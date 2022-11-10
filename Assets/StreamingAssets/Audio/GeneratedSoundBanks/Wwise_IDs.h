@@ -13,23 +13,7 @@ namespace AK
 {
     namespace EVENTS
     {
-        static const AkUniqueID PLAY_CLUB_SWING_VAR = 2698480971U;
-        static const AkUniqueID PLAY_DAGGER_SWING_VAR = 345029485U;
         static const AkUniqueID PLAY_DUNGEONDOOKKICK = 655318279U;
-        static const AkUniqueID PLAY_PLAYER_FOOTSTEPS = 98439365U;
-        static const AkUniqueID PLAY_PLAYER_JUMP = 562256996U;
-        static const AkUniqueID PLAY_PLAYER_LAND = 4249207015U;
-        static const AkUniqueID PLAY_SWORD_BLOCK_VAR = 1256834993U;
-        static const AkUniqueID PLAY_SWORD_HIT_VAR = 105369445U;
-        static const AkUniqueID PLAY_SWORD_SWING_VAR = 2181790556U;
-        static const AkUniqueID PLAY_TESTMUSIC_1_LP = 850545534U;
-        static const AkUniqueID PLAY_TESTMUSIC_2_LP = 3902639735U;
-        static const AkUniqueID PLAY_TESTSOUND1 = 1958090956U;
-        static const AkUniqueID PLAY_TESTSOUND1_3D = 265251250U;
-        static const AkUniqueID PLAY_TESTSOUND2_3D = 1556767723U;
-        static const AkUniqueID PLAY_TESTSOUND2_LP = 2445981326U;
-        static const AkUniqueID PLAY_TESTSOUND2_LP_STOP = 946131661U;
-        static const AkUniqueID PLAY_TESTSOUND2_STOP = 4060986362U;
     } // namespace EVENTS
 
     namespace STATES
@@ -78,7 +62,7 @@ namespace AK
     namespace BANKS
     {
         static const AkUniqueID INIT = 1355168291U;
-        static const AkUniqueID PLAYERSOUNDS = 1327972334U;
+        static const AkUniqueID SOUNDBANK2 = 1647770722U;
     } // namespace BANKS
 
     namespace BUSSES
