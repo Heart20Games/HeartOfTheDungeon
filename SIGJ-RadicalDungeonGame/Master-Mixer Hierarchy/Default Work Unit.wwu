@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{9084E0B8-54CC-4790-8319-2044EB2CB168}" SchemaVersion="110">
+	<Busses>
+		<WorkUnit Name="Default Work Unit" ID="{9084E0B8-54CC-4790-8319-2044EB2CB168}" PersistMode="Standalone">
+			<ChildrenList>
+				<Bus Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}">
+					<ReferenceList>
+						<Reference Name="AudioDevice" PluginName="System" CompanyID="0" PluginID="174" PluginType="7">
+							<ObjectRef Name="System" ID="{1B7ABF3F-316D-41A1-AF29-604AEB6F6BDF}" WorkUnitID="{E17EBFBD-8B57-4EDD-BF1E-AAEB426839B5}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<Bus Name="PlayerMaster" ID="{471830AE-822D-42A3-971C-65EA87FF3B64}">
+							<PropertyList>
+								<Property Name="UserAuxSendVolume0" Type="Real64">
+									<ValueList>
+										<Value>-5</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="UserAuxSend0">
+									<ObjectRef Name="Cave" ID="{9DE87825-62A8-465D-A9D1-99366BA932FA}" WorkUnitID="{9084E0B8-54CC-4790-8319-2044EB2CB168}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Bus Name="PlayerLocomotion" ID="{9D7C392F-052A-4A85-82EC-B1DE5C3550F6}">
+									<ChildrenList>
+										<Bus Name="PlayerFootsteps" ID="{62803435-755C-4B49-8B17-389773B5088E}"/>
+										<Bus Name="PlayerCloth" ID="{AA697A89-E153-4367-9B64-226578CD7E49}"/>
+									</ChildrenList>
+								</Bus>
+								<Bus Name="Player Combat" ID="{3447F56D-E33B-434C-92D3-03024C954A21}"/>
+							</ChildrenList>
+						</Bus>
+						<Bus Name="NPCMaster" ID="{9B77E97A-4707-413A-AFFF-83CF018A3929}"/>
+						<Bus Name="AmbientMaster" ID="{93B01529-E284-4FFA-B177-29E23427DBC3}">
+							<ChildrenList>
+								<Bus Name="3DAmbience" ID="{9A56C818-47A4-4155-9B46-68793AE6EEA1}"/>
+								<Bus Name="2DAmbience" ID="{E3CF544B-C176-451B-A21D-81DE09189C12}"/>
+								<Bus Name="AmbientBeds" ID="{712558CC-A49C-48E2-9F1B-2E2175116399}">
+									<ChildrenList>
+										<Bus Name="2DAmbientBeds" ID="{98B99CB4-2474-4528-8533-3F0F5B77C009}"/>
+									</ChildrenList>
+								</Bus>
+							</ChildrenList>
+						</Bus>
+						<AuxBus Name="Reverbs" ID="{45DF312E-CD1F-4820-B484-E12FE67050D9}">
+							<ChildrenList>
+								<AuxBus Name="LargeRoom" ID="{50C2A495-184A-4A07-8F9C-B202FB78857F}"/>
+								<AuxBus Name="SmallRoom" ID="{E6D94068-0C1F-4DCF-BC08-9132CC266D91}"/>
+								<AuxBus Name="Cave" ID="{9DE87825-62A8-465D-A9D1-99366BA932FA}">
+									<PropertyList>
+										<Property Name="BusVolume" Type="Real64">
+											<ValueList>
+												<Value>-6</Value>
+											</ValueList>
+										</Property>
+										<Property Name="OutputBusHighpass" Type="int16">
+											<ValueList>
+												<Value>17</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Effect0" PluginName="Wwise Matrix Reverb" CompanyID="0" PluginID="115" PluginType="3">
+											<ObjectRef Name="Underground_Parking1" ID="{8DA66AA3-6CA0-41A0-B7A2-BB6FCABFCDA8}" WorkUnitID="{E8613F7D-BAD3-45CD-A3ED-505576F31277}"/>
+										</Reference>
+									</ReferenceList>
+								</AuxBus>
+								<AuxBus Name="Hallway" ID="{BC563A32-2402-4A9C-A4BD-E223AF58578E}"/>
+							</ChildrenList>
+						</AuxBus>
+						<Bus Name="Music" ID="{3D25D695-04E9-434F-8ECD-ED37D40602E4}"/>
+						<Bus Name="SceneFoley" ID="{98ADF054-E77E-41AE-B3CE-F4462A3E3F7E}">
+							<ChildrenList>
+								<Bus Name="SceneAmbientFoley" ID="{351751FB-5BFC-4FFA-B551-AAEDF335AAF7}"/>
+								<Bus Name="SceneSpecialFoley" ID="{CED332DA-A071-44D1-AE57-35AB80A1715B}">
+									<ReferenceList>
+										<Reference Name="UserAuxSend0">
+											<ObjectRef Name="Cave" ID="{9DE87825-62A8-465D-A9D1-99366BA932FA}" WorkUnitID="{9084E0B8-54CC-4790-8319-2044EB2CB168}"/>
+										</Reference>
+									</ReferenceList>
+								</Bus>
+								<Bus Name="SceneCharacterFoley" ID="{07BC9808-CD17-467F-A16B-5D16559FE481}"/>
+							</ChildrenList>
+						</Bus>
+					</ChildrenList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="VOplaying" ID="{276FA3B1-0811-4030-9AB2-1374D35032EE}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="VOisPlaying" ID="{94B130D7-0E28-4664-8E69-F820CC0A48EA}"/>
+								<CustomState Name="" ID="{915FFB35-6559-4E5F-B0F3-C5F8F10D3298}" ShortID="204591497">
+									<PropertyList>
+										<Property Name="BusVolume" Type="Real64" Value="-7"/>
+									</PropertyList>
+								</CustomState>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="VOisNotPlaying" ID="{F9E34D9F-C738-4ED1-B3F9-6386AE9CCBE9}"/>
+								<CustomState Name="" ID="{75842546-412F-4C13-8A02-644755DCE4BF}" ShortID="18588390"/>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
+				</Bus>
+				<Bus Name="VoiceBus" ID="{41643D13-0D6E-4B16-BEA7-DA863600F05D}">
+					<ReferenceList>
+						<Reference Name="AudioDevice" PluginName="System" CompanyID="0" PluginID="174" PluginType="7">
+							<ObjectRef Name="System" ID="{1B7ABF3F-316D-41A1-AF29-604AEB6F6BDF}" WorkUnitID="{E17EBFBD-8B57-4EDD-BF1E-AAEB426839B5}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<Bus Name="BaelorB" ID="{DC23978C-1ACA-4B37-A690-EC34D42DF1F9}"/>
+						<Bus Name="Goblin" ID="{A89D5306-391D-456B-BDCD-7407478D47FE}"/>
+						<Bus Name="Osseus" ID="{3B0C63A0-76B3-4264-B56C-DF9F24B12913}"/>
+						<Bus Name="ClaviculusC" ID="{4B6B1326-4C41-4890-9D0A-A6ADD738A6AF}"/>
+						<Bus Name="Osteon" ID="{2EED2CDD-DA6F-4A74-92F3-151C857A5B64}"/>
+						<Bus Name="Rotta" ID="{96EE22E2-F49C-4C7E-95C5-BB83C357DA77}"/>
+						<Bus Name="TheHero" ID="{A502EEA5-31AD-44B3-AD0D-4DA110BEFF4C}"/>
+						<Bus Name="Venel" ID="{2FAF53F8-6AC0-4035-AD77-A59312AD943F}"/>
+						<Bus Name="Verpfeifen" ID="{0D90C545-6DC1-4A28-BD57-D4BD23270B10}"/>
+						<Bus Name="RatGuards" ID="{6238D2E8-EB49-47B2-8F65-9B1C60743A0D}"/>
+					</ChildrenList>
+				</Bus>
+			</ChildrenList>
+		</WorkUnit>
+	</Busses>
+</WwiseDocument>

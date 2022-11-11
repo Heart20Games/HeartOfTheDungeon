@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{9084E0B8-54CC-4790-8319-2044EB2CB168}" SchemaVersion="97">
+	<Busses>
+		<WorkUnit Name="Default Work Unit" ID="{9084E0B8-54CC-4790-8319-2044EB2CB168}" PersistMode="Standalone">
+			<ChildrenList>
+				<Bus Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}">
+					<ReferenceList>
+						<Reference Name="AudioDevice">
+							<ObjectRef Name="System" ID="{1B7ABF3F-316D-41A1-AF29-604AEB6F6BDF}" WorkUnitID="{E17EBFBD-8B57-4EDD-BF1E-AAEB426839B5}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<Bus Name="PlayerMaster" ID="{471830AE-822D-42A3-971C-65EA87FF3B64}">
+							<ChildrenList>
+								<Bus Name="PlayerLocomotion" ID="{9D7C392F-052A-4A85-82EC-B1DE5C3550F6}">
+									<ChildrenList>
+										<Bus Name="PlayerFootsteps" ID="{62803435-755C-4B49-8B17-389773B5088E}"/>
+										<Bus Name="PlayerCloth" ID="{AA697A89-E153-4367-9B64-226578CD7E49}"/>
+									</ChildrenList>
+								</Bus>
+							</ChildrenList>
+						</Bus>
+						<Bus Name="NPCMaster" ID="{9B77E97A-4707-413A-AFFF-83CF018A3929}"/>
+						<Bus Name="AmbientMaster" ID="{93B01529-E284-4FFA-B177-29E23427DBC3}">
+							<ChildrenList>
+								<Bus Name="3DAmbience" ID="{9A56C818-47A4-4155-9B46-68793AE6EEA1}"/>
+								<Bus Name="2DAmbience" ID="{E3CF544B-C176-451B-A21D-81DE09189C12}"/>
+								<Bus Name="AmbientBeds" ID="{712558CC-A49C-48E2-9F1B-2E2175116399}">
+									<ChildrenList>
+										<Bus Name="2DAmbientBeds" ID="{98B99CB4-2474-4528-8533-3F0F5B77C009}"/>
+									</ChildrenList>
+								</Bus>
+							</ChildrenList>
+						</Bus>
+						<AuxBus Name="Reverbs" ID="{45DF312E-CD1F-4820-B484-E12FE67050D9}">
+							<ChildrenList>
+								<AuxBus Name="LargeRoom" ID="{50C2A495-184A-4A07-8F9C-B202FB78857F}"/>
+								<AuxBus Name="SmallRoom" ID="{E6D94068-0C1F-4DCF-BC08-9132CC266D91}"/>
+								<AuxBus Name="Cave" ID="{9DE87825-62A8-465D-A9D1-99366BA932FA}"/>
+								<AuxBus Name="Hallway" ID="{BC563A32-2402-4A9C-A4BD-E223AF58578E}"/>
+							</ChildrenList>
+						</AuxBus>
+					</ChildrenList>
+				</Bus>
+			</ChildrenList>
+		</WorkUnit>
+	</Busses>
+</WwiseDocument>

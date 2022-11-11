@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{4F5ACA73-592A-4027-B7E5-84750AF439AA}" SchemaVersion="110" RootDocumentID="{387B9EEE-CBF7-49AC-A6AC-F1A3853EF2FD}" ParentDocumentID="{8F82D44B-D7B2-4FB3-9715-F62F6AF90AB4}">
+	<AudioObjects>
+		<WorkUnit Name="IntroFoley" ID="{4F5ACA73-592A-4027-B7E5-84750AF439AA}" OwnerID="{8F82D44B-D7B2-4FB3-9715-F62F6AF90AB4}" PersistMode="Nested">
+			<ChildrenList>
+				<Folder Name="Combat Foley" ID="{D0D2C7DE-14AA-48FB-80FE-014EEADD9DB2}" ShortID="475499250"/>
+				<Folder Name="Intro Ambient Foley" ID="{1AB1D27E-ED0D-479C-A8C0-AF258969AE8C}" ShortID="585393370"/>
+				<Folder Name="Intro Special Foley" ID="{853D7287-CE8F-47C7-8374-570927D36364}" ShortID="81634244">
+					<ChildrenList>
+						<Sound Name="DungeonDookKick" ID="{5844FE0B-51A1-404F-B884-914DAF92BE66}" ShortID="778329246">
+							<PropertyList>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>-7</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{B334DB7A-0546-42B9-B348-416537F8C535}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SceneSpecialFoley" ID="{CED332DA-A071-44D1-AE57-35AB80A1715B}" WorkUnitID="{9084E0B8-54CC-4790-8319-2044EB2CB168}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="DungeonDookKick" ID="{A8EBBC6C-BB37-46AE-86CA-592AD0868284}">
+									<Language>SFX</Language>
+									<AudioFile>DungeonDookKick.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="440962450"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ActiveSourceList>
+								<ActiveSource Name="DungeonDookKick" ID="{A8EBBC6C-BB37-46AE-86CA-592AD0868284}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+					</ChildrenList>
+				</Folder>
+			</ChildrenList>
+		</WorkUnit>
+	</AudioObjects>
+</WwiseDocument>

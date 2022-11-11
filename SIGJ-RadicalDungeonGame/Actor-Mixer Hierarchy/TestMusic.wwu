@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{184B2A60-D909-441D-A37F-13FBF08A2188}" SchemaVersion="110" RootDocumentID="{387B9EEE-CBF7-49AC-A6AC-F1A3853EF2FD}" ParentDocumentID="{42D42E80-DDA6-4A0E-911A-15CE476411B4}">
+	<AudioObjects>
+		<WorkUnit Name="TestMusic" ID="{184B2A60-D909-441D-A37F-13FBF08A2188}" OwnerID="{42D42E80-DDA6-4A0E-911A-15CE476411B4}" PersistMode="Nested">
+			<ChildrenList>
+				<Sound Name="Test_Music1_lp" ID="{83DAADDA-ECEC-4B26-A949-5E869F7E199A}" ShortID="880305723">
+					<PropertyList>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+						<Property Name="UseGameAuxSends" Type="bool" Value="True"/>
+						<Property Name="Volume" Type="Real64">
+							<ValueList>
+								<Value>-2</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{B334DB7A-0546-42B9-B348-416537F8C535}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Music" ID="{3D25D695-04E9-434F-8ECD-ED37D40602E4}" WorkUnitID="{9084E0B8-54CC-4790-8319-2044EB2CB168}"/>
+						</Reference>
+						<Reference Name="UserAuxSend0">
+							<ObjectRef Name="Cave" ID="{9DE87825-62A8-465D-A9D1-99366BA932FA}" WorkUnitID="{9084E0B8-54CC-4790-8319-2044EB2CB168}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="GameplayLoop1" ID="{A895BA2E-7C1D-401B-BFB9-D5BEC590A86D}">
+							<Language>SFX</Language>
+							<AudioFile>Test Music\GameplayLoop1.wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="521001615"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="GameplayLoop1" ID="{A895BA2E-7C1D-401B-BFB9-D5BEC590A86D}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Test_Music2_lp" ID="{11D9DF20-60EC-4B7E-9CB3-A8AB1704F119}" ShortID="732021764">
+					<PropertyList>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{B334DB7A-0546-42B9-B348-416537F8C535}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Music" ID="{3D25D695-04E9-434F-8ECD-ED37D40602E4}" WorkUnitID="{9084E0B8-54CC-4790-8319-2044EB2CB168}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="MenuMusic1" ID="{37B4ED6D-B939-4EB1-9BAE-82DB7F79508E}">
+							<Language>SFX</Language>
+							<AudioFile>Test Music\MenuMusic1.wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="175319031"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="MenuMusic1" ID="{37B4ED6D-B939-4EB1-9BAE-82DB7F79508E}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+			</ChildrenList>
+		</WorkUnit>
+	</AudioObjects>
+</WwiseDocument>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{9A992E9E-E455-4A9B-8207-25A5716B74FE}" SchemaVersion="110">
+	<Events>
+		<WorkUnit Name="Player" ID="{9A992E9E-E455-4A9B-8207-25A5716B74FE}" PersistMode="Standalone">
+			<PropertyList>
+				<Property Name="Color" Type="int16" Value="1"/>
+				<Property Name="OverrideColor" Type="bool" Value="True"/>
+			</PropertyList>
+			<ChildrenList>
+				<WorkUnit Name="PlayerLocomotion" ID="{89827E88-5FF1-4FE9-9A7B-81E6FABC3302}" PersistMode="Reference"/>
+				<Folder Name="PlayerCombat" ID="{B5DEC238-67EF-4726-A6D6-CC4591DA2F3C}" ShortID="628412952">
+					<ChildrenList>
+						<Event Name="Play_Sword_Block_Var" ID="{68B8A69B-3357-4DD1-819D-FE8BB02F4DC6}">
+							<ChildrenList>
+								<Action Name="" ID="{A9D2F9AE-A89D-498B-8708-D3424853742E}" ShortID="56349943">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Sword Block Var" ID="{6C3D0BA5-C4B6-4ADE-8616-DAB674CC3BBF}" WorkUnitID="{579E9FCC-7271-4923-A65C-08F7C15D0E0D}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_Sword_Hit_Var" ID="{F6F0F995-DDAE-4E9B-A565-F0F785A27863}">
+							<ChildrenList>
+								<Action Name="" ID="{03E10CD8-4754-4656-9DCE-DDC9AF6D2F5B}" ShortID="510012287">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Sword Hit Var" ID="{84D4AB89-24DC-4E27-9D56-1D71F7160654}" WorkUnitID="{579E9FCC-7271-4923-A65C-08F7C15D0E0D}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_Sword_Swing_Var" ID="{B6B527EC-CDC2-4387-A4C4-E32208A65465}">
+							<ChildrenList>
+								<Action Name="" ID="{4BDDC995-4454-4416-8691-4F50ED080A03}" ShortID="885118252">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Sword Swing Var" ID="{22899A9C-4EF8-4CDA-B800-A95295DE9338}" WorkUnitID="{579E9FCC-7271-4923-A65C-08F7C15D0E0D}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_Dagger_Swing_Var" ID="{22E44A49-3B1C-4441-9B33-27D8DE00B6F9}">
+							<ChildrenList>
+								<Action Name="" ID="{830B37F8-CE2C-4D4A-8092-10AEA426898B}" ShortID="999670185">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Dagger Swing Var" ID="{82AD41A1-E386-490F-8ED3-D854856EB5AB}" WorkUnitID="{579E9FCC-7271-4923-A65C-08F7C15D0E0D}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+					</ChildrenList>
+				</Folder>
+			</ChildrenList>
+		</WorkUnit>
+	</Events>
+</WwiseDocument>

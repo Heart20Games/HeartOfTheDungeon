@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{89827E88-5FF1-4FE9-9A7B-81E6FABC3302}" SchemaVersion="110" RootDocumentID="{9A992E9E-E455-4A9B-8207-25A5716B74FE}" ParentDocumentID="{9A992E9E-E455-4A9B-8207-25A5716B74FE}">
+	<Events>
+		<WorkUnit Name="PlayerLocomotion" ID="{89827E88-5FF1-4FE9-9A7B-81E6FABC3302}" OwnerID="{9A992E9E-E455-4A9B-8207-25A5716B74FE}" PersistMode="Nested">
+			<PropertyList>
+				<Property Name="Color" Type="int16" Value="1"/>
+				<Property Name="OverrideColor" Type="bool" Value="True"/>
+			</PropertyList>
+			<ChildrenList>
+				<Event Name="Play_Player_Footsteps" ID="{D14EC899-54C4-4A0A-BBBA-A5AB82C00B55}">
+					<PropertyList>
+						<Property Name="Color" Type="int16" Value="1"/>
+						<Property Name="OverrideColor" Type="bool" Value="True"/>
+					</PropertyList>
+					<ChildrenList>
+						<Action Name="" ID="{BB5FED37-C7CB-4F64-8B81-1CD9454A5CA5}" ShortID="322669798">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Test_Footstep" ID="{AEEABC2F-0950-4FDF-9178-BA6D902C1C7A}" WorkUnitID="{42D42E80-DDA6-4A0E-911A-15CE476411B4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Player_Jump" ID="{A69747DE-0016-4C87-975E-CB2D97F0918C}">
+					<ChildrenList>
+						<Action Name="" ID="{91F88519-FF24-45DA-B354-50E53ABC06D1}" ShortID="319005292">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Test_Jump" ID="{97AF3B9F-CA1E-4B41-8E32-A347D8E7B604}" WorkUnitID="{42D42E80-DDA6-4A0E-911A-15CE476411B4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Player_Land" ID="{4DA795BF-CF6F-426A-9E3A-C6A8E48FA19B}">
+					<ChildrenList>
+						<Action Name="" ID="{1B71935A-9D47-4DE7-A8C2-F93535AA3D92}" ShortID="171229923">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Test_Landing" ID="{AC6598BE-8CDD-4899-87B1-A02DA368AFB9}" WorkUnitID="{42D42E80-DDA6-4A0E-911A-15CE476411B4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
+	</Events>
+</WwiseDocument>

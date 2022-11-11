@@ -1,0 +1,2644 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{34441EDA-00B9-4B32-AF85-E1EDB098C997}" SchemaVersion="94">
+	<AudioObjects>
+		<WorkUnit Name="Factory Igniter Live Synth" ID="{34441EDA-00B9-4B32-AF85-E1EDB098C997}" PersistMode="Standalone">
+			<ChildrenList>
+				<Sound Name="Car Booster - Simple" ID="{879CE514-D79A-4D28-982D-F7FEC92D5306}" ShortID="764650565">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{CAEF2FAA-075D-4849-B69A-37A285C68C1F}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BFB41A91-3193-4ADE-8C5E-D67776F0815A}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<SourcePlugin Name="Igniter Live Synth" ID="{F3419FB2-CA5C-427C-AD90-A4F00F5AD0E9}" ShortID="334847977" PluginName="Igniter Live Synth" CompanyID="269" PluginID="82">
+							<PropertyList>
+								<Property Name="osc1AmFreq" Type="Real32" Value="5"/>
+								<Property Name="osc1AmGain" Type="Real32" Value="0.1"/>
+								<Property Name="osc1MainFreq" Type="Real32" Value="40">
+									<RTPCList>
+										<RTPC Name="" ID="{BC72330B-0A19-448F-B115-B9C76D2131D4}" ShortID="819200102">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{6E93F30D-E872-4E16-BBBB-6CA6A08929C7}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>40</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>73.9508</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1MainGain" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{C292EE09-3AF1-4357-8FD8-F53DDE953C5F}" ShortID="600183478">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{E6CC6E55-7F7B-456B-AC5A-31529334DC10}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0.86252</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>1</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1MainWaveshapeSecondary" Type="int32" Value="1"/>
+								<Property Name="osc1VibratoFreq" Type="Real32" Value="5"/>
+								<Property Name="osc1VibratoGain" Type="Real32" Value="0.05"/>
+							</PropertyList>
+							<Language>SFX</Language>
+						</SourcePlugin>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Igniter Live Synth" ID="{F3419FB2-CA5C-427C-AD90-A4F00F5AD0E9}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Car Booster - Complex" ID="{1B75257A-2E06-47F0-96F4-2C74AFA0E452}" ShortID="226032503">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{CAEF2FAA-075D-4849-B69A-37A285C68C1F}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BFB41A91-3193-4ADE-8C5E-D67776F0815A}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<SourcePlugin Name="Igniter Live Synth" ID="{BEC592A8-AACC-4B11-B4FE-7B7E32EB7D30}" ShortID="677687062" PluginName="Igniter Live Synth" CompanyID="269" PluginID="82">
+							<PropertyList>
+								<Property Name="osc1AmFreq" Type="Real32" Value="5"/>
+								<Property Name="osc1AmGain" Type="Real32" Value="0.1"/>
+								<Property Name="osc1AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1BlendAmount" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{0411F79B-BF36-4D7B-8749-0D45EC46CE68}" ShortID="274081706">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{F8E909F9-136D-40A7-A231-65845254D43B}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>0.09841</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1MainFreq" Type="Real32" Value="40">
+									<RTPCList>
+										<RTPC Name="" ID="{B0C14ABF-DF72-40D6-8F97-E7FC97517723}" ShortID="162677975">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{AF182104-8C0A-4068-B359-74B096CAB7F2}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>40</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>73.9508</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1MainGain" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{1D0CA3EC-E487-4841-9AA6-840AF6856159}" ShortID="505575760">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{B8AE5B87-3794-4EAE-8343-8A7DA97DD3EC}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0.8466</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>1</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1MainWaveshapeSecondary" Type="int32" Value="1"/>
+								<Property Name="osc1VibratoFreq" Type="Real32" Value="5"/>
+								<Property Name="osc1VibratoGain" Type="Real32" Value="0.05"/>
+								<Property Name="osc1VibratoOsc" Type="bool" Value="True"/>
+							</PropertyList>
+							<Language>SFX</Language>
+						</SourcePlugin>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Igniter Live Synth" ID="{BEC592A8-AACC-4B11-B4FE-7B7E32EB7D30}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Crazy Plusar" ID="{9724F676-E274-45F3-A484-6CD5AC7D37FE}" ShortID="64158582">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{CAEF2FAA-075D-4849-B69A-37A285C68C1F}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BFB41A91-3193-4ADE-8C5E-D67776F0815A}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<SourcePlugin Name="Igniter Live Synth" ID="{8DDA0C3C-C718-44A7-8A51-A003DFD945D0}" ShortID="650662816" PluginName="Igniter Live Synth" CompanyID="269" PluginID="82">
+							<PropertyList>
+								<Property Name="osc1AmFreq" Type="Real32" Value="15.27"/>
+								<Property Name="osc1AmGain" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{2689F576-E191-469B-92FD-F8129A385BCE}" ShortID="93144925">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{A09AB8AF-DBAE-4970-AD1C-18482E9F678D}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>70.5665</XPos>
+														<YPos>0</YPos>
+														<Flags>0</Flags>
+														<SegmentShape>Log2</SegmentShape>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>0.1288</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1BlendAmount" Type="Real32" Value="0.46"/>
+								<Property Name="osc1FmFreq" Type="Real32" Value="0.63"/>
+								<Property Name="osc1FmGain" Type="Real32" Value="1.79">
+									<RTPCList>
+										<RTPC Name="" ID="{AFC1F692-5694-4B0C-AAD6-2AAD4843BBA1}" ShortID="552931159">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{5D429E76-9BE3-412B-BD4B-9B837699A70D}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0.98408</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>19.95074</XPos>
+														<YPos>1.04196</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>21.55172</XPos>
+														<YPos>0.05797</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>94.95074</XPos>
+														<YPos>0</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>2.08394</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1FmWaveshape" Type="int32" Value="4"/>
+								<Property Name="osc1MainFreq" Type="Real32" Value="115.05">
+									<RTPCList>
+										<RTPC Name="" ID="{9F0973D6-E782-4E87-B542-C2A78CC606F6}" ShortID="443968781">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{1EDEA120-DE2F-4B21-B494-614BDDD4550E}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>117.45297</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>7.88177</XPos>
+														<YPos>129.60434</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>9.1133</XPos>
+														<YPos>101.11997</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>13.3004926108374</XPos>
+														<YPos>141.339535369125</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>19.95074</XPos>
+														<YPos>153.28282</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>21.42857</XPos>
+														<YPos>40</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>60.34483</XPos>
+														<YPos>157.51176</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>60.59113</XPos>
+														<YPos>108.56837</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>200</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1MainGain" Type="Real32" Value="0.24"/>
+								<Property Name="osc1MainWaveshapeSecondary" Type="int32" Value="4"/>
+								<Property Name="osc1VibratoFreq" Type="Real32" Value="4.32"/>
+								<Property Name="osc1VibratoGain" Type="Real32" Value="0.21"/>
+								<Property Name="osc1VibratoOsc" Type="bool" Value="True"/>
+								<Property Name="osc2AmFreq" Type="Real32" Value="5"/>
+								<Property Name="osc2AmGain" Type="Real32" Value="0.8"/>
+								<Property Name="osc2AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc2BlendAmount" Type="Real32" Value="0.31">
+									<RTPCList>
+										<RTPC Name="" ID="{7CA4464D-FF4C-4F59-9BC7-8E6120B6F0FA}" ShortID="610898628">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{2D049D52-8347-4130-8900-027321FD2512}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>0.57308</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc2MainFreq" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{9DBF8890-4F42-4523-8E93-1EA9F374A4EA}" ShortID="703195908">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{599E5F14-46ED-4816-BBC6-A611996E0120}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>51.98263</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>21.67488</XPos>
+														<YPos>64.69427</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>23.27586</XPos>
+														<YPos>47.9984</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>46.18227</XPos>
+														<YPos>67.95829</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>48.1527</XPos>
+														<YPos>49.44573</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>69.33498</XPos>
+														<YPos>71.17571</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>71.18227</XPos>
+														<YPos>53.36341</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>70</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc2MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc2MainWaveshape" Type="int32" Value="1"/>
+								<Property Name="osc2MainWaveshapeSecondary" Type="int32" Value="4"/>
+								<Property Name="osc2VibratoFreq" Type="Real32" Value="2.37"/>
+								<Property Name="osc2VibratoGain" Type="Real32" Value="0.63"/>
+								<Property Name="osc3AmFreq" Type="Real32" Value="5"/>
+								<Property Name="osc3AmGain" Type="Real32" Value="0.8"/>
+								<Property Name="osc3AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc3AmWaveshape" Type="int32" Value="4"/>
+								<Property Name="osc3FmFreq" Type="Real32" Value="20"/>
+								<Property Name="osc3FmGain" Type="Real32" Value="20"/>
+								<Property Name="osc3MainFreq" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{F6C9D9BA-39C0-4F11-90A2-1BB97F92C773}" ShortID="436755931">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{01854069-FE5F-473D-9B41-3EEC929F7F29}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>200</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>200</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc3MainGain" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{577F700D-1B30-43E3-B86A-6B84310B25BD}" ShortID="104028902">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{FE1D8F5E-29C6-4AA6-8870-769BCE2C784B}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0.0275</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>81.89655</XPos>
+														<YPos>0.0525</YPos>
+														<Flags>0</Flags>
+														<SegmentShape>Log2</SegmentShape>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>0.21563</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc3MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc3MainWaveshape" Type="int32" Value="5"/>
+								<Property Name="osc3VibratoFreq" Type="Real32" Value="10"/>
+								<Property Name="osc3VibratoGain" Type="Real32" Value="15.48"/>
+								<Property Name="osc4AmFreq" Type="Real32" Value="5"/>
+								<Property Name="osc4AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc4AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc4BlendAmount" Type="Real32" Value="0.52"/>
+								<Property Name="osc4FmFreq" Type="Real32" Value="20"/>
+								<Property Name="osc4FmGain" Type="Real32" Value="1"/>
+								<Property Name="osc4FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc4FmWaveshape" Type="int32" Value="4"/>
+								<Property Name="osc4MainFreq" Type="Real32" Value="50">
+									<RTPCList>
+										<RTPC Name="" ID="{7CD7E3A0-2271-48EF-8661-435DB56A6EDF}" ShortID="336066807">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{8E507FFE-E262-4A79-890C-5073DE117AC1}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>50</YPos>
+														<Flags>5</Flags>
+														<SegmentShape>InvertedSCurve</SegmentShape>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>70</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc4MainGain" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{5A32208B-C565-4784-ADA7-3F331116A6DB}" ShortID="662544069">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{DB097355-614D-4E93-AF8A-25D9E96CED44}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0.03183</YPos>
+														<Flags>5</Flags>
+														<SegmentShape>Exp2</SegmentShape>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>0.24167</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc4MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc4MainWaveshapeSecondary" Type="int32" Value="1"/>
+								<Property Name="osc4VibratoFreq" Type="Real32" Value="10">
+									<RTPCList>
+										<RTPC Name="" ID="{B65B2942-6896-48B1-A5E1-7E3116B76BB3}" ShortID="832788900">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{F8DC0EED-EB67-4CCC-8891-2B2C04F3AA65}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>5</YPos>
+														<Flags>5</Flags>
+														<SegmentShape>Exp2</SegmentShape>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>10</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc4VibratoGain" Type="Real32" Value="1">
+									<RTPCList>
+										<RTPC Name="" ID="{5001418D-D007-46D2-BA09-0310E760A0D9}" ShortID="489375003">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{606A10D1-C0BD-47B5-974C-A1750963BD9E}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+														<SegmentShape>SCurve</SegmentShape>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>1</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc4VibratoOsc" Type="bool" Value="True"/>
+							</PropertyList>
+							<Language>SFX</Language>
+						</SourcePlugin>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Igniter Live Synth" ID="{8DDA0C3C-C718-44A7-8A51-A003DFD945D0}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Energy Field" ID="{BC446179-15E6-49E2-881A-AE438C52725F}" ShortID="649528862">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{CAEF2FAA-075D-4849-B69A-37A285C68C1F}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BFB41A91-3193-4ADE-8C5E-D67776F0815A}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<SourcePlugin Name="Igniter Live Synth" ID="{DBAD54DC-C174-4FAA-B381-CD1E2BD663C1}" ShortID="573701485" PluginName="Igniter Live Synth" CompanyID="269" PluginID="82">
+							<PropertyList>
+								<Property Name="osc1AmFreq" Type="Real32" Value="37.37"/>
+								<Property Name="osc1AmGain" Type="Real32" Value="0.7"/>
+								<Property Name="osc1AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1BlendAmount" Type="Real32" Value="0.49"/>
+								<Property Name="osc1MainFreq" Type="Real32" Value="40"/>
+								<Property Name="osc1MainGain" Type="Real32" Value="0.55"/>
+								<Property Name="osc1MainWaveshape" Type="int32" Value="1"/>
+								<Property Name="osc1VibratoFreq" Type="Real32" Value="1"/>
+								<Property Name="osc1VibratoGain" Type="Real32" Value="0.53"/>
+								<Property Name="osc1VibratoOsc" Type="bool" Value="True"/>
+								<Property Name="osc2AmFreq" Type="Real32" Value="30"/>
+								<Property Name="osc2AmGain" Type="Real32" Value="0.7"/>
+								<Property Name="osc2AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc2BlendAmount" Type="Real32" Value="0.05"/>
+								<Property Name="osc2MainFreq" Type="Real32" Value="80"/>
+								<Property Name="osc2MainGain" Type="Real32" Value="0.49"/>
+								<Property Name="osc2MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc2MainWaveshapeSecondary" Type="int32" Value="3"/>
+								<Property Name="osc2VibratoFreq" Type="Real32" Value="0.5"/>
+								<Property Name="osc2VibratoGain" Type="Real32" Value="1"/>
+								<Property Name="osc2VibratoOsc" Type="bool" Value="True"/>
+								<Property Name="osc3AmFreq" Type="Real32" Value="60"/>
+								<Property Name="osc3AmGain" Type="Real32" Value="0.7"/>
+								<Property Name="osc3AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc3AmWaveshape" Type="int32" Value="2"/>
+								<Property Name="osc3BlendAmount" Type="Real32" Value="0.72"/>
+								<Property Name="osc3FmFreq" Type="Real32" Value="0.63"/>
+								<Property Name="osc3FmGain" Type="Real32" Value="20"/>
+								<Property Name="osc3FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc3MainFreq" Type="Real32" Value="160"/>
+								<Property Name="osc3MainGain" Type="Real32" Value="0.11"/>
+								<Property Name="osc3MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc3MainWaveshape" Type="int32" Value="4"/>
+								<Property Name="osc3VibratoFreq" Type="Real32" Value="10"/>
+								<Property Name="osc3VibratoGain" Type="Real32" Value="1"/>
+								<Property Name="osc3VibratoOsc" Type="bool" Value="True"/>
+								<Property Name="osc4AmFreq" Type="Real32" Value="10"/>
+								<Property Name="osc4AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc4AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc4MainGain" Type="Real32" Value="0.06"/>
+								<Property Name="osc4MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc4MainWaveshape" Type="int32" Value="5"/>
+							</PropertyList>
+							<Language>SFX</Language>
+						</SourcePlugin>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Igniter Live Synth" ID="{DBAD54DC-C174-4FAA-B381-CD1E2BD663C1}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Engine Idle" ID="{F083FF34-1E70-4297-83C5-8DF62BDB8D09}" ShortID="977500569">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{CAEF2FAA-075D-4849-B69A-37A285C68C1F}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BFB41A91-3193-4ADE-8C5E-D67776F0815A}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<SourcePlugin Name="Igniter Live Synth" ID="{03C5639D-1ABD-4572-B4D3-C973E54022BD}" ShortID="167595601" PluginName="Igniter Live Synth" CompanyID="269" PluginID="82">
+							<PropertyList>
+								<Property Name="osc1MainFreq" Type="Real32" Value="40"/>
+								<Property Name="osc1MainGain" Type="Real32" Value="0.71"/>
+								<Property Name="osc2MainFreq" Type="Real32" Value="60"/>
+								<Property Name="osc2MainGain" Type="Real32" Value="0.7"/>
+								<Property Name="osc2MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc3MainFreq" Type="Real32" Value="80"/>
+								<Property Name="osc3MainGain" Type="Real32" Value="0.7"/>
+								<Property Name="osc3MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc4AmFreq" Type="Real32" Value="10.01"/>
+								<Property Name="osc4AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc4AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc4AmWaveshape" Type="int32" Value="1"/>
+								<Property Name="osc4BlendAmount" Type="Real32" Value="0.06"/>
+								<Property Name="osc4MainFreq" Type="Real32" Value="100"/>
+								<Property Name="osc4MainGain" Type="Real32" Value="0.25"/>
+								<Property Name="osc4MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc4MainWaveshapeSecondary" Type="int32" Value="5"/>
+							</PropertyList>
+							<Language>SFX</Language>
+						</SourcePlugin>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Igniter Live Synth" ID="{03C5639D-1ABD-4572-B4D3-C973E54022BD}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Hovering Space Craft" ID="{A62800FF-46F5-4148-85E4-0957301E6461}" ShortID="909800917">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{CAEF2FAA-075D-4849-B69A-37A285C68C1F}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BFB41A91-3193-4ADE-8C5E-D67776F0815A}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<SourcePlugin Name="Igniter Live Synth" ID="{02D2CF53-2BAA-49EC-BA78-0EF8548A6AB9}" ShortID="754021023" PluginName="Igniter Live Synth" CompanyID="269" PluginID="82">
+							<PropertyList>
+								<Property Name="osc1AmFreq" Type="Real32" Value="100"/>
+								<Property Name="osc1AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc1AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1BlendAmount" Type="Real32" Value="0.04"/>
+								<Property Name="osc1FmFreq" Type="Real32" Value="0.3"/>
+								<Property Name="osc1FmGain" Type="Real32" Value="20"/>
+								<Property Name="osc1FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1MainFreq" Type="Real32" Value="100"/>
+								<Property Name="osc1MainGain" Type="Real32" Value="0.68"/>
+								<Property Name="osc1MainWaveshapeSecondary" Type="int32" Value="1"/>
+								<Property Name="osc1VibratoFreq" Type="Real32" Value="0.16"/>
+								<Property Name="osc1VibratoGain" Type="Real32" Value="1.05"/>
+								<Property Name="osc2AmFreq" Type="Real32" Value="100"/>
+								<Property Name="osc2AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc2AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc2BlendAmount" Type="Real32" Value="0.77"/>
+								<Property Name="osc2FmFreq" Type="Real32" Value="0.53"/>
+								<Property Name="osc2FmGain" Type="Real32" Value="20"/>
+								<Property Name="osc2FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc2MainGain" Type="Real32" Value="0.29"/>
+								<Property Name="osc2MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc2MainWaveshape" Type="int32" Value="4"/>
+								<Property Name="osc2MainWaveshapeSecondary" Type="int32" Value="1"/>
+								<Property Name="osc3AmFreq" Type="Real32" Value="100"/>
+								<Property Name="osc3AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc3AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc3BlendAmount" Type="Real32" Value="0.79"/>
+								<Property Name="osc3FmFreq" Type="Real32" Value="1.65"/>
+								<Property Name="osc3FmGain" Type="Real32" Value="1.05"/>
+								<Property Name="osc3FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc3MainFreq" Type="Real32" Value="300"/>
+								<Property Name="osc3MainGain" Type="Real32" Value="0.15"/>
+								<Property Name="osc3MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc3MainWaveshape" Type="int32" Value="3"/>
+								<Property Name="osc3MainWaveshapeSecondary" Type="int32" Value="1"/>
+								<Property Name="osc4AmFreq" Type="Real32" Value="98.42"/>
+								<Property Name="osc4AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc4AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc4BlendAmount" Type="Real32" Value="0.37"/>
+								<Property Name="osc4FmFreq" Type="Real32" Value="2.42"/>
+								<Property Name="osc4FmGain" Type="Real32" Value="1.89"/>
+								<Property Name="osc4FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc4MainFreq" Type="Real32" Value="400"/>
+								<Property Name="osc4MainGain" Type="Real32" Value="0.13"/>
+								<Property Name="osc4MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc4MainWaveshape" Type="int32" Value="1"/>
+							</PropertyList>
+							<Language>SFX</Language>
+						</SourcePlugin>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Igniter Live Synth" ID="{02D2CF53-2BAA-49EC-BA78-0EF8548A6AB9}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Idle Flying Saucer" ID="{A43FA8F6-F5D0-423B-961B-116A1509B970}" ShortID="969180081">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{CAEF2FAA-075D-4849-B69A-37A285C68C1F}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BFB41A91-3193-4ADE-8C5E-D67776F0815A}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<SourcePlugin Name="Igniter Live Synth" ID="{8382DC15-8F83-4945-BE53-D32D525E2EEA}" ShortID="305165808" PluginName="Igniter Live Synth" CompanyID="269" PluginID="82">
+							<PropertyList>
+								<Property Name="osc1BlendAmount" Type="Real32" Value="0.19"/>
+								<Property Name="osc1FmFreq" Type="Real32" Value="0.21"/>
+								<Property Name="osc1FmGain" Type="Real32" Value="14"/>
+								<Property Name="osc1FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1MainFreq" Type="Real32" Value="250"/>
+								<Property Name="osc1MainWaveshapeSecondary" Type="int32" Value="1"/>
+								<Property Name="osc1VibratoFreq" Type="Real32" Value="10"/>
+								<Property Name="osc1VibratoGain" Type="Real32" Value="1.16"/>
+								<Property Name="osc1VibratoOsc" Type="bool" Value="True"/>
+								<Property Name="osc2BlendAmount" Type="Real32" Value="0.64"/>
+								<Property Name="osc2FmFreq" Type="Real32" Value="0.11"/>
+								<Property Name="osc2FmGain" Type="Real32" Value="18.95"/>
+								<Property Name="osc2FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc2MainFreq" Type="Real32" Value="500"/>
+								<Property Name="osc2MainGain" Type="Real32" Value="0.5"/>
+								<Property Name="osc2MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc2MainWaveshapeSecondary" Type="int32" Value="1"/>
+								<Property Name="osc2VibratoFreq" Type="Real32" Value="10"/>
+								<Property Name="osc2VibratoGain" Type="Real32" Value="1.37"/>
+								<Property Name="osc2VibratoOsc" Type="bool" Value="True"/>
+							</PropertyList>
+							<Language>SFX</Language>
+						</SourcePlugin>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Igniter Live Synth" ID="{8382DC15-8F83-4945-BE53-D32D525E2EEA}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Initiate Search" ID="{51AFA1FE-741A-48F7-8C78-EBB771CA6CC0}" ShortID="469558611">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{CAEF2FAA-075D-4849-B69A-37A285C68C1F}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BFB41A91-3193-4ADE-8C5E-D67776F0815A}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<SourcePlugin Name="Igniter Live Synth" ID="{A7862994-F5FF-488F-9204-723E440A79A5}" ShortID="114953905" PluginName="Igniter Live Synth" CompanyID="269" PluginID="82">
+							<PropertyList>
+								<Property Name="osc1BlendAmount" Type="Real32" Value="0.02">
+									<RTPCList>
+										<RTPC Name="" ID="{CADA13DA-2181-44C7-A9CD-5BD032505321}" ShortID="416442307">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_State" ID="{51538BF7-528D-433F-9032-9B2B65A5890B}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{CF3861A6-650D-484E-9856-B990A4458821}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>1</XPos>
+														<YPos>0.3097</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1FmFreq" Type="Real32" Value="0.74">
+									<RTPCList>
+										<RTPC Name="" ID="{71DEA1F1-2747-4CB7-881C-1550C1D75F2A}" ShortID="872692592">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_State" ID="{51538BF7-528D-433F-9032-9B2B65A5890B}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{A113FFC1-1DC9-47BA-BD3A-54BA052229EC}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>1</XPos>
+														<YPos>0.73</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1FmGain" Type="Real32" Value="0.53"/>
+								<Property Name="osc1FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1MainFreq" Type="Real32" Value="497.58"/>
+								<Property Name="osc1MainGain" Type="Real32" Value="0.5"/>
+								<Property Name="osc1MainWaveshapeSecondary" Type="int32" Value="1"/>
+								<Property Name="osc2BlendAmount" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{FC9839DB-1323-477F-AD95-8C1E4E7085A9}" ShortID="49794465">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_State" ID="{51538BF7-528D-433F-9032-9B2B65A5890B}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{5CC77907-8586-405F-AEC6-8508EC1E8439}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0.03907</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>0.07142</XPos>
+														<YPos>0.08808</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>1</XPos>
+														<YPos>0.36614</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc2FmFreq" Type="Real32" Value="0.63">
+									<RTPCList>
+										<RTPC Name="" ID="{24717CD2-7A5E-4510-9AAE-B2BE6D6FF77E}" ShortID="232919719">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_State" ID="{51538BF7-528D-433F-9032-9B2B65A5890B}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{B130B1C0-5C60-4F5F-B647-95CF20C27FF3}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>1</XPos>
+														<YPos>0.63</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc2FmGain" Type="Real32" Value="0.42"/>
+								<Property Name="osc2FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc2MainFreq" Type="Real32" Value="500"/>
+								<Property Name="osc2MainGain" Type="Real32" Value="0.5"/>
+								<Property Name="osc2MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc2MainWaveshapeSecondary" Type="int32" Value="2"/>
+								<Property Name="osc3BlendAmount" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{7C5E1349-B299-40FC-AD20-0CE84F34FEED}" ShortID="1011024029">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_State" ID="{51538BF7-528D-433F-9032-9B2B65A5890B}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{74D4F7B2-DEB3-4A21-A645-70C8B37CA7A6}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0.03763</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>0.09674</XPos>
+														<YPos>0.06718</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>1</XPos>
+														<YPos>0.28799</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc3FmFreq" Type="Real32" Value="1.05">
+									<RTPCList>
+										<RTPC Name="" ID="{85D7BA04-635E-487D-92CF-6C61D6A5D4FB}" ShortID="1018360966">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_State" ID="{51538BF7-528D-433F-9032-9B2B65A5890B}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{04CDEAA6-6329-4812-94D0-6E1EAC3A66AF}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>1</XPos>
+														<YPos>0.53</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc3FmGain" Type="Real32" Value="0.74"/>
+								<Property Name="osc3FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc3MainFreq" Type="Real32" Value="497.94"/>
+								<Property Name="osc3MainGain" Type="Real32" Value="0.5"/>
+								<Property Name="osc3MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc3MainWaveshapeSecondary" Type="int32" Value="2"/>
+								<Property Name="osc4BlendAmount" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{02DCD8D6-4F60-48C8-BCBF-DCB41EB67251}" ShortID="753795328">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_State" ID="{51538BF7-528D-433F-9032-9B2B65A5890B}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{6BD473ED-660F-406F-9026-683AE3E2C1ED}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0.03907</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>0.17717</XPos>
+														<YPos>0.07028</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>1</XPos>
+														<YPos>0.24747</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc4FmFreq" Type="Real32" Value="0.42">
+									<RTPCList>
+										<RTPC Name="" ID="{D2BC1B6A-5604-4D45-917A-7D3CA56666D3}" ShortID="119663385">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_State" ID="{51538BF7-528D-433F-9032-9B2B65A5890B}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{3B502B71-010E-4FBD-8BFE-8C038B26A1C9}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>1</XPos>
+														<YPos>0.42</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc4FmGain" Type="Real32" Value="0.32"/>
+								<Property Name="osc4FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc4MainFreq" Type="Real32" Value="492.74"/>
+								<Property Name="osc4MainGain" Type="Real32" Value="0.5"/>
+								<Property Name="osc4MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc4MainWaveshapeSecondary" Type="int32" Value="2"/>
+							</PropertyList>
+							<Language>SFX</Language>
+						</SourcePlugin>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Igniter Live Synth" ID="{A7862994-F5FF-488F-9204-723E440A79A5}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Retro Detune" ID="{1C5B20E0-FEC4-4AAA-9D38-EE2CFEDE080D}" ShortID="718716219">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{CAEF2FAA-075D-4849-B69A-37A285C68C1F}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BFB41A91-3193-4ADE-8C5E-D67776F0815A}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<SourcePlugin Name="Igniter Live Synth" ID="{4791DD49-A172-4371-86A5-19CC69C77FCF}" ShortID="740267335" PluginName="Igniter Live Synth" CompanyID="269" PluginID="82">
+							<PropertyList>
+								<Property Name="osc1AmFreq" Type="Real32" Value="100"/>
+								<Property Name="osc1AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc1AmWaveshape" Type="int32" Value="3"/>
+								<Property Name="osc1FmFreq" Type="Real32" Value="3.58"/>
+								<Property Name="osc1FmGain" Type="Real32" Value="7.26"/>
+								<Property Name="osc1FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1MainFreq" Type="Real32" Value="500">
+									<RTPCList>
+										<RTPC Name="" ID="{D8D033A3-EAAB-46C2-BA36-B0523157CD14}" ShortID="836452958">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{19E126CD-A37C-4C5B-8AB3-384AB16E95A9}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>88.59624</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>449.40666</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1VibratoFreq" Type="Real32" Value="5"/>
+								<Property Name="osc1VibratoGain" Type="Real32" Value="1"/>
+								<Property Name="osc1VibratoOsc" Type="bool" Value="True"/>
+							</PropertyList>
+							<Language>SFX</Language>
+						</SourcePlugin>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Igniter Live Synth" ID="{4791DD49-A172-4371-86A5-19CC69C77FCF}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Robotic Noises" ID="{69321607-B6B4-4A27-BC17-568BD0A5E4E1}" ShortID="581186822">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{CAEF2FAA-075D-4849-B69A-37A285C68C1F}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BFB41A91-3193-4ADE-8C5E-D67776F0815A}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<SourcePlugin Name="Igniter Live Synth" ID="{C0ADD286-F0B2-46B9-8342-2D56B332CC0C}" ShortID="103023866" PluginName="Igniter Live Synth" CompanyID="269" PluginID="82">
+							<PropertyList>
+								<Property Name="osc1AmFreq" Type="Real32" Value="100">
+									<RTPCList>
+										<RTPC Name="" ID="{7F43F011-CB4E-4390-8D92-F4663CFD8BC1}" ShortID="389149697">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{B232B430-3CB6-462C-B3F8-284173973C97}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>100</YPos>
+														<Flags>5</Flags>
+														<SegmentShape>Log1</SegmentShape>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>9.99999977648258E-03</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1AmGain" Type="Real32" Value="0.31"/>
+								<Property Name="osc1AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1AmWaveshape" Type="int32" Value="2"/>
+								<Property Name="osc1BlendAmount" Type="Real32" Value="0.49"/>
+								<Property Name="osc1FmFreq" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{25F334B1-32BC-46AA-A028-3E6C0940BD72}" ShortID="956946152">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{95975983-8206-4F14-96A2-41DB90A5363A}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>99.9</XPos>
+														<YPos>20</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>20</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1FmGain" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{B6480794-4578-4835-939D-EAD09D1A4959}" ShortID="916038864">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{B6B67A39-45C8-48E3-9BFC-1AA339F8B11E}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>1.09986</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>50</XPos>
+														<YPos>20</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>1.56295</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1MainFreq" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{D61CD52A-8406-4410-9358-9A683312B92A}" ShortID="19337162">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{5A411A23-5A99-4BE0-B12E-B4B6C54BCAA0}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>40</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>50</XPos>
+														<YPos>500</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>40</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1MainWaveshapeSecondary" Type="int32" Value="4"/>
+							</PropertyList>
+							<Language>SFX</Language>
+						</SourcePlugin>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Igniter Live Synth" ID="{C0ADD286-F0B2-46B9-8342-2D56B332CC0C}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Scifi Car I" ID="{B7578376-D426-4C3C-B377-3D33A96D4E8F}" ShortID="395418781">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{CAEF2FAA-075D-4849-B69A-37A285C68C1F}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BFB41A91-3193-4ADE-8C5E-D67776F0815A}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<SourcePlugin Name="Igniter Live Synth" ID="{437F5CBD-C57D-47D6-9926-E75221C33497}" ShortID="80160630" PluginName="Igniter Live Synth" CompanyID="269" PluginID="82">
+							<PropertyList>
+								<Property Name="osc1AmFreq" Type="Real32" Value="0.1">
+									<RTPCList>
+										<RTPC Name="" ID="{D893218D-4166-4C0A-9B68-97CB6E8A1F83}" ShortID="12754092">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{6DB751DC-A635-4F3F-8F09-ED028F922769}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>2</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>15</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc1AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1BlendAmount" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{827372B5-5EC2-4A45-B398-2518E84C9FEC}" ShortID="12339891">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{0ACBCCF9-C091-4987-9759-3703540FC8A0}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>0.11064</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1FmFreq" Type="Real32" Value="4"/>
+								<Property Name="osc1FmGain" Type="Real32" Value="3.26">
+									<RTPCList>
+										<RTPC Name="" ID="{9048F124-7613-4C3E-A4D8-BF4C67ABB8AA}" ShortID="315230711">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{22586D95-16E1-4B95-82E7-00C116042534}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0.1</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>27.8962</XPos>
+														<YPos>0.86559</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>1.81035</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1MainFreq" Type="Real32" Value="40">
+									<RTPCList>
+										<RTPC Name="" ID="{555513E2-AEFF-4C58-BB5A-F1316C8DB169}" ShortID="425531239">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{AF11C255-C6B5-423E-A2E3-D1553459F514}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>40</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>80</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1MainGain" Type="Real32" Value="0.82"/>
+								<Property Name="osc1MainWaveshapeSecondary" Type="int32" Value="2"/>
+								<Property Name="osc2AmFreq" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{D0BAC338-27EB-439F-8252-0C4F951FA631}" ShortID="457566734">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{6F615B87-86E3-4E2D-9C01-EB22F1208C95}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>9.99999977648258E-03</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>15</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc2AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc2BlendAmount" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{D70010CC-54B9-4D81-8A35-7F4F0DD5F6B9}" ShortID="1061717276">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{A730FC6D-BDD2-4270-B200-6B24D17D3BD6}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>0.03448</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc2FmFreq" Type="Real32" Value="2"/>
+								<Property Name="osc2FmGain" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{4C66DBAD-7BA7-4592-84DF-7FA6593DC1CD}" ShortID="996228231">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{A657A2FA-5FAD-4B74-97FD-5762FB6C64D9}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>20.01854</XPos>
+														<YPos>0.26451</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>1.35058</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc2FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc2MainFreq" Type="Real32" Value="80">
+									<RTPCList>
+										<RTPC Name="" ID="{DDF4E7A9-1531-4AC9-AEAC-13DB76B45AF5}" ShortID="935608408">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{365C459B-2A29-4C91-930D-92B1898662D7}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>79.99999</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>160.00001</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc2MainGain" Type="Real32" Value="0.45"/>
+								<Property Name="osc2MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc2MainWaveshapeSecondary" Type="int32" Value="4"/>
+							</PropertyList>
+							<Language>SFX</Language>
+						</SourcePlugin>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Igniter Live Synth" ID="{437F5CBD-C57D-47D6-9926-E75221C33497}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Scifi Car II" ID="{21D26776-34B0-4488-8590-5920D0E2B0F8}" ShortID="163119565">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{CAEF2FAA-075D-4849-B69A-37A285C68C1F}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BFB41A91-3193-4ADE-8C5E-D67776F0815A}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<SourcePlugin Name="Igniter Live Synth" ID="{B2572F98-2152-4592-9F01-538271A8CA90}" ShortID="130389435" PluginName="Igniter Live Synth" CompanyID="269" PluginID="82">
+							<PropertyList>
+								<Property Name="osc1AmFreq" Type="Real32" Value="0.1">
+									<RTPCList>
+										<RTPC Name="" ID="{F42038EF-F2BD-4107-9772-385643813EED}" ShortID="663419872">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{470FA8F9-3628-4715-AD50-A16270D4D978}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>2</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>15</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc1AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1BlendAmount" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{1A72EA34-F261-449F-825D-F33C6C06D3F6}" ShortID="646555732">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{5FFA6841-5B12-4006-A404-C522B2CE54CF}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>0.11064</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1FmFreq" Type="Real32" Value="4.42"/>
+								<Property Name="osc1FmGain" Type="Real32" Value="3.26">
+									<RTPCList>
+										<RTPC Name="" ID="{3C563E6D-9ABC-4E5B-9D54-0D19A8F5BD92}" ShortID="143424216">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{464CA055-F262-4EE3-97EA-EFE0D73EC586}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0.1</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>27.8962</XPos>
+														<YPos>0.86559</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>1.81035</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1MainFreq" Type="Real32" Value="40">
+									<RTPCList>
+										<RTPC Name="" ID="{53B1ECE2-3BD8-43A7-AD3D-FE2E918B9E73}" ShortID="207483828">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{2D3AF1F8-8C64-4AA6-8BE8-61F053574A62}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>40</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>24.50738</XPos>
+														<YPos>66.92763</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>26.10837</XPos>
+														<YPos>43.98705</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>49.38424</XPos>
+														<YPos>78.44794</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>51.47783</XPos>
+														<YPos>45.15949</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>73.39902</XPos>
+														<YPos>84.93321</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>74.38424</XPos>
+														<YPos>54.21334</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>100</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1MainGain" Type="Real32" Value="0.8"/>
+								<Property Name="osc1MainWaveshapeSecondary" Type="int32" Value="2"/>
+								<Property Name="osc1VibratoFreq" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{EAA3B6C1-B6CC-439C-B6D9-AAE7AF277FEC}" ShortID="155657594">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{B42DF5C3-383C-4EF1-9E2A-128FD263D060}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>1.93922</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1VibratoGain" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{9CA90BBD-E49A-413E-BB57-C4FD64FB7647}" ShortID="909902576">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{36298524-7322-4A39-9CB2-FF3AC46E2D87}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>0.83979</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1VibratoOsc" Type="bool" Value="True"/>
+								<Property Name="osc2AmFreq" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{3B7A4EC1-5B5E-42DC-BE31-850087F5EEED}" ShortID="1072936144">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{82D0BB22-0955-4F19-801C-D30CE752DBD9}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>10</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>20</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc2AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc2AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc2BlendAmount" Type="Real32" Value="0.16"/>
+								<Property Name="osc2FmFreq" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{946CAB06-B438-4328-9A19-C527C25397EF}" ShortID="1000147011">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{2C240A58-803E-45A9-8355-C76CC2ABF8DC}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>1.36035</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc2FmGain" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{377FD15B-17F2-4127-BB7E-FFA500F61865}" ShortID="536923082">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{F137407E-DC4D-4039-BDF2-1049C55AF325}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>70.19704</XPos>
+														<YPos>0.31838</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>1.04197</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc2FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc2MainFreq" Type="Real32" Value="80">
+									<RTPCList>
+										<RTPC Name="" ID="{29114FA6-C6A6-419E-8880-4A11787D3978}" ShortID="496292431">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{3278A94B-DFBF-4782-B1FE-1FD7AE342E77}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>80</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>23.3990147783251</XPos>
+														<YPos>108.07881773399</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>25.86207</XPos>
+														<YPos>89.50967</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>48.6453201970443</XPos>
+														<YPos>123.464338450333</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>51.23153</XPos>
+														<YPos>102.82459</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>73.02956</XPos>
+														<YPos>146.95872</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>74.13793</XPos>
+														<YPos>119.87891</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>200</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc2MainGain" Type="Real32" Value="0.36"/>
+								<Property Name="osc2MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc2MainWaveshapeSecondary" Type="int32" Value="4"/>
+								<Property Name="osc2VibratoFreq" Type="Real32" Value="5"/>
+								<Property Name="osc2VibratoGain" Type="Real32" Value="1">
+									<RTPCList>
+										<RTPC Name="" ID="{DBB8860A-6915-441B-8246-312FA84065C1}" ShortID="746298091">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{2197E88F-42A4-4C7A-8FCB-DDB0B366F822}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>0.57916</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc2VibratoOsc" Type="bool" Value="True"/>
+								<Property Name="osc3AmFreq" Type="Real32" Value="13.17"/>
+								<Property Name="osc3AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc3AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc3MainGain" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{877A1B7D-47CA-444A-BDAB-4CF6F0BE14C9}" ShortID="387388258">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{D857CABF-5E78-47C9-B044-AE26507CC489}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0.00578</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>78.94089</XPos>
+														<YPos>0.02862</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>0.0521</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc3MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc3MainWaveshape" Type="int32" Value="5"/>
+								<Property Name="osc4AmFreq" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{D659387F-8F40-4424-B32A-AEC24FC083F6}" ShortID="361141769">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{A3210555-B32B-48A9-B2E5-22265766EACA}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>4.4958</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>20</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc4AmGain" Type="Real32" Value="0.4"/>
+								<Property Name="osc4AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc4AmWaveshape" Type="int32" Value="2"/>
+								<Property Name="osc4BlendAmount" Type="Real32" Value="0.2"/>
+								<Property Name="osc4FmFreq" Type="Real32" Value="4"/>
+								<Property Name="osc4FmGain" Type="Real32" Value="2"/>
+								<Property Name="osc4MainFreq" Type="Real32" Value="400">
+									<RTPCList>
+										<RTPC Name="" ID="{7550ACB6-C89B-4270-A00E-D70E2EB112A9}" ShortID="260342836">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{C0A73860-90A0-47F0-BF3E-FF7CB52C0EA7}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>200</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>23.8916256157635</XPos>
+														<YPos>247.783251231527</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>25.12315</XPos>
+														<YPos>215.45672</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>50.1231527093596</XPos>
+														<YPos>277.072326158567</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>51.84729</XPos>
+														<YPos>226.86169</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>74.38424</XPos>
+														<YPos>309.88093</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>75.61576</XPos>
+														<YPos>285.1979</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>400</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc4MainGain" Type="Real32" Value="0.16"/>
+								<Property Name="osc4MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc4MainWaveshape" Type="int32" Value="1"/>
+								<Property Name="osc4MainWaveshapeSecondary" Type="int32" Value="3"/>
+								<Property Name="osc4VibratoFreq" Type="Real32" Value="5"/>
+								<Property Name="osc4VibratoGain" Type="Real32" Value="0.5"/>
+								<Property Name="osc4VibratoOsc" Type="bool" Value="True"/>
+							</PropertyList>
+							<Language>SFX</Language>
+						</SourcePlugin>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Igniter Live Synth" ID="{B2572F98-2152-4592-9F01-538271A8CA90}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Server Room" ID="{8E1FBD78-3D03-462C-8859-8B4917B65947}" ShortID="412648743">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{CAEF2FAA-075D-4849-B69A-37A285C68C1F}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BFB41A91-3193-4ADE-8C5E-D67776F0815A}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<SourcePlugin Name="Igniter Live Synth" ID="{8741F572-864F-4119-96B9-44B7C8369414}" ShortID="527419411" PluginName="Igniter Live Synth" CompanyID="269" PluginID="82">
+							<PropertyList>
+								<Property Name="osc1AmFreq" Type="Real32" Value="6.33"/>
+								<Property Name="osc1AmGain" Type="Real32" Value="0.33"/>
+								<Property Name="osc1AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1MainFreq" Type="Real32" Value="50"/>
+								<Property Name="osc2AmFreq" Type="Real32" Value="7.38"/>
+								<Property Name="osc2AmGain" Type="Real32" Value="0.23"/>
+								<Property Name="osc2AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc2MainFreq" Type="Real32" Value="100"/>
+								<Property Name="osc2MainGain" Type="Real32" Value="0.04"/>
+								<Property Name="osc2MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc2MainWaveshape" Type="int32" Value="5"/>
+								<Property Name="osc3BlendAmount" Type="Real32" Value="0.49"/>
+								<Property Name="osc3FmFreq" Type="Real32" Value="5.79"/>
+								<Property Name="osc3FmGain" Type="Real32" Value="0.84"/>
+								<Property Name="osc3FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc3MainFreq" Type="Real32" Value="50"/>
+								<Property Name="osc3MainGain" Type="Real32" Value="0.12"/>
+								<Property Name="osc3MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc3MainWaveshapeSecondary" Type="int32" Value="4"/>
+								<Property Name="osc3VibratoFreq" Type="Real32" Value="10"/>
+								<Property Name="osc3VibratoGain" Type="Real32" Value="0.74"/>
+								<Property Name="osc3VibratoOsc" Type="bool" Value="True"/>
+							</PropertyList>
+							<Language>SFX</Language>
+						</SourcePlugin>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Igniter Live Synth" ID="{8741F572-864F-4119-96B9-44B7C8369414}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Siren" ID="{3C737C12-23EE-4A64-82A2-21DE054282BF}" ShortID="936841085">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{CAEF2FAA-075D-4849-B69A-37A285C68C1F}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BFB41A91-3193-4ADE-8C5E-D67776F0815A}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<SourcePlugin Name="Igniter Live Synth" ID="{444922BA-F6F0-45B1-9DDA-77402B382E51}" ShortID="694049791" PluginName="Igniter Live Synth" CompanyID="269" PluginID="82">
+							<PropertyList>
+								<Property Name="osc1AmFreq" Type="Real32" Value="100"/>
+								<Property Name="osc1AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc1AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1BlendAmount" Type="Real32" Value="0.89"/>
+								<Property Name="osc1MainFreq" Type="Real32" Value="50"/>
+								<Property Name="osc1MainGain" Type="Real32" Value="0.19"/>
+								<Property Name="osc1MainWaveshape" Type="int32" Value="4"/>
+								<Property Name="osc1VibratoFreq" Type="Real32" Value="1.5"/>
+								<Property Name="osc1VibratoGain" Type="Real32" Value="3.37"/>
+								<Property Name="osc1VibratoOsc" Type="bool" Value="True"/>
+								<Property Name="osc2AmFreq" Type="Real32" Value="100"/>
+								<Property Name="osc2AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc2AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc2BlendAmount" Type="Real32" Value="0.47"/>
+								<Property Name="osc2MainGain" Type="Real32" Value="0"/>
+								<Property Name="osc2MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc2MainWaveshape" Type="int32" Value="4"/>
+								<Property Name="osc2MainWaveshapeSecondary" Type="int32" Value="1"/>
+								<Property Name="osc2VibratoFreq" Type="Real32" Value="3.05"/>
+								<Property Name="osc2VibratoGain" Type="Real32" Value="3.37"/>
+								<Property Name="osc2VibratoOsc" Type="bool" Value="True"/>
+								<Property Name="osc3AmFreq" Type="Real32" Value="100"/>
+								<Property Name="osc3AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc3AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc3BlendAmount" Type="Real32" Value="0.36"/>
+								<Property Name="osc3FmFreq" Type="Real32" Value="20"/>
+								<Property Name="osc3FmGain" Type="Real32" Value="1.68"/>
+								<Property Name="osc3MainFreq" Type="Real32" Value="400"/>
+								<Property Name="osc3MainGain" Type="Real32" Value="0.75"/>
+								<Property Name="osc3MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc3MainWaveshape" Type="int32" Value="1"/>
+								<Property Name="osc3VibratoFreq" Type="Real32" Value="3.05"/>
+								<Property Name="osc3VibratoGain" Type="Real32" Value="3.37"/>
+								<Property Name="osc3VibratoOsc" Type="bool" Value="True"/>
+								<Property Name="osc4MainGain" Type="Real32" Value="0.65"/>
+							</PropertyList>
+							<Language>SFX</Language>
+						</SourcePlugin>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Igniter Live Synth" ID="{444922BA-F6F0-45B1-9DDA-77402B382E51}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Speeder 1" ID="{96AB4F83-DEF8-4613-A228-024DE6F3BB15}" ShortID="998998916">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{CAEF2FAA-075D-4849-B69A-37A285C68C1F}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BFB41A91-3193-4ADE-8C5E-D67776F0815A}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<SourcePlugin Name="Igniter Live Synth" ID="{80BCC333-22B7-49BB-9D78-1512B279594E}" ShortID="673541535" PluginName="Igniter Live Synth" CompanyID="269" PluginID="82">
+							<PropertyList>
+								<Property Name="osc1AmFreq" Type="Real32" Value="2">
+									<RTPCList>
+										<RTPC Name="" ID="{3CE6FAF1-FCD8-43D5-ACE8-A715AF9935E6}" ShortID="335403301">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{7E62F5F8-3CF7-49BE-BE81-D16C1E817A33}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>9.99999977648258E-03</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>10</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1AmGain" Type="Real32" Value="0.71"/>
+								<Property Name="osc1AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1BlendAmount" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{32A30A45-8634-4370-957B-AF96964BF9E4}" ShortID="755766385">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{88091154-7B4A-427D-8BCE-45A115817C52}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>0.14761</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1MainFreq" Type="Real32" Value="40">
+									<RTPCList>
+										<RTPC Name="" ID="{8A380CA5-5E9A-4C89-8736-5D258047C73E}" ShortID="1001687477">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{868DB06B-6ECE-43E5-8055-3B5F2D017603}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>40</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>80</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc1MainGain" Type="Real32" Value="0.89"/>
+								<Property Name="osc1MainWaveshapeSecondary" Type="int32" Value="2"/>
+								<Property Name="osc2AmFreq" Type="Real32" Value="4">
+									<RTPCList>
+										<RTPC Name="" ID="{50D9B888-3D55-418D-B760-70F7BA3C4427}" ShortID="507897839">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{713E5909-BCD9-42EA-850C-895B58503674}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>4</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>20</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc2AmGain" Type="Real32" Value="0.7"/>
+								<Property Name="osc2AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc2BlendAmount" Type="Real32">
+									<RTPCList>
+										<RTPC Name="" ID="{4FFEAF7A-4977-4510-9F47-F4D5EC749D41}" ShortID="835516371">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{3D42055B-EFC0-4805-8C30-15F60038DBB1}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>0.1534</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc2MainFreq" Type="Real32" Value="80">
+									<RTPCList>
+										<RTPC Name="" ID="{C4D78B52-1EAF-4E13-B3C1-2145C4D0FCBC}" ShortID="827487472">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{FE83186D-4745-4D08-85F0-26BE90793C62}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>80</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>160</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc2MainGain" Type="Real32" Value="0.93"/>
+								<Property Name="osc2MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc2MainWaveshapeSecondary" Type="int32" Value="2"/>
+								<Property Name="osc3AmFreq" Type="Real32" Value="4">
+									<RTPCList>
+										<RTPC Name="" ID="{0DE43493-CF01-441C-8DC0-08FCDAF1DF35}" ShortID="758413442">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{70B25227-8CCE-4BC9-8218-2A850E5198DA}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>14.33563</YPos>
+														<Flags>5</Flags>
+														<SegmentShape>Exp1</SegmentShape>
+													</Point>
+													<Point>
+														<XPos>76.35468</XPos>
+														<YPos>43.09114</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>100</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc3AmGain" Type="Real32" Value="0.71"/>
+								<Property Name="osc3AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc3BlendAmount" Type="Real32" Value="0.53"/>
+								<Property Name="osc3FmFreq" Type="Real32" Value="3.79"/>
+								<Property Name="osc3FmGain" Type="Real32" Value="0.95"/>
+								<Property Name="osc3FmOsc" Type="bool" Value="True"/>
+								<Property Name="osc3FmWaveshape" Type="int32" Value="4"/>
+								<Property Name="osc3MainFreq" Type="Real32" Value="124.74">
+									<RTPCList>
+										<RTPC Name="" ID="{11447A9B-B950-4737-8853-09E69A0B8934}" ShortID="97992737">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{202FD64E-FC4E-49EF-B89D-975E00BC8F71}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>80</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>160</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc3MainGain" Type="Real32" Value="0.18">
+									<RTPCList>
+										<RTPC Name="" ID="{231BA6ED-F7D4-48EA-BB7B-B97EBBBFD988}" ShortID="210620878">
+											<ReferenceList>
+												<Reference Name="ControlInput">
+													<ObjectRef Name="IgniterSynth_REV" ID="{E37FF6DD-CCCF-4A09-A17A-7AFC060C69F2}" WorkUnitID="{82E46A00-2047-48F9-92D4-01684C1325F6}"/>
+												</Reference>
+											</ReferenceList>
+											<Curve Name="" ID="{6D9EB17E-4360-491A-BF8B-6B9A5A5B9A2C}">
+												<PropertyList>
+													<Property Name="Flags" Type="int32" Value="1"/>
+												</PropertyList>
+												<PointList>
+													<Point>
+														<XPos>0</XPos>
+														<YPos>0.02895</YPos>
+														<Flags>5</Flags>
+													</Point>
+													<Point>
+														<XPos>9.85222</XPos>
+														<YPos>0.04621</YPos>
+														<Flags>0</Flags>
+													</Point>
+													<Point>
+														<XPos>100</XPos>
+														<YPos>0.08104</YPos>
+														<Flags>37</Flags>
+													</Point>
+												</PointList>
+											</Curve>
+										</RTPC>
+									</RTPCList>
+								</Property>
+								<Property Name="osc3MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc3MainWaveshape" Type="int32" Value="5"/>
+								<Property Name="osc3MainWaveshapeSecondary" Type="int32" Value="2"/>
+								<Property Name="osc3VibratoFreq" Type="Real32" Value="1.21"/>
+								<Property Name="osc3VibratoGain" Type="Real32" Value="0.95"/>
+								<Property Name="osc4MainGain" Type="Real32" Value="0.5"/>
+							</PropertyList>
+							<Language>SFX</Language>
+						</SourcePlugin>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Igniter Live Synth" ID="{80BCC333-22B7-49BB-9D78-1512B279594E}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="Squared Jawed Beat" ID="{8A2BAAC2-BCA8-445C-A495-39A06CAD34A2}" ShortID="375360255">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{CAEF2FAA-075D-4849-B69A-37A285C68C1F}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BFB41A91-3193-4ADE-8C5E-D67776F0815A}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<SourcePlugin Name="Igniter Live Synth" ID="{485637B1-A308-43BD-87AF-A2FE3E74D643}" ShortID="281092152" PluginName="Igniter Live Synth" CompanyID="269" PluginID="82">
+							<PropertyList>
+								<Property Name="osc1AmFreq" Type="Real32" Value="10"/>
+								<Property Name="osc1AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc1AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc1AmWaveshape" Type="int32" Value="4"/>
+								<Property Name="osc1BlendAmount" Type="Real32" Value="0.2"/>
+								<Property Name="osc1MainFreq" Type="Real32" Value="100"/>
+								<Property Name="osc1MainGain" Type="Real32" Value="0.42"/>
+								<Property Name="osc1MainWaveshapeSecondary" Type="int32" Value="2"/>
+								<Property Name="osc1VibratoFreq" Type="Real32" Value="10"/>
+								<Property Name="osc1VibratoGain" Type="Real32" Value="0.5"/>
+								<Property Name="osc2AmFreq" Type="Real32" Value="10"/>
+								<Property Name="osc2AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc2AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc2AmWaveshape" Type="int32" Value="4"/>
+								<Property Name="osc2BlendAmount" Type="Real32" Value="0.54"/>
+								<Property Name="osc2MainGain" Type="Real32" Value="0.28"/>
+								<Property Name="osc2MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc2MainWaveshapeSecondary" Type="int32" Value="3"/>
+								<Property Name="osc2VibratoFreq" Type="Real32" Value="10"/>
+								<Property Name="osc2VibratoGain" Type="Real32" Value="0.5"/>
+								<Property Name="osc3AmFreq" Type="Real32" Value="2.5"/>
+								<Property Name="osc3AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc3AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc3AmWaveshape" Type="int32" Value="4"/>
+								<Property Name="osc3BlendAmount" Type="Real32" Value="0.12"/>
+								<Property Name="osc3MainFreq" Type="Real32" Value="125"/>
+								<Property Name="osc3MainGain" Type="Real32" Value="0.3"/>
+								<Property Name="osc3MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc3MainWaveshapeSecondary" Type="int32" Value="4"/>
+								<Property Name="osc3VibratoFreq" Type="Real32" Value="2.5"/>
+								<Property Name="osc3VibratoGain" Type="Real32" Value="0.5"/>
+								<Property Name="osc4AmFreq" Type="Real32" Value="5"/>
+								<Property Name="osc4AmGain" Type="Real32" Value="1"/>
+								<Property Name="osc4AmOsc" Type="bool" Value="True"/>
+								<Property Name="osc4AmWaveshape" Type="int32" Value="4"/>
+								<Property Name="osc4BlendAmount" Type="Real32" Value="0.33"/>
+								<Property Name="osc4MainFreq" Type="Real32" Value="50"/>
+								<Property Name="osc4MainGain" Type="Real32" Value="0.42"/>
+								<Property Name="osc4MainOsc" Type="bool" Value="True"/>
+								<Property Name="osc4MainWaveshapeSecondary" Type="int32" Value="1"/>
+								<Property Name="osc4VibratoFreq" Type="Real32" Value="5"/>
+								<Property Name="osc4VibratoGain" Type="Real32" Value="0.5"/>
+							</PropertyList>
+							<Language>SFX</Language>
+						</SourcePlugin>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Igniter Live Synth" ID="{485637B1-A308-43BD-87AF-A2FE3E74D643}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+			</ChildrenList>
+		</WorkUnit>
+	</AudioObjects>
+</WwiseDocument>
