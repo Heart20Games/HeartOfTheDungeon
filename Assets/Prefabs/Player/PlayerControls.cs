@@ -35,6 +35,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DieTest"",
+                    ""type"": ""Button"",
+                    ""id"": ""434f2936-6ea5-4ebc-aed2-76351019f43a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -92,6 +101,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4575b443-be01-4a07-8c35-ebe69a5f87ee"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DieTest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -101,6 +121,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         // GroundMovement
         m_GroundMovement = asset.FindActionMap("GroundMovement", throwIfNotFound: true);
         m_GroundMovement_Movement = m_GroundMovement.FindAction("Movement", throwIfNotFound: true);
+        m_GroundMovement_DieTest = m_GroundMovement.FindAction("DieTest", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -161,11 +182,13 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_GroundMovement;
     private IGroundMovementActions m_GroundMovementActionsCallbackInterface;
     private readonly InputAction m_GroundMovement_Movement;
+    private readonly InputAction m_GroundMovement_DieTest;
     public struct GroundMovementActions
     {
         private @PlayerControls m_Wrapper;
         public GroundMovementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_GroundMovement_Movement;
+        public InputAction @DieTest => m_Wrapper.m_GroundMovement_DieTest;
         public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -178,6 +201,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Movement.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnMovement;
                 @Movement.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnMovement;
                 @Movement.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnMovement;
+                @DieTest.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnDieTest;
+                @DieTest.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnDieTest;
+                @DieTest.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnDieTest;
             }
             m_Wrapper.m_GroundMovementActionsCallbackInterface = instance;
             if (instance != null)
@@ -185,6 +211,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Movement.started += instance.OnMovement;
                 @Movement.performed += instance.OnMovement;
                 @Movement.canceled += instance.OnMovement;
+                @DieTest.started += instance.OnDieTest;
+                @DieTest.performed += instance.OnDieTest;
+                @DieTest.canceled += instance.OnDieTest;
             }
         }
     }
@@ -192,5 +221,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     public interface IGroundMovementActions
     {
         void OnMovement(InputAction.CallbackContext context);
+        void OnDieTest(InputAction.CallbackContext context);
     }
 }
