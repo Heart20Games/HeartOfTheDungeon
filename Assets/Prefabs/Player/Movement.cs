@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class Movement : MonoBehaviour
 {
     public float speed = 800f;
+    public bool canMove = true;
 
     private Vector2 MovementVector = new Vector2(0,0);
 
@@ -30,7 +31,10 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        myRigidbody.AddRelativeForce(new Vector3(MovementVector.x, 0, MovementVector.y) * speed * Time.deltaTime, ForceMode.Force);
+        if (canMove)
+        {
+            myRigidbody.AddRelativeForce(new Vector3(MovementVector.x, 0, MovementVector.y) * speed * Time.deltaTime, ForceMode.Force);
+        }
     }
 
     public void ReceiveInput(InputAction.CallbackContext context)
