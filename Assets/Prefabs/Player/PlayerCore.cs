@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
+using Yarn.Unity;
 
 public class PlayerCore : MonoBehaviour
 {
@@ -29,7 +31,7 @@ public class PlayerCore : MonoBehaviour
     public void Die()
     {
         Debug.Log("You are Dead");
-        SceneManager.LoadScene("GameOver");// Whisks us directly to the game over screen.
+        SceneManager.LoadScene("GameOver"); // Whisks us directly to the game over screen.
 
     }
 
