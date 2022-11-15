@@ -44,6 +44,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Talk"",
+                    ""type"": ""Button"",
+                    ""id"": ""f20b9006-d9ce-40ef-bf16-fde5f04afb33"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -112,6 +121,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""DieTest"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7b66dff0-341f-4c1c-85a0-e95816000acd"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Talk"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -122,6 +142,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_GroundMovement = asset.FindActionMap("GroundMovement", throwIfNotFound: true);
         m_GroundMovement_Movement = m_GroundMovement.FindAction("Movement", throwIfNotFound: true);
         m_GroundMovement_DieTest = m_GroundMovement.FindAction("DieTest", throwIfNotFound: true);
+        m_GroundMovement_Talk = m_GroundMovement.FindAction("Talk", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -183,12 +204,14 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private IGroundMovementActions m_GroundMovementActionsCallbackInterface;
     private readonly InputAction m_GroundMovement_Movement;
     private readonly InputAction m_GroundMovement_DieTest;
+    private readonly InputAction m_GroundMovement_Talk;
     public struct GroundMovementActions
     {
         private @PlayerControls m_Wrapper;
         public GroundMovementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_GroundMovement_Movement;
         public InputAction @DieTest => m_Wrapper.m_GroundMovement_DieTest;
+        public InputAction @Talk => m_Wrapper.m_GroundMovement_Talk;
         public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -204,6 +227,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @DieTest.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnDieTest;
                 @DieTest.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnDieTest;
                 @DieTest.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnDieTest;
+                @Talk.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnTalk;
+                @Talk.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnTalk;
+                @Talk.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnTalk;
             }
             m_Wrapper.m_GroundMovementActionsCallbackInterface = instance;
             if (instance != null)
@@ -214,6 +240,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @DieTest.started += instance.OnDieTest;
                 @DieTest.performed += instance.OnDieTest;
                 @DieTest.canceled += instance.OnDieTest;
+                @Talk.started += instance.OnTalk;
+                @Talk.performed += instance.OnTalk;
+                @Talk.canceled += instance.OnTalk;
             }
         }
     }
@@ -222,5 +251,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnDieTest(InputAction.CallbackContext context);
+        void OnTalk(InputAction.CallbackContext context);
     }
 }
