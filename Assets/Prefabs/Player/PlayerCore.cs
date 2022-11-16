@@ -17,8 +17,11 @@ public class PlayerCore : MonoBehaviour
 
     private void Start()
     {
-        dialogueRunner = dialogueHolder.GetComponent<DialogueRunner>();
-        dialogueRunner.onDialogueComplete.AddListener(DoneTalking);
+        if (dialogueHolder != null)
+        {
+            dialogueRunner = dialogueHolder.GetComponent<DialogueRunner>();
+            dialogueRunner.onDialogueComplete.AddListener(DoneTalking);
+        }
     }
     // For keeping track of things like health and other instance specific things.
     // Stat block here
@@ -34,16 +37,21 @@ public class PlayerCore : MonoBehaviour
 
     public void Talk()
     {
-        Debug.Log("I'm talking now");
-        if (talkable)
+        if (talkable && dialogueRunner != null)
         {
+            Debug.Log("I'm talking now");
             dialogueRunner.StartDialogue(targetNode);
             gameObject.GetComponent<Movement>().canMove = false;
+        }
+        else
+        {
+            Debug.LogWarning("No Dialogue Runner to Start Talking");
         }
     }
 
     private void DoneTalking()
     {
+        Debug.Log("I'm done talking now");
         gameObject.GetComponent<Movement>().canMove = true;
     }
 }
