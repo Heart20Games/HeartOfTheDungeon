@@ -42,7 +42,7 @@ namespace Yarn.Unity
             instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             string clean = line.ID.Remove(4, 1);
             currentID = clean;
-            instance.setParameterByNameWithLabel("Parameter 2", clean);
+            instance.setParameterByNameWithLabel("IntroVOParam", clean);
             instance.start();
             
             //tester.GetComponent<SoundScript>().coolfunctionthatfindsclips(currentID);
