@@ -5,44 +5,6 @@ tags:
 ===
 title: Start
 ---
-Grumbo: Hello world!  
-Grumbo: Hello to you too. Matt.  I'm talking to you. 
-<<jump Next>>
-===
-title: Next
----
-<<declare $hate=0>>
-Grumbo: This is the next scene. 
-Grumbo: What did you have for dinner friend? 
-    -> Taco Bell.  Not any items, just the whole restaurant. 
-        <<jump Horrified>>
-    -> Salad. 
-        <<jump Cool>>
-    -> Fancy Feast. I was feeling fancy. 
-        <<jump Cool>>
-===
-title: Horrified
----
-Grumbo: Why would you do that?
-<<set $hate=$hate+5>>
-<<jump Choice>>
-===
-title: Cool
----
-Grumbo: Cool story bro. 
-<<set $hate=$hate-1>>
-<<jump Choice>>
-===
-title: Choice
----
-Grumbo: I shall now judge you mortal. 
-<<if $hate>3>>
-Grumbo: You are doomed! 
-<<jump Doomed>>
-<<endif>>
-Grumbo: You're alright. 
-===  
-title: Doomed
---- 
-Grumbo: This is where the doom would go if I had any. 
+Baelor: I know we have been working hard these past weeks, and I want you to know I appreciate you all. #line001
+Rotta: What’s been the point? My clan won’t come out of their holes, they’re too busy forging armor too heavy to wear. #line002
 ===
