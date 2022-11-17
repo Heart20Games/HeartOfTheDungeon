@@ -7,7 +7,6 @@ using Yarn.Unity;
 
 public class PlayerCore : MonoBehaviour
 {
-    
     public bool talkable = false;
     public string targetNode = "";
 
@@ -32,13 +31,13 @@ public class PlayerCore : MonoBehaviour
     {
         Debug.Log("You are Dead");
         SceneManager.LoadScene("GameOver"); // Whisks us directly to the game over screen.
-
     }
 
     public void Talk()
     {
-        if (talkable && dialogueRunner != null)
+        if (talkable && dialogueRunner != null && targetNode != "")
         {
+            dialogueRunner.Stop();
             Debug.Log("I'm talking now");
             dialogueRunner.StartDialogue(targetNode);
             gameObject.GetComponent<Movement>().canMove = false;
@@ -53,5 +52,11 @@ public class PlayerCore : MonoBehaviour
     {
         Debug.Log("I'm done talking now");
         gameObject.GetComponent<Movement>().canMove = true;
+    }
+
+    [YarnCommand("enter_room")]
+    private void EnterRoom(string roomName)
+    {
+        SceneManager.LoadScene(roomName);
     }
 }

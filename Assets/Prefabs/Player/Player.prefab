@@ -166,6 +166,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 700
+  maxVelocity: 10
+  moveDrag: 0.5
+  stopDrag: 7.5
   canMove: 1
 --- !u!114 &4591095315821073496
 MonoBehaviour:
@@ -260,6 +263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b0f0a6202e8cae409f550be7e47640b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Weapon: {fileID: 0}
 --- !u!1 &5803656071047435973
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,6 +275,7 @@ GameObject:
   - component: {fileID: 281142454181593434}
   - component: {fileID: 1520774226850445314}
   - component: {fileID: 2531675061229377633}
+  - component: {fileID: 2394874503491497202}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -344,3 +349,16 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5803656071047435973}
   m_Enabled: 1
+--- !u!114 &2394874503491497202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5803656071047435973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attenuationObject: {fileID: 5110490933865610193}
