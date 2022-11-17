@@ -7,8 +7,11 @@ using Yarn.Unity;
 
 public class PlayerCore : MonoBehaviour
 {
+    
     public bool talkable = false;
     public string targetNode = "";
+
+    public Movement moveControls;
 
     public GameObject dialogueHolder;
 
@@ -16,60 +19,48 @@ public class PlayerCore : MonoBehaviour
 
     private void Start()
     {
-        if (dialogueHolder != null)
-        {
-            dialogueRunner = dialogueHolder.GetComponent<DialogueRunner>();
-            dialogueRunner.onDialogueComplete.AddListener(DoneTalking);
-        }
+        dialogueRunner = dialogueHolder.GetComponent<DialogueRunner>();
+        dialogueRunner.onDialogueComplete.AddListener(DoneTalking);
+        moveControls = GetComponent<Movement>();
     }
     // For keeping track of things like health and other instance specific things.
     // Stat block here
+    public void Update()
+    {
+        /* if(moveControls.getMoveVector().x > 0.5f)
+        {
+            East = true;
+        }else if(moveControls.getMoveVector().x < -0.5f)
+        {
+            East = false;
+        }else if()
+        if(moveControls.getMoveVector().y > 0.5f)
+        {
+            North = true;
+        } */
 
+    }
 
     // Public methods here
     public void Die()
     {
         Debug.Log("You are Dead");
         SceneManager.LoadScene("GameOver"); // Whisks us directly to the game over screen.
+
     }
 
     public void Talk()
     {
-        if (talkable && dialogueRunner != null)
+        Debug.Log("I'm talking now");
+        if (talkable)
         {
-            if (targetNode != "") {
-                dialogueRunner.Stop();
-                Debug.Log("I'm talking now");
-                dialogueRunner.StartDialogue(targetNode);
-                gameObject.GetComponent<Movement>().canMove = false;
-            }
-            else
-            {
-                Debug.LogWarning("No target node");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("No Dialogue Runner to Start Talking");
+            dialogueRunner.StartDialogue(targetNode);
+            gameObject.GetComponent<Movement>().canMove = false;
         }
     }
 
     private void DoneTalking()
     {
-        Debug.Log("I'm done talking now");
         gameObject.GetComponent<Movement>().canMove = true;
-    }
-
-    [YarnCommand("enter_room")]
-    private void EnterRoom(string roomName)
-    {
-        if (SceneUtility.GetBuildIndexByScenePath(roomName) >= 0)
-        {
-            SceneManager.LoadScene(roomName);
-        }
-        else
-        {
-            Debug.LogWarning("Scene " + roomName + " not in build.");
-        }
     }
 }

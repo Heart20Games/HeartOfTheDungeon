@@ -53,6 +53,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""ab2ff5e6-76e1-4188-8b31-e550d4e66d1d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -132,6 +141,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""Talk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""08bcc911-170f-4dae-8c3b-53e4d27ac362"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -143,6 +163,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_GroundMovement_Movement = m_GroundMovement.FindAction("Movement", throwIfNotFound: true);
         m_GroundMovement_DieTest = m_GroundMovement.FindAction("DieTest", throwIfNotFound: true);
         m_GroundMovement_Talk = m_GroundMovement.FindAction("Talk", throwIfNotFound: true);
+        m_GroundMovement_Attack = m_GroundMovement.FindAction("Attack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -205,6 +226,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_GroundMovement_Movement;
     private readonly InputAction m_GroundMovement_DieTest;
     private readonly InputAction m_GroundMovement_Talk;
+    private readonly InputAction m_GroundMovement_Attack;
     public struct GroundMovementActions
     {
         private @PlayerControls m_Wrapper;
@@ -212,6 +234,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_GroundMovement_Movement;
         public InputAction @DieTest => m_Wrapper.m_GroundMovement_DieTest;
         public InputAction @Talk => m_Wrapper.m_GroundMovement_Talk;
+        public InputAction @Attack => m_Wrapper.m_GroundMovement_Attack;
         public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -230,6 +253,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Talk.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnTalk;
                 @Talk.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnTalk;
                 @Talk.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnTalk;
+                @Attack.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnAttack;
+                @Attack.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnAttack;
+                @Attack.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnAttack;
             }
             m_Wrapper.m_GroundMovementActionsCallbackInterface = instance;
             if (instance != null)
@@ -243,6 +269,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Talk.started += instance.OnTalk;
                 @Talk.performed += instance.OnTalk;
                 @Talk.canceled += instance.OnTalk;
+                @Attack.started += instance.OnAttack;
+                @Attack.performed += instance.OnAttack;
+                @Attack.canceled += instance.OnAttack;
             }
         }
     }
@@ -252,5 +281,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnDieTest(InputAction.CallbackContext context);
         void OnTalk(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
     }
 }

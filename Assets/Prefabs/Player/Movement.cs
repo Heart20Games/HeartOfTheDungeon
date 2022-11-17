@@ -13,6 +13,8 @@ public class Movement : MonoBehaviour
 
     private Vector2 MovementVector = new Vector2(0,0);
 
+    
+
     private Rigidbody myRigidbody;
 
     PlayerControls controls;
@@ -23,6 +25,10 @@ public class Movement : MonoBehaviour
         controls = new PlayerControls();
     }
 
+    public Vector2 getMoveVector()
+    {
+        return MovementVector;
+    }
     private void Update()
     {
         // this.transform.local
@@ -33,6 +39,7 @@ public class Movement : MonoBehaviour
     {
         if (canMove)
         {
+            
             myRigidbody.AddRelativeForce(new Vector3(MovementVector.x, 0, MovementVector.y) * speed * Time.deltaTime, ForceMode.Force);
             if (myRigidbody.velocity.magnitude > maxVelocity)
             {
@@ -50,14 +57,8 @@ public class Movement : MonoBehaviour
     {
         if (context.performed)
         {
-            Debug.Log("Movement input");
-            Debug.Log(context.valueType);
-            Debug.Log(context.ReadValue<Vector2>());
 
             Vector2 inputVector = context.ReadValue<Vector2>();
-            // nowthe actual movement logic
-            // myRigidbody.AddForce(new Vector3(inputVector.x, 0, inputVector.y)* speed, ForceMode.Force);
-            // time to hack it.
             MovementVector = inputVector;
             if (MovementVector.magnitude == 0)
             {
