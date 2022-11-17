@@ -35,12 +35,18 @@ public class PlayerCore : MonoBehaviour
 
     public void Talk()
     {
-        if (talkable && dialogueRunner != null && targetNode != "")
+        if (talkable && dialogueRunner != null)
         {
-            dialogueRunner.Stop();
-            Debug.Log("I'm talking now");
-            dialogueRunner.StartDialogue(targetNode);
-            gameObject.GetComponent<Movement>().canMove = false;
+            if (targetNode != "") {
+                dialogueRunner.Stop();
+                Debug.Log("I'm talking now");
+                dialogueRunner.StartDialogue(targetNode);
+                gameObject.GetComponent<Movement>().canMove = false;
+            }
+            else
+            {
+                Debug.LogWarning("No target node");
+            }
         }
         else
         {
