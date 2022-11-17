@@ -57,6 +57,13 @@ public class PlayerCore : MonoBehaviour
     [YarnCommand("enter_room")]
     private void EnterRoom(string roomName)
     {
-        SceneManager.LoadScene(roomName);
+        if (SceneUtility.GetBuildIndexByScenePath(roomName) >= 0)
+        {
+            SceneManager.LoadScene(roomName);
+        }
+        else
+        {
+            Debug.LogWarning("Scene " + roomName + " not in build.");
+        }
     }
 }
