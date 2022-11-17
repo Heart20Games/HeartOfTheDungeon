@@ -10,12 +10,17 @@ public class PlayerCore : MonoBehaviour
     public bool talkable = false;
     public string targetNode = "";
 
+    public Movement moveControls;
+
     public GameObject dialogueHolder;
 
     DialogueRunner dialogueRunner;
 
     private void Start()
     {
+
+        moveControls = GetComponent<Movement>();
+
         if (dialogueHolder != null)
         {
             dialogueRunner = dialogueHolder.GetComponent<DialogueRunner>();
@@ -37,7 +42,8 @@ public class PlayerCore : MonoBehaviour
     {
         if (talkable && dialogueRunner != null)
         {
-            if (targetNode != "") {
+            if (targetNode != "")
+            {
                 dialogueRunner.Stop();
                 Debug.Log("I'm talking now");
                 dialogueRunner.StartDialogue(targetNode);
