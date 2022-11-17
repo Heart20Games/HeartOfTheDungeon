@@ -5,7 +5,10 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
-    public float speed = 800f;
+    public float speed = 700f;
+    public float maxVelocity = 10f;
+    public float moveDrag = 0.5f;
+    public float stopDrag = 7.5f;
     public bool canMove = true;
 
     private Vector2 MovementVector = new Vector2(0,0);
@@ -20,8 +23,6 @@ public class Movement : MonoBehaviour
     {
         myRigidbody = GetComponent<Rigidbody>();
         controls = new PlayerControls();
-        
-        
     }
 
     public Vector2 getMoveVector()
@@ -31,7 +32,6 @@ public class Movement : MonoBehaviour
     private void Update()
     {
         // this.transform.local
-        
         //myRigidbody.AddForce(new Vector3(MovementVector.x, 0, MovementVector.y) * speed * Time.deltaTime, ForceMode.Force); // deltatime decouples the framerate from movement.
     }
 
@@ -41,6 +41,15 @@ public class Movement : MonoBehaviour
         {
             
             myRigidbody.AddRelativeForce(new Vector3(MovementVector.x, 0, MovementVector.y) * speed * Time.deltaTime, ForceMode.Force);
+            if (myRigidbody.velocity.magnitude > maxVelocity)
+            {
+                Debug.Log("Velocity clamped");
+                myRigidbody.velocity = myRigidbody.velocity.normalized * maxVelocity;
+            }
+            else
+            {
+                Debug.Log("Velocity below maximum");
+            }
         }
     }
 
@@ -51,6 +60,14 @@ public class Movement : MonoBehaviour
 
             Vector2 inputVector = context.ReadValue<Vector2>();
             MovementVector = inputVector;
+            if (MovementVector.magnitude == 0)
+            {
+                myRigidbody.drag = stopDrag;
+            } 
+            else
+            {
+                myRigidbody.drag = moveDrag;
+            }
         }
         //horizontalInput = input;
         //print(horizontalInput);
