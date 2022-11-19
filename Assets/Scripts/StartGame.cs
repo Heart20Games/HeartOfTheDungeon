@@ -5,9 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class StartGame : MonoBehaviour
 {
+    [SerializeField] private string targetScene;
     public void StartGameplay()
     {
+        
         print("Game starts here!");
-        SceneManager.LoadScene("Gameplay");
+        SceneManager.LoadScene(targetScene);
     }
 }

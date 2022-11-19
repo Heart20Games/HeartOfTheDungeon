@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using Yarn.Unity;
 
+
+
 public class PlayerCore : MonoBehaviour
 {
     public bool talkable = false;
@@ -35,20 +37,20 @@ public class PlayerCore : MonoBehaviour
     // Public methods here
     public void Die()
     {
-        Debug.Log("You are Dead");
         SceneManager.LoadScene("GameOver"); // Whisks us directly to the game over screen.
     }
 
     public void Talk()
     {
+
         if (talkable && dialogueRunner != null)
         {
             if (targetNode != "")
             {
                 dialogueRunner.Stop();
-                Debug.Log("I'm talking now");
                 dialogueRunner.StartDialogue(targetNode);
                 gameObject.GetComponent<Movement>().canMove = false;
+                talkable = false;
             }
             else
             {
@@ -63,7 +65,6 @@ public class PlayerCore : MonoBehaviour
 
     private void DoneTalking()
     {
-        Debug.Log("I'm done talking now");
         gameObject.GetComponent<Movement>().canMove = true;
     }
 
