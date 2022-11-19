@@ -13,4 +13,13 @@ public class GameState : ScriptableObject
     public int health;
     public int roomID;
 
+    public List<string> visitedRooms;
+
+
+    // Can we put functions in here?
+    public void TestFunc()
+    {
+        Debug.Log("Hello world");
+    }
+
 }
