@@ -27,6 +27,7 @@ public class PlayerCore : MonoBehaviour
             dialogueRunner.onDialogueComplete.AddListener(DoneTalking);
         }
     }
+
     // For keeping track of things like health and other instance specific things.
     // Stat block here
 
@@ -66,6 +67,8 @@ public class PlayerCore : MonoBehaviour
         gameObject.GetComponent<Movement>().canMove = true;
     }
 
+
+    // Yarn Commands
     [YarnCommand("enter_room")]
     private void EnterRoom(string roomName)
     {
