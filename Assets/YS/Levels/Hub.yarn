@@ -17,6 +17,7 @@ title: RatEntrance
 position: 210,-85
 ---
 Ratdom: Would you like to visit the domain of rats? #line:176
+<<set $xp to 1>>
 -> Yes 
     <<enter_room Player RatAreaVOTest>>
 -> No
@@ -25,6 +26,7 @@ Ratdom: Would you like to visit the domain of rats? #line:176
 title: SkeleEntrance
 position: -204,-78
 ---
+<<set $xp to 2>>
 Skeledom: Would you like to visit the domain of skeletons? #line:137
 -> Yes
     <<enter_room Player SkeletonAreaVOTest>>
@@ -45,54 +47,53 @@ title: RottaAfterIntro
 
 position: -142,359
 ---
+<<if $xp < 1>>
 Rotta: You may have the fancy dice, but that doesn’t make you a dungeon master. I still don’t see what the old man saw in you. I’ll go along with it for now, but don’t think we’re friends. #line:H001
-    <<stop>>
-===
 
-title: RottaAfterRatSection
+<<elseif $xp < 2>>
 
-position: 48,355
----
 Rotta: Thank you, Gobkin. I didn’t think it was possible to reconnect with my father. And yet somehow, you found a way. I’m beginning to understand why Baelor chose you. #line:H002
     <<stop>>
-===
 
-title: RottaAfterSkeletonSection
+<<elseif $xp > 1>>
 
-position: 215,356
----
 Rotta: Poor Osseus. I know what it is to grieve for a loved one, but to see them killed before your eyes. Baelor was right about that old skeleton… death did nothing to dim their spirit. #line:H003
+
     <<stop>>
+
+<<endif>>
 ===
+
 
 title: OsseusAfterIntro
 
 position: -141,262
 ---
+<<if $xp < 1>>
+
 Osseus: I suppose our hopes lie with you little Gobkin. I do not believe there is much hope for us. But I will follow, for Baelor’s sake. #line:H004
     <<stop>>
-===
 
-title: OsseusAfterRatSection
+<<elseif $xp < 2>>
 
-position: 47,270
----
 Osseus: Well done little Gobkin, I must say, despite your limited intellect you have a way with words. <br>You seem to bring the best out of every creature you meet. <br>Perhaps that is why Baelor gave the dice to you. #line:H005
     <<stop>>
-===
 
-title: OsseusAfterSkeletonSection
+<<elseif $xp > 1>>
 
-position: 215,269
----
 Osseus: I miss Osteon. They were a cherished skeleton, my truest friend, and beloved partner. <br>And though their bones are with me now… <br>I shall always miss them #line:H006
     <<stop>>
+
+<<endif>>
 ===
+
 
 title: SlimeAfterIntro
 
 position: -138,166
 ---
+
+<<if $xp <1>>
 Gobkin: Hi slimefwend! #line:H007
 Sir Slimeington: JIGGLE!? WIBBLE WOBBLE! #line:H008
 Gobkin: Hrrrh? #line:H009
@@ -100,27 +101,38 @@ Osseus: He says how dare you speak to him. Do you know not know his lineage? <br
 Gobkin: He says all that? #line:H011
 Osseus: Basically, though some of what he said wasn’t fit for polite creatures like us, so I won’t repeat it. #line:H012
     <<stop>>
+
+<<elseif $xp <2>>
+
+Gobkin: Herrowww Slimefriend! #line:H013
+Sir Slimeington: WIBBLE? WOBBLE WOBBLE, JIGGLE… BLIBBLE… #line:H014
+Osseus: He says you again? He thought he made it clear last time you weren’t to speak to him. <br>Though he is… well impressed isn’t the word, there’s not really a direct translation. <br>Closest I can get is just imagine he’s telling you good job, <br>but also slapping you across the face while he’s saying it. #line:H015
+    <<stop>>
+
+<<elseif $xp > 1>>
+
+Gobkin: ‘elloh Slimefriend… #line:H016
+Sir Slimeington: WOBBLE WIBLLE JIBBLE! <br>WOBBLE? WIBBLE! <br>BIBBLE WOBBLE WIBBLE! #line:H017
+Osseus: Thank you Sir Slimeington. He said that you should not despair Gobkin. Baelor chose well when he gave you the dice. <br>Death? Death comes for us all, many never having truly lived. <br>To fully embrace who you are, while the world tells you you’re wrong, is true courage. <br>He says he was wrong about you, and he will stand with you in the final battle. #line:H018
+
+    <<stop>>
+
+<<endif>>
+
 ===
 
 title: SlimeAfterRatSection
 
 position: 44,161
 ---
-Gobkin: Herrowww Slimefriend! #line:H013
-Sir Slimeington: WIBBLE? WOBBLE WOBBLE, JIGGLE… BLIBBLE… #line:H014
-Osseus: He says you again? He thought he made it clear last time you weren’t to speak to him. <br>Though he is… well impressed isn’t the word, there’s not really a direct translation. <br>Closest I can get is just imagine he’s telling you good job, <br>but also slapping you across the face while he’s saying it. #line:H015
-    <<stop>>
+
 ===
 
 title: SlimeAfterSkeletonArea
 
 position: 213,160
 ---
-Gobkin: ‘elloh Slimefriend… #line:H016
-Sir Slimeington: WOBBLE WIBLLE JIBBLE! <br>WOBBLE? WIBBLE! <br>BIBBLE WOBBLE WIBBLE! #line:H017
-Osseus: Thank you Sir Slimeington. He said that you should not despair Gobkin. Baelor chose well when he gave you the dice. <br>Death? Death comes for us all, many never having truly lived. <br>To fully embrace who you are, while the world tells you you’re wrong, is true courage. <br>He says he was wrong about you, and he will stand with you in the final battle. #line:H018
 
-    <<stop>>
 ===
 
 
