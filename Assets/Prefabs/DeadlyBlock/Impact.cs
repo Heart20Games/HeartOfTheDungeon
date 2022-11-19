@@ -8,14 +8,11 @@ public class Impact : MonoBehaviour
     // Update is called once per frame
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Colliding");
         if(collision.gameObject.name == "Player")
         {
             PlayerCore player = collision.gameObject.GetComponent<PlayerCore>();
             player.talkable = true;
-            Debug.Log("I can talk");
             player.targetNode = this.targetNode;
-            // player.Die();
         }
     }
 
@@ -26,7 +23,6 @@ public class Impact : MonoBehaviour
             PlayerCore player = collision.gameObject.GetComponent<PlayerCore>();
             player.talkable = false;
             player.targetNode = "";
-            Debug.Log("Can't talk anymore");
         }
     }
 }
