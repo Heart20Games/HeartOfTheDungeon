@@ -17,6 +17,8 @@ public class Movement : MonoBehaviour
 
     private Rigidbody myRigidbody;
     PlayerControls controls;
+    public Animator animator;
+    public Transform pivot;
     FMOD.Studio.EventInstance footsteps;
 
     private void Awake()
@@ -50,15 +52,20 @@ public class Movement : MonoBehaviour
 
             if (myRigidbody.velocity.magnitude > footstepVelocity)
             {
+                float pMag = Mathf.Abs(pivot.localScale.x);
+                float sign = myRigidbody.velocity.x > myRigidbody.velocity.z ? 1 : -1;
+                pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
+
                 if (!hasFootsteps)
                 {
+                    animator.SetBool("run", true);
                     hasFootsteps = true;
                     footsteps.start();
                 }
-                
             } 
             else if (hasFootsteps)
             {
+                animator.SetBool("run", false);
                 hasFootsteps = false;
                 footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
