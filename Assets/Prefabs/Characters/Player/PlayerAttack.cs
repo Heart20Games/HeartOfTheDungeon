@@ -7,6 +7,8 @@ public class PlayerAttack : MonoBehaviour
 {
     public bool canAttack = true;
     public PlayerCore pCore;
+    public Animator animator;
+    public Transform pivot;
     public Weapon Weapon;
     private Vector3 weapRotation = Vector3.forward;
     
@@ -18,6 +20,9 @@ public class PlayerAttack : MonoBehaviour
     public void Slashie()
     {
         Vector2 movement = pCore.moveControls.getAttackVector();
+        float pMag = Mathf.Abs(pivot.localScale.x);
+        float sign = movement.x < 0 ? -1 : 1;
+        pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
         if (canAttack)
         {
             if (!Weapon.swinging) // set in weapon animation
@@ -26,6 +31,7 @@ public class PlayerAttack : MonoBehaviour
                 {
                     weapRotation = Vector3.right * -movement.x + Vector3.forward * -movement.y;
                 }
+                animator.SetTrigger("attack");
                 Weapon.Swing(weapRotation); // uses last rotation if not moving
                 print("I'mma slashin'");
             }
