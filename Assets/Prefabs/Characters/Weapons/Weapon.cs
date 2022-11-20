@@ -7,6 +7,7 @@ public class Weapon : MonoBehaviour
     public Animator animator;
     public bool swinging = false; // toggled in weapon 
     public float speed = 3f; // speed of the animation
+    public int damage = 1;
     FMOD.Studio.EventInstance daggerSwing;
 
     private readonly List<Enemy> enemiesHit = new List<Enemy>();
