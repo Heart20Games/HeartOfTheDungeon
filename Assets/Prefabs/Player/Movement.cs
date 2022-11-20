@@ -13,10 +13,7 @@ public class Movement : MonoBehaviour
 
     private Vector2 MovementVector = new Vector2(0,0);
 
-    
-
     private Rigidbody myRigidbody;
-
     PlayerControls controls;
 
     private void Awake()
