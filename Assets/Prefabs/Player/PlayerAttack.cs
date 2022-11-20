@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerAttack : MonoBehaviour
 {
+    public bool canAttack = true;
     public PlayerCore pCore;
     public Weapon Weapon;
     private Vector3 weapRotation = Vector3.forward;
@@ -17,14 +18,17 @@ public class PlayerAttack : MonoBehaviour
     public void Slashie()
     {
         Vector2 movement = pCore.moveControls.getMoveVector();
-        if (!Weapon.swinging) // set in weapon animation
+        if (canAttack)
         {
-            if (Mathf.Abs(movement.x) > 0.5f || Mathf.Abs(movement.y) > 0.5f)
+            if (!Weapon.swinging) // set in weapon animation
             {
-                weapRotation = Vector3.right * -movement.x + Vector3.forward * -movement.y;
+                if (Mathf.Abs(movement.x) > 0.5f || Mathf.Abs(movement.y) > 0.5f)
+                {
+                    weapRotation = Vector3.right * -movement.x + Vector3.forward * -movement.y;
+                }
+                Weapon.Swing(weapRotation); // uses last rotation if not moving
+                print("I'mma slashin'");
             }
-            Weapon.Swing(weapRotation); // uses last rotation if not moving
-            print("I'mma slashin'");
         }
     }
 }
