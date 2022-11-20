@@ -17,7 +17,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void Slashie()
     {
-        Vector2 movement = pCore.moveControls.getMoveVector();
+        Vector2 movement = pCore.moveControls.getAttackVector();
         if (canAttack)
         {
             if (!Weapon.swinging) // set in weapon animation
