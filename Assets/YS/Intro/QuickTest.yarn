@@ -51,19 +51,19 @@ Baelor: Come, let’s begin our journey and I shall tell you how it functions…
     <<cutscene SceneTimeline 0>>
 Hero: En garde foul denizens of evil! I have come forth to smote thee! #line:049
 Osseus: I heard that adventurers were pretentious but wow… to have a tongue and waste it so… #line:050
+<<unpause SceneTimeline>>
 Rotta: ARRGGHHH! LET ME AT HIM! #line:051
+<<unpause SceneTimeline>>
 Baelor: WAIT! #line:052
+<<unpause SceneTimeline>>
 Baelor: NO! STOP, PLEASE! #line:053
-    <<set $prog to $prog + 1>>
-    
-    <<stop>>
-
-<<elseif $prog >3>>
 
 Hero: I thought the Dungeon Guide listed this dungeon as a 2.5 stars? <br>Huh, I expected more challenge than this. Guess I’m better than I thought. #line:054
 Hero: I have lay thee low, abominations, but harken! Ye have earned a reprieve for now! <br>I shall return in three days with other holy warriors and we shall purge your filth from these lands! #line:055
     <<stop_emit YSemit>>
+    <<unpause SceneTimeline>>
 Hero: Man, these guys don’t even qualify as trash mobs. <br>However my low level friends will be able to grind xp quite easily in here! #line:056
+<<unpause SceneTimeline>>
 Gobkin: M-m-master? #line:057
     <<url_emit Music "event:/Tutorial Music">>
 Baelor: I’m sorry. I thought I had more time. #line:058
