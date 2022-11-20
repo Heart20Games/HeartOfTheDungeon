@@ -17,7 +17,7 @@ public class SceneTimeline : MonoBehaviour
     [YarnCommand("cutscene")]
     public void Trigger(int index)
     {
-        if (index > 0 && index < timelines.Count)
+        if (index >= 0 && index < timelines.Count)
         {
             director.Stop();
             director.playableAsset = timelines[index];

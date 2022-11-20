@@ -9,12 +9,14 @@ public class SceneAnimator : MonoBehaviour
 
     public void Start()
     {
+        Debug.Log("SceneAnimator Started");
         animator = GetComponent<Animator>();
     }
 
     [YarnCommand("trigger")]
     public void Trigger(string key)
     {
+        Debug.Log("Scene Animator Triggered");
         animator.SetTrigger(key);
     }
 }
