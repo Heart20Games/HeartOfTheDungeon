@@ -19,6 +19,7 @@ public class CharacterView : DialogueViewBase
     [SerializeField] Image leftImage;
     [SerializeField] Image rightImage;
 
+    string lastCharacter = "";
     bool leftNext = false;
 
     //Action advanceHandler = null;
@@ -47,14 +48,19 @@ public class CharacterView : DialogueViewBase
         string character = dialogueLine.CharacterName;
         if (characterPortraits.ContainsKey(character))
         {
+            bool sameCharacter = lastCharacter == character;
             Sprite portrait = characterPortraits[character];
             bool orientation = characterOrientations[character];
+            if (!sameCharacter)
+            {
+                leftNext = !leftNext;
+            }
             Image image = leftNext ? leftImage : rightImage;
             int xScale = (leftNext && !orientation) || (!leftNext && orientation) ? -1 : 1;
             image.rectTransform.localScale = new Vector2(xScale, 1);
             image.sprite = portrait;
             image.color = Color.white;
-            leftNext = !leftNext;
+            lastCharacter = character;
         }
 
         onDialogueLineFinished();
