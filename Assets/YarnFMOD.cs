@@ -12,7 +12,7 @@ public class YarnFMOD : MonoBehaviour
         emitter = GetComponent<StudioEventEmitter>();
     }
 
-    [YarnCommand("urlEmit")]
+    [YarnCommand("url_emit")]
     public void emitByURL(string url)
     {
         emitter.Stop();
@@ -20,7 +20,7 @@ public class YarnFMOD : MonoBehaviour
         emitter.Play();
     }
 
-    [YarnCommand("stopEmit")]
+    [YarnCommand("stop_emit")]
     public void stopEmit()
     {
         emitter.Stop();
