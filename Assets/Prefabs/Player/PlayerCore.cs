@@ -13,16 +13,16 @@ public class PlayerCore : MonoBehaviour
     public string targetNode = "";
 
     public Movement moveControls;
-
     public GameObject dialogueHolder;
-
     DialogueRunner dialogueRunner;
+    private PlayerAttack attacker;
+
 
     private void Start()
     {
 
         moveControls = GetComponent<Movement>();
-
+        attacker = GetComponent<PlayerAttack>();
         if (dialogueHolder != null)
         {
             dialogueRunner = dialogueHolder.GetComponent<DialogueRunner>();
@@ -49,7 +49,8 @@ public class PlayerCore : MonoBehaviour
             {
                 dialogueRunner.Stop();
                 dialogueRunner.StartDialogue(targetNode);
-                gameObject.GetComponent<Movement>().canMove = false;
+                moveControls.canMove = false;
+                attacker.canAttack = false;
                 talkable = false;
             }
             else
@@ -65,7 +66,8 @@ public class PlayerCore : MonoBehaviour
 
     private void DoneTalking()
     {
-        gameObject.GetComponent<Movement>().canMove = true;
+        moveControls.canMove = true;
+        attacker.canAttack = true;
     }
 
 
