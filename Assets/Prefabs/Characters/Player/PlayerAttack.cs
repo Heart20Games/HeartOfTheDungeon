@@ -29,6 +29,10 @@ public class PlayerAttack : MonoBehaviour
                 Weapon.Swing(weapRotation); // uses last rotation if not moving
                 print("I'mma slashin'");
             }
+            else
+            {
+                Debug.Log("Weapon Already Swinging");
+            }
         }
     }
 }

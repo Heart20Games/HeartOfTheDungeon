@@ -30,11 +30,6 @@ public class Movement : MonoBehaviour
     {
         return MovementVector;
     }
-    private void Update()
-    {
-        // this.transform.local
-        //myRigidbody.AddForce(new Vector3(MovementVector.x, 0, MovementVector.y) * speed * Time.deltaTime, ForceMode.Force); // deltatime decouples the framerate from movement.
-    }
 
     private void FixedUpdate()
     {
@@ -72,7 +67,6 @@ public class Movement : MonoBehaviour
     {
         if (context.performed)
         {
-
             Vector2 inputVector = context.ReadValue<Vector2>();
             MovementVector = inputVector;
             if (MovementVector.magnitude == 0)
@@ -84,7 +78,5 @@ public class Movement : MonoBehaviour
                 myRigidbody.drag = moveDrag;
             }
         }
-        //horizontalInput = input;
-        //print(horizontalInput);
     }
 }
