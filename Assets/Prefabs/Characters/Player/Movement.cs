@@ -26,9 +26,11 @@ public class Movement : MonoBehaviour
         controls = new PlayerControls();
     }
 
-    public Vector2 getMoveVector()
+    public Vector2 getAttackVector()
     {
-        return MovementVector;
+        Vector3 center = new Vector3(Screen.width, Screen.height, 0)/2;
+        return (Input.mousePosition - center).normalized;
+        //return MovementVector;
     }
 
     private void FixedUpdate()
