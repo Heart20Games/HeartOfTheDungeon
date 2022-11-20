@@ -11,6 +11,7 @@ public class Movement : MonoBehaviour
     public float moveDrag = 0.5f;
     public float stopDrag = 7.5f;
     public bool canMove = true;
+    private bool hasFootsteps = false;
 
     private Vector2 MovementVector = new Vector2(0,0);
 
@@ -52,10 +53,16 @@ public class Movement : MonoBehaviour
 
             if (myRigidbody.velocity.magnitude > footstepVelocity)
             {
-                footsteps.start();
+                if (!hasFootsteps)
+                {
+                    hasFootsteps = true;
+                    footsteps.start();
+                }
+                
             } 
-            else
+            else if (hasFootsteps)
             {
+                hasFootsteps = false;
                 footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
         }
