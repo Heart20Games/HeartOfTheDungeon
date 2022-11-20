@@ -3,6 +3,8 @@ tags:
 ---
 
 <<if $prog <1>>
+
+
 Baelor: I know we have been working hard these past weeks, and I want you to know I appreciate you all. #line:001
 Rotta: What’s been the point? My clan won’t come out of their holes, they’re too busy forging armor too heavy to wear. #line:002
 Osseus: And my fellow bone brethren won’t come to our aid either, they’re too obsessed with trying to repair themselves. #line:003 
@@ -38,8 +40,7 @@ Baelor: Well, fighting skill isn’t everything, and we won’t need to fight th
 Rotta: You really think my people won’t fight you tooth and tail? #line:041
 Osseus: And bone and… well bone, I suppose. #line:042
 Baelor: Perhaps, but I also have this! #line:043
-
-    
+  
     <<stop_emit Music>>
 Baelor: The D20 of the Dungeon Master, given to all dungeon masters. With this, we will have unity. #line:044
 Rotta: Ooooohhh...So green. #line:045
@@ -47,13 +48,14 @@ Osseus: Such fine craftsmanship. #line:046
 Gobkin: It’s warm… #line:047
 Baelor: Come, let’s begin our journey and I shall tell you how it functions… #line:048
     <<url_emit YSemit "event:/HeroFightMusic">>
+    <<cutscene SceneTimeline 0>>
 Hero: En garde foul denizens of evil! I have come forth to smote thee! #line:049
 Osseus: I heard that adventurers were pretentious but wow… to have a tongue and waste it so… #line:050
 Rotta: ARRGGHHH! LET ME AT HIM! #line:051
 Baelor: WAIT! #line:052
 Baelor: NO! STOP, PLEASE! #line:053
     <<set $prog to $prog + 1>>
- 
+    
     <<stop>>
 
 <<elseif $prog >3>>
