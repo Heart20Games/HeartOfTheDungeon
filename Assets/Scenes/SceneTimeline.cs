@@ -28,4 +28,16 @@ public class SceneTimeline : MonoBehaviour
             Debug.LogWarning("SceneTimeline index out of bounds: " + index);
         }
     }
+
+    [YarnCommand("pause")]
+    public void Pause()
+    {
+        director.Pause();
+    }
+
+    [YarnCommand("unpause")]
+    public void UnPause()
+    {
+        director.Play();
+    }
 }
