@@ -17,10 +17,8 @@ public class PlayerCore : MonoBehaviour
     DialogueRunner dialogueRunner;
     private PlayerAttack attacker;
 
-
     private void Start()
     {
-
         moveControls = GetComponent<Movement>();
         attacker = GetComponent<PlayerAttack>();
         if (dialogueHolder != null)
@@ -42,7 +40,6 @@ public class PlayerCore : MonoBehaviour
 
     public void Talk()
     {
-
         if (talkable && dialogueRunner != null)
         {
             if (targetNode != "")
@@ -68,20 +65,5 @@ public class PlayerCore : MonoBehaviour
     {
         moveControls.canMove = true;
         attacker.canAttack = true;
-    }
-
-
-    // Yarn Commands
-    [YarnCommand("enter_room")]
-    private void EnterRoom(string roomName)
-    {
-        if (SceneUtility.GetBuildIndexByScenePath(roomName) >= 0)
-        {
-            SceneManager.LoadScene(roomName);
-        }
-        else
-        {
-            Debug.LogWarning("Scene " + roomName + " not in build.");
-        }
     }
 }
