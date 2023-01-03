@@ -23,6 +23,7 @@ namespace Yarn.Unity
         private void Awake()
         {
             instance = RuntimeManager.CreateInstance(fmodEvent);
+            instance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject.transform));
             //instance.start();
 
             emitter = tester.GetComponent<StudioEventEmitter>();
