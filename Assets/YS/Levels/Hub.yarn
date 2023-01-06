@@ -7,7 +7,7 @@ title:HubEntrance
 ---
 The Hub: Would you like to return to the Hub? #line:505
 -> Yes
-    <<enter_room YarnRunner Hub>>
+    <<enter_room YarnRunner $Hub>>
 -> No
     <<stop>>
 ===
@@ -16,7 +16,7 @@ position: 3,-71
 ---
 Dungeon Exit: Would you like to leave the dungeon? #line:090
 -> Yes
-    <<enter_room YarnRunner SadEmpty>>
+    <<enter_room YarnRunner $SadEmpty>>
 -> No
     <<stop>>
 ===
@@ -26,7 +26,7 @@ position: 210,-85
 Ratdom: Would you like to visit the domain of rats? #line:176
 <<set $xp to 1>>
 -> Yes 
-    <<enter_room YarnRunner RatKing>>
+    <<enter_room YarnRunner $RatKing>>
 -> No
     <<stop>>
 ===
@@ -36,7 +36,7 @@ position: -204,-78
 <<set $xp to 2>>
 Skeledom: Would you like to visit the domain of skeletons? #line:137
 -> Yes
-    <<enter_room YarnRunner OstMech>>
+    <<enter_room YarnRunner $OstMech>>
 -> No
     <<stop>>
 ===
@@ -47,7 +47,7 @@ Demondom: The domain of demons cannot be traversed right now. #line:506
 <<stop>>
 // Demondom: Would you like to visit the domain of demons?
 // -> Yes
-//     <<enter_room YarnRunner DemonArea>>
+//     <<enter_room YarnRunner $DemonArea>>
 // -> No
 //     <<stop>>
 ===
