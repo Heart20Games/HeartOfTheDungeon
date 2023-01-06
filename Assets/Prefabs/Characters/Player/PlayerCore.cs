@@ -55,7 +55,7 @@ public class PlayerCore : MonoBehaviour
                 Debug.LogWarning("No target node");
             }
         }
-        else
+        else if (dialogueRunner == null)
         {
             Debug.LogWarning("No Dialogue Runner to Start Talking");
         }
