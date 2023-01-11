@@ -19,6 +19,7 @@ public class Enemy : MonoBehaviour
     private float timeMoving;
 
     private bool hasFootsteps = false;
+    private bool pursuing = false;
 
     public void Start()
     {
@@ -35,6 +36,8 @@ public class Enemy : MonoBehaviour
 
     public void Update()
     {
+        pursuing = false;
+
         timeTillAttack -= Time.deltaTime;
         if (timeTillAttack <= 0)
         {
@@ -45,7 +48,7 @@ public class Enemy : MonoBehaviour
         if (timeTillMove == 0)
         {
             timeMoving += Time.deltaTime;
-            Pursue();
+            pursuing = true;
             if (timeMoving >= enemyType.moveTime)
             {
                 Debug.Log("Stop Walking");
@@ -70,6 +73,14 @@ public class Enemy : MonoBehaviour
                 timeTillMove = 0;
                 timeMoving = 0;
             }
+        }
+    }
+
+    public void FixedUpdate()
+    {
+        if (pursuing)
+        {
+            Pursue();
         }
     }
 
@@ -129,7 +140,7 @@ public class Enemy : MonoBehaviour
         Vector3 diff = transform.position - player.transform.position;
         if (diff.magnitude >= enemyType.attackDistance/2)
         {
-            Vector3 destination = Vector3.MoveTowards(transform.position, player.transform.position, enemyType.moveSpeed * Time.deltaTime);
+            Vector3 destination = Vector3.MoveTowards(transform.position, player.transform.position, enemyType.moveSpeed * Time.fixedDeltaTime);
             GetComponent<Rigidbody>().MovePosition(destination);
 
             Vector3 direction = (transform.position - destination).normalized;

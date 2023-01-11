@@ -155,6 +155,7 @@ GameObject:
   - component: {fileID: 247714441200815817}
   - component: {fileID: 574000115014094558}
   - component: {fileID: 7120338839435959160}
+  - component: {fileID: 6208642385397890590}
   m_Layer: 0
   m_Name: YarnRunner
   m_TagString: Untagged
@@ -191,7 +192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bec29c0a230741bdac901dba8da47ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yarnProject: {fileID: 0}
+  yarnProject: {fileID: 7545569452688597077, guid: b32a2a9c2259ee344a5f6724a08cd5b7, type: 3}
   _variableStorage: {fileID: 574000115014094558}
   dialogueViews:
   - {fileID: 6426467422744738461}
@@ -200,7 +201,7 @@ MonoBehaviour:
   startNode: Start
   startAutomatically: 1
   runSelectedOptionAsLine: 0
-  lineProvider: {fileID: 0}
+  lineProvider: {fileID: 6208642385397890590}
   verboseLogging: 1
   onNodeStart:
     m_PersistentCalls:
@@ -255,6 +256,30 @@ MonoBehaviour:
     sceneName: MainMenu
   - name: GameOver
     sceneName: GameOver
+  - name: RatHub
+    sceneName: RatHub
+--- !u!114 &6208642385397890590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1507210881203439284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0d200d8f639e854b8cd103d326d5803, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentID: 
+  tester: {fileID: 0}
+  fmodEvent:
+    Guid:
+      Data1: -262801679
+      Data2: 1288987310
+      Data3: -1901138766
+      Data4: -322447752
+    Path: event:/MenuButtonDark1
+  textLanguageCode: en-US
 --- !u!1 &2264260657134396167
 GameObject:
   m_ObjectHideFlags: 0

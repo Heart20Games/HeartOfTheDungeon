@@ -29,6 +29,7 @@ public class YarnCommands : MonoBehaviour
         new Room("Outro", "OutroSequence"),
         new Room("OstMech", "OstMechBattle"),
         new Room("RatKing", "RatKingBattle"),
+        new Room("RatHub", "RatHub"),
         new Room("MainMenu", "MainMenu"),
         new Room("GameOver", "GameOver"),
     };
