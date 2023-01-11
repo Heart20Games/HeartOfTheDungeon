@@ -12,12 +12,12 @@ public class CharacterView : DialogueViewBase
     [SerializeField] List<string> characters;
     [SerializeField] List<Sprite> portraits;
     [SerializeField] List<bool> orientations;
-    Dictionary<string, Sprite> characterPortraits = new Dictionary<string, Sprite>();
-    Dictionary<string, bool> characterOrientations = new Dictionary<string, bool>();
+    private Dictionary<string, Sprite> characterPortraits = new Dictionary<string, Sprite>();
+    private Dictionary<string, bool> characterOrientations = new Dictionary<string, bool>();
 
     // UI Images to Update with Characters
-    [SerializeField] Image leftImage;
-    [SerializeField] Image rightImage;
+    [SerializeField] public Image leftImage;
+    [SerializeField] public Image rightImage;
 
     string lastCharacter = "";
     bool leftNext = false;
