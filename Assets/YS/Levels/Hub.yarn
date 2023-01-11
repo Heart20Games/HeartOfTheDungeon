@@ -5,7 +5,7 @@ position: -4,-249
 ===
 title:HubEntrance
 ---
-The Hub: Would you like to return to the Hub? #line:505
+The Hub: Would you like to return to the Hub? #no-va #line:505
 -> Yes
     <<enter_room YarnRunner $Hub>>
 -> No
@@ -14,7 +14,7 @@ The Hub: Would you like to return to the Hub? #line:505
 title: DungeonExit
 position: 3,-71
 ---
-Dungeon Exit: Would you like to leave the dungeon? #line:090
+Dungeon Exit: Would you like to leave the dungeon? #no-va #line:090
 -> Yes
     <<enter_room YarnRunner $SadEmpty>>
 -> No
@@ -23,10 +23,10 @@ Dungeon Exit: Would you like to leave the dungeon? #line:090
 title: RatEntrance
 position: 210,-85
 ---
-Ratdom: Would you like to visit the domain of rats? #line:176
+Ratdom: Would you like to visit the domain of rats? #no-va #line:176
 <<set $xp to 1>>
 -> Yes 
-    <<enter_room YarnRunner $RatKing>>
+    <<enter_room YarnRunner $RatHub>>
 -> No
     <<stop>>
 ===
@@ -34,7 +34,7 @@ title: SkeleEntrance
 position: -204,-78
 ---
 <<set $xp to 2>>
-Skeledom: Would you like to visit the domain of skeletons? #line:137
+Skeledom: Would you like to visit the domain of skeletons? #no-va #line:137
 -> Yes
     <<enter_room YarnRunner $OstMech>>
 -> No
@@ -43,9 +43,9 @@ Skeledom: Would you like to visit the domain of skeletons? #line:137
 title: DemonEntrance
 position: -3,50
 ---
-Demondom: The domain of demons cannot be traversed right now. #line:506
+Demondom: The domain of demons cannot be traversed right now. #no-va #line:506
 <<stop>>
-// Demondom: Would you like to visit the domain of demons?
+// Demondom: Would you like to visit the domain of demons? #no-va
 // -> Yes
 //     <<enter_room YarnRunner $DemonArea>>
 // -> No
