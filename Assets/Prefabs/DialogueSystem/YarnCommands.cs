@@ -10,43 +10,17 @@ public class YarnCommands : MonoBehaviour
     private InMemoryVariableStorage storage;
 
     // Rooms
-    [Serializable]
-    public struct Room
-    {
-        public Room(string _name, string _sceneName)
-        {
-            name = _name;
-            sceneName = _sceneName;
-        }
-        public string name;
-        public string sceneName;
-    }
-    public Room[] rooms = new Room[]
-    {
-        new Room("Hub","HubV2"),
-        new Room("Into", "IntroSequence"),
-        new Room("SadEmpty", "DungeonExitEmpty"),
-        new Room("Outro", "OutroSequence"),
-        new Room("OstMech", "OstMechBattle"),
-        new Room("RatKing", "RatKingBattle"),
-        new Room("RatHub", "RatHub"),
-        new Room("MainMenu", "MainMenu"),
-        new Room("GameOver", "GameOver"),
-    };
-    public Dictionary<string, string> roomDict = new Dictionary<string, string>();
+    [SerializeField] YarnRooms rooms;
 
 
     // Variable Initialization
     private void Start()
     {
         storage = GetComponent<InMemoryVariableStorage>();
-        foreach (Room room in rooms)
-        {
-            roomDict["$" + room.name] = room.sceneName;
-        }
+        rooms.Initialize();
         Dictionary<string, float> tempFloats = new Dictionary<string, float>();
         Dictionary<string, bool> tempBools = new Dictionary<string, bool>();
-        storage.SetAllVariables(tempFloats, roomDict, tempBools);
+        storage.SetAllVariables(tempFloats, rooms.bank, tempBools);
     }
 
     // Yarn Commands
@@ -56,7 +30,7 @@ public class YarnCommands : MonoBehaviour
         string sceneName = roomName;
         if (roomName.StartsWith("$"))
         {
-            sceneName = roomDict[roomName];
+            sceneName = rooms.bank[roomName];
         }
         if (SceneUtility.GetBuildIndexByScenePath(sceneName) >= 0)
         {
