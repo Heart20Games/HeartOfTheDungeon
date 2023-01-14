@@ -39,7 +39,7 @@ public class Movement : MonoBehaviour
     {
         if (canMove)
         {
-            myRigidbody.AddRelativeForce(new Vector3(MovementVector.x, 0, MovementVector.y) * speed * Time.deltaTime, ForceMode.Force);
+            myRigidbody.AddRelativeForce(new Vector3(MovementVector.x, 0, MovementVector.y) * speed * Time.fixedDeltaTime, ForceMode.Force);
             if (myRigidbody.velocity.magnitude > maxVelocity)
             {
                 Debug.Log("Velocity clamped");
