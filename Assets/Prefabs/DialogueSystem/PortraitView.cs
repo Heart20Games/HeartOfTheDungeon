@@ -5,15 +5,11 @@ using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
 
-public class CharacterView : DialogueViewBase
+public class PortraitView : DialogueViewBase
 {
 
     // Dictionary of Name:Image Pairs
-    [SerializeField] List<string> characters;
-    [SerializeField] List<Sprite> portraits;
-    [SerializeField] List<bool> orientations;
-    private Dictionary<string, Sprite> characterPortraits = new Dictionary<string, Sprite>();
-    private Dictionary<string, bool> characterOrientations = new Dictionary<string, bool>();
+    [SerializeField] Portraits portraits;
 
     // UI Images to Update with Characters
     [SerializeField] public Image leftImage;
@@ -26,15 +22,7 @@ public class CharacterView : DialogueViewBase
 
     public void Awake()
     {
-        int count = Mathf.Min(characters.Count, portraits.Count, orientations.Count);
-        for (int i = 0; i < count; i++)
-        {
-            string character = characters[i];
-            Sprite portrait = portraits[i];
-            bool orientation = orientations[i];
-            characterPortraits.Add(character, portrait);
-            characterOrientations.Add(character, orientation);
-        }
+        portraits.Initialize();
     }
 
     public override void RunLine(LocalizedLine dialogueLine, Action onDialogueLineFinished)
@@ -46,11 +34,12 @@ public class CharacterView : DialogueViewBase
         }
 
         string character = dialogueLine.CharacterName;
-        if (characterPortraits.ContainsKey(character))
+        if (portraits.bank.ContainsKey(character))
         {
             bool sameCharacter = lastCharacter == character;
-            Sprite portrait = characterPortraits[character];
-            bool orientation = characterOrientations[character];
+            
+            Portrait portrait = portraits.bank[character];
+            bool orientation = portrait.orientation;
             if (!sameCharacter)
             {
                 leftNext = !leftNext;
@@ -58,7 +47,7 @@ public class CharacterView : DialogueViewBase
             Image image = leftNext ? leftImage : rightImage;
             int xScale = (leftNext && !orientation) || (!leftNext && orientation) ? -1 : 1;
             image.rectTransform.localScale = new Vector2(xScale, 1);
-            image.sprite = portrait;
+            image.sprite = portrait.image;
             image.color = Color.white;
             lastCharacter = character;
         }
