@@ -41,9 +41,12 @@ namespace Yarn.Unity
             currentID = line.ID;
             //emitter.Params.SetValue("B001 Rotta");
             instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            string clean = line.ID.Remove(4, 1);
+            string clean = line.ID.Remove(4, 1); // removing colon
             currentID = clean;
-            instance.setParameterByNameWithLabel("IntroVOParam", clean);
+
+
+            
+            instance.setParameterByNameWithLabel("IntroVOParam", clean); // IntroVOParam is on the Intro Scene even (Fmod event)
             instance.start();
             
             //tester.GetComponent<SoundScript>().coolfunctionthatfindsclips(currentID);
@@ -64,5 +67,10 @@ namespace Yarn.Unity
         public override bool LinesAvailable => true;
 
         public override string LocaleCode => textLanguageCode;
+
+        public void StopAudio()
+        {
+            instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        }
     }
 }
