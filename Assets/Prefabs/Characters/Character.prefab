@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 850644614561672070}
   - component: {fileID: 3184436854040988869}
-  - component: {fileID: 1713879849750991221}
+  - component: {fileID: 2411932573346271244}
   - component: {fileID: 3391126302631715903}
+  - component: {fileID: 1895181659443492097}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -77,8 +78,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1713879849750991221
-BoxCollider:
+--- !u!136 &2411932573346271244
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -87,9 +88,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!65 &3391126302631715903
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -103,6 +105,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.12, y: 1, z: 1.09}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1895181659443492097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3324343490077819189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a77fa9df3c0af344f95e71811150e915, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilities: []
+  weapons: []
+  weapon: {fileID: 0}
+  pivot: {fileID: 4813447189290614994}
+  animator: {fileID: 0}
 --- !u!1 &9138035305037282160
 GameObject:
   m_ObjectHideFlags: 0

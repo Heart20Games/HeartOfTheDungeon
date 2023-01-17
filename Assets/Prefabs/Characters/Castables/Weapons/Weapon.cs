@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class Weapon : MonoBehaviour
+public class Weapon : MonoBehaviour, ICastable
 {
     public Animator animator;
     public bool swinging = false; // toggled in weapon 
     public float speed = 3f; // speed of the animation
     public int damage = 1;
     FMOD.Studio.EventInstance daggerSwing;
+    public UnityEvent onAttackComplete;
 
     private readonly List<Enemy> enemiesHit = new List<Enemy>();
 
@@ -19,7 +21,9 @@ public class Weapon : MonoBehaviour
         animator.speed = speed;
     }
 
-    public void Swing(Vector3 direction)
+    // Castable
+
+    public void Cast(Vector3 direction)
     {
         daggerSwing.start();
         if (direction.sqrMagnitude > 0.0f)
@@ -31,6 +35,17 @@ public class Weapon : MonoBehaviour
         swinging = true;
         animator.SetTrigger("Swing");
     }
+    public UnityEvent OnCasted()
+    {
+        return onAttackComplete;
+    }
+
+    public void Initialize(Character source) { }
+    public void Disable() { }
+    public void Enable() { }
+    public bool CanCast() { return !swinging; }
+
+    // HItting Enemies
 
     public bool HitEnemy(Enemy enemy)
     {

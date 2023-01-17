@@ -130,7 +130,7 @@ public class Enemy : MonoBehaviour
                     enemyType.fightSound.start();
                 }
                 Vector3 pDirection = diff.normalized;
-                weapon.Swing(pDirection);
+                weapon.Cast(pDirection);
             }
         }
     }
