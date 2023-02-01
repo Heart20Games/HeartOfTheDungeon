@@ -4,22 +4,27 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    [SerializeField] public List<Ability> abilities = new List<Ability>();
-    [SerializeField] public List<Weapon> weapons = new List<Weapon>();
+    public Loadout loadout;
+    public ICastable primaryCastable;
+    public ICastable secondaryCastable;
+    public Ability ability;
     public Weapon weapon;
 
     public Transform pivot;
     public Animator animator;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (loadout != null)
+        {
+            if (ability == null && loadout.abilities.Count > 0)
+            {
+                ability = Instantiate(loadout.abilities[0], transform);
+            }
+            if (weapon == null && loadout.weapons.Count > 0)
+            {
+                weapon = Instantiate(loadout.weapons[0], transform);
+            }
+        }
     }
 }

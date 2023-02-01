@@ -26,6 +26,7 @@ public class PlayerCore : MonoBehaviour
         {
             dialogueRunner.onDialogueComplete.AddListener(DoneTalking);
         }
+        print(character.weapon.name);
         Attacker.Castable = character.weapon;
     }
 
@@ -68,10 +69,20 @@ public class PlayerCore : MonoBehaviour
         Attacker.active = true;
     }
 
+    public void Special()
+    {
+        if (Attacker.active)
+        {
+            Attacker.Castable = character.ability;
+            Attacker.Slashie(moveControls.getAttackVector());
+        }
+    }
+
     public void Attack()
     {
         if (Attacker.active)
         {
+            Attacker.Castable = character.weapon;
             Attacker.Slashie(moveControls.getAttackVector());
         }
     }

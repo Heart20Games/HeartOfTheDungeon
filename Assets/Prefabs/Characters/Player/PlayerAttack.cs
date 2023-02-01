@@ -10,7 +10,7 @@ public class PlayerAttack : MonoBehaviour
     private Character character;
     private Animator animator;
     private Transform pivot;
-    [SerializeReference] public ICastable Castable;
+    public ICastable Castable;
     private Vector3 weapRotation = Vector3.forward;
 
     private void Awake()
