@@ -40,12 +40,28 @@ public class PlayerCore : MonoBehaviour
         SceneManager.LoadScene("GameOver"); // Whisks us directly to the game over screen.
     }
 
+    public void FoundTalkable(string dialogueNode)
+    {
+        talkable = true;
+        targetNode = dialogueNode;
+    }
+
+    public void LeftTalkable(string dialogueNode)
+    {
+        if (targetNode == dialogueNode)
+        {
+            talkable = false;
+            targetNode = "";
+        }
+    }
+
     public void Talk()
     {
         if (talkable && dialogueRunner != null)
         {
             if (targetNode != "")
             {
+                Debug.Log("Trying to Talk");
                 dialogueRunner.Stop();
                 dialogueRunner.StartDialogue(targetNode);
                 moveControls.canMove = false;

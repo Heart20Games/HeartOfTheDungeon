@@ -44,8 +44,6 @@ namespace Yarn.Unity
             string clean = line.ID.Remove(4, 1); // removing colon
             currentID = clean;
 
-
-            
             instance.setParameterByNameWithLabel("IntroVOParam", clean); // IntroVOParam is on the Intro Scene even (Fmod event)
             instance.start();
             

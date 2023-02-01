@@ -8,21 +8,19 @@ public class Impact : MonoBehaviour
     // Update is called once per frame
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.name == "Player")
+        PlayerCore playerCore = collision.gameObject.GetComponent<PlayerCore>();
+        if(playerCore != null)
         {
-            PlayerCore player = collision.gameObject.GetComponent<PlayerCore>();
-            player.talkable = true;
-            player.targetNode = this.targetNode;
+            playerCore.FoundTalkable(targetNode);
         }
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if(collision.gameObject.name == "Player")
+        PlayerCore playerCore = collision.gameObject.GetComponent<PlayerCore>();
+        if (playerCore != null)
         {
-            PlayerCore player = collision.gameObject.GetComponent<PlayerCore>();
-            player.talkable = false;
-            player.targetNode = "";
+            playerCore.LeftTalkable(targetNode);
         }
     }
 }
