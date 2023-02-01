@@ -5,7 +5,11 @@ using UnityEngine.Events;
 
 public class Ability : MonoBehaviour, ICastable
 {
-    public void Cast(Vector3 direction) { }
+    public UnityEvent onCast;
+    public void Cast(Vector3 direction)
+    {
+        onCast.Invoke();
+    }
     public UnityEvent OnCasted() { return null; }
     public void Disable() { }
     public void Enable() { }
