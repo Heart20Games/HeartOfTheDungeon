@@ -26,7 +26,6 @@ public class PlayerCore : MonoBehaviour
         {
             dialogueRunner.onDialogueComplete.AddListener(DoneTalking);
         }
-        print(character.weapon.name);
         Attacker.Castable = character.weapon;
     }
 

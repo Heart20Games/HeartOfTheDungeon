@@ -35,12 +35,8 @@ public class Weapon : MonoBehaviour, ICastable
         swinging = true;
         animator.SetTrigger("Swing");
     }
-    public UnityEvent OnCasted()
-    {
-        return onAttackComplete;
-    }
-
-    public void Initialize(Character source) { }
+    public UnityEvent OnCasted() { return onAttackComplete; }
+    public void Initialize(Character source, Transform effectSource = null) { }
     public void Disable() { }
     public void Enable() { }
     public bool CanCast() { return !swinging; }
