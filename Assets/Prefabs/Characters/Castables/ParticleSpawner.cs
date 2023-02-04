@@ -6,16 +6,17 @@ using UnityEngine.Events;
 public class ParticleSpawner : MonoBehaviour, IPositionable
 {
     public ParticleSystem system;
-    public Transform origin;
+    public Transform source;
+    public Transform target;
 
     private readonly List<ParticleSystem> instances = new List<ParticleSystem>();
     public UnityEvent onFinished;
     
     private void Start()
     {
-        if (origin == null)
+        if (source == null)
         {
-            origin = this.transform;
+            source = this.transform;
         }
     }
 
@@ -41,14 +42,16 @@ public class ParticleSpawner : MonoBehaviour, IPositionable
         }
     }
 
-    public void SetOrigin(Transform origin)
+    public void SetOrigin(Transform source, Transform target)
     {
-        this.origin = origin;
+        this.source = source;
+        this.target = target;
     }
 
     public void Spawn()
     {
-        ParticleSystem instance = Instantiate(system, origin);
+        ParticleSystem instance = Instantiate(system, source);
+        instance.transform.position = target.position;
         instance.Play();
         instances.Add(instance);
     }

@@ -5,8 +5,9 @@ using UnityEngine.Events;
 
 public class Ability : MonoBehaviour, ICastable
 {
-    public Transform effectSource;
+    public bool followBody = true;
     public UnityEvent onCast;
+
     public void Cast(Vector3 direction)
     {
         onCast.Invoke();
@@ -14,15 +15,15 @@ public class Ability : MonoBehaviour, ICastable
     public UnityEvent OnCasted() { return null; }
     public void Disable() { }
     public void Enable() { }
-    public void Initialize(Character source, Transform effectSource=null) 
+    public void Initialize(Character source) 
     {
-        this.effectSource = effectSource;
+        Transform effectOrigin = followBody ? source.body : source.transform;
         for (int l = 0; l < onCast.GetPersistentEventCount(); l++)
         {
             Component target = (Component)onCast.GetPersistentTarget(l);
-            if (target.GetType() == typeof(IPositionable))
+            if (target is IPositionable positionable)
             {
-                ((IPositionable)target).SetOrigin(effectSource);
+                positionable.SetOrigin(effectOrigin, source.body);
             }
         }
     }

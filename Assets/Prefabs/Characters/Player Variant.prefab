@@ -25,12 +25,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4294994327336393224}
-  m_LocalRotation: {x: 0.38268346, y: -0, z: -0, w: 0.9238796}
+  m_LocalRotation: {x: 0.38268343, y: 0.000000029802319, z: -0.000000014901159, w: 0.9238795}
   m_LocalPosition: {x: 1.2322903, y: 9.21, z: -15.558992}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7287822054869769564}
+  m_Father: {fileID: 2896124977569725573}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
 --- !u!20 &3087443954621576930
@@ -145,12 +145,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player Variant
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2934205721865042249, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+    - {fileID: 4209041839173678293, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+    - {fileID: 3080336433396283064, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 850644614561672070, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
-      insertIndex: 0
+    - targetCorrespondingSourceObject: {fileID: 5106106832475441759, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 5441491482357400051}
   m_SourcePrefab: {fileID: 100100000, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+--- !u!4 &2896124977569725573 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5106106832475441759, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+  m_PrefabInstance: {fileID: 7993206881160607450}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4670201496740149231 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3324343490077819189, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
@@ -169,13 +177,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canAttack: 1
-  Castable:
-    rid: -2
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+  active: 1
+--- !u!114 &4397839603414854010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4670201496740149231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1017309048
+      Data2: 1246461695
+      Data3: -1363376975
+      Data4: 1553050391
+    Path: event:/Player SFX/PlayerFootstep
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!114 &6938240246135146393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,7 +222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   talkable: 0
   targetNode: 
-  dialogueHolder: {fileID: 4670201496740149231}
+  dialogueRunner: {fileID: 0}
 --- !u!114 &8427845295537498848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,6 +300,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: ab2ff5e6-76e1-4188-8b31-e550d4e66d1d
     m_ActionName: GroundMovement/Attack[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: aa7655b0-1dc7-4e21-9541-def6bfd63dd6
+    m_ActionName: GroundMovement/Secondary Cast[/Mouse/rightButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: GroundMovement
@@ -291,38 +327,24 @@ MonoBehaviour:
   moveDrag: 0.5
   stopDrag: 7.5
   canMove: 1
---- !u!114 &4397839603414854010
-MonoBehaviour:
+--- !u!1 &5789370000633501351 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4520041833351946365, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+  m_PrefabInstance: {fileID: 7993206881160607450}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &2316961168985429769
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4670201496740149231}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 1017309048
-      Data2: 1246461695
-      Data3: -1363376975
-      Data4: 1553050391
-    Path: event:/Player SFX/PlayerFootstep
-  Event: 
-  PlayEvent: 0
-  StopEvent: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
---- !u!4 &7287822054869769564 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 850644614561672070, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
-  m_PrefabInstance: {fileID: 7993206881160607450}
-  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5789370000633501351}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 5
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0

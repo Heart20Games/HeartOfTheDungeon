@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IPositionable
 {
-    public void SetOrigin(Transform origin);
+    public void SetOrigin(Transform source, Transform target);
 }

@@ -24,8 +24,8 @@ public class Movement : MonoBehaviour
     private void Awake()
     {
         footsteps = FMODUnity.RuntimeManager.CreateInstance("event:/Player SFX/PlayerFootstep");
-        myRigidbody = GetComponent<Rigidbody>();
         character = GetComponent<Character>();
+        myRigidbody = character.body.GetComponent<Rigidbody>();
         animator = character.animator;
         pivot = character.pivot;
     }

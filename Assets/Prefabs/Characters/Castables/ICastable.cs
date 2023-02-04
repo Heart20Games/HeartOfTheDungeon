@@ -11,7 +11,7 @@ public interface ICastable
      */
     public void Cast(Vector3 direction);
     public UnityEvent OnCasted();
-    public void Initialize(Character source, Transform effectSource=null);
+    public void Initialize(Character source);
     public void Disable();
     public void Enable();
     public bool CanCast();

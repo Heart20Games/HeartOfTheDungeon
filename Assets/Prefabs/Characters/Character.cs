@@ -10,6 +10,7 @@ public class Character : MonoBehaviour
     public Ability ability;
     public Weapon weapon;
 
+    public Transform body;
     public Transform pivot;
     public Animator animator;
 
@@ -20,11 +21,15 @@ public class Character : MonoBehaviour
             if (ability == null && loadout.abilities.Count > 0)
             {
                 ability = Instantiate(loadout.abilities[0], transform);
+                ability.Initialize(this);
             }
             if (weapon == null && loadout.weapons.Count > 0)
             {
                 weapon = Instantiate(loadout.weapons[0], transform);
+                weapon.Initialize(this);
             }
         }
     }
+
+
 }
