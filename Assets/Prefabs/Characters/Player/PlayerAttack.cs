@@ -6,39 +6,33 @@ using UnityEngine.InputSystem;
 public class PlayerAttack : MonoBehaviour
 {
     public bool canAttack = true;
-    public PlayerCore pCore;
-    public Animator animator;
-    public Transform pivot;
-    public Weapon Weapon;
+    public bool active = true;
+    private Character character;
+    private Animator animator;
+    private Transform pivot;
+    public ICastable Castable;
     private Vector3 weapRotation = Vector3.forward;
-    
-    void Start()
+
+    private void Awake()
     {
-        pCore = GetComponent<PlayerCore>();
+        character = GetComponent<Character>();
+        animator = character.animator;
+        pivot = character.pivot;
     }
 
-    public void Slashie()
+    public void Slashie(Vector2 attackVector)
     {
-        Vector2 movement = pCore.moveControls.getAttackVector();
-        float pMag = Mathf.Abs(pivot.localScale.x);
-        float sign = movement.x < 0 ? -1 : 1;
-        pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
-        if (canAttack)
+        if (Castable != null && Castable.CanCast())
         {
-            if (!Weapon.swinging) // set in weapon animation
+            float pMag = Mathf.Abs(pivot.localScale.x);
+            float sign = attackVector.x < 0 ? -1 : 1;
+            pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
+            if (Mathf.Abs(attackVector.x) > 0.5f || Mathf.Abs(attackVector.y) > 0.5f)
             {
-                if (Mathf.Abs(movement.x) > 0.5f || Mathf.Abs(movement.y) > 0.5f)
-                {
-                    weapRotation = Vector3.right * -movement.x + Vector3.forward * -movement.y;
-                }
-                animator.SetTrigger("attack");
-                Weapon.Swing(weapRotation); // uses last rotation if not moving
-                print("I'mma slashin'");
+                weapRotation = Vector3.right * -attackVector.x + Vector3.forward * -attackVector.y;
             }
-            else
-            {
-                Debug.Log("Weapon Already Swinging");
-            }
+            animator.SetTrigger("attack");
+            Castable.Cast(weapRotation); // uses last rotation if not moving
         }
     }
 }

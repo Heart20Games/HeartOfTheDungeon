@@ -175,8 +175,6 @@ MonoBehaviour:
   moveDrag: 0.5
   stopDrag: 7.5
   canMove: 1
-  animator: {fileID: 831090731168695691}
-  pivot: {fileID: 7135441656980433453}
 --- !u!114 &4591095315821073496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,7 +189,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   talkable: 0
   targetNode: 
-  moveControls: {fileID: 0}
   dialogueHolder: {fileID: 0}
 --- !u!114 &2864828435938958512
 MonoBehaviour:
@@ -256,9 +253,9 @@ MonoBehaviour:
     m_ActionName: GroundMovement/Talk[/Keyboard/e]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6557641574997112675}
-        m_TargetAssemblyTypeName: PlayerAttack, Assembly-CSharp
-        m_MethodName: Slashie
+      - m_Target: {fileID: 4591095315821073496}
+        m_TargetAssemblyTypeName: PlayerCore, Assembly-CSharp
+        m_MethodName: Attack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -288,10 +285,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canAttack: 1
-  pCore: {fileID: 4591095315821073496}
   animator: {fileID: 831090731168695691}
   pivot: {fileID: 7135441656980433453}
-  Weapon: {fileID: 4974519811989461264}
+  Castable:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!95 &7629879706992985201
 Animator:
   serializedVersion: 4
@@ -581,14 +583,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8499599642134879461, guid: ddb01423ac6f097438e9d1d97cee64af, type: 3}
   m_PrefabInstance: {fileID: 8964775948985244075}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4974519811989461264 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4134378485378269371, guid: ddb01423ac6f097438e9d1d97cee64af, type: 3}
-  m_PrefabInstance: {fileID: 8964775948985244075}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 695ab985bf0640a4080eb607e181d234, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -89,8 +89,13 @@ public class Enemy : MonoBehaviour
         Debug.Log("Something's Touching Me...");
         Debug.Log(collider.gameObject.tag);
         Debug.Log(collider.gameObject.name);
-        Weapon enemyWeapon = collider.attachedRigidbody.GetComponent<Weapon>();
-        if (enemyWeapon != null && enemyWeapon.CompareTag("Player"))
+        Rigidbody rigidbody = collider.attachedRigidbody;
+        Weapon opponentWeapon = null;
+        if (rigidbody != null)
+        {
+            opponentWeapon = rigidbody.GetComponent<Weapon>();
+        }
+        if (opponentWeapon != null && opponentWeapon.CompareTag("Player"))
         //if (collision.gameObject.CompareTag("Weapon"))
         {
             Debug.Log("Took a while swinging");
@@ -98,7 +103,7 @@ public class Enemy : MonoBehaviour
             {
                 Debug.Log("Ouch, I've been hit!");
                 Debug.Log(enemyType.hurtSound);
-                health -= enemyWeapon.damage;
+                health -= opponentWeapon.damage;
                 if (enemyType.useHurtSound)
                 {
                     enemyType.hurtSound.start();
@@ -130,7 +135,7 @@ public class Enemy : MonoBehaviour
                     enemyType.fightSound.start();
                 }
                 Vector3 pDirection = diff.normalized;
-                weapon.Swing(pDirection);
+                weapon.Cast(pDirection);
             }
         }
     }

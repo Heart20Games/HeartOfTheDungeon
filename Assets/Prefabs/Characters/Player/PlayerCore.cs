@@ -12,20 +12,21 @@ public class PlayerCore : MonoBehaviour
     public bool talkable = false;
     public string targetNode = "";
 
-    public Movement moveControls;
-    public GameObject dialogueHolder;
-    DialogueRunner dialogueRunner;
-    private PlayerAttack attacker;
+    public DialogueRunner dialogueRunner;
+    private Character character;
+    private Movement moveControls;
+    private PlayerAttack Attacker;
 
     private void Start()
     {
+        character = GetComponent<Character>();
         moveControls = GetComponent<Movement>();
-        attacker = GetComponent<PlayerAttack>();
-        if (dialogueHolder != null)
+        Attacker = GetComponent<PlayerAttack>();
+        if (dialogueRunner != null)
         {
-            dialogueRunner = dialogueHolder.GetComponent<DialogueRunner>();
             dialogueRunner.onDialogueComplete.AddListener(DoneTalking);
         }
+        Attacker.Castable = character.weapon;
     }
 
     // For keeping track of things like health and other instance specific things.
@@ -38,16 +39,32 @@ public class PlayerCore : MonoBehaviour
         SceneManager.LoadScene("GameOver"); // Whisks us directly to the game over screen.
     }
 
+    public void FoundTalkable(string dialogueNode)
+    {
+        talkable = true;
+        targetNode = dialogueNode;
+    }
+
+    public void LeftTalkable(string dialogueNode)
+    {
+        if (targetNode == dialogueNode)
+        {
+            talkable = false;
+            targetNode = "";
+        }
+    }
+
     public void Talk()
     {
         if (talkable && dialogueRunner != null)
         {
             if (targetNode != "")
             {
+                Debug.Log("Trying to Talk");
                 dialogueRunner.Stop();
                 dialogueRunner.StartDialogue(targetNode);
                 moveControls.canMove = false;
-                attacker.canAttack = false;
+                Attacker.active = false;
                 talkable = false;
             }
             else
@@ -64,6 +81,24 @@ public class PlayerCore : MonoBehaviour
     private void DoneTalking()
     {
         moveControls.canMove = true;
-        attacker.canAttack = true;
+        Attacker.active = true;
+    }
+
+    public void Special()
+    {
+        if (Attacker.active)
+        {
+            Attacker.Castable = character.ability;
+            Attacker.Slashie(moveControls.getAttackVector());
+        }
+    }
+
+    public void Attack()
+    {
+        if (Attacker.active)
+        {
+            Attacker.Castable = character.weapon;
+            Attacker.Slashie(moveControls.getAttackVector());
+        }
     }
 }

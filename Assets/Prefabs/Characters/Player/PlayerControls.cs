@@ -55,9 +55,18 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Attack"",
+                    ""name"": ""Primary Cast"",
                     ""type"": ""Button"",
                     ""id"": ""ab2ff5e6-76e1-4188-8b31-e550d4e66d1d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Secondary Cast"",
+                    ""type"": ""Button"",
+                    ""id"": ""aa7655b0-1dc7-4e21-9541-def6bfd63dd6"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -149,7 +158,18 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Attack"",
+                    ""action"": ""Primary Cast"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5b871c23-33c5-44f3-ba40-aa3b63a71194"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Secondary Cast"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -163,7 +183,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_GroundMovement_Movement = m_GroundMovement.FindAction("Movement", throwIfNotFound: true);
         m_GroundMovement_DieTest = m_GroundMovement.FindAction("DieTest", throwIfNotFound: true);
         m_GroundMovement_Talk = m_GroundMovement.FindAction("Talk", throwIfNotFound: true);
-        m_GroundMovement_Attack = m_GroundMovement.FindAction("Attack", throwIfNotFound: true);
+        m_GroundMovement_PrimaryCast = m_GroundMovement.FindAction("Primary Cast", throwIfNotFound: true);
+        m_GroundMovement_SecondaryCast = m_GroundMovement.FindAction("Secondary Cast", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -226,7 +247,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_GroundMovement_Movement;
     private readonly InputAction m_GroundMovement_DieTest;
     private readonly InputAction m_GroundMovement_Talk;
-    private readonly InputAction m_GroundMovement_Attack;
+    private readonly InputAction m_GroundMovement_PrimaryCast;
+    private readonly InputAction m_GroundMovement_SecondaryCast;
     public struct GroundMovementActions
     {
         private @PlayerControls m_Wrapper;
@@ -234,7 +256,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_GroundMovement_Movement;
         public InputAction @DieTest => m_Wrapper.m_GroundMovement_DieTest;
         public InputAction @Talk => m_Wrapper.m_GroundMovement_Talk;
-        public InputAction @Attack => m_Wrapper.m_GroundMovement_Attack;
+        public InputAction @PrimaryCast => m_Wrapper.m_GroundMovement_PrimaryCast;
+        public InputAction @SecondaryCast => m_Wrapper.m_GroundMovement_SecondaryCast;
         public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -253,9 +276,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Talk.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnTalk;
                 @Talk.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnTalk;
                 @Talk.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnTalk;
-                @Attack.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnAttack;
-                @Attack.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnAttack;
-                @Attack.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnAttack;
+                @PrimaryCast.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnPrimaryCast;
+                @PrimaryCast.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnPrimaryCast;
+                @PrimaryCast.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnPrimaryCast;
+                @SecondaryCast.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSecondaryCast;
+                @SecondaryCast.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSecondaryCast;
+                @SecondaryCast.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSecondaryCast;
             }
             m_Wrapper.m_GroundMovementActionsCallbackInterface = instance;
             if (instance != null)
@@ -269,9 +295,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Talk.started += instance.OnTalk;
                 @Talk.performed += instance.OnTalk;
                 @Talk.canceled += instance.OnTalk;
-                @Attack.started += instance.OnAttack;
-                @Attack.performed += instance.OnAttack;
-                @Attack.canceled += instance.OnAttack;
+                @PrimaryCast.started += instance.OnPrimaryCast;
+                @PrimaryCast.performed += instance.OnPrimaryCast;
+                @PrimaryCast.canceled += instance.OnPrimaryCast;
+                @SecondaryCast.started += instance.OnSecondaryCast;
+                @SecondaryCast.performed += instance.OnSecondaryCast;
+                @SecondaryCast.canceled += instance.OnSecondaryCast;
             }
         }
     }
@@ -281,6 +310,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnDieTest(InputAction.CallbackContext context);
         void OnTalk(InputAction.CallbackContext context);
-        void OnAttack(InputAction.CallbackContext context);
+        void OnPrimaryCast(InputAction.CallbackContext context);
+        void OnSecondaryCast(InputAction.CallbackContext context);
     }
 }

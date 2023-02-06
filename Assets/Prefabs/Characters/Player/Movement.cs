@@ -16,16 +16,18 @@ public class Movement : MonoBehaviour
     private Vector2 MovementVector = new Vector2(0,0);
 
     private Rigidbody myRigidbody;
-    PlayerControls controls;
-    public Animator animator;
-    public Transform pivot;
+    private Character character;
+    private Animator animator;
+    private Transform pivot;
     FMOD.Studio.EventInstance footsteps;
 
     private void Awake()
     {
         footsteps = FMODUnity.RuntimeManager.CreateInstance("event:/Player SFX/PlayerFootstep");
-        myRigidbody = GetComponent<Rigidbody>();
-        controls = new PlayerControls();
+        character = GetComponent<Character>();
+        myRigidbody = character.body.GetComponent<Rigidbody>();
+        animator = character.animator;
+        pivot = character.pivot;
     }
 
     public Vector2 getAttackVector()
