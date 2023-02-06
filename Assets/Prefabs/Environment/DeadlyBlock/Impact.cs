@@ -6,14 +6,16 @@ using UnityEngine.Events;
 public class Impact : MonoBehaviour
 {
     public List<string> desiredTags;
-    public UnityEvent onPlayerEnter;
-    public UnityEvent onPlayerExit;
+    public UnityEvent onTouch;
+    public UnityEvent onUnTouch;
+    public UnityEvent onEnter;
+    public UnityEvent onExit;
 
     private void OnCollisionEnter(Collision collision)
     {
         if (desiredTags.Contains(collision.gameObject.tag))
         {
-            onPlayerEnter.Invoke();
+            onTouch.Invoke();
         }
     }
 
@@ -21,7 +23,23 @@ public class Impact : MonoBehaviour
     {
         if (desiredTags.Contains(collision.gameObject.tag))
         {
-            onPlayerExit.Invoke();
+            onUnTouch.Invoke();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (desiredTags.Contains(other.gameObject.tag))
+        {
+            onEnter.Invoke();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (desiredTags.Contains(other.gameObject.tag))
+        {
+            onExit.Invoke();
         }
     }
 }
