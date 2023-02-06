@@ -17,16 +17,11 @@ namespace Yarn.Unity
         public EventReference fmodEvent;
         private FMOD.Studio.EventInstance instance;
 
-        StudioEventEmitter emitter;
-        
-
         private void Awake()
         {
-            instance = RuntimeManager.CreateInstance(fmodEvent);
-            instance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject.transform));
+            //instance = RuntimeManager.CreateInstance(fmodEvent);
+            //instance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject.transform));
             //instance.start();
-
-            emitter = tester.GetComponent<StudioEventEmitter>();
         }
 
 
@@ -38,14 +33,14 @@ namespace Yarn.Unity
         public override LocalizedLine GetLocalizedLine(Yarn.Line line)
         {
             var text = YarnProject.GetLocalization(textLanguageCode).GetLocalizedString(line.ID);
-            currentID = line.ID;
+            //currentID = line.ID;
             //emitter.Params.SetValue("B001 Rotta");
-            instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            //instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             string clean = line.ID.Remove(4, 1); // removing colon
             currentID = clean;
 
-            instance.setParameterByNameWithLabel("IntroVOParam", clean); // IntroVOParam is on the Intro Scene even (Fmod event)
-            instance.start();
+            //instance.setParameterByNameWithLabel("IntroVOParam", clean); // IntroVOParam is on the Intro Scene even (Fmod event)
+            //instance.start();
             
             //tester.GetComponent<SoundScript>().coolfunctionthatfindsclips(currentID);
             return new LocalizedLine()
