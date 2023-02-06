@@ -57,7 +57,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4441838461997617693}
   - component: {fileID: 2323783891994009846}
-  - component: {fileID: 7566032070466672517}
   - component: {fileID: 8467610254409454302}
   m_Layer: 0
   m_Name: HubEntrance
@@ -95,19 +94,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.6875, y: 3.2376742, z: 0.90681714}
   m_Center: {x: 0, y: 1.6175251, z: 0.2965915}
---- !u!65 &7566032070466672517
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4441838461997617692}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.6875, y: 3.2376742, z: 0.90681714}
-  m_Center: {x: 0, y: 1.6175251, z: 0.2965915}
 --- !u!114 &8467610254409454302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,7 +106,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetNode: 
+  onPlayerEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlayerExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &4441838461636125459
 PrefabInstance:
   m_ObjectHideFlags: 0
