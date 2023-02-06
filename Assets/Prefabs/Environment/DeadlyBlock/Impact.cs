@@ -1,26 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Impact : MonoBehaviour
 {
-    public string targetNode;
-    // Update is called once per frame
+    public List<string> desiredTags;
+    public UnityEvent onPlayerEnter;
+    public UnityEvent onPlayerExit;
+
     private void OnCollisionEnter(Collision collision)
     {
-        PlayerCore playerCore = collision.gameObject.GetComponent<PlayerCore>();
-        if(playerCore != null)
+        if (desiredTags.Contains(collision.gameObject.tag))
         {
-            playerCore.FoundTalkable(targetNode);
+            onPlayerEnter.Invoke();
         }
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        PlayerCore playerCore = collision.gameObject.GetComponent<PlayerCore>();
-        if (playerCore != null)
+        if (desiredTags.Contains(collision.gameObject.tag))
         {
-            playerCore.LeftTalkable(targetNode);
+            onPlayerExit.Invoke();
         }
     }
 }

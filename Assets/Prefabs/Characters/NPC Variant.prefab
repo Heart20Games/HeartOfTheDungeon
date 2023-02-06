@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 850644614561672070, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 850644614561672070, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: m_LocalRotation.w
@@ -52,7 +52,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3324343490077819189, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
   m_PrefabInstance: {fileID: 6927041544219623993}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &918954849
+--- !u!114 &5613266783506565697
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -61,7 +61,57 @@ MonoBehaviour:
   m_GameObject: {fileID: 5621542780324872972}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e4383e0da46d0d489e7124e5ab8ee35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yarnNode: 
+  player: {fileID: 0}
+--- !u!1 &6817220084651303492 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4520041833351946365, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+  m_PrefabInstance: {fileID: 6927041544219623993}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3463278704858477919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6817220084651303492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetNode: 
+  desiredTags:
+  - Player
+  onPlayerEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5613266783506565697}
+        m_TargetAssemblyTypeName: NPC, Assembly-CSharp
+        m_MethodName: NotifyPlayerEnteredInteractable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onPlayerExit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5613266783506565697}
+        m_TargetAssemblyTypeName: NPC, Assembly-CSharp
+        m_MethodName: NotifyPlayerLeftInteractable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
