@@ -250,7 +250,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 9148224578137899568}
         m_TargetAssemblyTypeName: Movement, Assembly-CSharp
         m_MethodName: ReceiveInput
         m_Mode: 0
@@ -265,12 +265,24 @@ MonoBehaviour:
     m_ActionId: 5afb2a4c-38f9-42a6-95bb-f9788364c85c
     m_ActionName: GroundMovement/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6938240246135146393}
+        m_TargetAssemblyTypeName: PlayerCore, Assembly-CSharp
+        m_MethodName: Die
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 434f2936-6ea5-4ebc-aed2-76351019f43a
     m_ActionName: GroundMovement/DieTest[/Keyboard/k]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6938240246135146393}
         m_TargetAssemblyTypeName: PlayerCore, Assembly-CSharp
         m_MethodName: Talk
         m_Mode: 1
@@ -286,9 +298,9 @@ MonoBehaviour:
     m_ActionName: GroundMovement/Talk[/Keyboard/e]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4670201496740149231}
-        m_TargetAssemblyTypeName: PlayerAttack, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 6938240246135146393}
+        m_TargetAssemblyTypeName: PlayerCore, Assembly-CSharp
+        m_MethodName: Attack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -301,9 +313,53 @@ MonoBehaviour:
     m_ActionId: ab2ff5e6-76e1-4188-8b31-e550d4e66d1d
     m_ActionName: GroundMovement/Attack[/Mouse/leftButton]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6938240246135146393}
+        m_TargetAssemblyTypeName: PlayerCore, Assembly-CSharp
+        m_MethodName: Special
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: aa7655b0-1dc7-4e21-9541-def6bfd63dd6
     m_ActionName: GroundMovement/Secondary Cast[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6938240246135146393}
+        m_TargetAssemblyTypeName: PlayerCore, Assembly-CSharp
+        m_MethodName: ChangeWeapon
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9c8d0cd9-3328-4fd6-b860-3330f80a7959
+    m_ActionName: GroundMovement/Switch Weapon[/Keyboard/1]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6938240246135146393}
+        m_TargetAssemblyTypeName: PlayerCore, Assembly-CSharp
+        m_MethodName: ChangeAbility
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0ca15d03-d446-4370-ae98-256ab25941ba
+    m_ActionName: GroundMovement/Switch Ability[/Keyboard/2]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: GroundMovement
