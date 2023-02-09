@@ -101,4 +101,20 @@ public class PlayerCore : MonoBehaviour
             Attacker.Slashie(moveControls.getAttackVector());
         }
     }
+
+    public void ChangeAbility(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            character.ChangeAbility();
+        }
+    }
+
+    public void ChangeWeapon(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            character.ChangeWeapon();
+        }
+    }
 }
