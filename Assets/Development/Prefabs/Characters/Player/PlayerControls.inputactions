@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Talk",
+                    "name": "Interact",
                     "type": "Button",
                     "id": "f20b9006-d9ce-40ef-bf16-fde5f04afb33",
                     "expectedControlType": "Button",
@@ -64,6 +64,24 @@
                     "type": "Button",
                     "id": "0ca15d03-d446-4370-ae98-256ab25941ba",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Skill Weeh",
+                    "type": "Button",
+                    "id": "216f075d-ea50-4bc4-8bc2-de338f8b2575",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Select Companion",
+                    "type": "PassThrough",
+                    "id": "9b4d422a-4563-4e56-9c2a-2675c39d78b6",
+                    "expectedControlType": "Dpad",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -126,6 +144,61 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "Left JoyStick",
+                    "id": "f4e1178b-dfdd-450a-b1e7-79b6bb75276a",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "da726ce9-e5ff-453f-a3b8-4ea33920d94e",
+                    "path": "<Gamepad>/leftStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "ad88f92f-b134-4da1-9fee-717ea8d08679",
+                    "path": "<Gamepad>/leftStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "2f896057-ea70-432e-b91f-7230ec40ecfb",
+                    "path": "<Gamepad>/leftStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "35b293fe-5866-4da2-b371-82224b4d66b4",
+                    "path": "<Gamepad>/leftStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "4575b443-be01-4a07-8c35-ebe69a5f87ee",
                     "path": "<Keyboard>/k",
@@ -140,10 +213,21 @@
                     "name": "",
                     "id": "7b66dff0-341f-4c1c-85a0-e95816000acd",
                     "path": "<Keyboard>/e",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "",
-                    "action": "Talk",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b91392e3-38e7-490f-be7e-33d06be862e1",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -151,7 +235,18 @@
                     "name": "",
                     "id": "08bcc911-170f-4dae-8c3b-53e4d27ac362",
                     "path": "<Mouse>/leftButton",
-                    "interactions": "",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Primary Cast",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8ede39a6-7910-46b6-9f40-62b46eca27e3",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "",
                     "action": "Primary Cast",
@@ -162,7 +257,18 @@
                     "name": "",
                     "id": "5b871c23-33c5-44f3-ba40-aa3b63a71194",
                     "path": "<Mouse>/rightButton",
-                    "interactions": "",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Secondary Cast",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "51627623-c437-452c-a3ee-db1b730264c1",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "",
                     "action": "Secondary Cast",
@@ -173,7 +279,18 @@
                     "name": "",
                     "id": "dc1ecd1e-4a82-4102-978a-53d8b1c15505",
                     "path": "<Keyboard>/1",
-                    "interactions": "",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Switch Weapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "22aff08f-8c35-49a2-8e71-1dfd6df94817",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "",
                     "action": "Switch Weapon",
@@ -184,10 +301,32 @@
                     "name": "",
                     "id": "54c38d64-7f14-408a-ac73-5d06cd3ee310",
                     "path": "<Keyboard>/2",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "",
                     "action": "Switch Ability",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0918806a-9d28-4cc5-bf9b-2add6a8c88b8",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Switch Ability",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fee31364-f1c1-43d4-a416-a360fd573bc1",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill Weeh",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
