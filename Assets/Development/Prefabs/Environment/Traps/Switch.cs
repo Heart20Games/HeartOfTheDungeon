@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Switch : MonoBehaviour
 {
-    public Triggerable target;
+    public List<Triggerable> targets = new List<Triggerable>();
 
     private void Start()
     {
-        if (target == null)
+        if (targets.Count == 0)
         {
             Debug.LogWarning("Switch " + name + " doesn't have a target.");
         }
@@ -17,7 +17,7 @@ public class Switch : MonoBehaviour
     public void Toggle()
     {
         Debug.LogWarning("Toggle?");
-        if (target != null)
+        foreach (Triggerable target in targets)
         {
             Debug.LogWarning("Switch Toggled");
             target.Trigger();
