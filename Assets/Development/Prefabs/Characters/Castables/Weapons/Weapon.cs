@@ -36,7 +36,6 @@ public class Weapon : MonoBehaviour, ICastable
             Quaternion newRotation = Quaternion.LookRotation(direction, Vector3.up);
             pivot.localRotation = newRotation;
         }
-        Debug.Log("Swinging -- " + swinging);
         swinging = true;
         animator.SetTrigger("Swing");
     }
@@ -66,7 +65,6 @@ public class Weapon : MonoBehaviour, ICastable
 
     public void DoneSwinging()
     {
-        Debug.Log("Done Swinging - " + swinging);
         swinging = false;
         pivot.gameObject.SetActive(false);
         if (enemiesHit.Count > 0)

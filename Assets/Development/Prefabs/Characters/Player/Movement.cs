@@ -44,12 +44,12 @@ public class Movement : MonoBehaviour
             myRigidbody.AddRelativeForce(new Vector3(MovementVector.x, 0, MovementVector.y) * speed * Time.fixedDeltaTime, ForceMode.Force);
             if (myRigidbody.velocity.magnitude > maxVelocity)
             {
-                Debug.Log("Velocity clamped");
+                //Debug.Log("Velocity clamped");
                 myRigidbody.velocity = myRigidbody.velocity.normalized * maxVelocity;
             }
             else
             {
-                Debug.Log("Velocity below maximum");
+                //Debug.Log("Velocity below maximum");
             }
 
             if (myRigidbody.velocity.magnitude > footstepVelocity)
@@ -76,7 +76,6 @@ public class Movement : MonoBehaviour
 
     public void ReceiveInput(InputAction.CallbackContext context)
     {
-        print("Input Received");
         if (context.performed)
         {
             Vector2 inputVector = context.ReadValue<Vector2>();

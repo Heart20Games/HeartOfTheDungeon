@@ -11,34 +11,55 @@ public class Impact : MonoBehaviour
     public UnityEvent onEnter;
     public UnityEvent onExit;
 
+    private List<GameObject> touching;
+
+    private void Start()
+    {
+        touching = new List<GameObject>();
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
-        if (desiredTags.Contains(collision.gameObject.tag))
+        GameObject other = collision.gameObject;
+        if (desiredTags.Contains(other.tag) && !touching.Contains(other))
         {
+            touching.Add(other);
             onTouch.Invoke();
         }
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if (desiredTags.Contains(collision.gameObject.tag))
+        GameObject other = collision.gameObject;
+        if (desiredTags.Contains(other.tag))
         {
+            if (touching.Contains(other))
+            {
+                touching.Remove(other);
+            }
             onUnTouch.Invoke();
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (desiredTags.Contains(other.gameObject.tag))
+        GameObject otherG = other.gameObject;
+        if (desiredTags.Contains(other.gameObject.tag) && !touching.Contains(otherG))
         {
+            touching.Add(otherG);
             onEnter.Invoke();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (desiredTags.Contains(other.gameObject.tag))
+        GameObject otherG = other.gameObject;
+        if (desiredTags.Contains(otherG.tag))
         {
+            if (touching.Contains(otherG))
+            {
+                touching.Remove(otherG);
+            }
             onExit.Invoke();
         }
     }
