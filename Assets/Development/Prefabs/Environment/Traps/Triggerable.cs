@@ -1,0 +1,26 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+
+public class Triggerable : MonoBehaviour
+{
+    public bool togglable = false;
+    public bool on = false;
+    public UnityEvent onTriggeredOn;
+    public UnityEvent onTriggeredOff;
+    public void Trigger()
+    {
+        Debug.LogWarning("Triggered!");
+        if (on)
+        {
+            on = false;
+            onTriggeredOff.Invoke();
+        }
+        else
+        {
+            on = true;
+            onTriggeredOn.Invoke();
+        }
+    }
+}
