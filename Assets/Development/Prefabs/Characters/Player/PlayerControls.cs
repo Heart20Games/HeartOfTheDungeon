@@ -46,7 +46,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Talk"",
+                    ""name"": ""Interact"",
                     ""type"": ""Button"",
                     ""id"": ""f20b9006-d9ce-40ef-bf16-fde5f04afb33"",
                     ""expectedControlType"": ""Button"",
@@ -86,6 +86,24 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""type"": ""Button"",
                     ""id"": ""0ca15d03-d446-4370-ae98-256ab25941ba"",
                     ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill Weeh"",
+                    ""type"": ""Button"",
+                    ""id"": ""216f075d-ea50-4bc4-8bc2-de338f8b2575"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Select Companion"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""9b4d422a-4563-4e56-9c2a-2675c39d78b6"",
+                    ""expectedControlType"": ""Dpad"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -148,6 +166,61 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
+                    ""name"": ""Left JoyStick"",
+                    ""id"": ""f4e1178b-dfdd-450a-b1e7-79b6bb75276a"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""da726ce9-e5ff-453f-a3b8-4ea33920d94e"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""ad88f92f-b134-4da1-9fee-717ea8d08679"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""2f896057-ea70-432e-b91f-7230ec40ecfb"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""35b293fe-5866-4da2-b371-82224b4d66b4"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
                     ""name"": """",
                     ""id"": ""4575b443-be01-4a07-8c35-ebe69a5f87ee"",
                     ""path"": ""<Keyboard>/k"",
@@ -162,10 +235,21 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""7b66dff0-341f-4c1c-85a0-e95816000acd"",
                     ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Talk"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b91392e3-38e7-490f-be7e-33d06be862e1"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -173,7 +257,18 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""08bcc911-170f-4dae-8c3b-53e4d27ac362"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Primary Cast"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8ede39a6-7910-46b6-9f40-62b46eca27e3"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Primary Cast"",
@@ -184,7 +279,18 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""5b871c23-33c5-44f3-ba40-aa3b63a71194"",
                     ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Secondary Cast"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""51627623-c437-452c-a3ee-db1b730264c1"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Secondary Cast"",
@@ -195,7 +301,18 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""dc1ecd1e-4a82-4102-978a-53d8b1c15505"",
                     ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch Weapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""22aff08f-8c35-49a2-8e71-1dfd6df94817"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Switch Weapon"",
@@ -206,10 +323,32 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""54c38d64-7f14-408a-ac73-5d06cd3ee310"",
                     ""path"": ""<Keyboard>/2"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Switch Ability"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0918806a-9d28-4cc5-bf9b-2add6a8c88b8"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch Ability"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fee31364-f1c1-43d4-a416-a360fd573bc1"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Skill Weeh"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -222,11 +361,13 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_GroundMovement = asset.FindActionMap("GroundMovement", throwIfNotFound: true);
         m_GroundMovement_Movement = m_GroundMovement.FindAction("Movement", throwIfNotFound: true);
         m_GroundMovement_DieTest = m_GroundMovement.FindAction("DieTest", throwIfNotFound: true);
-        m_GroundMovement_Talk = m_GroundMovement.FindAction("Talk", throwIfNotFound: true);
+        m_GroundMovement_Interact = m_GroundMovement.FindAction("Interact", throwIfNotFound: true);
         m_GroundMovement_PrimaryCast = m_GroundMovement.FindAction("Primary Cast", throwIfNotFound: true);
         m_GroundMovement_SecondaryCast = m_GroundMovement.FindAction("Secondary Cast", throwIfNotFound: true);
         m_GroundMovement_SwitchWeapon = m_GroundMovement.FindAction("Switch Weapon", throwIfNotFound: true);
         m_GroundMovement_SwitchAbility = m_GroundMovement.FindAction("Switch Ability", throwIfNotFound: true);
+        m_GroundMovement_SkillWeeh = m_GroundMovement.FindAction("Skill Weeh", throwIfNotFound: true);
+        m_GroundMovement_SelectCompanion = m_GroundMovement.FindAction("Select Companion", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -288,22 +429,26 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private IGroundMovementActions m_GroundMovementActionsCallbackInterface;
     private readonly InputAction m_GroundMovement_Movement;
     private readonly InputAction m_GroundMovement_DieTest;
-    private readonly InputAction m_GroundMovement_Talk;
+    private readonly InputAction m_GroundMovement_Interact;
     private readonly InputAction m_GroundMovement_PrimaryCast;
     private readonly InputAction m_GroundMovement_SecondaryCast;
     private readonly InputAction m_GroundMovement_SwitchWeapon;
     private readonly InputAction m_GroundMovement_SwitchAbility;
+    private readonly InputAction m_GroundMovement_SkillWeeh;
+    private readonly InputAction m_GroundMovement_SelectCompanion;
     public struct GroundMovementActions
     {
         private @PlayerControls m_Wrapper;
         public GroundMovementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_GroundMovement_Movement;
         public InputAction @DieTest => m_Wrapper.m_GroundMovement_DieTest;
-        public InputAction @Talk => m_Wrapper.m_GroundMovement_Talk;
+        public InputAction @Interact => m_Wrapper.m_GroundMovement_Interact;
         public InputAction @PrimaryCast => m_Wrapper.m_GroundMovement_PrimaryCast;
         public InputAction @SecondaryCast => m_Wrapper.m_GroundMovement_SecondaryCast;
         public InputAction @SwitchWeapon => m_Wrapper.m_GroundMovement_SwitchWeapon;
         public InputAction @SwitchAbility => m_Wrapper.m_GroundMovement_SwitchAbility;
+        public InputAction @SkillWeeh => m_Wrapper.m_GroundMovement_SkillWeeh;
+        public InputAction @SelectCompanion => m_Wrapper.m_GroundMovement_SelectCompanion;
         public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -319,9 +464,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @DieTest.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnDieTest;
                 @DieTest.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnDieTest;
                 @DieTest.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnDieTest;
-                @Talk.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnTalk;
-                @Talk.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnTalk;
-                @Talk.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnTalk;
+                @Interact.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnInteract;
                 @PrimaryCast.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnPrimaryCast;
                 @PrimaryCast.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnPrimaryCast;
                 @PrimaryCast.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnPrimaryCast;
@@ -334,6 +479,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @SwitchAbility.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSwitchAbility;
                 @SwitchAbility.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSwitchAbility;
                 @SwitchAbility.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSwitchAbility;
+                @SkillWeeh.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSkillWeeh;
+                @SkillWeeh.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSkillWeeh;
+                @SkillWeeh.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSkillWeeh;
+                @SelectCompanion.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSelectCompanion;
+                @SelectCompanion.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSelectCompanion;
+                @SelectCompanion.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSelectCompanion;
             }
             m_Wrapper.m_GroundMovementActionsCallbackInterface = instance;
             if (instance != null)
@@ -344,9 +495,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @DieTest.started += instance.OnDieTest;
                 @DieTest.performed += instance.OnDieTest;
                 @DieTest.canceled += instance.OnDieTest;
-                @Talk.started += instance.OnTalk;
-                @Talk.performed += instance.OnTalk;
-                @Talk.canceled += instance.OnTalk;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
                 @PrimaryCast.started += instance.OnPrimaryCast;
                 @PrimaryCast.performed += instance.OnPrimaryCast;
                 @PrimaryCast.canceled += instance.OnPrimaryCast;
@@ -359,6 +510,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @SwitchAbility.started += instance.OnSwitchAbility;
                 @SwitchAbility.performed += instance.OnSwitchAbility;
                 @SwitchAbility.canceled += instance.OnSwitchAbility;
+                @SkillWeeh.started += instance.OnSkillWeeh;
+                @SkillWeeh.performed += instance.OnSkillWeeh;
+                @SkillWeeh.canceled += instance.OnSkillWeeh;
+                @SelectCompanion.started += instance.OnSelectCompanion;
+                @SelectCompanion.performed += instance.OnSelectCompanion;
+                @SelectCompanion.canceled += instance.OnSelectCompanion;
             }
         }
     }
@@ -367,10 +524,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnDieTest(InputAction.CallbackContext context);
-        void OnTalk(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
         void OnPrimaryCast(InputAction.CallbackContext context);
         void OnSecondaryCast(InputAction.CallbackContext context);
         void OnSwitchWeapon(InputAction.CallbackContext context);
         void OnSwitchAbility(InputAction.CallbackContext context);
+        void OnSkillWeeh(InputAction.CallbackContext context);
+        void OnSelectCompanion(InputAction.CallbackContext context);
     }
 }
