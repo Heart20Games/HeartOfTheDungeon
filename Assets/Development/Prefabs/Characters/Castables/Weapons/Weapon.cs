@@ -44,7 +44,9 @@ public class Weapon : MonoBehaviour, ICastable
     public void Initialize(Character source)
     {
         Transform origin = followBody ? source.body : transform;
+        Vector3 pivotLocalPosition = pivot.localPosition;
         pivot.SetParent(origin);
+        pivot.localPosition = pivotLocalPosition;
     }
     public void Disable() { }
     public void Enable() { }
