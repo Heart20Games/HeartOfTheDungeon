@@ -24,7 +24,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     ""name"": ""PlayerControls"",
     ""maps"": [
         {
-            ""name"": ""Ground"",
+            ""name"": ""GroundMovement"",
             ""id"": ""68936ce1-7dac-4e3a-afbc-8dc23e83038f"",
             ""actions"": [
                 {
@@ -601,17 +601,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     ],
     ""controlSchemes"": []
 }");
-        // Ground
-        m_Ground = asset.FindActionMap("Ground", throwIfNotFound: true);
-        m_Ground_Movement = m_Ground.FindAction("Movement", throwIfNotFound: true);
-        m_Ground_DieTest = m_Ground.FindAction("DieTest", throwIfNotFound: true);
-        m_Ground_Interact = m_Ground.FindAction("Interact", throwIfNotFound: true);
-        m_Ground_PrimaryCast = m_Ground.FindAction("Primary Cast", throwIfNotFound: true);
-        m_Ground_SecondaryCast = m_Ground.FindAction("Secondary Cast", throwIfNotFound: true);
-        m_Ground_SwitchWeapon = m_Ground.FindAction("Switch Weapon", throwIfNotFound: true);
-        m_Ground_SwitchAbility = m_Ground.FindAction("Switch Ability", throwIfNotFound: true);
-        m_Ground_SkillWheel = m_Ground.FindAction("Skill Wheel", throwIfNotFound: true);
-        m_Ground_SelectCompanion = m_Ground.FindAction("Select Companion", throwIfNotFound: true);
+        // GroundMovement
+        m_GroundMovement = asset.FindActionMap("GroundMovement", throwIfNotFound: true);
+        m_GroundMovement_Movement = m_GroundMovement.FindAction("Movement", throwIfNotFound: true);
+        m_GroundMovement_DieTest = m_GroundMovement.FindAction("DieTest", throwIfNotFound: true);
+        m_GroundMovement_Interact = m_GroundMovement.FindAction("Interact", throwIfNotFound: true);
+        m_GroundMovement_PrimaryCast = m_GroundMovement.FindAction("Primary Cast", throwIfNotFound: true);
+        m_GroundMovement_SecondaryCast = m_GroundMovement.FindAction("Secondary Cast", throwIfNotFound: true);
+        m_GroundMovement_SwitchWeapon = m_GroundMovement.FindAction("Switch Weapon", throwIfNotFound: true);
+        m_GroundMovement_SwitchAbility = m_GroundMovement.FindAction("Switch Ability", throwIfNotFound: true);
+        m_GroundMovement_SkillWheel = m_GroundMovement.FindAction("Skill Wheel", throwIfNotFound: true);
+        m_GroundMovement_SelectCompanion = m_GroundMovement.FindAction("Select Companion", throwIfNotFound: true);
         // Dialogue
         m_Dialogue = asset.FindActionMap("Dialogue", throwIfNotFound: true);
         m_Dialogue_Continue = m_Dialogue.FindAction("Continue", throwIfNotFound: true);
@@ -673,69 +673,69 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Ground
-    private readonly InputActionMap m_Ground;
-    private IGroundActions m_GroundActionsCallbackInterface;
-    private readonly InputAction m_Ground_Movement;
-    private readonly InputAction m_Ground_DieTest;
-    private readonly InputAction m_Ground_Interact;
-    private readonly InputAction m_Ground_PrimaryCast;
-    private readonly InputAction m_Ground_SecondaryCast;
-    private readonly InputAction m_Ground_SwitchWeapon;
-    private readonly InputAction m_Ground_SwitchAbility;
-    private readonly InputAction m_Ground_SkillWheel;
-    private readonly InputAction m_Ground_SelectCompanion;
-    public struct GroundActions
+    // GroundMovement
+    private readonly InputActionMap m_GroundMovement;
+    private IGroundMovementActions m_GroundMovementActionsCallbackInterface;
+    private readonly InputAction m_GroundMovement_Movement;
+    private readonly InputAction m_GroundMovement_DieTest;
+    private readonly InputAction m_GroundMovement_Interact;
+    private readonly InputAction m_GroundMovement_PrimaryCast;
+    private readonly InputAction m_GroundMovement_SecondaryCast;
+    private readonly InputAction m_GroundMovement_SwitchWeapon;
+    private readonly InputAction m_GroundMovement_SwitchAbility;
+    private readonly InputAction m_GroundMovement_SkillWheel;
+    private readonly InputAction m_GroundMovement_SelectCompanion;
+    public struct GroundMovementActions
     {
         private @PlayerControls m_Wrapper;
-        public GroundActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Movement => m_Wrapper.m_Ground_Movement;
-        public InputAction @DieTest => m_Wrapper.m_Ground_DieTest;
-        public InputAction @Interact => m_Wrapper.m_Ground_Interact;
-        public InputAction @PrimaryCast => m_Wrapper.m_Ground_PrimaryCast;
-        public InputAction @SecondaryCast => m_Wrapper.m_Ground_SecondaryCast;
-        public InputAction @SwitchWeapon => m_Wrapper.m_Ground_SwitchWeapon;
-        public InputAction @SwitchAbility => m_Wrapper.m_Ground_SwitchAbility;
-        public InputAction @SkillWheel => m_Wrapper.m_Ground_SkillWheel;
-        public InputAction @SelectCompanion => m_Wrapper.m_Ground_SelectCompanion;
-        public InputActionMap Get() { return m_Wrapper.m_Ground; }
+        public GroundMovementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Movement => m_Wrapper.m_GroundMovement_Movement;
+        public InputAction @DieTest => m_Wrapper.m_GroundMovement_DieTest;
+        public InputAction @Interact => m_Wrapper.m_GroundMovement_Interact;
+        public InputAction @PrimaryCast => m_Wrapper.m_GroundMovement_PrimaryCast;
+        public InputAction @SecondaryCast => m_Wrapper.m_GroundMovement_SecondaryCast;
+        public InputAction @SwitchWeapon => m_Wrapper.m_GroundMovement_SwitchWeapon;
+        public InputAction @SwitchAbility => m_Wrapper.m_GroundMovement_SwitchAbility;
+        public InputAction @SkillWheel => m_Wrapper.m_GroundMovement_SkillWheel;
+        public InputAction @SelectCompanion => m_Wrapper.m_GroundMovement_SelectCompanion;
+        public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(GroundActions set) { return set.Get(); }
-        public void SetCallbacks(IGroundActions instance)
+        public static implicit operator InputActionMap(GroundMovementActions set) { return set.Get(); }
+        public void SetCallbacks(IGroundMovementActions instance)
         {
-            if (m_Wrapper.m_GroundActionsCallbackInterface != null)
+            if (m_Wrapper.m_GroundMovementActionsCallbackInterface != null)
             {
-                @Movement.started -= m_Wrapper.m_GroundActionsCallbackInterface.OnMovement;
-                @Movement.performed -= m_Wrapper.m_GroundActionsCallbackInterface.OnMovement;
-                @Movement.canceled -= m_Wrapper.m_GroundActionsCallbackInterface.OnMovement;
-                @DieTest.started -= m_Wrapper.m_GroundActionsCallbackInterface.OnDieTest;
-                @DieTest.performed -= m_Wrapper.m_GroundActionsCallbackInterface.OnDieTest;
-                @DieTest.canceled -= m_Wrapper.m_GroundActionsCallbackInterface.OnDieTest;
-                @Interact.started -= m_Wrapper.m_GroundActionsCallbackInterface.OnInteract;
-                @Interact.performed -= m_Wrapper.m_GroundActionsCallbackInterface.OnInteract;
-                @Interact.canceled -= m_Wrapper.m_GroundActionsCallbackInterface.OnInteract;
-                @PrimaryCast.started -= m_Wrapper.m_GroundActionsCallbackInterface.OnPrimaryCast;
-                @PrimaryCast.performed -= m_Wrapper.m_GroundActionsCallbackInterface.OnPrimaryCast;
-                @PrimaryCast.canceled -= m_Wrapper.m_GroundActionsCallbackInterface.OnPrimaryCast;
-                @SecondaryCast.started -= m_Wrapper.m_GroundActionsCallbackInterface.OnSecondaryCast;
-                @SecondaryCast.performed -= m_Wrapper.m_GroundActionsCallbackInterface.OnSecondaryCast;
-                @SecondaryCast.canceled -= m_Wrapper.m_GroundActionsCallbackInterface.OnSecondaryCast;
-                @SwitchWeapon.started -= m_Wrapper.m_GroundActionsCallbackInterface.OnSwitchWeapon;
-                @SwitchWeapon.performed -= m_Wrapper.m_GroundActionsCallbackInterface.OnSwitchWeapon;
-                @SwitchWeapon.canceled -= m_Wrapper.m_GroundActionsCallbackInterface.OnSwitchWeapon;
-                @SwitchAbility.started -= m_Wrapper.m_GroundActionsCallbackInterface.OnSwitchAbility;
-                @SwitchAbility.performed -= m_Wrapper.m_GroundActionsCallbackInterface.OnSwitchAbility;
-                @SwitchAbility.canceled -= m_Wrapper.m_GroundActionsCallbackInterface.OnSwitchAbility;
-                @SkillWheel.started -= m_Wrapper.m_GroundActionsCallbackInterface.OnSkillWheel;
-                @SkillWheel.performed -= m_Wrapper.m_GroundActionsCallbackInterface.OnSkillWheel;
-                @SkillWheel.canceled -= m_Wrapper.m_GroundActionsCallbackInterface.OnSkillWheel;
-                @SelectCompanion.started -= m_Wrapper.m_GroundActionsCallbackInterface.OnSelectCompanion;
-                @SelectCompanion.performed -= m_Wrapper.m_GroundActionsCallbackInterface.OnSelectCompanion;
-                @SelectCompanion.canceled -= m_Wrapper.m_GroundActionsCallbackInterface.OnSelectCompanion;
+                @Movement.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnMovement;
+                @Movement.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnMovement;
+                @Movement.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnMovement;
+                @DieTest.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnDieTest;
+                @DieTest.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnDieTest;
+                @DieTest.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnDieTest;
+                @Interact.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnInteract;
+                @PrimaryCast.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnPrimaryCast;
+                @PrimaryCast.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnPrimaryCast;
+                @PrimaryCast.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnPrimaryCast;
+                @SecondaryCast.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSecondaryCast;
+                @SecondaryCast.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSecondaryCast;
+                @SecondaryCast.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSecondaryCast;
+                @SwitchWeapon.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSwitchWeapon;
+                @SwitchWeapon.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSwitchWeapon;
+                @SwitchWeapon.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSwitchWeapon;
+                @SwitchAbility.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSwitchAbility;
+                @SwitchAbility.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSwitchAbility;
+                @SwitchAbility.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSwitchAbility;
+                @SkillWheel.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSkillWheel;
+                @SkillWheel.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSkillWheel;
+                @SkillWheel.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSkillWheel;
+                @SelectCompanion.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSelectCompanion;
+                @SelectCompanion.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSelectCompanion;
+                @SelectCompanion.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSelectCompanion;
             }
-            m_Wrapper.m_GroundActionsCallbackInterface = instance;
+            m_Wrapper.m_GroundMovementActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @Movement.started += instance.OnMovement;
@@ -768,7 +768,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
             }
         }
     }
-    public GroundActions @Ground => new GroundActions(this);
+    public GroundMovementActions @GroundMovement => new GroundMovementActions(this);
 
     // Dialogue
     private readonly InputActionMap m_Dialogue;
@@ -818,7 +818,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         }
     }
     public DialogueActions @Dialogue => new DialogueActions(this);
-    public interface IGroundActions
+    public interface IGroundMovementActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnDieTest(InputAction.CallbackContext context);

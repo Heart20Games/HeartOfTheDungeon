@@ -7,14 +7,14 @@ public class InputManager : MonoBehaviour
 {
 
     PlayerControls controls;
-    PlayerControls.GroundActions groundMovement;
+    PlayerControls.GroundMovementActions groundMovement;
 
     Vector2 horizontalInput;
 
     void Awake()
     {
         controls = new PlayerControls();
-        groundMovement = controls.Ground;
+        groundMovement = controls.GroundMovement;
 
         // groundMovement.[action].performed += context => do something;
         groundMovement.Movement.performed += ctx => horizontalInput = ctx.ReadValue<Vector2>();

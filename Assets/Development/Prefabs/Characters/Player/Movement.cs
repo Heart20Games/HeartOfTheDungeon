@@ -76,6 +76,7 @@ public class Movement : MonoBehaviour
 
     public void ReceiveInput(InputAction.CallbackContext context)
     {
+        print("Input Received");
         if (context.performed)
         {
             Vector2 inputVector = context.ReadValue<Vector2>();
