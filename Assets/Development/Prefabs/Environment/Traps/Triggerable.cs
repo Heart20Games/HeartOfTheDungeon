@@ -11,7 +11,6 @@ public class Triggerable : MonoBehaviour
     public UnityEvent onTriggeredOff;
     public void Trigger()
     {
-        Debug.LogWarning("Triggered!");
         if (on)
         {
             on = false;
