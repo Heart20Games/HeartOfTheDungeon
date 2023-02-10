@@ -419,7 +419,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""id"": ""053b44bb-f407-4d4d-a0a6-97ef694df359"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -428,7 +428,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""id"": ""c5a08cf9-d320-46c6-850c-fa21e327155a"",
                     ""expectedControlType"": ""Dpad"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -437,7 +437,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""id"": ""8a9196ac-13e1-4851-a4d9-3ba9334e90a3"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -446,7 +446,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""82945459-0420-44b5-901d-f3bad80dd277"",
                     ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Continue"",
@@ -457,7 +457,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""4079a6ad-52f0-4c3e-a336-042decfa5886"",
                     ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Continue"",
