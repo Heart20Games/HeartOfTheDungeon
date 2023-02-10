@@ -16,10 +16,8 @@ public class Switch : MonoBehaviour
 
     public void Toggle()
     {
-        Debug.LogWarning("Toggle?");
         foreach (Triggerable target in targets)
         {
-            Debug.LogWarning("Switch Toggled");
             target.Trigger();
         }
     }
