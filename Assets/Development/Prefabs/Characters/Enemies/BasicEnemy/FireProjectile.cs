@@ -5,8 +5,9 @@ public class FireProjectile : MonoBehaviour
     private AgentFollower agentFollower;
     private Transform player;
     public GameObject projectilePrefab;
-    private float fireInterval = 5f;
+    public float fireInterval = 5f;
     private float timeSinceLastFire = 0f;
+    public bool isFiring = true;
 
     void Awake()
     {
@@ -17,11 +18,13 @@ public class FireProjectile : MonoBehaviour
     void Update()
     {
         timeSinceLastFire += Time.deltaTime;
-
-        if (timeSinceLastFire >= fireInterval)
+        if (isFiring)
         {
-            Fire();
-            timeSinceLastFire = 0f;
+            if (timeSinceLastFire >= fireInterval)
+            {
+                Fire();
+                timeSinceLastFire = 0f;
+            }
         }
     }
 
