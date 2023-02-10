@@ -72,4 +72,11 @@ public class Weapon : MonoBehaviour, ICastable
             enemiesHit.Clear();
         }
     }
+
+    // Cleanup
+
+    private void OnDestroy()
+    {
+        Destroy(pivot.gameObject);
+    }
 }
