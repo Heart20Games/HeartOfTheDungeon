@@ -26,6 +26,10 @@ public class Impact : MonoBehaviour
             touching.Add(other);
             onTouch.Invoke();
         }
+        if(other.layer == 7) // Layer 7 is character
+        {
+            Debug.Log("Test");
+        }
     }
 
     private void OnCollisionExit(Collision collision)
@@ -49,7 +53,13 @@ public class Impact : MonoBehaviour
             touching.Add(otherG);
             onEnter.Invoke();
         }
+        if (otherG.layer == 7) // Layer 7 is character
+        {
+            Debug.Log("Test");
+        }
     }
+
+    
 
     private void OnTriggerExit(Collider other)
     {
