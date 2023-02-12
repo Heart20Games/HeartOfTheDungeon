@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class Weapon : MonoBehaviour, ICastable
 {
+    public Transform weaponArt;
     private Animator animator;
     public Transform pivot;
     public Transform body;
@@ -46,6 +47,12 @@ public class Weapon : MonoBehaviour, ICastable
         Vector3 pivotLocalPosition = pivot.localPosition;
         pivot.SetParent(origin);
         pivot.localPosition = pivotLocalPosition;
+        if (source.weaponHand != null && weaponArt)
+        {
+            Vector3 weaponLocalPosition = weaponArt.localPosition;
+            weaponArt.SetParent(source.weaponHand);
+            weaponArt.localPosition = weaponLocalPosition;
+        }
     }
     public void Disable() { }
     public void Enable() { }
