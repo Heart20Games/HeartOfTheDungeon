@@ -45,12 +45,12 @@ public class Weapon : MonoBehaviour, ICastable
     {
         Transform origin = followBody ? source.body : transform;
         Vector3 pivotLocalPosition = pivot.localPosition;
-        pivot.SetParent(origin);
+        pivot.SetParent(origin, false);
         pivot.localPosition = pivotLocalPosition;
         if (source.weaponHand != null && weaponArt)
         {
             Vector3 weaponLocalPosition = weaponArt.localPosition;
-            weaponArt.SetParent(source.weaponHand);
+            weaponArt.SetParent(source.weaponHand, false);
             weaponArt.localPosition = weaponLocalPosition;
         }
     }
