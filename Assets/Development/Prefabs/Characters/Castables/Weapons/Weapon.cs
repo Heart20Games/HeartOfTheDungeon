@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class Weapon : MonoBehaviour, ICastable
 {
+    public Transform weaponArt;
     private Animator animator;
     public Transform pivot;
     public Transform body;
@@ -44,8 +45,14 @@ public class Weapon : MonoBehaviour, ICastable
     {
         Transform origin = followBody ? source.body : transform;
         Vector3 pivotLocalPosition = pivot.localPosition;
-        pivot.SetParent(origin);
+        pivot.SetParent(origin, false);
         pivot.localPosition = pivotLocalPosition;
+        if (source.weaponHand != null && weaponArt)
+        {
+            Vector3 weaponLocalPosition = weaponArt.localPosition;
+            weaponArt.SetParent(source.weaponHand, false);
+            weaponArt.localPosition = weaponLocalPosition;
+        }
     }
     public void Disable() { }
     public void Enable() { }
@@ -78,5 +85,9 @@ public class Weapon : MonoBehaviour, ICastable
     private void OnDestroy()
     {
         Destroy(pivot.gameObject);
+        if (weaponArt != null)
+        {
+            Destroy(weaponArt.gameObject);
+        }
     }
 }

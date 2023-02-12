@@ -7,6 +7,7 @@ public class Character : MonoBehaviour
     public Transform body;
     public Transform pivot;
     public Animator animator;
+    public Transform weaponHand;
 
     public Loadout loadout;
     public ICastable primaryCastable;
