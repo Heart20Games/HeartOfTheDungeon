@@ -85,5 +85,9 @@ public class Weapon : MonoBehaviour, ICastable
     private void OnDestroy()
     {
         Destroy(pivot.gameObject);
+        if (weaponArt != null)
+        {
+            Destroy(weaponArt.gameObject);
+        }
     }
 }
