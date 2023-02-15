@@ -26,6 +26,7 @@ public class Weapon : MonoBehaviour, ICastable
         pivot.gameObject.SetActive(false);
     }
 
+
     // Castable
 
     public void Cast(Vector3 direction)
@@ -57,8 +58,21 @@ public class Weapon : MonoBehaviour, ICastable
     public void Disable() { }
     public void Enable() { }
     public bool CanCast() { return !swinging; }
+    
 
     // HItting Enemies
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.TakeDamage(damage);
+            }
+        }
+    }
 
     public bool HitEnemy(Enemy enemy)
     {

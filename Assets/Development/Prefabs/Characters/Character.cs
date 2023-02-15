@@ -1,14 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class Character : MonoBehaviour
+public class Character : MonoBehaviour, IDamageable
 {
+    // Character Parts
     public Transform body;
     public Transform pivot;
     public Animator animator;
     public Transform weaponHand;
+    public HealthbarUI healthBarUI;
 
+    // Castables
     public Loadout loadout;
     public ICastable primaryCastable;
     public ICastable secondaryCastable;
@@ -17,7 +21,50 @@ public class Character : MonoBehaviour
     private int abilityIdx = -1;
     private int weaponIdx = -1;
 
+    // Health
+    public float startingHealth = 25f;
+    public float currentHealth;
+    public UnityEvent onDeath;
+
+    // Initialization
     private void Start()
+    {
+        currentHealth = startingHealth;
+        InitializeCastables();
+        UpdateHealthUI();
+    }
+
+
+    // Health
+
+    public void UpdateHealthUI()
+    {
+        if (healthBarUI != null)
+        {
+            healthBarUI.UpdateFill(currentHealth, startingHealth);
+        }
+    }
+
+    public void TakeDamage(float damageAmount)
+    {
+        currentHealth -= damageAmount;
+        UpdateHealthUI();
+        if (currentHealth <= 0f)
+        {
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        onDeath.Invoke();
+        Destroy(gameObject);
+    }
+
+
+    // Castables
+
+    public void InitializeCastables()
     {
         if (loadout != null)
         {
