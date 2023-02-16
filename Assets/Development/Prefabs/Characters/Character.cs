@@ -11,6 +11,7 @@ public class Character : MonoBehaviour, IDamageable
     public Animator animator;
     public Transform weaponHand;
     public HealthbarUI healthBarUI;
+    public Movement movement;
 
     // Castables
     public Loadout loadout;
@@ -27,6 +28,11 @@ public class Character : MonoBehaviour, IDamageable
     public UnityEvent onDeath;
 
     // Initialization
+    private void Awake()
+    {
+        movement = GetComponent<Movement>();
+    }
+
     private void Start()
     {
         currentHealth = startingHealth;

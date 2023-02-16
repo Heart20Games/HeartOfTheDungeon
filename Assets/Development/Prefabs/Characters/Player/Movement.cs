@@ -37,6 +37,19 @@ public class Movement : MonoBehaviour
         //return MovementVector;
     }
 
+    public void SetInputVector(Vector2 inputVector)
+    {
+        MovementVector = inputVector;
+        if (MovementVector.magnitude == 0)
+        {
+            myRigidbody.drag = stopDrag;
+        }
+        else
+        {
+            myRigidbody.drag = moveDrag;
+        }
+    }
+
     private void FixedUpdate()
     {
         if (canMove)
@@ -70,23 +83,6 @@ public class Movement : MonoBehaviour
                 animator.SetBool("run", false);
                 hasFootsteps = false;
                 footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            }
-        }
-    }
-
-    public void ReceiveInput(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            Vector2 inputVector = context.ReadValue<Vector2>();
-            MovementVector = inputVector;
-            if (MovementVector.magnitude == 0)
-            {
-                myRigidbody.drag = stopDrag;
-            } 
-            else
-            {
-                myRigidbody.drag = moveDrag;
             }
         }
     }

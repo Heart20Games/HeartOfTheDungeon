@@ -5,11 +5,18 @@ using UnityEngine.UIElements;
 
 public class UserInterface : MonoBehaviour
 {
-    public Button testButton;
-    public void ClickButton(Button btn)
+    public Character controlledCharacter;
+
+    public void SetCharacter(Character character)
     {
-        Button button = btn;
-        using (var e = new NavigationSubmitEvent() { target = button })
-            button.SendEvent(e);
+        controlledCharacter = character;
     }
+
+    //public Button testButton;
+    //public void ClickButton(Button btn)
+    //{
+    //    Button button = btn;
+    //    using (var e = new NavigationSubmitEvent() { target = button })
+    //        button.SendEvent(e);
+    //}
 }
