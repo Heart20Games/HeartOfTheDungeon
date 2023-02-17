@@ -85,6 +85,15 @@
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleFollowers",
+                    "type": "Button",
+                    "id": "b078f247-3f63-4992-bcfe-0202b328d762",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -159,7 +168,7 @@
                     "id": "da726ce9-e5ff-453f-a3b8-4ea33920d94e",
                     "path": "<Gamepad>/leftStick/up",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "AxisDeadzone",
                     "groups": "",
                     "action": "Movement",
                     "isComposite": false,
@@ -170,7 +179,7 @@
                     "id": "ad88f92f-b134-4da1-9fee-717ea8d08679",
                     "path": "<Gamepad>/leftStick/down",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "AxisDeadzone",
                     "groups": "",
                     "action": "Movement",
                     "isComposite": false,
@@ -181,7 +190,7 @@
                     "id": "2f896057-ea70-432e-b91f-7230ec40ecfb",
                     "path": "<Gamepad>/leftStick/left",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "AxisDeadzone",
                     "groups": "",
                     "action": "Movement",
                     "isComposite": false,
@@ -192,7 +201,7 @@
                     "id": "35b293fe-5866-4da2-b371-82224b4d66b4",
                     "path": "<Gamepad>/leftStick/right",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "AxisDeadzone",
                     "groups": "",
                     "action": "Movement",
                     "isComposite": false,
@@ -384,6 +393,17 @@
                     "action": "Select Companion",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "b31bfd85-e4ce-488f-b83a-cdd66968ac4f",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleFollowers",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

@@ -107,6 +107,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleFollowers"",
+                    ""type"": ""Button"",
+                    ""id"": ""b078f247-3f63-4992-bcfe-0202b328d762"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -181,7 +190,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""id"": ""da726ce9-e5ff-453f-a3b8-4ea33920d94e"",
                     ""path"": ""<Gamepad>/leftStick/up"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""AxisDeadzone"",
                     ""groups"": """",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
@@ -192,7 +201,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""id"": ""ad88f92f-b134-4da1-9fee-717ea8d08679"",
                     ""path"": ""<Gamepad>/leftStick/down"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""AxisDeadzone"",
                     ""groups"": """",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
@@ -203,7 +212,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""id"": ""2f896057-ea70-432e-b91f-7230ec40ecfb"",
                     ""path"": ""<Gamepad>/leftStick/left"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""AxisDeadzone"",
                     ""groups"": """",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
@@ -214,7 +223,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""id"": ""35b293fe-5866-4da2-b371-82224b4d66b4"",
                     ""path"": ""<Gamepad>/leftStick/right"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""AxisDeadzone"",
                     ""groups"": """",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
@@ -406,6 +415,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""Select Companion"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b31bfd85-e4ce-488f-b83a-cdd66968ac4f"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleFollowers"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -612,6 +632,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_GroundMovement_SwitchAbility = m_GroundMovement.FindAction("Switch Ability", throwIfNotFound: true);
         m_GroundMovement_SkillWheel = m_GroundMovement.FindAction("Skill Wheel", throwIfNotFound: true);
         m_GroundMovement_SelectCompanion = m_GroundMovement.FindAction("Select Companion", throwIfNotFound: true);
+        m_GroundMovement_ToggleFollowers = m_GroundMovement.FindAction("ToggleFollowers", throwIfNotFound: true);
         // Dialogue
         m_Dialogue = asset.FindActionMap("Dialogue", throwIfNotFound: true);
         m_Dialogue_Continue = m_Dialogue.FindAction("Continue", throwIfNotFound: true);
@@ -685,6 +706,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_GroundMovement_SwitchAbility;
     private readonly InputAction m_GroundMovement_SkillWheel;
     private readonly InputAction m_GroundMovement_SelectCompanion;
+    private readonly InputAction m_GroundMovement_ToggleFollowers;
     public struct GroundMovementActions
     {
         private @PlayerControls m_Wrapper;
@@ -698,6 +720,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @SwitchAbility => m_Wrapper.m_GroundMovement_SwitchAbility;
         public InputAction @SkillWheel => m_Wrapper.m_GroundMovement_SkillWheel;
         public InputAction @SelectCompanion => m_Wrapper.m_GroundMovement_SelectCompanion;
+        public InputAction @ToggleFollowers => m_Wrapper.m_GroundMovement_ToggleFollowers;
         public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -734,6 +757,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @SelectCompanion.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSelectCompanion;
                 @SelectCompanion.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSelectCompanion;
                 @SelectCompanion.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnSelectCompanion;
+                @ToggleFollowers.started -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnToggleFollowers;
+                @ToggleFollowers.performed -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnToggleFollowers;
+                @ToggleFollowers.canceled -= m_Wrapper.m_GroundMovementActionsCallbackInterface.OnToggleFollowers;
             }
             m_Wrapper.m_GroundMovementActionsCallbackInterface = instance;
             if (instance != null)
@@ -765,6 +791,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @SelectCompanion.started += instance.OnSelectCompanion;
                 @SelectCompanion.performed += instance.OnSelectCompanion;
                 @SelectCompanion.canceled += instance.OnSelectCompanion;
+                @ToggleFollowers.started += instance.OnToggleFollowers;
+                @ToggleFollowers.performed += instance.OnToggleFollowers;
+                @ToggleFollowers.canceled += instance.OnToggleFollowers;
             }
         }
     }
@@ -829,6 +858,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnSwitchAbility(InputAction.CallbackContext context);
         void OnSkillWheel(InputAction.CallbackContext context);
         void OnSelectCompanion(InputAction.CallbackContext context);
+        void OnToggleFollowers(InputAction.CallbackContext context);
     }
     public interface IDialogueActions
     {
