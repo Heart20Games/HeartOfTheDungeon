@@ -125,6 +125,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleFollowers"",
+                    ""type"": ""Button"",
+                    ""id"": ""b078f247-3f63-4992-bcfe-0202b328d762"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -199,7 +208,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""id"": ""da726ce9-e5ff-453f-a3b8-4ea33920d94e"",
                     ""path"": ""<Gamepad>/leftStick/up"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""AxisDeadzone"",
                     ""groups"": """",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
@@ -210,7 +219,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""id"": ""ad88f92f-b134-4da1-9fee-717ea8d08679"",
                     ""path"": ""<Gamepad>/leftStick/down"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""AxisDeadzone"",
                     ""groups"": """",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
@@ -221,7 +230,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""id"": ""2f896057-ea70-432e-b91f-7230ec40ecfb"",
                     ""path"": ""<Gamepad>/leftStick/left"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""AxisDeadzone"",
                     ""groups"": """",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
@@ -232,7 +241,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""id"": ""35b293fe-5866-4da2-b371-82224b4d66b4"",
                     ""path"": ""<Gamepad>/leftStick/right"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""AxisDeadzone"",
                     ""groups"": """",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
