@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class Character : MonoBehaviour, IDamageable
     public Transform weaponHand;
     public HealthbarUI healthBarUI;
     public Movement movement;
+    public Interactor interactor;
+    public PlayerAttack attacker;
 
     // Castables
     public Loadout loadout;
@@ -27,10 +30,15 @@ public class Character : MonoBehaviour, IDamageable
     public float currentHealth;
     public UnityEvent onDeath;
 
+    // State
+    public bool controllable = true;
+
     // Initialization
     private void Awake()
     {
         movement = GetComponent<Movement>();
+        interactor = GetComponent<Interactor>();
+        attacker = GetComponent<PlayerAttack>();
     }
 
     private void Start()
@@ -38,6 +46,16 @@ public class Character : MonoBehaviour, IDamageable
         currentHealth = startingHealth;
         InitializeCastables();
         UpdateHealthUI();
+    }
+
+
+    // State
+
+    public void SetControllable(bool _controllable)
+    {
+        controllable = _controllable;
+        movement.canMove = controllable;
+        attacker.active = controllable;
     }
 
 
@@ -85,40 +103,48 @@ public class Character : MonoBehaviour, IDamageable
         }
     }
 
-    public void ChangeAbility()
+    public void ChangeCastable(bool primary)
     {
-        PrintAbilities(loadout.abilities);
-        
-        abilityIdx = (abilityIdx + 1) % loadout.abilities.Count;
-        if (ability != null)
+        ICastable castable = primary ? weapon as ICastable : ability as ICastable;
+        if (castable != null)
         {
-            Destroy(ability.gameObject);
-            Debug.Log("Ability Destroyed");
+            castable.UnEquip();
         }
-        
-        Debug.Log("Ability Index:" + abilityIdx.ToString());
-        ability = Instantiate(loadout.abilities[abilityIdx], transform);
-        ability.Initialize(this);
-        Debug.Log("Ability Created");
+
+        if (primary)
+        {
+            weaponIdx = (weaponIdx + 1) % loadout.weapons.Count;
+            weapon = Instantiate(loadout.weapons[weaponIdx], transform);
+            weapon.Initialize(this);
+        }
+        else
+        {
+            abilityIdx = (abilityIdx + 1) % loadout.abilities.Count;
+            ability = Instantiate(loadout.abilities[abilityIdx], transform);
+            ability.Initialize(this);
+        }
     }
 
-    public void ChangeWeapon()
+    public void ActivateCastable(ICastable castable)
     {
-        PrintWeapons(loadout.weapons);
-        print(weaponIdx);
-        
-        weaponIdx = (weaponIdx + 1) % loadout.weapons.Count;
-        if (weapon != null)
+        if (attacker != null && attacker.active)
         {
-            Destroy(weapon.gameObject);
-            Debug.Log("Weapon Destroyed");
+            attacker.Castable = castable;
+            attacker.Slashie(movement.getAttackVector());
         }
-        
-        Debug.Log("Weapon Index:" + weaponIdx.ToString());
-        weapon = Instantiate(loadout.weapons[weaponIdx], transform);
-        weapon.Initialize(this);
-        Debug.Log("Weapon Created");
     }
+
+
+    // Actions
+    public void MoveCharacter(Vector2 input) { movement.SetInputVector(input); }
+    public void ChangeAbility() { ChangeCastable(false); }
+    public void ChangeWeapon() { ChangeCastable(true); }
+    public void ActivateWeapon() { ActivateCastable(weapon); }
+    public void ActivateAbility() { ActivateCastable(ability); }
+    public void Interact() { interactor.Talk(); }
+
+
+    // Debugging
 
     public void PrintAbilities(List<Ability> abilities)
     {

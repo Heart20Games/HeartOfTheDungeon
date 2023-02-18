@@ -138,7 +138,7 @@ PrefabInstance:
     - target: {fileID: 278772545492323897, guid: 6f922ad2abb57744498881020713b508, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 974793709}
+      objectReference: {fileID: 522997160}
     - target: {fileID: 278772545492323897, guid: 6f922ad2abb57744498881020713b508, type: 3}
       propertyPath: yarnNode
       value: OsseusAfterIntro
@@ -214,7 +214,7 @@ PrefabInstance:
     - target: {fileID: 1118034208472675638, guid: a07fc24a4bab1a1458f14dc823a55001, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 974793709}
+      objectReference: {fileID: 522997160}
     - target: {fileID: 1118034208472675638, guid: a07fc24a4bab1a1458f14dc823a55001, type: 3}
       propertyPath: yarnNode
       value: RottaAfterIntro
@@ -810,7 +810,7 @@ PrefabInstance:
     - target: {fileID: 3974853360252367362, guid: f5d2fc14089a0f445821d4a124273d2f, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 974793709}
+      objectReference: {fileID: 0}
     - target: {fileID: 3974853360252367362, guid: f5d2fc14089a0f445821d4a124273d2f, type: 3}
       propertyPath: yarnNode
       value: RatEntrance
@@ -1099,169 +1099,6 @@ Transform:
   m_Father: {fileID: 1350414083}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &499207697
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 499207698}
-  - component: {fileID: 499207699}
-  - component: {fileID: 499207700}
-  m_Layer: 0
-  m_Name: Game Controller
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &499207698
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 499207697}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.9981537, y: 3.1906357, z: -7.496052}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &499207699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 499207697}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42d95da6e169dba4fb525878db1376d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playableCharacters:
-  - {fileID: 522997160}
-  curCharacter: {fileID: 522997160}
-  userInterface: {fileID: 993305256}
---- !u!114 &499207700
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 499207697}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 24023da9ead2b60458a74c066d5fd066, type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2101128581}
-        m_TargetAssemblyTypeName: Movement, Assembly-CSharp
-        m_MethodName: ReceiveInput
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 5afb2a4c-38f9-42a6-95bb-f9788364c85c
-    m_ActionName: GroundMovement/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/DualSenseGamepadHID/leftStick/up,/DualSenseGamepadHID/leftStick/down,/DualSenseGamepadHID/leftStick/left,/DualSenseGamepadHID/leftStick/right]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 434f2936-6ea5-4ebc-aed2-76351019f43a
-    m_ActionName: GroundMovement/DieTest[/Keyboard/k]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: f20b9006-d9ce-40ef-bf16-fde5f04afb33
-    m_ActionName: GroundMovement/Interact[/Keyboard/e,/DualSenseGamepadHID/buttonSouth]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: ab2ff5e6-76e1-4188-8b31-e550d4e66d1d
-    m_ActionName: GroundMovement/Primary Cast[/Mouse/leftButton,/DualSenseGamepadHID/rightTrigger]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: aa7655b0-1dc7-4e21-9541-def6bfd63dd6
-    m_ActionName: GroundMovement/Secondary Cast[/Mouse/rightButton,/DualSenseGamepadHID/leftTrigger]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9c8d0cd9-3328-4fd6-b860-3330f80a7959
-    m_ActionName: GroundMovement/Switch Weapon[/Keyboard/1,/DualSenseGamepadHID/leftShoulder]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 0ca15d03-d446-4370-ae98-256ab25941ba
-    m_ActionName: GroundMovement/Switch Ability[/Keyboard/2,/DualSenseGamepadHID/rightShoulder]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 216f075d-ea50-4bc4-8bc2-de338f8b2575
-    m_ActionName: GroundMovement/Skill Wheel[/DualSenseGamepadHID/dpad/up]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 499207699}
-        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
-        m_MethodName: ChangeCharacter
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 499207697}
-        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 9b4d422a-4563-4e56-9c2a-2675c39d78b6
-    m_ActionName: GroundMovement/Select Companion[/DualSenseGamepadHID/dpad/up,/DualSenseGamepadHID/dpad/down,/DualSenseGamepadHID/dpad/left,/DualSenseGamepadHID/dpad/right]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 053b44bb-f407-4d4d-a0a6-97ef694df359
-    m_ActionName: Dialogue/Continue[/DualSenseGamepadHID/buttonSouth,/Keyboard/space]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: c5a08cf9-d320-46c6-850c-fa21e327155a
-    m_ActionName: Dialogue/Change Selection[/DualSenseGamepadHID/leftStick/up,/DualSenseGamepadHID/leftStick/down,/DualSenseGamepadHID/leftStick/left,/DualSenseGamepadHID/leftStick/right,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 8a9196ac-13e1-4851-a4d9-3ba9334e90a3
-    m_ActionName: Dialogue/Back[/DualSenseGamepadHID/buttonEast,/Keyboard/backspace]
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: GroundMovement
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!1001 &505279962
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1352,6 +1189,54 @@ PrefabInstance:
     - target: {fileID: 4702101022514389407, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
       propertyPath: maxVelocity
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422767827069520207, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
+      propertyPath: m_NotificationBehavior
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422767827069520207, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422767827069520207, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
+      propertyPath: m_ActionEvents.Array.data[12].m_ActionId
+      value: c2b927cd-76e6-4070-878c-27e5f2a3d228
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422767827069520207, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
+      propertyPath: m_ActionEvents.Array.data[13].m_ActionId
+      value: d6550c58-45d5-4fde-b826-b51adc9d2fe0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422767827069520207, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
+      propertyPath: m_ActionEvents.Array.data[12].m_ActionName
+      value: GroundMovement/Switch Character Right[/DualSenseGamepadHID/dpad/right]
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422767827069520207, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
+      propertyPath: m_ActionEvents.Array.data[13].m_ActionName
+      value: GroundMovement/Switch Character Center[/DualSenseGamepadHID/dpad/down]
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422767827069520207, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
+      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422767827069520207, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422767827069520207, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
+      propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422767827069520207, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
+      propertyPath: m_ActionEvents.Array.data[4].m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422767827069520207, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422767827069520207, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
+      propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6527890370181070579, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
       propertyPath: m_RootOrder
@@ -1577,7 +1462,7 @@ PrefabInstance:
     - target: {fileID: 3009324790049457129, guid: 106e3ec9f7ec87a4fa0141c405b625ac, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 974793709}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 106e3ec9f7ec87a4fa0141c405b625ac, type: 3}
@@ -1709,17 +1594,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &974793709 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6916867676172493878, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
-  m_PrefabInstance: {fileID: 522997159}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09ae9a754089c0c44af55d6e4277f1cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &974793715 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6527890370181070579, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
@@ -2344,7 +2218,7 @@ PrefabInstance:
     - target: {fileID: 9004651516787878498, guid: 036dd2a1e8036b342adc966895b99baa, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 974793709}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 036dd2a1e8036b342adc966895b99baa, type: 3}
@@ -2578,7 +2452,7 @@ PrefabInstance:
     - target: {fileID: 6432256226314185837, guid: e0331995c729f9b48881e191cbcbafcc, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 974793709}
+      objectReference: {fileID: 0}
     - target: {fileID: 7856606243336205884, guid: e0331995c729f9b48881e191cbcbafcc, type: 3}
       propertyPath: m_Name
       value: BoneyDoor
@@ -2717,7 +2591,7 @@ PrefabInstance:
     - target: {fileID: 4368389840042942000, guid: 4ed4cc5420d16b5498beb3c1cdde6edc, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 974793709}
+      objectReference: {fileID: 522997160}
     - target: {fileID: 4368389840042942000, guid: 4ed4cc5420d16b5498beb3c1cdde6edc, type: 3}
       propertyPath: yarnNode
       value: SlimeAfterIntro
@@ -2734,17 +2608,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1915758671176826318, guid: 4ed4cc5420d16b5498beb3c1cdde6edc, type: 3}
   m_PrefabInstance: {fileID: 2035204060}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2101128581 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4702101022514389407, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
-  m_PrefabInstance: {fileID: 522997159}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 276473aba86fe7e4dab05e2ba89d6b45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2120466721
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2897,3 +2760,102 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 397533716789919413, guid: 7fce0b26d15baee4bb49c4f6a27affd8, type: 3}
   m_PrefabInstance: {fileID: 397533716879282153}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8636156924362983869
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8636156924694284201, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_NotificationBehavior
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636156924694284201, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_ActionEvents.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636156924694284201, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_ActionEvents.Array.data[12].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636156924694284201, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_ActionEvents.Array.data[13].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636156924694284201, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_ActionEvents.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetCharacterLeft
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636156924694284201, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_ActionEvents.Array.data[12].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetCharacterRight
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636156924694284201, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_ActionEvents.Array.data[13].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetCharacterCenter
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636156924694284204, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_Name
+      value: Game Controller
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636156924694284206, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: curCharacter
+      value: 
+      objectReference: {fileID: 522997160}
+    - target: {fileID: 8636156924694284206, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: userInterface
+      value: 
+      objectReference: {fileID: 993305256}
+    - target: {fileID: 8636156924694284206, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: playableCharacters.Array.data[0]
+      value: 
+      objectReference: {fileID: 522997160}
+    - target: {fileID: 8636156924694284207, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636156924694284207, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.9981537
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636156924694284207, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.1906357
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636156924694284207, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.496052
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636156924694284207, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636156924694284207, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636156924694284207, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636156924694284207, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636156924694284207, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636156924694284207, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636156924694284207, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: c674be24b2327ed489b88d349f0a0c93, type: 3}

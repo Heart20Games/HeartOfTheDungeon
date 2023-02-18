@@ -33,7 +33,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Primary Cast",
+                    "name": "Cast Primary",
                     "type": "Button",
                     "id": "ab2ff5e6-76e1-4188-8b31-e550d4e66d1d",
                     "expectedControlType": "Button",
@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Secondary Cast",
+                    "name": "Cast Secondary",
                     "type": "Button",
                     "id": "aa7655b0-1dc7-4e21-9541-def6bfd63dd6",
                     "expectedControlType": "Button",
@@ -51,7 +51,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Switch Weapon",
+                    "name": "Switch Primary",
                     "type": "Button",
                     "id": "9c8d0cd9-3328-4fd6-b860-3330f80a7959",
                     "expectedControlType": "Button",
@@ -60,7 +60,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Switch Ability",
+                    "name": "Switch Secondary",
                     "type": "Button",
                     "id": "0ca15d03-d446-4370-ae98-256ab25941ba",
                     "expectedControlType": "Button",
@@ -78,10 +78,28 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Select Companion",
-                    "type": "PassThrough",
+                    "name": "Switch Character Left",
+                    "type": "Button",
                     "id": "9b4d422a-4563-4e56-9c2a-2675c39d78b6",
-                    "expectedControlType": "Dpad",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Switch Character Right",
+                    "type": "Button",
+                    "id": "c2b927cd-76e6-4070-878c-27e5f2a3d228",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Switch Character Center",
+                    "type": "Button",
+                    "id": "d6550c58-45d5-4fde-b826-b51adc9d2fe0",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
@@ -238,7 +256,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "",
-                    "action": "Primary Cast",
+                    "action": "Cast Primary",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -249,7 +267,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "",
-                    "action": "Primary Cast",
+                    "action": "Cast Primary",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -260,7 +278,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "",
-                    "action": "Secondary Cast",
+                    "action": "Cast Secondary",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -271,7 +289,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "",
-                    "action": "Secondary Cast",
+                    "action": "Cast Secondary",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -282,7 +300,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Switch Weapon",
+                    "action": "Switch Primary",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -293,7 +311,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Switch Weapon",
+                    "action": "Switch Primary",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -304,7 +322,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Switch Ability",
+                    "action": "Switch Secondary",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -315,7 +333,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Switch Ability",
+                    "action": "Switch Secondary",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -331,59 +349,37 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "DPad",
-                    "id": "0d0a2259-f51f-4173-b169-28325a769e8b",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Select Companion",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "0b4d62c8-a190-40fb-92e9-70daeee5595b",
-                    "path": "<Gamepad>/dpad/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Select Companion",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "9b6e8fe1-059a-4e3a-8eec-020175334fdf",
-                    "path": "<Gamepad>/dpad/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Select Companion",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "24b4b7d7-de3c-48d7-ba57-5ce30b37c6cf",
-                    "path": "<Gamepad>/dpad/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Select Companion",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "399e382f-2ab7-4b13-8ca7-a56d89ed1ee6",
+                    "name": "",
+                    "id": "429e9fc7-8c86-48e4-ad86-b57ce09450dc",
                     "path": "<Gamepad>/dpad/right",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Select Companion",
+                    "action": "Switch Character Right",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d30793cc-f603-4289-9ac8-73649f999556",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Switch Character Center",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cf71ce4a-8fc9-4ca3-bf99-12111b5081c1",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Switch Character Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

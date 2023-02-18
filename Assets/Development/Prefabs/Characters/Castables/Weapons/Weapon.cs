@@ -58,6 +58,7 @@ public class Weapon : MonoBehaviour, ICastable
     public void Disable() { }
     public void Enable() { }
     public bool CanCast() { return !swinging; }
+    public void UnEquip() { Destroy(gameObject); }
     
 
     // HItting Enemies

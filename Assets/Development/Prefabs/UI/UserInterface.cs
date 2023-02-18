@@ -12,6 +12,11 @@ public class UserInterface : MonoBehaviour
         controlledCharacter = character;
     }
 
+    public void UpdateWeapon()
+    {
+
+    }
+
     //public Button testButton;
     //public void ClickButton(Button btn)
     //{

@@ -5,15 +5,15 @@ using UnityEngine;
 public class Interactable : MonoBehaviour
 {
     public string yarnNode;
-    public PlayerCore player;
+    public Character player;
 
     public void NotifyPlayerEnteredInteractable()
     {
-        player.FoundTalkable(yarnNode);
+        player.interactor.FoundTalkable(yarnNode);
     }
 
     public void NotifyPlayerLeftInteractable()
     {
-        player.LeftTalkable(yarnNode);
+        player.interactor.LeftTalkable(yarnNode);
     }
 }
