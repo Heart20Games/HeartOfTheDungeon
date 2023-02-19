@@ -112,6 +112,44 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   desiredTags:
   - Player
+  onCollision:
+    onEnter:
+      m_PersistentCalls:
+        m_Calls: []
+    onExit:
+      m_PersistentCalls:
+        m_Calls: []
+  onTrigger:
+    onEnter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1360097456029011571}
+          m_TargetAssemblyTypeName: Switch, Assembly-CSharp
+          m_MethodName: Toggle
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onExit:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1360097456029011571}
+          m_TargetAssemblyTypeName: Switch, Assembly-CSharp
+          m_MethodName: Toggle
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   onTouch:
     m_PersistentCalls:
       m_Calls: []
@@ -179,7 +217,7 @@ Transform:
   m_Children:
   - {fileID: 7257377524935757047}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1360097456029011571
 MonoBehaviour:
@@ -193,4 +231,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aea0d13a49df5654fa0868c74be4615c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  targets: []

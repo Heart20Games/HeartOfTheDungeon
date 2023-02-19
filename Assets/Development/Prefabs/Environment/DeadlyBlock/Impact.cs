@@ -4,63 +4,65 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class Impact : MonoBehaviour
-{
+{   
+    // Properties
+
     public List<string> desiredTags;
-    public UnityEvent onTouch;
-    public UnityEvent onUnTouch;
-    public UnityEvent onEnter;
-    public UnityEvent onExit;
+
+    public BinaryEvent onCollision;
+    public BinaryEvent onTrigger;
 
     private List<GameObject> touching;
+
+
+    // Events
 
     private void Start()
     {
         touching = new List<GameObject>();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnEventEnter(GameObject other, UnityEvent onEvent)
     {
-        GameObject other = collision.gameObject;
         if (desiredTags.Contains(other.tag) && !touching.Contains(other))
         {
             touching.Add(other);
-            onTouch.Invoke();
+            onEvent.Invoke();
         }
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnEventExit(GameObject other, UnityEvent onEvent)
     {
-        GameObject other = collision.gameObject;
         if (desiredTags.Contains(other.tag))
         {
             if (touching.Contains(other))
             {
                 touching.Remove(other);
             }
-            onUnTouch.Invoke();
+            onEvent.Invoke();
         }
+    }
+
+
+    // Signals
+    
+    private void OnTriggerExit(Collider other)
+    {
+        OnEventExit(other.gameObject, onTrigger.exit);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        OnEventEnter(collision.gameObject, onCollision.enter);
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        OnEventExit(collision.gameObject, onCollision.exit);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        GameObject otherG = other.gameObject;
-        if (desiredTags.Contains(other.gameObject.tag) && !touching.Contains(otherG))
-        {
-            touching.Add(otherG);
-            onEnter.Invoke();
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        GameObject otherG = other.gameObject;
-        if (desiredTags.Contains(otherG.tag))
-        {
-            if (touching.Contains(otherG))
-            {
-                touching.Remove(otherG);
-            }
-            onExit.Invoke();
-        }
+        OnEventEnter(other.gameObject, onTrigger.enter);
     }
 }
