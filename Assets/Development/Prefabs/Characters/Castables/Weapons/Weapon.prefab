@@ -102,6 +102,7 @@ GameObject:
   - component: {fileID: 2767592121704544239}
   - component: {fileID: 4706741201082345559}
   - component: {fileID: 9138939352093381924}
+  - component: {fileID: 748318687840574374}
   m_Layer: 0
   m_Name: Body
   m_TagString: Weapon
@@ -184,6 +185,57 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &748318687840574374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5437472882635739354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  desiredTags: []
+  onCollision:
+    enter:
+      m_PersistentCalls:
+        m_Calls: []
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
+  onTrigger:
+    enter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4915850916652667943}
+          m_TargetAssemblyTypeName: 
+          m_MethodName: 
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    exit:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4915850916652667943}
+          m_TargetAssemblyTypeName: 
+          m_MethodName: 
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &6502756704121821110
 GameObject:
   m_ObjectHideFlags: 0

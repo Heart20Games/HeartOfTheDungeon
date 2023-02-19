@@ -15,4 +15,6 @@ public interface ICastable
     public void Disable();
     public void Enable();
     public bool CanCast();
+
+    public void UnEquip();
 }

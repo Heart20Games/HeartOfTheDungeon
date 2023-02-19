@@ -34,7 +34,19 @@ public class Movement : MonoBehaviour
     {
         Vector3 center = new Vector3(Screen.width, Screen.height, 0)/2;
         return (Input.mousePosition - center).normalized;
-        //return MovementVector;
+    }
+
+    public void SetInputVector(Vector2 inputVector)
+    {
+        MovementVector = inputVector;
+        if (MovementVector.magnitude == 0)
+        {
+            myRigidbody.drag = stopDrag;
+        }
+        else
+        {
+            myRigidbody.drag = moveDrag;
+        }
     }
 
     private void FixedUpdate()
@@ -44,12 +56,7 @@ public class Movement : MonoBehaviour
             myRigidbody.AddRelativeForce(new Vector3(MovementVector.x, 0, MovementVector.y) * speed * Time.fixedDeltaTime, ForceMode.Force);
             if (myRigidbody.velocity.magnitude > maxVelocity)
             {
-                //Debug.Log("Velocity clamped");
                 myRigidbody.velocity = myRigidbody.velocity.normalized * maxVelocity;
-            }
-            else
-            {
-                //Debug.Log("Velocity below maximum");
             }
 
             if (myRigidbody.velocity.magnitude > footstepVelocity)
@@ -70,23 +77,6 @@ public class Movement : MonoBehaviour
                 animator.SetBool("run", false);
                 hasFootsteps = false;
                 footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            }
-        }
-    }
-
-    public void ReceiveInput(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            Vector2 inputVector = context.ReadValue<Vector2>();
-            MovementVector = inputVector;
-            if (MovementVector.magnitude == 0)
-            {
-                myRigidbody.drag = stopDrag;
-            } 
-            else
-            {
-                myRigidbody.drag = moveDrag;
             }
         }
     }

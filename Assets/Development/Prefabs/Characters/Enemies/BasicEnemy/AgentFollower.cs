@@ -23,8 +23,6 @@ public class AgentFollower : MonoBehaviour
             agent = GetComponent<NavMeshAgent>();
             agent.destination = player.position;
         }
-
-       
     }
 
     private void Update()
@@ -51,7 +49,6 @@ public class AgentFollower : MonoBehaviour
         else
         {
             // We can handle what happens when we want to send them somewhere else.
-
         }
     }
     

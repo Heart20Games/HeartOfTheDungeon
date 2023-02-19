@@ -21,7 +21,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         healthBarUI.UpdateFill(currentHealth, startingHealth);      
     }
 
-       public void TakeDamage(float damageAmount)
+    public void TakeDamage(float damageAmount)
     {
         currentHealth -= damageAmount;
         healthBarUI.UpdateFill(currentHealth, startingHealth);
