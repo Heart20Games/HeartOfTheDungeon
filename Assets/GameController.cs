@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
 
     public void SetCharacter(int idx)
     {
-        curCharacter = playableCharacters[idx];
+        curCharacter = playableCharacters[idx % (playableCharacters.Count)];
         userInterface.SetCharacter(curCharacter);
     }
 
