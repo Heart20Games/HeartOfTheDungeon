@@ -63,15 +63,17 @@ public class UIParticleSystem : MaskableGraphic {
                 material.hideFlags = HideFlags.DontSave;
                 renderer.sharedMaterial = material;
             }
-            #endif
- 
+#endif
+
             // automatically set scaling
-            _particleSystem.scalingMode = ParticleSystemScalingMode.Hierarchy;
+            var main = _particleSystem.main;
+            main.scalingMode = ParticleSystemScalingMode.Hierarchy;
  
             _particles = null;
         }
         if (_particles == null) {
-            _particles = new ParticleSystem.Particle[_particleSystem.maxParticles];
+            var main = _particleSystem.main;
+            _particles = new ParticleSystem.Particle[main.maxParticles];
         }
  
         // prepare uvs
@@ -122,16 +124,18 @@ public class UIParticleSystem : MaskableGraphic {
  
         for (int i = 0; i < count; ++i) {
             ParticleSystem.Particle particle = _particles[i];
- 
+
+            var main = _particleSystem.main;
+            
             // get particle properties
-            Vector2 position = (_particleSystem.simulationSpace == ParticleSystemSimulationSpace.Local ? particle.position : _transform.InverseTransformPoint(particle.position));
+            Vector2 position = (main.simulationSpace == ParticleSystemSimulationSpace.Local ? particle.position : _transform.InverseTransformPoint(particle.position));
             float rotation = -particle.rotation * Mathf.Deg2Rad;
             float rotation90 = rotation + Mathf.PI / 2;
             Color32 color = particle.GetCurrentColor(_particleSystem);
             float size = particle.GetCurrentSize(_particleSystem) * 0.5f;
- 
+
             // apply scale
-            if (_particleSystem.scalingMode == ParticleSystemScalingMode.Shape) {
+            if (main.scalingMode == ParticleSystemScalingMode.Shape) {
                 position /= canvas.scaleFactor;
             }
  

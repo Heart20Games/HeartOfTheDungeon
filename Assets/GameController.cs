@@ -5,18 +5,37 @@ using UnityEngine.InputSystem;
 
 public class GameController : MonoBehaviour
 {
+    public Character playerCharacter;
     public List<Character> playableCharacters;
     public Character curCharacter;
     public UserInterface userInterface;
 
     private void Start()
     {
+        InitializePlayableCharacters();
+    }
+
+    public void InitializePlayableCharacters()
+    {
+        bool hasPlayer = false;
+        foreach (Character character in playableCharacters)
+        {
+            if (character.GetComponent<PlayerCore>() != null)
+            {
+                hasPlayer = true;
+                break;
+            }
+        }
+        if (!hasPlayer && playerCharacter != null)
+        {
+            playableCharacters.Insert(0, playerCharacter);
+        }
         SetCharacter(0);
     }
 
     public void SetCharacter(int idx)
     {
-        curCharacter = playableCharacters[idx];
+        curCharacter = playableCharacters[idx % (playableCharacters.Count)];
         userInterface.SetCharacter(curCharacter);
     }
 

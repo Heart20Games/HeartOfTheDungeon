@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,9 +10,9 @@ public class Character : MonoBehaviour, IDamageable
     public Animator animator;
     public Transform weaponHand;
     public HealthbarUI healthBarUI;
-    public Movement movement;
-    public Interactor interactor;
-    public PlayerAttack attacker;
+    [HideInInspector] public Movement movement;
+    [HideInInspector] public Interactor interactor;
+    [HideInInspector] public PlayerAttack attacker;
 
     // Castables
     public Loadout loadout;

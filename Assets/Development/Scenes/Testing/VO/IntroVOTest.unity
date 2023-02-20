@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -104,7 +104,7 @@ NavMeshSettings:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_BuildSettings:
-    serializedVersion: 2
+    serializedVersion: 3
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
@@ -117,7 +117,7 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
-    accuratePlacement: 0
+    buildHeightMesh: 0
     maxJobWorkers: 0
     preserveTilesOutsideBounds: 0
     debug:
@@ -153,6 +153,7 @@ GameObject:
   m_Component:
   - component: {fileID: 74049933}
   - component: {fileID: 74049932}
+  - component: {fileID: 74049934}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -237,6 +238,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &74049934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74049931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!4 &75397389 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
@@ -303,7 +327,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -355,7 +379,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (32)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!4 &157331416 stripped
 Transform:
@@ -367,7 +393,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 88292689}
     m_Modifications:
     - target: {fileID: 4903433459165519280, guid: 2bc8e6d096b451845a602562555de941, type: 3}
@@ -419,7 +445,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2bc8e6d096b451845a602562555de941, type: 3}
 --- !u!4 &162802875 stripped
 Transform:
@@ -431,7 +459,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
@@ -483,14 +511,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_Short_05 (11)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
 --- !u!1001 &173033460
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
@@ -542,7 +572,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_Short_05 (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
 --- !u!4 &177973990 stripped
 Transform:
@@ -554,7 +586,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -606,7 +638,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (24)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!4 &189516362 stripped
 Transform:
@@ -623,7 +657,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
@@ -675,14 +709,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_Short_05 (10)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
 --- !u!1001 &204771967
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
@@ -734,7 +770,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_Short_05 (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
 --- !u!4 &229403086 stripped
 Transform:
@@ -756,7 +794,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -808,7 +846,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (19)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!4 &326780149 stripped
 Transform:
@@ -820,7 +860,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -872,7 +912,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (7)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!4 &356960292 stripped
 Transform:
@@ -884,7 +926,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
@@ -936,14 +978,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_Short_05 (14)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
 --- !u!1001 &364396045
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -995,14 +1039,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (21)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!1001 &392315599
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -1054,14 +1100,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!1001 &410460512
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -1113,14 +1161,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (13)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!1001 &419163520
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -1172,14 +1222,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (29)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!1001 &419245682
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
@@ -1231,14 +1283,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_03 (9)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
 --- !u!1001 &429906672
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b96a20f265cd7484a8226c5cf269aedf, type: 3}
@@ -1290,7 +1344,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_02 (4)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b96a20f265cd7484a8226c5cf269aedf, type: 3}
 --- !u!4 &465930879 stripped
 Transform:
@@ -1307,7 +1363,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 88292689}
     m_Modifications:
     - target: {fileID: 850644614561672070, guid: c1bf795fc122c6a479b173d93c2644e7, type: 3}
@@ -1359,7 +1415,9 @@ PrefabInstance:
       value: Slimeington
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1bf795fc122c6a479b173d93c2644e7, type: 3}
 --- !u!4 &489446531 stripped
 Transform:
@@ -1371,7 +1429,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -1423,7 +1481,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (31)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!4 &499798364 stripped
 Transform:
@@ -1440,7 +1500,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
@@ -1492,37 +1552,21 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_Short_05 (4)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
 --- !u!4 &518344314 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
   m_PrefabInstance: {fileID: 1230161077}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &524672527 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5803656071047435973, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-  m_PrefabInstance: {fileID: 1655450514074276385}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &524672531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 524672527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attenuationObject: {fileID: 2027417598}
 --- !u!1001 &537800407
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
@@ -1574,14 +1618,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_03 (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
 --- !u!1001 &559954865
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
@@ -1633,7 +1679,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_Short_05
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
 --- !u!4 &570828889 stripped
 Transform:
@@ -1645,7 +1693,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b96a20f265cd7484a8226c5cf269aedf, type: 3}
@@ -1697,14 +1745,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_02
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b96a20f265cd7484a8226c5cf269aedf, type: 3}
 --- !u!1001 &587085629
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
@@ -1756,7 +1806,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_03 (5)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
 --- !u!4 &591123447 stripped
 Transform:
@@ -1768,7 +1820,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
@@ -1820,14 +1872,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_Short_05 (9)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
 --- !u!1001 &614369141
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -1879,7 +1933,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (20)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!4 &624184811 stripped
 Transform:
@@ -1891,7 +1947,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
@@ -1943,7 +1999,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_Short_05 (13)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
 --- !u!4 &636329942 stripped
 Transform:
@@ -1955,7 +2013,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b96a20f265cd7484a8226c5cf269aedf, type: 3}
@@ -2007,7 +2065,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_02 (6)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b96a20f265cd7484a8226c5cf269aedf, type: 3}
 --- !u!4 &680471941 stripped
 Transform:
@@ -2019,7 +2079,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
@@ -2071,14 +2131,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_03 (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
 --- !u!1001 &706604630
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -2130,14 +2192,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (23)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!1001 &711632403
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -2189,14 +2253,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (10)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!1001 &766370226
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 492072745342511801, guid: e19f139b96f93964db31b0b60e75d8b9, type: 3}
@@ -2209,7 +2275,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2537876803322511370, guid: e19f139b96f93964db31b0b60e75d8b9, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2537876803322511370, guid: e19f139b96f93964db31b0b60e75d8b9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2256,14 +2322,19 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 492072745342511801, guid: e19f139b96f93964db31b0b60e75d8b9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 869937781}
   m_SourcePrefab: {fileID: 100100000, guid: e19f139b96f93964db31b0b60e75d8b9, type: 3}
 --- !u!1001 &769085661
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -2315,7 +2386,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (33)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!4 &773076423 stripped
 Transform:
@@ -2327,7 +2400,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
@@ -2379,14 +2452,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_Short_05 (5)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
 --- !u!1001 &840975985
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b96a20f265cd7484a8226c5cf269aedf, type: 3}
@@ -2438,14 +2513,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_02 (5)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b96a20f265cd7484a8226c5cf269aedf, type: 3}
 --- !u!1001 &852430790
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b96a20f265cd7484a8226c5cf269aedf, type: 3}
@@ -2497,14 +2574,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_02 (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b96a20f265cd7484a8226c5cf269aedf, type: 3}
 --- !u!1001 &856071784
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
@@ -2556,7 +2635,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_03 (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
 --- !u!1 &869937774 stripped
 GameObject:
@@ -2565,7 +2646,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &869937781
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2582,13 +2663,13 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1001 &879885545
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
@@ -2640,7 +2721,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_Short_05 (6)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
 --- !u!4 &895108080 stripped
 Transform:
@@ -2657,7 +2740,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 88292689}
     m_Modifications:
     - target: {fileID: 6626078228074374752, guid: ea9cf594dde776a4ebdad25157796112, type: 3}
@@ -2709,7 +2792,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea9cf594dde776a4ebdad25157796112, type: 3}
 --- !u!4 &898568605 stripped
 Transform:
@@ -2721,7 +2806,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -2773,14 +2858,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (4)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!1001 &920111480
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b96a20f265cd7484a8226c5cf269aedf, type: 3}
@@ -2832,14 +2919,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_02 (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b96a20f265cd7484a8226c5cf269aedf, type: 3}
 --- !u!1001 &926051918
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -2891,14 +2980,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (34)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!1001 &936538717
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b96a20f265cd7484a8226c5cf269aedf, type: 3}
@@ -2950,14 +3041,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_02 (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b96a20f265cd7484a8226c5cf269aedf, type: 3}
 --- !u!1001 &949316216
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -3009,14 +3102,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (18)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!1001 &953952370
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b96a20f265cd7484a8226c5cf269aedf, type: 3}
@@ -3068,7 +3163,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_02 (7)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b96a20f265cd7484a8226c5cf269aedf, type: 3}
 --- !u!4 &960538365 stripped
 Transform:
@@ -3100,7 +3197,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 397533716789919369, guid: 7fce0b26d15baee4bb49c4f6a27affd8, type: 3}
@@ -3117,7 +3214,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 397533716789919413, guid: 7fce0b26d15baee4bb49c4f6a27affd8, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 397533716789919413, guid: 7fce0b26d15baee4bb49c4f6a27affd8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3176,14 +3273,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 869937781}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7fce0b26d15baee4bb49c4f6a27affd8, type: 3}
 --- !u!1001 &1185024733
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
@@ -3235,7 +3334,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_03 (7)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
 --- !u!1 &1190376915
 GameObject:
@@ -3264,9 +3365,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1190376915}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1190376917
@@ -3339,7 +3448,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -3391,14 +3500,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (15)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!1001 &1193800468
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -3450,7 +3561,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!4 &1206847939 stripped
 Transform:
@@ -3462,7 +3575,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 247714441200815817, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
@@ -3481,13 +3594,61 @@ PrefabInstance:
       propertyPath: startAutomatically
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 521903565293069686, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 521903565293069686, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 521903565293069686, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 521903565293069686, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 521903565293069686, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 521903565293069686, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1054541336754862621, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1054541336754862621, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1054541336754862621, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1054541336754862621, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1054541336754862621, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1054541336754862621, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1507210881203439284, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
       propertyPath: m_Name
       value: TalkingTest
       objectReference: {fileID: 0}
     - target: {fileID: 2229466327454135498, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2229466327454135498, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3555,6 +3716,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2264260657633791861, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143128606988353164, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143128606988353164, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143128606988353164, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143128606988353164, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143128606988353164, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143128606988353164, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6426467420802608879, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
@@ -3666,14 +3851,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1507210881203439284, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1298782509}
   m_SourcePrefab: {fileID: 100100000, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
 --- !u!1001 &1230161077
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -3725,7 +3915,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!4 &1250010645 stripped
 Transform:
@@ -3742,7 +3934,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: a8aa66d6624b05e4c97993910f80e77e, type: 3}
@@ -3794,7 +3986,9 @@ PrefabInstance:
       value: Prop_Gothic_Abstract_Stepped_Circle_Decoration_01
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8aa66d6624b05e4c97993910f80e77e, type: 3}
 --- !u!1 &1298782505 stripped
 GameObject:
@@ -3828,7 +4022,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -3880,14 +4074,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (12)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!1001 &1307209138
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -3939,7 +4135,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (8)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!4 &1321855708 stripped
 Transform:
@@ -3951,7 +4149,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -4003,14 +4201,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (25)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!1001 &1337903799
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -4062,14 +4262,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (16)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!1001 &1343362311
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -4121,7 +4323,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (22)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!4 &1351032306 stripped
 Transform:
@@ -4133,7 +4337,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
@@ -4185,7 +4389,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_03
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
 --- !u!4 &1376024661 stripped
 Transform:
@@ -4197,7 +4403,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b96a20f265cd7484a8226c5cf269aedf, type: 3}
@@ -4249,7 +4455,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_02 (8)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b96a20f265cd7484a8226c5cf269aedf, type: 3}
 --- !u!4 &1394935720 stripped
 Transform:
@@ -4276,7 +4484,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
@@ -4328,7 +4536,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_Short_05 (12)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
 --- !u!4 &1467300940 stripped
 Transform:
@@ -4345,7 +4555,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 88292689}
     m_Modifications:
     - target: {fileID: 850644614561672070, guid: 21604db7188113d4aba60fdb7660313e, type: 3}
@@ -4397,7 +4607,9 @@ PrefabInstance:
       value: Baelor
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21604db7188113d4aba60fdb7660313e, type: 3}
 --- !u!4 &1498477478 stripped
 Transform:
@@ -4409,7 +4621,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
@@ -4461,7 +4673,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_03 (10)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
 --- !u!4 &1546840062 stripped
 Transform:
@@ -4483,7 +4697,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -4535,7 +4749,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (17)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!4 &1559421976 stripped
 Transform:
@@ -4547,7 +4763,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
@@ -4599,7 +4815,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_Short_05 (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
 --- !u!4 &1594307813 stripped
 Transform:
@@ -4611,7 +4829,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
@@ -4663,7 +4881,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_03 (6)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
 --- !u!4 &1618606715 stripped
 Transform:
@@ -4675,7 +4895,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
@@ -4727,7 +4947,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_Short_05 (8)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
 --- !u!4 &1627869944 stripped
 Transform:
@@ -4739,7 +4961,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
@@ -4791,14 +5013,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_03 (4)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
 --- !u!1001 &1647279212
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -4850,7 +5074,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!4 &1654781918 stripped
 Transform:
@@ -4872,7 +5098,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -4924,7 +5150,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (6)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!4 &1694910470 stripped
 Transform:
@@ -4941,7 +5169,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
@@ -4993,7 +5221,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_Short_05 (7)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f4a8a561bdd134f942120d730e1bd6, type: 3}
 --- !u!4 &1736926117 stripped
 Transform:
@@ -5005,7 +5235,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
@@ -5057,7 +5287,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_03 (8)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a6a9f3fdc6c5064e8c48adca98c7945, type: 3}
 --- !u!4 &1751564802 stripped
 Transform:
@@ -5069,7 +5301,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -5121,7 +5353,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (30)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!1 &1775814983
 GameObject:
@@ -5203,7 +5437,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1785898945 stripped
 Transform:
@@ -5308,14 +5542,14 @@ Transform:
   - {fileID: 1452695235}
   - {fileID: 1891675216}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1826610788
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -5367,7 +5601,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (11)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!4 &1864300285 stripped
 Transform:
@@ -5394,7 +5630,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -5446,36 +5682,21 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (9)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!4 &1965540765 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
   m_PrefabInstance: {fileID: 1307209138}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2027417598 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5110490933865610193, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-  m_PrefabInstance: {fileID: 1655450514074276385}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2027417599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2027417598}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a33d3e76df1ea1248ad8605828e2e732, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2056908202
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -5527,14 +5748,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (27)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!1001 &2061204309
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -5586,14 +5809,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (26)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!1001 &2062853824
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 88292689}
     m_Modifications:
     - target: {fileID: 850644614561672070, guid: b9f8d63456d6872448b2b9bb3e578c0b, type: 3}
@@ -5645,7 +5870,9 @@ PrefabInstance:
       value: Hero
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9f8d63456d6872448b2b9bb3e578c0b, type: 3}
 --- !u!4 &2062853825 stripped
 Transform:
@@ -5657,7 +5884,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -5709,7 +5936,9 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (5)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
 --- !u!4 &2128191695 stripped
 Transform:
@@ -5721,7 +5950,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1810260211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
@@ -5773,113 +6002,16 @@ PrefabInstance:
       value: Prop_Tile_Terrain_Dungeon_Gothic_Cobble_01 (14)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274b6b297ccd5274c96c044071d0d30b, type: 3}
---- !u!1001 &1655450514074276385
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 2
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 281142454181593434, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 281142454181593434, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -4.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 1520774226850445314, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: orthographic size
-      value: 3.69
-      objectReference: {fileID: 0}
-    - target: {fileID: 1667762923481478585, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: m_IsTrigger
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2531675061229377633, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4591095315821073496, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: dialogueHolder
-      value: 
-      objectReference: {fileID: 1298782505}
-    - target: {fileID: 5110490933865610193, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 6557641574997112675, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: Weapon
-      value: 
-      objectReference: {fileID: 1655450514074276386}
-    - target: {fileID: 7314863941168818304, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7314863941168818304, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -6.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7314863941168818304, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.13
-      objectReference: {fileID: 0}
-    - target: {fileID: 7314863941168818304, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -7.97
-      objectReference: {fileID: 0}
-    - target: {fileID: 7314863941168818304, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.92387956
-      objectReference: {fileID: 0}
-    - target: {fileID: 7314863941168818304, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7314863941168818304, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.38268343
-      objectReference: {fileID: 0}
-    - target: {fileID: 7314863941168818304, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7314863941168818304, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7314863941168818304, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 7314863941168818304, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2531675061229377633, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-    m_AddedGameObjects: []
-  m_SourcePrefab: {fileID: 100100000, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
---- !u!114 &1655450514074276386 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4974519811989461264, guid: c77d824ea2213034d8d93b7a6b70ee9f, type: 3}
-  m_PrefabInstance: {fileID: 1655450514074276385}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 695ab985bf0640a4080eb607e181d234, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2414798692876110161
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 492072745342511801, guid: e19f139b96f93964db31b0b60e75d8b9, type: 3}
@@ -5892,7 +6024,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2537876803322511370, guid: e19f139b96f93964db31b0b60e75d8b9, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2537876803322511370, guid: e19f139b96f93964db31b0b60e75d8b9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5939,5 +6071,7 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e19f139b96f93964db31b0b60e75d8b9, type: 3}
