@@ -21,6 +21,8 @@ public class Movement : MonoBehaviour
     private Transform pivot;
     FMOD.Studio.EventInstance footsteps;
 
+    private Dictionary<string, bool> parameterExists = new Dictionary<string, bool>();
+
     private void Awake()
     {
         footsteps = FMODUnity.RuntimeManager.CreateInstance("event:/Player SFX/PlayerFootstep");
@@ -28,6 +30,8 @@ public class Movement : MonoBehaviour
         myRigidbody = character.body.GetComponent<Rigidbody>();
         animator = character.animator;
         pivot = character.pivot;
+
+        parameterExists["run"] = animator.HasParameter("run");
     }
 
     public Vector2 getAttackVector()
@@ -67,17 +71,26 @@ public class Movement : MonoBehaviour
 
                 if (!hasFootsteps)
                 {
-                    animator.SetBool("run", true);
+                    SetAnimBool("run", true);
                     hasFootsteps = true;
+                    footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
                     footsteps.start();
                 }
             } 
             else if (hasFootsteps)
             {
-                animator.SetBool("run", false);
+                SetAnimBool("run", false);
                 hasFootsteps = false;
                 footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
+        }
+    }
+
+    private void SetAnimBool(string parameter, bool value)
+    {
+        if (parameterExists[parameter])
+        {
+            animator.SetBool(parameter, value);
         }
     }
 }
