@@ -7,8 +7,8 @@ public class GameController : MonoBehaviour
 {
     public Character playerCharacter;
     public List<Character> playableCharacters;
-    public Character curCharacter;
-    public UserInterface userInterface;
+    [HideInInspector] public Character curCharacter;
+    [HideInInspector] public UserInterface userInterface;
 
     private void Start()
     {
@@ -35,7 +35,13 @@ public class GameController : MonoBehaviour
 
     public void SetCharacter(int idx)
     {
+        print("Set Character: " + idx + " / " + playableCharacters.Count + " -> " + idx % (playableCharacters.Count));
+        if (curCharacter != null)
+        {
+            print(curCharacter.name);
+        }
         curCharacter = playableCharacters[idx % (playableCharacters.Count)];
+        print(curCharacter.name);
         userInterface.SetCharacter(curCharacter);
     }
 
