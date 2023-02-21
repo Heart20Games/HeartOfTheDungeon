@@ -33,7 +33,7 @@ Transform:
   - {fileID: 7653698587025269210}
   - {fileID: 5739940595592914766}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4214730573758056994
 MonoBehaviour:
@@ -186,7 +186,15 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2287295727684182060}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
@@ -208,14 +216,14 @@ MonoBehaviour:
   desiredTags:
   - Player
   onCollision:
-    onEnter:
+    enter:
       m_PersistentCalls:
         m_Calls: []
-    onExit:
+    exit:
       m_PersistentCalls:
         m_Calls: []
   onTrigger:
-    onEnter:
+    enter:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 7428074478537561858}
@@ -230,33 +238,9 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-    onExit:
+    exit:
       m_PersistentCalls:
         m_Calls: []
-  onTouch:
-    m_PersistentCalls:
-      m_Calls: []
-  onUnTouch:
-    m_PersistentCalls:
-      m_Calls: []
-  onEnter:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7428074478537561858}
-        m_TargetAssemblyTypeName: BounceBack, Assembly-CSharp
-        m_MethodName: Bounce
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onExit:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &7719120233215506911
 GameObject:
   m_ObjectHideFlags: 0
