@@ -26,10 +26,6 @@ public class Impact : MonoBehaviour
     {
         if (desiredTags.Contains(other.tag) && !touching.Contains(other))
         {
-            if (other.tag == "Player")
-            {
-                Debug.LogWarning("PlayerEntered");
-            }
             touching.Add(other);
             onEvent.Invoke();
         }
@@ -39,10 +35,6 @@ public class Impact : MonoBehaviour
     {
         if (desiredTags.Contains(other.tag))
         {
-            if (other.tag == "Player")
-            {
-                Debug.LogWarning("PlayerExited");
-            }
             if (touching.Contains(other))
             {
                 touching.Remove(other);

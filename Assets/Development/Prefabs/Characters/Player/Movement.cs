@@ -73,7 +73,8 @@ public class Movement : MonoBehaviour
                 {
                     SetAnimBool("run", true);
                     hasFootsteps = true;
-                    footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                    print("Start walking");
+                    //footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
                     footsteps.start();
                 }
             } 
@@ -81,6 +82,7 @@ public class Movement : MonoBehaviour
             {
                 SetAnimBool("run", false);
                 hasFootsteps = false;
+                print("Stop walking");
                 footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
         }
