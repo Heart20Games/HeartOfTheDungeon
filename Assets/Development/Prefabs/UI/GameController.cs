@@ -41,7 +41,9 @@ public class GameController : MonoBehaviour
         {
             print(curCharacter.name);
         }
+        curCharacter.SetControllable(false);
         curCharacter = playableCharacters[idx % (playableCharacters.Count)];
+        curCharacter.SetControllable(true);
         print(curCharacter.name);
         userInterface.SetCharacter(curCharacter);
         hud.CharacterSelect(idx);
