@@ -14,6 +14,8 @@ public class HUD : MonoBehaviour
     [SerializeField] private Image abilityMenu;
     [SerializeField] private bool abilityMenuActive = false;
     [SerializeField] private Animator abilityMenuAnimator;
+
+    enum CHAR { GOBKIN, ROTTA, OSSEUS }
     
     public Image selectedAbility;
 
@@ -21,87 +23,42 @@ public class HUD : MonoBehaviour
     {
         abilityMenuAnimator = abilityMenu.GetComponent<Animator>();
     }
-  
-    public void CharacterSelect(InputAction.CallbackContext context)
+
+    public void CharacterSelect(int idx)
     {
-        //Debug.Log("Target is: " + context.ReadValue<Vector2>());
-        if(context.performed)
-        {
-            
-            prevSelectedCharacter = selectedCharacter;
-            if(context.ReadValue<Vector2>().x < 0) // select Osseus
-            {
-                if(selectedCharacter == characterImages[2])
-                    return;
+        if (selectedCharacter == characterImages[idx])
+            return;
 
-                selectedCharacter = characterImages[2]; 
-                selectedCharacter.transform.SetAsLastSibling();
-                prevSelectedCharacter.transform.SetSiblingIndex(2);
-                abilityMenu.transform.SetAsFirstSibling();            
-                characterSelectAnimator.SetTrigger("SelectCharacter2");
-                
-                if(abilityMenuActive == true)
-                {
-                    abilityMenuAnimator.SetBool("AbilityMenuActive", false);
-                    abilityMenuActive = false;
-                    abilityMenu.transform.SetAsFirstSibling();    
-                }                
-            }
-            else if(context.ReadValue<Vector2>().x > 0) // select Rotta
-            {
-                if(selectedCharacter == characterImages[1])
-                    return;
+        prevSelectedCharacter = selectedCharacter;
 
-                selectedCharacter = characterImages[1]; 
-                selectedCharacter.transform.SetAsLastSibling();
-                prevSelectedCharacter.transform.SetSiblingIndex(2);
-                abilityMenu.transform.SetAsFirstSibling();
-                characterSelectAnimator.SetTrigger("SelectCharacter1");
-                
-                if(abilityMenuActive == true)
-                {
-                    abilityMenuAnimator.SetBool("AbilityMenuActive", false);
-                    abilityMenuActive = false;
-                    abilityMenu.transform.SetAsFirstSibling();    
-                }                
-            }
-            else if(context.ReadValue<Vector2>().y < 0) // select Gobkin
-            {
-                if(selectedCharacter == characterImages[0])
-                    return;
-                
-                selectedCharacter = characterImages[0]; 
-                selectedCharacter.transform.SetAsLastSibling();
-                prevSelectedCharacter.transform.SetSiblingIndex(2);
-                abilityMenu.transform.SetAsFirstSibling(); 
-                characterSelectAnimator.SetTrigger("SelectCharacter0");
-                
-                if(abilityMenuActive == true)
-                {
-                    abilityMenuAnimator.SetBool("AbilityMenuActive", false);
-                    abilityMenuActive = false;
-                    abilityMenu.transform.SetAsFirstSibling();    
-                }                        
-            }
-            else if(context.ReadValue<Vector2>().y > 0) // select dungeonAbilities
-            {
-                if(abilityMenuActive == true)
-                {
-                    abilityMenuAnimator.SetBool("AbilityMenuActive", false);
-                    abilityMenuActive = false;
-                    abilityMenu.transform.SetAsFirstSibling();
-                }    
-                else
-                {
-                    abilityMenuAnimator.SetBool("AbilityMenuActive", true); 
-                    abilityMenu.transform.SetAsLastSibling();
-                    abilityMenuActive = true;                   
-                }
-            }
-        }
-        
-        
+        selectedCharacter = characterImages[idx];
+        selectedCharacter.transform.SetAsLastSibling();
+        prevSelectedCharacter.transform.SetSiblingIndex(idx);
+        abilityMenu.transform.SetAsFirstSibling();
+        characterSelectAnimator.SetTrigger("SelectCharacter" + idx);
+
+        AbilitySelect(false);
     }
 
+    public void AbilityToggle()
+    {
+        AbilitySelect(!abilityMenuActive);
+    }
 
+    public void AbilitySelect(bool activate)
+    {
+        if (!abilityMenuActive && activate || abilityMenuActive && !activate)
+        {
+            abilityMenuAnimator.SetBool("AbilityMenuActive", activate);
+            abilityMenuActive = activate;
+            if (activate)
+            {
+                abilityMenu.transform.SetAsLastSibling();
+            }
+            else
+            {
+                abilityMenu.transform.SetAsFirstSibling();
+            }
+        }
+    }
 }
