@@ -5,12 +5,12 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 850644614561672070, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 850644614561672070, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: m_LocalRotation.w
@@ -53,11 +53,11 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
-      propertyPath: onTrigger.onExit.m_PersistentCalls.m_Calls.Array.size
+      propertyPath: onTrigger.exit.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
-      propertyPath: onTrigger.onEnter.m_PersistentCalls.m_Calls.Array.size
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
@@ -69,15 +69,19 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
-      propertyPath: onTrigger.onExit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      propertyPath: onTrigger.exit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
-      propertyPath: onTrigger.onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
-      propertyPath: onTrigger.onExit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      propertyPath: onTrigger.exit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5613266783506565697}
+    - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 5613266783506565697}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
@@ -85,37 +89,33 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
-      propertyPath: onTrigger.onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5613266783506565697}
+      propertyPath: onTrigger.exit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: ImpactEvents.onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+      propertyPath: onTrigger.exit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NotifyPlayerLeftInteractable
       objectReference: {fileID: 0}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: ImpactEvents.onExit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 5613266783506565697}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
-      propertyPath: onTrigger.onExit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NotifyPlayerEnteredInteractable
       objectReference: {fileID: 0}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: ImpactEvents.onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 5613266783506565697}
-    - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
-      propertyPath: onTrigger.onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
-      propertyPath: onTrigger.onExit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: NotifyPlayerLeftInteractable
-      objectReference: {fileID: 0}
-    - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
-      propertyPath: onTrigger.onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: NotifyPlayerEnteredInteractable
-      objectReference: {fileID: 0}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: ImpactEvents.onExit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -133,11 +133,11 @@ PrefabInstance:
       value: NotifyPlayerEnteredInteractable
       objectReference: {fileID: 0}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
-      propertyPath: onTrigger.onExit.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      propertyPath: onTrigger.exit.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Interactable, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
-      propertyPath: onTrigger.onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Interactable, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
@@ -149,11 +149,11 @@ PrefabInstance:
       value: Interactable, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
-      propertyPath: onTrigger.onExit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: onTrigger.exit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
-      propertyPath: onTrigger.onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 4413256440571499932, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
@@ -169,7 +169,12 @@ PrefabInstance:
       value: 0.94
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3324343490077819189, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5613266783506565697}
   m_SourcePrefab: {fileID: 100100000, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
 --- !u!1 &5621542780324872972 stripped
 GameObject:
