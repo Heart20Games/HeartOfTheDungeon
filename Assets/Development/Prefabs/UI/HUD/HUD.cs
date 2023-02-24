@@ -14,6 +14,7 @@ public class HUD : MonoBehaviour
     [SerializeField] private Image abilityMenu;
     [SerializeField] private bool abilityMenuActive = false;
     [SerializeField] private Animator abilityMenuAnimator;
+    private int selectedIdx = 0;
 
     enum CHAR { GOBKIN, ROTTA, OSSEUS }
     
@@ -30,6 +31,7 @@ public class HUD : MonoBehaviour
             return;
 
         prevSelectedCharacter = selectedCharacter;
+        selectedIdx = idx;
 
         selectedCharacter = characterImages[idx];
         selectedCharacter.transform.SetAsLastSibling();
@@ -42,7 +44,7 @@ public class HUD : MonoBehaviour
 
     public void AbilityToggle()
     {
-        AbilitySelect(!abilityMenuActive);
+        AbilitySelect(!abilityMenuActive && selectedIdx==0);
     }
 
     public void AbilitySelect(bool activate)
