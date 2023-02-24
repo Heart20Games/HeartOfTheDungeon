@@ -28,4 +28,5 @@ public class Ability : MonoBehaviour, ICastable
         }
     }
     public bool CanCast() { return true; }
+    public void UnEquip() { Destroy(gameObject); }
 }

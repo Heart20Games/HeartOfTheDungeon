@@ -112,6 +112,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9104755598543999528}
   - component: {fileID: 5879095054503257125}
+  - component: {fileID: 8229274895447285697}
   m_Layer: 0
   m_Name: UserInterface
   m_TagString: Untagged
@@ -221,11 +222,40 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 8a9196ac-13e1-4851-a4d9-3ba9334e90a3
     m_ActionName: Dialogue/Back[/DualSenseGamepadHID/buttonEast,/Keyboard/backspace]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c2b927cd-76e6-4070-878c-27e5f2a3d228
+    m_ActionName: GroundMovement/Switch Character Right
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d6550c58-45d5-4fde-b826-b51adc9d2fe0
+    m_ActionName: GroundMovement/Switch Character Center
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b078f247-3f63-4992-bcfe-0202b328d762
+    m_ActionName: GroundMovement/ToggleFollowers
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b7a22a2d-9eb5-4675-a18a-bd28587fe8fd
+    m_ActionName: GroundMovement/Test
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Dialogue
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &8229274895447285697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5228559661474112977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2db2e04eb6063fe44a4c0b9b1bba6539, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controlledCharacter: {fileID: 0}
 --- !u!1 &5361198058841974356
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,6 +316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
   m_XRTrackingOrigin: {fileID: 0}
@@ -308,7 +339,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 1363493481069434397}
     m_Modifications:
     - target: {fileID: 521903565293069686, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
@@ -609,7 +640,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5100788739113593643, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
 --- !u!114 &4146323173656492999 stripped
 MonoBehaviour:

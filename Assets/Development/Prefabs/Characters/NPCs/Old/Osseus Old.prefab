@@ -131,9 +131,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6626078228074374752}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &6546347817729966954
@@ -144,9 +152,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6626078228074374752}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 1.12, y: 1, z: 1.09}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4611843160307934568
@@ -161,13 +177,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetNode: OsseusAfterIntro
+  desiredTags: []
+  onTouch:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnTouch:
+    m_PersistentCalls:
+      m_Calls: []
+  onEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &458234060740588353
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 7396115268431818895}
     m_Modifications:
     - target: {fileID: 1182968771057702655, guid: c3a59ef7e27fb8f468dace5ef2a207fd, type: 3}
@@ -186,6 +214,10 @@ PrefabInstance:
       propertyPath: m_SpriteSortPoint
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2149301156275632676, guid: c3a59ef7e27fb8f468dace5ef2a207fd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     - target: {fileID: 2164828374840982240, guid: c3a59ef7e27fb8f468dace5ef2a207fd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.720001
@@ -198,6 +230,10 @@ PrefabInstance:
       propertyPath: m_SpriteSortPoint
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2324123411408502665, guid: c3a59ef7e27fb8f468dace5ef2a207fd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     - target: {fileID: 3365391213739940694, guid: c3a59ef7e27fb8f468dace5ef2a207fd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -214,6 +250,10 @@ PrefabInstance:
       propertyPath: m_SpriteSortPoint
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4505942635599554307, guid: c3a59ef7e27fb8f468dace5ef2a207fd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     - target: {fileID: 5411839657659711550, guid: c3a59ef7e27fb8f468dace5ef2a207fd, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -282,6 +322,10 @@ PrefabInstance:
       propertyPath: m_SpriteSortPoint
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6289483732652708090, guid: c3a59ef7e27fb8f468dace5ef2a207fd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     - target: {fileID: 8192002109733744782, guid: c3a59ef7e27fb8f468dace5ef2a207fd, type: 3}
       propertyPath: m_SortingOrder
       value: 0
@@ -290,6 +334,10 @@ PrefabInstance:
       propertyPath: m_SpriteSortPoint
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8192002109733744782, guid: c3a59ef7e27fb8f468dace5ef2a207fd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     - target: {fileID: 8932566283376135562, guid: c3a59ef7e27fb8f468dace5ef2a207fd, type: 3}
       propertyPath: m_SortingOrder
       value: 0
@@ -298,8 +346,14 @@ PrefabInstance:
       propertyPath: m_SpriteSortPoint
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8932566283376135562, guid: c3a59ef7e27fb8f468dace5ef2a207fd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3a59ef7e27fb8f468dace5ef2a207fd, type: 3}
 --- !u!4 &5566816434669007743 stripped
 Transform:
