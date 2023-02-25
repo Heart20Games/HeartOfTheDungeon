@@ -2365,7 +2365,7 @@ GameObject:
   m_Component:
   - component: {fileID: 919942034}
   - component: {fileID: 919942035}
-  - component: {fileID: 919942033}
+  - component: {fileID: 919942037}
   m_Layer: 0
   m_Name: FMODManager
   m_TagString: Untagged
@@ -2373,36 +2373,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &919942033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919942032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: -1526573136
-      Data2: 1285336361
-      Data3: 195301544
-      Data4: 957431870
-    Path: event:/UI/UI_Button_Hover_High
-  Event: 
-  PlayEvent: 0
-  StopEvent: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!4 &919942034
 Transform:
   m_ObjectHideFlags: 0
@@ -2416,6 +2386,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1312190613}
+  - {fileID: 1028882776}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2437,6 +2408,18 @@ MonoBehaviour:
   - Master
   CollisionTag: 
   PreloadSamples: 0
+--- !u!114 &919942037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919942032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d26e83e53b19e62469a39c2a92901175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &959730910
 GameObject:
   m_ObjectHideFlags: 0
@@ -2752,6 +2735,92 @@ Transform:
   m_Father: {fileID: 650640749}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 55.371, z: 0}
+--- !u!1 &1028882775
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1028882776}
+  - component: {fileID: 1028882777}
+  m_Layer: 0
+  m_Name: FmodEventReferences
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1028882776
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028882775}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 919942034}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1028882777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028882775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 173fa66040751714cb53df6ca06f6d89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <UIHoverLow>k__BackingField:
+    Guid:
+      Data1: 139307074
+      Data2: 1261290750
+      Data3: 1049362339
+      Data4: -1700882195
+    Path: event:/UI/UI_Button_Hover_Low
+  <UIHoverHigh>k__BackingField:
+    Guid:
+      Data1: -1526573136
+      Data2: 1285336361
+      Data3: 195301544
+      Data4: 957431870
+    Path: event:/UI/UI_Button_Hover_High
+  <UISelectHigh>k__BackingField:
+    Guid:
+      Data1: -552432160
+      Data2: 1180046914
+      Data3: -1482822749
+      Data4: 668195555
+    Path: event:/UI/UI_Button_Select_High
+  <UIMenuSelect>k__BackingField:
+    Guid:
+      Data1: 871419580
+      Data2: 1094333375
+      Data3: -336072034
+      Data4: -35546365
+    Path: event:/UI/UI_Menu_Select
+  <UIMenuSwipe>k__BackingField:
+    Guid:
+      Data1: -88708400
+      Data2: 1321886407
+      Data3: 379652225
+      Data4: -473811388
+    Path: event:/UI/UI_Menu_Swipe
+  <FloorPlate>k__BackingField:
+    Guid:
+      Data1: -858435358
+      Data2: 1209402568
+      Data3: -383751533
+      Data4: -2024079520
+    Path: event:/Traps/TriggerTrapPlate
 --- !u!1 &1043654883
 GameObject:
   m_ObjectHideFlags: 0

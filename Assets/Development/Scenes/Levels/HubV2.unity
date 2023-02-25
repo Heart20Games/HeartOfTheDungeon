@@ -516,6 +516,92 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5283177243289135445, guid: a2d6365c00ea280459bd5b6173e7d74e, type: 3}
   m_PrefabInstance: {fileID: 293339662}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &318793230
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 318793231}
+  - component: {fileID: 318793232}
+  m_Layer: 0
+  m_Name: FmodEventReferences
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &318793231
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 318793230}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1679888924}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &318793232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 318793230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 173fa66040751714cb53df6ca06f6d89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <UIHoverLow>k__BackingField:
+    Guid:
+      Data1: 139307074
+      Data2: 1261290750
+      Data3: 1049362339
+      Data4: -1700882195
+    Path: event:/UI/UI_Button_Hover_Low
+  <UIHoverHigh>k__BackingField:
+    Guid:
+      Data1: -1526573136
+      Data2: 1285336361
+      Data3: 195301544
+      Data4: 957431870
+    Path: event:/UI/UI_Button_Hover_High
+  <UISelectHigh>k__BackingField:
+    Guid:
+      Data1: -552432160
+      Data2: 1180046914
+      Data3: -1482822749
+      Data4: 668195555
+    Path: event:/UI/UI_Button_Select_High
+  <UIMenuSelect>k__BackingField:
+    Guid:
+      Data1: 871419580
+      Data2: 1094333375
+      Data3: -336072034
+      Data4: -35546365
+    Path: event:/UI/UI_Menu_Select
+  <UIMenuSwipe>k__BackingField:
+    Guid:
+      Data1: -88708400
+      Data2: 1321886407
+      Data3: 379652225
+      Data4: -473811388
+    Path: event:/UI/UI_Menu_Swipe
+  <FloorPlate>k__BackingField:
+    Guid:
+      Data1: -858435358
+      Data2: 1209402568
+      Data3: -383751533
+      Data4: -2024079520
+    Path: event:/Traps/TriggerTrapPlate
 --- !u!1 &322163875
 GameObject:
   m_ObjectHideFlags: 0
@@ -1834,6 +1920,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6455188901295713305, guid: 11d1eb7139457d34b8c327bd0a6a35a1, type: 3}
+      propertyPath: onCollision.enter.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1879,6 +1969,162 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &733476577
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 733476578}
+  - component: {fileID: 733476580}
+  - component: {fileID: 733476579}
+  - component: {fileID: 733476582}
+  - component: {fileID: 733476581}
+  m_Layer: 0
+  m_Name: MusicAndAmbiPlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &733476578
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733476577}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1679888924}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &733476579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733476577}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -498541007
+      Data2: 1308188436
+      Data3: -1127252049
+      Data4: 1370338120
+    Path: event:/Ambi/SkeletonAmbience
+  Event: 
+  PlayEvent: 1
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &733476580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733476577}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 374767545
+      Data2: 1296384551
+      Data3: -1761326934
+      Data4: -1711590127
+    Path: event:/Music/Skeleton Faction Theme
+  Event: 
+  PlayEvent: 1
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &733476581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733476577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -775219946
+      Data2: 1255018490
+      Data3: -1896293224
+      Data4: 26684270
+    Path: event:/Ambience, Restaurant & Bar, Foodcourt, Oslo, Mathallen, Ventilation,
+      Light Activity, Very Few People 05 SND44028
+  Event: 
+  PlayEvent: 1
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &733476582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733476577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1261288714
+      Data2: 1231370723
+      Data3: 2078525361
+      Data4: -1829845331
+    Path: event:/Music/Hub Theme
+  Event: 
+  PlayEvent: 1
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!4 &974793715 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6527890370181070579, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
@@ -2186,8 +2432,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1021822975}
   - component: {fileID: 1021822977}
-  - component: {fileID: 1021822976}
-  - component: {fileID: 1021822978}
   m_Layer: 0
   m_Name: FMODaudio
   m_TagString: Untagged
@@ -2210,36 +2454,6 @@ Transform:
   m_Father: {fileID: 1680763780}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1021822976
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1021822974}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 1261288714
-      Data2: 1231370723
-      Data3: 2078525361
-      Data4: -1829845331
-    Path: event:/Music/Hub Theme
-  Event: 
-  PlayEvent: 1
-  StopEvent: 2
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!114 &1021822977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2258,37 +2472,6 @@ MonoBehaviour:
   - MainBank
   CollisionTag: 
   PreloadSamples: 0
---- !u!114 &1021822978
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1021822974}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: -775219946
-      Data2: 1255018490
-      Data3: -1896293224
-      Data4: 26684270
-    Path: event:/Ambience, Restaurant & Bar, Foodcourt, Oslo, Mathallen, Ventilation,
-      Light Activity, Very Few People 05 SND44028
-  Event: 
-  PlayEvent: 1
-  StopEvent: 2
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!1001 &1029752047
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2698,11 +2881,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1509572147}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.831901, y: -8.507795, z: -10.432967}
+  m_LocalPosition: {x: -31.838198, y: -14.687394, z: 3.5745192}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1680763780}
+  m_Father: {fileID: 1679888924}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1622189643
@@ -2781,6 +2964,72 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ee1fc072d87d15439ef67547a1defd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1679888921
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1679888924}
+  - component: {fileID: 1679888923}
+  - component: {fileID: 1679888922}
+  m_Layer: 0
+  m_Name: FMODManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1679888922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679888921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d26e83e53b19e62469a39c2a92901175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1679888923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679888921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9468c5f457ace64f8d4df6d642b107f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LoadEvent: 1
+  UnloadEvent: 2
+  Banks:
+  - Master
+  CollisionTag: 
+  PreloadSamples: 0
+--- !u!4 &1679888924
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679888921}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 25.738197, y: 17.707394, z: -11.544519}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 733476578}
+  - {fileID: 318793231}
+  - {fileID: 1509572149}
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1680763779
 GameObject:
   m_ObjectHideFlags: 0
@@ -2810,7 +3059,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 397533716879282154}
-  - {fileID: 1509572149}
   - {fileID: 1021822975}
   m_Father: {fileID: 0}
   m_RootOrder: 4
