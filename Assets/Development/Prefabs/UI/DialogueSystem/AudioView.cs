@@ -51,12 +51,7 @@ public class AudioView : DialogueViewBase
         string clean = dialogueLine.TextID.Remove(4, 1);
         if (!skip)
         {
-            Debug.Log("Play Line");
             instance.setParameterByNameWithLabel("IntroVOParam", clean); // IntroVOParam is on the Intro Scene even (Fmod event)
-        }
-        else
-        {
-            Debug.Log("Skip Line");
         }
         instance.start();
     }

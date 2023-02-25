@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour
     [HideInInspector] public Character curCharacter;
     [HideInInspector] public UserInterface userInterface;
     [HideInInspector] public HUD hud;
+    private int curCharIdx = 0;
 
     private void Start()
     {
@@ -36,26 +37,29 @@ public class GameController : MonoBehaviour
 
     public void SetCharacter(int idx)
     {
-        print("Set Character: " + idx + " / " + playableCharacters.Count + " -> " + idx % (playableCharacters.Count));
-        if (curCharacter != null)
-        {
-            print(curCharacter.name);
-        }
+        idx = idx < 0 ? playableCharacters.Count + idx : idx;
         curCharacter.SetControllable(false);
-        curCharacter = playableCharacters[idx % (playableCharacters.Count)];
+        curCharIdx = idx % (playableCharacters.Count);
+        Debug.LogWarning("Character Index: " + curCharIdx);
+        curCharacter = playableCharacters[curCharIdx];
         curCharacter.SetControllable(true);
-        print(curCharacter.name);
         userInterface.SetCharacter(curCharacter);
-        hud.CharacterSelect(idx);
+        hud.CharacterSelect(curCharIdx);
     }
 
 
     // Actions
 
-    public void OnMovement(InputValue inputValue)
+    public void OnMove(InputValue inputValue)
     {
         Vector2 inputVector = inputValue.Get<Vector2>();
         curCharacter.MoveCharacter(inputVector);
+    }
+
+    public void OnAim(InputValue inputValue)
+    {
+        Vector2 inputVector = inputValue.Get<Vector2>();
+        curCharacter.AimCharacter(inputVector);
     }
 
     public void SetCharacterInput(InputValue inputValue, int idx)
@@ -79,6 +83,16 @@ public class GameController : MonoBehaviour
     public void OnSwitchCharacterCenter(InputValue inputValue)
     {
         SetCharacterInput(inputValue, 0);
+    }
+
+    public void OnCycleCharacterLeft(InputValue inputValue)
+    {
+        SetCharacterInput(inputValue, curCharIdx - 1);
+    }
+
+    public void OnCycleCharacterRight(InputValue inputValue)
+    {
+        SetCharacterInput(inputValue, curCharIdx + 1);
     }
 
     public void OnSwitchSecondary(InputValue inputValue)
@@ -117,6 +131,7 @@ public class GameController : MonoBehaviour
     {
         if (inputValue.isPressed)
         {
+            print("Interact");
             curCharacter.Interact();
         }
     }

@@ -28,7 +28,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ""id"": ""68936ce1-7dac-4e3a-afbc-8dc23e83038f"",
             ""actions"": [
                 {
-                    ""name"": ""Movement"",
+                    ""name"": ""Move"",
                     ""type"": ""PassThrough"",
                     ""id"": ""5afb2a4c-38f9-42a6-95bb-f9788364c85c"",
                     ""expectedControlType"": ""Vector2"",
@@ -143,6 +143,33 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Aim"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""bde91a51-f0b0-4f69-93df-953a75e9bcf7"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cycle Character Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""1fbf7a26-cc4a-444e-9128-e1a1de4db185"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cycle Character Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""28d5642f-5d6c-4406-8eb3-63001598f40e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -153,7 +180,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""Move"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -164,7 +191,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -175,7 +202,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -186,7 +213,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -197,7 +224,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -208,7 +235,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""Move"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -219,7 +246,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": ""AxisDeadzone"",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -230,7 +257,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": ""AxisDeadzone"",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -241,7 +268,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": ""AxisDeadzone"",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -252,7 +279,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": ""AxisDeadzone"",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -429,6 +456,83 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Test"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""d84240aa-b9af-4a6d-908f-32d3a41b629c"",
+                    ""path"": ""2DVector(mode=2)"",
+                    ""interactions"": """",
+                    ""processors"": ""NormalizeVector2"",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""6423447a-5a01-4921-b0bf-7e10cfa62c17"",
+                    ""path"": ""<Gamepad>/rightStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""58b2e1bc-d351-43c5-8046-ec5584315c11"",
+                    ""path"": ""<Gamepad>/rightStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""7b679475-9381-4296-a569-1ee6ea3efae4"",
+                    ""path"": ""<Gamepad>/rightStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""36c99ed9-8ab0-4ac2-bd2e-4b1f31419191"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8287fb4-91cc-4b5d-be87-8e5f488a6b68"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cycle Character Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6e9d5f66-f770-4f06-a982-e5150d1428ae"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cycle Character Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -628,7 +732,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
 }");
         // GroundMovement
         m_GroundMovement = asset.FindActionMap("GroundMovement", throwIfNotFound: true);
-        m_GroundMovement_Movement = m_GroundMovement.FindAction("Movement", throwIfNotFound: true);
+        m_GroundMovement_Move = m_GroundMovement.FindAction("Move", throwIfNotFound: true);
         m_GroundMovement_DieTest = m_GroundMovement.FindAction("DieTest", throwIfNotFound: true);
         m_GroundMovement_Interact = m_GroundMovement.FindAction("Interact", throwIfNotFound: true);
         m_GroundMovement_CastPrimary = m_GroundMovement.FindAction("Cast Primary", throwIfNotFound: true);
@@ -641,6 +745,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_GroundMovement_SwitchCharacterCenter = m_GroundMovement.FindAction("Switch Character Center", throwIfNotFound: true);
         m_GroundMovement_ToggleFollowers = m_GroundMovement.FindAction("ToggleFollowers", throwIfNotFound: true);
         m_GroundMovement_Test = m_GroundMovement.FindAction("Test", throwIfNotFound: true);
+        m_GroundMovement_Aim = m_GroundMovement.FindAction("Aim", throwIfNotFound: true);
+        m_GroundMovement_CycleCharacterLeft = m_GroundMovement.FindAction("Cycle Character Left", throwIfNotFound: true);
+        m_GroundMovement_CycleCharacterRight = m_GroundMovement.FindAction("Cycle Character Right", throwIfNotFound: true);
         // Dialogue
         m_Dialogue = asset.FindActionMap("Dialogue", throwIfNotFound: true);
         m_Dialogue_Continue = m_Dialogue.FindAction("Continue", throwIfNotFound: true);
@@ -707,7 +814,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     // GroundMovement
     private readonly InputActionMap m_GroundMovement;
     private List<IGroundMovementActions> m_GroundMovementActionsCallbackInterfaces = new List<IGroundMovementActions>();
-    private readonly InputAction m_GroundMovement_Movement;
+    private readonly InputAction m_GroundMovement_Move;
     private readonly InputAction m_GroundMovement_DieTest;
     private readonly InputAction m_GroundMovement_Interact;
     private readonly InputAction m_GroundMovement_CastPrimary;
@@ -720,11 +827,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_GroundMovement_SwitchCharacterCenter;
     private readonly InputAction m_GroundMovement_ToggleFollowers;
     private readonly InputAction m_GroundMovement_Test;
+    private readonly InputAction m_GroundMovement_Aim;
+    private readonly InputAction m_GroundMovement_CycleCharacterLeft;
+    private readonly InputAction m_GroundMovement_CycleCharacterRight;
     public struct GroundMovementActions
     {
         private @PlayerControls m_Wrapper;
         public GroundMovementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Movement => m_Wrapper.m_GroundMovement_Movement;
+        public InputAction @Move => m_Wrapper.m_GroundMovement_Move;
         public InputAction @DieTest => m_Wrapper.m_GroundMovement_DieTest;
         public InputAction @Interact => m_Wrapper.m_GroundMovement_Interact;
         public InputAction @CastPrimary => m_Wrapper.m_GroundMovement_CastPrimary;
@@ -737,6 +847,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @SwitchCharacterCenter => m_Wrapper.m_GroundMovement_SwitchCharacterCenter;
         public InputAction @ToggleFollowers => m_Wrapper.m_GroundMovement_ToggleFollowers;
         public InputAction @Test => m_Wrapper.m_GroundMovement_Test;
+        public InputAction @Aim => m_Wrapper.m_GroundMovement_Aim;
+        public InputAction @CycleCharacterLeft => m_Wrapper.m_GroundMovement_CycleCharacterLeft;
+        public InputAction @CycleCharacterRight => m_Wrapper.m_GroundMovement_CycleCharacterRight;
         public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -746,9 +859,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_GroundMovementActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_GroundMovementActionsCallbackInterfaces.Add(instance);
-            @Movement.started += instance.OnMovement;
-            @Movement.performed += instance.OnMovement;
-            @Movement.canceled += instance.OnMovement;
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
             @DieTest.started += instance.OnDieTest;
             @DieTest.performed += instance.OnDieTest;
             @DieTest.canceled += instance.OnDieTest;
@@ -785,13 +898,22 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Test.started += instance.OnTest;
             @Test.performed += instance.OnTest;
             @Test.canceled += instance.OnTest;
+            @Aim.started += instance.OnAim;
+            @Aim.performed += instance.OnAim;
+            @Aim.canceled += instance.OnAim;
+            @CycleCharacterLeft.started += instance.OnCycleCharacterLeft;
+            @CycleCharacterLeft.performed += instance.OnCycleCharacterLeft;
+            @CycleCharacterLeft.canceled += instance.OnCycleCharacterLeft;
+            @CycleCharacterRight.started += instance.OnCycleCharacterRight;
+            @CycleCharacterRight.performed += instance.OnCycleCharacterRight;
+            @CycleCharacterRight.canceled += instance.OnCycleCharacterRight;
         }
 
         private void UnregisterCallbacks(IGroundMovementActions instance)
         {
-            @Movement.started -= instance.OnMovement;
-            @Movement.performed -= instance.OnMovement;
-            @Movement.canceled -= instance.OnMovement;
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
             @DieTest.started -= instance.OnDieTest;
             @DieTest.performed -= instance.OnDieTest;
             @DieTest.canceled -= instance.OnDieTest;
@@ -828,6 +950,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Test.started -= instance.OnTest;
             @Test.performed -= instance.OnTest;
             @Test.canceled -= instance.OnTest;
+            @Aim.started -= instance.OnAim;
+            @Aim.performed -= instance.OnAim;
+            @Aim.canceled -= instance.OnAim;
+            @CycleCharacterLeft.started -= instance.OnCycleCharacterLeft;
+            @CycleCharacterLeft.performed -= instance.OnCycleCharacterLeft;
+            @CycleCharacterLeft.canceled -= instance.OnCycleCharacterLeft;
+            @CycleCharacterRight.started -= instance.OnCycleCharacterRight;
+            @CycleCharacterRight.performed -= instance.OnCycleCharacterRight;
+            @CycleCharacterRight.canceled -= instance.OnCycleCharacterRight;
         }
 
         public void RemoveCallbacks(IGroundMovementActions instance)
@@ -909,7 +1040,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     public DialogueActions @Dialogue => new DialogueActions(this);
     public interface IGroundMovementActions
     {
-        void OnMovement(InputAction.CallbackContext context);
+        void OnMove(InputAction.CallbackContext context);
         void OnDieTest(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnCastPrimary(InputAction.CallbackContext context);
@@ -922,6 +1053,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSwitchCharacterCenter(InputAction.CallbackContext context);
         void OnToggleFollowers(InputAction.CallbackContext context);
         void OnTest(InputAction.CallbackContext context);
+        void OnAim(InputAction.CallbackContext context);
+        void OnCycleCharacterLeft(InputAction.CallbackContext context);
+        void OnCycleCharacterRight(InputAction.CallbackContext context);
     }
     public interface IDialogueActions
     {

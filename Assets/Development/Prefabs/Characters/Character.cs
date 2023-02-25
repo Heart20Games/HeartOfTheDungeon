@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,6 +12,7 @@ public class Character : MonoBehaviour, IDamageable
     public Transform weaponHand;
     public Transform moveReticle;
     public HealthbarUI healthBarUI;
+    public CinemachineVirtualCamera virtualCamera;
     [HideInInspector] public Movement movement;
     [HideInInspector] public Interactor interactor;
     [HideInInspector] public PlayerAttack attacker;
@@ -38,6 +40,10 @@ public class Character : MonoBehaviour, IDamageable
         movement = GetComponent<Movement>();
         interactor = GetComponent<Interactor>();
         attacker = GetComponent<PlayerAttack>();
+        if (movement != null)
+        {
+            movement.OnSetCastVector.AddListener(OnCastVectorChanged);
+        }
         SetControllable(false);
     }
 
@@ -49,6 +55,14 @@ public class Character : MonoBehaviour, IDamageable
     }
 
 
+    // Aiming
+
+    public void OnCastVectorChanged()
+    {
+        moveReticle.SetRotationWithVector(movement.castVector);
+    }
+
+
     // State
 
     public void SetControllable(bool _controllable)
@@ -56,9 +70,15 @@ public class Character : MonoBehaviour, IDamageable
         controllable = _controllable;
         movement.canMove = controllable;
         attacker.active = controllable;
-        if (moveReticle != null)
+        SetGameObjectActive(moveReticle, _controllable);
+        SetGameObjectActive(virtualCamera, _controllable);
+    }
+
+    public void SetGameObjectActive(Component component, bool _active)
+    {
+        if (component != null)
         {
-            moveReticle.gameObject.SetActive(_controllable);
+            component.gameObject.SetActive(_active);
         }
     }
 
@@ -115,17 +135,26 @@ public class Character : MonoBehaviour, IDamageable
             castable.UnEquip();
         }
 
-        if (primary)
+        if (loadout != null)
         {
-            weaponIdx = (weaponIdx + 1) % loadout.weapons.Count;
-            weapon = Instantiate(loadout.weapons[weaponIdx], transform);
-            weapon.Initialize(this);
-        }
-        else
-        {
-            abilityIdx = (abilityIdx + 1) % loadout.abilities.Count;
-            ability = Instantiate(loadout.abilities[abilityIdx], transform);
-            ability.Initialize(this);
+            if (primary)
+            {
+                if (loadout.weapons.Count > 0)
+                {
+                    weaponIdx = (weaponIdx + 1) % loadout.weapons.Count;
+                    weapon = Instantiate(loadout.weapons[weaponIdx], transform);
+                    weapon.Initialize(this);
+                }
+            }
+            else
+            {
+                if (loadout.abilities.Count > 0)
+                {
+                    abilityIdx = (abilityIdx + 1) % loadout.abilities.Count;
+                    ability = Instantiate(loadout.abilities[abilityIdx], transform);
+                    ability.Initialize(this);
+                }
+            }
         }
     }
 
@@ -134,13 +163,14 @@ public class Character : MonoBehaviour, IDamageable
         if (attacker != null && attacker.active)
         {
             attacker.Castable = castable;
-            attacker.Slashie(movement.getAttackVector());
+            attacker.Slashie(movement.castVector);
         }
     }
 
 
     // Actions
-    public void MoveCharacter(Vector2 input) { movement.SetInputVector(input); }
+    public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); }
+    public void AimCharacter(Vector2 input) { movement.SetAimVector(input); }
     public void ChangeAbility() { ChangeCastable(false); }
     public void ChangeWeapon() { ChangeCastable(true); }
     public void ActivateWeapon() { ActivateCastable(weapon); }
