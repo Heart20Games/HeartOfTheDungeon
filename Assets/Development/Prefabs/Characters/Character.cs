@@ -38,6 +38,10 @@ public class Character : MonoBehaviour, IDamageable
         movement = GetComponent<Movement>();
         interactor = GetComponent<Interactor>();
         attacker = GetComponent<PlayerAttack>();
+        if (movement != null)
+        {
+            movement.OnSetCastVector.AddListener(OnCastVectorChanged);
+        }
         SetControllable(false);
     }
 
@@ -46,6 +50,17 @@ public class Character : MonoBehaviour, IDamageable
         currentHealth = startingHealth;
         InitializeCastables();
         UpdateHealthUI();
+    }
+
+
+    // Aiming
+
+    public void OnCastVectorChanged()
+    {
+        if (movement.castVector.magnitude > 0)
+        {
+            moveReticle.SetRotationWithVector(movement.castVector);
+        }
     }
 
 
@@ -134,13 +149,14 @@ public class Character : MonoBehaviour, IDamageable
         if (attacker != null && attacker.active)
         {
             attacker.Castable = castable;
-            attacker.Slashie(movement.getAttackVector());
+            attacker.Slashie(movement.castVector);
         }
     }
 
 
     // Actions
-    public void MoveCharacter(Vector2 input) { movement.SetInputVector(input); }
+    public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); }
+    public void AimCharacter(Vector2 input) { movement.SetAimVector(input); }
     public void ChangeAbility() { ChangeCastable(false); }
     public void ChangeWeapon() { ChangeCastable(true); }
     public void ActivateWeapon() { ActivateCastable(weapon); }

@@ -52,10 +52,16 @@ public class GameController : MonoBehaviour
 
     // Actions
 
-    public void OnMovement(InputValue inputValue)
+    public void OnMove(InputValue inputValue)
     {
         Vector2 inputVector = inputValue.Get<Vector2>();
         curCharacter.MoveCharacter(inputVector);
+    }
+
+    public void OnAim(InputValue inputValue)
+    {
+        Vector2 inputVector = inputValue.Get<Vector2>();
+        curCharacter.AimCharacter(inputVector);
     }
 
     public void SetCharacterInput(InputValue inputValue, int idx)
