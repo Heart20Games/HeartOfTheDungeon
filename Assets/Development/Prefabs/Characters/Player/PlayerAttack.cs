@@ -27,12 +27,12 @@ public class PlayerAttack : MonoBehaviour
             float pMag = Mathf.Abs(pivot.localScale.x);
             float sign = attackVector.x < 0 ? -1 : 1;
             pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
-            //if (Mathf.Abs(attackVector.x) > 0.5f || Mathf.Abs(attackVector.y) > 0.5f)
-            //{
-            //    weapRotation = Vector3.right * -attackVector.x + Vector3.forward * -attackVector.y;
-            //}
+            if (Mathf.Abs(attackVector.x) > 0.5f || Mathf.Abs(attackVector.y) > 0.5f)
+            {
+                weapRotation = Vector3.right * -attackVector.x + Vector3.forward * -attackVector.y;
+            }
             animator.SetTrigger("attack");
-            Castable.Cast(attackVector);//weapRotation); // uses last rotation if not moving
+            Castable.Cast(weapRotation); // uses last rotation if not moving
         }
     }
 }

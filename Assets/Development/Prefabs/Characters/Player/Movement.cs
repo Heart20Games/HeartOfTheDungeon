@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
@@ -14,9 +13,7 @@ public class Movement : MonoBehaviour
     public bool canMove = true;
     private bool hasFootsteps = false;
 
-    private Vector2 moveVector = new Vector2(0,0);
-    private Vector2 aimVector = new Vector2(0, 0);
-    public Vector2 castVector = new Vector2(0, 0);
+    private Vector2 MovementVector = new Vector2(0,0);
 
     private Rigidbody myRigidbody;
     private Character character;
@@ -25,9 +22,6 @@ public class Movement : MonoBehaviour
     FMOD.Studio.EventInstance footsteps;
 
     private Dictionary<string, bool> parameterExists = new Dictionary<string, bool>();
-
-    public UnityEvent OnSetCastVector;
-    public UnityEvent OnSetMoveVector;
 
     private void Awake()
     {
@@ -40,31 +34,16 @@ public class Movement : MonoBehaviour
         parameterExists["run"] = animator.HasParameter("run");
     }
 
-
-    // Vectors
-
-    //public Vector2 GetCastVector()
-    //{
-    //    Vector3 center = new Vector3(Screen.width, Screen.height, 0) / 2;
-    //    return (Input.mousePosition - center).normalized;
-    //}
-
-    public void UpdateCastVector()
+    public Vector2 getAttackVector()
     {
-        castVector = aimVector.magnitude > 0 ? aimVector : moveVector;
-        OnSetCastVector.Invoke();
+        Vector3 center = new Vector3(Screen.width, Screen.height, 0)/2;
+        return (Input.mousePosition - center).normalized;
     }
 
-    public void SetAimVector(Vector2 vector)
+    public void SetInputVector(Vector2 inputVector)
     {
-        aimVector = vector;
-        UpdateCastVector();
-    }
-
-    public void SetMoveVector(Vector2 vector)
-    {
-        moveVector = vector;
-        if (moveVector.magnitude == 0)
+        MovementVector = inputVector;
+        if (MovementVector.magnitude == 0)
         {
             myRigidbody.drag = stopDrag;
         }
@@ -72,17 +51,13 @@ public class Movement : MonoBehaviour
         {
             myRigidbody.drag = moveDrag;
         }
-        UpdateCastVector();
     }
 
-
-    // Movement
-    
     private void FixedUpdate()
     {
         if (canMove)
         {
-            myRigidbody.AddRelativeForce(new Vector3(moveVector.x, 0, moveVector.y) * speed * Time.fixedDeltaTime, ForceMode.Force);
+            myRigidbody.AddRelativeForce(new Vector3(MovementVector.x, 0, MovementVector.y) * speed * Time.fixedDeltaTime, ForceMode.Force);
             if (myRigidbody.velocity.magnitude > maxVelocity)
             {
                 myRigidbody.velocity = myRigidbody.velocity.normalized * maxVelocity;
@@ -99,6 +74,7 @@ public class Movement : MonoBehaviour
                     SetAnimBool("run", true);
                     hasFootsteps = true;
                     print("Start walking");
+                    //footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
                     footsteps.start();
                 }
             } 
@@ -111,9 +87,6 @@ public class Movement : MonoBehaviour
             }
         }
     }
-
-
-    // Animation
 
     private void SetAnimBool(string parameter, bool value)
     {

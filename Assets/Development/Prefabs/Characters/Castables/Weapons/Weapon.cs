@@ -33,12 +33,11 @@ public class Weapon : MonoBehaviour, ICastable
     {
         daggerSwing.start();
         pivot.gameObject.SetActive(true);
-        pivot.transform.SetRotationWithVector(direction);
-        //if (direction.sqrMagnitude > 0.0f)
-        //{
-        //    Quaternion newRotation = Quaternion.LookRotation(direction, Vector3.up);
-        //    pivot.localRotation = newRotation;
-        //}
+        if (direction.sqrMagnitude > 0.0f)
+        {
+            Quaternion newRotation = Quaternion.LookRotation(direction, Vector3.up);
+            pivot.localRotation = newRotation;
+        }
         swinging = true;
         animator.SetTrigger("Swing");
     }
