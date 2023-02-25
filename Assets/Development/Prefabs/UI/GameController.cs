@@ -36,15 +36,9 @@ public class GameController : MonoBehaviour
 
     public void SetCharacter(int idx)
     {
-        print("Set Character: " + idx + " / " + playableCharacters.Count + " -> " + idx % (playableCharacters.Count));
-        if (curCharacter != null)
-        {
-            print(curCharacter.name);
-        }
         curCharacter.SetControllable(false);
         curCharacter = playableCharacters[idx % (playableCharacters.Count)];
         curCharacter.SetControllable(true);
-        print(curCharacter.name);
         userInterface.SetCharacter(curCharacter);
         hud.CharacterSelect(idx);
     }
@@ -123,6 +117,7 @@ public class GameController : MonoBehaviour
     {
         if (inputValue.isPressed)
         {
+            print("Interact");
             curCharacter.Interact();
         }
     }

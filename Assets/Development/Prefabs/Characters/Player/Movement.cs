@@ -98,7 +98,6 @@ public class Movement : MonoBehaviour
                 {
                     SetAnimBool("run", true);
                     hasFootsteps = true;
-                    print("Start walking");
                     footsteps.start();
                 }
             } 
@@ -106,7 +105,6 @@ public class Movement : MonoBehaviour
             {
                 SetAnimBool("run", false);
                 hasFootsteps = false;
-                print("Stop walking");
                 footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
         }
