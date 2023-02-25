@@ -9,6 +9,7 @@ public class Character : MonoBehaviour, IDamageable
     public Transform pivot;
     public Animator animator;
     public Transform weaponHand;
+    public Transform moveReticle;
     public HealthbarUI healthBarUI;
     [HideInInspector] public Movement movement;
     [HideInInspector] public Interactor interactor;
@@ -37,6 +38,11 @@ public class Character : MonoBehaviour, IDamageable
         movement = GetComponent<Movement>();
         interactor = GetComponent<Interactor>();
         attacker = GetComponent<PlayerAttack>();
+        if (movement != null)
+        {
+            movement.OnSetCastVector.AddListener(OnCastVectorChanged);
+        }
+        SetControllable(false);
     }
 
     private void Start()
@@ -47,6 +53,17 @@ public class Character : MonoBehaviour, IDamageable
     }
 
 
+    // Aiming
+
+    public void OnCastVectorChanged()
+    {
+        if (movement.castVector.magnitude > 0)
+        {
+            moveReticle.SetRotationWithVector(movement.castVector);
+        }
+    }
+
+
     // State
 
     public void SetControllable(bool _controllable)
@@ -54,6 +71,10 @@ public class Character : MonoBehaviour, IDamageable
         controllable = _controllable;
         movement.canMove = controllable;
         attacker.active = controllable;
+        if (moveReticle != null)
+        {
+            moveReticle.gameObject.SetActive(_controllable);
+        }
     }
 
 
@@ -128,13 +149,14 @@ public class Character : MonoBehaviour, IDamageable
         if (attacker != null && attacker.active)
         {
             attacker.Castable = castable;
-            attacker.Slashie(movement.getAttackVector());
+            attacker.Slashie(movement.castVector);
         }
     }
 
 
     // Actions
-    public void MoveCharacter(Vector2 input) { movement.SetInputVector(input); }
+    public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); }
+    public void AimCharacter(Vector2 input) { movement.SetAimVector(input); }
     public void ChangeAbility() { ChangeCastable(false); }
     public void ChangeWeapon() { ChangeCastable(true); }
     public void ActivateWeapon() { ActivateCastable(weapon); }
