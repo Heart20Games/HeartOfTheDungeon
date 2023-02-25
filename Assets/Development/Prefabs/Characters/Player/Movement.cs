@@ -74,7 +74,6 @@ public class Movement : MonoBehaviour
                     SetAnimBool("run", true);
                     hasFootsteps = true;
                     print("Start walking");
-                    //footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
                     footsteps.start();
                 }
             } 

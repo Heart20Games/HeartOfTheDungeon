@@ -9,6 +9,7 @@ public class Character : MonoBehaviour, IDamageable
     public Transform pivot;
     public Animator animator;
     public Transform weaponHand;
+    public Transform moveReticle;
     public HealthbarUI healthBarUI;
     [HideInInspector] public Movement movement;
     [HideInInspector] public Interactor interactor;
@@ -37,6 +38,7 @@ public class Character : MonoBehaviour, IDamageable
         movement = GetComponent<Movement>();
         interactor = GetComponent<Interactor>();
         attacker = GetComponent<PlayerAttack>();
+        SetControllable(false);
     }
 
     private void Start()
@@ -54,6 +56,10 @@ public class Character : MonoBehaviour, IDamageable
         controllable = _controllable;
         movement.canMove = controllable;
         attacker.active = controllable;
+        if (moveReticle != null)
+        {
+            moveReticle.gameObject.SetActive(_controllable);
+        }
     }
 
 

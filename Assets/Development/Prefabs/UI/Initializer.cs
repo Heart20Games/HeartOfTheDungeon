@@ -9,6 +9,7 @@ public class Initializer : MonoBehaviour
     private Character[] characters;
     private DialogueRunner dialogueRunner;
     private UserInterface userInterface;
+    private HUD hud;
 
     private GameController gameController;
 
@@ -19,6 +20,7 @@ public class Initializer : MonoBehaviour
         characters = FindObjectsOfType<Character>();
         dialogueRunner = FindObjectOfType<DialogueRunner>();
         userInterface = FindObjectOfType<UserInterface>();
+        hud = FindAnyObjectByType<HUD>();
 
         if (gameController.playerCharacter == null)
         {
@@ -35,11 +37,13 @@ public class Initializer : MonoBehaviour
         }
 
         gameController.userInterface = userInterface;
+        gameController.hud = hud;
 
         AssetNonNull("GameController", gameController, "on GameObject");
         AssetNonNull("PlayerCore", player);
         AssetNonNull("DialogueRunner", dialogueRunner);
         AssetNonNull("UserInterface", userInterface);
+        AssetNonNull("HUD", hud);
     }
 
     private void AssetNonNull(string typeName, MonoBehaviour monoBehaviour, string context= "in scene")

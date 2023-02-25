@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
     public List<Character> playableCharacters;
     [HideInInspector] public Character curCharacter;
     [HideInInspector] public UserInterface userInterface;
+    [HideInInspector] public HUD hud;
 
     private void Start()
     {
@@ -40,9 +41,12 @@ public class GameController : MonoBehaviour
         {
             print(curCharacter.name);
         }
+        curCharacter.SetControllable(false);
         curCharacter = playableCharacters[idx % (playableCharacters.Count)];
+        curCharacter.SetControllable(true);
         print(curCharacter.name);
         userInterface.SetCharacter(curCharacter);
+        hud.CharacterSelect(idx);
     }
 
 
@@ -114,6 +118,14 @@ public class GameController : MonoBehaviour
         if (inputValue.isPressed)
         {
             curCharacter.Interact();
+        }
+    }
+
+    public void OnOpenSkillWheel(InputValue inputValue)
+    {
+        if (inputValue.isPressed)
+        {
+            hud.AbilityToggle();
         }
     }
 }
