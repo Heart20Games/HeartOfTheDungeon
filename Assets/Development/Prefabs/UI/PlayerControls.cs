@@ -152,6 +152,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cycle Character Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""1fbf7a26-cc4a-444e-9128-e1a1de4db185"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cycle Character Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""28d5642f-5d6c-4406-8eb3-63001598f40e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -495,6 +513,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Aim"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8287fb4-91cc-4b5d-be87-8e5f488a6b68"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cycle Character Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6e9d5f66-f770-4f06-a982-e5150d1428ae"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cycle Character Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -706,6 +746,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_GroundMovement_ToggleFollowers = m_GroundMovement.FindAction("ToggleFollowers", throwIfNotFound: true);
         m_GroundMovement_Test = m_GroundMovement.FindAction("Test", throwIfNotFound: true);
         m_GroundMovement_Aim = m_GroundMovement.FindAction("Aim", throwIfNotFound: true);
+        m_GroundMovement_CycleCharacterLeft = m_GroundMovement.FindAction("Cycle Character Left", throwIfNotFound: true);
+        m_GroundMovement_CycleCharacterRight = m_GroundMovement.FindAction("Cycle Character Right", throwIfNotFound: true);
         // Dialogue
         m_Dialogue = asset.FindActionMap("Dialogue", throwIfNotFound: true);
         m_Dialogue_Continue = m_Dialogue.FindAction("Continue", throwIfNotFound: true);
@@ -786,6 +828,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_GroundMovement_ToggleFollowers;
     private readonly InputAction m_GroundMovement_Test;
     private readonly InputAction m_GroundMovement_Aim;
+    private readonly InputAction m_GroundMovement_CycleCharacterLeft;
+    private readonly InputAction m_GroundMovement_CycleCharacterRight;
     public struct GroundMovementActions
     {
         private @PlayerControls m_Wrapper;
@@ -804,6 +848,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @ToggleFollowers => m_Wrapper.m_GroundMovement_ToggleFollowers;
         public InputAction @Test => m_Wrapper.m_GroundMovement_Test;
         public InputAction @Aim => m_Wrapper.m_GroundMovement_Aim;
+        public InputAction @CycleCharacterLeft => m_Wrapper.m_GroundMovement_CycleCharacterLeft;
+        public InputAction @CycleCharacterRight => m_Wrapper.m_GroundMovement_CycleCharacterRight;
         public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -855,6 +901,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Aim.started += instance.OnAim;
             @Aim.performed += instance.OnAim;
             @Aim.canceled += instance.OnAim;
+            @CycleCharacterLeft.started += instance.OnCycleCharacterLeft;
+            @CycleCharacterLeft.performed += instance.OnCycleCharacterLeft;
+            @CycleCharacterLeft.canceled += instance.OnCycleCharacterLeft;
+            @CycleCharacterRight.started += instance.OnCycleCharacterRight;
+            @CycleCharacterRight.performed += instance.OnCycleCharacterRight;
+            @CycleCharacterRight.canceled += instance.OnCycleCharacterRight;
         }
 
         private void UnregisterCallbacks(IGroundMovementActions instance)
@@ -901,6 +953,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Aim.started -= instance.OnAim;
             @Aim.performed -= instance.OnAim;
             @Aim.canceled -= instance.OnAim;
+            @CycleCharacterLeft.started -= instance.OnCycleCharacterLeft;
+            @CycleCharacterLeft.performed -= instance.OnCycleCharacterLeft;
+            @CycleCharacterLeft.canceled -= instance.OnCycleCharacterLeft;
+            @CycleCharacterRight.started -= instance.OnCycleCharacterRight;
+            @CycleCharacterRight.performed -= instance.OnCycleCharacterRight;
+            @CycleCharacterRight.canceled -= instance.OnCycleCharacterRight;
         }
 
         public void RemoveCallbacks(IGroundMovementActions instance)
@@ -996,6 +1054,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnToggleFollowers(InputAction.CallbackContext context);
         void OnTest(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
+        void OnCycleCharacterLeft(InputAction.CallbackContext context);
+        void OnCycleCharacterRight(InputAction.CallbackContext context);
     }
     public interface IDialogueActions
     {
