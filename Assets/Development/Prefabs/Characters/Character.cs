@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,6 +12,7 @@ public class Character : MonoBehaviour, IDamageable
     public Transform weaponHand;
     public Transform moveReticle;
     public HealthbarUI healthBarUI;
+    public CinemachineVirtualCamera virtualCamera;
     [HideInInspector] public Movement movement;
     [HideInInspector] public Interactor interactor;
     [HideInInspector] public PlayerAttack attacker;
@@ -71,9 +73,15 @@ public class Character : MonoBehaviour, IDamageable
         controllable = _controllable;
         movement.canMove = controllable;
         attacker.active = controllable;
-        if (moveReticle != null)
+        SetGameObjectActive(moveReticle, _controllable);
+        SetGameObjectActive(virtualCamera, _controllable);
+    }
+
+    public void SetGameObjectActive(Component component, bool _active)
+    {
+        if (component != null)
         {
-            moveReticle.gameObject.SetActive(_controllable);
+            component.gameObject.SetActive(_active);
         }
     }
 
