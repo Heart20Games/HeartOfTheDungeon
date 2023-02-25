@@ -32,8 +32,8 @@ public class HUD : MonoBehaviour
         prevSelectedCharacter = selectedCharacter;
 
         selectedCharacter = characterImages[idx];
-        selectedCharacter.transform.SetAsLastSibling();
-        prevSelectedCharacter.transform.SetSiblingIndex(idx);
+        selectedCharacter.transform.parent.SetAsLastSibling();
+        prevSelectedCharacter.transform.parent.SetSiblingIndex(5);
         abilityMenu.transform.SetAsFirstSibling();
         characterSelectAnimator.SetTrigger("SelectCharacter" + idx);
 
@@ -51,14 +51,14 @@ public class HUD : MonoBehaviour
         {
             abilityMenuAnimator.SetBool("AbilityMenuActive", activate);
             abilityMenuActive = activate;
-            if (activate)
-            {
-                abilityMenu.transform.SetAsLastSibling();
-            }
-            else
-            {
-                abilityMenu.transform.SetAsFirstSibling();
-            }
+            //if (activate)
+            //{
+            //    abilityMenu.transform.SetAsLastSibling();
+            //}
+            //else
+            //{
+            //    abilityMenu.transform.SetAsFirstSibling();
+            //}
         }
     }
 }
