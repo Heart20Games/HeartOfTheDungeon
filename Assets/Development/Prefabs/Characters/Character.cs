@@ -59,10 +59,7 @@ public class Character : MonoBehaviour, IDamageable
 
     public void OnCastVectorChanged()
     {
-        if (movement.castVector.magnitude > 0)
-        {
-            moveReticle.SetRotationWithVector(movement.castVector);
-        }
+        moveReticle.SetRotationWithVector(movement.castVector);
     }
 
 
