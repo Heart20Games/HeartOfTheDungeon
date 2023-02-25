@@ -135,17 +135,26 @@ public class Character : MonoBehaviour, IDamageable
             castable.UnEquip();
         }
 
-        if (primary)
+        if (loadout != null)
         {
-            weaponIdx = (weaponIdx + 1) % loadout.weapons.Count;
-            weapon = Instantiate(loadout.weapons[weaponIdx], transform);
-            weapon.Initialize(this);
-        }
-        else
-        {
-            abilityIdx = (abilityIdx + 1) % loadout.abilities.Count;
-            ability = Instantiate(loadout.abilities[abilityIdx], transform);
-            ability.Initialize(this);
+            if (primary)
+            {
+                if (loadout.weapons.Count > 0)
+                {
+                    weaponIdx = (weaponIdx + 1) % loadout.weapons.Count;
+                    weapon = Instantiate(loadout.weapons[weaponIdx], transform);
+                    weapon.Initialize(this);
+                }
+            }
+            else
+            {
+                if (loadout.abilities.Count > 0)
+                {
+                    abilityIdx = (abilityIdx + 1) % loadout.abilities.Count;
+                    ability = Instantiate(loadout.abilities[abilityIdx], transform);
+                    ability.Initialize(this);
+                }
+            }
         }
     }
 
