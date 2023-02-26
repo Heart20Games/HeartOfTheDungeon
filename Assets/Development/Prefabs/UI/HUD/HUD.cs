@@ -11,7 +11,7 @@ public class HUD : MonoBehaviour
     [SerializeField] private Image prevSelectedCharacter;
     [SerializeField] private Animator characterSelectAnimator;
     [SerializeField] private Image characterSelectFrame;
-    [SerializeField] private Image abilityMenu;
+    [SerializeField] private Canvas abilityMenu;
     [SerializeField] private bool abilityMenuActive = false;
     [SerializeField] private Animator abilityMenuAnimator;
 
