@@ -14,6 +14,8 @@ public class HUD : MonoBehaviour
     [SerializeField] private Canvas abilityMenu;
     [SerializeField] private bool abilityMenuActive = false;
     [SerializeField] private Animator abilityMenuAnimator;
+    [SerializeField] private Material shimmerMat;
+    [SerializeField] private float shimmerTime;
 
     enum CHAR { GOBKIN, ROTTA, OSSEUS }
     
@@ -36,6 +38,7 @@ public class HUD : MonoBehaviour
         prevSelectedCharacter.transform.parent.SetSiblingIndex(5);
         abilityMenu.transform.SetAsFirstSibling();
         characterSelectAnimator.SetTrigger("SelectCharacter" + idx);
+        StartCoroutine(Shimmer(idx));
 
         AbilitySelect(false);
     }
@@ -45,6 +48,16 @@ public class HUD : MonoBehaviour
         AbilitySelect(!abilityMenuActive);
     }
 
+    IEnumerator Shimmer(int idx)
+    {
+        Image character = characterImages[idx];
+        character.material = shimmerMat;
+        yield return new WaitForSeconds(shimmerTime);
+        character.material = null;
+        Debug.Log("Finished Coroutine for" + idx);
+
+    }
+    
     public void AbilitySelect(bool activate)
     {
         if (!abilityMenuActive && activate || abilityMenuActive && !activate)
