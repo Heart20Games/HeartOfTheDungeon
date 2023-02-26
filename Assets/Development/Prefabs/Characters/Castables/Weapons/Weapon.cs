@@ -18,12 +18,16 @@ public class Weapon : MonoBehaviour, ICastable
 
     private readonly List<Enemy> enemiesHit = new List<Enemy>();
 
-    void Start()
+    private void Awake()
     {
-        daggerSwing = FMODUnity.RuntimeManager.CreateInstance("event:/Player SFX/DaggerSwing");
         animator = GetComponent<Animator>();
         animator.speed = speed;
         pivot.gameObject.SetActive(false);
+    }
+
+    private void Start()
+    {
+        daggerSwing = FMODUnity.RuntimeManager.CreateInstance("event:/Player SFX/DaggerSwing");
     }
 
 
@@ -59,9 +63,9 @@ public class Weapon : MonoBehaviour, ICastable
 
     // HItting Enemies
 
-    private void HitOpponent(Collider other)
+    public void HitDamagable(Impact impactor)
     {
-        IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
+        IDamageable damageable = impactor.other.GetComponent<IDamageable>();
         if (damageable != null)
         {
             damageable.TakeDamage(damage);
