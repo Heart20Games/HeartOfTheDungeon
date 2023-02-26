@@ -34,11 +34,6 @@ public class Weapon : MonoBehaviour, ICastable
         daggerSwing.start();
         pivot.gameObject.SetActive(true);
         pivot.transform.SetRotationWithVector(direction);
-        //if (direction.sqrMagnitude > 0.0f)
-        //{
-        //    Quaternion newRotation = Quaternion.LookRotation(direction, Vector3.up);
-        //    pivot.localRotation = newRotation;
-        //}
         swinging = true;
         animator.SetTrigger("Swing");
     }
@@ -64,15 +59,12 @@ public class Weapon : MonoBehaviour, ICastable
 
     // HItting Enemies
 
-    private void OnTriggerEnter(Collider other)
+    private void HitOpponent(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
+        if (damageable != null)
         {
-            IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
-            if (damageable != null)
-            {
-                damageable.TakeDamage(damage);
-            }
+            damageable.TakeDamage(damage);
         }
     }
 
