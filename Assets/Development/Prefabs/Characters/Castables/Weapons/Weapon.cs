@@ -9,6 +9,7 @@ public class Weapon : MonoBehaviour, ICastable
     private Animator animator;
     public Transform pivot;
     public Transform body;
+    public float rotationOffset = 0;
     public bool swinging = false; // toggled in weapon 
     public float speed = 3f; // speed of the animation
     public int damage = 1;
@@ -39,7 +40,7 @@ public class Weapon : MonoBehaviour, ICastable
         daggerSwing.start();
         pivot.gameObject.SetActive(true);
         print("Weapon Swing: " + direction);
-        pivot.transform.SetRotationWithVector(direction);
+        pivot.transform.SetRotationWithVector(direction, rotationOffset);
         swinging = true;
         animator.SetTrigger("Swing");
     }
