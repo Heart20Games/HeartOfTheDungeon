@@ -262,6 +262,7 @@ GameObject:
   - component: {fileID: 2485834102352749627}
   - component: {fileID: 4413256440571499932}
   - component: {fileID: 1662274335675725108}
+  - component: {fileID: 1170855021759411822}
   m_Layer: 0
   m_Name: Body
   m_TagString: Character
@@ -427,6 +428,7 @@ MonoBehaviour:
     exit:
       m_PersistentCalls:
         m_Calls: []
+  other: {fileID: 0}
 --- !u!210 &1662274335675725108
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -439,6 +441,33 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
+--- !u!114 &1170855021759411822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4520041833351946365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf779c5f95ce1474b99ba990b082ae02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onTakeDamage:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1895181659443492097}
+        m_TargetAssemblyTypeName: Character, Assembly-CSharp
+        m_MethodName: TakeDamage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8688300506291837896
 GameObject:
   m_ObjectHideFlags: 0

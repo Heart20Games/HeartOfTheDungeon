@@ -13,6 +13,7 @@ public class Impact : MonoBehaviour
     public BinaryEvent onTrigger;
 
     private List<GameObject> touching;
+    public GameObject other;
 
 
     // Events
@@ -22,8 +23,9 @@ public class Impact : MonoBehaviour
         touching = new List<GameObject>();
     }
 
-    private void OnEventEnter(GameObject other, UnityEvent onEvent)
+    private void OnEventEnter(GameObject _other, UnityEvent onEvent)
     {
+        other = _other;
         if (desiredTags.Contains(other.tag) && !touching.Contains(other))
         {
             touching.Add(other);
@@ -31,8 +33,9 @@ public class Impact : MonoBehaviour
         }
     }
 
-    private void OnEventExit(GameObject other, UnityEvent onEvent)
+    private void OnEventExit(GameObject _other, UnityEvent onEvent)
     {
+        other = _other;
         if (desiredTags.Contains(other.tag))
         {
             if (touching.Contains(other))
@@ -46,9 +49,9 @@ public class Impact : MonoBehaviour
 
     // Signals
     
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider _other)
     {
-        OnEventExit(other.gameObject, onTrigger.exit);
+        OnEventExit(_other.gameObject, onTrigger.exit);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -61,8 +64,8 @@ public class Impact : MonoBehaviour
         OnEventExit(collision.gameObject, onCollision.exit);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider _other)
     {
-        OnEventEnter(other.gameObject, onTrigger.enter);
+        OnEventEnter(_other.gameObject, onTrigger.enter);
     }
 }
