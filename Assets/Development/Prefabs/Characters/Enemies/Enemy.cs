@@ -98,21 +98,21 @@ public class Enemy : MonoBehaviour
         if (opponentWeapon != null && opponentWeapon.CompareTag("Player"))
         //if (collision.gameObject.CompareTag("Weapon"))
         {
-            Debug.Log("Took a while swinging");
-            if (weapon.HitEnemy(this))
-            {
-                Debug.Log("Ouch, I've been hit!");
-                Debug.Log(enemyType.hurtSound);
-                health -= opponentWeapon.damage;
-                if (enemyType.useHurtSound)
-                {
-                    enemyType.hurtSound.start();
-                }
-                if (health <= 0)
-                {
-                    Die();
-                }
-            }
+            //Debug.Log("Took a while swinging");
+            //if (weapon.HitEnemy(this))
+            //{
+            //    Debug.Log("Ouch, I've been hit!");
+            //    Debug.Log(enemyType.hurtSound);
+            //    health -= opponentWeapon.damage;
+            //    if (enemyType.useHurtSound)
+            //    {
+            //        enemyType.hurtSound.start();
+            //    }
+            //    if (health <= 0)
+            //    {
+            //        Die();
+            //    }
+            //}
         }
     }
 
