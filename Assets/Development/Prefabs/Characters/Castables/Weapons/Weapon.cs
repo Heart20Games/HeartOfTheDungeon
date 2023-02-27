@@ -16,14 +16,19 @@ public class Weapon : MonoBehaviour, ICastable
     FMOD.Studio.EventInstance daggerSwing;
     public UnityEvent onAttackComplete;
 
-    private readonly List<Enemy> enemiesHit = new List<Enemy>();
+    private readonly List<IDamageable> others = new List<IDamageable>();
+    private readonly List<IDamageable> ignored = new List<IDamageable>();
 
-    void Start()
+    private void Awake()
     {
-        daggerSwing = FMODUnity.RuntimeManager.CreateInstance("event:/Player SFX/DaggerSwing");
         animator = GetComponent<Animator>();
         animator.speed = speed;
         pivot.gameObject.SetActive(false);
+    }
+
+    private void Start()
+    {
+        daggerSwing = FMODUnity.RuntimeManager.CreateInstance("event:/Player SFX/DaggerSwing");
     }
 
 
@@ -33,12 +38,8 @@ public class Weapon : MonoBehaviour, ICastable
     {
         daggerSwing.start();
         pivot.gameObject.SetActive(true);
+        print("Weapon Swing: " + direction);
         pivot.transform.SetRotationWithVector(direction);
-        //if (direction.sqrMagnitude > 0.0f)
-        //{
-        //    Quaternion newRotation = Quaternion.LookRotation(direction, Vector3.up);
-        //    pivot.localRotation = newRotation;
-        //}
         swinging = true;
         animator.SetTrigger("Swing");
     }
@@ -62,39 +63,35 @@ public class Weapon : MonoBehaviour, ICastable
     public void UnEquip() { Destroy(gameObject); }
     
 
-    // HItting Enemies
+    // Swinging
 
-    private void OnTriggerEnter(Collider other)
+    public void HitDamagable(Impact impactor)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        IDamageable other = impactor.other.GetComponent<IDamageable>();
+        if (other != null && !ignored.Contains(other) && !others.Contains(other))
         {
-            IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
-            if (damageable != null)
-            {
-                damageable.TakeDamage(damage);
-            }
+            Debug.Log("Damage it!");
+            others.Add(other);
+            other.TakeDamage(damage);
         }
     }
 
-    public bool HitEnemy(Enemy enemy)
+    public void LeftDamagable(Impact impactor)
     {
-        bool hit = !enemiesHit.Contains(enemy);
-        if (hit)
+        IDamageable other = impactor.other.GetComponent<IDamageable>();
+        if (other != null && others.Contains(other))
         {
-            enemiesHit.Add(enemy);
+            others.Remove(other);
         }
-        return hit;
     }
 
     public void DoneSwinging()
     {
         swinging = false;
         pivot.gameObject.SetActive(false);
-        if (enemiesHit.Count > 0)
-        {
-            enemiesHit.Clear();
-        }
+        others.Clear();
     }
+
 
     // Cleanup
 
