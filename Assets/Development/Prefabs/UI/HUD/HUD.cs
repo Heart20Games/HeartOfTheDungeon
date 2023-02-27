@@ -6,11 +6,11 @@ using UnityEngine.InputSystem;
 
 public class HUD : MonoBehaviour
 {
-    [SerializeField] private List<Image> characterImages;
-    [SerializeField] private Image selectedCharacter;
-    [SerializeField] private Image prevSelectedCharacter;
+    [SerializeField] private List<GameObject> characterImages;
+    [SerializeField] private GameObject selectedCharacter;
+    [SerializeField] private GameObject prevSelectedCharacter;
     [SerializeField] private Animator characterSelectAnimator;
-    [SerializeField] private Image characterSelectFrame;
+    [SerializeField] private GameObject characterSelectFrame;
     [SerializeField] private Canvas abilityMenu;
     [SerializeField] private bool abilityMenuActive = false;
     [SerializeField] private Animator abilityMenuAnimator;
@@ -50,10 +50,10 @@ public class HUD : MonoBehaviour
 
     IEnumerator Shimmer(int idx)
     {
-        Image character = characterImages[idx];
-        character.material = shimmerMat;
+        GameObject character = characterImages[idx];
+        character.GetComponent<SpriteRenderer>().material = shimmerMat;
         yield return new WaitForSeconds(shimmerTime);
-        character.material = null;
+        character.GetComponent<SpriteRenderer>().material = null;
         Debug.Log("Finished Coroutine for" + idx);
 
     }
