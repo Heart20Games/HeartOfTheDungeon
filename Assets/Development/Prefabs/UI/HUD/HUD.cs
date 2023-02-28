@@ -16,6 +16,8 @@ public class HUD : MonoBehaviour
     [SerializeField] private Animator abilityMenuAnimator;
     [SerializeField] private Material shimmerMat;
     [SerializeField] private float shimmerTime;
+    [SerializeField] private Material defaultSpriteMat;
+
 
     enum CHAR { GOBKIN, ROTTA, OSSEUS }
     
@@ -34,9 +36,8 @@ public class HUD : MonoBehaviour
         prevSelectedCharacter = selectedCharacter;
 
         selectedCharacter = characterImages[idx];
-        selectedCharacter.transform.parent.SetAsLastSibling();
-        prevSelectedCharacter.transform.parent.SetSiblingIndex(5);
-        abilityMenu.transform.SetAsFirstSibling();
+        selectedCharacter.GetComponent<SpriteRenderer>().sortingOrder = 3;
+        prevSelectedCharacter.GetComponent<SpriteRenderer>().sortingOrder = 1;
         characterSelectAnimator.SetTrigger("SelectCharacter" + idx);
         StartCoroutine(Shimmer(idx));
 
@@ -53,7 +54,7 @@ public class HUD : MonoBehaviour
         GameObject character = characterImages[idx];
         character.GetComponent<SpriteRenderer>().material = shimmerMat;
         yield return new WaitForSeconds(shimmerTime);
-        character.GetComponent<SpriteRenderer>().material = null;
+        character.GetComponent<SpriteRenderer>().material = defaultSpriteMat;
         Debug.Log("Finished Coroutine for" + idx);
 
     }
@@ -64,14 +65,7 @@ public class HUD : MonoBehaviour
         {
             abilityMenuAnimator.SetBool("AbilityMenuActive", activate);
             abilityMenuActive = activate;
-            //if (activate)
-            //{
-            //    abilityMenu.transform.SetAsLastSibling();
-            //}
-            //else
-            //{
-            //    abilityMenu.transform.SetAsFirstSibling();
-            //}
+            
         }
     }
 }
