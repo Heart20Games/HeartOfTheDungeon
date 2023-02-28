@@ -17,6 +17,9 @@ public class HUD : MonoBehaviour
     [SerializeField] private Material shimmerMat;
     [SerializeField] private float shimmerTime;
     [SerializeField] private Material defaultSpriteMat;
+    private GameObject mainCamera;
+    private Canvas hudCanvas;
+
 
 
     enum CHAR { GOBKIN, ROTTA, OSSEUS }
@@ -26,6 +29,10 @@ public class HUD : MonoBehaviour
     private void Start() 
     {
         abilityMenuAnimator = abilityMenu.GetComponent<Animator>();
+        mainCamera = GameObject.FindGameObjectWithTag("Player").transform.Find("Main Camera").gameObject;
+        hudCanvas = this.GetComponent<Canvas>();
+        hudCanvas.renderMode = RenderMode.ScreenSpaceCamera;
+        hudCanvas.worldCamera = mainCamera.GetComponent<Camera>();
     }
 
     public void CharacterSelect(int idx)
@@ -55,8 +62,6 @@ public class HUD : MonoBehaviour
         character.GetComponent<SpriteRenderer>().material = shimmerMat;
         yield return new WaitForSeconds(shimmerTime);
         character.GetComponent<SpriteRenderer>().material = defaultSpriteMat;
-        Debug.Log("Finished Coroutine for" + idx);
-
     }
     
     public void AbilitySelect(bool activate)
@@ -64,8 +69,7 @@ public class HUD : MonoBehaviour
         if (!abilityMenuActive && activate || abilityMenuActive && !activate)
         {
             abilityMenuAnimator.SetBool("AbilityMenuActive", activate);
-            abilityMenuActive = activate;
-            
+            abilityMenuActive = activate;            
         }
     }
 }
