@@ -18,6 +18,7 @@ public class InputManager : MonoBehaviour
         //toggleFollow = controls.ToggleFollowers();
         // groundMovement.[action].performed += context => do something;
         groundMovement.Move.performed += ctx => horizontalInput = ctx.ReadValue<Vector2>();
+        
     }
 
     void OnEnable()

@@ -40,10 +40,6 @@ public class Character : MonoBehaviour, IDamageable
         movement = GetComponent<Movement>();
         interactor = GetComponent<Interactor>();
         attacker = GetComponent<PlayerAttack>();
-        if (movement != null)
-        {
-            movement.OnSetCastVector.AddListener(OnCastVectorChanged);
-        }
         SetControllable(false);
     }
 
@@ -70,11 +66,11 @@ public class Character : MonoBehaviour, IDamageable
         controllable = _controllable;
         movement.canMove = controllable;
         attacker.active = controllable;
-        SetGameObjectActive(moveReticle, _controllable);
-        SetGameObjectActive(virtualCamera, _controllable);
+        SetComponentActive(moveReticle, _controllable);
+        SetComponentActive(virtualCamera, _controllable);
     }
 
-    public void SetGameObjectActive(Component component, bool _active)
+    public void SetComponentActive(Component component, bool _active)
     {
         if (component != null)
         {
