@@ -10,6 +10,7 @@ public class Character : MonoBehaviour, IDamageable
     public Transform pivot;
     public Animator animator;
     public Transform weaponHand;
+    public Transform moveReticle;
     public HealthbarUI healthBarUI;
     public CinemachineVirtualCamera virtualCamera;
     [HideInInspector] public Movement movement;
@@ -157,13 +158,13 @@ public class Character : MonoBehaviour, IDamageable
         if (attacker != null && attacker.active)
         {
             attacker.Castable = castable;
-            attacker.Slashie(movement.getAttackVector());
+            attacker.Slashie(movement.castVector);
         }
     }
 
 
     // Actions
-    public void MoveCharacter(Vector2 input) { movement.SetInputVector(input); }
+    public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); }
     public void ChangeAbility() { ChangeCastable(false); }
     public void ChangeWeapon() { ChangeCastable(true); }
     public void ActivateWeapon() { ActivateCastable(weapon); }
