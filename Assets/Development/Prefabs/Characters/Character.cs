@@ -65,11 +65,11 @@ public class Character : MonoBehaviour, IDamageable
         controllable = _controllable;
         movement.canMove = controllable;
         attacker.active = controllable;
-        SetGameObjectActive(moveReticle, _controllable);
-        SetGameObjectActive(virtualCamera, _controllable);
+        SetComponentActive(moveReticle, _controllable);
+        SetComponentActive(virtualCamera, _controllable);
     }
 
-    public void SetGameObjectActive(Component component, bool _active)
+    public void SetComponentActive(Component component, bool _active)
     {
         if (component != null)
         {
@@ -165,6 +165,7 @@ public class Character : MonoBehaviour, IDamageable
 
     // Actions
     public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); }
+    public void AimCharacter(Vector2 input) { movement.SetAimVector(input); }
     public void ChangeAbility() { ChangeCastable(false); }
     public void ChangeWeapon() { ChangeCastable(true); }
     public void ActivateWeapon() { ActivateCastable(weapon); }
