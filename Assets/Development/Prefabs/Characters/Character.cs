@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,6 +11,7 @@ public class Character : MonoBehaviour, IDamageable
     public Animator animator;
     public Transform weaponHand;
     public HealthbarUI healthBarUI;
+    public CinemachineVirtualCamera virtualCamera;
     [HideInInspector] public Movement movement;
     [HideInInspector] public Interactor interactor;
     [HideInInspector] public PlayerAttack attacker;
@@ -47,6 +49,14 @@ public class Character : MonoBehaviour, IDamageable
     }
 
 
+    // Aiming
+
+    public void OnCastVectorChanged()
+    {
+        moveReticle.SetRotationWithVector(movement.castVector);
+    }
+
+
     // State
 
     public void SetControllable(bool _controllable)
@@ -54,6 +64,16 @@ public class Character : MonoBehaviour, IDamageable
         controllable = _controllable;
         movement.canMove = controllable;
         attacker.active = controllable;
+        SetGameObjectActive(moveReticle, _controllable);
+        SetGameObjectActive(virtualCamera, _controllable);
+    }
+
+    public void SetGameObjectActive(Component component, bool _active)
+    {
+        if (component != null)
+        {
+            component.gameObject.SetActive(_active);
+        }
     }
 
 
@@ -109,17 +129,26 @@ public class Character : MonoBehaviour, IDamageable
             castable.UnEquip();
         }
 
-        if (primary)
+        if (loadout != null)
         {
-            weaponIdx = (weaponIdx + 1) % loadout.weapons.Count;
-            weapon = Instantiate(loadout.weapons[weaponIdx], transform);
-            weapon.Initialize(this);
-        }
-        else
-        {
-            abilityIdx = (abilityIdx + 1) % loadout.abilities.Count;
-            ability = Instantiate(loadout.abilities[abilityIdx], transform);
-            ability.Initialize(this);
+            if (primary)
+            {
+                if (loadout.weapons.Count > 0)
+                {
+                    weaponIdx = (weaponIdx + 1) % loadout.weapons.Count;
+                    weapon = Instantiate(loadout.weapons[weaponIdx], transform);
+                    weapon.Initialize(this);
+                }
+            }
+            else
+            {
+                if (loadout.abilities.Count > 0)
+                {
+                    abilityIdx = (abilityIdx + 1) % loadout.abilities.Count;
+                    ability = Instantiate(loadout.abilities[abilityIdx], transform);
+                    ability.Initialize(this);
+                }
+            }
         }
     }
 

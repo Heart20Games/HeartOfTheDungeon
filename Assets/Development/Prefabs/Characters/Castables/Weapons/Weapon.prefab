@@ -50,7 +50,8 @@ MonoBehaviour:
   weaponArt: {fileID: 0}
   pivot: {fileID: 6217251625220617419}
   body: {fileID: 2008137554218384267}
-  swinging: 1
+  rotationOffset: 112.5
+  swinging: 0
   speed: 3
   damage: 1
   followBody: 1
@@ -59,7 +60,7 @@ MonoBehaviour:
       m_Calls: []
 --- !u!95 &6748884909623955628
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -76,7 +77,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!114 &-327606228693391448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,9 +135,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5437472882635739354}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 0.24918842, y: 2.0002384, z: 1.9227624}
   m_Center: {x: -0.012851298, y: 0.08068037, z: -1.4034221}
 --- !u!54 &4706741201082345559
@@ -146,10 +155,21 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5437472882635739354}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
@@ -197,7 +217,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  desiredTags: []
+  desiredTags:
+  - Character
   onCollision:
     enter:
       m_PersistentCalls:
@@ -209,13 +230,13 @@ MonoBehaviour:
     enter:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4915850916652667943}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: 
-          m_Mode: 1
+        - m_Target: {fileID: 5382981727209902725}
+          m_TargetAssemblyTypeName: Weapon, Assembly-CSharp
+          m_MethodName: HitDamagable
+          m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
+            m_ObjectArgument: {fileID: 748318687840574374}
+            m_ObjectArgumentAssemblyTypeName: Impact, Assembly-CSharp
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -224,18 +245,19 @@ MonoBehaviour:
     exit:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4915850916652667943}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: 
-          m_Mode: 1
+        - m_Target: {fileID: 5382981727209902725}
+          m_TargetAssemblyTypeName: Weapon, Assembly-CSharp
+          m_MethodName: HitDamagable
+          m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
+            m_ObjectArgument: {fileID: 748318687840574374}
+            m_ObjectArgumentAssemblyTypeName: Impact, Assembly-CSharp
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  other: {fileID: 0}
 --- !u!1 &6502756704121821110
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,7 +281,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6502756704121821110}
-  m_LocalRotation: {x: 0, y: 0.8716671, z: 0, w: 0.49009845}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -273,7 +295,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 2008137554218384267}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: ec55122b8d933cb4cbb72f5195231c54, type: 3}
@@ -341,7 +363,9 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec55122b8d933cb4cbb72f5195231c54, type: 3}
 --- !u!4 &6946796165296354338 stripped
 Transform:

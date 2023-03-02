@@ -21,9 +21,12 @@ public class HealthbarUI : MonoBehaviour
         fill.fillAmount = (float)curHP / (float)maxHP;
     }
 
-    private void LateUpdate() 
+    private void LateUpdate()
     {
-        transform.eulerAngles = cam.transform.eulerAngles;    
+        if (cam != null)
+        {
+            transform.eulerAngles = cam.transform.eulerAngles;
+        }
     }
 
 }

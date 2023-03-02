@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour
     [HideInInspector] public Character curCharacter;
     [HideInInspector] public UserInterface userInterface;
     [HideInInspector] public HUD hud;
+    private int curCharIdx = 0;
 
     private void Start()
     {
@@ -36,15 +37,14 @@ public class GameController : MonoBehaviour
 
     public void SetCharacter(int idx)
     {
-        print("Set Character: " + idx + " / " + playableCharacters.Count + " -> " + idx % (playableCharacters.Count));
-        if (curCharacter != null)
-        {
-            print(curCharacter.name);
-        }
-        curCharacter = playableCharacters[idx % (playableCharacters.Count)];
-        print(curCharacter.name);
+        idx = idx < 0 ? playableCharacters.Count + idx : idx;
+        curCharacter.SetControllable(false);
+        curCharIdx = idx % (playableCharacters.Count);
+        Debug.LogWarning("Character Index: " + curCharIdx);
+        curCharacter = playableCharacters[curCharIdx];
+        curCharacter.SetControllable(true);
         userInterface.SetCharacter(curCharacter);
-        hud.CharacterSelect(idx);
+        hud.CharacterSelect(curCharIdx);
     }
 
 
@@ -77,6 +77,16 @@ public class GameController : MonoBehaviour
     public void OnSwitchCharacterCenter(InputValue inputValue)
     {
         SetCharacterInput(inputValue, 0);
+    }
+
+    public void OnCycleCharacterLeft(InputValue inputValue)
+    {
+        SetCharacterInput(inputValue, curCharIdx - 1);
+    }
+
+    public void OnCycleCharacterRight(InputValue inputValue)
+    {
+        SetCharacterInput(inputValue, curCharIdx + 1);
     }
 
     public void OnSwitchSecondary(InputValue inputValue)
@@ -115,6 +125,7 @@ public class GameController : MonoBehaviour
     {
         if (inputValue.isPressed)
         {
+            print("Interact");
             curCharacter.Interact();
         }
     }

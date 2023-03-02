@@ -143,6 +143,33 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Aim"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""bde91a51-f0b0-4f69-93df-953a75e9bcf7"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cycle Character Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""1fbf7a26-cc4a-444e-9128-e1a1de4db185"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cycle Character Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""28d5642f-5d6c-4406-8eb3-63001598f40e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -431,6 +458,83 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Test"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""d84240aa-b9af-4a6d-908f-32d3a41b629c"",
+                    ""path"": ""2DVector(mode=2)"",
+                    ""interactions"": """",
+                    ""processors"": ""NormalizeVector2"",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""6423447a-5a01-4921-b0bf-7e10cfa62c17"",
+                    ""path"": ""<Gamepad>/rightStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""58b2e1bc-d351-43c5-8046-ec5584315c11"",
+                    ""path"": ""<Gamepad>/rightStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""7b679475-9381-4296-a569-1ee6ea3efae4"",
+                    ""path"": ""<Gamepad>/rightStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""36c99ed9-8ab0-4ac2-bd2e-4b1f31419191"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8287fb4-91cc-4b5d-be87-8e5f488a6b68"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cycle Character Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6e9d5f66-f770-4f06-a982-e5150d1428ae"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cycle Character Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -641,6 +745,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_GroundMovement_SwitchCharacterCenter = m_GroundMovement.FindAction("Switch Character Center", throwIfNotFound: true);
         m_GroundMovement_ToggleFollowers = m_GroundMovement.FindAction("ToggleFollowers", throwIfNotFound: true);
         m_GroundMovement_Test = m_GroundMovement.FindAction("Test", throwIfNotFound: true);
+        m_GroundMovement_Aim = m_GroundMovement.FindAction("Aim", throwIfNotFound: true);
+        m_GroundMovement_CycleCharacterLeft = m_GroundMovement.FindAction("Cycle Character Left", throwIfNotFound: true);
+        m_GroundMovement_CycleCharacterRight = m_GroundMovement.FindAction("Cycle Character Right", throwIfNotFound: true);
         // Dialogue
         m_Dialogue = asset.FindActionMap("Dialogue", throwIfNotFound: true);
         m_Dialogue_Continue = m_Dialogue.FindAction("Continue", throwIfNotFound: true);
@@ -720,6 +827,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_GroundMovement_SwitchCharacterCenter;
     private readonly InputAction m_GroundMovement_ToggleFollowers;
     private readonly InputAction m_GroundMovement_Test;
+    private readonly InputAction m_GroundMovement_Aim;
+    private readonly InputAction m_GroundMovement_CycleCharacterLeft;
+    private readonly InputAction m_GroundMovement_CycleCharacterRight;
     public struct GroundMovementActions
     {
         private @PlayerControls m_Wrapper;
@@ -737,6 +847,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @SwitchCharacterCenter => m_Wrapper.m_GroundMovement_SwitchCharacterCenter;
         public InputAction @ToggleFollowers => m_Wrapper.m_GroundMovement_ToggleFollowers;
         public InputAction @Test => m_Wrapper.m_GroundMovement_Test;
+        public InputAction @Aim => m_Wrapper.m_GroundMovement_Aim;
+        public InputAction @CycleCharacterLeft => m_Wrapper.m_GroundMovement_CycleCharacterLeft;
+        public InputAction @CycleCharacterRight => m_Wrapper.m_GroundMovement_CycleCharacterRight;
         public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -785,6 +898,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Test.started += instance.OnTest;
             @Test.performed += instance.OnTest;
             @Test.canceled += instance.OnTest;
+            @Aim.started += instance.OnAim;
+            @Aim.performed += instance.OnAim;
+            @Aim.canceled += instance.OnAim;
+            @CycleCharacterLeft.started += instance.OnCycleCharacterLeft;
+            @CycleCharacterLeft.performed += instance.OnCycleCharacterLeft;
+            @CycleCharacterLeft.canceled += instance.OnCycleCharacterLeft;
+            @CycleCharacterRight.started += instance.OnCycleCharacterRight;
+            @CycleCharacterRight.performed += instance.OnCycleCharacterRight;
+            @CycleCharacterRight.canceled += instance.OnCycleCharacterRight;
         }
 
         private void UnregisterCallbacks(IGroundMovementActions instance)
@@ -828,6 +950,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Test.started -= instance.OnTest;
             @Test.performed -= instance.OnTest;
             @Test.canceled -= instance.OnTest;
+            @Aim.started -= instance.OnAim;
+            @Aim.performed -= instance.OnAim;
+            @Aim.canceled -= instance.OnAim;
+            @CycleCharacterLeft.started -= instance.OnCycleCharacterLeft;
+            @CycleCharacterLeft.performed -= instance.OnCycleCharacterLeft;
+            @CycleCharacterLeft.canceled -= instance.OnCycleCharacterLeft;
+            @CycleCharacterRight.started -= instance.OnCycleCharacterRight;
+            @CycleCharacterRight.performed -= instance.OnCycleCharacterRight;
+            @CycleCharacterRight.canceled -= instance.OnCycleCharacterRight;
         }
 
         public void RemoveCallbacks(IGroundMovementActions instance)
@@ -922,6 +1053,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSwitchCharacterCenter(InputAction.CallbackContext context);
         void OnToggleFollowers(InputAction.CallbackContext context);
         void OnTest(InputAction.CallbackContext context);
+        void OnAim(InputAction.CallbackContext context);
+        void OnCycleCharacterLeft(InputAction.CallbackContext context);
+        void OnCycleCharacterRight(InputAction.CallbackContext context);
     }
     public interface IDialogueActions
     {
