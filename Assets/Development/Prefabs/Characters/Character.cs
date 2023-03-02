@@ -40,6 +40,7 @@ public class Character : MonoBehaviour, IDamageable
         movement = GetComponent<Movement>();
         interactor = GetComponent<Interactor>();
         attacker = GetComponent<PlayerAttack>();
+        SetControllable(false);
     }
 
     private void Start()
