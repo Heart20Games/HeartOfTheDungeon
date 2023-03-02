@@ -29,10 +29,11 @@ public class HUD : MonoBehaviour
     private void Start() 
     {
         abilityMenuAnimator = abilityMenu.GetComponent<Animator>();
-        mainCamera = GameObject.FindGameObjectWithTag("Player").transform.Find("Main Camera").gameObject;
+        mainCamera = GameObject.Find("Main Camera").gameObject;
         hudCanvas = this.GetComponent<Canvas>();
         hudCanvas.renderMode = RenderMode.ScreenSpaceCamera;
         hudCanvas.worldCamera = mainCamera.GetComponent<Camera>();
+        CharacterSelect(0);
     }
 
     public void CharacterSelect(int idx)
@@ -42,9 +43,14 @@ public class HUD : MonoBehaviour
 
         prevSelectedCharacter = selectedCharacter;
 
+        print(selectedCharacter);
         selectedCharacter = characterImages[idx];
+        print(selectedCharacter);
         selectedCharacter.GetComponent<SpriteRenderer>().sortingOrder = 3;
-        prevSelectedCharacter.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        if (prevSelectedCharacter != null)
+        {
+            prevSelectedCharacter.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        }
         characterSelectAnimator.SetTrigger("SelectCharacter" + idx);
         StartCoroutine(Shimmer(idx));
 

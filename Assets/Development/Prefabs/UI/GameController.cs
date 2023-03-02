@@ -38,22 +38,27 @@ public class GameController : MonoBehaviour
     public void SetCharacter(int idx)
     {
         idx = idx < 0 ? playableCharacters.Count + idx : idx;
-        curCharacter.SetControllable(false);
         curCharIdx = idx % (playableCharacters.Count);
-        Debug.LogWarning("Character Index: " + curCharIdx);
+        curCharacter.SetControllable(false);
         curCharacter = playableCharacters[curCharIdx];
         curCharacter.SetControllable(true);
-        userInterface.SetCharacter(curCharacter);
+        //userInterface.SetCharacter(curCharacter);
         hud.CharacterSelect(curCharIdx);
     }
 
 
     // Actions
 
-    public void OnMovement(InputValue inputValue)
+    public void OnMove(InputValue inputValue)
     {
         Vector2 inputVector = inputValue.Get<Vector2>();
         curCharacter.MoveCharacter(inputVector);
+    }
+
+    public void OnAim(InputValue inputValue)
+    {
+        Vector2 inputVector = inputValue.Get<Vector2>();
+        curCharacter.AimCharacter(inputVector);
     }
 
     public void SetCharacterInput(InputValue inputValue, int idx)
