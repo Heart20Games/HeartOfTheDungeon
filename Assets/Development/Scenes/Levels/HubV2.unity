@@ -588,27 +588,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5126080762954294258, guid: a2d6365c00ea280459bd5b6173e7d74e, type: 3}
       propertyPath: onTriggeredOn.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5126080762954294258, guid: a2d6365c00ea280459bd5b6173e7d74e, type: 3}
       propertyPath: onTriggeredOn.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5126080762954294258, guid: a2d6365c00ea280459bd5b6173e7d74e, type: 3}
       propertyPath: onTriggeredOn.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 293339664}
+      objectReference: {fileID: 756945819}
     - target: {fileID: 5126080762954294258, guid: a2d6365c00ea280459bd5b6173e7d74e, type: 3}
       propertyPath: onTriggeredOn.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5126080762954294258, guid: a2d6365c00ea280459bd5b6173e7d74e, type: 3}
       propertyPath: onTriggeredOn.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: SetTrigger
+      value: Play
       objectReference: {fileID: 0}
     - target: {fileID: 5126080762954294258, guid: a2d6365c00ea280459bd5b6173e7d74e, type: 3}
       propertyPath: onTriggeredOn.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: UnityEngine.Animator, UnityEngine
+      value: FMODUnity.StudioEventEmitter, FMODUnity
       objectReference: {fileID: 0}
     - target: {fileID: 5126080762954294258, guid: a2d6365c00ea280459bd5b6173e7d74e, type: 3}
       propertyPath: onTriggeredOn.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
@@ -669,16 +669,14 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8282316528763727846, guid: a2d6365c00ea280459bd5b6173e7d74e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 756945819}
   m_SourcePrefab: {fileID: 100100000, guid: a2d6365c00ea280459bd5b6173e7d74e, type: 3}
 --- !u!4 &293339663 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5283177243289135445, guid: a2d6365c00ea280459bd5b6173e7d74e, type: 3}
-  m_PrefabInstance: {fileID: 293339662}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &293339664 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 4112903426316553668, guid: a2d6365c00ea280459bd5b6173e7d74e, type: 3}
   m_PrefabInstance: {fileID: 293339662}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &318793230
@@ -1337,7 +1335,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5126080762954294258, guid: a2d6365c00ea280459bd5b6173e7d74e, type: 3}
   m_PrefabInstance: {fileID: 293339662}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 756945818}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5ee1fc072d87d15439ef67547a1defd8, type: 3}
@@ -1755,11 +1753,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 1419379533
-      Data2: 1282326260
-      Data3: 1455110034
-      Data4: 1656885497
-    Path: event:/Traps/SpikeTrapActivate
+      Data1: 766110263
+      Data2: 1146662491
+      Data3: 80088473
+      Data4: 1249706166
+    Path: event:/Traps/StoneWallSlide
   Event: 
   PlayEvent: 0
   StopEvent: 0
@@ -1778,6 +1776,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 197157754022857429, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
+      propertyPath: Preload
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 197157754022857429, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/Footsteploop
+      objectReference: {fileID: 0}
+    - target: {fileID: 197157754022857429, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -935974002
+      objectReference: {fileID: 0}
+    - target: {fileID: 197157754022857429, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1270476182
+      objectReference: {fileID: 0}
+    - target: {fileID: 197157754022857429, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: 331242389
+      objectReference: {fileID: 0}
+    - target: {fileID: 197157754022857429, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: 1854110131
+      objectReference: {fileID: 0}
     - target: {fileID: 1121743467617867635, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.00000047683716
@@ -2274,13 +2296,52 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6455188901295713305, guid: 11d1eb7139457d34b8c327bd0a6a35a1, type: 3}
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455188901295713305, guid: 11d1eb7139457d34b8c327bd0a6a35a1, type: 3}
       propertyPath: onCollision.enter.m_PersistentCalls.m_Calls.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455188901295713305, guid: 11d1eb7139457d34b8c327bd0a6a35a1, type: 3}
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455188901295713305, guid: 11d1eb7139457d34b8c327bd0a6a35a1, type: 3}
+      propertyPath: onCollision.enter.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455188901295713305, guid: 11d1eb7139457d34b8c327bd0a6a35a1, type: 3}
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1293128216}
+    - target: {fileID: 6455188901295713305, guid: 11d1eb7139457d34b8c327bd0a6a35a1, type: 3}
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455188901295713305, guid: 11d1eb7139457d34b8c327bd0a6a35a1, type: 3}
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Toggle
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455188901295713305, guid: 11d1eb7139457d34b8c327bd0a6a35a1, type: 3}
+      propertyPath: onCollision.enter.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455188901295713305, guid: 11d1eb7139457d34b8c327bd0a6a35a1, type: 3}
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Switch, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455188901295713305, guid: 11d1eb7139457d34b8c327bd0a6a35a1, type: 3}
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2482388980292069151, guid: 11d1eb7139457d34b8c327bd0a6a35a1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2031791044}
   m_SourcePrefab: {fileID: 100100000, guid: 11d1eb7139457d34b8c327bd0a6a35a1, type: 3}
 --- !u!4 &603454884 stripped
 Transform:
@@ -2474,6 +2535,41 @@ MonoBehaviour:
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!1 &756945818 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8282316528763727846, guid: a2d6365c00ea280459bd5b6173e7d74e, type: 3}
+  m_PrefabInstance: {fileID: 293339662}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &756945819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 756945818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1419379533
+      Data2: 1282326260
+      Data3: 1455110034
+      Data4: 1656885497
+    Path: event:/Traps/SpikeTrapActivate
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
   Params: []
   OverrideAttenuation: 0
   OverrideMinDistance: 1
@@ -2960,6 +3056,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1694805287296114474, guid: 09bc4dd88be8caf4cb4987dc9e6d2168, type: 3}
   m_PrefabInstance: {fileID: 522997159}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1293128216 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1360097456029011571, guid: 11d1eb7139457d34b8c327bd0a6a35a1, type: 3}
+  m_PrefabInstance: {fileID: 603454883}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aea0d13a49df5654fa0868c74be4615c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1350414082
 GameObject:
   m_ObjectHideFlags: 0
@@ -3638,6 +3745,41 @@ Transform:
   m_Father: {fileID: 1350414083}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2031791038 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2482388980292069151, guid: 11d1eb7139457d34b8c327bd0a6a35a1, type: 3}
+  m_PrefabInstance: {fileID: 603454883}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2031791044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2031791038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -858435358
+      Data2: 1209402568
+      Data3: -383751533
+      Data4: -2024079520
+    Path: event:/Traps/TriggerTrapPlate
+  Event: 
+  PlayEvent: 3
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &2035204060
 PrefabInstance:
   m_ObjectHideFlags: 0
