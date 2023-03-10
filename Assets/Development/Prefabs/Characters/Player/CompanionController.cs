@@ -18,7 +18,7 @@ public class CompanionController : MonoBehaviour
 
     public void Toggle()
     {
-        followerA.isFollowing = !followerA.isFollowing;
-        followerB.isFollowing = !followerB.isFollowing;
+        //followerA.isFollowing = !followerA.isFollowing;
+        //followerB.isFollowing = !followerB.isFollowing;
     }
 }

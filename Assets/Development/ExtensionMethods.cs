@@ -15,12 +15,10 @@ public static class ExtensionMethods
     public static void SetRotationWithVector(this Transform _transform, Vector2 vector, float rotationOffset=0)
     {
         Vector3 direction = Vector3.forward;
-        Debug.Log("Initial vector:" + vector);
         if (Mathf.Abs(vector.x) > 0.5f || Mathf.Abs(vector.y) > 0.5f)
         {
             direction = Vector3.right * vector.x + Vector3.forward * vector.y;
         }
-        Debug.Log("Final direction: " + direction);
         if (direction.sqrMagnitude > 0.0f)
         {
             Quaternion newRotation = Quaternion.LookRotation(direction, Vector3.up);
@@ -28,7 +26,6 @@ public static class ExtensionMethods
             _transform.Rotate(0, rotationOffset, 0);
             Vector3 euler = _transform.eulerAngles;
             _transform.eulerAngles = new Vector3(euler.x, euler.y + rotationOffset, euler.z);
-            Debug.Log("Final Rotation: " + newRotation);
         }
     }
 }
