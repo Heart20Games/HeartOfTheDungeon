@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 413461243803000072}
   - component: {fileID: 7638968927939714640}
   - component: {fileID: 1211649189196671348}
+  - component: {fileID: 4730995108601591377}
   m_Layer: 0
   m_Name: Character
   m_TagString: Character
@@ -259,6 +260,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canAttack: 1
   active: 1
+--- !u!114 &4730995108601591377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3324343490077819189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 466148a357dcc8c46831e0a2997da0c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  agent: {fileID: 608404790986451179}
+  isFollowing: 1
+  navUpdate: 1
+  followingDistance: 0
 --- !u!1 &4520041833351946365
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,6 +293,7 @@ GameObject:
   - component: {fileID: 4413256440571499932}
   - component: {fileID: 1662274335675725108}
   - component: {fileID: 1170855021759411822}
+  - component: {fileID: 608404790986451179}
   m_Layer: 0
   m_Name: Body
   m_TagString: Character
@@ -480,6 +499,28 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!195 &608404790986451179
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4520041833351946365}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &8688300506291837896
 GameObject:
   m_ObjectHideFlags: 0

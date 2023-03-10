@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 
 public class AgentFollower : MonoBehaviour
 {
-    public Transform player;
+    public Transform target;
     public NavMeshAgent agent;
     public bool isFollowing = true;
     public float navUpdate = 1f;
@@ -21,7 +21,7 @@ public class AgentFollower : MonoBehaviour
         {
             // StartCoroutine(UpdateDestination());
             agent = GetComponent<NavMeshAgent>();
-            agent.destination = player.position;
+            agent.destination = target.position;
         }
     }
 
@@ -29,7 +29,7 @@ public class AgentFollower : MonoBehaviour
     {
         if (isFollowing)
         {
-            if (Vector3.Distance(transform.position, player.position) < followingDistance)
+            if (Vector3.Distance(transform.position, target.position) < followingDistance)
             {
                 agent.isStopped = true;
                 return;
@@ -42,7 +42,7 @@ public class AgentFollower : MonoBehaviour
             if(timeKeeper > navUpdate)
             {
                 timeKeeper = 0f;
-                Vector3 playerPosition = player.position;
+                Vector3 playerPosition = target.position;
                 agent.destination = playerPosition;
             }
         }
