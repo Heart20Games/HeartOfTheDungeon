@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FireProjectile : MonoBehaviour
 {
-    private AgentFollower agentFollower;
+    private AIBehaviors agentFollower;
     private Transform player;
     public GameObject projectilePrefab;
     public float fireInterval = 5f;
@@ -11,7 +11,7 @@ public class FireProjectile : MonoBehaviour
 
     void Awake()
     {
-        agentFollower = GetComponent<AgentFollower>();
+        agentFollower = GetComponent<AIBehaviors>();
         player = agentFollower.target;
     }
 

@@ -286,7 +286,7 @@ GameObject:
   - component: {fileID: 6436829769542476567}
   - component: {fileID: 4568429421967156578}
   - component: {fileID: 6436829769542476573}
-  - component: {fileID: 6436829769542476560}
+  - component: {fileID: 3246146634167580595}
   m_Layer: 6
   m_Name: TestEnemy
   m_TagString: Untagged
@@ -308,7 +308,7 @@ Transform:
   m_Children:
   - {fileID: 1064339067}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6436829769542476562
 MeshFilter:
@@ -435,7 +435,7 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &6436829769542476560
+--- !u!114 &3246146634167580595
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -447,8 +447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 466148a357dcc8c46831e0a2997da0c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  agent: {fileID: 6436829769542476573}
-  isFollowing: 1
+  target: {fileID: 0}
   navUpdate: 1
   followingDistance: 0
+  baseOffset: 0
