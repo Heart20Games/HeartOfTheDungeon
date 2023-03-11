@@ -37,10 +37,14 @@ public class GameController : MonoBehaviour
 
     public void SetCharacter(int idx)
     {
+        print("Idx: " + curCharIdx);
         idx = idx < 0 ? playableCharacters.Count + idx : idx;
         curCharIdx = idx % (playableCharacters.Count);
+        print("New Idx: " + curCharIdx);
         curCharacter.SetControllable(false);
+        print("Char: " + curCharacter.name);
         curCharacter = playableCharacters[curCharIdx];
+        print("New Char: " + curCharacter.name);
         curCharacter.SetControllable(true);
         //userInterface.SetCharacter(curCharacter);
         hud.CharacterSelect(curCharIdx);

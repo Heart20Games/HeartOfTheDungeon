@@ -40,7 +40,8 @@ public class Weapon : MonoBehaviour, ICastable
         daggerSwing.start();
         pivot.gameObject.SetActive(true);
         print("Weapon Swing: " + direction);
-        pivot.transform.SetRotationWithVector(direction, rotationOffset);
+        Vector2 dir = new Vector2(direction.x, direction.z);
+        pivot.transform.SetRotationWithVector(dir, rotationOffset);
         swinging = true;
         animator.SetTrigger("Swing");
     }
