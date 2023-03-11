@@ -10,12 +10,10 @@ public class HUD : MonoBehaviour
     [SerializeField] private GameObject selectedCharacter;
     [SerializeField] private GameObject prevSelectedCharacter;
     [SerializeField] private Animator characterSelectAnimator;
-    [SerializeField] private GameObject characterSelectFrame;
     [SerializeField] private Canvas abilityMenu;
     [SerializeField] private bool abilityMenuActive = false;
     [SerializeField] private Animator abilityMenuAnimator;
     [SerializeField] private Material shimmerMat;
-    [SerializeField] private float shimmerTime;
     [SerializeField] private float shimmerSpeed = .01f;
     private bool isShimmering = false;
     private int currentCharacter;
@@ -23,7 +21,6 @@ public class HUD : MonoBehaviour
     [SerializeField] private Material defaultSpriteMat;
     private GameObject mainCamera;
     private Canvas hudCanvas;
-
 
 
     enum CHAR { GOBKIN, ROTTA, OSSEUS }
@@ -77,21 +74,10 @@ public class HUD : MonoBehaviour
     {
         float endingPos = -.7f;
         float currentPos = shimmerMat.GetFloat("_SheenPosition");
-        Debug.Log(currentPos);
         if(currentPos >= endingPos)                
             shimmerMat.SetFloat("_SheenPosition", currentPos - shimmerSpeed);
         else
             isShimmering = false;
-                  
-        // while(currentPos > endingPos)
-        // {
-        //     currentPos -= (Time.deltaTime * shimmerSpeed);      
-        //     shimmerMat.SetFloat("_SheenPosition", currentPos);
-            
-        //     Debug.Log(currentPos);
-        // }
-        // yield return new WaitForSeconds(shimmerTime);
-        // character.GetComponent<SpriteRenderer>().material = defaultSpriteMat;
     }
     
     public void AbilitySelect(bool activate)
