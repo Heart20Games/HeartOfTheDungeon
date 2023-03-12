@@ -14,7 +14,7 @@ public class HUD : MonoBehaviour
     [SerializeField] private bool abilityMenuActive = false;
     [SerializeField] private Animator abilityMenuAnimator;
     [SerializeField] private Material shimmerMat;
-    [SerializeField] private float shimmerSpeed = .01f;
+    [SerializeField] private float shimmerSpeed = .02f;
     private bool isShimmering = false;
     private int currentCharacter;
 
@@ -72,7 +72,7 @@ public class HUD : MonoBehaviour
 
     public void Shimmer(int idx)
     {
-        float endingPos = -.7f;
+        float endingPos = -.9f;
         float currentPos = shimmerMat.GetFloat("_SheenPosition");
         if(currentPos >= endingPos)                
             shimmerMat.SetFloat("_SheenPosition", currentPos - shimmerSpeed);
