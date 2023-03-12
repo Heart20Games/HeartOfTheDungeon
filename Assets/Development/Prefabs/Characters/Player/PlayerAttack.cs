@@ -20,6 +20,7 @@ public class PlayerAttack : MonoBehaviour
         pivot = character.pivot;
     }
 
+    private Vector3 lastDirection;
     public void Slashie(Vector2 attackVector)
     {
         if (Castable != null && Castable.CanCast())
@@ -31,7 +32,18 @@ public class PlayerAttack : MonoBehaviour
             {
                 weapRotation = Vector3.right * -attackVector.x + Vector3.forward * -attackVector.y;
             }
-            animator.SetTrigger("attack");
+            if (animator != null)
+            {
+                if (animator.HasParameter("attack"))
+                {
+                    animator.SetTrigger("attack");
+                }
+            }
+            if (weapRotation != lastDirection)
+            {
+                print("Attack Direction: " + weapRotation);
+                lastDirection = weapRotation;
+            }
             Castable.Cast(weapRotation); // uses last rotation if not moving
         }
     }

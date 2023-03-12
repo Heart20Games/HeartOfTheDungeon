@@ -7,13 +7,13 @@ public class CompanionController : MonoBehaviour
     public GameObject CompanionA;
     public GameObject CompanionB;
 
-    private AIBehaviors followerA;
-    private AIBehaviors followerB;
+    private Brain followerA;
+    private Brain followerB;
 
     private void Start()
     {
-        followerA = CompanionA.GetComponent<AIBehaviors>();
-        followerB = CompanionB.GetComponent<AIBehaviors>();
+        followerA = CompanionA.GetComponent<Brain>();
+        followerB = CompanionB.GetComponent<Brain>();
     }
 
     public void Toggle()

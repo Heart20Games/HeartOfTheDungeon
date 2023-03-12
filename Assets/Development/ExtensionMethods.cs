@@ -18,6 +18,11 @@ public static class ExtensionMethods
         if (Mathf.Abs(vector.x) > 0.5f || Mathf.Abs(vector.y) > 0.5f)
         {
             direction = Vector3.right * vector.x + Vector3.forward * vector.y;
+            Debug.Log("Non-Default: " + direction);
+        }
+        else
+        {
+            Debug.Log("Default: " + direction);
         }
         if (direction.sqrMagnitude > 0.0f)
         {

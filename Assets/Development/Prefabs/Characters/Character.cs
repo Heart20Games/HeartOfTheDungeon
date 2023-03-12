@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Events;
 
 public class Character : MonoBehaviour, IDamageable
@@ -13,9 +14,11 @@ public class Character : MonoBehaviour, IDamageable
     public Transform moveReticle;
     public HealthbarUI healthBarUI;
     public CinemachineVirtualCamera virtualCamera;
+    [HideInInspector] public Brain brain;
     [HideInInspector] public Movement movement;
     [HideInInspector] public Interactor interactor;
     [HideInInspector] public PlayerAttack attacker;
+    [HideInInspector] public float baseOffset;
 
     // Castables
     public Loadout loadout;
@@ -37,6 +40,9 @@ public class Character : MonoBehaviour, IDamageable
     // Initialization
     private void Awake()
     {
+        AwarnNotNull(body, "Character has no Body");
+        InitBody();
+        brain = GetComponent<Brain>();
         movement = GetComponent<Movement>();
         interactor = GetComponent<Interactor>();
         attacker = GetComponent<PlayerAttack>();
@@ -50,12 +56,34 @@ public class Character : MonoBehaviour, IDamageable
         UpdateHealthUI();
     }
 
+    private void InitBody()
+    {
+        if (body != null)
+        {
+            CapsuleCollider capsuleCollider= body.GetComponent<CapsuleCollider>();
+            baseOffset = capsuleCollider.height / 2;
+            capsuleCollider.center = new Vector3(capsuleCollider.center.x, baseOffset, capsuleCollider.center.z);
+        }
+    }
+
+
+    // Debugging
+
+    private void AwarnNotNull(Object obj, string msg)
+    {
+        if (obj == null)
+        {
+            Debug.LogWarning(msg);
+        }
+    }
+
 
     // Aiming
 
     public void OnCastVectorChanged()
     {
         moveReticle.SetRotationWithVector(movement.castVector);
+        print("Move Reticle: " + moveReticle.rotation);
     }
 
 
@@ -63,6 +91,7 @@ public class Character : MonoBehaviour, IDamageable
 
     public void SetControllable(bool _controllable)
     {
+        brain.Enabled = !_controllable;
         controllable = _controllable;
         movement.canMove = controllable;
         attacker.active = controllable;
