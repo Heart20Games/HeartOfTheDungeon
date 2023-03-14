@@ -202,6 +202,7 @@ GameObject:
   - component: {fileID: 9104755598543999528}
   - component: {fileID: 5879095054503257125}
   - component: {fileID: 8229274895447285697}
+  - component: {fileID: 2806409545018912321}
   m_Layer: 0
   m_Name: UserInterface
   m_TagString: Untagged
@@ -226,7 +227,7 @@ Transform:
   - {fileID: 2629046266225021029}
   - {fileID: 6016434561473056852}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5879095054503257125
 MonoBehaviour:
@@ -329,6 +330,18 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: b7a22a2d-9eb5-4675-a18a-bd28587fe8fd
     m_ActionName: GroundMovement/Test
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: bde91a51-f0b0-4f69-93df-953a75e9bcf7
+    m_ActionName: GroundMovement/Aim[/XInputControllerWindows/rightStick/up,/XInputControllerWindows/rightStick/down,/XInputControllerWindows/rightStick/left,/XInputControllerWindows/rightStick/right]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1fbf7a26-cc4a-444e-9128-e1a1de4db185
+    m_ActionName: GroundMovement/Cycle Character Left[/XInputControllerWindows/leftShoulder]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 28d5642f-5d6c-4406-8eb3-63001598f40e
+    m_ActionName: GroundMovement/Cycle Character Right[/XInputControllerWindows/rightShoulder]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Dialogue
@@ -347,6 +360,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controlledCharacter: {fileID: 0}
+--- !u!114 &2806409545018912321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5228559661474112977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 877d6df1605009545b5ba5aad1d33566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <objectMoveOne>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!1 &5361198058841974356
 GameObject:
   m_ObjectHideFlags: 0
@@ -755,8 +787,31 @@ PrefabInstance:
     - {fileID: 2662405239143919679, guid: a51ef5c1af54bab4c94fee6fc26ac8f4, type: 3}
     - {fileID: 2596666668573393835, guid: a51ef5c1af54bab4c94fee6fc26ac8f4, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2614992594947347982, guid: a51ef5c1af54bab4c94fee6fc26ac8f4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7331037354472860924}
   m_SourcePrefab: {fileID: 100100000, guid: a51ef5c1af54bab4c94fee6fc26ac8f4, type: 3}
+--- !u!1 &767014741281517732 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2614992594947347982, guid: a51ef5c1af54bab4c94fee6fc26ac8f4, type: 3}
+  m_PrefabInstance: {fileID: 3381827557485684394}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7331037354472860924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767014741281517732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d26e83e53b19e62469a39c2a92901175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  libary: {fileID: 11400000, guid: 749ef86be3519894482dad5e1b19e5e2, type: 2}
+  offset: {x: 0, y: -2, z: 0}
+  source: {fileID: 0}
 --- !u!224 &767014741281517736 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2614992594947347970, guid: a51ef5c1af54bab4c94fee6fc26ac8f4, type: 3}
