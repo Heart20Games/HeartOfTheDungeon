@@ -19,6 +19,8 @@ public class Weapon : MonoBehaviour, ICastable
     public bool followBody = true;
     public bool instanced = false;
     FMOD.Studio.EventInstance daggerSwing;
+
+    public UnityEvent onCast;
     public UnityEvent onAttackComplete;
 
     private readonly List<IDamageable> others = new List<IDamageable>();
@@ -65,6 +67,7 @@ public class Weapon : MonoBehaviour, ICastable
             CastInstance(direction, pivot, body);
         }
         Swing();
+        onCast.Invoke();
     }
     public UnityEvent OnCasted() { return onAttackComplete; }
     public void Initialize(Character source)
