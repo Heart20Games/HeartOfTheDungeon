@@ -43,7 +43,6 @@ public class HUD : MonoBehaviour
    
         prevSelectedCharacter = selectedCharacter;        
         selectedCharacter = characterImages[idx];
-        print(selectedCharacter);
         selectedCharacter.GetComponent<SpriteRenderer>().sortingOrder = 3;
         prevSelectedCharacter.GetComponent<SpriteRenderer>().sortingOrder = 1;        
         characterSelectAnimator.SetTrigger("SelectCharacter" + idx);

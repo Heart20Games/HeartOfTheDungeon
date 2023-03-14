@@ -109,7 +109,8 @@ public class Movement : MonoBehaviour
                 myRigidbody.velocity = myRigidbody.velocity.normalized * maxVelocity;
             }
 
-            if (myRigidbody.velocity.magnitude > footstepVelocity)
+            Vector2 hVelocity = new Vector2(myRigidbody.velocity.x, myRigidbody.velocity.z);
+            if (hVelocity.magnitude > footstepVelocity)
             {
                 float pMag = Mathf.Abs(pivot.localScale.x);
                 float sign = myRigidbody.velocity.x > myRigidbody.velocity.z ? 1 : -1;
