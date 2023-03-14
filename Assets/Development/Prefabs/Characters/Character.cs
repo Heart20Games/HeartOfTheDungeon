@@ -83,7 +83,6 @@ public class Character : MonoBehaviour, IDamageable
     public void OnCastVectorChanged()
     {
         moveReticle.SetRotationWithVector(movement.castVector);
-        print("Move Reticle: " + moveReticle.rotation);
     }
 
 
