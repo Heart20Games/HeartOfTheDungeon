@@ -23,7 +23,7 @@ public class FModEventLibary : ScriptableObject
     private Dictionary<string, FModEvent> bank = new Dictionary<string, FModEvent>();
     private bool initialized = false;
 
-    private void Initialize()
+    public void Initialize()
     {
         string names = "";
         bank.Clear();
