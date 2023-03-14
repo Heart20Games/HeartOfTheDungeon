@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -829,69 +829,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 173fa66040751714cb53df6ca06f6d89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <UIHoverLow>k__BackingField:
-    Guid:
-      Data1: 139307074
-      Data2: 1261290750
-      Data3: 1049362339
-      Data4: -1700882195
-    Path: event:/UI/UI_Button_Hover_Low
-  <UIHoverHigh>k__BackingField:
-    Guid:
-      Data1: -1526573136
-      Data2: 1285336361
-      Data3: 195301544
-      Data4: 957431870
-    Path: event:/UI/UI_Button_Hover_High
-  <UISelectHigh>k__BackingField:
-    Guid:
-      Data1: -552432160
-      Data2: 1180046914
-      Data3: -1482822749
-      Data4: 668195555
-    Path: event:/UI/UI_Button_Select_High
-  <UIMenuSelect>k__BackingField:
-    Guid:
-      Data1: 871419580
-      Data2: 1094333375
-      Data3: -336072034
-      Data4: -35546365
-    Path: event:/UI/UI_Menu_Select
-  <UIMenuSwipe>k__BackingField:
-    Guid:
-      Data1: -88708400
-      Data2: 1321886407
-      Data3: 379652225
-      Data4: -473811388
-    Path: event:/UI/UI_Menu_Swipe
-  <FloorPlate>k__BackingField:
-    Guid:
-      Data1: -858435358
-      Data2: 1209402568
-      Data3: -383751533
-      Data4: -2024079520
-    Path: event:/Traps/TriggerTrapPlate
-  <SpikeTrap>k__BackingField:
-    Guid:
-      Data1: 1419379533
-      Data2: 1282326260
-      Data3: 1455110034
-      Data4: 1656885497
-    Path: event:/Traps/SpikeTrapActivate
-  <SpinWall>k__BackingField:
-    Guid:
-      Data1: 1419379533
-      Data2: 1282326260
-      Data3: 1455110034
-      Data4: 1656885497
-    Path: event:/Traps/SpikeTrapActivate
-  <GateOpen>k__BackingField:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
 --- !u!1 &322163875
 GameObject:
   m_ObjectHideFlags: 0
@@ -3080,7 +3017,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6033141886009145804, guid: 2501f27d6f062d64d819616631342b67, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1909630957}
   m_SourcePrefab: {fileID: 100100000, guid: 2501f27d6f062d64d819616631342b67, type: 3}
 --- !u!114 &993305254 stripped
 MonoBehaviour:
@@ -3605,6 +3545,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d26e83e53b19e62469a39c2a92901175, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  libary: {fileID: 0}
+  offset: {x: 0, y: 0, z: 0}
+  source: {fileID: 0}
 --- !u!114 &1679888923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3876,6 +3819,26 @@ Transform:
   m_Father: {fileID: 1350414083}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1909630951 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6033141886009145804, guid: 2501f27d6f062d64d819616631342b67, type: 3}
+  m_PrefabInstance: {fileID: 993305253}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1909630957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1909630951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d26e83e53b19e62469a39c2a92901175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  libary: {fileID: 11400000, guid: 749ef86be3519894482dad5e1b19e5e2, type: 2}
+  offset: {x: 0, y: 0, z: 0}
+  source: {fileID: 0}
 --- !u!1 &1998742857
 GameObject:
   m_ObjectHideFlags: 0
