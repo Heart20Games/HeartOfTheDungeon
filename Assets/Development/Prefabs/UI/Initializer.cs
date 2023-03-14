@@ -5,8 +5,11 @@ using Yarn.Unity;
 
 public class Initializer : MonoBehaviour
 {
+    public FModEventLibary defaultFModLibrary;
+
     private Character player;
     private Character[] characters;
+    private FModEventPlayer[] fmodPlayers;
     private DialogueRunner dialogueRunner;
     private UserInterface userInterface;
     private HUD hud;
@@ -18,6 +21,7 @@ public class Initializer : MonoBehaviour
         gameController = GetComponent<GameController>();
         player = FindObjectOfType<PlayerCore>().GetComponent<Character>();
         characters = FindObjectsOfType<Character>();
+        fmodPlayers = FindObjectsOfType<FModEventPlayer>();
         dialogueRunner = FindObjectOfType<DialogueRunner>();
         userInterface = FindObjectOfType<UserInterface>();
         hud = FindAnyObjectByType<HUD>();
@@ -33,6 +37,18 @@ public class Initializer : MonoBehaviour
             if (interactor != null)
             {
                 interactor.dialogueRunner = dialogueRunner;
+            }
+        }
+
+        if (defaultFModLibrary != null)
+        {
+            defaultFModLibrary.Initialize();
+            foreach (FModEventPlayer fmodPlayer in fmodPlayers)
+            {
+                if (fmodPlayer.libary == null)
+                {
+                    fmodPlayer.libary = defaultFModLibrary;
+                }
             }
         }
 
