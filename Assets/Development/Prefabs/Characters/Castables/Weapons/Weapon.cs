@@ -7,13 +7,17 @@ public class Weapon : MonoBehaviour, ICastable
 {
     public Transform weaponArt;
     private Animator animator;
+    public Character source;
     public Transform pivot;
     public Transform body;
     public float rotationOffset = 0;
     public bool swinging = false; // toggled in weapon 
+    public float swingLength = 1; // Non-animation swing time
     public float speed = 3f; // speed of the animation
+    public float instanceLifeSpan = 2; // Lifespan of instances
     public int damage = 1;
     public bool followBody = true;
+    public bool instanced = false;
     FMOD.Studio.EventInstance daggerSwing;
     public UnityEvent onAttackComplete;
 
@@ -23,7 +27,10 @@ public class Weapon : MonoBehaviour, ICastable
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        animator.speed = speed;
+        if (animator != null )
+        {
+            animator.speed = speed;
+        }
         pivot.gameObject.SetActive(false);
     }
 
@@ -35,20 +42,40 @@ public class Weapon : MonoBehaviour, ICastable
 
     // Castable
 
+    private Vector3 lastDirection;
     public void Cast(Vector3 direction)
     {
         daggerSwing.start();
-        pivot.gameObject.SetActive(true);
-        print("Weapon Swing: " + direction);
-        Vector2 dir = new Vector2(direction.x, direction.z);
-        pivot.transform.SetRotationWithVector(dir, rotationOffset);
-        swinging = true;
-        animator.SetTrigger("Swing");
+        if (instanced)
+        {
+            if (direction != lastDirection)
+            {
+                print("Direction: " + direction);
+                lastDirection = direction;
+            }
+            print("Instanced");
+            Transform pInstance = Instantiate(pivot);
+            Transform bInstance = pInstance.GetComponent<Pivot>().body;
+            CastInstance(direction, pInstance, bInstance);
+            StartCoroutine(CleanupInstance(instanceLifeSpan, pInstance, bInstance));
+        }
+        else
+        {
+            print("Not Instanced");
+            CastInstance(direction, pivot, body);
+        }
+        Swing();
     }
     public UnityEvent OnCasted() { return onAttackComplete; }
     public void Initialize(Character source)
     {
+        this.source = source;
         Transform origin = followBody ? source.body : transform;
+        IDamageable damageable = source.body.GetComponent<IDamageable>();
+        if (damageable != null)
+        {
+            ignored.Add(damageable);
+        }
         Vector3 pivotLocalPosition = pivot.localPosition;
         pivot.SetParent(origin, false);
         pivot.localPosition = pivotLocalPosition;
@@ -63,16 +90,73 @@ public class Weapon : MonoBehaviour, ICastable
     public void Enable() { }
     public bool CanCast() { return !swinging; }
     public void UnEquip() { Destroy(gameObject); }
-    
+
+
+    // Casting
+
+    public void CastInstance(Vector3 direction, Transform pInstance, Transform bInstance)
+    {
+        if (!followBody)
+        {
+            pInstance.position = source.body.position;
+        }
+        else
+        {
+            pInstance.localPosition = new Vector3();
+        }
+        bInstance.localPosition = new Vector3();
+        pInstance.gameObject.SetActive(true);
+        Vector2 dir = new Vector2(direction.x, direction.z);
+        pInstance.SetRotationWithVector(dir, rotationOffset);
+        bInstance.localRotation = Quaternion.identity;
+        if (instanced)
+        {
+            print("Location: " + pInstance.position);
+            print("Forward: " + pInstance.forward);
+            print("P Rotation: " + pInstance.rotation);
+            print("B Rotation: " + bInstance.rotation);
+        }
+    }
+
+    public IEnumerator CleanupInstance(float lifeSpan, Transform pInstance, Transform bInstance)
+    {
+        yield return new WaitForSeconds(lifeSpan);
+        Destroy(pInstance.gameObject);
+    }
+
 
     // Swinging
+
+    public void Swing()
+    {
+        if (animator != null)
+        {
+            SwingForAnimation();
+        }
+        else
+        {
+            StartCoroutine(SwingForSeconds(swingLength));
+        }
+    }
+
+    public IEnumerator SwingForSeconds(float seconds)
+    {
+        StartSwinging();
+        yield return new WaitForSeconds(seconds);
+        DoneSwinging();
+    }
+
+    public void SwingForAnimation()
+    {
+        StartSwinging();
+        animator.SetTrigger("Swing");
+    }
 
     public void HitDamagable(Impact impactor)
     {
         IDamageable other = impactor.other.GetComponent<IDamageable>();
         if (other != null && !ignored.Contains(other) && !others.Contains(other))
         {
-            Debug.Log("Damage it!");
             others.Add(other);
             other.TakeDamage(damage);
         }
@@ -81,10 +165,16 @@ public class Weapon : MonoBehaviour, ICastable
     public void LeftDamagable(Impact impactor)
     {
         IDamageable other = impactor.other.GetComponent<IDamageable>();
-        if (other != null && others.Contains(other))
+        if (other != null && !ignored.Contains(other) && others.Contains(other))
         {
             others.Remove(other);
         }
+    }
+
+    public void StartSwinging()
+    {
+        swinging = true;
+        pivot.gameObject.SetActive(true);
     }
 
     public void DoneSwinging()

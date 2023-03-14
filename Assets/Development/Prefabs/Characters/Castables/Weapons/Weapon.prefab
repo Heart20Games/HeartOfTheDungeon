@@ -48,13 +48,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponArt: {fileID: 0}
+  source: {fileID: 0}
   pivot: {fileID: 6217251625220617419}
   body: {fileID: 2008137554218384267}
   rotationOffset: 202.5
   swinging: 0
+  swingLength: 1
   speed: 3
+  instanceLifeSpan: 2
   damage: 1
   followBody: 1
+  instanced: 0
   onAttackComplete:
     m_PersistentCalls:
       m_Calls: []
@@ -267,6 +271,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6217251625220617419}
+  - component: {fileID: 7255319612675216035}
   m_Layer: 0
   m_Name: Weapon Pivot
   m_TagString: Untagged
@@ -290,6 +295,19 @@ Transform:
   m_Father: {fileID: 441588990764781275}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7255319612675216035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6502756704121821110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43b97ecb1e3625c468a11ddcbd29b35f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 2008137554218384267}
 --- !u!1001 &7488715641729684425
 PrefabInstance:
   m_ObjectHideFlags: 0
