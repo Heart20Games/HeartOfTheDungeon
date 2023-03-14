@@ -10,16 +10,17 @@ public class HUD : MonoBehaviour
     [SerializeField] private GameObject selectedCharacter;
     [SerializeField] private GameObject prevSelectedCharacter;
     [SerializeField] private Animator characterSelectAnimator;
-    [SerializeField] private GameObject characterSelectFrame;
     [SerializeField] private Canvas abilityMenu;
     [SerializeField] private bool abilityMenuActive = false;
     [SerializeField] private Animator abilityMenuAnimator;
     [SerializeField] private Material shimmerMat;
-    [SerializeField] private float shimmerTime;
+    [SerializeField] private float shimmerSpeed = .02f;
+    private bool isShimmering = false;
+    private int currentCharacter;
+
     [SerializeField] private Material defaultSpriteMat;
     private GameObject mainCamera;
     private Canvas hudCanvas;
-
 
 
     enum CHAR { GOBKIN, ROTTA, OSSEUS }
@@ -35,6 +36,14 @@ public class HUD : MonoBehaviour
         hudCanvas.worldCamera = mainCamera.GetComponent<Camera>();                
     }
 
+    private void FixedUpdate() 
+    {
+        if(isShimmering)
+        {
+            Shimmer(currentCharacter);
+        }    
+    }
+
     public void CharacterSelect(int idx)
     {
         
@@ -44,9 +53,13 @@ public class HUD : MonoBehaviour
         prevSelectedCharacter = selectedCharacter;        
         selectedCharacter = characterImages[idx];
         selectedCharacter.GetComponent<SpriteRenderer>().sortingOrder = 3;
-        prevSelectedCharacter.GetComponent<SpriteRenderer>().sortingOrder = 1;        
+        prevSelectedCharacter.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        prevSelectedCharacter.GetComponent<SpriteRenderer>().material = defaultSpriteMat;
+        shimmerMat.SetFloat("_SheenPosition", 0f);
+        selectedCharacter.GetComponent<SpriteRenderer>().material = shimmerMat;
+        isShimmering = true;        
         characterSelectAnimator.SetTrigger("SelectCharacter" + idx);
-        StartCoroutine(Shimmer(idx));
+        currentCharacter = idx;
 
         AbilitySelect(false);
     }
@@ -56,12 +69,14 @@ public class HUD : MonoBehaviour
         AbilitySelect(!abilityMenuActive);
     }
 
-    IEnumerator Shimmer(int idx)
+    public void Shimmer(int idx)
     {
-        GameObject character = characterImages[idx];
-        character.GetComponent<SpriteRenderer>().material = shimmerMat;
-        yield return new WaitForSeconds(shimmerTime);
-        character.GetComponent<SpriteRenderer>().material = defaultSpriteMat;
+        float endingPos = -.9f;
+        float currentPos = shimmerMat.GetFloat("_SheenPosition");
+        if(currentPos >= endingPos)                
+            shimmerMat.SetFloat("_SheenPosition", currentPos - shimmerSpeed);
+        else
+            isShimmering = false;
     }
     
     public void AbilitySelect(bool activate)
