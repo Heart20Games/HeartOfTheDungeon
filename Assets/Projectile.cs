@@ -8,6 +8,11 @@ public class Projectile : MonoBehaviour
     public float speed = 0;
     private new Rigidbody rigidbody;
 
+    public void Destroy()
+    {
+        Destroy(gameObject);
+    }
+
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();

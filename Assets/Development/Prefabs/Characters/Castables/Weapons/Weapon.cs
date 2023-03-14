@@ -18,7 +18,7 @@ public class Weapon : MonoBehaviour, ICastable
     public int damage = 1;
     public bool followBody = true;
     public bool instanced = false;
-    FMOD.Studio.EventInstance daggerSwing;
+   
 
     public UnityEvent onCast;
     public UnityEvent onAttackComplete;
@@ -36,18 +36,13 @@ public class Weapon : MonoBehaviour, ICastable
         pivot.gameObject.SetActive(false);
     }
 
-    private void Start()
-    {
-        daggerSwing = FMODUnity.RuntimeManager.CreateInstance("event:/Player SFX/DaggerSwing");
-    }
-
 
     // Castable
 
     private Vector3 lastDirection;
     public void Cast(Vector3 direction)
     {
-        daggerSwing.start();
+        
         if (instanced)
         {
             if (direction != lastDirection)
