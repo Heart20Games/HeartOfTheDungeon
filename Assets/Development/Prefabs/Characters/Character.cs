@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(Brain))]
+[RequireComponent(typeof(Movement))]
+[RequireComponent(typeof(Interactor))]
+[RequireComponent(typeof(PlayerAttack))]
 public class Character : MonoBehaviour, IDamageable
 {
     // Character Parts
