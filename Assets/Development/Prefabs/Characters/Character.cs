@@ -44,7 +44,7 @@ public class Character : MonoBehaviour, IDamageable
     // Initialization
     private void Awake()
     {
-        AwarnNotNull(body, "Character has no Body");
+        Awarn.IsNotNull(body, "Character has no Body");
         InitBody();
         brain = GetComponent<Brain>();
         movement = GetComponent<Movement>();
@@ -67,17 +67,6 @@ public class Character : MonoBehaviour, IDamageable
             CapsuleCollider capsuleCollider= body.GetComponent<CapsuleCollider>();
             baseOffset = capsuleCollider.height / 2;
             capsuleCollider.center = new Vector3(capsuleCollider.center.x, baseOffset, capsuleCollider.center.z);
-        }
-    }
-
-
-    // Debugging
-
-    private void AwarnNotNull(Object obj, string msg)
-    {
-        if (obj == null)
-        {
-            Debug.LogWarning(msg);
         }
     }
 
