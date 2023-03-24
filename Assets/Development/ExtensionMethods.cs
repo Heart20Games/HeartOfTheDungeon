@@ -12,10 +12,10 @@ public static class ExtensionMethods
         return false;
     }
 
-    public static void SetRotationWithVector(this Transform _transform, Vector2 vector, float rotationOffset=0)
+    public static void SetRotationWithVector(this Transform _transform, Vector2 vector, float rotationOffset=0, float threshold=0.5f)
     {
         Vector3 direction = Vector3.forward;
-        if (Mathf.Abs(vector.x) > 0.5f || Mathf.Abs(vector.y) > 0.5f)
+        if (Mathf.Abs(vector.x) > threshold || Mathf.Abs(vector.y) > threshold)
         {
             direction = Vector3.right * vector.x + Vector3.forward * vector.y;
         }

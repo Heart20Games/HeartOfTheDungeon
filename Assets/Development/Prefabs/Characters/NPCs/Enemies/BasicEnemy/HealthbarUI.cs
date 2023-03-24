@@ -12,7 +12,7 @@ public class HealthbarUI : MonoBehaviour
     private void Start() 
     {
         player = GameObject.Find("/Player V2/Body");
-        cam = player.transform.Find("Main Camera");    
+        cam = Camera.main.transform;
     }
 
    

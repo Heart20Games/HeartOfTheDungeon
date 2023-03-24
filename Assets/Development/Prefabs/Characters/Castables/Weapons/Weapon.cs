@@ -50,10 +50,8 @@ public class Weapon : MonoBehaviour, ICastable
         {
             if (direction != lastDirection)
             {
-                print("Direction: " + direction);
                 lastDirection = direction;
             }
-            print("Instanced");
             Transform pInstance = Instantiate(pivot);
             Transform bInstance = pInstance.GetComponent<Pivot>().body;
             CastInstance(direction, pInstance, bInstance);
@@ -61,7 +59,6 @@ public class Weapon : MonoBehaviour, ICastable
         }
         else
         {
-            print("Not Instanced");
             CastInstance(direction, pivot, body);
         }
         Swing();
