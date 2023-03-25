@@ -42,7 +42,6 @@ public class Weapon : MonoBehaviour, ICastable
     private Vector3 lastDirection;
     public void Cast(Vector3 direction)
     {
-        
         if (instanced)
         {
             if (direction != lastDirection)
@@ -93,11 +92,11 @@ public class Weapon : MonoBehaviour, ICastable
     {
         if (!followBody)
         {
-            pInstance.position = source.body.position;
+            pInstance.position = source.body.position + source.weaponOffset;
         }
         else
         {
-            pInstance.localPosition = new Vector3();
+            pInstance.localPosition = source.weaponOffset;
         }
         bInstance.localPosition = new Vector3();
         pInstance.gameObject.SetActive(true);
