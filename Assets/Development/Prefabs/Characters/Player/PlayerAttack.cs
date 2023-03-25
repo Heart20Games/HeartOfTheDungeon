@@ -41,7 +41,6 @@ public class PlayerAttack : MonoBehaviour
             }
             if (weapRotation != lastDirection)
             {
-                print("Attack Direction: " + weapRotation);
                 lastDirection = weapRotation;
             }
             Castable.Cast(weapRotation); // uses last rotation if not moving

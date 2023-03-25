@@ -10,11 +10,11 @@ public interface ICastable
      * 2. communicate which character animation is needed
      */
     public void Cast(Vector3 direction);
+    public void UnCast();
     public UnityEvent OnCasted();
     public void Initialize(Character source);
     public void Disable();
     public void Enable();
     public bool CanCast();
-
     public void UnEquip();
 }
