@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 9045202737010207962}
   - component: {fileID: 5547293998782812372}
   - component: {fileID: 2133279280376860803}
+  - component: {fileID: -3342325827621795708}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -166,7 +167,19 @@ MonoBehaviour:
   onCollision:
     enter:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 1969719491241460694}
+          m_TargetAssemblyTypeName: Projectile, Assembly-CSharp
+          m_MethodName: Destroy
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     exit:
       m_PersistentCalls:
         m_Calls: []
@@ -186,12 +199,24 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: -3342325827621795708}
+          m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     exit:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Weapon, Assembly-CSharp
-          m_MethodName: HitDamagable
+          m_MethodName: LeftDamagable
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 2133279280376860803}
@@ -200,5 +225,35 @@ MonoBehaviour:
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
-          m_CallState: 2
+          m_CallState: 0
   other: {fileID: 0}
+--- !u!114 &-3342325827621795708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2138072239630478774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1683198497
+      Data2: 1171886858
+      Data3: -949595210
+      Data4: -744244503
+    Path: event:/NPC SFX/NPC Abilities/SpellImpact
+  Event: 
+  PlayEvent: 2
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20

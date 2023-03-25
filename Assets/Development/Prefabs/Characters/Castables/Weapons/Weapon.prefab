@@ -59,6 +59,9 @@ MonoBehaviour:
   damage: 1
   followBody: 1
   instanced: 0
+  onCast:
+    m_PersistentCalls:
+      m_Calls: []
   onAttackComplete:
     m_PersistentCalls:
       m_Calls: []
@@ -272,13 +275,14 @@ GameObject:
   m_Component:
   - component: {fileID: 6217251625220617419}
   - component: {fileID: 7255319612675216035}
+  - component: {fileID: 434347846665295092}
   m_Layer: 0
   m_Name: Weapon Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6217251625220617419
 Transform:
   m_ObjectHideFlags: 0
@@ -308,6 +312,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   body: {fileID: 2008137554218384267}
+--- !u!114 &434347846665295092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6502756704121821110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -931823393
+      Data2: 1230227664
+      Data3: 768917642
+      Data4: 161759417
+    Path: event:/Player SFX/DaggerSwing
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &7488715641729684425
 PrefabInstance:
   m_ObjectHideFlags: 0
