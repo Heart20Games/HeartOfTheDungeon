@@ -30,6 +30,7 @@ public class Character : MonoBehaviour, IDamageable
     public ICastable secondaryCastable;
     public Ability ability;
     public Weapon weapon;
+    public Vector3 weaponOffset = Vector3.up;
     private int abilityIdx = -1;
     private int weaponIdx = -1;
 

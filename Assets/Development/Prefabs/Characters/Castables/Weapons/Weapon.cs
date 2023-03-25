@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Weapon : MonoBehaviour, ICastable
+public class Weapon : Castable
 {
     public Transform weaponArt;
     private Animator animator;
@@ -18,10 +18,6 @@ public class Weapon : MonoBehaviour, ICastable
     public int damage = 1;
     public bool followBody = true;
     public bool instanced = false;
-   
-
-    public UnityEvent onCast;
-    public UnityEvent onAttackComplete;
 
     private readonly List<IDamageable> others = new List<IDamageable>();
     private readonly List<IDamageable> ignored = new List<IDamageable>();
@@ -39,30 +35,7 @@ public class Weapon : MonoBehaviour, ICastable
 
     // Castable
 
-    private Vector3 lastDirection;
-    public void Cast(Vector3 direction)
-    {
-        
-        if (instanced)
-        {
-            if (direction != lastDirection)
-            {
-                lastDirection = direction;
-            }
-            Transform pInstance = Instantiate(pivot);
-            Transform bInstance = pInstance.GetComponent<Pivot>().body;
-            CastInstance(direction, pInstance, bInstance);
-            StartCoroutine(CleanupInstance(instanceLifeSpan, pInstance, bInstance));
-        }
-        else
-        {
-            CastInstance(direction, pivot, body);
-        }
-        Swing();
-        onCast.Invoke();
-    }
-    public UnityEvent OnCasted() { return onAttackComplete; }
-    public void Initialize(Character source)
+    public override void Initialize(Character source)
     {
         this.source = source;
         Transform origin = followBody ? source.body : transform;
@@ -81,10 +54,30 @@ public class Weapon : MonoBehaviour, ICastable
             weaponArt.localPosition = weaponLocalPosition;
         }
     }
-    public void Disable() { }
-    public void Enable() { }
-    public bool CanCast() { return !swinging; }
-    public void UnEquip() { Destroy(gameObject); }
+
+    private Vector3 lastDirection;
+    public override void Cast(Vector3 direction)
+    {
+        if (instanced)
+        {
+            if (direction != lastDirection)
+            {
+                lastDirection = direction;
+            }
+            Transform pInstance = Instantiate(pivot);
+            Transform bInstance = pInstance.GetComponent<Pivot>().body;
+            CastInstance(direction, pInstance, bInstance);
+            StartCoroutine(CleanupInstance(instanceLifeSpan, pInstance, bInstance));
+        }
+        else
+        {
+            CastInstance(direction, pivot, body);
+        }
+        Swing();
+        onCast.Invoke();
+    }
+
+    public override bool CanCast() { return !swinging; }
 
 
     // Casting
@@ -93,24 +86,24 @@ public class Weapon : MonoBehaviour, ICastable
     {
         if (!followBody)
         {
-            pInstance.position = source.body.position;
+            pInstance.position = source.body.position + source.weaponOffset;
         }
         else
         {
-            pInstance.localPosition = new Vector3();
+            pInstance.localPosition = source.weaponOffset;
         }
         bInstance.localPosition = new Vector3();
         pInstance.gameObject.SetActive(true);
         Vector2 dir = new Vector2(direction.x, direction.z);
         pInstance.SetRotationWithVector(dir, rotationOffset);
         bInstance.localRotation = Quaternion.identity;
-        if (instanced)
-        {
-            print("Location: " + pInstance.position);
-            print("Forward: " + pInstance.forward);
-            print("P Rotation: " + pInstance.rotation);
-            print("B Rotation: " + bInstance.rotation);
-        }
+        //if (instanced)
+        //{
+        //    print("Location: " + pInstance.position);
+        //    print("Forward: " + pInstance.forward);
+        //    print("P Rotation: " + pInstance.rotation);
+        //    print("B Rotation: " + bInstance.rotation);
+        //}
     }
 
     public IEnumerator CleanupInstance(float lifeSpan, Transform pInstance, Transform bInstance)
