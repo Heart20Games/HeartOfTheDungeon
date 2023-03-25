@@ -14,8 +14,8 @@ public class SpriteText : MonoBehaviour
          renderer.sortingOrder = parentRenderer.sortingOrder;
  
          var spriteTransform = parent.transform;
-         var text = GetComponent<TextMesh>();
+         //var text = GetComponent<TMPro.TextMeshPro>();
          var pos = spriteTransform.position;
-         text.text = string.Format("{0}, {1}", pos.x, pos.y);
+         //text.text = string.Format("{0}, {1}", pos.x, pos.y);
      }
 }
