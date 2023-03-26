@@ -97,13 +97,6 @@ public class Weapon : Castable
         Vector2 dir = new Vector2(direction.x, direction.z);
         pInstance.SetRotationWithVector(dir, rotationOffset);
         bInstance.localRotation = Quaternion.identity;
-        //if (instanced)
-        //{
-        //    print("Location: " + pInstance.position);
-        //    print("Forward: " + pInstance.forward);
-        //    print("P Rotation: " + pInstance.rotation);
-        //    print("B Rotation: " + bInstance.rotation);
-        //}
     }
 
     public IEnumerator CleanupInstance(float lifeSpan, Transform pInstance, Transform bInstance)
