@@ -9,6 +9,7 @@ public class Ability : Castable
 
     public override void Initialize(Character source) 
     {
+        base.Initialize(source);
         Transform effectOrigin = followBody ? source.body : source.transform;
         for (int l = 0; l < onCast.GetPersistentEventCount(); l++)
         {
