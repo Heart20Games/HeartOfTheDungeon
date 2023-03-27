@@ -12,8 +12,8 @@ public class Modified <T>
         get { return value; }
         set { SetValue(value); }
     }
-    public delegate T Modify(T oldValue, T newValue);
-    public List<Modify> modifiers = new();
+    public delegate T Modify(T value);
+    public List<Modify> modifiers;
 
     public Modified (T value)
     {
@@ -22,21 +22,25 @@ public class Modified <T>
 
     public void Subscribe(Modify modify)
     {
-        modifiers.Add(modify);
+        if (!modifiers.Contains(modify))
+        {
+            modifiers.Add(modify);
+        }
     }
 
     public void UnSubscribe(Modify modify)
     {
-        modifiers.Remove(modify);
+        if (modifiers.Contains(modify))
+        {
+            modifiers.Remove(modify);
+        }
     }
 
     private void SetValue(T value)
     {
-        Debug.Log("Set Value, modify " + modifiers.Count + " times.");
         foreach (Modify modifier in modifiers)
         {
-            Debug.Log("Modify...");
-            value = modifier.Invoke(this.value, value);
+            value = modifier.Invoke(value);
         }
         this.value = value;
     }
