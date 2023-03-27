@@ -6,19 +6,30 @@ public class HealthPips : MonoBehaviour
 {
     public int totalHealth;
     public int currentHealth;
-    [SerializeField]
     private List<GameObject> healthPips = new List<GameObject>();
     private List<Animator> pipAnimator = new List<Animator>();
     [SerializeField]
     private GameObject healthPipPrefab;
     [SerializeField]
     private Transform healthPipCanvas;
-    public int lastDamaged = -1;
+    private int lastDamaged = -1;
+    public Transform cam;
+    public GameObject gameController;
     
     // Start is called before the first frame update
     void Start()
     {
         UpdateTotalHealth();
+        gameController = GameObject.Find("Game Controller");
+        cam = gameController.transform.Find("Main Camera"); 
+    }
+
+    private void LateUpdate()
+    {
+        if (cam != null)
+        {
+            transform.eulerAngles = cam.transform.eulerAngles;
+        }
     }
 
     public void UpdateTotalHealth()
