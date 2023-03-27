@@ -7,7 +7,6 @@ public class Weapon : Castable
 {
     public Transform weaponArt;
     private Animator animator;
-    public Character source;
     public Transform pivot;
     public Transform body;
     public float rotationOffset = 0;
@@ -37,7 +36,7 @@ public class Weapon : Castable
 
     public override void Initialize(Character source)
     {
-        this.source = source;
+        base.Initialize(source);
         Transform origin = followBody ? source.body : transform;
         IDamageable damageable = source.body.GetComponent<IDamageable>();
         if (damageable != null)
