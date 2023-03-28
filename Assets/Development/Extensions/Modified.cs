@@ -32,10 +32,8 @@ public class Modified <T>
 
     private void SetValue(T value)
     {
-        Debug.Log("Set Value, modify " + modifiers.Count + " times.");
         foreach (Modify modifier in modifiers)
         {
-            Debug.Log("Modify...");
             value = modifier.Invoke(this.value, value);
         }
         this.value = value;
