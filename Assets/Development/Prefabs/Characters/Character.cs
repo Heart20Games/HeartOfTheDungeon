@@ -16,7 +16,7 @@ public class Character : MonoBehaviour, IDamageable
     public Animator animator;
     public Transform weaponHand;
     public Transform moveReticle;
-    public HealthbarUI healthBarUI;
+    public Health healthBar;
     public CinemachineVirtualCamera virtualCamera;
     [HideInInspector] public Brain brain;
     [HideInInspector] public Movement movement;
@@ -38,10 +38,10 @@ public class Character : MonoBehaviour, IDamageable
     public List<Status> statuses;
 
     // Health
-    public Modified<float> maxHealth = new(25f);
-    public Modified<float> currentHealth = new(25f);
-    public float MaxHealth { get { return maxHealth.Value; } set { maxHealth.Value = value; } }
-    public float CurrentHealth { get { return currentHealth.Value; } set { currentHealth.Value = value; } }
+    public Modified<int> maxHealth = new(25);
+    public Modified<int> currentHealth = new(25);
+    public int MaxHealth { get { return maxHealth.Value; } set { maxHealth.Value = value; } }
+    public int CurrentHealth { get { return currentHealth.Value; } set { currentHealth.Value = value; } }
     public UnityEvent onDeath;
 
     // State
@@ -62,7 +62,7 @@ public class Character : MonoBehaviour, IDamageable
     private void Start()
     {
         InitializeCastables();
-        UpdateHealthUI();
+        healthBar.SetHealthBase(CurrentHealth, MaxHealth);
     }
 
     private void InitBody()
@@ -125,18 +125,18 @@ public class Character : MonoBehaviour, IDamageable
 
     // Health
 
-    public void UpdateHealthUI()
-    {
-        if (healthBarUI != null)
-        {
-            healthBarUI.UpdateFill(CurrentHealth, MaxHealth);
-        }
-    }
+    //public void UpdateHealthUI()
+    //{
+    //    if (healthBar != null)
+    //    {
+    //        healthBar.SetHealth(CurrentHealth);
+    //    }
+    //}
 
-    public void TakeDamage(float damageAmount)
+    public void TakeDamage(int damageAmount)
     {
         CurrentHealth -= damageAmount;
-        UpdateHealthUI();
+        healthBar.SetHealth(CurrentHealth);
         if (CurrentHealth <= 0f)
         {
             Die();

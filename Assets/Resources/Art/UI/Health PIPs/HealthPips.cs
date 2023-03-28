@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthPips : MonoBehaviour
+public class HealthPips : Health
 {
     public int totalHealth;
     public int currentHealth;
@@ -18,28 +18,43 @@ public class HealthPips : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UpdateTotalHealth();
+        SetHealthTotal(totalHealth);
     }
 
-    public void UpdateTotalHealth()
+    public override void SetHealthBase(int amount, int total)
     {
-        for(int i = 0; i < totalHealth; i++)
+        currentHealth = amount;
+        SetHealthTotal(total);
+    }
+
+    public override void SetHealthTotal(int amount)
+    {
+        totalHealth = amount;
+        for (int i = healthPips.Count; i < totalHealth; i++)
         {
             Instantiate(healthPipPrefab, healthPipCanvas);
             healthPips.Add(transform.GetChild(i).gameObject);
             pipAnimator.Add(healthPips[i].GetComponent<Animator>());
         }
+        SetHealth(currentHealth);
+    }
 
+    public override void SetHealth(int amount)
+    {
+        currentHealth = amount;
         int damage = totalHealth - currentHealth;
-
-        for(int i = 0; i < damage; i++)
+        for (int i = 0; i < damage; i++)
         {
             pipAnimator[i].SetBool("IsDamaged", true);
             lastDamaged = i;
         }
+        for (int i = damage; i < healthPips.Count; i++)
+        {
+            pipAnimator[i].SetBool("IsDamaged", false);
+        }
     }
 
-    public void TakeDamage(int amount)
+    public override void TakeDamage(int amount)
     {
         int damageToTake = Mathf.Clamp(amount, 0, (totalHealth - (lastDamaged + 1)));
             
@@ -50,7 +65,7 @@ public class HealthPips : MonoBehaviour
         }
     }
 
-    public void HealDamage(int amount)
+    public override void HealDamage(int amount)
     {
         int damageToHeal = Mathf.Clamp(amount, 0, (lastDamaged + 1));
 

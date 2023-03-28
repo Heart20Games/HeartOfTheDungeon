@@ -18,7 +18,7 @@ public class ShieldStatus : StatusEffect
         character.currentHealth.UnSubscribe(Shield);
     }
 
-    public float Shield(float oldHealth, float newHealth)
+    public int Shield(int oldHealth, int newHealth)
     {
         Debug.Log("Shield");
         return oldHealth;

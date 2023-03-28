@@ -6,9 +6,9 @@ using UnityEngine.Events;
 
 public class DamageReceiver : MonoBehaviour, IDamageable
 {
-    public UnityEvent<float> onTakeDamage;
+    public UnityEvent<int> onTakeDamage;
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(int amount)
     {
         onTakeDamage.Invoke(amount);
     }
