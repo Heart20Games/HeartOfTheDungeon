@@ -125,7 +125,7 @@ public class NavPathRenderer : MonoBehaviour
                 arrowhead.position = endPoint;
                 print(endPoint);
                 Vector2 flatDirection = new Vector2(direction.x, direction.z);
-                arrowhead.SetRotationWithVector(flatDirection, 90, 0.1f);
+                arrowhead.SetRotationWithVector(flatDirection, 90);
             }
         }
     }

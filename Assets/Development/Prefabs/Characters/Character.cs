@@ -34,9 +34,14 @@ public class Character : MonoBehaviour, IDamageable
     private int abilityIdx = -1;
     private int weaponIdx = -1;
 
+    // Statuses
+    public List<Status> statuses;
+
     // Health
-    public float startingHealth = 25f;
-    public float currentHealth;
+    public Modified<float> maxHealth = new(25f);
+    public Modified<float> currentHealth = new(25f);
+    public float MaxHealth { get { return maxHealth.Value; } set { maxHealth.Value = value; } }
+    public float CurrentHealth { get { return currentHealth.Value; } set { currentHealth.Value = value; } }
     public UnityEvent onDeath;
 
     // State
@@ -56,7 +61,6 @@ public class Character : MonoBehaviour, IDamageable
 
     private void Start()
     {
-        currentHealth = startingHealth;
         InitializeCastables();
         UpdateHealthUI();
     }
@@ -68,6 +72,24 @@ public class Character : MonoBehaviour, IDamageable
             CapsuleCollider capsuleCollider= body.GetComponent<CapsuleCollider>();
             baseOffset = capsuleCollider.height / 2;
             capsuleCollider.center = new Vector3(capsuleCollider.center.x, baseOffset, capsuleCollider.center.z);
+        }
+    }
+
+    // Updates
+
+    private void Update()
+    {
+        StatusTick();
+    }
+
+
+    // Statuses
+
+    private void StatusTick()
+    {
+        foreach (Status status in statuses)
+        {
+            status.effect.Tick(status.strength, this);
         }
     }
 
@@ -107,15 +129,15 @@ public class Character : MonoBehaviour, IDamageable
     {
         if (healthBarUI != null)
         {
-            healthBarUI.UpdateFill(currentHealth, startingHealth);
+            healthBarUI.UpdateFill(CurrentHealth, MaxHealth);
         }
     }
 
     public void TakeDamage(float damageAmount)
     {
-        currentHealth -= damageAmount;
+        CurrentHealth -= damageAmount;
         UpdateHealthUI();
-        if (currentHealth <= 0f)
+        if (CurrentHealth <= 0f)
         {
             Die();
         }

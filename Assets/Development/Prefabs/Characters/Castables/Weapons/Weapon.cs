@@ -7,7 +7,6 @@ public class Weapon : Castable
 {
     public Transform weaponArt;
     private Animator animator;
-    public Character source;
     public Transform pivot;
     public Transform body;
     public float rotationOffset = 0;
@@ -37,7 +36,7 @@ public class Weapon : Castable
 
     public override void Initialize(Character source)
     {
-        this.source = source;
+        base.Initialize(source);
         Transform origin = followBody ? source.body : transform;
         IDamageable damageable = source.body.GetComponent<IDamageable>();
         if (damageable != null)
@@ -97,13 +96,6 @@ public class Weapon : Castable
         Vector2 dir = new Vector2(direction.x, direction.z);
         pInstance.SetRotationWithVector(dir, rotationOffset);
         bInstance.localRotation = Quaternion.identity;
-        //if (instanced)
-        //{
-        //    print("Location: " + pInstance.position);
-        //    print("Forward: " + pInstance.forward);
-        //    print("P Rotation: " + pInstance.rotation);
-        //    print("B Rotation: " + bInstance.rotation);
-        //}
     }
 
     public IEnumerator CleanupInstance(float lifeSpan, Transform pInstance, Transform bInstance)
