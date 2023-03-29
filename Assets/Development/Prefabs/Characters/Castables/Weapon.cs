@@ -9,14 +9,10 @@ public class Weapon : Castable
     private Animator animator;
     public Transform pivot;
     public Transform body;
-    public float rotationOffset = 0;
     public bool swinging = false; // toggled in weapon 
     public float swingLength = 1; // Non-animation swing time
     public float speed = 3f; // speed of the animation
-    public float instanceLifeSpan = 2; // Lifespan of instances
     public int damage = 1;
-    public bool followBody = true;
-    public bool instanced = false;
 
     private readonly List<IDamageable> others = new List<IDamageable>();
     private readonly List<IDamageable> ignored = new List<IDamageable>();
@@ -54,55 +50,13 @@ public class Weapon : Castable
         }
     }
 
-    private Vector3 lastDirection;
     public override void Cast(Vector3 direction)
     {
-        if (instanced)
-        {
-            if (direction != lastDirection)
-            {
-                lastDirection = direction;
-            }
-            Transform pInstance = Instantiate(pivot);
-            Transform bInstance = pInstance.GetComponent<Pivot>().body;
-            CastInstance(direction, pInstance, bInstance);
-            StartCoroutine(CleanupInstance(instanceLifeSpan, pInstance, bInstance));
-        }
-        else
-        {
-            CastInstance(direction, pivot, body);
-        }
         Swing();
-        onCast.Invoke();
+        base.Cast(direction);
     }
 
     public override bool CanCast() { return !swinging; }
-
-
-    // Casting
-
-    public void CastInstance(Vector3 direction, Transform pInstance, Transform bInstance)
-    {
-        if (!followBody)
-        {
-            pInstance.position = source.body.position + source.weaponOffset;
-        }
-        else
-        {
-            pInstance.localPosition = source.weaponOffset;
-        }
-        bInstance.localPosition = new Vector3();
-        pInstance.gameObject.SetActive(true);
-        Vector2 dir = new Vector2(direction.x, direction.z);
-        pInstance.SetRotationWithVector(dir, rotationOffset);
-        bInstance.localRotation = Quaternion.identity;
-    }
-
-    public IEnumerator CleanupInstance(float lifeSpan, Transform pInstance, Transform bInstance)
-    {
-        yield return new WaitForSeconds(lifeSpan);
-        Destroy(pInstance.gameObject);
-    }
 
 
     // Swinging
