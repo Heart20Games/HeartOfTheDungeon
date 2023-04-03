@@ -81,10 +81,17 @@ public class HUD : MonoBehaviour
     
     public void AbilitySelect(bool activate)
     {
-        if (!abilityMenuActive && activate || abilityMenuActive && !activate)
+        if (abilityMenuActive != activate)
         {
-            abilityMenuAnimator.SetBool("AbilityMenuActive", activate);
-            abilityMenuActive = activate;            
+            if (abilityMenuAnimator.HasParameter("AbilityMenuActive"))
+            {
+                abilityMenuAnimator.SetBool("AbilityMenuActive", activate);
+                abilityMenuActive = activate;            
+            }
+            else
+            {
+                Debug.LogWarning("HUD cannot find Animator parameter: AbilityMenuActive");
+            }
         }
     }
 }

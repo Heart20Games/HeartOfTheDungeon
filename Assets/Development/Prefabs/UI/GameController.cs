@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour
 {
     public Character playerCharacter;
     public List<Character> playableCharacters;
+    public SelectionCursor selectionCursor;
     [HideInInspector] public Character curCharacter;
     [HideInInspector] public UserInterface userInterface;
     [HideInInspector] public HUD hud;
@@ -33,6 +34,18 @@ public class GameController : MonoBehaviour
             playableCharacters.Insert(0, playerCharacter);
         }
         SetCharacter(0);
+    }
+
+    public void EnterSelectionMode()
+    {
+        curCharacter.SetControllable(false);
+        selectionCursor.SetControllable(true);
+    }
+
+    public void ExitSelectionMode()
+    {
+        selectionCursor.SetControllable(false);
+        curCharacter.SetControllable(true);
     }
 
     public void SetCharacter(int idx)
@@ -138,6 +151,14 @@ public class GameController : MonoBehaviour
     {
         if (inputValue.isPressed)
         {
+            if (selectionCursor.controllable)
+            {
+                ExitSelectionMode();
+            }
+            else
+            {
+                EnterSelectionMode();
+            }
             hud.AbilityToggle();
         }
     }
