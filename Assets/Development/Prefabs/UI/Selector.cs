@@ -4,9 +4,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class SelectionCursor : MonoBehaviour
+public class Selector : MonoBehaviour
 {
     public Rigidbody myRigidbody;
+    public Transform cursor;
 
     public float speed = 700f;
     public float maxVelocity = 10f;
