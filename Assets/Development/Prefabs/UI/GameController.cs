@@ -1,3 +1,4 @@
+using FMOD;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,13 +9,22 @@ public class GameController : MonoBehaviour
     public Character playerCharacter;
     public List<Character> playableCharacters;
     public Selector selector;
+    public string characterInputMap = "GroundMovement";
+    public string selectorInputMap = "Selector";
     [HideInInspector] public Character curCharacter;
     [HideInInspector] public UserInterface userInterface;
     [HideInInspector] public HUD hud;
     private int curCharIdx = 0;
+    
+    public enum GameMode { Selection, Character };
+    private GameMode mode = GameMode.Character;
+    public GameMode Mode { get { return mode; } set { SetMode(value); } }
+
+    private PlayerInput input;
 
     private void Start()
     {
+        input = GetComponent<PlayerInput>();
         InitializePlayableCharacters();
     }
 
@@ -36,16 +46,26 @@ public class GameController : MonoBehaviour
         SetCharacter(0);
     }
 
-    public void EnterSelectionMode()
+    public void SetMode(GameMode mode)
     {
-        curCharacter.SetControllable(false);
-        selector.SetControllable(true);
-    }
-
-    public void ExitSelectionMode()
-    {
-        selector.SetControllable(false);
-        curCharacter.SetControllable(true);
+        switch (this.mode)
+        {
+            case GameMode.Character:
+                curCharacter.SetControllable(false); break;
+            case GameMode.Selection:
+                selector.SetControllable(false); break;
+        }
+        switch (mode)
+        {
+            case GameMode.Character:
+                input.SwitchCurrentActionMap(characterInputMap);
+                curCharacter.SetControllable(true); break;
+            case GameMode.Selection:
+                input.SwitchCurrentActionMap(selectorInputMap);
+                selector.transform.position = curCharacter.transform.position;
+                selector.SetControllable(true); break;
+        }
+        this.mode = mode;
     }
 
     public void SetCharacter(int idx)
@@ -151,18 +171,11 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void OnOpenSkillWheel(InputValue inputValue)
+    public void OnToggleSkillWheel(InputValue inputValue)
     {
         if (inputValue.isPressed)
         {
-            if (selector.controllable)
-            {
-                ExitSelectionMode();
-            }
-            else
-            {
-                EnterSelectionMode();
-            }
+            Mode = mode == GameMode.Character ? GameMode.Selection : GameMode.Character;
             hud.AbilityToggle();
         }
     }

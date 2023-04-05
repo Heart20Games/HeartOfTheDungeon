@@ -26,11 +26,13 @@ public class Selector : MonoBehaviour
         {
             myRigidbody = GetComponent<Rigidbody>();
         }
+        Controllable = false;
     }
 
-    public void SetControllable(bool controllable=true)
+    public void SetControllable(bool controllable = true)
     {
         this.controllable = controllable;
+        cursor.gameObject.SetActive(controllable);
     }
 
     public void SetMoveVector(Vector2 vector)
