@@ -14,11 +14,14 @@ public class Selector : MonoBehaviour
     public float moveDrag = 0.5f;
     public float stopDrag = 7.5f;
     public UnityEvent OnSetMoveVector;
-    public bool controllable = false;
+    private bool controllable = false; 
     public bool Controllable { get { return controllable; } set { SetControllable(value); } }
 
     private Vector2 moveVector = new Vector2(0, 0);
     public Vector2 MoveVector { get { return moveVector; } set { SetMoveVector(value); } }
+
+    private List<Selectable> hoveringOver = new List<Selectable>();
+    private Selectable selected;
 
     private void Awake()
     {
@@ -48,5 +51,75 @@ public class Selector : MonoBehaviour
         {
             myRigidbody.velocity = myRigidbody.velocity.normalized * maxVelocity;
         }
+    }
+
+    
+    // Selectables
+
+    public void Hover(Impact impact)
+    {
+        print("Hover?");
+        Selectable selectable = impact.selectable;
+        if (selectable != null)
+        {
+            print("Hovering...");
+            if (hoveringOver.Count > 0)
+            {
+                hoveringOver[hoveringOver.Count - 1].UnHover();
+            }
+            hoveringOver.Add(selectable);
+            selectable.Hover();
+        }
+    }
+
+    public void UnHover(Impact impact)
+    {
+        print("UnHover?");
+        Selectable selectable = impact.selectable;
+        if (selectable != null)
+        {
+            print("UnHovering...");
+            if (selected = selectable)
+            {
+                DeSelect();
+            }
+            hoveringOver.Remove(selectable);
+            selectable.UnHover();
+            if (hoveringOver.Count > 0)
+            {
+                hoveringOver[hoveringOver.Count - 1].Hover();
+            }
+        }
+    }
+
+    public void Select()
+    {
+        if (hoveringOver.Count > 0)
+        {
+            print("Select");
+            selected = hoveringOver[hoveringOver.Count - 1];
+            if (selected.isSelected)
+            {
+                Confirm();
+            }
+            else
+            {
+                selected.Select();
+            }
+        }
+    }
+
+    public void DeSelect()
+    {
+        if (selected != null)
+        {
+            selected.DeSelect();
+            selected = null;
+        }
+    }
+
+    public void Confirm()
+    {
+        selected.Confirm();
     }
 }

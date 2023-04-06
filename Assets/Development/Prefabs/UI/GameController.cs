@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
     [HideInInspector] public HUD hud;
     private int curCharIdx = 0;
     
-    public enum GameMode { Selection, Character };
+    public enum GameMode { Selection, Character, Dialogue };
     private GameMode mode = GameMode.Character;
     public GameMode Mode { get { return mode; } set { SetMode(value); } }
 
@@ -84,10 +84,12 @@ public class GameController : MonoBehaviour
     public void OnMove(InputValue inputValue)
     {
         Vector2 inputVector = inputValue.Get<Vector2>();
-        curCharacter.MoveCharacter(inputVector);
-        if (selector.controllable)
+        switch (Mode)
         {
-            selector.MoveVector = inputVector;
+            case GameMode.Character:
+                curCharacter.MoveCharacter(inputVector); break;
+            case GameMode.Selection:
+                selector.MoveVector = inputVector; break;
         }
     }
 
@@ -168,6 +170,28 @@ public class GameController : MonoBehaviour
         {
             print("Interact");
             curCharacter.Interact();
+        }
+    }
+
+    public void OnSelect(InputValue inputValue)
+    {
+        if (inputValue.isPressed)
+        {
+            if (Mode == GameMode.Selection)
+            {
+                selector.Select();
+            }
+        }
+    }
+
+    public void OnDeSelect(InputValue inputValue)
+    {
+        if (inputValue.isPressed)
+        {
+            if (Mode == GameMode.Selection)
+            {
+                selector.DeSelect();
+            }
         }
     }
 

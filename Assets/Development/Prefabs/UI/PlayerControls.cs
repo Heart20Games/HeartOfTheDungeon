@@ -748,6 +748,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""c604108f-2008-4423-afb4-aff394b61d80"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DeSelect"",
+                    ""type"": ""Button"",
+                    ""id"": ""611c6732-58bd-4edc-aedb-384f9493641b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -871,6 +889,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Toggle Skill Wheel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""908904ac-349a-4563-84a7-dbd01bad885e"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4e32a94f-ceac-4990-b806-2a8f03b27930"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DeSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -904,6 +944,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Selector = asset.FindActionMap("Selector", throwIfNotFound: true);
         m_Selector_Move = m_Selector.FindAction("Move", throwIfNotFound: true);
         m_Selector_ToggleSkillWheel = m_Selector.FindAction("Toggle Skill Wheel", throwIfNotFound: true);
+        m_Selector_Select = m_Selector.FindAction("Select", throwIfNotFound: true);
+        m_Selector_DeSelect = m_Selector.FindAction("DeSelect", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1195,12 +1237,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<ISelectorActions> m_SelectorActionsCallbackInterfaces = new List<ISelectorActions>();
     private readonly InputAction m_Selector_Move;
     private readonly InputAction m_Selector_ToggleSkillWheel;
+    private readonly InputAction m_Selector_Select;
+    private readonly InputAction m_Selector_DeSelect;
     public struct SelectorActions
     {
         private @PlayerControls m_Wrapper;
         public SelectorActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Selector_Move;
         public InputAction @ToggleSkillWheel => m_Wrapper.m_Selector_ToggleSkillWheel;
+        public InputAction @Select => m_Wrapper.m_Selector_Select;
+        public InputAction @DeSelect => m_Wrapper.m_Selector_DeSelect;
         public InputActionMap Get() { return m_Wrapper.m_Selector; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1216,6 +1262,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ToggleSkillWheel.started += instance.OnToggleSkillWheel;
             @ToggleSkillWheel.performed += instance.OnToggleSkillWheel;
             @ToggleSkillWheel.canceled += instance.OnToggleSkillWheel;
+            @Select.started += instance.OnSelect;
+            @Select.performed += instance.OnSelect;
+            @Select.canceled += instance.OnSelect;
+            @DeSelect.started += instance.OnDeSelect;
+            @DeSelect.performed += instance.OnDeSelect;
+            @DeSelect.canceled += instance.OnDeSelect;
         }
 
         private void UnregisterCallbacks(ISelectorActions instance)
@@ -1226,6 +1278,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ToggleSkillWheel.started -= instance.OnToggleSkillWheel;
             @ToggleSkillWheel.performed -= instance.OnToggleSkillWheel;
             @ToggleSkillWheel.canceled -= instance.OnToggleSkillWheel;
+            @Select.started -= instance.OnSelect;
+            @Select.performed -= instance.OnSelect;
+            @Select.canceled -= instance.OnSelect;
+            @DeSelect.started -= instance.OnDeSelect;
+            @DeSelect.performed -= instance.OnDeSelect;
+            @DeSelect.canceled -= instance.OnDeSelect;
         }
 
         public void RemoveCallbacks(ISelectorActions instance)
@@ -1272,5 +1330,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnToggleSkillWheel(InputAction.CallbackContext context);
+        void OnSelect(InputAction.CallbackContext context);
+        void OnDeSelect(InputAction.CallbackContext context);
     }
 }
