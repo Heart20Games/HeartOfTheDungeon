@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.Events;
 using FMODUnity;
 
-public class Triggerable : MonoBehaviour
+public class Triggerable : Selectable
 {
     public bool togglable = false;
     public bool on = false;
     public UnityEvent onTriggeredOn;
     public UnityEvent onTriggeredOff;
+
     public void Trigger()
     {
         if (on)
@@ -23,4 +24,13 @@ public class Triggerable : MonoBehaviour
             onTriggeredOn.Invoke();
         }
     }
+
+    // ISelectable
+    public override void Confirm()
+    {
+        base.Confirm();
+        Trigger();
+    }
+
+    
 }

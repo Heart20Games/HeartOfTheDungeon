@@ -43,12 +43,6 @@ public class Movement : MonoBehaviour
 
     // Vectors
 
-    //public Vector2 GetCastVector()
-    //{
-    //    Vector3 center = new Vector3(Screen.width, Screen.height, 0) / 2;
-    //    return (Input.mousePosition - center).normalized;
-    //}
-
     public void UpdateCastVector()
     {
         if (moveVector.magnitude > 0 || aimVector.magnitude > 0)
@@ -85,14 +79,7 @@ public class Movement : MonoBehaviour
     public void SetMoveVector(Vector2 vector)
     {
         moveVector = vector;
-        if (moveVector.magnitude == 0)
-        {
-            myRigidbody.drag = stopDrag;
-        }
-        else
-        {
-            myRigidbody.drag = moveDrag;
-        }
+        myRigidbody.drag = moveVector.magnitude == 0 ? stopDrag : moveDrag;
         UpdateCastVector();
     }
 

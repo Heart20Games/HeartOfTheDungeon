@@ -1,3 +1,4 @@
+using FMOD;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,13 +8,23 @@ public class GameController : MonoBehaviour
 {
     public Character playerCharacter;
     public List<Character> playableCharacters;
+    public Selector selector;
+    public string characterInputMap = "GroundMovement";
+    public string selectorInputMap = "Selector";
     [HideInInspector] public Character curCharacter;
     [HideInInspector] public UserInterface userInterface;
     [HideInInspector] public HUD hud;
     private int curCharIdx = 0;
+    
+    public enum GameMode { Selection, Character, Dialogue };
+    private GameMode mode = GameMode.Character;
+    public GameMode Mode { get { return mode; } set { SetMode(value); } }
+
+    private PlayerInput input;
 
     private void Start()
     {
+        input = GetComponent<PlayerInput>();
         InitializePlayableCharacters();
     }
 
@@ -35,6 +46,28 @@ public class GameController : MonoBehaviour
         SetCharacter(0);
     }
 
+    public void SetMode(GameMode mode)
+    {
+        switch (this.mode)
+        {
+            case GameMode.Character:
+                curCharacter.SetControllable(false); break;
+            case GameMode.Selection:
+                selector.SetControllable(false); break;
+        }
+        switch (mode)
+        {
+            case GameMode.Character:
+                input.SwitchCurrentActionMap(characterInputMap);
+                curCharacter.SetControllable(true); break;
+            case GameMode.Selection:
+                input.SwitchCurrentActionMap(selectorInputMap);
+                selector.transform.position = curCharacter.transform.position;
+                selector.SetControllable(true); break;
+        }
+        this.mode = mode;
+    }
+
     public void SetCharacter(int idx)
     {
         idx = idx < 0 ? playableCharacters.Count + idx : idx;
@@ -51,7 +84,13 @@ public class GameController : MonoBehaviour
     public void OnMove(InputValue inputValue)
     {
         Vector2 inputVector = inputValue.Get<Vector2>();
-        curCharacter.MoveCharacter(inputVector);
+        switch (Mode)
+        {
+            case GameMode.Character:
+                curCharacter.MoveCharacter(inputVector); break;
+            case GameMode.Selection:
+                selector.MoveVector = inputVector; break;
+        }
     }
 
     public void OnAim(InputValue inputValue)
@@ -134,10 +173,33 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void OnOpenSkillWheel(InputValue inputValue)
+    public void OnSelect(InputValue inputValue)
     {
         if (inputValue.isPressed)
         {
+            if (Mode == GameMode.Selection)
+            {
+                selector.Select();
+            }
+        }
+    }
+
+    public void OnDeSelect(InputValue inputValue)
+    {
+        if (inputValue.isPressed)
+        {
+            if (Mode == GameMode.Selection)
+            {
+                selector.DeSelect();
+            }
+        }
+    }
+
+    public void OnToggleSkillWheel(InputValue inputValue)
+    {
+        if (inputValue.isPressed)
+        {
+            Mode = mode == GameMode.Character ? GameMode.Selection : GameMode.Character;
             hud.AbilityToggle();
         }
     }
