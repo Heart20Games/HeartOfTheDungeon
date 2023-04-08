@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using static GameController;
+using static Game;
 using static Selectable;
 
-public class GameControl : MonoBehaviour
+public class GameController : MonoBehaviour
 {
     public GameMode mode = GameMode.Character;
     public List<SelectType> selectableTypes;
-    [HideInInspector] public GameController controller;
+    [HideInInspector] public Game controller;
     public UnityEvent onSelectorConfirmed;
 
     private void Awake()
     {
-        controller = FindObjectOfType<GameController>();
+        controller = FindObjectOfType<Game>();
         controller.selector.onConfirm.AddListener(OnSelectorConfirmed);
     }
 

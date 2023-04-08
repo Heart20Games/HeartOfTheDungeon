@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class GameController : MonoBehaviour
+public class Game : MonoBehaviour
 {
     public Character playerCharacter;
     public List<Character> playableCharacters;

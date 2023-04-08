@@ -14,14 +14,14 @@ public class Initializer : MonoBehaviour
     private DialogueRunner dialogueRunner;
     private UserInterface userInterface;
     private List<ITimeScalable> timeScalables;
-    private GameControl[] gameControls;
+    private GameController[] gameControls;
     private HUD hud;
 
-    private GameController gameController;
+    private Game gameController;
 
     private void Awake()
     {
-        gameController = GetComponent<GameController>();
+        gameController = GetComponent<Game>();
         player = FindObjectOfType<PlayerCore>().GetComponent<Character>();
         characters = FindObjectsOfType<Character>();
         fmodPlayers = FindObjectsOfType<FModEventPlayer>();
@@ -60,7 +60,7 @@ public class Initializer : MonoBehaviour
         gameController.timeScalables = timeScalables;
         gameController.hud = hud;
 
-        AssetNonNull("GameController", gameController, "on GameObject");
+        AssetNonNull("Game", gameController, "on GameObject");
         AssetNonNull("PlayerCore", player);
         AssetNonNull("DialogueRunner", dialogueRunner);
         AssetNonNull("UserInterface", userInterface);
