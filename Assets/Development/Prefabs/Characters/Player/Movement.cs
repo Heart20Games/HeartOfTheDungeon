@@ -12,18 +12,21 @@ public class Movement : MonoBehaviour, ITimeScalable
     public float moveDrag = 0.5f;
     public float stopDrag = 7.5f;
     public bool canMove = true;
-    public float timeScale = 1f;
-    private bool hasFootsteps = false;
+
+    private float timeScale = 1f;
+    public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
 
     private Vector2 moveVector = new Vector2(0,0);
     private Vector2 aimVector = new Vector2(0, 0);
     public Vector2 castVector = new Vector2(0, 0);
+    
+    private bool hasFootsteps = false;
+    FMOD.Studio.EventInstance footsteps;
 
     private Rigidbody myRigidbody;
     private Character character;
     private Animator animator;
     private Transform pivot;
-    FMOD.Studio.EventInstance footsteps;
 
     private Dictionary<string, bool> parameterExists = new Dictionary<string, bool>();
 

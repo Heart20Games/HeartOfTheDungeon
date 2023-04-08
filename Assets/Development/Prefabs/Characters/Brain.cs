@@ -41,6 +41,7 @@ public class Brain : MonoBehaviour, ITimeScalable
     private BehaviorNode.Status status;
 
     private float timeScale = 1f;
+    public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
     private float timeKeeper = 0f;
 
     private void Awake()
