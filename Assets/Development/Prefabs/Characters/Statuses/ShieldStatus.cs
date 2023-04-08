@@ -6,9 +6,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewShieldStatus", menuName = "Statuses/ShieldStatus", order = 1)]
 public class ShieldStatus : StatusEffect
 {
+    public float maxStrength = 1.0f;
+    private int strength;
+
     public override void Apply(Character character, int strength)
     {
         base.Apply(character, strength);
+        this.strength = strength;
         character.currentHealth.Subscribe(Shield);
     }
 
@@ -20,7 +24,16 @@ public class ShieldStatus : StatusEffect
 
     public int Shield(int oldHealth, int newHealth)
     {
-        Debug.Log("Shield");
-        return oldHealth;
+        int difference = newHealth - oldHealth;
+        if (difference < 0)
+        {
+            float percentShielded = Mathf.Min(strength / maxStrength, 1.0f);
+            int healthShielded = Mathf.CeilToInt(difference * percentShielded);
+            return oldHealth + difference - healthShielded;
+        }
+        else
+        {
+            return newHealth;
+        }
     }
 }

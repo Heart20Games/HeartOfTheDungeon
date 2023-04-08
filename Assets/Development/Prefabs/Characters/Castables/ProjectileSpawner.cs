@@ -33,12 +33,10 @@ public class ProjectileSpawner : Positionable
     public override void SetOrigin(Transform source, Transform target)
     {
         base.SetOrigin(source, target);
-        print("Set Origin on Projectile: " + source + ", " + target);
     }
 
     public void Spawn(Vector3 direction)
     {
-        print("Spawn Projectile");
         Transform pInstance = Instantiate(pivot, source);
         Transform bInstance = projectile;
         LaunchInstance(direction, pInstance.transform, bInstance);
