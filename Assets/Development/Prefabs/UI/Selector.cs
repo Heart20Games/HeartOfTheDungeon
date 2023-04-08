@@ -58,11 +58,9 @@ public class Selector : MonoBehaviour
 
     public void Hover(Impact impact)
     {
-        print("Hover?");
         Selectable selectable = impact.selectable;
         if (selectable != null)
         {
-            print("Hovering...");
             if (hoveringOver.Count > 0)
             {
                 hoveringOver[hoveringOver.Count - 1].UnHover();
@@ -74,11 +72,9 @@ public class Selector : MonoBehaviour
 
     public void UnHover(Impact impact)
     {
-        print("UnHover?");
         Selectable selectable = impact.selectable;
         if (selectable != null)
         {
-            print("UnHovering...");
             if (selected = selectable)
             {
                 DeSelect();
@@ -96,7 +92,6 @@ public class Selector : MonoBehaviour
     {
         if (hoveringOver.Count > 0)
         {
-            print("Select");
             selected = hoveringOver[hoveringOver.Count - 1];
             if (selected.isSelected)
             {

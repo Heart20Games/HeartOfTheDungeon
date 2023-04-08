@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 
-public class Brain : MonoBehaviour
+public class Brain : MonoBehaviour, ITimeScalable
 {
     public bool Enabled
     {
@@ -40,6 +40,7 @@ public class Brain : MonoBehaviour
     public BehaviorNode tree = new BehaviorNode();
     private BehaviorNode.Status status;
 
+    private float timeScale = 1f;
     private float timeKeeper = 0f;
 
     private void Awake()
@@ -60,7 +61,7 @@ public class Brain : MonoBehaviour
         hasTarget.AddChild(chase);
         hasTarget.AddChild(idle);
 
-        tree.PrintTree();
+        //tree.PrintTree();
     }
 
     private void Update()
@@ -125,5 +126,37 @@ public class Brain : MonoBehaviour
             }
         }
         return BehaviorNode.Status.SUCCESS;
+    }
+
+
+    // TimeScaling
+    private float tempSpeed;
+    private float tempAngularSpeed;
+    private float tempAcceleration;
+    public void SetTimeScale(float timeScale)
+    {
+        if (this.timeScale != timeScale)
+        {
+            if (timeScale == 0)
+            {
+                tempSpeed = agent.speed;
+                tempAngularSpeed = agent.angularSpeed;
+                tempAcceleration = agent.acceleration;
+                agent.speed = 0;
+                agent.angularSpeed = 0;
+            }
+            else if (this.timeScale == 0)
+            {
+                agent.speed = tempSpeed;
+                agent.angularSpeed = tempAngularSpeed;
+            }
+            else
+            {
+                float ratio = timeScale / this.timeScale;
+                agent.speed *= ratio;
+                agent.angularSpeed *= ratio;
+            }
+        }
+        this.timeScale = timeScale;
     }
 }

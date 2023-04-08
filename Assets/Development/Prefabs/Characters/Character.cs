@@ -176,8 +176,6 @@ public class Character : MonoBehaviour, IDamageable
             castable.UnEquip();
         }
 
-        print("Change Castable: " + slot);
-
         if (loadout != null)
         {
             switch (slot)

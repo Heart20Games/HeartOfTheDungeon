@@ -14,8 +14,11 @@ public class GameController : MonoBehaviour
     [HideInInspector] public Character curCharacter;
     [HideInInspector] public UserInterface userInterface;
     [HideInInspector] public HUD hud;
+    [HideInInspector] public List<ITimeScalable> timeScalables;
     private int curCharIdx = 0;
     
+    public float timeScale = 1.0f;
+    public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
     public enum GameMode { Selection, Character, Dialogue };
     private GameMode mode = GameMode.Character;
     public GameMode Mode { get { return mode; } set { SetMode(value); } }
@@ -46,6 +49,15 @@ public class GameController : MonoBehaviour
         SetCharacter(0);
     }
 
+    public void SetTimeScale(float timeScale)
+    {
+        this.timeScale = timeScale;
+        foreach(ITimeScalable timeScalable in timeScalables)
+        {
+            timeScalable.SetTimeScale(this.timeScale);
+        }
+    }
+
     public void SetMode(GameMode mode)
     {
         switch (this.mode)
@@ -59,10 +71,12 @@ public class GameController : MonoBehaviour
         {
             case GameMode.Character:
                 input.SwitchCurrentActionMap(characterInputMap);
+                TimeScale = 1;
                 curCharacter.SetControllable(true); break;
             case GameMode.Selection:
                 input.SwitchCurrentActionMap(selectorInputMap);
                 selector.transform.position = curCharacter.transform.position;
+                TimeScale = 0.1f;
                 selector.SetControllable(true); break;
         }
         this.mode = mode;

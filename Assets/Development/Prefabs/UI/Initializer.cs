@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Yarn.Unity;
 
@@ -12,6 +13,7 @@ public class Initializer : MonoBehaviour
     private FModEventPlayer[] fmodPlayers;
     private DialogueRunner dialogueRunner;
     private UserInterface userInterface;
+    private List<ITimeScalable> timeScalables;
     private HUD hud;
 
     private GameController gameController;
@@ -24,6 +26,7 @@ public class Initializer : MonoBehaviour
         fmodPlayers = FindObjectsOfType<FModEventPlayer>();
         dialogueRunner = FindObjectOfType<DialogueRunner>();
         userInterface = FindObjectOfType<UserInterface>();
+        timeScalables = new List<ITimeScalable>(FindObjectsOfType<MonoBehaviour>().OfType<ITimeScalable>());
         hud = FindAnyObjectByType<HUD>();
 
         if (gameController.playerCharacter == null)
@@ -53,6 +56,7 @@ public class Initializer : MonoBehaviour
         }
 
         gameController.userInterface = userInterface;
+        gameController.timeScalables = timeScalables;
         gameController.hud = hud;
 
         AssetNonNull("GameController", gameController, "on GameObject");

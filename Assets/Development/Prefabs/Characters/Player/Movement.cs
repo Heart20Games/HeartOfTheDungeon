@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class Movement : MonoBehaviour
+public class Movement : MonoBehaviour, ITimeScalable
 {
     public float speed = 700f;
     public float maxVelocity = 10f;
@@ -12,6 +12,7 @@ public class Movement : MonoBehaviour
     public float moveDrag = 0.5f;
     public float stopDrag = 7.5f;
     public bool canMove = true;
+    public float timeScale = 1f;
     private bool hasFootsteps = false;
 
     private Vector2 moveVector = new Vector2(0,0);
@@ -90,7 +91,7 @@ public class Movement : MonoBehaviour
     {
         if (canMove)
         {
-            myRigidbody.AddRelativeForce(new Vector3(moveVector.x, 0, moveVector.y) * speed * Time.fixedDeltaTime, ForceMode.Force);
+            myRigidbody.AddRelativeForce(new Vector3(moveVector.x, 0, moveVector.y) * speed * Time.fixedDeltaTime * timeScale, ForceMode.Force);
             if (myRigidbody.velocity.magnitude > maxVelocity)
             {
                 myRigidbody.velocity = myRigidbody.velocity.normalized * maxVelocity;
@@ -128,5 +129,29 @@ public class Movement : MonoBehaviour
         {
             animator.SetBool(parameter, value);
         }
+    }
+
+    // TimeScaling
+    private Vector3 tempVelocity;
+    public void SetTimeScale(float timeScale)
+    {
+        if (this.timeScale != timeScale)
+        {
+            if (timeScale == 0)
+            {
+                tempVelocity = myRigidbody.velocity;
+                myRigidbody.velocity = new Vector3();
+            }
+            else if (this.timeScale == 0)
+            {
+                myRigidbody.velocity = tempVelocity;
+            }
+            else
+            {
+                float ratio = timeScale / this.timeScale;
+                myRigidbody.velocity *= ratio;
+            }
+        }
+        this.timeScale = timeScale;
     }
 }
