@@ -14,6 +14,7 @@ public class Initializer : MonoBehaviour
     private DialogueRunner dialogueRunner;
     private UserInterface userInterface;
     private List<ITimeScalable> timeScalables;
+    private GameControl[] gameControls;
     private HUD hud;
 
     private GameController gameController;

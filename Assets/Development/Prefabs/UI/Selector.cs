@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using static Selectable;
 
 public class Selector : MonoBehaviour
 {
     public Rigidbody myRigidbody;
-    public Transform cursor;
+    public Impact cursor;
 
     public float speed = 700f;
     public float maxVelocity = 10f;
     public float moveDrag = 0.5f;
     public float stopDrag = 7.5f;
-    public UnityEvent OnSetMoveVector;
+    public UnityEvent onConfirm;
+
+    private List<SelectType> selectableTypes;
+    public List<SelectType> SelectableTypes { get { return selectableTypes; } set { SetSelectableTypes(value); } }
+
     private bool controllable = false; 
     public bool Controllable { get { return controllable; } set { SetControllable(value); } }
 
@@ -36,6 +41,12 @@ public class Selector : MonoBehaviour
     {
         this.controllable = controllable;
         cursor.gameObject.SetActive(controllable);
+    }
+
+    public void SetSelectableTypes(List<SelectType> types)
+    {
+        selectableTypes = types;
+        cursor.selectableTypes = selectableTypes;
     }
 
     public void SetMoveVector(Vector2 vector)
@@ -115,6 +126,9 @@ public class Selector : MonoBehaviour
 
     public void Confirm()
     {
+        print("Confirmed");
+        print(onConfirm.ToString());
         selected.Confirm();
+        onConfirm.Invoke();
     }
 }
