@@ -2,19 +2,53 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static Selectable;
 
 public class Impact : MonoBehaviour
 {   
     // Properties
 
     public List<string> desiredTags;
+    [SerializeField] private List<SelectType> selectableTypes;
+    public List<SelectType> SelectableTypes { get { return selectableTypes; } set { SetSelectableTypes(value); } }
 
     public BinaryEvent onCollision;
     public BinaryEvent onTrigger;
 
-    private List<GameObject> touching;
-    public GameObject other;
+    public bool debug = false;
 
+    private List<GameObject> touching;
+    [HideInInspector] public GameObject other;
+    [HideInInspector] public Selectable selectable;
+
+    private void SetSelectableTypes(List<SelectType> selectableTypes)
+    {
+        print("Set Types on Impact");
+        this.selectableTypes = selectableTypes;
+    }
+
+    private bool HasValidTag(GameObject other)
+    {
+        if (debug && desiredTags.Count != 0)
+        {
+            print("Valid Tag? " + (desiredTags.Count == 0 || desiredTags.Contains(other.tag)) + " (" + other.tag + ")");
+        }
+        return desiredTags.Count == 0 || desiredTags.Contains(other.tag);
+    }
+
+    private bool IsValidSelectable(GameObject other)
+    {
+        if (selectableTypes.Count > 0)
+        {
+            selectable = other.GetComponent<Selectable>();
+            if (debug && selectable != null)
+            {
+                print("Valid Selectable?" + (selectable != null && selectableTypes.Contains(selectable.type)) + " (" + selectable.type + ")");
+            }
+            return selectable != null && selectableTypes.Contains(selectable.type);
+        }
+        else return true;
+    }
 
     // Events
 
@@ -23,20 +57,20 @@ public class Impact : MonoBehaviour
         touching = new List<GameObject>();
     }
 
-    private void OnEventEnter(GameObject _other, UnityEvent onEvent)
+    private void OnEventEnter(GameObject other, UnityEvent onEvent)
     {
-        other = _other;
-        if (desiredTags.Contains(other.tag) && !touching.Contains(other))
+        this.other = other;
+        if (HasValidTag(other) && IsValidSelectable(other) && !touching.Contains(other))
         {
             touching.Add(other);
             onEvent.Invoke();
         }
     }
 
-    private void OnEventExit(GameObject _other, UnityEvent onEvent)
+    private void OnEventExit(GameObject other, UnityEvent onEvent)
     {
-        other = _other;
-        if (desiredTags.Contains(other.tag))
+        this.other = other;
+        if (HasValidTag(other) && IsValidSelectable(other))
         {
             if (touching.Contains(other))
             {
@@ -49,9 +83,9 @@ public class Impact : MonoBehaviour
 
     // Signals
     
-    private void OnTriggerExit(Collider _other)
+    private void OnTriggerExit(Collider other)
     {
-        OnEventExit(_other.gameObject, onTrigger.exit);
+        OnEventExit(other.gameObject, onTrigger.exit);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -64,8 +98,8 @@ public class Impact : MonoBehaviour
         OnEventExit(collision.gameObject, onCollision.exit);
     }
 
-    private void OnTriggerEnter(Collider _other)
+    private void OnTriggerEnter(Collider other)
     {
-        OnEventEnter(_other.gameObject, onTrigger.enter);
+        OnEventEnter(other.gameObject, onTrigger.enter);
     }
 }

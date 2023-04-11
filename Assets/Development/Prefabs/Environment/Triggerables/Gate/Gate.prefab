@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8330241296442725374}
   - component: {fileID: 4624187604445185197}
   - component: {fileID: 539139373284615958}
+  - component: {fileID: 6646311200139596761}
   m_Layer: 0
   m_Name: Gate
   m_TagString: Untagged
@@ -32,7 +33,7 @@ Transform:
   m_Children:
   - {fileID: 1172052139091480888}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4624187604445185197
 MonoBehaviour:
@@ -46,6 +47,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ee1fc072d87d15439ef67547a1defd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelection:
+    enter:
+      m_PersistentCalls:
+        m_Calls: []
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
+  onHover:
+    enter:
+      m_PersistentCalls:
+        m_Calls: []
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
+  onConfirm:
+    m_PersistentCalls:
+      m_Calls: []
+  type: 1
+  isSelected: 0
+  isHovering: 0
   togglable: 1
   on: 1
   onTriggeredOn:
@@ -98,6 +119,27 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!65 &6646311200139596761
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3865990060827399928}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 1, z: 2}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &7378746558536247804
 GameObject:
   m_ObjectHideFlags: 0

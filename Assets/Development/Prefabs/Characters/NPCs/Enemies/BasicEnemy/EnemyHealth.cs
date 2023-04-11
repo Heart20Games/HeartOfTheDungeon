@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
-    public float startingHealth = 25f;
-    public float currentHealth;
+    public int startingHealth = 25;
+    public int currentHealth;
     public HealthbarUI healthBarUI;
 
     void Awake()
@@ -21,7 +21,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         healthBarUI.UpdateFill(currentHealth, startingHealth);      
     }
 
-    public void TakeDamage(float damageAmount)
+    public void TakeDamage(int damageAmount)
     {
         currentHealth -= damageAmount;
         healthBarUI.UpdateFill(currentHealth, startingHealth);

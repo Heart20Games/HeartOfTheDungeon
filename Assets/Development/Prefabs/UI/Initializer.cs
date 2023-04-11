@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using Yarn.Unity;
 
@@ -10,20 +13,23 @@ public class Initializer : MonoBehaviour
     private Character player;
     private Character[] characters;
     private FModEventPlayer[] fmodPlayers;
-    private DialogueRunner dialogueRunner;
+    [SerializeField] private DialogueRunner dialogueRunner;
     private UserInterface userInterface;
+    private List<ITimeScalable> timeScalables;
+    private GameController[] gameControls;
     private HUD hud;
 
-    private GameController gameController;
+    private Game gameController;
 
     private void Awake()
     {
-        gameController = GetComponent<GameController>();
+        gameController = GetComponent<Game>();
         player = FindObjectOfType<PlayerCore>().GetComponent<Character>();
         characters = FindObjectsOfType<Character>();
         fmodPlayers = FindObjectsOfType<FModEventPlayer>();
-        dialogueRunner = FindObjectOfType<DialogueRunner>();
+        if (dialogueRunner == null) dialogueRunner = FindObjectOfType<DialogueRunner>();
         userInterface = FindObjectOfType<UserInterface>();
+        timeScalables = new List<ITimeScalable>(FindObjectsOfType<MonoBehaviour>().OfType<ITimeScalable>());
         hud = FindAnyObjectByType<HUD>();
 
         if (gameController.playerCharacter == null)
@@ -53,9 +59,10 @@ public class Initializer : MonoBehaviour
         }
 
         gameController.userInterface = userInterface;
+        gameController.timeScalables = timeScalables;
         gameController.hud = hud;
 
-        AssetNonNull("GameController", gameController, "on GameObject");
+        AssetNonNull("Game", gameController, "on GameObject");
         AssetNonNull("PlayerCore", player);
         AssetNonNull("DialogueRunner", dialogueRunner);
         AssetNonNull("UserInterface", userInterface);
@@ -68,11 +75,5 @@ public class Initializer : MonoBehaviour
         {
             Debug.LogWarning("Can't find any " + typeName + " " + context + ".");
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 }

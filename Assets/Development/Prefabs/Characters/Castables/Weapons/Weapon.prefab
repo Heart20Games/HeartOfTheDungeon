@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 441588990764781275}
   - component: {fileID: 5382981727209902725}
   - component: {fileID: 6748884909623955628}
-  - component: {fileID: -327606228693391448}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Weapon
@@ -47,24 +46,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 695ab985bf0640a4080eb607e181d234, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponArt: {fileID: 0}
   source: {fileID: 0}
-  pivot: {fileID: 6217251625220617419}
-  body: {fileID: 2008137554218384267}
-  rotationOffset: 202.5
-  swinging: 0
-  swingLength: 1
-  speed: 3
-  instanceLifeSpan: 2
-  damage: 1
-  followBody: 1
-  instanced: 0
+  doCast:
+    m_PersistentCalls:
+      m_Calls: []
   onCast:
     m_PersistentCalls:
       m_Calls: []
-  onAttackComplete:
+  onUnCast:
     m_PersistentCalls:
       m_Calls: []
+  onCasted:
+    m_PersistentCalls:
+      m_Calls: []
+  casting: 0
+  castStatuses: []
+  hitStatuses: []
+  rOffset: 0
+  followBody: 1
+  weaponArt: {fileID: 0}
+  pivot: {fileID: 6217251625220617419}
+  body: {fileID: 2008137554218384267}
+  swinging: 0
+  swingLength: 1
+  speed: 3
+  damage: 1
 --- !u!95 &6748884909623955628
 Animator:
   serializedVersion: 5
@@ -85,19 +91,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!114 &-327606228693391448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4915850916652667943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2ff4b93bae275a4ab531af8efd19ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 10
 --- !u!1 &5437472882635739354
 GameObject:
   m_ObjectHideFlags: 0

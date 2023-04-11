@@ -32,7 +32,7 @@ public class FModEventLibary : ScriptableObject
             names += "\n" + fmodEvent.name;
             bank[fmodEvent.name] = fmodEvent;
         }
-        Debug.Log(names);
+        //Debug.Log(names);
     }
 
     public EventReference GetReference(string key)
