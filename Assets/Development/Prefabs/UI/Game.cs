@@ -11,10 +11,13 @@ public class Game : MonoBehaviour
     public Selector selector;
     public string characterInputMap = "GroundMovement";
     public string selectorInputMap = "Selector";
-    [HideInInspector] public Character curCharacter;
     [HideInInspector] public UserInterface userInterface;
     [HideInInspector] public HUD hud;
     [HideInInspector] public List<ITimeScalable> timeScalables;
+
+    private Character curCharacter;
+    [HideInInspector] public Character CurCharacter { get { return curCharacter; } set { SetCharacter(value); } }
+    
     private int curCharIdx = 0;
     
     public float timeScale = 1.0f;
@@ -46,7 +49,7 @@ public class Game : MonoBehaviour
         {
             playableCharacters.Insert(0, playerCharacter);
         }
-        SetCharacter(0);
+        SetCharacterIdx(0);
     }
 
     public void SetTimeScale(float timeScale)
@@ -82,14 +85,25 @@ public class Game : MonoBehaviour
         this.mode = mode;
     }
 
-    public void SetCharacter(int idx)
+    public void SetCharacterIdx(int idx)
     {
         idx = idx < 0 ? playableCharacters.Count + idx : idx;
         curCharIdx = idx % (playableCharacters.Count);
-        curCharacter.SetControllable(false);
-        curCharacter = playableCharacters[curCharIdx];
-        curCharacter.SetControllable(true);
-        hud.CharacterSelect(curCharIdx);
+        SetCharacter(playableCharacters[curCharIdx]);
+        
+    }
+
+    public void SetCharacter(Character character)
+    {
+        if (character != null)
+        {
+            if (curCharacter != null)
+            {
+                curCharacter.SetControllable(false);
+            }
+            curCharacter = character;
+            curCharacter.SetControllable(true);
+        }
     }
 
 
@@ -117,7 +131,7 @@ public class Game : MonoBehaviour
     {
         if (inputValue.isPressed)
         {
-            SetCharacter(idx);
+            SetCharacterIdx(idx);
         }
     }
 

@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour
     [HideInInspector] public Game controller;
     public UnityEvent onSelectorConfirmed;
 
+    private Stack<Character> characterStack = new Stack<Character>();
+
     private void Awake()
     {
         controller = FindObjectOfType<Game>();
@@ -36,6 +38,24 @@ public class GameController : MonoBehaviour
     public void SetMode(GameMode mode)
     {
         controller.Mode = mode;
+    }
+
+    public void PushCharacter()
+    {
+        Character character = controller.selector.selected.GetComponent<Character>();
+        if (character != null )
+        {
+            characterStack.Push(controller.CurCharacter);
+            controller.SetCharacter(character);
+        }
+    }
+
+    public void PopCharacter()
+    {
+        if (characterStack.Count > 0)
+        {
+            controller.SetCharacter(characterStack.Pop());
+        }
     }
 
     public void SetTimeScale(float timeScale)

@@ -26,7 +26,7 @@ public class Selector : MonoBehaviour
     public Vector2 MoveVector { get { return moveVector; } set { SetMoveVector(value); } }
 
     private List<Selectable> hoveringOver = new List<Selectable>();
-    private Selectable selected;
+    public Selectable selected;
 
     private void Awake()
     {
