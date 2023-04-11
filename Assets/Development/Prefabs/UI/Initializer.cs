@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using Yarn.Unity;
 
@@ -11,7 +13,7 @@ public class Initializer : MonoBehaviour
     private Character player;
     private Character[] characters;
     private FModEventPlayer[] fmodPlayers;
-    private DialogueRunner dialogueRunner;
+    [SerializeField] private DialogueRunner dialogueRunner;
     private UserInterface userInterface;
     private List<ITimeScalable> timeScalables;
     private GameController[] gameControls;
@@ -25,7 +27,7 @@ public class Initializer : MonoBehaviour
         player = FindObjectOfType<PlayerCore>().GetComponent<Character>();
         characters = FindObjectsOfType<Character>();
         fmodPlayers = FindObjectsOfType<FModEventPlayer>();
-        dialogueRunner = FindObjectOfType<DialogueRunner>();
+        if (dialogueRunner == null) dialogueRunner = FindObjectOfType<DialogueRunner>();
         userInterface = FindObjectOfType<UserInterface>();
         timeScalables = new List<ITimeScalable>(FindObjectsOfType<MonoBehaviour>().OfType<ITimeScalable>());
         hud = FindAnyObjectByType<HUD>();
@@ -73,11 +75,5 @@ public class Initializer : MonoBehaviour
         {
             Debug.LogWarning("Can't find any " + typeName + " " + context + ".");
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 }

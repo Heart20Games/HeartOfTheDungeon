@@ -11,8 +11,18 @@ public class Selectable : MonoBehaviour, ISelectable
     public enum SelectType { Default, Triggerable, Character, Interactable , Disabled, Invalid }
     public SelectType type = SelectType.Default;
 
+    public GameObject source;
+
     [HideInInspector] public bool isSelected = false;
     [HideInInspector] public bool isHovering = false;
+
+    private void Awake()
+    {
+        if (source == null)
+        {
+            source = gameObject;
+        }
+    }
 
     public virtual void Select()
     {

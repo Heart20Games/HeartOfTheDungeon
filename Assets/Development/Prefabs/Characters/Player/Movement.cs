@@ -138,7 +138,7 @@ public class Movement : MonoBehaviour, ITimeScalable
     private Vector3 tempVelocity;
     public void SetTimeScale(float timeScale)
     {
-        if (this.timeScale != timeScale)
+        if (myRigidbody != null && this.timeScale != timeScale)
         {
             if (timeScale == 0)
             {
