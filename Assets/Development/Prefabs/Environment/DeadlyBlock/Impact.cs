@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static Selectable;
 
 public class Impact : MonoBehaviour
 {   
     // Properties
 
     public List<string> desiredTags;
-    public List<Selectable.SelectType> selectableTypes;
+    [SerializeField] private List<SelectType> selectableTypes;
+    public List<SelectType> SelectableTypes { get { return selectableTypes; } set { SetSelectableTypes(value); } }
 
     public BinaryEvent onCollision;
     public BinaryEvent onTrigger;
@@ -18,6 +20,12 @@ public class Impact : MonoBehaviour
     private List<GameObject> touching;
     [HideInInspector] public GameObject other;
     [HideInInspector] public Selectable selectable;
+
+    private void SetSelectableTypes(List<SelectType> selectableTypes)
+    {
+        print("Set Types on Impact");
+        this.selectableTypes = selectableTypes;
+    }
 
     private bool HasValidTag(GameObject other)
     {

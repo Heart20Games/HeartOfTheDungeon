@@ -340,6 +340,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   desiredTags: []
+  selectableTypes: 
   onCollision:
     enter:
       m_PersistentCalls:
@@ -354,7 +355,9 @@ MonoBehaviour:
     exit:
       m_PersistentCalls:
         m_Calls: []
+  debug: 0
   other: {fileID: 0}
+  selectable: {fileID: 0}
 --- !u!114 &1170855021759411822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -401,10 +404,20 @@ MonoBehaviour:
     exit:
       m_PersistentCalls:
         m_Calls: []
+  onHover:
+    enter:
+      m_PersistentCalls:
+        m_Calls: []
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
   onConfirm:
     m_PersistentCalls:
       m_Calls: []
   type: 2
+  source: {fileID: 3324343490077819189}
+  isSelected: 0
+  isHovering: 0
 --- !u!195 &608404790986451179
 NavMeshAgent:
   m_ObjectHideFlags: 0

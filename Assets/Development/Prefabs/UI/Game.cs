@@ -90,7 +90,7 @@ public class Game : MonoBehaviour
         idx = idx < 0 ? playableCharacters.Count + idx : idx;
         curCharIdx = idx % (playableCharacters.Count);
         SetCharacter(playableCharacters[curCharIdx]);
-        
+        hud.CharacterSelect(curCharIdx);
     }
 
     public void SetCharacter(Character character)
@@ -103,6 +103,7 @@ public class Game : MonoBehaviour
             }
             curCharacter = character;
             curCharacter.SetControllable(true);
+            SetMode(GameMode.Character);
         }
     }
 

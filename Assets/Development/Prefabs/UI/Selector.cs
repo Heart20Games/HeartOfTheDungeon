@@ -16,7 +16,7 @@ public class Selector : MonoBehaviour
     public float stopDrag = 7.5f;
     public UnityEvent onConfirm;
 
-    private List<SelectType> selectableTypes;
+    [SerializeField] private List<SelectType> selectableTypes;
     public List<SelectType> SelectableTypes { get { return selectableTypes; } set { SetSelectableTypes(value); } }
 
     private bool controllable = false; 
@@ -25,7 +25,7 @@ public class Selector : MonoBehaviour
     private Vector2 moveVector = new Vector2(0, 0);
     public Vector2 MoveVector { get { return moveVector; } set { SetMoveVector(value); } }
 
-    private List<Selectable> hoveringOver = new List<Selectable>();
+    public List<Selectable> hoveringOver = new List<Selectable>();
     public Selectable selected;
 
     private void Awake()
@@ -41,12 +41,15 @@ public class Selector : MonoBehaviour
     {
         this.controllable = controllable;
         cursor.gameObject.SetActive(controllable);
+        DeSelect();
+        hoveringOver.Clear();
     }
 
     public void SetSelectableTypes(List<SelectType> types)
     {
+        print("Set Selectable Types");
         selectableTypes = types;
-        cursor.selectableTypes = selectableTypes;
+        cursor.SelectableTypes = selectableTypes;
     }
 
     public void SetMoveVector(Vector2 vector)
@@ -126,8 +129,7 @@ public class Selector : MonoBehaviour
 
     public void Confirm()
     {
-        print("Confirmed");
-        print(onConfirm.ToString());
+        print("Confirmed (" + selected + ")");
         selected.Confirm();
         onConfirm.Invoke();
     }
