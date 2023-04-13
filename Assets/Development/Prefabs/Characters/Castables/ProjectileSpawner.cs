@@ -35,7 +35,12 @@ public class ProjectileSpawner : Positionable
         base.SetOrigin(source, target);
     }
 
-    public void Spawn(Vector3 direction)
+    public void Spawn()
+    {
+        Spawn(new Vector3());
+    }
+
+    public void Spawn(Vector3 direction=new Vector3())
     {
         Transform pInstance = Instantiate(pivot, source);
         Transform bInstance = projectile;

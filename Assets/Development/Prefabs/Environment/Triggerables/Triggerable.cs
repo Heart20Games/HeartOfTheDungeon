@@ -13,14 +13,21 @@ public class Triggerable : Selectable
 
     public void Trigger()
     {
-        if (on)
+        if (togglable)
         {
-            on = false;
-            onTriggeredOff.Invoke();
+            if (on)
+            {
+                on = false;
+                onTriggeredOff.Invoke();
+            }
+            else
+            {
+                on = true;
+                onTriggeredOn.Invoke();
+            }
         }
         else
         {
-            on = true;
             onTriggeredOn.Invoke();
         }
     }
