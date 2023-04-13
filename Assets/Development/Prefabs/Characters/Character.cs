@@ -147,7 +147,8 @@ public class Character : MonoBehaviour, IDamageable
     public void Die()
     {
         onDeath.Invoke();
-        Destroy(gameObject);
+        body.gameObject.SetActive(false);
+        //Destroy(gameObject);
     }
 
 

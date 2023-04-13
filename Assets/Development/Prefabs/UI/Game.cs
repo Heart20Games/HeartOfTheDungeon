@@ -57,7 +57,10 @@ public class Game : MonoBehaviour
         this.timeScale = timeScale;
         foreach(ITimeScalable timeScalable in timeScalables)
         {
-            timeScalable.SetTimeScale(this.timeScale);
+            if (timeScalable != null)
+            {
+                timeScalable.SetTimeScale(this.timeScale);
+            }
         }
     }
 
