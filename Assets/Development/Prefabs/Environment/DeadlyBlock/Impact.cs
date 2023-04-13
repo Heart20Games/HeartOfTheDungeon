@@ -17,7 +17,7 @@ public class Impact : MonoBehaviour
 
     public bool debug = false;
 
-    private List<GameObject> touching;
+    public List<GameObject> touching;
     [HideInInspector] public GameObject other;
     [HideInInspector] public Selectable selectable;
 
