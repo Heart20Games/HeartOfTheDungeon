@@ -39,15 +39,18 @@ public class Selector : MonoBehaviour
 
     public void SetControllable(bool controllable = true)
     {
+        hoveringOver.Clear();
+        if (cursor != null && cursor.touching.Count > 0)
+        {
+            cursor.touching.Clear();
+        }
         this.controllable = controllable;
         cursor.gameObject.SetActive(controllable);
         DeSelect();
-        hoveringOver.Clear();
     }
 
     public void SetSelectableTypes(List<SelectType> types)
     {
-        print("Set Selectable Types");
         selectableTypes = types;
         cursor.SelectableTypes = selectableTypes;
     }
@@ -129,7 +132,6 @@ public class Selector : MonoBehaviour
 
     public void Confirm()
     {
-        print("Confirmed (" + selected + ")");
         selected.Confirm();
         onConfirm.Invoke();
     }
