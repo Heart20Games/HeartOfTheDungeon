@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using static Game;
-using static Selectable;
+using static ISelectable;
 
 public class GameController : MonoBehaviour
 {

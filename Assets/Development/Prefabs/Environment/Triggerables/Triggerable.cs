@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using FMODUnity;
+using static ISelectable;
 
-public class Triggerable : Selectable
+public class Triggerable : ASelectable
 {
     public bool togglable = false;
     public bool on = false;
@@ -33,11 +33,10 @@ public class Triggerable : Selectable
     }
 
     // ISelectable
+    public override SelectType Type { get => SelectType.Triggerable; set => NoOpSelectType(value); }
+
     public override void Confirm()
     {
-        base.Confirm();
         Trigger();
     }
-
-    
 }

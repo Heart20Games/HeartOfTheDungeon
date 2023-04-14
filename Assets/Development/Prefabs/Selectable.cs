@@ -2,53 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static ISelectable;
 
-public class Selectable : MonoBehaviour, ISelectable
+public class Selectable : ASelectable
 {
     public BinaryEvent onSelection;
     public BinaryEvent onHover;
     public UnityEvent onConfirm;
-    public enum SelectType { Default, Triggerable, Character, Interactable , Disabled, Invalid }
-    public SelectType type = SelectType.Default;
 
-    public GameObject source;
+    [SerializeField] private SelectType selectType = SelectType.Default;
+    public override SelectType Type { get => selectType; set => selectType = value; }
 
-    [HideInInspector] public bool isSelected = false;
-    [HideInInspector] public bool isHovering = false;
-
-    private void Awake()
+    public override void Select()
     {
-        if (source == null)
-        {
-            source = gameObject;
-        }
-    }
-
-    public virtual void Select()
-    {
-        isSelected = true;
+        base.Select();
         onSelection.enter.Invoke();
     }
 
-    public virtual void DeSelect()
+    public override void DeSelect()
     {
-        isSelected = false;
+        base.DeSelect();
         onSelection.exit.Invoke();
     }
 
-    public virtual void Hover()
+    public override void Hover()
     {
-        isHovering = true;
+        base.Hover();
         onHover.enter.Invoke();
     }
 
-    public virtual void UnHover()
+    public override void UnHover()
     {
-        isHovering = false;
+        base.UnHover();
         onHover.exit.Invoke();
     }
 
-    public virtual void Confirm()
+    public override void Confirm()
     {
         onConfirm.Invoke();
     }
