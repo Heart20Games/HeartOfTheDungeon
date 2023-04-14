@@ -7,28 +7,35 @@ using static ISelectable;
 public class Triggerable : ASelectable
 {
     public bool togglable = false;
+    public bool oneShot = false;
     public bool on = false;
     public UnityEvent onTriggeredOn;
     public UnityEvent onTriggeredOff;
 
+    private bool hasFired = false;
+
     public void Trigger()
     {
-        if (togglable)
+        if (!oneShot || !hasFired)
         {
-            if (on)
+            if (togglable)
             {
-                on = false;
-                onTriggeredOff.Invoke();
+                if (on)
+                {
+                    on = false;
+                    onTriggeredOff.Invoke();
+                }
+                else
+                {
+                    on = true;
+                    onTriggeredOn.Invoke();
+                }
             }
             else
             {
-                on = true;
                 onTriggeredOn.Invoke();
             }
-        }
-        else
-        {
-            onTriggeredOn.Invoke();
+            hasFired = true;
         }
     }
 
