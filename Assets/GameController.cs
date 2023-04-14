@@ -40,6 +40,11 @@ public class GameController : MonoBehaviour
         SetMode(GameMode.Character);
     }
 
+    public void UseDialoge()
+    {
+        SetMode(GameMode.Dialogue);
+    }
+
     public void SetMode(GameMode mode)
     {
         controller.Mode = mode;

@@ -12,6 +12,7 @@ public class Game : MonoBehaviour
     public Selector selector;
     public string characterInputMap = "GroundMovement";
     public string selectorInputMap = "Selector";
+    public string dialogueInputMap = "Dialogue";
     [HideInInspector] public UserInterface userInterface;
     [HideInInspector] public HUD hud;
     [HideInInspector] public List<ITimeScalable> timeScalables;
@@ -78,6 +79,8 @@ public class Game : MonoBehaviour
                 curCharacter.SetControllable(false); break;
             case GameMode.Selection:
                 selector.SetControllable(false); break;
+            case GameMode.Dialogue:
+                break;
         }
         switch (mode)
         {
@@ -90,6 +93,8 @@ public class Game : MonoBehaviour
                 selector.transform.position = curCharacter.transform.position;
                 TimeScale = 0.1f;
                 selector.SetControllable(true); break;
+            case GameMode.Dialogue:
+                input.SwitchCurrentActionMap(dialogueInputMap); break;
         }
         this.mode = mode;
     }
