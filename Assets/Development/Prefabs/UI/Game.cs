@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 public class Game : MonoBehaviour
 {
+    // Properties
     public Character playerCharacter;
     public List<Character> playableCharacters;
     public Selector selector;
@@ -14,18 +15,23 @@ public class Game : MonoBehaviour
     [HideInInspector] public UserInterface userInterface;
     [HideInInspector] public HUD hud;
     [HideInInspector] public List<ITimeScalable> timeScalables;
+    [HideInInspector] public List<Interactable> interactables;
 
+    // Current Character
     private Character curCharacter;
     [HideInInspector] public Character CurCharacter { get { return curCharacter; } set { SetCharacter(value); } }
-    
     private int curCharIdx = 0;
     
+    // TimeScale
     public float timeScale = 1.0f;
     public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
+    
+    // Game Mode
     public enum GameMode { Selection, Character, Dialogue };
     private GameMode mode = GameMode.Character;
     public GameMode Mode { get { return mode; } set { SetMode(value); } }
 
+    // Input
     private PlayerInput input;
 
     private void Start()
@@ -57,7 +63,10 @@ public class Game : MonoBehaviour
         this.timeScale = timeScale;
         foreach(ITimeScalable timeScalable in timeScalables)
         {
-            timeScalable.SetTimeScale(this.timeScale);
+            if (timeScalable != null)
+            {
+                timeScalable.SetTimeScale(this.timeScale);
+            }
         }
     }
 
@@ -197,8 +206,10 @@ public class Game : MonoBehaviour
     {
         if (inputValue.isPressed)
         {
-            print("Interact");
-            curCharacter.Interact();
+            foreach (Interactable interactable in interactables)
+            {
+                interactable.Interact();
+            }
         }
     }
 

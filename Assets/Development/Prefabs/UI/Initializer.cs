@@ -16,6 +16,7 @@ public class Initializer : MonoBehaviour
     [SerializeField] private DialogueRunner dialogueRunner;
     private UserInterface userInterface;
     private List<ITimeScalable> timeScalables;
+    private List<Interactable> interactables;
     private GameController[] gameControls;
     private HUD hud;
 
@@ -30,6 +31,7 @@ public class Initializer : MonoBehaviour
         if (dialogueRunner == null) dialogueRunner = FindObjectOfType<DialogueRunner>();
         userInterface = FindObjectOfType<UserInterface>();
         timeScalables = new List<ITimeScalable>(FindObjectsOfType<MonoBehaviour>().OfType<ITimeScalable>());
+        interactables = new List<Interactable>(FindObjectsOfType<Interactable>());
         hud = FindAnyObjectByType<HUD>();
 
         if (gameController.playerCharacter == null)
@@ -39,7 +41,7 @@ public class Initializer : MonoBehaviour
 
         foreach (Character character in characters)
         {
-            Interactor interactor = character.GetComponent<Interactor>();
+            Talker interactor = character.GetComponent<Talker>();
             if (interactor != null)
             {
                 interactor.dialogueRunner = dialogueRunner;
@@ -60,6 +62,7 @@ public class Initializer : MonoBehaviour
 
         gameController.userInterface = userInterface;
         gameController.timeScalables = timeScalables;
+        gameController.interactables = interactables;
         gameController.hud = hud;
 
         AssetNonNull("Game", gameController, "on GameObject");
