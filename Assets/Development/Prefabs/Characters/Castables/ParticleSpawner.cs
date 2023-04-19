@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ParticleSpawner : Positionable
+public class ParticleSpawner : MonoBehaviour, IPositionable
 {
     public ParticleSystem system;
+    public Transform source;
+    public Transform target;
 
     private readonly List<ParticleSystem> instances = new List<ParticleSystem>();
     public UnityEvent onFinished;
@@ -14,7 +16,7 @@ public class ParticleSpawner : Positionable
     {
         if (source == null)
         {
-            source = transform;
+            source = this.transform;
         }
     }
 
@@ -38,6 +40,12 @@ public class ParticleSpawner : Positionable
         {
             instances.Clear();
         }
+    }
+
+    public void SetOrigin(Transform source, Transform target)
+    {
+        this.source = source;
+        this.target = target;
     }
 
     public void Spawn()

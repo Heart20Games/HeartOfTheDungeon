@@ -18,6 +18,7 @@ public class Switch : MonoBehaviour
     {
         foreach (Triggerable target in targets)
         {
+            print("Toggle");
             target.Trigger();
         }
     }

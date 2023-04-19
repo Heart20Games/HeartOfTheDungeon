@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Weapon : Castable
+public class Weapon : MonoBehaviour, ICastable
 {
     public Transform weaponArt;
     private Animator animator;
@@ -13,6 +13,15 @@ public class Weapon : Castable
     public float swingLength = 1; // Non-animation swing time
     public float speed = 3f; // speed of the animation
     public int damage = 1;
+<<<<<<< HEAD:Assets/Development/Prefabs/Characters/Castables/Weapon.cs
+=======
+    public bool followBody = true;
+    public bool instanced = false;
+   
+
+    public UnityEvent onCast;
+    public UnityEvent onAttackComplete;
+>>>>>>> main:Assets/Development/Prefabs/Characters/Castables/Weapons/Weapon.cs
 
     private readonly List<IDamageable> others = new List<IDamageable>();
     private readonly List<IDamageable> ignored = new List<IDamageable>();
@@ -30,7 +39,33 @@ public class Weapon : Castable
 
     // Castable
 
-    public override void Initialize(Character source)
+    private Vector3 lastDirection;
+    public void Cast(Vector3 direction)
+    {
+        
+        if (instanced)
+        {
+            if (direction != lastDirection)
+            {
+                print("Direction: " + direction);
+                lastDirection = direction;
+            }
+            print("Instanced");
+            Transform pInstance = Instantiate(pivot);
+            Transform bInstance = pInstance.GetComponent<Pivot>().body;
+            CastInstance(direction, pInstance, bInstance);
+            StartCoroutine(CleanupInstance(instanceLifeSpan, pInstance, bInstance));
+        }
+        else
+        {
+            print("Not Instanced");
+            CastInstance(direction, pivot, body);
+        }
+        Swing();
+        onCast.Invoke();
+    }
+    public UnityEvent OnCasted() { return onAttackComplete; }
+    public void Initialize(Character source)
     {
         base.Initialize(source);
         Transform origin = followBody ? source.body : transform;
@@ -49,6 +84,7 @@ public class Weapon : Castable
             weaponArt.localPosition = weaponLocalPosition;
         }
     }
+<<<<<<< HEAD:Assets/Development/Prefabs/Characters/Castables/Weapon.cs
 
     public override void Cast(Vector3 direction)
     {
@@ -59,6 +95,40 @@ public class Weapon : Castable
     public override bool CanCast() { return !swinging; }
 
 
+=======
+    public void Disable() { }
+    public void Enable() { }
+    public bool CanCast() { return !swinging; }
+    public void UnEquip() { Destroy(gameObject); }
+
+
+    // Casting
+
+    public void CastInstance(Vector3 direction, Transform pInstance, Transform bInstance)
+    {
+        if (!followBody)
+        {
+            pInstance.position = source.body.position;
+        }
+        else
+        {
+            pInstance.localPosition = new Vector3();
+        }
+        bInstance.localPosition = new Vector3();
+        pInstance.gameObject.SetActive(true);
+        Vector2 dir = new Vector2(direction.x, direction.z);
+        pInstance.SetRotationWithVector(dir, rotationOffset);
+        bInstance.localRotation = Quaternion.identity;
+    }
+
+    public IEnumerator CleanupInstance(float lifeSpan, Transform pInstance, Transform bInstance)
+    {
+        yield return new WaitForSeconds(lifeSpan);
+        Destroy(pInstance.gameObject);
+    }
+
+
+>>>>>>> main:Assets/Development/Prefabs/Characters/Castables/Weapons/Weapon.cs
     // Swinging
 
     public void Swing()
