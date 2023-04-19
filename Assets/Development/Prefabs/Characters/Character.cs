@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 [RequireComponent(typeof(Brain))]
 [RequireComponent(typeof(Movement))]
-[RequireComponent(typeof(Interactor))]
+[RequireComponent(typeof(Talker))]
 [RequireComponent(typeof(PlayerAttack))]
 public class Character : MonoBehaviour, IDamageable
 {
@@ -20,7 +20,7 @@ public class Character : MonoBehaviour, IDamageable
     public CinemachineVirtualCamera virtualCamera;
     [HideInInspector] public Brain brain;
     [HideInInspector] public Movement movement;
-    [HideInInspector] public Interactor interactor;
+    [HideInInspector] public Talker interactor;
     [HideInInspector] public PlayerAttack attacker;
     [HideInInspector] public float baseOffset;
 
@@ -55,7 +55,7 @@ public class Character : MonoBehaviour, IDamageable
         InitBody();
         brain = GetComponent<Brain>();
         movement = GetComponent<Movement>();
-        interactor = GetComponent<Interactor>();
+        interactor = GetComponent<Talker>();
         attacker = GetComponent<PlayerAttack>();
         SetControllable(false);
     }
@@ -147,7 +147,8 @@ public class Character : MonoBehaviour, IDamageable
     public void Die()
     {
         onDeath.Invoke();
-        Destroy(gameObject);
+        body.gameObject.SetActive(false);
+        //Destroy(gameObject);
     }
 
 
@@ -175,8 +176,6 @@ public class Character : MonoBehaviour, IDamageable
         {
             castable.UnEquip();
         }
-
-        print("Change Castable: " + slot);
 
         if (loadout != null)
         {

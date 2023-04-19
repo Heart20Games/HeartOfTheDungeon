@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Interactable : MonoBehaviour
 {
-    public string yarnNode;
-    public Character player;
+    public UnityEvent onInteract;
+    public bool canInteract = false;
 
-    public void NotifyPlayerEnteredInteractable()
+    public void Interact()
     {
-        player.interactor.FoundTalkable(yarnNode);
+        if (canInteract)
+        {
+            onInteract.Invoke();
+        }
     }
 
-    public void NotifyPlayerLeftInteractable()
+    public void SetCanInteract(bool canInteract)
     {
-        player.interactor.LeftTalkable(yarnNode);
+        this.canInteract = canInteract;
     }
 }

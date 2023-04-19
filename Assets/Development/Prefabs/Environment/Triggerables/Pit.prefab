@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6592795345864717131}
   - component: {fileID: 4214730573758056994}
   - component: {fileID: 7428074478537561858}
+  - component: {fileID: 7270207731517239373}
   m_Layer: 0
   m_Name: Pit
   m_TagString: Untagged
@@ -33,7 +34,7 @@ Transform:
   - {fileID: 7653698587025269210}
   - {fileID: 5739940595592914766}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4214730573758056994
 MonoBehaviour:
@@ -47,6 +48,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ee1fc072d87d15439ef67547a1defd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelection:
+    enter:
+      m_PersistentCalls:
+        m_Calls: []
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
+  onHover:
+    enter:
+      m_PersistentCalls:
+        m_Calls: []
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
+  onConfirm:
+    m_PersistentCalls:
+      m_Calls: []
+  type: 1
+  isSelected: 0
+  isHovering: 0
   togglable: 1
   on: 1
   onTriggeredOn:
@@ -93,6 +114,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bouncee: {fileID: 0}
   destination: {fileID: 5739940595592914766}
+--- !u!65 &7270207731517239373
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690562455933679589}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 1, z: 3}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &2287295727684182060
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,6 +257,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   desiredTags:
   - Player
+  selectableTypes: 
   onCollision:
     enter:
       m_PersistentCalls:
@@ -241,6 +284,9 @@ MonoBehaviour:
     exit:
       m_PersistentCalls:
         m_Calls: []
+  debug: 0
+  other: {fileID: 0}
+  selectable: {fileID: 0}
 --- !u!1 &7719120233215506911
 GameObject:
   m_ObjectHideFlags: 0

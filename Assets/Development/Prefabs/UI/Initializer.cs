@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using Yarn.Unity;
 
@@ -9,35 +12,39 @@ public class Initializer : MonoBehaviour
 
     private Character player;
     private Character[] characters;
+    private Talker[] talkers;
     private FModEventPlayer[] fmodPlayers;
-    private DialogueRunner dialogueRunner;
+    [SerializeField] private DialogueRunner dialogueRunner;
     private UserInterface userInterface;
+    private List<ITimeScalable> timeScalables;
+    private List<Interactable> interactables;
+    private GameController[] gameControls;
     private HUD hud;
 
-    private GameController gameController;
+    private Game game;
 
     private void Awake()
     {
-        gameController = GetComponent<GameController>();
+        game = GetComponent<Game>();
         player = FindObjectOfType<PlayerCore>().GetComponent<Character>();
         characters = FindObjectsOfType<Character>();
+        talkers = FindObjectsOfType<Talker>();
         fmodPlayers = FindObjectsOfType<FModEventPlayer>();
-        dialogueRunner = FindObjectOfType<DialogueRunner>();
+        if (dialogueRunner == null) dialogueRunner = FindObjectOfType<DialogueRunner>();
         userInterface = FindObjectOfType<UserInterface>();
+        timeScalables = new List<ITimeScalable>(FindObjectsOfType<MonoBehaviour>().OfType<ITimeScalable>());
+        interactables = new List<Interactable>(FindObjectsOfType<Interactable>());
         hud = FindAnyObjectByType<HUD>();
 
-        if (gameController.playerCharacter == null)
+        if (game.playerCharacter == null)
         {
-            gameController.playerCharacter = player;
+            game.playerCharacter = player;
         }
 
-        foreach (Character character in characters)
+        foreach (Talker talker in talkers)
         {
-            Interactor interactor = character.GetComponent<Interactor>();
-            if (interactor != null)
-            {
-                interactor.dialogueRunner = dialogueRunner;
-            }
+            talker.game = game;
+            talker.dialogueRunner = dialogueRunner;
         }
 
         if (defaultFModLibrary != null)
@@ -52,10 +59,12 @@ public class Initializer : MonoBehaviour
             }
         }
 
-        gameController.userInterface = userInterface;
-        gameController.hud = hud;
+        game.userInterface = userInterface;
+        game.timeScalables = timeScalables;
+        game.interactables = interactables;
+        game.hud = hud;
 
-        AssetNonNull("GameController", gameController, "on GameObject");
+        AssetNonNull("Game", game, "on GameObject");
         AssetNonNull("PlayerCore", player);
         AssetNonNull("DialogueRunner", dialogueRunner);
         AssetNonNull("UserInterface", userInterface);
@@ -68,11 +77,5 @@ public class Initializer : MonoBehaviour
         {
             Debug.LogWarning("Can't find any " + typeName + " " + context + ".");
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 }

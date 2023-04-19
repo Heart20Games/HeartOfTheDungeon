@@ -123,7 +123,6 @@ public class NavPathRenderer : MonoBehaviour
                 Vector3 direction = (prevPoint - endPoint).normalized;
                 arrowhead.gameObject.SetActive(true);
                 arrowhead.position = endPoint;
-                print(endPoint);
                 Vector2 flatDirection = new Vector2(direction.x, direction.z);
                 arrowhead.SetRotationWithVector(flatDirection, 90);
             }
