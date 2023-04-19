@@ -45,8 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 543e0e75bcdd3264ebbfa11009f8b80d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yarnNode: 
-  player: {fileID: 0}
+  onInteract:
+    m_PersistentCalls:
+      m_Calls: []
+  canInteract: 0
 --- !u!114 &1249575108106196185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,22 +62,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   desiredTags:
-  - Player
+  - Character
+  selectableTypes: 
   onCollision:
-    onEnter:
+    enter:
       m_PersistentCalls:
         m_Calls: []
-    onExit:
+    exit:
       m_PersistentCalls:
         m_Calls: []
   onTrigger:
-    onEnter:
+    enter:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 8224246277920953064}
           m_TargetAssemblyTypeName: Interactable, Assembly-CSharp
-          m_MethodName: NotifyPlayerEnteredInteractable
-          m_Mode: 1
+          m_MethodName: SetCanInteract
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+    exit:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8224246277920953064}
+          m_TargetAssemblyTypeName: Interactable, Assembly-CSharp
+          m_MethodName: SetCanInteract
+          m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -84,54 +102,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-    onExit:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 8224246277920953064}
-          m_TargetAssemblyTypeName: Interactable, Assembly-CSharp
-          m_MethodName: NotifyPlayerLeftInteractable
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  onTouch:
-    m_PersistentCalls:
-      m_Calls: []
-  onUnTouch:
-    m_PersistentCalls:
-      m_Calls: []
-  onEnter:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8224246277920953064}
-        m_TargetAssemblyTypeName: Interactable, Assembly-CSharp
-        m_MethodName: NotifyPlayerEnteredInteractable
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onExit:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8224246277920953064}
-        m_TargetAssemblyTypeName: Interactable, Assembly-CSharp
-        m_MethodName: NotifyPlayerLeftInteractable
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  debug: 0
+  touching: []
+  other: {fileID: 0}
+  selectable: {fileID: 0}

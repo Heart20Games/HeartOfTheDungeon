@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class UserInterface : MonoBehaviour
 {
     public Character controlledCharacter;
+
+    public UnityEvent onContinue;
 
     public void SetCharacter(Character character)
     {
@@ -17,11 +21,11 @@ public class UserInterface : MonoBehaviour
 
     }
 
-    //public Button testButton;
-    //public void ClickButton(Button btn)
-    //{
-    //    Button button = btn;
-    //    using (var e = new NavigationSubmitEvent() { target = button })
-    //        button.SendEvent(e);
-    //}
+    public void OnContinue(InputValue inputValue)
+    {
+        if (inputValue.isPressed)
+        {
+            onContinue.Invoke();
+        }
+    }
 }

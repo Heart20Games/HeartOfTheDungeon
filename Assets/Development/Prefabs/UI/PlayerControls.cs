@@ -91,7 +91,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Open Skill Wheel"",
+                    ""name"": ""Toggle Skill Wheel"",
                     ""type"": ""Button"",
                     ""id"": ""216f075d-ea50-4bc4-8bc2-de338f8b2575"",
                     ""expectedControlType"": ""Button"",
@@ -411,7 +411,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Open Skill Wheel"",
+                    ""action"": ""Toggle Skill Wheel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -513,28 +513,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Aim"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e8287fb4-91cc-4b5d-be87-8e5f488a6b68"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Cycle Character Left"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""6e9d5f66-f770-4f06-a982-e5150d1428ae"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Cycle Character Right"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -548,7 +526,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""053b44bb-f407-4d4d-a0a6-97ef694df359"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press"",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
@@ -575,7 +553,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""82945459-0420-44b5-901d-f3bad80dd277"",
                     ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Continue"",
@@ -586,7 +564,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""4079a6ad-52f0-4c3e-a336-042decfa5886"",
                     ""path"": ""<Keyboard>/space"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Continue"",
@@ -726,6 +704,193 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Selector"",
+            ""id"": ""e035308a-d628-4d92-87a0-6d9f43ca2995"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""4f1ac0f0-8bea-419e-bc15-874fa8bb6215"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Toggle Skill Wheel"",
+                    ""type"": ""Button"",
+                    ""id"": ""a49a1b34-29a8-4f19-8116-81bc2e0ef642"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""c604108f-2008-4423-afb4-aff394b61d80"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DeSelect"",
+                    ""type"": ""Button"",
+                    ""id"": ""611c6732-58bd-4edc-aedb-384f9493641b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""79830cb1-299c-4570-a5b6-c14c9425080c"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""e20c256c-d68c-417a-ad50-e121136bf15c"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""2a990db1-5535-416c-a31f-87d2d322fc4f"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""3783771e-562a-4fa2-94e7-db41848d82af"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""5cf0c37e-9dbc-43ee-b7de-ddeb88d728e0"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Left JoyStick"",
+                    ""id"": ""f09ee884-35df-47d1-93d8-2a2af18cc340"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""6dc47d5e-fc2a-42f8-85be-b3d85ecb0784"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": ""AxisDeadzone"",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""75d2e3ba-586e-451a-b577-97fbf2ef99db"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": ""AxisDeadzone"",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""84dc7715-232c-4628-97eb-1b7e34c6efbc"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": ""AxisDeadzone"",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""58439aaf-2dd7-461a-96d5-4f28eecd4dec"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": ""AxisDeadzone"",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""43c083c6-1084-4071-bc65-bb248ecd5607"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Skill Wheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""908904ac-349a-4563-84a7-dbd01bad885e"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4e32a94f-ceac-4990-b806-2a8f03b27930"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DeSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -739,7 +904,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_GroundMovement_CastSecondary = m_GroundMovement.FindAction("Cast Secondary", throwIfNotFound: true);
         m_GroundMovement_SwitchPrimary = m_GroundMovement.FindAction("Switch Primary", throwIfNotFound: true);
         m_GroundMovement_SwitchSecondary = m_GroundMovement.FindAction("Switch Secondary", throwIfNotFound: true);
-        m_GroundMovement_OpenSkillWheel = m_GroundMovement.FindAction("Open Skill Wheel", throwIfNotFound: true);
+        m_GroundMovement_ToggleSkillWheel = m_GroundMovement.FindAction("Toggle Skill Wheel", throwIfNotFound: true);
         m_GroundMovement_SwitchCharacterLeft = m_GroundMovement.FindAction("Switch Character Left", throwIfNotFound: true);
         m_GroundMovement_SwitchCharacterRight = m_GroundMovement.FindAction("Switch Character Right", throwIfNotFound: true);
         m_GroundMovement_SwitchCharacterCenter = m_GroundMovement.FindAction("Switch Character Center", throwIfNotFound: true);
@@ -753,6 +918,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Dialogue_Continue = m_Dialogue.FindAction("Continue", throwIfNotFound: true);
         m_Dialogue_ChangeSelection = m_Dialogue.FindAction("Change Selection", throwIfNotFound: true);
         m_Dialogue_Back = m_Dialogue.FindAction("Back", throwIfNotFound: true);
+        // Selector
+        m_Selector = asset.FindActionMap("Selector", throwIfNotFound: true);
+        m_Selector_Move = m_Selector.FindAction("Move", throwIfNotFound: true);
+        m_Selector_ToggleSkillWheel = m_Selector.FindAction("Toggle Skill Wheel", throwIfNotFound: true);
+        m_Selector_Select = m_Selector.FindAction("Select", throwIfNotFound: true);
+        m_Selector_DeSelect = m_Selector.FindAction("DeSelect", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -821,7 +992,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_GroundMovement_CastSecondary;
     private readonly InputAction m_GroundMovement_SwitchPrimary;
     private readonly InputAction m_GroundMovement_SwitchSecondary;
-    private readonly InputAction m_GroundMovement_OpenSkillWheel;
+    private readonly InputAction m_GroundMovement_ToggleSkillWheel;
     private readonly InputAction m_GroundMovement_SwitchCharacterLeft;
     private readonly InputAction m_GroundMovement_SwitchCharacterRight;
     private readonly InputAction m_GroundMovement_SwitchCharacterCenter;
@@ -841,7 +1012,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @CastSecondary => m_Wrapper.m_GroundMovement_CastSecondary;
         public InputAction @SwitchPrimary => m_Wrapper.m_GroundMovement_SwitchPrimary;
         public InputAction @SwitchSecondary => m_Wrapper.m_GroundMovement_SwitchSecondary;
-        public InputAction @OpenSkillWheel => m_Wrapper.m_GroundMovement_OpenSkillWheel;
+        public InputAction @ToggleSkillWheel => m_Wrapper.m_GroundMovement_ToggleSkillWheel;
         public InputAction @SwitchCharacterLeft => m_Wrapper.m_GroundMovement_SwitchCharacterLeft;
         public InputAction @SwitchCharacterRight => m_Wrapper.m_GroundMovement_SwitchCharacterRight;
         public InputAction @SwitchCharacterCenter => m_Wrapper.m_GroundMovement_SwitchCharacterCenter;
@@ -880,9 +1051,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwitchSecondary.started += instance.OnSwitchSecondary;
             @SwitchSecondary.performed += instance.OnSwitchSecondary;
             @SwitchSecondary.canceled += instance.OnSwitchSecondary;
-            @OpenSkillWheel.started += instance.OnOpenSkillWheel;
-            @OpenSkillWheel.performed += instance.OnOpenSkillWheel;
-            @OpenSkillWheel.canceled += instance.OnOpenSkillWheel;
+            @ToggleSkillWheel.started += instance.OnToggleSkillWheel;
+            @ToggleSkillWheel.performed += instance.OnToggleSkillWheel;
+            @ToggleSkillWheel.canceled += instance.OnToggleSkillWheel;
             @SwitchCharacterLeft.started += instance.OnSwitchCharacterLeft;
             @SwitchCharacterLeft.performed += instance.OnSwitchCharacterLeft;
             @SwitchCharacterLeft.canceled += instance.OnSwitchCharacterLeft;
@@ -932,9 +1103,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwitchSecondary.started -= instance.OnSwitchSecondary;
             @SwitchSecondary.performed -= instance.OnSwitchSecondary;
             @SwitchSecondary.canceled -= instance.OnSwitchSecondary;
-            @OpenSkillWheel.started -= instance.OnOpenSkillWheel;
-            @OpenSkillWheel.performed -= instance.OnOpenSkillWheel;
-            @OpenSkillWheel.canceled -= instance.OnOpenSkillWheel;
+            @ToggleSkillWheel.started -= instance.OnToggleSkillWheel;
+            @ToggleSkillWheel.performed -= instance.OnToggleSkillWheel;
+            @ToggleSkillWheel.canceled -= instance.OnToggleSkillWheel;
             @SwitchCharacterLeft.started -= instance.OnSwitchCharacterLeft;
             @SwitchCharacterLeft.performed -= instance.OnSwitchCharacterLeft;
             @SwitchCharacterLeft.canceled -= instance.OnSwitchCharacterLeft;
@@ -1038,6 +1209,76 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public DialogueActions @Dialogue => new DialogueActions(this);
+
+    // Selector
+    private readonly InputActionMap m_Selector;
+    private List<ISelectorActions> m_SelectorActionsCallbackInterfaces = new List<ISelectorActions>();
+    private readonly InputAction m_Selector_Move;
+    private readonly InputAction m_Selector_ToggleSkillWheel;
+    private readonly InputAction m_Selector_Select;
+    private readonly InputAction m_Selector_DeSelect;
+    public struct SelectorActions
+    {
+        private @PlayerControls m_Wrapper;
+        public SelectorActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Selector_Move;
+        public InputAction @ToggleSkillWheel => m_Wrapper.m_Selector_ToggleSkillWheel;
+        public InputAction @Select => m_Wrapper.m_Selector_Select;
+        public InputAction @DeSelect => m_Wrapper.m_Selector_DeSelect;
+        public InputActionMap Get() { return m_Wrapper.m_Selector; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SelectorActions set) { return set.Get(); }
+        public void AddCallbacks(ISelectorActions instance)
+        {
+            if (instance == null || m_Wrapper.m_SelectorActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_SelectorActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @ToggleSkillWheel.started += instance.OnToggleSkillWheel;
+            @ToggleSkillWheel.performed += instance.OnToggleSkillWheel;
+            @ToggleSkillWheel.canceled += instance.OnToggleSkillWheel;
+            @Select.started += instance.OnSelect;
+            @Select.performed += instance.OnSelect;
+            @Select.canceled += instance.OnSelect;
+            @DeSelect.started += instance.OnDeSelect;
+            @DeSelect.performed += instance.OnDeSelect;
+            @DeSelect.canceled += instance.OnDeSelect;
+        }
+
+        private void UnregisterCallbacks(ISelectorActions instance)
+        {
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @ToggleSkillWheel.started -= instance.OnToggleSkillWheel;
+            @ToggleSkillWheel.performed -= instance.OnToggleSkillWheel;
+            @ToggleSkillWheel.canceled -= instance.OnToggleSkillWheel;
+            @Select.started -= instance.OnSelect;
+            @Select.performed -= instance.OnSelect;
+            @Select.canceled -= instance.OnSelect;
+            @DeSelect.started -= instance.OnDeSelect;
+            @DeSelect.performed -= instance.OnDeSelect;
+            @DeSelect.canceled -= instance.OnDeSelect;
+        }
+
+        public void RemoveCallbacks(ISelectorActions instance)
+        {
+            if (m_Wrapper.m_SelectorActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ISelectorActions instance)
+        {
+            foreach (var item in m_Wrapper.m_SelectorActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_SelectorActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public SelectorActions @Selector => new SelectorActions(this);
     public interface IGroundMovementActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -1047,7 +1288,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnCastSecondary(InputAction.CallbackContext context);
         void OnSwitchPrimary(InputAction.CallbackContext context);
         void OnSwitchSecondary(InputAction.CallbackContext context);
-        void OnOpenSkillWheel(InputAction.CallbackContext context);
+        void OnToggleSkillWheel(InputAction.CallbackContext context);
         void OnSwitchCharacterLeft(InputAction.CallbackContext context);
         void OnSwitchCharacterRight(InputAction.CallbackContext context);
         void OnSwitchCharacterCenter(InputAction.CallbackContext context);
@@ -1062,5 +1303,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnContinue(InputAction.CallbackContext context);
         void OnChangeSelection(InputAction.CallbackContext context);
         void OnBack(InputAction.CallbackContext context);
+    }
+    public interface ISelectorActions
+    {
+        void OnMove(InputAction.CallbackContext context);
+        void OnToggleSkillWheel(InputAction.CallbackContext context);
+        void OnSelect(InputAction.CallbackContext context);
+        void OnDeSelect(InputAction.CallbackContext context);
     }
 }
