@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using static Selectable;
+using static ISelectable;
 
 public class Selector : MonoBehaviour
 {
@@ -25,8 +25,8 @@ public class Selector : MonoBehaviour
     private Vector2 moveVector = new Vector2(0, 0);
     public Vector2 MoveVector { get { return moveVector; } set { SetMoveVector(value); } }
 
-    public List<Selectable> hoveringOver = new List<Selectable>();
-    public Selectable selected;
+    public List<ASelectable> hoveringOver = new List<ASelectable>();
+    public ASelectable selected;
 
     private void Awake()
     {
@@ -75,7 +75,7 @@ public class Selector : MonoBehaviour
 
     public void Hover(Impact impact)
     {
-        Selectable selectable = impact.selectable;
+        ASelectable selectable = impact.selectable;
         if (selectable != null)
         {
             if (hoveringOver.Count > 0)
@@ -89,7 +89,7 @@ public class Selector : MonoBehaviour
 
     public void UnHover(Impact impact)
     {
-        Selectable selectable = impact.selectable;
+        ASelectable selectable = impact.selectable;
         if (selectable != null)
         {
             if (selected = selectable)

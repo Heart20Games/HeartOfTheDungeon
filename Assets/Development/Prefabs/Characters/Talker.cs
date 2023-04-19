@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Yarn.Unity;
+using static Game;
 
 public class Talker : MonoBehaviour
 {
+    [HideInInspector] public Game game;
+    [HideInInspector] public DialogueRunner dialogueRunner;
+    public GameObject virtualCamera;
     public string targetNode = "";
 
-    public DialogueRunner dialogueRunner;
     public UnityEvent onStartTalking;
     public UnityEvent onDoneTalking;
+    private GameMode prevMode;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +22,16 @@ public class Talker : MonoBehaviour
         if (dialogueRunner != null)
         {
             dialogueRunner.onDialogueComplete.AddListener(onDoneTalking.Invoke);
+        }
+        onDoneTalking.AddListener(ResetMode);
+    }
+
+    private void ResetMode()
+    {
+        game.Mode = prevMode;
+        if (virtualCamera != null)
+        {
+            virtualCamera.SetActive(false);
         }
     }
 
@@ -29,6 +43,12 @@ public class Talker : MonoBehaviour
         {
             if (targetNode != "")
             {
+                if (virtualCamera != null)
+                {
+                    virtualCamera.SetActive(true);
+                }
+                prevMode = game.Mode;
+                game.Mode = GameMode.Dialogue;
                 dialogueRunner.Stop();
                 dialogueRunner.StartDialogue(targetNode);
                 onStartTalking.Invoke();
@@ -43,6 +63,4 @@ public class Talker : MonoBehaviour
             Debug.LogWarning("No Dialogue Runner to Start Talking");
         }
     }
-
-    
 }

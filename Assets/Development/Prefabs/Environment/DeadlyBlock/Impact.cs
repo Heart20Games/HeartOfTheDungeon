@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using static Selectable;
+using static ISelectable;
 
 public class Impact : MonoBehaviour
 {   
@@ -19,7 +19,7 @@ public class Impact : MonoBehaviour
 
     public List<GameObject> touching;
     [HideInInspector] public GameObject other;
-    [HideInInspector] public Selectable selectable;
+    [HideInInspector] public ASelectable selectable;
 
     private void SetSelectableTypes(List<SelectType> selectableTypes)
     {
@@ -40,12 +40,12 @@ public class Impact : MonoBehaviour
     {
         if (selectableTypes.Count > 0)
         {
-            selectable = other.GetComponent<Selectable>();
+            selectable = other.GetComponent<ASelectable>();
             if (debug && selectable != null)
             {
-                print("Valid Selectable?" + (selectable != null && selectableTypes.Contains(selectable.type)) + " (" + selectable.type + ")");
+                print("Valid Selectable?" + (selectable != null && selectableTypes.Contains(selectable.Type)) + " (" + selectable.Type + ")");
             }
-            return selectable != null && selectableTypes.Contains(selectable.type);
+            return selectable != null && selectableTypes.Contains(selectable.Type);
         }
         else return true;
     }

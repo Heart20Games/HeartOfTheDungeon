@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using static Game;
-using static Selectable;
+using static ISelectable;
 
 public class GameController : MonoBehaviour
 {
@@ -38,6 +38,11 @@ public class GameController : MonoBehaviour
     public void UseCharacter()
     {
         SetMode(GameMode.Character);
+    }
+
+    public void UseDialoge()
+    {
+        SetMode(GameMode.Dialogue);
     }
 
     public void SetMode(GameMode mode)

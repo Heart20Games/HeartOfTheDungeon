@@ -12,6 +12,7 @@ public class Initializer : MonoBehaviour
 
     private Character player;
     private Character[] characters;
+    private Talker[] talkers;
     private FModEventPlayer[] fmodPlayers;
     [SerializeField] private DialogueRunner dialogueRunner;
     private UserInterface userInterface;
@@ -20,13 +21,14 @@ public class Initializer : MonoBehaviour
     private GameController[] gameControls;
     private HUD hud;
 
-    private Game gameController;
+    private Game game;
 
     private void Awake()
     {
-        gameController = GetComponent<Game>();
+        game = GetComponent<Game>();
         player = FindObjectOfType<PlayerCore>().GetComponent<Character>();
         characters = FindObjectsOfType<Character>();
+        talkers = FindObjectsOfType<Talker>();
         fmodPlayers = FindObjectsOfType<FModEventPlayer>();
         if (dialogueRunner == null) dialogueRunner = FindObjectOfType<DialogueRunner>();
         userInterface = FindObjectOfType<UserInterface>();
@@ -34,18 +36,15 @@ public class Initializer : MonoBehaviour
         interactables = new List<Interactable>(FindObjectsOfType<Interactable>());
         hud = FindAnyObjectByType<HUD>();
 
-        if (gameController.playerCharacter == null)
+        if (game.playerCharacter == null)
         {
-            gameController.playerCharacter = player;
+            game.playerCharacter = player;
         }
 
-        foreach (Character character in characters)
+        foreach (Talker talker in talkers)
         {
-            Talker interactor = character.GetComponent<Talker>();
-            if (interactor != null)
-            {
-                interactor.dialogueRunner = dialogueRunner;
-            }
+            talker.game = game;
+            talker.dialogueRunner = dialogueRunner;
         }
 
         if (defaultFModLibrary != null)
@@ -60,12 +59,12 @@ public class Initializer : MonoBehaviour
             }
         }
 
-        gameController.userInterface = userInterface;
-        gameController.timeScalables = timeScalables;
-        gameController.interactables = interactables;
-        gameController.hud = hud;
+        game.userInterface = userInterface;
+        game.timeScalables = timeScalables;
+        game.interactables = interactables;
+        game.hud = hud;
 
-        AssetNonNull("Game", gameController, "on GameObject");
+        AssetNonNull("Game", game, "on GameObject");
         AssetNonNull("PlayerCore", player);
         AssetNonNull("DialogueRunner", dialogueRunner);
         AssetNonNull("UserInterface", userInterface);
