@@ -12,7 +12,23 @@ public class Brain : MonoBehaviour
         set { SetEnabled(value); }
     }
 
-    public Transform target;
+    [SerializeField]
+    private Transform target = null;
+    public Transform Target
+    {
+        get { return target; }
+        set {
+            Character targetChar = value.GetComponent<Character>();
+            if (targetChar != null)
+            {
+                target = targetChar.body;
+            }
+            else
+            {
+                target = value; 
+            }
+        }
+    }
     
     private Character character;
     private NavMeshAgent agent;
@@ -31,6 +47,10 @@ public class Brain : MonoBehaviour
         character = GetComponent<Character>();
         agent = character.body.GetComponent<NavMeshAgent>();
         agent.baseOffset = baseOffset;
+        if (target != null)
+        {
+            Target = target;
+        }
 
         SelectorNode hasTarget = new SelectorNode("Has Target");
         LeafNode idle = new LeafNode("Idle", Idle);

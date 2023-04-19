@@ -12,7 +12,7 @@ public class FireProjectile : MonoBehaviour
     void Awake()
     {
         agentFollower = GetComponent<Brain>();
-        player = agentFollower.target;
+        player = agentFollower.Target;
     }
 
     void Update()

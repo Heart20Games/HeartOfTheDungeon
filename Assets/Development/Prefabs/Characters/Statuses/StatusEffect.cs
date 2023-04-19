@@ -55,7 +55,6 @@ public abstract class StatusEffect: ScriptableObject
     
     public virtual void Remove(Character character)
     {
-<<<<<<< HEAD
         for (int i = 0; i < character.statuses.Count;)
         {
             Status status = character.statuses[i];
@@ -64,14 +63,6 @@ public abstract class StatusEffect: ScriptableObject
                 character.statuses.RemoveAt(i);
             }
             else i++;
-=======
-        foreach (Status status in character.statuses)
-        {
-            if (status.effect == this)
-            {
-                character.statuses.Remove(status);
-            }
->>>>>>> main
         }
     }
 }

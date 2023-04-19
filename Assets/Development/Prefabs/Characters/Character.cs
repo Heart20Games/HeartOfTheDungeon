@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(Brain))]
+[RequireComponent(typeof(Movement))]
+[RequireComponent(typeof(Interactor))]
+[RequireComponent(typeof(PlayerAttack))]
 public class Character : MonoBehaviour, IDamageable
 {
     // Character Parts
@@ -24,14 +28,9 @@ public class Character : MonoBehaviour, IDamageable
     public Loadout loadout;
     public ICastable primaryCastable;
     public ICastable secondaryCastable;
-<<<<<<< HEAD
     public Castable primary;
     public Castable secondary;
     public Vector3 weaponOffset = Vector3.up;
-=======
-    public Ability ability;
-    public Weapon weapon;
->>>>>>> main
     private int abilityIdx = -1;
     private int weaponIdx = -1;
     public enum CastSlot { PRIMARY, SECONDARY };
@@ -52,7 +51,7 @@ public class Character : MonoBehaviour, IDamageable
     // Initialization
     private void Awake()
     {
-        AwarnNotNull(body, "Character has no Body");
+        Awarn.IsNotNull(body, "Character has no Body");
         InitBody();
         brain = GetComponent<Brain>();
         movement = GetComponent<Movement>();
@@ -92,17 +91,6 @@ public class Character : MonoBehaviour, IDamageable
         foreach (Status status in statuses)
         {
             status.effect.Tick(status.strength, this);
-        }
-    }
-
-
-    // Debugging
-
-    private void AwarnNotNull(Object obj, string msg)
-    {
-        if (obj == null)
-        {
-            Debug.LogWarning(msg);
         }
     }
 
