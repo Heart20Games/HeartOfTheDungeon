@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(Brain))]
+[RequireComponent(typeof(Movement))]
+[RequireComponent(typeof(Talker))]
+[RequireComponent(typeof(PlayerAttack))]
 public class Character : MonoBehaviour, IDamageable
 {
     // Character Parts
@@ -12,11 +16,11 @@ public class Character : MonoBehaviour, IDamageable
     public Animator animator;
     public Transform weaponHand;
     public Transform moveReticle;
-    public HealthbarUI healthBarUI;
+    public Health healthBar;
     public CinemachineVirtualCamera virtualCamera;
     [HideInInspector] public Brain brain;
     [HideInInspector] public Movement movement;
-    [HideInInspector] public Interactor interactor;
+    [HideInInspector] public Talker interactor;
     [HideInInspector] public PlayerAttack attacker;
     [HideInInspector] public float baseOffset;
 
@@ -24,14 +28,21 @@ public class Character : MonoBehaviour, IDamageable
     public Loadout loadout;
     public ICastable primaryCastable;
     public ICastable secondaryCastable;
-    public Ability ability;
-    public Weapon weapon;
+    public Castable primary;
+    public Castable secondary;
+    public Vector3 weaponOffset = Vector3.up;
     private int abilityIdx = -1;
     private int weaponIdx = -1;
+    public enum CastSlot { PRIMARY, SECONDARY };
+
+    // Statuses
+    public List<Status> statuses;
 
     // Health
-    public float startingHealth = 25f;
-    public float currentHealth;
+    public Modified<int> maxHealth = new(25);
+    public Modified<int> currentHealth = new(25);
+    public int MaxHealth { get { return maxHealth.Value; } set { maxHealth.Value = value; } }
+    public int CurrentHealth { get { return currentHealth.Value; } set { currentHealth.Value = value; } }
     public UnityEvent onDeath;
 
     // State
@@ -40,20 +51,19 @@ public class Character : MonoBehaviour, IDamageable
     // Initialization
     private void Awake()
     {
-        AwarnNotNull(body, "Character has no Body");
+        Awarn.IsNotNull(body, "Character has no Body");
         InitBody();
         brain = GetComponent<Brain>();
         movement = GetComponent<Movement>();
-        interactor = GetComponent<Interactor>();
+        interactor = GetComponent<Talker>();
         attacker = GetComponent<PlayerAttack>();
         SetControllable(false);
     }
 
     private void Start()
     {
-        currentHealth = startingHealth;
         InitializeCastables();
-        UpdateHealthUI();
+        healthBar.SetHealthBase(CurrentHealth, MaxHealth);
     }
 
     private void InitBody()
@@ -66,14 +76,21 @@ public class Character : MonoBehaviour, IDamageable
         }
     }
 
+    // Updates
 
-    // Debugging
-
-    private void AwarnNotNull(Object obj, string msg)
+    private void Update()
     {
-        if (obj == null)
+        StatusTick();
+    }
+
+
+    // Statuses
+
+    private void StatusTick()
+    {
+        foreach (Status status in statuses)
         {
-            Debug.LogWarning(msg);
+            status.effect.Tick(status.strength, this);
         }
     }
 
@@ -109,19 +126,19 @@ public class Character : MonoBehaviour, IDamageable
 
     // Health
 
-    public void UpdateHealthUI()
-    {
-        if (healthBarUI != null)
-        {
-            healthBarUI.UpdateFill(currentHealth, startingHealth);
-        }
-    }
+    //public void UpdateHealthUI()
+    //{
+    //    if (healthBar != null)
+    //    {
+    //        healthBar.SetHealth(CurrentHealth);
+    //    }
+    //}
 
-    public void TakeDamage(float damageAmount)
+    public void TakeDamage(int damageAmount)
     {
-        currentHealth -= damageAmount;
-        UpdateHealthUI();
-        if (currentHealth <= 0f)
+        CurrentHealth -= damageAmount;
+        healthBar.SetHealth(CurrentHealth);
+        if (CurrentHealth <= 0f)
         {
             Die();
         }
@@ -130,7 +147,8 @@ public class Character : MonoBehaviour, IDamageable
     public void Die()
     {
         onDeath.Invoke();
-        Destroy(gameObject);
+        body.gameObject.SetActive(false);
+        //Destroy(gameObject);
     }
 
 
@@ -140,20 +158,20 @@ public class Character : MonoBehaviour, IDamageable
     {
         if (loadout != null)
         {
-            if (ability == null)
+            if (secondary == null)
             {
-                ChangeAbility();
+                ChangeCastable(CastSlot.SECONDARY);
             }
-            if (weapon == null)
+            if (primary == null)
             {
-                ChangeWeapon();
+                ChangeCastable(CastSlot.PRIMARY);
             }
         }
     }
 
-    public void ChangeCastable(bool primary)
+    public void ChangeCastable(CastSlot slot)
     {
-        ICastable castable = primary ? weapon as ICastable : ability as ICastable;
+        ICastable castable = slot == CastSlot.PRIMARY ? primary as ICastable : secondary as ICastable;
         if (castable != null)
         {
             castable.UnEquip();
@@ -161,23 +179,24 @@ public class Character : MonoBehaviour, IDamageable
 
         if (loadout != null)
         {
-            if (primary)
+            switch (slot)
             {
-                if (loadout.weapons.Count > 0)
-                {
-                    weaponIdx = (weaponIdx + 1) % loadout.weapons.Count;
-                    weapon = Instantiate(loadout.weapons[weaponIdx], transform);
-                    weapon.Initialize(this);
-                }
-            }
-            else
-            {
-                if (loadout.abilities.Count > 0)
-                {
-                    abilityIdx = (abilityIdx + 1) % loadout.abilities.Count;
-                    ability = Instantiate(loadout.abilities[abilityIdx], transform);
-                    ability.Initialize(this);
-                }
+                case CastSlot.PRIMARY:
+                    if (loadout.weapons.Count > 0)
+                    {
+                        weaponIdx = (weaponIdx + 1) % loadout.weapons.Count;
+                        primary = Instantiate(loadout.weapons[weaponIdx], transform);
+                        primary.Initialize(this);
+                    }
+                    break;
+                case CastSlot.SECONDARY:
+                    if (loadout.abilities.Count > 0)
+                    {
+                        abilityIdx = (abilityIdx + 1) % loadout.abilities.Count;
+                        secondary = Instantiate(loadout.abilities[abilityIdx], transform);
+                        secondary.Initialize(this);
+                    }
+                    break;
             }
         }
     }
@@ -195,10 +214,10 @@ public class Character : MonoBehaviour, IDamageable
     // Actions
     public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); }
     public void AimCharacter(Vector2 input) { movement.SetAimVector(input); }
-    public void ChangeAbility() { ChangeCastable(false); }
-    public void ChangeWeapon() { ChangeCastable(true); }
-    public void ActivateWeapon() { ActivateCastable(weapon); }
-    public void ActivateAbility() { ActivateCastable(ability); }
+    public void ChangeAbility() { ChangeCastable(CastSlot.SECONDARY); }
+    public void ChangeWeapon() { ChangeCastable(CastSlot.PRIMARY); }
+    public void ActivateWeapon() { ActivateCastable(primary); }
+    public void ActivateAbility() { ActivateCastable(secondary); }
     public void Interact() { interactor.Talk(); }
 
 

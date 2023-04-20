@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 
-public class Brain : MonoBehaviour
+public class Brain : MonoBehaviour, ITimeScalable
 {
     public bool Enabled
     {
@@ -12,7 +12,23 @@ public class Brain : MonoBehaviour
         set { SetEnabled(value); }
     }
 
-    public Transform target;
+    [SerializeField]
+    private Transform target = null;
+    public Transform Target
+    {
+        get { return target; }
+        set {
+            Character targetChar = value.GetComponent<Character>();
+            if (targetChar != null)
+            {
+                target = targetChar.body;
+            }
+            else
+            {
+                target = value; 
+            }
+        }
+    }
     
     private Character character;
     private NavMeshAgent agent;
@@ -24,6 +40,8 @@ public class Brain : MonoBehaviour
     public BehaviorNode tree = new BehaviorNode();
     private BehaviorNode.Status status;
 
+    private float timeScale = 1f;
+    public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
     private float timeKeeper = 0f;
 
     private void Awake()
@@ -31,6 +49,10 @@ public class Brain : MonoBehaviour
         character = GetComponent<Character>();
         agent = character.body.GetComponent<NavMeshAgent>();
         agent.baseOffset = baseOffset;
+        if (target != null)
+        {
+            Target = target;
+        }
 
         SelectorNode hasTarget = new SelectorNode("Has Target");
         LeafNode idle = new LeafNode("Idle", Idle);
@@ -40,7 +62,7 @@ public class Brain : MonoBehaviour
         hasTarget.AddChild(chase);
         hasTarget.AddChild(idle);
 
-        tree.PrintTree();
+        //tree.PrintTree();
     }
 
     private void Update()
@@ -105,5 +127,37 @@ public class Brain : MonoBehaviour
             }
         }
         return BehaviorNode.Status.SUCCESS;
+    }
+
+
+    // TimeScaling
+    private float tempSpeed;
+    private float tempAngularSpeed;
+    private float tempAcceleration;
+    public void SetTimeScale(float timeScale)
+    {
+        if (this.timeScale != timeScale)
+        {
+            if (timeScale == 0)
+            {
+                tempSpeed = agent.speed;
+                tempAngularSpeed = agent.angularSpeed;
+                tempAcceleration = agent.acceleration;
+                agent.speed = 0;
+                agent.angularSpeed = 0;
+            }
+            else if (this.timeScale == 0)
+            {
+                agent.speed = tempSpeed;
+                agent.angularSpeed = tempAngularSpeed;
+            }
+            else
+            {
+                float ratio = timeScale / this.timeScale;
+                agent.speed *= ratio;
+                agent.angularSpeed *= ratio;
+            }
+        }
+        this.timeScale = timeScale;
     }
 }
