@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour
 {
     public Vector3 direction = new Vector3();
@@ -18,17 +19,8 @@ public class Projectile : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
     }
 
-    private Vector3 lastDirection;
-    private void FixedUpdate()
+    private void Start()
     {
-        if (rigidbody != null)
-        {
-            if (-transform.forward != lastDirection)
-            {
-                print("Projectile: " + -transform.forward + " -> " + transform.rotation);
-                lastDirection = -transform.forward;
-            }
-            rigidbody.velocity = -transform.forward * speed * Time.fixedDeltaTime;
-        }
+        rigidbody.velocity = -transform.forward * speed * Time.fixedDeltaTime;
     }
 }
