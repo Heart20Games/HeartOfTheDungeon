@@ -45,6 +45,8 @@ public class Character : MonoBehaviour, IDamageable
     public int CurrentHealth { get { return currentHealth.Value; } set { currentHealth.Value = value; } }
     public UnityEvent onDeath;
 
+    public UnityEvent onDmg;
+
     // State
     public bool controllable = true;
 
@@ -138,6 +140,7 @@ public class Character : MonoBehaviour, IDamageable
     {
         CurrentHealth -= damageAmount;
         healthBar.SetHealth(CurrentHealth);
+        onDmg.Invoke();
         if (CurrentHealth <= 0f)
         {
             Die();
