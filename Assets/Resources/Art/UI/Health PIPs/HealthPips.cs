@@ -14,6 +14,7 @@ public class HealthPips : Health
     [SerializeField]
     private Transform healthPipCanvas;
     public int lastDamaged = -1;
+
     
     // Start is called before the first frame update
     void Start()
@@ -46,7 +47,7 @@ public class HealthPips : Health
         for (int i = 0; i < damage; i++)
         {
             pipAnimator[i].SetBool("IsDamaged", true);
-            lastDamaged = i;
+            lastDamaged = i;          
         }
         for (int i = damage; i < healthPips.Count; i++)
         {
