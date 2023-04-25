@@ -107,8 +107,8 @@ GameObject:
   - component: {fileID: 4666652024189201520}
   - component: {fileID: 1895181659443492097}
   - component: {fileID: 1211649189196671348}
-  - component: {fileID: 413461243803000072}
   - component: {fileID: 7638968927939714640}
+  - component: {fileID: 7892170351578171540}
   m_Layer: 0
   m_Name: Character
   m_TagString: Character
@@ -132,7 +132,7 @@ Transform:
   - {fileID: 5676186294004812607}
   - {fileID: 8573595303347455047}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
 --- !u!114 &4666652024189201520
 MonoBehaviour:
@@ -186,6 +186,9 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
+  onDmg:
+    m_PersistentCalls:
+      m_Calls: []
   controllable: 1
 --- !u!114 &1211649189196671348
 MonoBehaviour:
@@ -201,51 +204,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canAttack: 1
   active: 1
---- !u!114 &413461243803000072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3324343490077819189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d174604d3a4d7e0489168f75962c3e5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  talkable: 0
-  targetNode: 
-  dialogueRunner: {fileID: 0}
-  onStartTalking:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1895181659443492097}
-        m_TargetAssemblyTypeName: Character, Assembly-CSharp
-        m_MethodName: SetControllable
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onDoneTalking:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1895181659443492097}
-        m_TargetAssemblyTypeName: Character, Assembly-CSharp
-        m_MethodName: SetControllable
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
 --- !u!114 &7638968927939714640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,6 +239,28 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   OnSetMoveVector:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &7892170351578171540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3324343490077819189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b523fe6c478d7646ae1a0fd4631ae6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  game: {fileID: 0}
+  dialogueRunner: {fileID: 0}
+  virtualCamera: {fileID: 0}
+  targetNode: 
+  onStartTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onDoneTalking:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &4520041833351946365
@@ -452,6 +432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   desiredTags: []
+  selectableTypes: 
   onCollision:
     enter:
       m_PersistentCalls:
@@ -466,7 +447,10 @@ MonoBehaviour:
     exit:
       m_PersistentCalls:
         m_Calls: []
+  debug: 0
+  touching: []
   other: {fileID: 0}
+  selectable: {fileID: 0}
 --- !u!210 &1662274335675725108
 SortingGroup:
   m_ObjectHideFlags: 0
