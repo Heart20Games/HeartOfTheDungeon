@@ -32,7 +32,7 @@ public class Brain : MonoBehaviour, ITimeScalable
     }
     
     private Character character;
-    private NavMeshAgent agent;
+    [HideInInspector] public NavMeshAgent agent;
 
     public float navUpdate = 1f;
     public float followingDistance = 0f;
@@ -49,8 +49,10 @@ public class Brain : MonoBehaviour, ITimeScalable
         }
     }
     public BehaviorTree tree;
-    public BehaviorNode root;
+    [HideInInspector] public BehaviorNode root;
     private BehaviorNode.Status status;
+
+    public BrainModifiers modifiers;
 
     private float timeScale = 1f;
     public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
@@ -70,6 +72,10 @@ public class Brain : MonoBehaviour, ITimeScalable
         if (tree != null)
         {
             root = tree.GenerateTree(this);
+        }
+        if (agent != null && modifiers != null)
+        {
+            modifiers.InitializeBrain(this);
         }
         Debug.Log("Tree Name: " + root.name);
 
@@ -136,7 +142,7 @@ public class Brain : MonoBehaviour, ITimeScalable
         if (debug) Debug.Log("Chasing...");
 
         agent.destination = target.position;
-        if (Vector3.Distance(transform.position, target.position) < followingDistance)
+        if (Vector3.Distance(transform.position, target.position) < agent.stoppingDistance)
         {
             agent.isStopped = true;
         }
