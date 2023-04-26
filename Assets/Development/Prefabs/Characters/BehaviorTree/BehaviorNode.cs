@@ -23,6 +23,7 @@ public class BehaviorNode
 
     public virtual Status Process()
     {
+        Debug.Log("Process base: " + name);
         return children[currentChild].Process();
     }
 

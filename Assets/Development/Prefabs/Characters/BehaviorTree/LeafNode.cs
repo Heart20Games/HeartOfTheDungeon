@@ -19,6 +19,7 @@ public class LeafNode : BehaviorNode
 
     public override Status Process()
     {
+        Debug.Log("Process leaf: " + name);
         if (ProcessMethod != null)
         {
             return ProcessMethod();

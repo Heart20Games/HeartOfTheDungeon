@@ -13,6 +13,7 @@ public class SequenceNode : BehaviorNode
 
     public override Status Process()
     {
+        Debug.Log("Process sequence: " + name);
         Status childStatus = children[currentChild].Process();
         if (childStatus != Status.SUCCESS) return childStatus;
         currentChild++;

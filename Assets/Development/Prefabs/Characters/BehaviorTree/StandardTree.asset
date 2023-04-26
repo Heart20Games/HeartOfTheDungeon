@@ -10,10 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21a46c54e6bb5984dad9111fd07667dd, type: 3}
-  m_Name: CombatTree
+  m_Name: StandardTree
   m_EditorClassIdentifier: 
-  rootNode:
-    status: 0
-    children: []
-    currentChild: 0
-    name: 
+  nodes:
+  - name: Has Target
+    type: 2
+    action: 0
+    childCount: 2
+  - name: Chase
+    type: 0
+    action: 1
+    childCount: 0
+  - name: Idle
+    type: 0
+    action: 0
+    childCount: 0

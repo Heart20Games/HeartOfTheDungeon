@@ -3,6 +3,8 @@ using UnityEngine.AI;
 using System;
 using System.Collections;
 using Unity.VisualScripting;
+using System.Collections.Generic;
+using static LeafNode;
 
 public class Brain : MonoBehaviour, ITimeScalable
 {
@@ -18,8 +20,7 @@ public class Brain : MonoBehaviour, ITimeScalable
     {
         get { return target; }
         set {
-            Character targetChar = value.GetComponent<Character>();
-            if (targetChar != null)
+            if (value.TryGetComponent(out Character targetChar))
             {
                 target = targetChar.body;
             }
@@ -37,12 +38,25 @@ public class Brain : MonoBehaviour, ITimeScalable
     public float followingDistance = 0f;
     public float baseOffset = 0f;
 
-    public BehaviorNode tree = new BehaviorNode();
+    public enum Type { Leaf, Condition, Selector, Sequence }
+    public enum Action { Idle, Chase }
+    private Dictionary<Action, Tick> actions;
+    public Dictionary<Action, Tick> Actions {
+        get {
+            return actions ??= new Dictionary<Action, Tick>() {
+                { Action.Idle, Idle }, { Action.Chase, Chase },
+            }; 
+        }
+    }
+    public BehaviorTree tree;
+    public BehaviorNode root;
     private BehaviorNode.Status status;
 
     private float timeScale = 1f;
     public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
     private float timeKeeper = 0f;
+
+    public bool debug = false;
 
     private void Awake()
     {
@@ -53,25 +67,31 @@ public class Brain : MonoBehaviour, ITimeScalable
         {
             Target = target;
         }
+        if (tree != null)
+        {
+            root = tree.GenerateTree(this);
+        }
+        Debug.Log("Tree Name: " + root.name);
 
-        SelectorNode hasTarget = new SelectorNode("Has Target");
-        LeafNode idle = new LeafNode("Idle", Idle);
-        LeafNode chase = new LeafNode("Chase", Chase);
+        //SelectorNode hasTarget = new SelectorNode("Has Target");
+        //LeafNode idle = new LeafNode("Idle", Idle);
+        //LeafNode chase = new LeafNode("Chase", Chase);
 
-        tree.AddChild(hasTarget);
-        hasTarget.AddChild(chase);
-        hasTarget.AddChild(idle);
+        //tree.AddChild(hasTarget);
+        //hasTarget.AddChild(chase);
+        //hasTarget.AddChild(idle);
 
-        //tree.PrintTree();
+        root.PrintTree();
     }
 
     private void Update()
     {
+        if (debug) Debug.Log("Updating Brain");
         if (status == BehaviorNode.Status.FAILURE)
         {
             Debug.LogWarning("Behavior Tree reached fail state");
         }
-        status = tree.Process();
+        status = root.Process();
     }
 
     
@@ -96,6 +116,7 @@ public class Brain : MonoBehaviour, ITimeScalable
 
     public bool HasTarget()
     {
+        if (debug) Debug.Log("Has Target? " + (target != null ? "Yes" : "No") + " (" + target + ")");
         return target != null;
     }
 
@@ -104,12 +125,15 @@ public class Brain : MonoBehaviour, ITimeScalable
 
     public BehaviorNode.Status Idle()
     {
+        if (debug) Debug.Log("Idling...");
         return BehaviorNode.Status.SUCCESS;
     }
 
     public BehaviorNode.Status Chase()
     {
         if (!HasTarget()) return BehaviorNode.Status.FAILURE;
+
+        if (debug) Debug.Log("Chasing...");
 
         agent.destination = target.position;
         if (Vector3.Distance(transform.position, target.position) < followingDistance)
