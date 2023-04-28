@@ -96,8 +96,11 @@ GameObject:
   - component: {fileID: 4474384162132301050}
   - component: {fileID: 689792838586362243}
   - component: {fileID: 742184408474497233}
-  - component: {fileID: 742184408474497232}
   - component: {fileID: 1108233836239189838}
+  - component: {fileID: 7039075980456899197}
+  - component: {fileID: 2912185254956280731}
+  - component: {fileID: 8322301090053487829}
+  - component: {fileID: 7690026522722989185}
   m_Layer: 0
   m_Name: F_Osseus
   m_TagString: Untagged
@@ -119,7 +122,7 @@ Transform:
   m_Children:
   - {fileID: 7100404206759422884}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
 --- !u!114 &4474384162132301050
 MonoBehaviour:
@@ -137,9 +140,30 @@ MonoBehaviour:
   pivot: {fileID: 7393205978733502761}
   animator: {fileID: 5636248479161535672}
   weaponHand: {fileID: 0}
+  moveReticle: {fileID: 0}
+  healthBar: {fileID: 0}
+  virtualCamera: {fileID: 0}
+  brain: {fileID: 0}
+  movement: {fileID: 0}
+  interactor: {fileID: 0}
+  attacker: {fileID: 0}
+  baseOffset: 0
   loadout: {fileID: 0}
-  ability: {fileID: 0}
-  weapon: {fileID: 0}
+  primary: {fileID: 0}
+  secondary: {fileID: 0}
+  weaponOffset: {x: 0, y: 1, z: 0}
+  statuses: []
+  maxHealth:
+    value: 25
+  currentHealth:
+    value: 25
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  onDmg:
+    m_PersistentCalls:
+      m_Calls: []
+  controllable: 1
 --- !u!114 &689792838586362243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,8 +176,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e4383e0da46d0d489e7124e5ab8ee35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yarnNode: OsseusAfterIntro
-  player: {fileID: 0}
+  onInteract:
+    m_PersistentCalls:
+      m_Calls: []
+  canInteract: 0
 --- !u!195 &742184408474497233
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -176,23 +202,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &742184408474497232
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 754157050334404814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 466148a357dcc8c46831e0a2997da0c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  agent: {fileID: 0}
-  isFollowing: 1
-  navUpdate: 1
-  followingDistance: 5
 --- !u!114 &1108233836239189838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,6 +216,83 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
   player: {fileID: 0}
+--- !u!114 &7039075980456899197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754157050334404814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb54bc3dd20868d47854d27f758b978e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  navUpdate: 1
+  followingDistance: 0
+  baseOffset: 0
+--- !u!114 &2912185254956280731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754157050334404814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 276473aba86fe7e4dab05e2ba89d6b45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 700
+  maxVelocity: 10
+  footstepVelocity: 1
+  moveDrag: 0.5
+  stopDrag: 7.5
+  canMove: 1
+  castVector: {x: 0, y: 0}
+  OnSetCastVector:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSetMoveVector:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &8322301090053487829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754157050334404814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b523fe6c478d7646ae1a0fd4631ae6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  game: {fileID: 0}
+  dialogueRunner: {fileID: 0}
+  virtualCamera: {fileID: 0}
+  targetNode: 
+  onStartTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onDoneTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &7690026522722989185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754157050334404814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b0f0a6202e8cae409f550be7e47640b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canAttack: 1
+  active: 1
 --- !u!1 &853244600606771688
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,42 +484,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   desiredTags:
   - Player
-  onTouch:
-    m_PersistentCalls:
-      m_Calls: []
-  onUnTouch:
-    m_PersistentCalls:
-      m_Calls: []
-  onEnter:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 689792838586362243}
-        m_TargetAssemblyTypeName: Interactable, Assembly-CSharp
-        m_MethodName: NotifyPlayerEnteredInteractable
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onExit:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 689792838586362243}
-        m_TargetAssemblyTypeName: Interactable, Assembly-CSharp
-        m_MethodName: NotifyPlayerLeftInteractable
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  selectableTypes: 
+  onCollision:
+    enter:
+      m_PersistentCalls:
+        m_Calls: []
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
+  onTrigger:
+    enter:
+      m_PersistentCalls:
+        m_Calls: []
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
+  debug: 0
+  touching: []
+  other: {fileID: 0}
+  selectable: {fileID: 0}
 --- !u!1 &2755326329157593895
 GameObject:
   m_ObjectHideFlags: 0

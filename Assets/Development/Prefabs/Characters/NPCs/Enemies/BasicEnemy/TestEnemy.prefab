@@ -194,7 +194,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fill: {fileID: 1339620931}
   cam: {fileID: 0}
-  player: {fileID: 0}
 --- !u!1 &1339620929
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,10 +282,8 @@ GameObject:
   - component: {fileID: 6436829769542476562}
   - component: {fileID: 6436829769542476563}
   - component: {fileID: 6436829769542476572}
-  - component: {fileID: 6436829769542476567}
   - component: {fileID: 4568429421967156578}
   - component: {fileID: 6436829769542476573}
-  - component: {fileID: 3246146634167580595}
   m_Layer: 6
   m_Name: TestEnemy
   m_TagString: Untagged
@@ -383,21 +380,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6436829769542476567
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6436829769542476574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 977b796a8eba3c445b313fe74527096f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 2138072239630478774, guid: 311300ecfbd938b48ae10571780ec3dc, type: 3}
-  fireInterval: 5
-  isFiring: 1
 --- !u!114 &4568429421967156578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,19 +417,3 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &3246146634167580595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6436829769542476574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 466148a357dcc8c46831e0a2997da0c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  navUpdate: 1
-  followingDistance: 0
-  baseOffset: 0
