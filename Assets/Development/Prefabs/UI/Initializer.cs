@@ -47,8 +47,6 @@ public class Initializer : MonoBehaviour
             dialogueRunner = userInterface.dialogueRunner;
         }
 
-        print("Dialogue Runner: " + (dialogueRunner != null));
-
         foreach (Talker talker in talkers)
         {
             talker.game = game;

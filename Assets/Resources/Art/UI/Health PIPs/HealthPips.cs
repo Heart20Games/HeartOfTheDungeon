@@ -7,8 +7,8 @@ public class HealthPips : Health
     public int totalHealth;
     public int currentHealth;
     [SerializeField]
-    private List<GameObject> healthPips = new List<GameObject>();
-    private List<Animator> pipAnimator = new List<Animator>();
+    private List<GameObject> healthPips = new();
+    private readonly List<Animator> pipAnimator = new();
     [SerializeField]
     private GameObject healthPipPrefab;
     [SerializeField]
@@ -20,7 +20,7 @@ public class HealthPips : Health
         SetHealthTotal(totalHealth);
     }
 
-    private void ClearPips(int amount)
+    private void ClearPips()
     {
         foreach (GameObject pip in healthPips)
         {
@@ -39,12 +39,12 @@ public class HealthPips : Health
     public override void SetHealthTotal(int amount)
     {
         totalHealth = amount;
-        ClearPips(totalHealth);
-        for (int i = healthPips.Count; i < totalHealth; i++)
+        ClearPips();
+        for (int i = 0; i < totalHealth; i++)
         {
-            Instantiate(healthPipPrefab, healthPipCanvas);
-            healthPips.Add(transform.GetChild(i).gameObject);
-            pipAnimator.Add(healthPips[i].GetComponent<Animator>());
+            GameObject pip = Instantiate(healthPipPrefab, healthPipCanvas);
+            healthPips.Add(pip);
+            pipAnimator.Add(pip.GetComponent<Animator>());
         }
         SetHealth(Mathf.Min(totalHealth, currentHealth));
     }
