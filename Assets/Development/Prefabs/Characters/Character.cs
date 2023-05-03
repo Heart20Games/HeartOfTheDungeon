@@ -41,8 +41,8 @@ public class Character : MonoBehaviour, IDamageable
     // Health
     public Modified<int> maxHealth = new(25);
     public Modified<int> currentHealth = new(25);
-    public int MaxHealth { get { return maxHealth.Value; } set { maxHealth.Value = value; } }
-    public int CurrentHealth { get { return currentHealth.Value; } set { currentHealth.Value = value; } }
+    public int MaxHealth { get { return maxHealth.Value; } set { SetMaxHealth(value); } }
+    public int CurrentHealth { get { return currentHealth.Value; } set { SetCurrentHealth(value); } }
     public UnityEvent onDeath;
 
     public UnityEvent onDmg;
@@ -59,6 +59,8 @@ public class Character : MonoBehaviour, IDamageable
         movement = GetComponent<Movement>();
         interactor = GetComponent<Talker>();
         attacker = GetComponent<PlayerAttack>();
+        MaxHealth = MaxHealth;
+        CurrentHealth = CurrentHealth;
         SetControllable(false);
     }
 
@@ -135,6 +137,25 @@ public class Character : MonoBehaviour, IDamageable
     //        healthBar.SetHealth(CurrentHealth);
     //    }
     //}
+
+    public void SetMaxHealth(int amount)
+    {
+        maxHealth.value = amount;
+        if (healthBar != null)
+        {
+            healthBar.SetHealthTotal(MaxHealth);
+        }
+        //CurrentHealth = CurrentHealth;
+    }
+
+    public void SetCurrentHealth(int amount)
+    {
+        currentHealth.Value = Mathf.Min(amount, maxHealth.Value);
+        if (healthBar != null)
+        {
+            healthBar.SetHealth(amount);
+        }
+    }
 
     public void TakeDamage(int damageAmount)
     {

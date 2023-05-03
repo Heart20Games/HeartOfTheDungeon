@@ -15,11 +15,19 @@ public class HealthPips : Health
     private Transform healthPipCanvas;
     public int lastDamaged = -1;
 
-    
-    // Start is called before the first frame update
     void Start()
     {
         SetHealthTotal(totalHealth);
+    }
+
+    private void ClearPips(int amount)
+    {
+        foreach (GameObject pip in healthPips)
+        {
+            Destroy(pip);
+        }
+        healthPips.Clear();
+        pipAnimator.Clear();
     }
 
     public override void SetHealthBase(int amount, int total)
@@ -31,13 +39,14 @@ public class HealthPips : Health
     public override void SetHealthTotal(int amount)
     {
         totalHealth = amount;
+        ClearPips(totalHealth);
         for (int i = healthPips.Count; i < totalHealth; i++)
         {
             Instantiate(healthPipPrefab, healthPipCanvas);
             healthPips.Add(transform.GetChild(i).gameObject);
             pipAnimator.Add(healthPips[i].GetComponent<Animator>());
         }
-        SetHealth(currentHealth);
+        SetHealth(Mathf.Min(totalHealth, currentHealth));
     }
 
     public override void SetHealth(int amount)
