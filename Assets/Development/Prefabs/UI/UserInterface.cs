@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using Yarn.Unity;
 
 public class UserInterface : MonoBehaviour
 {
     public Character controlledCharacter;
+    public DialogueRunner dialogueRunner;
 
     public UnityEvent onContinue;
 
