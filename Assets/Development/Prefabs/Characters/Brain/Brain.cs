@@ -81,10 +81,10 @@ public class Brain : MonoBehaviour, ITimeScalable
 
         //SelectorNode hasTarget = new SelectorNode("Has Target");
         //LeafNode idle = new LeafNode("Idle", Idle);
-        //LeafNode chase = new LeafNode("Chase", Chase);
+        //LeafNode interest = new LeafNode("Chase", Chase);
 
         //tree.AddChild(hasTarget);
-        //hasTarget.AddChild(chase);
+        //hasTarget.AddChild(interest);
         //hasTarget.AddChild(idle);
 
         root.PrintTree();
