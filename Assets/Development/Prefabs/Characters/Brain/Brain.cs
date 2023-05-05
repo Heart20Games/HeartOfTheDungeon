@@ -106,7 +106,7 @@ public class Brain : MonoBehaviour, ITimeScalable
         }
         if (controller != null)
         {
-            controller.active = !useAgent && enabled;
+            controller.Active = !useAgent && enabled;
         }
     }
 

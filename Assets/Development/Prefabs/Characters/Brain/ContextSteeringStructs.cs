@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using static ContextSteeringController;
 
@@ -8,16 +10,15 @@ public class ContextSteeringStructs
 {
     // Enums
     public enum Identity { Neutral, Friend, Foe }
-    public enum ContextType { Peer, Target, Obstacle }
+    public enum ContextType { Peer, Target, Obstacle, None }
     public enum MapType { Interest, Danger, None }
 
     // Defaults
-    static readonly public Context[] defaultContexts = new Context[]
-    {
-        new(ContextType.Peer, 1f, 0f, 5f, 20f),
-        new (ContextType.Target, 1f, 0f, 1000f, 20f),
-        new (ContextType.Obstacle, 1f, 0f, 5f, 20f),
-    };
+    static readonly public Contexts defaultContexts = new(
+        new(ContextType.Peer, 1f, 0f, 5f, 50f),
+        new(ContextType.Target, 1f, 0f, 1000f, 50f),
+        new(ContextType.Obstacle, 1f, 0f, 5f, 50f)
+    );
     static readonly public IdentityMapPair[] defaultPairs = new IdentityMapPair[]
     {
         new(Identity.Neutral, MapType.None),
@@ -38,10 +39,37 @@ public class ContextSteeringStructs
         baseline = new Vector2[resolution];
         for (int i = 0; i < resolution; i++)
         {
-            float angle = Mathf.Lerp(0, 360, i / resolution);
+            float angle = Mathf.Lerp(0, 360, (float)i / resolution);
             baseline[i] = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
         }
+
+        PrintVectors(baseline, "Baseline");
+
         return baseline;
+    }
+
+    [Serializable]
+    public struct Contexts
+    {
+        public Contexts(Context peer, Context target, Context obstacle)
+        {
+            this.peer = peer;
+            this.target = target;
+            this.obstacle = obstacle;
+        }
+        public Context peer;
+        public Context target;
+        public Context obstacle;
+        public Context GetContext(ContextType type)
+        {
+            switch (type)
+            {
+                case ContextType.Peer: return peer;
+                case ContextType.Target: return target;
+                case ContextType.Obstacle: return obstacle;
+                default: return new(ContextType.None, 0f, 0f, 0f, 0f);
+            }
+        }
     }
 
     [Serializable]
@@ -78,6 +106,27 @@ public class ContextSteeringStructs
         public MapType mapType;
     }
 
+    [Serializable]
+    public struct Maps
+    {
+        public Maps(float[] interests, float[] dangers)
+        {
+            this.interests = interests;
+            this.dangers = dangers;
+        }
+        public float[] interests;
+        public float[] dangers;
+        public float[] GetMap(MapType type)
+        {
+            switch (type)
+            {
+                case MapType.Interest: return interests;
+                case MapType.Danger: return dangers;
+                default: return null;
+            }
+        }
+    }
+
     //public class IdentityComparer : IEqualityComparer<Identity>
     //{
     //    public bool Equals(Identity x, Identity y)
@@ -90,4 +139,13 @@ public class ContextSteeringStructs
     //        return (int)x;
     //    }
     //}
+
+    static public void PrintVectors(Vector2[] vectors, string label)
+    {
+        StringBuilder b = new();
+        b.Append(label);
+        b.Append(" ");
+        b.AppendJoin(", ", vectors);
+        Debug.Log(b);
+    }
 }
