@@ -7,109 +7,45 @@ using UnityEditor.Experimental.GraphView;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.Assertions;
+using static ContextSteeringStructs;
 
 [RequireComponent(typeof(Rigidbody))]
 public class ContextSteeringController : MonoBehaviour
 {
-    [Serializable]
-    public struct Context
-    {
-        public Context(float weight, float minDistance, float maxDistance, float falloff)
-        {
-            this.weight = weight;
-            this.minDistance = minDistance;
-            this.maxDistance = maxDistance;
-            this.falloff = falloff;
-        }
-
-        public float weight;
-        public float minDistance;
-        public float maxDistance;
-        public float falloff;
-    }
-
-    [Serializable]
-    public struct IdentityMapPair
-    {
-        public IdentityMapPair(Identity identity, MapType mapType)
-        {
-            name = identity.HumanName();
-            this.identity = identity;
-            this.mapType = mapType;
-        }
-
-        public string name;
-        public Identity identity;
-        public MapType mapType;
-    }
-
-
-    [HideInInspector] static public Vector2[] baseline;
-    [HideInInspector] public float[] interest;
-    [HideInInspector] public float[] danger;
-
-    public enum ContextType { Peer, Target, Obstacle }
-    public enum MapType { Interest, Danger, None }
-    private Context[] contexts;
-    private float[][] maps;
-
-    public int resolution = 12;
-    public Context peerContext = new(1f, 0f, 5f, 20f);
-    public Context targetContext = new(1f, 0f, 1000f, 20f);
-    public Context obstacleContext = new(1f, 0f, 5f, 20f);
-
-    public enum Identity { Neutral, Friend, Foe }
-    public Identity identity = Identity.Neutral;
-    private Dictionary<Identity, MapType> identityMap = new();
-    public List<IdentityMapPair> pairs = new(new IdentityMapPair[] 
-    {
-        new(Identity.Neutral, MapType.None),
-        new IdentityMapPair(Identity.Foe, MapType.Interest),
-        new IdentityMapPair(Identity.Friend, MapType.Danger)
-    });
-
     public float testSpeed = 3f;
     public bool active = false;
 
+    // Readonly
+    private readonly Context[] contexts = defaultContexts;
+    private readonly float[][] maps = { new float[resolution], new float[resolution] };
+    private readonly Dictionary<Identity, MapType> identityMap = new();
     private readonly List<Transform> obstacles = new();
+
+    // Identity
+    public Identity identity = Identity.Neutral;
+    public IdentityMapPair[] pairs = defaultPairs;
+
+    // Initialization
     private new Rigidbody rigidbody;
     private bool initialized = false;
 
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
-
         Initialize();
     }
 
     public void Initialize()
     {
-        if (initialized) return;
-        initialized = true;
-
-        // Baseline
-        if (baseline == null)
+        if (!initialized)
         {
-            baseline = new Vector2[resolution];
-            for (int i = 0; i < resolution; i++)
+            initialized = true;
+
+            // Identity Map
+            foreach (var pair in pairs)
             {
-                float angle = Mathf.Lerp(0, 360, i / resolution);
-                baseline[i] = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+                identityMap[pair.identity] = pair.mapType;
             }
-        }
-
-        // Contexts
-        contexts = new Context[] { peerContext, targetContext, obstacleContext };
-
-        // Maps
-        interest = new float[resolution];
-        danger = new float[resolution];
-        maps = new float[][] { interest, danger };
-
-        // Identities
-        foreach (var pair in pairs)
-        {
-            identityMap[pair.identity] = pair.mapType;
         }
     }
 
@@ -122,15 +58,16 @@ public class ContextSteeringController : MonoBehaviour
         }
     }
 
+    // Get
     public Vector2 GetVector()
     {
         Vector2 vector = new();
         for (int i = 0; i < resolution; i++)
         {
-            vector += baseline[i] * interest[i];
-            vector -= baseline[i] * danger[i];
-            interest[i] = 0f;
-            danger[i] = 0f;
+            vector += Baseline[i] * maps[(int)MapType.Interest][i];
+            vector -= Baseline[i] * maps[(int)MapType.Danger][i];
+            maps[(int)MapType.Interest][i] = 0f;
+            maps[(int)MapType.Danger][i] = 0f;
         }
         return vector.normalized;
     }
@@ -140,6 +77,7 @@ public class ContextSteeringController : MonoBehaviour
         return identityMap[id];
     }
 
+    // Set
     public void MapTo(Vector2 vector, MapType mapType, ContextType contextType)
     {
         // Map / Context
@@ -183,13 +121,18 @@ public class ContextSteeringController : MonoBehaviour
         }
     }
 
+    // Obstacles
     public void AddObstacle(Impact impact)
     {
         if (!impact.other.TryGetComponent<ContextSteeringController>(out _))
         {
             if (!obstacles.Contains(impact.other.transform))
             {
-                obstacles.Add(impact.other.transform);
+                Transform other = impact.other.transform;
+                obstacles.Add(other);
+                Vector2 otherPos = new(other.position.x, other.position.z);
+                Vector2 curPos = new(transform.position.x, transform.position.z);
+                MapTo(otherPos - curPos, MapType.Danger, ContextType.Obstacle);
             }
         }
     }

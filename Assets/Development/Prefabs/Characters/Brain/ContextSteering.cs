@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Data.Common;
 using UnityEngine;
 using UnityEngine.Assertions;
-using static ContextSteeringController;
+using static ContextSteeringStructs;
 
 public class ContextSteering : MonoBehaviour
 {
     [SerializeField] private ContextSteeringController[] controllers;
-    private Vector2[] positions;
 
     private void Awake()
     {
@@ -17,7 +16,6 @@ public class ContextSteering : MonoBehaviour
         {
             controller.Initialize();
         }
-        positions = new Vector2[controllers.Length];
     }
 
     private void FixedUpdate()
@@ -47,7 +45,7 @@ public class ContextSteering : MonoBehaviour
         MapType mapType = bCon.GetMapOf(aCon.identity);
         if (mapType != MapType.None)
         {
-            bCon.MapTo(bPos - aPos, mapType, ContextType.Peer);
+            bCon.MapTo(aPos - bPos, mapType, ContextType.Peer);
         }
     }
 }
