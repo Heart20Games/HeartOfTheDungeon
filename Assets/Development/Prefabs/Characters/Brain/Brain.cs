@@ -5,12 +5,14 @@ using System.Collections;
 using Unity.VisualScripting;
 using System.Collections.Generic;
 using static LeafNode;
+using UnityEngine.InputSystem;
+using static ContextSteeringStructs;
 
 public class Brain : MonoBehaviour, ITimeScalable
 {
     public bool Enabled
     {
-        get { return enabled; }
+        get => enabled;
         set { SetEnabled(value); }
     }
 
@@ -19,16 +21,7 @@ public class Brain : MonoBehaviour, ITimeScalable
     public Transform Target
     {
         get { return target; }
-        set {
-            if (value.TryGetComponent(out Character targetChar))
-            {
-                target = targetChar.body;
-            }
-            else
-            {
-                target = value; 
-            }
-        }
+        set { target = value.TryGetComponent(out Character targetChar) ? targetChar.body : value; }
     }
     
     private Character character;
@@ -44,11 +37,7 @@ public class Brain : MonoBehaviour, ITimeScalable
     public enum Action { Idle, Chase }
     private Dictionary<Action, Tick> actions;
     public Dictionary<Action, Tick> Actions {
-        get {
-            return actions ??= new Dictionary<Action, Tick>() {
-                { Action.Idle, Idle }, { Action.Chase, Chase },
-            }; 
-        }
+        get { return actions ??= new Dictionary<Action, Tick>() { { Action.Idle, Idle }, { Action.Chase, Chase } }; }
     }
     public BehaviorTree tree;
     [HideInInspector] public BehaviorNode root;
@@ -58,6 +47,7 @@ public class Brain : MonoBehaviour, ITimeScalable
 
     private float timeScale = 1f;
     public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
+
     private float timeKeeper = 0f;
 
     public bool debug = false;
@@ -204,4 +194,17 @@ public class Brain : MonoBehaviour, ITimeScalable
         }
         this.timeScale = timeScale;
     }
+
+    //public class ActionComparer : IEqualityComparer<Action>
+    //{
+    //    public bool Equals(Action x, Action y)
+    //    {
+    //        return x == y;
+    //    }
+
+    //    public int GetHashCode(Action x)
+    //    {
+    //        return (int)x;
+    //    }
+    //}
 }

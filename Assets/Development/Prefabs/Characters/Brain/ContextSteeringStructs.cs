@@ -78,16 +78,16 @@ public class ContextSteeringStructs
         public MapType mapType;
     }
 
-    public class IdentityComparer : IEqualityComparer<Identity>
-    {
-        public bool Equals(Identity x, Identity y)
-        {
-            return x == y;
-        }
+    //public class IdentityComparer : IEqualityComparer<Identity>
+    //{
+    //    public bool Equals(Identity x, Identity y)
+    //    {
+    //        return x == y;
+    //    }
 
-        public int GetHashCode(Identity x)
-        {
-            return (int)x;
-        }
-    }
+    //    public int GetHashCode(Identity x)
+    //    {
+    //        return (int)x;
+    //    }
+    //}
 }

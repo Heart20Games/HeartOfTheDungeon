@@ -18,8 +18,8 @@ public class YarnCommands : MonoBehaviour
     {
         storage = GetComponent<InMemoryVariableStorage>();
         rooms.Initialize();
-        Dictionary<string, float> tempFloats = new Dictionary<string, float>();
-        Dictionary<string, bool> tempBools = new Dictionary<string, bool>();
+        Dictionary<string, float> tempFloats = new();
+        Dictionary<string, bool> tempBools = new();
         storage.SetAllVariables(tempFloats, rooms.bank, tempBools);
     }
 
