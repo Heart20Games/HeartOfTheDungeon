@@ -151,6 +151,7 @@ MonoBehaviour:
   navUpdate: 1
   followingDistance: 0
   baseOffset: 0
+  useAgent: 1
   tree: {fileID: 11400000, guid: 5140f609f0a38fb48865e6fb826fc149, type: 2}
   modifiers: {fileID: 11400000, guid: e747a79b96270f8488105465899547d7, type: 2}
   debug: 0
@@ -324,35 +325,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e69096a08d9cbe942bcf67cfc758bb00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chase:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  avoid:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  peerWeight: 1
-  targetWeight: 1
-  obstacleWeight: 1
+  interest: []
+  danger: []
+  resolution: 12
+  peerContext:
+    weight: 2
+    minDistance: 0
+    maxDistance: 5
+    falloff: 20
+  targetContext:
+    weight: 1
+    minDistance: 0
+    maxDistance: 1000
+    falloff: 20
+  obstacleContext:
+    weight: 1
+    minDistance: 0
+    maxDistance: 5
+    falloff: 20
+  identity: 0
+  interests: 
+  dangers: 
+  testSpeed: 10
+  active: 0
 --- !u!114 &442215480502625366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -415,7 +410,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4520041833351946365}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5

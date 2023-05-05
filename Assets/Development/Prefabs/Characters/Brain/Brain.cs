@@ -33,10 +33,12 @@ public class Brain : MonoBehaviour, ITimeScalable
     
     private Character character;
     [HideInInspector] public NavMeshAgent agent;
+    [HideInInspector] private ContextSteeringController controller;
 
     public float navUpdate = 1f;
     public float followingDistance = 0f;
     public float baseOffset = 0f;
+    public bool useAgent = true;
 
     public enum Type { Leaf, Condition, Selector, Sequence }
     public enum Action { Idle, Chase }
@@ -64,6 +66,7 @@ public class Brain : MonoBehaviour, ITimeScalable
     {
         character = GetComponent<Character>();
         agent = character.body.GetComponent<NavMeshAgent>();
+        controller = character.body.GetComponent<ContextSteeringController>();
         agent.baseOffset = baseOffset;
         if (target != null)
         {
@@ -88,6 +91,7 @@ public class Brain : MonoBehaviour, ITimeScalable
         //hasTarget.AddChild(idle);
 
         root.PrintTree();
+        Enabled = Enabled;
     }
 
     private void Update()
@@ -108,7 +112,11 @@ public class Brain : MonoBehaviour, ITimeScalable
         this.enabled = enabled;
         if (agent != null)
         {
-            agent.enabled = enabled;
+            agent.enabled = useAgent && enabled;
+        }
+        if (controller != null)
+        {
+            controller.active = !useAgent && enabled;
         }
     }
 
@@ -141,19 +149,22 @@ public class Brain : MonoBehaviour, ITimeScalable
 
         if (debug) Debug.Log("Chasing...");
 
-        agent.destination = target.position;
-        if (Vector3.Distance(transform.position, target.position) < agent.stoppingDistance)
+        if (useAgent)
         {
-            agent.isStopped = true;
-        }
-        else
-        {
-            agent.isStopped = false;
-            timeKeeper += Time.deltaTime;
-            if (timeKeeper > navUpdate)
+            agent.destination = target.position;
+            if (Vector3.Distance(transform.position, target.position) < agent.stoppingDistance)
             {
-                timeKeeper = 0f;
-                agent.destination = target.position;
+                agent.isStopped = true;
+            }
+            else
+            {
+                agent.isStopped = false;
+                timeKeeper += Time.deltaTime;
+                if (timeKeeper > navUpdate)
+                {
+                    timeKeeper = 0f;
+                    agent.destination = target.position;
+                }
             }
         }
         return BehaviorNode.Status.SUCCESS;
@@ -168,24 +179,27 @@ public class Brain : MonoBehaviour, ITimeScalable
     {
         if (this.timeScale != timeScale)
         {
-            if (timeScale == 0)
+            if (useAgent)
             {
-                tempSpeed = agent.speed;
-                tempAngularSpeed = agent.angularSpeed;
-                tempAcceleration = agent.acceleration;
-                agent.speed = 0;
-                agent.angularSpeed = 0;
-            }
-            else if (this.timeScale == 0)
-            {
-                agent.speed = tempSpeed;
-                agent.angularSpeed = tempAngularSpeed;
-            }
-            else
-            {
-                float ratio = timeScale / this.timeScale;
-                agent.speed *= ratio;
-                agent.angularSpeed *= ratio;
+                if (timeScale == 0)
+                {
+                    tempSpeed = agent.speed;
+                    tempAngularSpeed = agent.angularSpeed;
+                    tempAcceleration = agent.acceleration;
+                    agent.speed = 0;
+                    agent.angularSpeed = 0;
+                }
+                else if (this.timeScale == 0)
+                {
+                    agent.speed = tempSpeed;
+                    agent.angularSpeed = tempAngularSpeed;
+                }
+                else
+                {
+                    float ratio = timeScale / this.timeScale;
+                    agent.speed *= ratio;
+                    agent.angularSpeed *= ratio;
+                }
             }
         }
         this.timeScale = timeScale;

@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 [RequireComponent(typeof(Rigidbody))]
 public class ContextSteeringController : MonoBehaviour
@@ -27,6 +28,22 @@ public class ContextSteeringController : MonoBehaviour
         public float falloff;
     }
 
+    [Serializable]
+    public struct IdentityMapPair
+    {
+        public IdentityMapPair(Identity identity, MapType mapType)
+        {
+            name = identity.HumanName();
+            this.identity = identity;
+            this.mapType = mapType;
+        }
+
+        public string name;
+        public Identity identity;
+        public MapType mapType;
+    }
+
+
     [HideInInspector] static public Vector2[] baseline;
     [HideInInspector] public float[] interest;
     [HideInInspector] public float[] danger;
@@ -43,13 +60,16 @@ public class ContextSteeringController : MonoBehaviour
 
     public enum Identity { Neutral, Friend, Foe }
     public Identity identity = Identity.Neutral;
-    public List<Identity> interests = new();
-    public List<Identity> dangers = new();
-    private bool[] bInterests;
-    private bool[] bDangers;
-    private bool[][] identities;
+    private Dictionary<Identity, MapType> identityMap = new();
+    public List<IdentityMapPair> pairs = new(new IdentityMapPair[] 
+    {
+        new(Identity.Neutral, MapType.None),
+        new IdentityMapPair(Identity.Foe, MapType.Interest),
+        new IdentityMapPair(Identity.Friend, MapType.Danger)
+    });
 
     public float testSpeed = 3f;
+    public bool active = false;
 
     private readonly List<Transform> obstacles = new();
     private new Rigidbody rigidbody;
@@ -87,20 +107,19 @@ public class ContextSteeringController : MonoBehaviour
         maps = new float[][] { interest, danger };
 
         // Identities
-        bInterests = new bool[Enum.GetValues(typeof(Identity)).Length];
-        bDangers = new bool[Enum.GetValues(typeof(Identity)).Length];
-        identities = new bool[][] { bInterests, bDangers };
-        foreach (Identity id in Enum.GetValues(typeof(Identity)))
+        foreach (var pair in pairs)
         {
-            bInterests[(int)id] = interests.Contains(id);
-            bDangers[(int)id] = dangers.Contains(id);
+            identityMap[pair.identity] = pair.mapType;
         }
     }
 
     private void FixedUpdate()
     {
-        Vector2 vector = GetVector();
-        rigidbody.velocity = testSpeed * Time.fixedDeltaTime * new Vector3(vector.x, 0, vector.y);
+        if (active)
+        {
+            Vector2 vector = GetVector();
+            rigidbody.velocity = testSpeed * Time.fixedDeltaTime * new Vector3(vector.x, 0, vector.y);
+        }
     }
 
     public Vector2 GetVector()
@@ -118,23 +137,7 @@ public class ContextSteeringController : MonoBehaviour
 
     public MapType GetMapOf(Identity id)
     {
-        if (MappedTo(id, MapType.Interest))
-        {
-            return MapType.Interest;
-        }
-        else if (MappedTo(id, MapType.Danger))
-        {
-            return MapType.Danger;
-        }
-        else
-        {
-            return MapType.None;
-        }
-    }
-
-    public bool MappedTo(Identity id, MapType map)
-    {
-        return identities[(int)map][(int)id];
+        return identityMap[id];
     }
 
     public void MapTo(Vector2 vector, MapType mapType, ContextType contextType)
@@ -143,10 +146,6 @@ public class ContextSteeringController : MonoBehaviour
         float[] map = maps[(int)mapType];
         Context context = contexts[(int)contextType];
 
-        // Angle / Slot
-        float angle = Mathf.Atan(vector.y / vector.x);
-        float slot = (angle / 360) * resolution;
-
         // Weight
         float distance = vector.magnitude - context.minDistance;
         float range = (context.maxDistance - context.minDistance);
@@ -154,6 +153,13 @@ public class ContextSteeringController : MonoBehaviour
 
         if (weight > 0f)
         {
+            // Angle / Slot
+            float angle = vector.x != 0f ? Mathf.Atan(vector.y / vector.x) : Mathf.Sign(vector.y) * 90;
+            float slot = (angle / 360) * resolution;
+
+            Assert.IsFalse(float.IsNaN(angle));
+            Assert.IsFalse(float.IsNaN(slot));
+
             // Falloff
             float falloff = (context.falloff / 360) * resolution;
             float falloffHigh = slot + falloff;

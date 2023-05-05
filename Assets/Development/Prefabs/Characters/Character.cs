@@ -41,8 +41,16 @@ public class Character : MonoBehaviour, IDamageable
     // Health
     public Modified<int> maxHealth = new(25);
     public Modified<int> currentHealth = new(25);
-    public int MaxHealth { get { return maxHealth.Value; } set { SetMaxHealth(value); } }
-    public int CurrentHealth { get { return currentHealth.Value; } set { SetCurrentHealth(value); } }
+    public int MaxHealth
+    {
+        get { return maxHealth.Value; }
+        set { SetMaxHealth(value); }
+    }
+    public int CurrentHealth
+    {
+        get { return currentHealth.Value; }
+        set { SetCurrentHealth(value); }
+    }
     public UnityEvent onDeath;
 
     public UnityEvent onDmg;

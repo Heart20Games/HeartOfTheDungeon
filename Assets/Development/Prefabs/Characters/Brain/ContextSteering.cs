@@ -1,43 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using UnityEngine;
+using UnityEngine.Assertions;
 using static ContextSteeringController;
 
 public class ContextSteering : MonoBehaviour
 {
-    [SerializeField] private List<ContextSteeringController> controllers;
+    [SerializeField] private ContextSteeringController[] controllers;
+    private Vector2[] positions;
 
     private void Awake()
     {
-        controllers = new(FindObjectsOfType<ContextSteeringController>());
+        controllers = FindObjectsOfType<ContextSteeringController>();
         foreach (var controller in controllers)
         {
             controller.Initialize();
         }
+        positions = new Vector2[controllers.Length];
     }
 
     private void FixedUpdate()
     {
-        for (int i = 0; i < controllers.Count-1; i++)
+        for (int i = 0; i < controllers.Length-1; i++)
         {
-            for (int j = i + 1; j < controllers.Count; j++)
+            for (int j = i + 1; j < controllers.Length; j++)
             {
                 var iCon = controllers[i];
                 var jCon = controllers[j];
-                
-                MapOntoPeer(iCon, jCon);
-                MapOntoPeer(jCon, iCon);
+
+                Assert.AreNotEqual(iCon, jCon);
+
+                Vector3 aPosition = iCon.transform.position;
+                Vector3 bPosition = jCon.transform.position;
+                Vector2 iPos = new(aPosition.x, aPosition.z);
+                Vector2 jPos = new(bPosition.x, bPosition.z);
+
+                MapOntoPeer(iCon, jCon, iPos, jPos);
+                MapOntoPeer(jCon, iCon, jPos, iPos);
             }
         }
     }
 
-    public void MapOntoPeer(ContextSteeringController aCon, ContextSteeringController bCon)
+    public void MapOntoPeer(ContextSteeringController aCon, ContextSteeringController bCon, Vector2 aPos, Vector2 bPos)
     {
-        Vector3 aPosition = aCon.transform.position;
-        Vector3 bPosition = bCon.transform.position;
-        Vector2 aPos = new(aPosition.x, aPosition.z);
-        Vector2 bPos = new(bPosition.x, bPosition.z);
-
         MapType mapType = bCon.GetMapOf(aCon.identity);
         if (mapType != MapType.None)
         {

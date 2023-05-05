@@ -68,6 +68,10 @@ public class Game : MonoBehaviour
             {
                 timeScalable.SetTimeScale(this.timeScale);
             }
+            else
+            {
+                print("Invalid Object");
+            }
         }
     }
 

@@ -13,7 +13,6 @@ public class SelectorNode : BehaviorNode
 
     public override Status Process()
     {
-        Debug.Log("Process Selector: " + name);
         Status childStatus = children[currentChild].Process();
 
         switch (childStatus)
