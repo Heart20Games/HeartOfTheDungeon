@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
+using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using static ContextSteeringController;
@@ -12,12 +14,15 @@ public class ContextSteeringStructs
     public enum Identity { Neutral, Friend, Foe }
     public enum ContextType { Peer, Target, Obstacle, None }
     public enum MapType { Interest, Danger, None }
+    const sbyte POS = 1;
+    const sbyte NA = 0;
+    const sbyte NEG = -1;
 
     // Defaults
     static readonly public Contexts defaultContexts = new(
-        new(ContextType.Peer, 1f, 0f, 5f, 50f),
-        new(ContextType.Target, 1f, 0f, 1000f, 50f),
-        new(ContextType.Obstacle, 1f, 0f, 5f, 50f)
+        new(ContextType.Peer, 1f, 0f, 5f, -1f, 50f),
+        new(ContextType.Target, 1f, 0f, 1000f, -1f, 50f),
+        new(ContextType.Obstacle, 1f, 0f, 5f, -1f, 50f)
     );
     static readonly public IdentityMapPair[] defaultPairs = new IdentityMapPair[]
     {
@@ -28,19 +33,19 @@ public class ContextSteeringStructs
 
     // Resolution
     static public int resolution = 12;
-    static private Vector2[] baseline;
-    static public Vector2[] Baseline
+    static private Vector3[] baseline;
+    static public Vector3[] Baseline
     {
         get { return baseline ?? InitializeBaseline(); }
         set => baseline = value;
     }
-    static private Vector2[] InitializeBaseline()
+    static private Vector3[] InitializeBaseline()
     {
-        baseline = new Vector2[resolution];
+        baseline = new Vector3[resolution];
         for (int i = 0; i < resolution; i++)
         {
             float angle = Mathf.Lerp(0, 360, (float)i / resolution);
-            baseline[i] = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+            baseline[i] = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
         }
 
         PrintVectors(baseline, "Baseline");
@@ -67,7 +72,7 @@ public class ContextSteeringStructs
                 case ContextType.Peer: return peer;
                 case ContextType.Target: return target;
                 case ContextType.Obstacle: return obstacle;
-                default: return new(ContextType.None, 0f, 0f, 0f, 0f);
+                default: return new(ContextType.None, 0f, 0f, 0f, -1f, 0f);
             }
         }
     }
@@ -75,13 +80,14 @@ public class ContextSteeringStructs
     [Serializable]
     public struct Context
     {
-        public Context(ContextType type, float weight, float minDistance, float maxDistance, float falloff)
+        public Context(ContextType type, float weight, float minDistance, float maxDistance, float cullDistance, float falloff)
         {
             name = type.ToString();
             this.type = type;
             this.weight = weight;
             this.minDistance = minDistance;
             this.maxDistance = maxDistance;
+            this.cullDistance = cullDistance >= 0f ? cullDistance : float.MaxValue;
             this.falloff = falloff;
         }
         public string name;
@@ -89,6 +95,7 @@ public class ContextSteeringStructs
         public float weight;
         public float minDistance;
         public float maxDistance;
+        public float cullDistance;
         public float falloff;
     }
 
@@ -107,22 +114,74 @@ public class ContextSteeringStructs
     }
 
     [Serializable]
+    public struct Map
+    {
+        public Map(float[] dirs, sbyte sign)
+        {
+            this.dirs = dirs ?? new float[resolution];
+            this.sign = sign;
+            this.valid = true;
+        }
+        public Map(float[] dirs, sbyte sign, bool initialize)
+        {
+            this.dirs = !initialize ? dirs : (dirs ?? new float[resolution]);
+            this.sign = sign;
+            this.valid = true;
+        }
+        //public float[] dirs;
+        public float[] dirs;
+        public sbyte sign;
+        public bool valid;
+        public int Length => dirs.Length;
+        public float this[int index]
+        {
+            get { return dirs[index]; }
+            set { dirs[index] = value; }
+        }
+        public new string ToString()
+        {
+            return dirs.ToString();
+        }
+    }
+
+    [Serializable]
     public struct Maps
     {
-        public Maps(float[] interests, float[] dangers)
+        public Maps(Map interests, Map dangers)
         {
             this.interests = interests;
             this.dangers = dangers;
         }
-        public float[] interests;
-        public float[] dangers;
-        public float[] GetMap(MapType type)
+        public Maps(float[] interests, float[] dangers)
         {
-            switch (type)
+            this.interests = new(interests, POS);
+            this.dangers = new(dangers, NEG);
+        }
+        public Map interests;
+        public Map dangers;
+        public int Length => 2;
+        public Map this[int index]
+        {
+            get
             {
-                case MapType.Interest: return interests;
-                case MapType.Danger: return dangers;
-                default: return null;
+                return index switch
+                {
+                    0 => interests,
+                    1 => dangers,
+                    _ => new(),
+                };
+            }
+        }
+        public Map this[MapType type]
+        {
+            get
+            {
+                return type switch
+                {
+                    MapType.Interest => interests,
+                    MapType.Danger => dangers,
+                    _ => new(),
+                };
             }
         }
     }
@@ -140,7 +199,7 @@ public class ContextSteeringStructs
     //    }
     //}
 
-    static public void PrintVectors(Vector2[] vectors, string label)
+    static public void PrintVectors(Vector3[] vectors, string label)
     {
         StringBuilder b = new();
         b.Append(label);

@@ -29,23 +29,20 @@ public class ContextSteering : MonoBehaviour
 
                 Assert.AreNotEqual(iCon, jCon);
 
-                Vector3 aPosition = iCon.transform.position;
-                Vector3 bPosition = jCon.transform.position;
-                Vector2 iPos = new(aPosition.x, aPosition.z);
-                Vector2 jPos = new(bPosition.x, bPosition.z);
-
-                MapOntoPeer(iCon, jCon, iPos, jPos);
-                MapOntoPeer(jCon, iCon, jPos, iPos);
+                MapOntoPeer(iCon, jCon);
+                MapOntoPeer(jCon, iCon);
             }
         }
     }
 
-    public void MapOntoPeer(ContextSteeringController aCon, ContextSteeringController bCon, Vector2 aPos, Vector2 bPos)
+    public void MapOntoPeer(ContextSteeringController aCon, ContextSteeringController bCon)
     {
-        MapType mapType = bCon.GetMapOf(aCon.identity);
-        if (mapType != MapType.None)
+        Map map = bCon.GetMapOf(aCon.identity);
+        if (map.valid)
         {
-            bCon.MapTo(aPos - bPos, mapType, ContextType.Peer);
+            Vector3 sourceVector = aCon.transform.position - bCon.transform.position;
+            Vector2 vector = new(sourceVector.x, sourceVector.z);
+            bCon.MapTo(vector, ContextType.Peer, map);
         }
     }
 }

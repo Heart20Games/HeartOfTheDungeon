@@ -13,6 +13,7 @@ using static ContextSteeringStructs;
 public class ContextSteeringController : MonoBehaviour
 {
     public float testSpeed = 3f;
+    public float drawScale = 1.0f;
     public bool draw;
     [SerializeField] private bool active = false;
     public bool Active
@@ -25,13 +26,11 @@ public class ContextSteeringController : MonoBehaviour
     [SerializeField] private Vector3 destination = new();
     public bool following = false;
     public Vector3 Destination { get => destination; set { destination = value; following = true; } }
-
-    // Readonly
-    private readonly Maps maps = new(new float[resolution], new float[resolution]);
     private readonly Dictionary<Identity, MapType> identityMap = new();
     private readonly List<Transform> obstacles = new();
 
     // Identity
+    public Maps Maps { get; } = new(null, null);
     [SerializeField] private Contexts contexts = defaultContexts;
     public Identity identity = Identity.Neutral;
     public IdentityMapPair[] pairs = defaultPairs;
@@ -74,84 +73,96 @@ public class ContextSteeringController : MonoBehaviour
     {
         if (active)
         {
-            MapTo(transform.position - destination, MapType.Interest, ContextType.Target);
+            MapTo(transform.position - destination, ContextType.Target, Maps.interests);
             Draw();
-            Vector2 vector = GetVector();
-            rigidbody.velocity = testSpeed * Time.fixedDeltaTime * new Vector3(vector.x, 0, vector.y);
+            rigidbody.velocity = testSpeed * Time.fixedDeltaTime * GetVector();
         }
     }
 
     // Get
-    public Vector2 GetVector()
+    public Vector3 GetVector()
     {
-        Vector2 vector = new();
-        float[] interests = maps.GetMap(MapType.Interest);
-        float[] dangers = maps.GetMap(MapType.Danger);
+        Vector3 vector = new();
+        Map interests = Maps[MapType.Interest];
+        Map dangers = Maps[MapType.Danger];
         for (int i = 0; i < resolution; i++)
         {
-            vector += Baseline[i] * interests[i];
-            vector -= Baseline[i] * dangers[i];
+            vector += interests[i] * interests.sign * Baseline[i];
+            vector += dangers[i] * dangers.sign * Baseline[i];
             interests[i] = 0f;
             dangers[i] = 0f;
         }
         return vector.normalized;
     }
 
-    public MapType GetMapOf(Identity id)
+    public Map GetMapOf(Identity id)
     {
-        return identityMap[id];
+        return Maps[identityMap[id]];
     }
 
     // Set
-    public void MapTo(Vector2 vector, MapType mapType, ContextType contextType)
+    public void MapTo(Vector2 vector, ContextType contextType, Map map)
     {
         if (vector != Vector2.zero)
         {
             // Map / Context
-            float[] map = maps.GetMap(mapType);
             Context context = contexts.GetContext(contextType);
 
-            // Weight
-            float distance = vector.magnitude - context.minDistance;
-            float range = (context.maxDistance - context.minDistance);
-            float weight = Mathf.Lerp(context.weight, 0f, distance / range);
-
-            if (weight > 0f)
+            if (vector.magnitude < context.cullDistance)
             {
-                // Angle / Slot
-                float angle = vector.x != 0f ? Mathf.Rad2Deg * Mathf.Atan(vector.y / vector.x) : Mathf.Sign(vector.y) * 90;
-                float slot = (angle / 360) * resolution;
+                // Weight
+                float distance = vector.magnitude - context.minDistance;
+                float range = (context.maxDistance - context.minDistance);
+                float weight = Mathf.Lerp(context.weight, 0f, distance / range);
 
-                if (Mathf.Round(slot) != 0)
+                if (weight > 0f)
                 {
-                    Debug.Log("Not Zero: " + Mathf.Round(slot));
-                    print(vector);
-                }
-                Assert.IsFalse(float.IsNaN(angle));
-                Assert.IsFalse(float.IsNaN(slot));
+                    // Angle / Slot
+                    float angle = vector.x != 0f ? Mathf.Rad2Deg * Mathf.Atan(vector.y / vector.x) : Mathf.Sign(vector.y) * 90;
+                    angle = Mathf.Repeat(angle, 360);
+                    float slot = Mathf.Repeat((angle / 360) * resolution, 11);
 
-                // Falloff
-                float falloff = (context.falloff / 360) * resolution;
-                float falloffHigh = slot + falloff;
-                float falloffLow = slot - falloff;
+                    Assert.IsFalse(float.IsNaN(angle));
+                    Assert.IsFalse(float.IsNaN(slot));
+                    AssertInRange(angle, 0, 360);
+                    AssertInRange(slot, 0, 11);
 
-                // Slots
-                int nextSlot = Mathf.CeilToInt(slot);
-                int prevSlot = Mathf.FloorToInt(slot);
-                int highSlot = Mathf.FloorToInt(falloffHigh);
-                int lowSlot = Mathf.CeilToInt(falloffLow);
+                    // Falloff
+                    float falloff = (context.falloff / 360) * resolution;
+                    float falloffHigh = Mathf.Repeat(slot + falloff, 11);
+                    float falloffLow = Mathf.Repeat(slot - falloff, 11);
 
-                // Add it up
-                for (int i = nextSlot; i <= highSlot; i++)
-                {
-                    map[i] += Mathf.Lerp(weight, 0, (i - slot) / falloff);
-                }
-                for (int i = prevSlot; i >= lowSlot; i--)
-                {
-                    map[i] += Mathf.Lerp(weight, 0, (slot - i) / falloff);
+                    // Slots
+                    int nextSlot = Mathf.CeilToInt(slot);
+                    int prevSlot = Mathf.FloorToInt(slot);
+                    int highSlot = Mathf.FloorToInt(falloffHigh);
+                    int lowSlot = Mathf.CeilToInt(falloffLow);
+
+                    AssertInRange(nextSlot, 0, 11);
+                    AssertInRange(prevSlot, 0, 11);
+                    AssertInRange(highSlot, 0, 11);
+                    AssertInRange(lowSlot, 0, 11);
+
+                    //print(nextSlot + " -> " + highSlot + " / " + prevSlot + " -> " + lowSlot);
+
+                    // Add it up
+                    for (int i = nextSlot; i <= highSlot; i++)
+                    {
+                        map[i] += Mathf.Lerp(weight, 0, (i - slot) / falloff);
+                    }
+                    for (int i = prevSlot; i >= lowSlot; i--)
+                    {
+                        map[i] += Mathf.Lerp(weight, 0, (slot - i) / falloff);
+                    }
                 }
             }
         }
+    }
+
+    private void AssertInRange(float value, float min, float max)
+    {
+        Assert.IsTrue(value >= min);
+        Assert.IsTrue(value <= max);
     }
 
     // Obstacles
@@ -165,7 +176,7 @@ public class ContextSteeringController : MonoBehaviour
                 obstacles.Add(other);
                 Vector2 otherPos = new(other.position.x, other.position.z);
                 Vector2 curPos = new(transform.position.x, transform.position.z);
-                MapTo(otherPos - curPos, MapType.Danger, ContextType.Obstacle);
+                MapTo(otherPos - curPos, ContextType.Obstacle, Maps.dangers);
             }
         }
     }
@@ -183,17 +194,17 @@ public class ContextSteeringController : MonoBehaviour
     {
         if (draw)
         {
-            float[] interests = maps.GetMap(MapType.Interest);
-            float[] dangers = maps.GetMap(MapType.Danger);
-            for (int i = 0; i < resolution; i++)
+            for (int i = 0; i < Maps.Length; i++) 
             {
-                if (interests[i] > 0)
+                Map map = Maps[i];
+                for (int j = 0; j < resolution; j++)
                 {
-                    Debug.DrawRay(transform.position, 100 * interests[i] * Baseline[i], Color.green, Time.deltaTime);
-                }
-                if (dangers[i] > 0)
-                {
-                    Debug.DrawRay(transform.position, -100 * dangers[i] * Baseline[i], Color.red, Time.deltaTime);
+                    if (map[j] > 0)
+                    {
+                        Color color = map.sign < 0 ? Color.red : Color.green;
+                        Vector3 dir = drawScale * map.sign * map[i] * Baseline[i];
+                        Debug.DrawRay(transform.position, dir, color, Time.deltaTime);
+                    }
                 }
             }
         }
