@@ -7,37 +7,41 @@ using UnityEditor.Experimental.GraphView;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.Assertions;
-using static ContextSteeringStructs;
+using static CSContext;
+using static CSMapping;
+using static CSIdentity;
 
 [RequireComponent(typeof(Rigidbody))]
-public class ContextSteeringController : MonoBehaviour
-{
-    public float testSpeed = 3f;
-    public float drawScale = 1.0f;
-    public bool draw;
+public class CSController : MonoBehaviour
+{    
+    // Presets
+    public CSPreset preset;
+    public float Speed => preset.testSpeed;
+    public float DrawScale => preset.drawScale;
+    public bool DrawRays => preset.draw;
+    public Contexts Contexts { get => preset.Contexts; }
+    public Identity Identity { get => preset.Identity; }
+    public IdentityMapPair[] Pairs { get => preset.Pairs; }
+    
+    // Initialization
+    private new Rigidbody rigidbody;
+    private bool initialized = false;
+
+    // Active
     [SerializeField] private bool active = false;
-    public bool Active
-    {
-        get => active;
-        set => SetActive(value);
-    }
+    public bool Active { get => active; set => SetActive(value); }
 
     // Destination
     [SerializeField] private Vector3 destination = new();
     public bool following = false;
     public Vector3 Destination { get => destination; set { destination = value; following = true; } }
+
+    // Outcomes
     private readonly Dictionary<Identity, MapType> identityMap = new();
     private readonly List<Transform> obstacles = new();
+    private Maps Maps { get; } = new(null, null);
 
-    // Identity
-    public Maps Maps { get; } = new(null, null);
-    [SerializeField] private Contexts contexts = defaultContexts;
-    public Identity identity = Identity.Neutral;
-    public IdentityMapPair[] pairs = defaultPairs;
-
-    // Initialization
-    private new Rigidbody rigidbody;
-    private bool initialized = false;
+    // Initialize
 
     private void Awake()
     {
@@ -53,12 +57,14 @@ public class ContextSteeringController : MonoBehaviour
             initialized = true;
 
             // Identity Map
-            foreach (var pair in pairs)
+            foreach (var pair in Pairs)
             {
                 identityMap[pair.identity] = pair.mapType;
             }
         }
     }
+
+    // Activate
 
     public void SetActive(bool active)
     {
@@ -69,13 +75,15 @@ public class ContextSteeringController : MonoBehaviour
         }
     }
 
+    // Update
+
     private void FixedUpdate()
     {
         if (active)
         {
             MapTo(transform.position - destination, ContextType.Target, Maps.interests);
             Draw();
-            rigidbody.velocity = testSpeed * Time.fixedDeltaTime * GetVector();
+            rigidbody.velocity = Speed * Time.fixedDeltaTime * GetVector();
         }
     }
 
@@ -106,7 +114,7 @@ public class ContextSteeringController : MonoBehaviour
         if (vector != Vector2.zero)
         {
             // Map / Context
-            Context context = contexts.GetContext(contextType);
+            Context context = Contexts.GetContext(contextType);
 
             if (vector.magnitude < context.cullDistance)
             {
@@ -168,7 +176,7 @@ public class ContextSteeringController : MonoBehaviour
     // Obstacles
     public void AddObstacle(Impact impact)
     {
-        if (!impact.other.TryGetComponent<ContextSteeringController>(out _))
+        if (!impact.other.TryGetComponent<CSController>(out _))
         {
             if (!obstacles.Contains(impact.other.transform))
             {
@@ -183,7 +191,7 @@ public class ContextSteeringController : MonoBehaviour
 
     public void RemoveObstacle(Impact impact)
     {
-        if (!impact.other.TryGetComponent<ContextSteeringController>(out _))
+        if (!impact.other.TryGetComponent<CSController>(out _))
         {
             obstacles.Remove(impact.other.transform);
         }
@@ -192,7 +200,7 @@ public class ContextSteeringController : MonoBehaviour
     // Draw
     public void Draw()
     {
-        if (draw)
+        if (DrawRays)
         {
             for (int i = 0; i < Maps.Length; i++) 
             {
@@ -202,7 +210,7 @@ public class ContextSteeringController : MonoBehaviour
                     if (map[j] > 0)
                     {
                         Color color = map.sign < 0 ? Color.red : Color.green;
-                        Vector3 dir = drawScale * map.sign * map[i] * Baseline[i];
+                        Vector3 dir = DrawScale * map.sign * map[i] * Baseline[i];
                         Debug.DrawRay(transform.position, dir, color, Time.deltaTime);
                     }
                 }

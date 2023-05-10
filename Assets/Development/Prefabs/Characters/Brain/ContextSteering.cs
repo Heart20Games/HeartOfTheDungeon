@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Data.Common;
 using UnityEngine;
 using UnityEngine.Assertions;
-using static ContextSteeringStructs;
+using static CSContext;
+using static CSMapping;
 
 public class ContextSteering : MonoBehaviour
 {
-    [SerializeField] private ContextSteeringController[] controllers;
+    [SerializeField] private CSController[] controllers;
 
     private void Awake()
     {
-        controllers = FindObjectsOfType<ContextSteeringController>();
+        controllers = FindObjectsOfType<CSController>();
         foreach (var controller in controllers)
         {
             controller.Initialize();
@@ -35,9 +36,9 @@ public class ContextSteering : MonoBehaviour
         }
     }
 
-    public void MapOntoPeer(ContextSteeringController aCon, ContextSteeringController bCon)
+    public void MapOntoPeer(CSController aCon, CSController bCon)
     {
-        Map map = bCon.GetMapOf(aCon.identity);
+        Map map = bCon.GetMapOf(aCon.Identity);
         if (map.valid)
         {
             Vector3 sourceVector = aCon.transform.position - bCon.transform.position;

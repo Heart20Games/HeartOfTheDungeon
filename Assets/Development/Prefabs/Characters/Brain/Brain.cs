@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using System.Collections.Generic;
 using static LeafNode;
 using UnityEngine.InputSystem;
-using static ContextSteeringStructs;
+using static CSMapping;
 
 public class Brain : MonoBehaviour, ITimeScalable
 {
@@ -26,7 +26,7 @@ public class Brain : MonoBehaviour, ITimeScalable
     
     private Character character;
     [HideInInspector] public NavMeshAgent agent;
-    [HideInInspector] private ContextSteeringController controller;
+    [HideInInspector] private CSController controller;
 
     public float navUpdate = 1f;
     public float followingDistance = 0f;
@@ -56,7 +56,7 @@ public class Brain : MonoBehaviour, ITimeScalable
     {
         character = GetComponent<Character>();
         agent = character.body.GetComponent<NavMeshAgent>();
-        controller = character.body.GetComponent<ContextSteeringController>();
+        controller = character.body.GetComponent<CSController>();
         agent.baseOffset = baseOffset;
         if (target != null)
         {
