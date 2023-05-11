@@ -67,7 +67,6 @@ public class HealthPips : Health
     public override void TakeDamage(int amount)
     {
         int damageToTake = Mathf.Clamp(amount, 0, (totalHealth - (lastDamaged + 1)));
-            
         for(int i = 0; i < damageToTake; i++)
         {                                               
             lastDamaged++;
@@ -78,7 +77,6 @@ public class HealthPips : Health
     public override void HealDamage(int amount)
     {
         int damageToHeal = Mathf.Clamp(amount, 0, (lastDamaged + 1));
-
         for(int i = 0; i < damageToHeal; i++)
         {                                                    
             pipAnimator[lastDamaged].SetBool("IsDamaged", false);
