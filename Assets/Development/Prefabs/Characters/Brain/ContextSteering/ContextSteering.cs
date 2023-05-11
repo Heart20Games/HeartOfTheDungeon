@@ -41,6 +41,7 @@ public class ContextSteering : MonoBehaviour
         Map map = bCon.GetMapOf(aCon.Identity);
         if (map.valid)
         {
+            print("Mapping");
             Vector3 sourceVector = aCon.transform.position - bCon.transform.position;
             Vector2 vector = new(sourceVector.x, sourceVector.z);
             bCon.MapTo(vector, ContextType.Peer, map);

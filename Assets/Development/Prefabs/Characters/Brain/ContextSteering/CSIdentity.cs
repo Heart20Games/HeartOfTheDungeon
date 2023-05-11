@@ -1,3 +1,4 @@
+using ScriptableObjectDropdown;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,10 +8,10 @@ using static CSMapping;
 [CreateAssetMenu(fileName = "CSIdentity", menuName = "Context Steering/Identity", order = 1)]
 public class CSIdentity : ScriptableObject
 {
+    public enum Identity { Neutral, Friend, Foe }
+
     public Identity identity = Identity.Neutral;
     public IdentityMapPair[] pairs = defaultPairs;
-
-    public enum Identity { Neutral, Friend, Foe }
 
     static readonly public IdentityMapPair[] defaultPairs = new IdentityMapPair[]
     {

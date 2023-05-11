@@ -1,27 +1,28 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.Assertions;
 using static CSContext;
 using static CSMapping;
 using static CSIdentity;
+using ScriptableObjectDropdown;
+using System.Linq;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CSController : MonoBehaviour
-{    
+{
     // Presets
-    public CSPreset preset;
-    public float Speed => preset.testSpeed;
-    public float DrawScale => preset.drawScale;
-    public bool DrawRays => preset.draw;
-    public Contexts Contexts { get => preset.Contexts; }
-    public Identity Identity { get => preset.Identity; }
-    public IdentityMapPair[] Pairs { get => preset.Pairs; }
+    [ScriptableObjectDropdown(typeof(CSPreset), grouping = ScriptableObjectGrouping.ByFolderFlat)]
+    public ScriptableObjectReference preset;
+    public CSPreset Preset { get { return (CSPreset)preset.value; } set { preset.value = value; } }
+
+    public float Speed => Preset.testSpeed;
+    public float DrawScale => Preset.drawScale;
+    public bool DrawRays => Preset.draw;
+    public Contexts Contexts { get => Preset.Contexts; }
+    public Identity Identity { get => Preset.Identity; }
+    public IdentityMapPair[] Pairs { get => Preset.Pairs; }
     
     // Initialization
     private new Rigidbody rigidbody;
