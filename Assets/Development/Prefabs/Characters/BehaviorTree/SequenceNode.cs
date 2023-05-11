@@ -2,26 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SequenceNode : BehaviorNode
+namespace Body.Behavior.Tree
 {
-    public SequenceNode() { }
-
-    public SequenceNode(string n)
+    public class SequenceNode : BehaviorNode
     {
-        name = n;
-    }
+        public SequenceNode() { }
 
-    public override Status Process()
-    {
-        Debug.Log("Process sequence: " + name);
-        Status childStatus = children[currentChild].Process();
-        if (childStatus != Status.SUCCESS) return childStatus;
-        currentChild++;
-        if (currentChild >= children.Count)
+        public SequenceNode(string n)
         {
-            currentChild = 0;
-            return Status.SUCCESS;
+            name = n;
         }
-        return Status.RUNNING;
+
+        public override Status Process()
+        {
+            Debug.Log("Process sequence: " + name);
+            Status childStatus = children[currentChild].Process();
+            if (childStatus != Status.SUCCESS) return childStatus;
+            currentChild++;
+            if (currentChild >= children.Count)
+            {
+                currentChild = 0;
+                return Status.SUCCESS;
+            }
+            return Status.RUNNING;
+        }
     }
 }

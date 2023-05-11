@@ -9,7 +9,7 @@ public class NPCCameraFace : MonoBehaviour
 
     private void Start() 
     {
-        player = GameObject.Find("/Player V2/Body");
+        player = GameObject.Find("/Player V2/Character");
         cam = player.transform.Find("Main Camera");    
     }
 

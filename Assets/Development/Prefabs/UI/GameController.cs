@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using static Game;
 using static ISelectable;
+using Body;
 
 public class GameController : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class GameController : MonoBehaviour
     [HideInInspector] public Selector selector;
     public UnityEvent onSelectorConfirmed;
 
-    private Stack<Character> characterStack = new Stack<Character>();
+    private readonly Stack<Character> characterStack = new();
 
     private void Awake()
     {

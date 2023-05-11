@@ -1,50 +1,50 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Data.Common;
 using UnityEngine;
 using UnityEngine.Assertions;
-using static CSContext;
-using static CSMapping;
 
-public class ContextSteering : MonoBehaviour
+namespace Body.Behavior.ContextSteering
 {
-    [SerializeField] private CSController[] controllers;
+    using static CSContext;
+    using static CSMapping;
 
-    private void Awake()
+    public class CSHive : MonoBehaviour
     {
-        controllers = FindObjectsOfType<CSController>();
-        foreach (var controller in controllers)
-        {
-            controller.Initialize();
-        }
-    }
+        [SerializeField] private CSController[] controllers;
 
-    private void FixedUpdate()
-    {
-        for (int i = 0; i < controllers.Length-1; i++)
+        private void Awake()
         {
-            for (int j = i + 1; j < controllers.Length; j++)
+            controllers = FindObjectsOfType<CSController>();
+            foreach (var controller in controllers)
             {
-                var iCon = controllers[i];
-                var jCon = controllers[j];
-
-                Assert.AreNotEqual(iCon, jCon);
-
-                MapOntoPeer(iCon, jCon);
-                MapOntoPeer(jCon, iCon);
+                controller.Initialize();
             }
         }
-    }
 
-    public void MapOntoPeer(CSController aCon, CSController bCon)
-    {
-        Map map = bCon.GetMapOf(aCon.Identity);
-        if (map.valid)
+        private void FixedUpdate()
         {
-            print("Mapping");
-            Vector3 sourceVector = aCon.transform.position - bCon.transform.position;
-            Vector2 vector = new(sourceVector.x, sourceVector.z);
-            bCon.MapTo(vector, ContextType.Peer, map);
+            for (int i = 0; i < controllers.Length - 1; i++)
+            {
+                for (int j = i + 1; j < controllers.Length; j++)
+                {
+                    var iCon = controllers[i];
+                    var jCon = controllers[j];
+
+                    Assert.AreNotEqual(iCon, jCon);
+
+                    MapOntoPeer(iCon, jCon);
+                    MapOntoPeer(jCon, iCon);
+                }
+            }
+        }
+
+        public void MapOntoPeer(CSController aCon, CSController bCon)
+        {
+            Map map = bCon.GetMapOf(aCon.Identity);
+            if (map.valid)
+            {
+                Vector3 sourceVector = aCon.transform.position - bCon.transform.position;
+                Vector2 vector = new(sourceVector.x, sourceVector.z);
+                bCon.MapTo(vector, ContextType.Peer, map);
+            }
         }
     }
 }

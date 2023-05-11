@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using Body;
 
 [CreateAssetMenu(fileName = "NewHasteStatus", menuName = "Statuses/HasteStatus", order = 1)]
 public class HasteStatus : StatusEffect, ITimeScalable

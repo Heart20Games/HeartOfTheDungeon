@@ -1,4 +1,5 @@
 using UnityEngine;
+using Body.Behavior;
 
 public class FireProjectile : MonoBehaviour
 {
