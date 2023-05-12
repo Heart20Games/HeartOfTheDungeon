@@ -21,7 +21,7 @@ namespace Body.Behavior.ContextSteering
         public float DrawScale => Preset.drawScale;
         public bool DrawRays => Preset.draw;
         public Contexts Contexts { get => Preset.Contexts; }
-        public CSIdentity.Identity Identity { get => Preset.Identity; }
+        public Identity Identity { get => Preset.Identity; }
         public IdentityMapPair[] Pairs { get => Preset.Pairs; }
 
         // Initialization
@@ -38,7 +38,7 @@ namespace Body.Behavior.ContextSteering
         public Vector3 Destination { get => destination; set { destination = value; following = true; } }
 
         // Generated
-        private readonly Dictionary<CSIdentity.Identity, MapType> identityMap = new();
+        private readonly Dictionary<Identity, MapType> identityMap = new();
         private readonly List<Transform> obstacles = new();
         private Maps Maps { get; } = new(null, null);
 
@@ -104,7 +104,7 @@ namespace Body.Behavior.ContextSteering
             return vector.normalized;
         }
 
-        public Map GetMapOf(CSIdentity.Identity id)
+        public Map GetMapOf(Identity id)
         {
             return Maps[identityMap[id]];
         }
@@ -115,7 +115,7 @@ namespace Body.Behavior.ContextSteering
             if (vector != Vector2.zero)
             {
                 // Map / Context
-                CSContext.Context context = Contexts.GetContext(contextType);
+                Context context = Contexts.GetContext(contextType);
 
                 if (vector.magnitude < context.cullDistance)
                 {
@@ -206,15 +206,18 @@ namespace Body.Behavior.ContextSteering
                 for (int i = 0; i < Maps.Length; i++)
                 {
                     Map map = Maps[i];
-                    print(map);
-                    for (int j = 0; j < resolution; j++)
+                    if (!map.IsZero())
                     {
-                        if (map[j] > 0)
+                        print((map.sign < 0 ? "Danger" : "Interest"));
+                        for (int j = 0; j < resolution; j++)
                         {
-                            print("Drawing...");
-                            Color color = map.sign < 0 ? Color.red : Color.green;
-                            Vector3 dir = DrawScale * map.sign * map[i] * Baseline[i];
-                            Debug.DrawRay(transform.position, dir, color, Time.deltaTime);
+                            if (map[j] > 0)
+                            {
+                                Color color = map.sign < 0 ? Color.red : Color.green;
+                                Vector3 dir = DrawScale * 2 * map.sign * map[j] * Baseline[j];
+                                //print("Drawing... " + dir + " (" + DrawScale + "/" + map.sign + "/" + map[j] + "/" + Baseline[j] + ")");
+                                Debug.DrawRay(transform.position, dir, color, Time.fixedDeltaTime * 2);
+                            }
                         }
                     }
                 }

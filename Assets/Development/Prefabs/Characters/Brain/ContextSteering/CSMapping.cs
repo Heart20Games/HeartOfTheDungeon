@@ -42,15 +42,14 @@ namespace Body.Behavior.ContextSteering
             {
                 this.dirs = dirs ?? new float[resolution];
                 this.sign = sign;
-                this.valid = true;
+                valid = true;
             }
             public Map(float[] dirs, sbyte sign, bool initialize)
             {
                 this.dirs = !initialize ? dirs : (dirs ?? new float[resolution]);
                 this.sign = sign;
-                this.valid = true;
+                valid = true;
             }
-            //public float[] dirs;
             public float[] dirs;
             public sbyte sign;
             public bool valid;
@@ -59,6 +58,24 @@ namespace Body.Behavior.ContextSteering
             {
                 get { return dirs[index]; }
                 set { dirs[index] = value; }
+            }
+            public bool IsZero()
+            {
+                for (int i = 0; i < dirs.Length; i++)
+                {
+                    if (dirs[i] != 0)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            public void Clear()
+            {
+                for (int i = 0; i < this.dirs.Length; i++)
+                {
+                    dirs[i] = 0;
+                }
             }
             public new string ToString()
             {

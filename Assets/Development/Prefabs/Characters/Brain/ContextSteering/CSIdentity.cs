@@ -11,13 +11,17 @@ namespace Body.Behavior.ContextSteering
         public enum Identity { Neutral, Friend, Foe }
 
         public Identity identity = Identity.Neutral;
-        public IdentityMapPair[] pairs = defaultPairs;
+        public IdentityMapPair[] pairs = new IdentityMapPair[] {
+            new(Identity.Neutral, MapType.None),
+            new IdentityMapPair(Identity.Foe, MapType.Interest),
+            new IdentityMapPair(Identity.Friend, MapType.Danger)
+        };
 
         static readonly public IdentityMapPair[] defaultPairs = new IdentityMapPair[]
         {
-        new(Identity.Neutral, MapType.None),
-        new IdentityMapPair(Identity.Foe, MapType.Interest),
-        new IdentityMapPair(Identity.Friend, MapType.Danger)
+            new(Identity.Neutral, MapType.None),
+            new IdentityMapPair(Identity.Foe, MapType.Interest),
+            new IdentityMapPair(Identity.Friend, MapType.Danger)
         };
 
         [Serializable]
