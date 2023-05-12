@@ -8,9 +8,9 @@ namespace Body.Behavior.ContextSteering
     {
         // Enums
         public enum MapType { Interest, Danger, None }
-        const sbyte POS = 1;
-        const sbyte NA = 0;
-        const sbyte NEG = -1;
+        public const sbyte POS = 1;
+        public const sbyte NA = 0;
+        public const sbyte NEG = -1;
 
         // Resolution
         static public int resolution = 12;

@@ -108,26 +108,29 @@ namespace Body.Behavior.ContextSteering
                 if (vector.magnitude < context.cullDistance)
                 {
                     // Weight
-                    float distance = vector.magnitude - context.minDistance;
+                    float distance = Mathf.Min(vector.magnitude - context.minDistance, context.minDistance);
                     float range = (context.maxDistance - context.minDistance);
                     float weight = Mathf.Lerp(context.weight, 0f, distance / range);
 
                     if (weight > 0f)
                     {
                         // Angle / Slot
-                        float angle = vector.x != 0f ? Mathf.Rad2Deg * Mathf.Atan(vector.y / vector.x) : Mathf.Sign(vector.y) * 90;
+                        float angle = -Mathf.Rad2Deg * Mathf.Acos(vector.x / vector.magnitude);
+                        angle = (vector.y > 0f) ? 360 - angle : angle;
+                        //float angle = vector.x != 0f ? Mathf.Rad2Deg * Mathf.Atan(vector.y/vector.x) : Mathf.Sign(vector.y) * 90;
                         angle = Mathf.Repeat(angle, 360);
-                        float slot = Mathf.Repeat((angle / 360) * resolution, 11);
+                        float slot = Mathf.Repeat((angle / 360) * resolution, resolution-1);
+                        DrawPart(NA, 0.5f, Baseline[Mathf.RoundToInt(slot)], 0.5f, 1f);
 
                         Assert.IsFalse(float.IsNaN(angle));
                         Assert.IsFalse(float.IsNaN(slot));
                         AssertInRange(angle, 0, 360);
-                        AssertInRange(slot, 0, 11);
+                        AssertInRange(slot, 0, resolution-1);
 
                         // Falloff
                         float falloff = (context.falloff / 360) * resolution;
-                        float falloffHigh = Mathf.Repeat(slot + falloff, 11);
-                        float falloffLow = Mathf.Repeat(slot - falloff, 11);
+                        float falloffHigh = slot + falloff;
+                        float falloffLow = slot - falloff;
 
                         // Slots
                         int nextSlot = Mathf.CeilToInt(slot);
@@ -135,21 +138,23 @@ namespace Body.Behavior.ContextSteering
                         int highSlot = Mathf.FloorToInt(falloffHigh);
                         int lowSlot = Mathf.CeilToInt(falloffLow);
 
-                        AssertInRange(nextSlot, 0, 11);
-                        AssertInRange(prevSlot, 0, 11);
-                        AssertInRange(highSlot, 0, 11);
-                        AssertInRange(lowSlot, 0, 11);
+                        //AssertInRange(nextSlot, 0, 11);
+                        //AssertInRange(prevSlot, 0, 11);
+                        //AssertInRange(highSlot, 0, 11);
+                        //AssertInRange(lowSlot, 0, 11);
 
                         //print(nextSlot + " -> " + highSlot + " / " + prevSlot + " -> " + lowSlot);
 
                         // Add it up
                         for (int i = nextSlot; i <= highSlot; i++)
                         {
-                            map[i] += Mathf.Lerp(weight, 0, (i - slot) / falloff);
+                            int ii = (int)Mathf.Repeat(i, resolution-1);
+                            map[ii] += Mathf.Lerp(weight, 0, (i - slot) / falloff);
                         }
                         for (int i = prevSlot; i >= lowSlot; i--)
                         {
-                            map[i] += Mathf.Lerp(weight, 0, (slot - i) / falloff);
+                            int ii = (int)Mathf.Repeat(i, resolution-1);
+                            map[ii] += Mathf.Lerp(weight, 0, (slot - i) / falloff);
                         }
                     }
                 }
@@ -197,7 +202,7 @@ namespace Body.Behavior.ContextSteering
                     Map map = Maps[i];
                     if (!map.IsZero())
                     {
-                        print("Draw: " + (map.sign < 0 ? "Danger" : "Interest"));
+                        //print("Draw: " + (map.sign < 0 ? "Danger" : "Interest"));
                         for (int j = 0; j < resolution; j++)
                         {
                             if (map[j] > 0)
@@ -221,13 +226,32 @@ namespace Body.Behavior.ContextSteering
             }
         }
 
-        public void DrawPart(sbyte sign, float magnitude, Vector3 dir, float buffer=0f, float limit=float.MaxValue)
+        public void DrawPart(sbyte sign, float magnitude, Vector3 dir, float buffer=0f, float limit=float.MaxValue, float duration=2f)
         {
-            Color color = sign < 0 ? Color.red : Color.green;
+            Color color = sign switch
+            {
+                POS => Color.green,
+                NEG => Color.red,
+                NA => Color.cyan,
+                _ => Color.yellow,
+            };
+            sign = sign == 0 ? (sbyte)1 : sign;
             Vector3 direction = DrawScale * sign * dir;
             Vector3 vector = Mathf.Min(magnitude, limit) * direction;
             Vector3 start = transform.position + (buffer * direction);
-            Debug.DrawRay(start, vector, color, Time.fixedDeltaTime * 2);
+            Debug.DrawRay(start, vector, color, Time.fixedDeltaTime * duration);
+        }
+
+        private void CheckColor(Color color)
+        {
+            if (color == Color.blue)
+            {
+                print("Blue!");
+            }
+            else if (color == Color.yellow)
+            {
+                print("Yellow!");
+            }
         }
     }
 }
