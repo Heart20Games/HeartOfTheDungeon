@@ -13,21 +13,21 @@ namespace Body.Behavior.ContextSteering
 
         public Identity identity = Identity.Neutral;
         public IdentityMapPair[] pairs = new IdentityMapPair[] {
-            new(Identity.Neutral, MapType.None),
-            new IdentityMapPair(Identity.Foe, MapType.Interest),
-            new IdentityMapPair(Identity.Friend, MapType.Danger)
+            new(Identity.Neutral, MapType.None, 0f),
+            new IdentityMapPair(Identity.Foe, MapType.Interest, 1f),
+            new IdentityMapPair(Identity.Friend, MapType.Danger, 0.5f)
         };
 
 
         static readonly public IdentityMapPair[] defaultPairs = new IdentityMapPair[]
         {
-            new(Identity.Neutral, MapType.None),
-            new IdentityMapPair(Identity.Foe, MapType.Interest),
-            new IdentityMapPair(Identity.Friend, MapType.Danger)
+            new(Identity.Neutral, MapType.None, 0f),
+            new IdentityMapPair(Identity.Foe, MapType.Interest, 1f),
+            new IdentityMapPair(Identity.Friend, MapType.Danger, 0.5f)
         };
 
-        public Dictionary<Identity, MapType> identityMap = null;
-        public Dictionary<Identity, MapType> IdentityMap
+        public Dictionary<Identity, IdentityMapPair> identityMap = null;
+        public Dictionary<Identity, IdentityMapPair> IdentityMap
         {
             get
             {
@@ -36,7 +36,7 @@ namespace Body.Behavior.ContextSteering
                     identityMap = new();
                     foreach (var pair in pairs)
                     {
-                        identityMap[pair.identity] = pair.mapType;
+                        identityMap[pair.identity] = pair;
                     }
                 }
                 return identityMap; 
@@ -46,15 +46,17 @@ namespace Body.Behavior.ContextSteering
         [Serializable]
         public struct IdentityMapPair
         {
-            public IdentityMapPair(Identity identity, MapType mapType)
+            public IdentityMapPair(Identity identity, MapType mapType, float weight)
             {
                 name = identity.ToString();
                 this.identity = identity;
                 this.mapType = mapType;
+                this.weight = weight;
             }
             public string name;
             public Identity identity;
             public MapType mapType;
+            public float weight;
         }
     }
 }

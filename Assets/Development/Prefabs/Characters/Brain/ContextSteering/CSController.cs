@@ -23,7 +23,7 @@ namespace Body.Behavior.ContextSteering
         public Contexts Contexts { get => Preset.Contexts; }
         public Identity Identity { get => Preset.Identity; }
         public IdentityMapPair[] Pairs { get => Preset.Pairs; }
-        public Dictionary<Identity, MapType> IdentityMap { get => Preset.IdentityMap; }
+        public Dictionary<Identity, IdentityMapPair> IdentityMap { get => Preset.IdentityMap; }
 
         // Initialization
         private new Rigidbody rigidbody;
@@ -91,11 +91,11 @@ namespace Body.Behavior.ContextSteering
 
         public Map GetMapOf(Identity id)
         {
-            return Maps[IdentityMap[id]];
+            return Maps[IdentityMap[id].mapType];
         }
 
         // Set
-        public void MapTo(Vector2 vector, ContextType contextType, Map map)
+        public void MapTo(Vector2 vector, ContextType contextType, Map map, float idWeight=1f)
         {
             if (vector != Vector2.zero)
             {
@@ -110,7 +110,7 @@ namespace Body.Behavior.ContextSteering
                     // Weight
                     float distance = Mathf.Min(vector.magnitude - context.minDistance, context.minDistance);
                     float range = (context.maxDistance - context.minDistance);
-                    float weight = Mathf.Lerp(context.weight, 0f, distance / range);
+                    float weight = Mathf.Lerp(context.weight, 0f, distance / range) * idWeight;
 
                     if (weight > 0f)
                     {

@@ -24,6 +24,6 @@ namespace Body.Behavior.ContextSteering
         public Contexts Contexts { get { return ((CSContext)contextPreset.value).contexts; } }
         public CSIdentity.Identity Identity { get { return ((CSIdentity)identityPreset.value).identity; } }
         public IdentityMapPair[] Pairs { get { return ((CSIdentity)identityPreset.value).pairs; } }
-        public Dictionary<Identity, MapType> IdentityMap { get { return ((CSIdentity)identityPreset.value).IdentityMap; } }
+        public Dictionary<Identity, IdentityMapPair> IdentityMap { get { return ((CSIdentity)identityPreset.value).IdentityMap; } }
     }
 }
