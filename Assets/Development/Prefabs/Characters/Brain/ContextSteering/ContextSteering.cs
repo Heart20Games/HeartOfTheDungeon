@@ -13,10 +13,6 @@ namespace Body.Behavior.ContextSteering
         private void Awake()
         {
             controllers = FindObjectsOfType<CSController>();
-            foreach (var controller in controllers)
-            {
-                controller.Initialize();
-            }
         }
 
         private void FixedUpdate()

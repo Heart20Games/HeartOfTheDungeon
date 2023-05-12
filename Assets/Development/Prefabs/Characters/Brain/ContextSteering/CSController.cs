@@ -23,10 +23,10 @@ namespace Body.Behavior.ContextSteering
         public Contexts Contexts { get => Preset.Contexts; }
         public Identity Identity { get => Preset.Identity; }
         public IdentityMapPair[] Pairs { get => Preset.Pairs; }
+        public Dictionary<Identity, MapType> IdentityMap { get => Preset.IdentityMap; }
 
         // Initialization
         private new Rigidbody rigidbody;
-        private bool initialized = false;
 
         // Active
         [SerializeField] private bool active = false;
@@ -38,35 +38,17 @@ namespace Body.Behavior.ContextSteering
         public Vector3 Destination { get => destination; set { destination = value; following = true; } }
 
         // Generated
-        private readonly Dictionary<Identity, MapType> identityMap = new();
         private readonly List<Transform> obstacles = new();
         private Maps Maps { get; } = new(null, null);
 
         // Initialize
-
         private void Awake()
         {
             rigidbody = GetComponent<Rigidbody>();
             Active = Active;
-            Initialize();
-        }
-
-        public void Initialize()
-        {
-            if (!initialized)
-            {
-                initialized = true;
-
-                // Identity Map
-                foreach (var pair in Pairs)
-                {
-                    identityMap[pair.identity] = pair.mapType;
-                }
-            }
         }
 
         // Activate
-
         public void SetActive(bool active)
         {
             this.active = active;
@@ -77,14 +59,17 @@ namespace Body.Behavior.ContextSteering
         }
 
         // Update
-
         private void FixedUpdate()
         {
-            if (active)
+            if (following)
             {
                 MapTo(transform.position - destination, ContextType.Target, Maps.interests);
-                Draw();
-                rigidbody.velocity = Speed * Time.fixedDeltaTime * GetVector();
+            }
+            Draw();
+            Vector3 vector = GetVector();
+            if (active)
+            {
+                rigidbody.velocity = Speed * Time.fixedDeltaTime * vector;
             }
         }
 
@@ -106,7 +91,7 @@ namespace Body.Behavior.ContextSteering
 
         public Map GetMapOf(Identity id)
         {
-            return Maps[identityMap[id]];
+            return Maps[IdentityMap[id]];
         }
 
         // Set
@@ -114,6 +99,9 @@ namespace Body.Behavior.ContextSteering
         {
             if (vector != Vector2.zero)
             {
+                Vector3 alt = new(vector.x, 0f, vector.y);
+                DrawPart(map.sign, 0.5f, alt.normalized, 0.5f, 1.0f);
+
                 // Map / Context
                 Context context = Contexts.GetContext(contextType);
 
@@ -203,25 +191,43 @@ namespace Body.Behavior.ContextSteering
         {
             if (DrawRays)
             {
+                float maxValue = Maps.MaxValue();
                 for (int i = 0; i < Maps.Length; i++)
                 {
                     Map map = Maps[i];
                     if (!map.IsZero())
                     {
-                        print((map.sign < 0 ? "Danger" : "Interest"));
+                        print("Draw: " + (map.sign < 0 ? "Danger" : "Interest"));
                         for (int j = 0; j < resolution; j++)
                         {
                             if (map[j] > 0)
                             {
-                                Color color = map.sign < 0 ? Color.red : Color.green;
-                                Vector3 dir = DrawScale * 2 * map.sign * map[j] * Baseline[j];
-                                //print("Drawing... " + dir + " (" + DrawScale + "/" + map.sign + "/" + map[j] + "/" + Baseline[j] + ")");
-                                Debug.DrawRay(transform.position, dir, color, Time.fixedDeltaTime * 2);
+                                DrawPart(map.sign, Mathf.Lerp(0f, 0.5f, map[j]/maxValue), Baseline[j], 0f, 0.5f);
                             }
                         }
                     }
                 }
+                DrawCircle(0.5f);
             }
+        }
+
+        public void DrawCircle(float radius)
+        {
+            for (int i = 0; i < resolution; i++)
+            {
+                Vector3 start = transform.position + (DrawScale * radius * Baseline[i]);
+                Vector3 end = transform.position + (DrawScale * radius * Baseline[(i + 1) % resolution]);
+                Debug.DrawLine(start, end, Color.white, Time.fixedDeltaTime * 2);
+            }
+        }
+
+        public void DrawPart(sbyte sign, float magnitude, Vector3 dir, float buffer=0f, float limit=float.MaxValue)
+        {
+            Color color = sign < 0 ? Color.red : Color.green;
+            Vector3 direction = DrawScale * sign * dir;
+            Vector3 vector = Mathf.Min(magnitude, limit) * direction;
+            Vector3 start = transform.position + (buffer * direction);
+            Debug.DrawRay(start, vector, color, Time.fixedDeltaTime * 2);
         }
     }
 }

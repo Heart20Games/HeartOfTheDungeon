@@ -1,10 +1,13 @@
 using UnityEngine;
 using ScriptableObjectDropdown;
+using System.Collections.Generic;
+using System.Data;
 
 namespace Body.Behavior.ContextSteering
 {
     using static CSIdentity;
     using static CSContext;
+    using static CSMapping;
 
     [CreateAssetMenu(fileName = "CSPreset", menuName = "Context Steering/Preset", order = 1)]
     public class CSPreset : ScriptableObject
@@ -21,5 +24,6 @@ namespace Body.Behavior.ContextSteering
         public Contexts Contexts { get { return ((CSContext)contextPreset.value).contexts; } }
         public CSIdentity.Identity Identity { get { return ((CSIdentity)identityPreset.value).identity; } }
         public IdentityMapPair[] Pairs { get { return ((CSIdentity)identityPreset.value).pairs; } }
+        public Dictionary<Identity, MapType> IdentityMap { get { return ((CSIdentity)identityPreset.value).IdentityMap; } }
     }
 }

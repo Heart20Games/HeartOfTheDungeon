@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Body.Behavior.ContextSteering
@@ -17,12 +18,30 @@ namespace Body.Behavior.ContextSteering
             new IdentityMapPair(Identity.Friend, MapType.Danger)
         };
 
+
         static readonly public IdentityMapPair[] defaultPairs = new IdentityMapPair[]
         {
             new(Identity.Neutral, MapType.None),
             new IdentityMapPair(Identity.Foe, MapType.Interest),
             new IdentityMapPair(Identity.Friend, MapType.Danger)
         };
+
+        public Dictionary<Identity, MapType> identityMap = null;
+        public Dictionary<Identity, MapType> IdentityMap
+        {
+            get
+            {
+                if (identityMap == null)
+                {
+                    identityMap = new();
+                    foreach (var pair in pairs)
+                    {
+                        identityMap[pair.identity] = pair.mapType;
+                    }
+                }
+                return identityMap; 
+            }
+        }
 
         [Serializable]
         public struct IdentityMapPair

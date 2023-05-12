@@ -27,7 +27,7 @@ namespace Body.Behavior.ContextSteering
             baseline = new Vector3[resolution];
             for (int i = 0; i < resolution; i++)
             {
-                float angle = Mathf.Lerp(0, 360, (float)i / resolution);
+                float angle = Mathf.Lerp(0, 360, (float)i / resolution) * Mathf.Deg2Rad;
                 baseline[i] = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
             }
             return baseline;
@@ -122,6 +122,12 @@ namespace Body.Behavior.ContextSteering
                         _ => new(),
                     };
                 }
+            }
+            public float MaxValue()
+            {
+                float interestMax = Mathf.Max(interests.dirs);
+                float dangerMax = Mathf.Max(dangers.dirs);
+                return Mathf.Max(interestMax, dangerMax);
             }
         }
 
