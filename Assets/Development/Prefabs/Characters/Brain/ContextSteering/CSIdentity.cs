@@ -11,7 +11,6 @@ namespace Body.Behavior.ContextSteering
     {
         public enum Identity { Neutral, Friend, Foe, Obstacle, Target }
 
-        public Identity identity = Identity.Neutral;
         public IdentityMapPair[] pairs = new IdentityMapPair[] {
             new(Identity.Neutral, MapType.None, 0f),
             new IdentityMapPair(Identity.Foe, MapType.Interest, 1f),

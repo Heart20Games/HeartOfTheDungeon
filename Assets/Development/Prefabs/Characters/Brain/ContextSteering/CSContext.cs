@@ -13,12 +13,12 @@ namespace Body.Behavior.ContextSteering
 
         public Context[] contexts = new Context[]
         {
-            new(Identity.Friend, 1f, 0f, 5f, -1f, 50f),
-            new(Identity.Foe, 1f, 0f, 5f, -1f, 50f),
-            new(Identity.Target, 1f, 0f, 1000f, -1f, 50f),
-            new(Identity.Obstacle, 1f, 0f, 5f, -1f, 50f),
+            new(Identity.Friend, 1f, 0f, 5f, 6f, 4f, -1f, 50f),
+            new(Identity.Foe, 1f, 0f, 5f, 6f, 4f, -1f, 50f),
+            new(Identity.Target, 1f, 0f, 1000f, 6f, 4f, -1f, 50f),
+            new(Identity.Obstacle, 1f, 0f, 5f, 6f, 4f, -1f, 50f),
         };
-        public static Context fallbackContext = new(Identity.Neutral, 1f, 0f, 5f, -1f, 50f);
+        public static Context fallbackContext = new(Identity.Neutral, 1f, 0f, 5f, 6f, 4f, -1f, 50f);
         
         public Dictionary<Identity, Context> contextMap = null;
         public Dictionary<Identity, Context> ContextMap
@@ -84,13 +84,15 @@ namespace Body.Behavior.ContextSteering
         [Serializable]
         public struct Context
         {
-            public Context(Identity identity, float weight, float minDistance, float maxDistance, float cullDistance, float falloff)
+            public Context(Identity identity, float weight, float minDistance, float maxDistance, float escapeDistance, float approachDistance, float cullDistance, float falloff)
             {
                 name = identity.ToString();
                 this.identity = identity;
                 this.weight = weight;
                 this.minDistance = minDistance;
                 this.maxDistance = maxDistance;
+                this.escapeDistance = escapeDistance;
+                this.approachDistance = approachDistance;
                 this.cullDistance = cullDistance >= 0f ? cullDistance : float.MaxValue;
                 this.falloff = falloff;
             }
@@ -99,6 +101,8 @@ namespace Body.Behavior.ContextSteering
             public float weight;
             public float minDistance;
             public float maxDistance;
+            public float escapeDistance;
+            public float approachDistance;
             public float cullDistance;
             public float falloff;
         }

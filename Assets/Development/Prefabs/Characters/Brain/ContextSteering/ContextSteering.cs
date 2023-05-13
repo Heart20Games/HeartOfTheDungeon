@@ -3,6 +3,7 @@ using UnityEngine.Assertions;
 
 namespace Body.Behavior.ContextSteering
 {
+    using static CSIdentity;
     using static CSContext;
     using static CSMapping;
 
@@ -39,7 +40,8 @@ namespace Body.Behavior.ContextSteering
             {
                 Vector3 sourceVector = aCon.transform.position - bCon.transform.position;
                 Vector2 vector = new(sourceVector.x, sourceVector.z);
-                bCon.MapTo(vector, aCon.Identity, map, bCon.IdentityMap[aCon.Identity].weight);
+                Identity identity = bCon.RelativeIdentity(aCon.Identity);
+                bCon.MapTo(vector, identity, map);
             }
         }
     }

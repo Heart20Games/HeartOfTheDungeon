@@ -5,17 +5,23 @@ using System.Collections.Generic;
 namespace Body.Behavior
 {
     using ContextSteering;
+    using FMOD.Studio;
+    using ScriptableObjectDropdown;
+    using System.Linq;
     using Tree;
+    using static ContextSteering.CSIdentity;
     using static Tree.LeafNode;
 
     public class Brain : MonoBehaviour, ITimeScalable
     {
+        // Enabled
         public bool Enabled
         {
             get => enabled;
             set { SetEnabled(value); }
         }
 
+        // Target
         [SerializeField]
         private Transform target = null;
         public Transform Target
@@ -24,35 +30,39 @@ namespace Body.Behavior
             set { target = value.TryGetComponent(out Character targetChar) ? targetChar.body : value; }
         }
 
+        // Components
         private Character character;
         [HideInInspector] public NavMeshAgent agent;
         [HideInInspector] private CSController controller;
 
+        // Agent
         public float navUpdate = 1f;
         public float followingDistance = 0f;
         public float baseOffset = 0f;
         public bool useAgent = true;
+        public Modifiers modifiers;
 
+        // Tree
         public enum Type { Leaf, Condition, Selector, Sequence }
-        public enum Action { Idle, Chase }
+        public enum Action { Idle, Chase, Duel }
         private Dictionary<Action, Tick> actions;
         public Dictionary<Action, Tick> Actions
         {
-            get { return actions ??= new Dictionary<Action, Tick>() { { Action.Idle, Idle }, { Action.Chase, Chase } }; }
+            get { return actions ??= new Dictionary<Action, Tick>() { { Action.Idle, Idle }, { Action.Chase, Chase }, { Action.Duel, Duel } }; }
         }
         public BehaviorTree tree;
         [HideInInspector] public BehaviorNode root;
         private BehaviorNode.Status status;
 
-        public Modifiers modifiers;
-
+        // TimeScale
         private float timeScale = 1f;
         public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
 
+        // Helpers
         private float timeKeeper = 0f;
-
         public bool debug = false;
 
+        // Initialization
         private void Awake()
         {
             character = GetComponent<Character>();
@@ -85,6 +95,7 @@ namespace Body.Behavior
             Enabled = Enabled;
         }
 
+        // Update
         private void Update()
         {
             if (debug) Debug.Log("Updating Brain");
@@ -96,8 +107,7 @@ namespace Body.Behavior
         }
 
 
-        // Outside Interaction
-
+        // Enabled
         public void SetEnabled(bool enabled)
         {
             this.enabled = enabled;
@@ -111,9 +121,17 @@ namespace Body.Behavior
             }
         }
 
+        // Target
         public void SetTarget(Transform _target)
         {
             target = _target;
+        }
+
+
+        // Contexts
+        public void SetContext(Action action)
+        {
+            controller.Context = controller.Preset.GetContext(action);
         }
 
 
@@ -125,11 +143,39 @@ namespace Body.Behavior
             return target != null;
         }
 
+        public bool TargetClose()
+        {
+            if (Target != null && controller.Context != null)
+            {
+                Vector3 vector = Target.transform.position - transform.position;
+                return vector.magnitude < controller.Context[Identity.Target].approachDistance;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool TargetFar()
+        {
+            if (Target != null && controller.Context != null)
+            {
+                Vector3 vector = Target.transform.position - transform.position;
+                return vector.magnitude > controller.Context[Identity.Target].escapeDistance;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
         // Actions
 
         public BehaviorNode.Status Idle()
         {
+            SetContext(Action.Idle);
+
             if (debug) Debug.Log("Idling...");
             return BehaviorNode.Status.SUCCESS;
         }
@@ -137,6 +183,9 @@ namespace Body.Behavior
         public BehaviorNode.Status Chase()
         {
             if (!HasTarget()) return BehaviorNode.Status.FAILURE;
+            if (TargetClose()) return BehaviorNode.Status.FAILURE;
+
+            SetContext(Action.Chase);
 
             if (debug) Debug.Log("Chasing...");
 
@@ -158,6 +207,18 @@ namespace Body.Behavior
                     }
                 }
             }
+            return BehaviorNode.Status.SUCCESS;
+        }
+
+        public BehaviorNode.Status Duel()
+        {
+            if (!HasTarget()) return BehaviorNode.Status.FAILURE;
+            if (TargetFar()) return BehaviorNode.Status.FAILURE;
+
+            SetContext(Action.Duel);
+
+            if (debug) Debug.Log("Dueling...");
+
             return BehaviorNode.Status.SUCCESS;
         }
 

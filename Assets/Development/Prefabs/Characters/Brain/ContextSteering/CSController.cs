@@ -8,6 +8,7 @@ namespace Body.Behavior.ContextSteering
     using static CSContext;
     using static CSMapping;
     using static CSIdentity;
+    using static Brain;
 
     [RequireComponent(typeof(Rigidbody))]
     public class CSController : MonoBehaviour
@@ -17,13 +18,37 @@ namespace Body.Behavior.ContextSteering
         public ScriptableObjectReference preset;
         public CSPreset Preset { get { return (CSPreset)preset.value; } set { preset.value = value; } }
 
+        // Context
+        private CSContext context;
+        public CSContext Context
+        {
+            get
+            {
+                if (context == null) context = Preset.GetContext(Action.Chase);
+                return context;
+            }
+            set => context = value;
+        }
+
+        // Idenity
+        private CSIdentity relationships;
+        public CSIdentity Relationships
+        {
+            get
+            {
+                if (relationships == null) relationships = Preset.GetRelationships(Action.Chase);
+                return relationships;
+            }
+            set => relationships = value;
+        }
+
+        // Parts
         public float Speed => Preset.testSpeed;
         public float DrawScale => Preset.drawScale;
         public bool DrawRays => Preset.draw;
-        public Dictionary<Identity, Context> Contexts { get => Preset.Contexts; }
         public Identity Identity { get => Preset.Identity; }
-        public IdentityMapPair[] Pairs { get => Preset.Pairs; }
-        public Dictionary<Identity, IdentityMapPair> IdentityMap { get => Preset.IdentityMap; }
+        public IdentityMapPair[] Pairs { get => Relationships.pairs; }
+        public Dictionary<Identity, IdentityMapPair> IdentityMap { get => Relationships.IdentityMap; }
 
         // Initialization
         private new Rigidbody rigidbody;
@@ -73,7 +98,7 @@ namespace Body.Behavior.ContextSteering
             }
         }
 
-        // Get
+        // Vector
         public Vector3 GetVector()
         {
             Vector3 vector = new();
@@ -89,27 +114,34 @@ namespace Body.Behavior.ContextSteering
             return vector.normalized;
         }
 
+        // Mapping
         public Map GetMapOf(Identity id)
         {
-            return Maps[IdentityMap[id].mapType];
+            return Relationships == null ? Maps[MapType.None] : Maps[IdentityMap[id].mapType];
+        }
+
+        public Identity RelativeIdentity(Identity id)
+        {
+            bool friendOrFoe = id == Identity.Friend || id == Identity.Foe;
+            Identity opponent = (id == Identity ? Identity.Friend : Identity.Foe);
+            return !friendOrFoe ? id : opponent;
         }
 
         // Set
-        public void MapTo(Vector2 vector, Identity identity, Map map, float idWeight=1f)
+        public void MapTo(Vector2 vector, Identity identity, Map map)
         {
-            if (vector != Vector2.zero)
+            if (Context != null && Relationships != null && vector != Vector2.zero)
             {
                 Vector3 alt = new(vector.x, 0f, vector.y);
                 DrawPart(map.sign, 0.5f, alt.normalized, 0.5f, 1.0f);
 
                 // Map / Context
-                bool friendOrFoe = identity == Identity.Friend || identity == Identity.Foe;
-                Identity opponent = (identity == Identity ? Identity.Friend : Identity.Foe);
-                Context context = Preset.GetContext(!friendOrFoe ? identity : opponent);//.GetContext(contextType);
+                Context context = Context[identity];
 
                 if (vector.magnitude < context.cullDistance)
                 {
                     // Weight
+                    float idWeight = IdentityMap.TryGetValue(identity, out IdentityMapPair pair) ? pair.weight : 1;
                     float distance = Mathf.Min(vector.magnitude - context.minDistance, context.minDistance);
                     float range = (context.maxDistance - context.minDistance);
                     float weight = Mathf.Lerp(context.weight, 0f, distance / range) * idWeight;
@@ -139,13 +171,6 @@ namespace Body.Behavior.ContextSteering
                         int prevSlot = Mathf.FloorToInt(slot);
                         int highSlot = Mathf.FloorToInt(falloffHigh);
                         int lowSlot = Mathf.CeilToInt(falloffLow);
-
-                        //AssertInRange(nextSlot, 0, 11);
-                        //AssertInRange(prevSlot, 0, 11);
-                        //AssertInRange(highSlot, 0, 11);
-                        //AssertInRange(lowSlot, 0, 11);
-
-                        //print(nextSlot + " -> " + highSlot + " / " + prevSlot + " -> " + lowSlot);
 
                         // Add it up
                         for (int i = nextSlot; i <= highSlot; i++)

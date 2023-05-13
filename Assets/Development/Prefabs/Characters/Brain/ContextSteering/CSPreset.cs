@@ -2,12 +2,15 @@ using UnityEngine;
 using ScriptableObjectDropdown;
 using System.Collections.Generic;
 using System.Data;
+using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace Body.Behavior.ContextSteering
 {
     using static CSIdentity;
     using static CSContext;
     using static CSMapping;
+    using static Brain;
 
     [CreateAssetMenu(fileName = "CSPreset", menuName = "Context Steering/Preset", order = 1)]
     public class CSPreset : ScriptableObject
@@ -16,16 +19,39 @@ namespace Body.Behavior.ContextSteering
         public float drawScale = 1.0f;
         public bool draw;
 
-        [ScriptableObjectDropdown(typeof(CSContext), grouping = ScriptableObjectGrouping.ByFolderFlat)]
-        public ScriptableObjectReference contextPreset;
-        [ScriptableObjectDropdown(typeof(CSIdentity), grouping = ScriptableObjectGrouping.ByFolderFlat)]
-        public ScriptableObjectReference identityPreset;
+        public Identity identity = Identity.Neutral;
 
-        //public Contexts Contexts { get { return ((CSContext)contextPreset.value).contexts; } }
-        public Dictionary<Identity, Context> Contexts { get { return ((CSContext) contextPreset.value).contextMap; } }
-        public Context GetContext(Identity id) { return ((CSContext)contextPreset.value)[id]; }
-        public Identity Identity { get { return ((CSIdentity)identityPreset.value).identity; } }
-        public IdentityMapPair[] Pairs { get { return ((CSIdentity)identityPreset.value).pairs; } }
-        public Dictionary<Identity, IdentityMapPair> IdentityMap { get { return ((CSIdentity)identityPreset.value).IdentityMap; } }
+        [ScriptableObjectDropdown(typeof(CSContext), grouping = ScriptableObjectGrouping.ByFolderFlat)]
+        public ScriptableObjectReference chaseContext;
+        [ScriptableObjectDropdown(typeof(CSContext), grouping = ScriptableObjectGrouping.ByFolderFlat)]
+        public ScriptableObjectReference duelContext;
+        [ScriptableObjectDropdown(typeof(CSIdentity), grouping = ScriptableObjectGrouping.ByFolderFlat)]
+        public ScriptableObjectReference chaseIdentity;
+        [ScriptableObjectDropdown(typeof(CSIdentity), grouping = ScriptableObjectGrouping.ByFolderFlat)]
+        public ScriptableObjectReference duelIdentity;
+
+        public CSContext GetContext(Action action)
+        {
+            ScriptableObjectReference reference = action switch
+            {
+                Action.Chase => chaseContext,
+                Action.Duel => duelContext,
+                _ => null
+            };
+            return reference == null ? null : (CSContext)reference.value;
+        }
+
+        public CSIdentity GetRelationships(Action action)
+        {
+            ScriptableObjectReference reference = action switch
+            {
+                Action.Chase => chaseIdentity,
+                Action.Duel => duelIdentity,
+                _ => null
+            };
+            return reference == null ? null : (CSIdentity)reference.value;
+        }
+
+        public Identity Identity => identity;
     }
 }
