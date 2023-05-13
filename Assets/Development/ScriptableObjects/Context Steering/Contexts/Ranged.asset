@@ -13,27 +13,31 @@ MonoBehaviour:
   m_Name: Ranged
   m_EditorClassIdentifier: 
   contexts:
-    peer:
-      name: Peer
-      type: 0
-      weight: 1
-      minDistance: 0
-      maxDistance: 10
-      cullDistance: 3.4028235e+38
-      falloff: 180
-    target:
-      name: Target
-      type: 1
-      weight: 1
-      minDistance: 0
-      maxDistance: 1000
-      cullDistance: 0
-      falloff: 180
-    obstacle:
-      name: Obstacle
-      type: 2
-      weight: 1
-      minDistance: 0
-      maxDistance: 2
-      cullDistance: 0
-      falloff: 180
+  - name: Friend
+    identity: 1
+    weight: 1
+    minDistance: 0
+    maxDistance: 5
+    cullDistance: 3.4028235e+38
+    falloff: 50
+  - name: Foe
+    identity: 2
+    weight: 1
+    minDistance: 0
+    maxDistance: 5
+    cullDistance: 3.4028235e+38
+    falloff: 50
+  - name: Target
+    identity: 4
+    weight: 1
+    minDistance: 0
+    maxDistance: 1000
+    cullDistance: 3.4028235e+38
+    falloff: 50
+  - name: Obstacle
+    identity: 3
+    weight: 1
+    minDistance: 0
+    maxDistance: 5
+    cullDistance: 3.4028235e+38
+    falloff: 50

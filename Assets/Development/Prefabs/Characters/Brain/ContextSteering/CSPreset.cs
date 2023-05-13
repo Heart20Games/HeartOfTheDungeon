@@ -21,8 +21,10 @@ namespace Body.Behavior.ContextSteering
         [ScriptableObjectDropdown(typeof(CSIdentity), grouping = ScriptableObjectGrouping.ByFolderFlat)]
         public ScriptableObjectReference identityPreset;
 
-        public Contexts Contexts { get { return ((CSContext)contextPreset.value).contexts; } }
-        public CSIdentity.Identity Identity { get { return ((CSIdentity)identityPreset.value).identity; } }
+        //public Contexts Contexts { get { return ((CSContext)contextPreset.value).contexts; } }
+        public Dictionary<Identity, Context> Contexts { get { return ((CSContext) contextPreset.value).contextMap; } }
+        public Context GetContext(Identity id) { return ((CSContext)contextPreset.value)[id]; }
+        public Identity Identity { get { return ((CSIdentity)identityPreset.value).identity; } }
         public IdentityMapPair[] Pairs { get { return ((CSIdentity)identityPreset.value).pairs; } }
         public Dictionary<Identity, IdentityMapPair> IdentityMap { get { return ((CSIdentity)identityPreset.value).IdentityMap; } }
     }

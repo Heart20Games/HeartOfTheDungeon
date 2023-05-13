@@ -9,7 +9,7 @@ namespace Body.Behavior.ContextSteering
     [CreateAssetMenu(fileName = "CSIdentity", menuName = "Context Steering/Identity", order = 1)]
     public class CSIdentity : ScriptableObject
     {
-        public enum Identity { Neutral, Friend, Foe }
+        public enum Identity { Neutral, Friend, Foe, Obstacle, Target }
 
         public Identity identity = Identity.Neutral;
         public IdentityMapPair[] pairs = new IdentityMapPair[] {

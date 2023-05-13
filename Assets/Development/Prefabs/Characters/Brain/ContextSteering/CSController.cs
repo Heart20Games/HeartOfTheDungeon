@@ -20,7 +20,7 @@ namespace Body.Behavior.ContextSteering
         public float Speed => Preset.testSpeed;
         public float DrawScale => Preset.drawScale;
         public bool DrawRays => Preset.draw;
-        public Contexts Contexts { get => Preset.Contexts; }
+        public Dictionary<Identity, Context> Contexts { get => Preset.Contexts; }
         public Identity Identity { get => Preset.Identity; }
         public IdentityMapPair[] Pairs { get => Preset.Pairs; }
         public Dictionary<Identity, IdentityMapPair> IdentityMap { get => Preset.IdentityMap; }
@@ -63,7 +63,7 @@ namespace Body.Behavior.ContextSteering
         {
             if (following)
             {
-                MapTo(transform.position - destination, ContextType.Target, Maps.interests);
+                MapTo(transform.position - destination, Identity.Target, Maps.interests);
             }
             Draw();
             Vector3 vector = GetVector();
@@ -95,7 +95,7 @@ namespace Body.Behavior.ContextSteering
         }
 
         // Set
-        public void MapTo(Vector2 vector, ContextType contextType, Map map, float idWeight=1f)
+        public void MapTo(Vector2 vector, Identity identity, Map map, float idWeight=1f)
         {
             if (vector != Vector2.zero)
             {
@@ -103,7 +103,9 @@ namespace Body.Behavior.ContextSteering
                 DrawPart(map.sign, 0.5f, alt.normalized, 0.5f, 1.0f);
 
                 // Map / Context
-                Context context = Contexts.GetContext(contextType);
+                bool friendOrFoe = identity == Identity.Friend || identity == Identity.Foe;
+                Identity opponent = (identity == Identity ? Identity.Friend : Identity.Foe);
+                Context context = Preset.GetContext(!friendOrFoe ? identity : opponent);//.GetContext(contextType);
 
                 if (vector.magnitude < context.cullDistance)
                 {
@@ -178,7 +180,7 @@ namespace Body.Behavior.ContextSteering
                     obstacles.Add(other);
                     Vector2 otherPos = new(other.position.x, other.position.z);
                     Vector2 curPos = new(transform.position.x, transform.position.z);
-                    MapTo(otherPos - curPos, ContextType.Obstacle, Maps.dangers);
+                    MapTo(otherPos - curPos, Identity.Obstacle, Maps.dangers);
                 }
             }
         }

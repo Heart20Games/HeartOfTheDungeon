@@ -39,7 +39,7 @@ namespace Body.Behavior.ContextSteering
             {
                 Vector3 sourceVector = aCon.transform.position - bCon.transform.position;
                 Vector2 vector = new(sourceVector.x, sourceVector.z);
-                bCon.MapTo(vector, ContextType.Peer, map, bCon.IdentityMap[aCon.Identity].weight);
+                bCon.MapTo(vector, aCon.Identity, map, bCon.IdentityMap[aCon.Identity].weight);
             }
         }
     }
