@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using ScriptableObjectDropdown.Extension;
 using Unity.VisualScripting.FullSerializer;
+using Unity.Collections;
+using PlasticPipe.PlasticProtocol.Messages;
+using UnityEngine.UIElements;
 
 namespace ScriptableObjectDropdown.Editor
 {
@@ -99,11 +102,24 @@ namespace ScriptableObjectDropdown.Editor
         /// <summary>
         /// Gets ScriptableObjects just when it is selected or new ScriptableObject added to the project
         /// </summary>
+        private Dictionary<string,string[]> guidDict = new();
+        private string[] GetGuiId(string key)
+        {
+            if (guidDict.TryGetValue(key, out string[] ids))
+            {
+                return ids;
+            }
+            else
+            {
+                guidDict.Add(key, AssetDatabase.FindAssets(key));
+                return guidDict[key];
+            }
+        }
         private void GetScriptableObjects(ScriptableObjectDropdownAttribute attribute)
         {
             if (attribute.BaseType.IsClass)
             {
-                string[] guids = AssetDatabase.FindAssets(String.Format("t:{0}", attribute.BaseType));
+                string[] guids = GetGuiId(String.Format("t:{0}", attribute.BaseType));
                 for (int i = 0; i < guids.Length; i++)
                 {
                     _scriptableObjects.Add(AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guids[i]), attribute.BaseType) as ScriptableObject);
@@ -118,7 +134,7 @@ namespace ScriptableObjectDropdown.Editor
 
                 foreach (Type type in types)
                 {
-                    string[] guids = AssetDatabase.FindAssets(String.Format("t:{0}", type));
+                    string[] guids = GetGuiId(String.Format("t:{0}", type));
                     for (int i = 0; i < guids.Length; i++)
                     {
                         _scriptableObjects.Add(AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guids[i]), attribute.BaseType) as ScriptableObject);
