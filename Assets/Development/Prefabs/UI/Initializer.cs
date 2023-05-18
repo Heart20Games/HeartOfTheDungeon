@@ -7,7 +7,7 @@ using UnityEngine;
 using Yarn.Unity;
 using Body;
 
-public class Initializer : MonoBehaviour
+public class Initializer : BaseMonoBehaviour
 {
     public FModEventLibary defaultFModLibrary;
 
@@ -33,7 +33,7 @@ public class Initializer : MonoBehaviour
         fmodPlayers = FindObjectsOfType<FModEventPlayer>();
         dialogueRunner = FindObjectOfType<DialogueRunner>();
         userInterface = FindObjectOfType<UserInterface>();
-        timeScalables = new List<ITimeScalable>(FindObjectsOfType<MonoBehaviour>().OfType<ITimeScalable>());
+        timeScalables = new List<ITimeScalable>(FindObjectsOfType<BaseMonoBehaviour>().OfType<ITimeScalable>());
         interactables = new List<Interactable>(FindObjectsOfType<Interactable>());
         hud = FindAnyObjectByType<HUD>();
 
@@ -78,9 +78,9 @@ public class Initializer : MonoBehaviour
         AssetNonNull("HUD", hud);
     }
 
-    private void AssetNonNull(string typeName, MonoBehaviour monoBehaviour, string context= "in scene")
+    private void AssetNonNull(string typeName, MonoBehaviour BaseMonoBehaviour, string context= "in scene")
     {
-        if (monoBehaviour == null)
+        if (BaseMonoBehaviour == null)
         {
             Debug.LogWarning("Can't find any " + typeName + " " + context + ".");
         }

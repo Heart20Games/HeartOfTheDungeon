@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using static ISelectable;
 
-public class Impact : MonoBehaviour
+public class Impact : BaseMonoBehaviour
 {   
     // Properties
 

@@ -12,7 +12,7 @@ namespace Body
     [RequireComponent(typeof(Movement))]
     [RequireComponent(typeof(Talker))]
     [RequireComponent(typeof(PlayerAttack))]
-    public class Character : MonoBehaviour, IDamageable
+    public class Character : BaseMonoBehaviour, IDamageable
     {
         // Character Parts
         public Transform body;

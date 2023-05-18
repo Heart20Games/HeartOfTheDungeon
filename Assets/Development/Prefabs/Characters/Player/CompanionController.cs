@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Body.Behavior;
 
-public class CompanionController : MonoBehaviour
+public class CompanionController : BaseMonoBehaviour
 {
     public GameObject CompanionA;
     public GameObject CompanionB;

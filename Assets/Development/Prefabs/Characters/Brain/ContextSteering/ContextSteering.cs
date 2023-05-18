@@ -7,7 +7,7 @@ namespace Body.Behavior.ContextSteering
     using static CSContext;
     using static CSMapping;
 
-    public class CSHive : MonoBehaviour
+    public class CSHive : BaseMonoBehaviour
     {
         [SerializeField] private CSController[] controllers;
 

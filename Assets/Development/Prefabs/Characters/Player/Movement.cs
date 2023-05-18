@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Body;
 
-public class Movement : MonoBehaviour, ITimeScalable
+public class Movement : BaseMonoBehaviour, ITimeScalable
 {
     public float speed = 700f;
     public float maxVelocity = 10f;

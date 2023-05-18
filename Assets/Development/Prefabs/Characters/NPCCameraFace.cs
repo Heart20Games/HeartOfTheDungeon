@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCCameraFace : MonoBehaviour
+public class NPCCameraFace : BaseMonoBehaviour
 {
     public Transform cam;
     public GameObject player;

@@ -6,7 +6,7 @@ using static Game;
 using static ISelectable;
 using Body;
 
-public class GameController : MonoBehaviour
+public class GameController : BaseMonoBehaviour
 {
     public GameMode mode = GameMode.Character;
     public List<SelectType> selectableTypes;

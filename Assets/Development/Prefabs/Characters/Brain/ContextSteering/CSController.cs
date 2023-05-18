@@ -11,7 +11,7 @@ namespace Body.Behavior.ContextSteering
     using static Brain;
 
     [RequireComponent(typeof(Rigidbody))]
-    public class CSController : MonoBehaviour
+    public class CSController : BaseMonoBehaviour
     {
         // Presets
         [ScriptableObjectDropdown(typeof(CSPreset), grouping = ScriptableObjectGrouping.ByFolderFlat)]

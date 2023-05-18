@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ISelectable;
 
-public abstract class ASelectable : MonoBehaviour, ISelectable
+public abstract class ASelectable : BaseMonoBehaviour, ISelectable
 {
     public abstract SelectType Type { get; set; }
     public void NoOpSelectType(SelectType value) { }

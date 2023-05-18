@@ -12,7 +12,7 @@ namespace Body.Behavior
     using static ContextSteering.CSIdentity;
     using static Tree.LeafNode;
 
-    public class Brain : MonoBehaviour, ITimeScalable
+    public class Brain : BaseMonoBehaviour, ITimeScalable
     {
         // Enabled
         public bool Enabled

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Body;
 
-public class Game : MonoBehaviour
+public class Game : BaseMonoBehaviour
 {
     // Properties
     public Body.Character playerCharacter;

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Yarn.Unity;
 
-public class YarnCommands : MonoBehaviour
+public class YarnCommands : BaseMonoBehaviour
 {
     private InMemoryVariableStorage storage;
 

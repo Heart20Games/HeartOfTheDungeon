@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 using Yarn.Unity;
 using Body;
 
-public class UserInterface : MonoBehaviour
+public class UserInterface : BaseMonoBehaviour
 {
     public Body.Character controlledCharacter;
     public DialogueRunner dialogueRunner;

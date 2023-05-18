@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using static Unity.VisualScripting.Member;
 using Body;
 
-public class Castable : MonoBehaviour, ICastable
+public class Castable : BaseMonoBehaviour, ICastable
 {
     [HideInInspector] public Body.Character source;
 
