@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class TargetManager : MonoBehaviour
+public class TargetManager : BaseMonoBehaviour
 {
     [SerializeField] private List<GameObject> targets;
     [SerializeField] private GameObject selectedTarget;

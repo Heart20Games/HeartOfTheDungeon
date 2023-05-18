@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthPipTester : MonoBehaviour
+public class HealthPipTester : BaseMonoBehaviour
 {
     public HealthPips healthPips;
     public bool takeDamage;

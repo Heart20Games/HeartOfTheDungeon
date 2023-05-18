@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpriteText : MonoBehaviour
+public class SpriteText : BaseMonoBehaviour
 {
      void Start()
      {

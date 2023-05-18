@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class D20Shield : MonoBehaviour
+public class D20Shield : BaseMonoBehaviour
 {
     [SerializeField]
     public GameObject shieldImpact;

@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class PlayerHealthUI : MonoBehaviour
+public class PlayerHealthUI : BaseMonoBehaviour
 {
     public float startingHealth = 20f;
     public float previousHealth = 20f;

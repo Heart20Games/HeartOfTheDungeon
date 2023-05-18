@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealthTester : MonoBehaviour
+public class PlayerHealthTester : BaseMonoBehaviour
 {
     [SerializeField]
     private PlayerHealthUI playerHealthUI;

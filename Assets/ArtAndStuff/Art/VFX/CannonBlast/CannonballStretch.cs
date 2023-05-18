@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CannonballStretch : MonoBehaviour
+public class CannonballStretch : BaseMonoBehaviour
 {
     public GameObject cannonball;
     private Rigidbody cannonbody;

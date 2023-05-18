@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpellSlotTester : MonoBehaviour
+public class SpellSlotTester : BaseMonoBehaviour
 {
     public int spellCost;
     public int spellGain;

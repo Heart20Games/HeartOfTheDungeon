@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpellSlots : MonoBehaviour
+public class SpellSlots : BaseMonoBehaviour
 {
     [SerializeField]
     private List<GameObject> spellSlots = new List<GameObject>();
