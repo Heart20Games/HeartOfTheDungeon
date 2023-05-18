@@ -122,9 +122,9 @@ namespace Body.Behavior.ContextSteering
 
         public Identity RelativeIdentity(Identity id)
         {
-            bool friendOrFoe = id == Identity.Friend || id == Identity.Foe;
+            bool friendOrFoe = (id == Identity.Friend) || (id == Identity.Foe);
             Identity opponent = (id == Identity ? Identity.Friend : Identity.Foe);
-            return !friendOrFoe ? id : opponent;
+            return (!friendOrFoe) ? id : opponent;
         }
 
         // Set
