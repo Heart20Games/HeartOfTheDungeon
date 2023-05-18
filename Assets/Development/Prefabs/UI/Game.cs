@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Body;
 
-public class Game : MonoBehaviour
+public class Game : BaseMonoBehaviour
 {
     // Properties
-    public Character playerCharacter;
-    public List<Character> playableCharacters;
+    public Body.Character playerCharacter;
+    public List<Body.Character> playableCharacters;
     public Selector selector;
     public string characterInputMap = "GroundMovement";
     public string selectorInputMap = "Selector";
@@ -19,8 +20,8 @@ public class Game : MonoBehaviour
     [HideInInspector] public List<Interactable> interactables;
 
     // Current Character
-    private Character curCharacter;
-    [HideInInspector] public Character CurCharacter { get { return curCharacter; } set { SetCharacter(value); } }
+    private Body.Character curCharacter;
+    [HideInInspector] public Body.Character CurCharacter { get { return curCharacter; } set { SetCharacter(value); } }
     private int curCharIdx = 0;
     
     // TimeScale
@@ -44,7 +45,7 @@ public class Game : MonoBehaviour
     public void InitializePlayableCharacters()
     {
         bool hasPlayer = false;
-        foreach (Character character in playableCharacters)
+        foreach (Body.Character character in playableCharacters)
         {
             if (character.GetComponent<PlayerCore>() != null)
             {
@@ -67,6 +68,10 @@ public class Game : MonoBehaviour
             if (timeScalable != null)
             {
                 timeScalable.SetTimeScale(this.timeScale);
+            }
+            else
+            {
+                print("Invalid Object");
             }
         }
     }
@@ -107,7 +112,7 @@ public class Game : MonoBehaviour
         hud.CharacterSelect(curCharIdx);
     }
 
-    public void SetCharacter(Character character)
+    public void SetCharacter(Body.Character character)
     {
         if (character != null)
         {

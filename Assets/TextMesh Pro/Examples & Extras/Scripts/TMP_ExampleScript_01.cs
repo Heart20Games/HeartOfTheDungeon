@@ -7,7 +7,7 @@ using TMPro;
 namespace TMPro.Examples
 {
 
-    public class TMP_ExampleScript_01 : MonoBehaviour
+    public class TMP_ExampleScript_01 : BaseMonoBehaviour
     {
         public enum objectType { TextMeshPro = 0, TextMeshProUGUI = 1 };
 

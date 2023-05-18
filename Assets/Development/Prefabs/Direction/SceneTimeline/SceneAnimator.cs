@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Yarn.Unity;
 
-public class SceneAnimator : MonoBehaviour
+public class SceneAnimator : BaseMonoBehaviour
 {
     private Animator animator;
 

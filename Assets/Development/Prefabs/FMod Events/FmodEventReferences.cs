@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
 
-public class FmodEventReferences : MonoBehaviour
+public class FmodEventReferences : BaseMonoBehaviour
 {
     [field: Header("UI Sounds")]
     [field: SerializeField] public EventReference UIHoverLow { get; private set; }

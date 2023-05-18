@@ -7,7 +7,7 @@ using UnityEngine;
 public class Portraits : ScriptableObject
 {
     public Portrait[] portraits = new Portrait[5];
-    public Dictionary<string, Portrait> bank = new Dictionary<string, Portrait>();
+    public Dictionary<string, Portrait> bank = new();
 
     public void Initialize()
     {

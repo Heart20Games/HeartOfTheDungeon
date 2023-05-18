@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Body;
 
 public class Weapon : Castable
 {
@@ -14,8 +15,8 @@ public class Weapon : Castable
     public float speed = 3f; // speed of the animation
     public int damage = 1;
 
-    private readonly List<IDamageable> others = new List<IDamageable>();
-    private readonly List<IDamageable> ignored = new List<IDamageable>();
+    private readonly List<IDamageable> others = new();
+    private readonly List<IDamageable> ignored = new();
 
     private void Awake()
     {
@@ -30,7 +31,7 @@ public class Weapon : Castable
 
     // Castable
 
-    public override void Initialize(Character source)
+    public override void Initialize(Body.Character source)
     {
         base.Initialize(source);
         Transform origin = followBody ? source.body : transform;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
 
-public class Enemy : MonoBehaviour
+public class Enemy : BaseMonoBehaviour
 {
     public EnemyType enemyType;
     public PlayerCore player;

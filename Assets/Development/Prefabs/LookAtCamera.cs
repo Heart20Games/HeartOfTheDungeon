@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LookAtCamera : MonoBehaviour
+public class LookAtCamera : BaseMonoBehaviour
 {
     public Transform target;
     public Vector3 up = Vector3.up;

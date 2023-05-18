@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Yarn.Unity;
 
-public class YarnCommands : MonoBehaviour
+public class YarnCommands : BaseMonoBehaviour
 {
     private InMemoryVariableStorage storage;
 
@@ -18,8 +18,8 @@ public class YarnCommands : MonoBehaviour
     {
         storage = GetComponent<InMemoryVariableStorage>();
         rooms.Initialize();
-        Dictionary<string, float> tempFloats = new Dictionary<string, float>();
-        Dictionary<string, bool> tempBools = new Dictionary<string, bool>();
+        Dictionary<string, float> tempFloats = new();
+        Dictionary<string, bool> tempBools = new();
         storage.SetAllVariables(tempFloats, rooms.bank, tempBools);
     }
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Body;
 
 [CreateAssetMenu(fileName = "NewDamageStatus", menuName = "Statuses/DamageStatus", order = 1)]
 public class DamageEffect : StatusEffect

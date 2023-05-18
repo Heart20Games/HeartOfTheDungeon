@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-public class HUD : MonoBehaviour
+public class HUD : BaseMonoBehaviour
 {
     [SerializeField] private List<GameObject> characterImages;
     [SerializeField] private GameObject selectedCharacter;

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Yarn.Unity;
 
-public class LoadRoom : MonoBehaviour
+public class LoadRoom : BaseMonoBehaviour
 {
     public InMemoryVariableStorage storage;
     [SerializeField] public string targetRoom = "$Hub";

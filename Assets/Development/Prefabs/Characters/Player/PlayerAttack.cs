@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Body;
 
-public class PlayerAttack : MonoBehaviour
+public class PlayerAttack : BaseMonoBehaviour
 {
     public bool canAttack = true;
     public bool active = true;

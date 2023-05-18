@@ -5,8 +5,9 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using Yarn.Unity;
+using Body;
 
-public class Initializer : MonoBehaviour
+public class Initializer : BaseMonoBehaviour
 {
     public FModEventLibary defaultFModLibrary;
 
@@ -14,7 +15,7 @@ public class Initializer : MonoBehaviour
     private Character[] characters;
     private Talker[] talkers;
     private FModEventPlayer[] fmodPlayers;
-    [SerializeField] private DialogueRunner dialogueRunner;
+    private DialogueRunner dialogueRunner;
     private UserInterface userInterface;
     private List<ITimeScalable> timeScalables;
     private List<Interactable> interactables;
@@ -26,19 +27,25 @@ public class Initializer : MonoBehaviour
     private void Awake()
     {
         game = GetComponent<Game>();
-        player = FindObjectOfType<PlayerCore>().GetComponent<Character>();
+        player = FindObjectOfType<Character>();
         characters = FindObjectsOfType<Character>();
         talkers = FindObjectsOfType<Talker>();
         fmodPlayers = FindObjectsOfType<FModEventPlayer>();
-        if (dialogueRunner == null) dialogueRunner = FindObjectOfType<DialogueRunner>();
+        dialogueRunner = FindObjectOfType<DialogueRunner>();
         userInterface = FindObjectOfType<UserInterface>();
-        timeScalables = new List<ITimeScalable>(FindObjectsOfType<MonoBehaviour>().OfType<ITimeScalable>());
+        timeScalables = new List<ITimeScalable>(FindObjectsOfType<BaseMonoBehaviour>().OfType<ITimeScalable>());
         interactables = new List<Interactable>(FindObjectsOfType<Interactable>());
         hud = FindAnyObjectByType<HUD>();
+
 
         if (game.playerCharacter == null)
         {
             game.playerCharacter = player;
+        }
+
+        if (dialogueRunner == null && userInterface != null)
+        {
+            dialogueRunner = userInterface.dialogueRunner;
         }
 
         foreach (Talker talker in talkers)
@@ -71,9 +78,9 @@ public class Initializer : MonoBehaviour
         AssetNonNull("HUD", hud);
     }
 
-    private void AssetNonNull(string typeName, MonoBehaviour monoBehaviour, string context= "in scene")
+    private void AssetNonNull(string typeName, MonoBehaviour BaseMonoBehaviour, string context= "in scene")
     {
-        if (monoBehaviour == null)
+        if (BaseMonoBehaviour == null)
         {
             Debug.LogWarning("Can't find any " + typeName + " " + context + ".");
         }

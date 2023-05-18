@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using TMPro;
 
-public class ChatController : MonoBehaviour {
+public class ChatController : BaseMonoBehaviour {
 
 
     public TMP_InputField ChatInputField;
