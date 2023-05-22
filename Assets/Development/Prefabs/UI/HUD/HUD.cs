@@ -30,7 +30,7 @@ public class HUD : BaseMonoBehaviour
     private void Start() 
     {
         abilityMenuAnimator = abilityMenu.GetComponent<Animator>();
-        mainCamera = GameObject.Find("Game Controller").transform.Find("Main Camera").gameObject;
+        mainCamera = FindObjectOfType<Camera>().gameObject;
         hudCanvas = this.GetComponent<Canvas>();
         hudCanvas.renderMode = RenderMode.ScreenSpaceCamera;
         hudCanvas.worldCamera = mainCamera.GetComponent<Camera>();                

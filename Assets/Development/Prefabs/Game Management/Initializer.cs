@@ -72,7 +72,7 @@ public class Initializer : BaseMonoBehaviour
         game.hud = hud;
 
         AssetNonNull("Game", game, "on GameObject");
-        AssetNonNull("PlayerCore", player);
+        AssetNonNull("Character", player);
         AssetNonNull("DialogueRunner", dialogueRunner);
         AssetNonNull("UserInterface", userInterface);
         AssetNonNull("HUD", hud);

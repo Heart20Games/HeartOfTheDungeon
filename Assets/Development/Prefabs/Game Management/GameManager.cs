@@ -58,6 +58,10 @@ public class Game : BaseMonoBehaviour
             playableCharacters.Insert(0, playerCharacter);
         }
         SetCharacterIdx(0);
+        if (curCharacter == null)
+        {
+            SetMode(GameMode.Selection);
+        }
     }
 
     public void SetTimeScale(float timeScale)
@@ -81,9 +85,9 @@ public class Game : BaseMonoBehaviour
         switch (this.mode)
         {
             case GameMode.Character:
-                curCharacter.SetControllable(false); break;
+                SetControllable(curCharacter, false); break;
             case GameMode.Selection:
-                selector.SetControllable(false); break;
+                SetControllable(selector, false); break;
             case GameMode.Dialogue:
                 break;
         }
@@ -92,38 +96,56 @@ public class Game : BaseMonoBehaviour
             case GameMode.Character:
                 input.SwitchCurrentActionMap(characterInputMap);
                 TimeScale = 1;
-                curCharacter.SetControllable(true); break;
+                SetControllable(curCharacter, true); break;
             case GameMode.Selection:
                 input.SwitchCurrentActionMap(selectorInputMap);
-                selector.transform.position = curCharacter.transform.position;
+                if (selector != null && curCharacter != null)
+                {
+                    selector.transform.position = curCharacter.transform.position;
+                }
                 TimeScale = 0.1f;
-                selector.SetControllable(true); break;
+                SetControllable(selector, true); break;
             case GameMode.Dialogue:
                 input.SwitchCurrentActionMap(dialogueInputMap); break;
         }
         this.mode = mode;
     }
 
+    public void SetControllable(IControllable controllable, bool shouldControl)
+    {
+        controllable?.SetControllable(shouldControl);
+    }
+
     public void SetCharacterIdx(int idx)
     {
-        idx = idx < 0 ? playableCharacters.Count + idx : idx;
-        curCharIdx = idx % (playableCharacters.Count);
-        SetCharacter(playableCharacters[curCharIdx]);
-        hud.CharacterSelect(curCharIdx);
+        if (playableCharacters.Count > 0)
+        {
+            idx = idx < 0 ? playableCharacters.Count + idx : idx;
+            curCharIdx = idx % (playableCharacters.Count);
+            SetCharacter(playableCharacters[curCharIdx]);
+            hud.CharacterSelect(curCharIdx);
+        }
     }
 
     public void SetCharacter(Body.Character character)
     {
         if (character != null)
         {
-            if (curCharacter != null)
-            {
-                curCharacter.SetControllable(false);
-            }
+            SetControllable(curCharacter, false);
             curCharacter = character;
-            curCharacter.SetControllable(true);
+            SetControllable(curCharacter, true);
             SetMode(GameMode.Character);
         }
+    }
+
+    public bool CanUseCharacter()
+    {
+        return curCharacter != null && Mode == GameMode.Character;
+    }
+
+    public bool CanUseSelector()
+    {
+        return selector != null && Mode == GameMode.Selection;
     }
 
 
@@ -135,9 +157,15 @@ public class Game : BaseMonoBehaviour
         switch (Mode)
         {
             case GameMode.Character:
-                curCharacter.MoveCharacter(inputVector); break;
+                if (CanUseCharacter())
+                {
+                    curCharacter.MoveCharacter(inputVector);
+                } break;
             case GameMode.Selection:
-                selector.MoveVector = inputVector; break;
+                if (CanUseSelector())
+                {
+                    selector.MoveVector = inputVector;
+                } break;
         }
     }
 
@@ -182,7 +210,7 @@ public class Game : BaseMonoBehaviour
 
     public void OnSwitchSecondary(InputValue inputValue)
     {
-        if (inputValue.isPressed)
+        if (inputValue.isPressed && CanUseCharacter())
         {
             curCharacter.ChangeAbility();
         }
@@ -190,7 +218,7 @@ public class Game : BaseMonoBehaviour
 
     public void OnSwitchPrimary(InputValue inputValue)
     {
-        if (inputValue.isPressed)
+        if (inputValue.isPressed && CanUseCharacter())
         {
             curCharacter.ChangeWeapon();
         }
@@ -198,7 +226,7 @@ public class Game : BaseMonoBehaviour
 
     public void OnCastPrimary(InputValue inputValue)
     {
-        if (inputValue.isPressed)
+        if (inputValue.isPressed && CanUseCharacter())
         {
             curCharacter.ActivateWeapon();
         }
@@ -206,7 +234,7 @@ public class Game : BaseMonoBehaviour
 
     public void OnCastSecondary(InputValue inputValue)
     {
-        if (inputValue.isPressed)
+        if (inputValue.isPressed && CanUseCharacter())
         {
             curCharacter.ActivateAbility();
         }
@@ -227,7 +255,7 @@ public class Game : BaseMonoBehaviour
     {
         if (inputValue.isPressed)
         {
-            if (Mode == GameMode.Selection)
+            if (CanUseSelector())
             {
                 selector.Select();
             }
@@ -238,7 +266,7 @@ public class Game : BaseMonoBehaviour
     {
         if (inputValue.isPressed)
         {
-            if (Mode == GameMode.Selection)
+            if (CanUseSelector())
             {
                 selector.DeSelect();
             }
