@@ -7,10 +7,11 @@ namespace Body.Behavior.ContextSteering
     public class CSMapping
     {
         // Enums
-        public enum MapType { Interest, Danger, None }
         public const sbyte POS = 1;
-        public const sbyte NA = 0;
         public const sbyte NEG = -1;
+        public const sbyte NA = 0;
+        public const sbyte NAN = 2;
+        public enum MapType { Interest=POS, Danger=NEG, None=NA, Other=NAN }
 
         // Resolution
         static public int resolution = 12;
@@ -41,16 +42,19 @@ namespace Body.Behavior.ContextSteering
             public Map(float[] dirs, sbyte sign)
             {
                 this.dirs = dirs ?? new float[resolution];
+                this.componentCount = 0;
                 this.sign = sign;
                 valid = true;
             }
             public Map(float[] dirs, sbyte sign, bool initialize)
             {
                 this.dirs = !initialize ? dirs : (dirs ?? new float[resolution]);
+                this.componentCount = 0;
                 this.sign = sign;
                 valid = true;
             }
             public float[] dirs;
+            public int componentCount;
             public sbyte sign;
             public bool valid;
             public int Length => dirs.Length;
@@ -76,6 +80,7 @@ namespace Body.Behavior.ContextSteering
                 {
                     dirs[i] = 0;
                 }
+                componentCount = 0;
             }
             public new string ToString()
             {

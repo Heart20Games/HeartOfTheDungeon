@@ -20,8 +20,7 @@ public class Weapon : Castable
 
     private void Awake()
     {
-        animator = GetComponent<Animator>();
-        if (animator != null )
+        if (TryGetComponent(out animator))
         {
             animator.speed = speed;
         }

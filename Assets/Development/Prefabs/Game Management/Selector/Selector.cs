@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using static ISelectable;
 
-public class Selector : BaseMonoBehaviour
+public class Selector : BaseMonoBehaviour, IControllable
 {
     public Rigidbody myRigidbody;
     public Impact cursor;

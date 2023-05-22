@@ -9,7 +9,9 @@ namespace Body.Behavior
     using ScriptableObjectDropdown;
     using System.Linq;
     using Tree;
+    using UnityEngine.Assertions;
     using static ContextSteering.CSIdentity;
+    using static ContextSteering.CSContext;
     using static Tree.LeafNode;
 
     public class Brain : BaseMonoBehaviour, ITimeScalable
@@ -145,28 +147,36 @@ namespace Body.Behavior
 
         public bool TargetClose()
         {
-            if (Target != null && controller.Context != null)
+            Assert.IsNotNull(Target);
+            bool outcome = false;
+            if (controller.Context != null)
             {
-                Vector3 vector = Target.transform.position - transform.position;
-                return vector.magnitude < controller.Context[Identity.Target].approachDistance;
+                //Vector3 vector = Target.transform.position - transform.position;
+                //List<Context> contexts = controller.Context[Identity.Target];
+                //for (int i = 0; i < contexts.Count; i++)
+                //{
+                //    outcome = vector.magnitude < contexts[i].approachDistance;
+                //}
             }
-            else
-            {
-                return false;
-            }
+            if (debug) Debug.Log("Target Close? " + (outcome ? "Yes" : "No"));
+            return outcome;
         }
 
         public bool TargetFar()
         {
-            if (Target != null && controller.Context != null)
+            Assert.IsNotNull(Target);
+            bool outcome = false;
+            if (controller.Context != null)
             {
-                Vector3 vector = Target.transform.position - transform.position;
-                return vector.magnitude > controller.Context[Identity.Target].escapeDistance;
+                //Vector3 vector = Target.transform.position - transform.position;
+                //List<Context> contexts = controller.Context[Identity.Target];
+                //for (int i = 0; i < contexts.Count; i++)
+                //{
+                //    outcome = vector.magnitude < contexts[i].escapeDistance;
+                //}
             }
-            else
-            {
-                return false;
-            }
+            if (debug) Debug.Log("Target Far? " + (outcome ? "Yes" : "No"));
+            return outcome;
         }
 
 
@@ -184,8 +194,6 @@ namespace Body.Behavior
         {
             if (!HasTarget()) return BehaviorNode.Status.FAILURE;
             if (TargetClose()) return BehaviorNode.Status.FAILURE;
-
-            SetContext(Action.Chase);
 
             if (debug) Debug.Log("Chasing...");
 
@@ -209,13 +217,11 @@ namespace Body.Behavior
             }
             return BehaviorNode.Status.SUCCESS;
         }
-
+        
         public BehaviorNode.Status Duel()
         {
             if (!HasTarget()) return BehaviorNode.Status.FAILURE;
             if (TargetFar()) return BehaviorNode.Status.FAILURE;
-
-            SetContext(Action.Duel);
 
             if (debug) Debug.Log("Dueling...");
 
