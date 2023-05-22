@@ -66,6 +66,12 @@ namespace Body.Behavior.ContextSteering
         private readonly List<Transform> obstacles = new();
         private Maps Maps { get; } = new(null, null);
 
+        // Debug
+        [SerializeField] private readonly float ResultRadius = 0.5f;
+        [SerializeField] private readonly float CircleRadius = 0.55f;
+        [SerializeField] private readonly float SourceRadius = 0.15f;
+        [SerializeField] private readonly float ActualRadius = 0.05f;
+
         // Initialize
         private void Awake()
         {
@@ -88,7 +94,7 @@ namespace Body.Behavior.ContextSteering
         {
             if (following)
             {
-                MapTo(transform.position - destination, Identity.Target, Maps.interests);
+                MapTo(transform.position - destination, Identity.Target);
             }
             Draw();
             Vector3 vector = GetVector();
@@ -104,13 +110,16 @@ namespace Body.Behavior.ContextSteering
             Vector3 vector = new();
             Map interests = Maps[MapType.Interest];
             Map dangers = Maps[MapType.Danger];
+            int componentCount = 1; // interests.componentCount + dangers.componentCount;
             for (int i = 0; i < resolution; i++)
             {
-                vector += interests[i] * interests.sign * Baseline[i];
-                vector += dangers[i] * dangers.sign * Baseline[i];
+                vector += (interests[i] / componentCount) * interests.sign * Baseline[i];
+                vector += (dangers[i] / componentCount) * dangers.sign * Baseline[i];
                 interests[i] = 0f;
                 dangers[i] = 0f;
             }
+            interests.componentCount = 0;
+            dangers.componentCount = 0;
             return vector.normalized;
         }
 
@@ -128,62 +137,77 @@ namespace Body.Behavior.ContextSteering
         }
 
         // Set
-        public void MapTo(Vector2 vector, Identity identity, Map map)
+        public void MapTo(Vector2 vector, Identity identity)
         {
             if (Context != null && Relationships != null && vector != Vector2.zero)
             {
                 Vector3 alt = new(vector.x, 0f, vector.y);
-                DrawPart(map.sign, 0.5f, alt.normalized, 0.5f, 1.0f);
+                DrawPart(NA, alt.normalized, CircleRadius+SourceRadius, CircleRadius+SourceRadius+ActualRadius);
 
-                // Map / Context
-                Context context = Context[identity];
-
-                if (vector.magnitude < context.cullDistance)
+                // Map Context
+                if (Context.TryGet(identity, out List<Context> contexts))
                 {
-                    // Weight
-                    float idWeight = IdentityMap.TryGetValue(identity, out IdentityMapPair pair) ? pair.weight : 1;
-                    float distance = Mathf.Min(vector.magnitude - context.minDistance, context.minDistance);
-                    float range = (context.maxDistance - context.minDistance);
-                    float weight = Mathf.Lerp(context.weight, 0f, distance / range) * idWeight;
-
-                    if (weight > 0f)
+                    for (int i = 0; i < contexts.Count; i++)
                     {
-                        // Angle / Slot
-                        float angle = -Mathf.Rad2Deg * Mathf.Acos(vector.x / vector.magnitude);
-                        angle = (vector.y > 0f) ? 360 - angle : angle;
-                        //float angle = vector.x != 0f ? Mathf.Rad2Deg * Mathf.Atan(vector.y/vector.x) : Mathf.Sign(vector.y) * 90;
-                        angle = Mathf.Repeat(angle, 360);
-                        float slot = Mathf.Repeat((angle / 360) * resolution, resolution-1);
-                        DrawPart(NA, 0.5f, Baseline[Mathf.RoundToInt(slot)], 0.5f, 1f);
-
-                        Assert.IsFalse(float.IsNaN(angle));
-                        Assert.IsFalse(float.IsNaN(slot));
-                        AssertInRange(angle, 0, 360);
-                        AssertInRange(slot, 0, resolution-1);
-
-                        // Falloff
-                        float falloff = (context.falloff / 360) * resolution;
-                        float falloffHigh = slot + falloff;
-                        float falloffLow = slot - falloff;
-
-                        // Slots
-                        int nextSlot = Mathf.CeilToInt(slot);
-                        int prevSlot = Mathf.FloorToInt(slot);
-                        int highSlot = Mathf.FloorToInt(falloffHigh);
-                        int lowSlot = Mathf.CeilToInt(falloffLow);
-
-                        // Add it up
-                        for (int i = nextSlot; i <= highSlot; i++)
-                        {
-                            int ii = (int)Mathf.Repeat(i, resolution-1);
-                            map[ii] += Mathf.Lerp(weight, 0, (i - slot) / falloff);
-                        }
-                        for (int i = prevSlot; i >= lowSlot; i--)
-                        {
-                            int ii = (int)Mathf.Repeat(i, resolution-1);
-                            map[ii] += Mathf.Lerp(weight, 0, (slot - i) / falloff);
-                        }
+                        MapContext(vector, identity, contexts[i]);
                     }
+                }
+            }
+        }
+
+        public void MapContext(Vector2 vector, Identity identity, Context context)
+        {
+            if (vector.magnitude == Mathf.Clamp(vector.magnitude, context.deadzone.x, context.deadzone.y))
+            {
+                // Weight
+                float idWeight = IdentityMap.TryGetValue(identity, out IdentityMapPair pair) ? pair.weight : 1;
+                float distance = Mathf.Min(vector.magnitude - context.gradient.x, context.gradient.y);
+                float range = (context.gradient.y - context.gradient.x);
+                float weight = Mathf.Lerp(context.weight.x, context.weight.y, distance / range) * idWeight;
+
+                if (weight != 0f)
+                {
+                    Map map = weight < 0 ? Maps.dangers : Maps.interests;
+                    weight *= map.sign;
+
+                    // Angle / Slot
+                    float angle = -Mathf.Rad2Deg * Mathf.Acos(vector.x / vector.magnitude);
+                    angle = (vector.y > 0f) ? 360 - angle : angle;
+                    //float angle = vector.x != 0f ? Mathf.Rad2Deg * Mathf.Atan(vector.y/vector.x) : Mathf.Sign(vector.y) * 90;
+                    angle = Mathf.Repeat(angle, 360);
+                    float slot = Mathf.Repeat((angle / 360) * resolution, resolution - 1);
+                    DrawPart(map.sign, Baseline[Mathf.RoundToInt(slot)], CircleRadius, CircleRadius+SourceRadius);
+
+                    Assert.IsFalse(float.IsNaN(angle));
+                    Assert.IsFalse(float.IsNaN(slot));
+                    AssertInRange(angle, 0, 360);
+                    AssertInRange(slot, 0, resolution - 1);
+
+                    // Falloff
+                    float falloff = (context.falloff / 360) * resolution;
+                    float falloffHigh = slot + falloff;
+                    float falloffLow = slot - falloff;
+
+                    // Slots
+                    int nextSlot = Mathf.CeilToInt(slot);
+                    int prevSlot = Mathf.FloorToInt(slot);
+                    int highSlot = Mathf.FloorToInt(falloffHigh);
+                    int lowSlot = Mathf.CeilToInt(falloffLow);
+
+                    // Add it up
+                    for (int i = nextSlot; i <= highSlot; i++)
+                    {
+                        int ii = (int)Mathf.Repeat(i, resolution - 1);
+                        map[ii] += Mathf.Lerp(weight, 0, (i - slot) / falloff);
+                    }
+                    for (int i = prevSlot; i >= lowSlot; i--)
+                    {
+                        int ii = (int)Mathf.Repeat(i, resolution - 1);
+                        map[ii] += Mathf.Lerp(weight, 0, (slot - i) / falloff);
+                    }
+
+                    // Up the component count
+                    map.componentCount += 1;
                 }
             }
         }
@@ -205,7 +229,7 @@ namespace Body.Behavior.ContextSteering
                     obstacles.Add(other);
                     Vector2 otherPos = new(other.position.x, other.position.z);
                     Vector2 curPos = new(transform.position.x, transform.position.z);
-                    MapTo(otherPos - curPos, Identity.Obstacle, Maps.dangers);
+                    MapTo(otherPos - curPos, Identity.Obstacle);
                 }
             }
         }
@@ -234,12 +258,13 @@ namespace Body.Behavior.ContextSteering
                         {
                             if (map[j] > 0)
                             {
-                                DrawPart(map.sign, Mathf.Lerp(0f, 0.5f, map[j]/maxValue), Baseline[j], 0f, 0.5f);
+                                Assert.IsTrue(map[j] <= maxValue);
+                                DrawPart(map.sign, Baseline[j], 0f, ResultRadius, Mathf.Lerp(0f, ResultRadius, map[j] / maxValue));
                             }
                         }
                     }
                 }
-                DrawCircle(0.5f);
+                DrawCircle(CircleRadius);
             }
         }
 
@@ -253,7 +278,7 @@ namespace Body.Behavior.ContextSteering
             }
         }
 
-        public void DrawPart(sbyte sign, float magnitude, Vector3 dir, float buffer=0f, float limit=float.MaxValue, float duration=2f)
+        public void DrawPart(sbyte sign, Vector3 dir, float buffer=0f, float limit=float.MaxValue, float magnitude = 1f, float duration=1f)
         {
             Color color = sign switch
             {
@@ -262,23 +287,29 @@ namespace Body.Behavior.ContextSteering
                 NA => Color.cyan,
                 _ => Color.yellow,
             };
+            //print("Color: " + ColorString(color));
             sign = sign == 0 ? (sbyte)1 : sign;
+            sign = (Mathf.Abs(sign) > 1) ? (sbyte)(1 * Mathf.Sign(sign)) : sign;
             Vector3 direction = DrawScale * sign * dir;
-            Vector3 vector = Mathf.Min(magnitude, limit) * direction;
+            float mag = Mathf.Min(magnitude, limit-buffer);
+            Vector3 vector = mag * direction;
             Vector3 start = transform.position + (buffer * direction);
             Debug.DrawRay(start, vector, color, Time.fixedDeltaTime * duration);
         }
 
-        private void CheckColor(Color color)
+        private string ColorString(Color color)
         {
-            if (color == Color.blue)
-            {
-                print("Blue!");
-            }
-            else if (color == Color.yellow)
-            {
-                print("Yellow!");
-            }
+            return color == Color.blue ?
+                    "Blue" : 
+                color == Color.green ? 
+                    "Green" :
+                color == Color.red ? 
+                    "Red" :
+                color == Color.cyan ?
+                    "Cyan" :
+                color == Color.yellow ?
+                    "Yellow" :
+                color.ToString();
         }
     }
 }

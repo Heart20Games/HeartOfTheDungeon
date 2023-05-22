@@ -13,15 +13,21 @@ namespace Body.Behavior.ContextSteering
 
         public Context[] contexts = new Context[]
         {
-            new(Identity.Friend, 1f, 0f, 5f, 6f, 4f, -1f, 50f),
-            new(Identity.Foe, 1f, 0f, 5f, 6f, 4f, -1f, 50f),
-            new(Identity.Target, 1f, 0f, 1000f, 6f, 4f, -1f, 50f),
-            new(Identity.Obstacle, 1f, 0f, 5f, 6f, 4f, -1f, 50f),
+            defaultContext
         };
-        public static Context fallbackContext = new(Identity.Neutral, 1f, 0f, 5f, 6f, 4f, -1f, 50f);
+        public static readonly Identity defaultIdentity = Identity.Neutral;
+        public static readonly Vector2 defaultWeight = new(1f, 0f);
+        public static readonly Vector2 defaultGradient = new(0f, 5f);
+        public static readonly Vector2 defaultDeadzone = new(0f, -1f);
+        public static readonly float defaultFallof = 50f;
+        public static readonly Context defaultContext = new(defaultIdentity, defaultWeight, defaultGradient, defaultDeadzone, defaultFallof);
+        public static Context DefaultContext(Identity identity)
+        {
+            return new(identity, defaultWeight, defaultGradient, defaultDeadzone, defaultFallof);
+        }
         
-        public Dictionary<Identity, Context> contextMap = null;
-        public Dictionary<Identity, Context> ContextMap
+        public Dictionary<Identity, List<Context>> contextMap = null;
+        public Dictionary<Identity, List<Context>> ContextMap
         {
             get
             {
@@ -31,22 +37,29 @@ namespace Body.Behavior.ContextSteering
                     for(int i = 0; i < contexts.Length; i++)
                     {
                         Context context = contexts[i];
-                        contextMap[context.identity] = context;
+                        bool found = contextMap.TryGetValue(context.identity, out List<Context> values);
+                        if (!found)
+                        {
+                            values = new();
+                            contextMap.Add(context.identity, values);
+                        }
+                        values.Add(context);
                     }
                 }
                 return contextMap;
             }
         }
-        public Context this[Identity identity]
+        public List<Context> this[Identity identity]
         {
             get
             {
-                if (ContextMap.TryGetValue(identity, out Context context))
-                {
-                    return context;
-                }
-                return fallbackContext;
+                return ContextMap[identity];
             }
+        }
+
+        public bool TryGet(Identity identity, out List<Context> result)
+        {
+            return ContextMap.TryGetValue(identity, out result);
         }
 
         //public Contexts contexts = defaultContexts;
@@ -84,26 +97,25 @@ namespace Body.Behavior.ContextSteering
         [Serializable]
         public struct Context
         {
-            public Context(Identity identity, float weight, float minDistance, float maxDistance, float escapeDistance, float approachDistance, float cullDistance, float falloff)
+            public Context(Identity identity, Vector2 weight, Vector2 gradient, Vector2 deadzone, float falloff)
             {
                 name = identity.ToString();
                 this.identity = identity;
                 this.weight = weight;
-                this.minDistance = minDistance;
-                this.maxDistance = maxDistance;
-                this.escapeDistance = escapeDistance;
-                this.approachDistance = approachDistance;
-                this.cullDistance = cullDistance >= 0f ? cullDistance : float.MaxValue;
+                this.gradient = gradient;
+                this.deadzone = new Vector2(Mathf.Repeat(deadzone.x, float.MaxValue), Mathf.Repeat(deadzone.y, float.MaxValue));
                 this.falloff = falloff;
             }
             public string name;
             public Identity identity;
-            public float weight;
-            public float minDistance;
-            public float maxDistance;
-            public float escapeDistance;
-            public float approachDistance;
-            public float cullDistance;
+            // All vectors are one-dimensional, but defined by two points.
+            // The weight vector is a bi-directional vector along the h-axis indicating the weight corresponding to the high and low ends of the gradient vector.
+            public Vector2 weight;
+            // The gradient vector indicates the start and end of the weight gradient, with final weight values above and below the vector being constant.
+            public Vector2 gradient;
+            // The deadzone vector indicates the cutoff range beyond which all final weights are equal to zero.
+            public Vector2 deadzone;
+            // The falloff is the angle from the y-axis at which the final weight drops to zero.
             public float falloff;
         }
     }
