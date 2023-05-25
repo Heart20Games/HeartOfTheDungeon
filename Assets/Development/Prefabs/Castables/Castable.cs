@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using static Unity.VisualScripting.Member;
+using Body;
 
-public class Castable : MonoBehaviour, ICastable
+public class Castable : BaseMonoBehaviour, ICastable
 {
-    [HideInInspector] public Character source;
+    [HideInInspector] public Body.Character source;
 
     public UnityEvent<Vector3> doCast;
     public UnityEvent onCast;
@@ -28,7 +29,7 @@ public class Castable : MonoBehaviour, ICastable
         damager = GetComponent<Damager>();
     }
 
-    public virtual void Initialize(Character source)
+    public virtual void Initialize(Body.Character source)
     {
         this.source = source;
         if (damager != null) { damager.Ignore(source.body); }

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(LineRenderer))]
-public class NavPathRenderer : MonoBehaviour
+public class NavPathRenderer : BaseMonoBehaviour
 {
     public NavMeshAgent agent;
     public Transform body;

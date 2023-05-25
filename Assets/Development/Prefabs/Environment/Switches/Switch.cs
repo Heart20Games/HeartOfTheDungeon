@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Switch : MonoBehaviour
+public class Switch : BaseMonoBehaviour
 {
     public UnityEvent onToggle;
     public List<Triggerable> targets = new List<Triggerable>();

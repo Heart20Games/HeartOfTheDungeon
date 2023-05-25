@@ -19,7 +19,7 @@ public class YarnRooms : ScriptableObject
     }
 
     public Room[] rooms = new Room[5];
-    public Dictionary<string, string> bank = new Dictionary<string, string>();
+    public Dictionary<string, string> bank = new();
 
     public void Initialize()
     {

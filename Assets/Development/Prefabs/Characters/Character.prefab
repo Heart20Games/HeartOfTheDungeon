@@ -132,7 +132,7 @@ Transform:
   - {fileID: 5676186294004812607}
   - {fileID: 8573595303347455047}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
 --- !u!114 &4666652024189201520
 MonoBehaviour:
@@ -147,9 +147,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  agent: {fileID: 0}
   navUpdate: 1
   followingDistance: 0
   baseOffset: 0
+  useAgent: 1
+  modifiers: {fileID: 11400000, guid: e747a79b96270f8488105465899547d7, type: 2}
+  tree: {fileID: 11400000, guid: 5140f609f0a38fb48865e6fb826fc149, type: 2}
+  debug: 0
 --- !u!114 &1895181659443492097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,9 +185,9 @@ MonoBehaviour:
   weaponOffset: {x: 0, y: 1, z: 0}
   statuses: []
   maxHealth:
-    value: 25
+    value: 5
   currentHealth:
-    value: 25
+    value: 5
   onDeath:
     m_PersistentCalls:
       m_Calls: []
@@ -272,14 +277,16 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5106106832475441759}
+  - component: {fileID: 852013129629387909}
+  - component: {fileID: 442215480502625366}
+  - component: {fileID: 608404790986451179}
+  - component: {fileID: 4413256440571499932}
+  - component: {fileID: 1170855021759411822}
+  - component: {fileID: 1662274335675725108}
   - component: {fileID: 2627509537351594196}
   - component: {fileID: 2698830970327350241}
   - component: {fileID: 1230430943143690019}
   - component: {fileID: 2485834102352749627}
-  - component: {fileID: 4413256440571499932}
-  - component: {fileID: 1662274335675725108}
-  - component: {fileID: 1170855021759411822}
-  - component: {fileID: 608404790986451179}
   m_Layer: 7
   m_Name: Body
   m_TagString: Character
@@ -306,6 +313,170 @@ Transform:
   m_Father: {fileID: 850644614561672070}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &852013129629387909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4520041833351946365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e69096a08d9cbe942bcf67cfc758bb00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preset:
+    value: {fileID: 11400000, guid: 53f2beb2628ea6a46a5ae457c34209ca, type: 2}
+  active: 0
+  destination: {x: 0, y: 0, z: 0}
+  following: 0
+--- !u!114 &442215480502625366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4520041833351946365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  desiredTags: []
+  selectableTypes: 
+  onCollision:
+    enter:
+      m_PersistentCalls:
+        m_Calls: []
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
+  onTrigger:
+    enter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 852013129629387909}
+          m_TargetAssemblyTypeName: ContextSteering, Assembly-CSharp
+          m_MethodName: AddObstacle
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 442215480502625366}
+            m_ObjectArgumentAssemblyTypeName: Impact, Assembly-CSharp
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    exit:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 852013129629387909}
+          m_TargetAssemblyTypeName: ContextSteering, Assembly-CSharp
+          m_MethodName: RemoveObstacle
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 442215480502625366}
+            m_ObjectArgumentAssemblyTypeName: Impact, Assembly-CSharp
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  debug: 0
+  other: {fileID: 0}
+  selectable: {fileID: 0}
+--- !u!195 &608404790986451179
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4520041833351946365}
+  m_Enabled: 0
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &4413256440571499932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4520041833351946365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  desiredTags: []
+  selectableTypes: 
+  onCollision:
+    enter:
+      m_PersistentCalls:
+        m_Calls: []
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
+  onTrigger:
+    enter:
+      m_PersistentCalls:
+        m_Calls: []
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
+  debug: 0
+  other: {fileID: 0}
+  selectable: {fileID: 0}
+--- !u!114 &1170855021759411822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4520041833351946365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf779c5f95ce1474b99ba990b082ae02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onTakeDamage:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1895181659443492097}
+        m_TargetAssemblyTypeName: Character, Assembly-CSharp
+        m_MethodName: TakeDamage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!210 &1662274335675725108
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4520041833351946365}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!54 &2627509537351594196
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -419,99 +590,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4413256440571499932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4520041833351946365}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  desiredTags: []
-  selectableTypes: 
-  onCollision:
-    enter:
-      m_PersistentCalls:
-        m_Calls: []
-    exit:
-      m_PersistentCalls:
-        m_Calls: []
-  onTrigger:
-    enter:
-      m_PersistentCalls:
-        m_Calls: []
-    exit:
-      m_PersistentCalls:
-        m_Calls: []
-  debug: 0
-  touching: []
-  other: {fileID: 0}
-  selectable: {fileID: 0}
---- !u!210 &1662274335675725108
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4520041833351946365}
-  m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_SortAtRoot: 0
---- !u!114 &1170855021759411822
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4520041833351946365}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf779c5f95ce1474b99ba990b082ae02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onTakeDamage:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1895181659443492097}
-        m_TargetAssemblyTypeName: Character, Assembly-CSharp
-        m_MethodName: TakeDamage
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!195 &608404790986451179
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4520041833351946365}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!1 &8688300506291837896
 GameObject:
   m_ObjectHideFlags: 0
@@ -954,6 +1032,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5106106832475441759}
     m_Modifications:
+    - target: {fileID: 250899217180294028, guid: f618bd6bff53c0c4e83bc935ee154c8b, type: 3}
+      propertyPath: totalHealth
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 250899217180294028, guid: f618bd6bff53c0c4e83bc935ee154c8b, type: 3}
+      propertyPath: currentHealth
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4099199581749838624, guid: f618bd6bff53c0c4e83bc935ee154c8b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

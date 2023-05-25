@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using Yarn.Unity;
 using static Game;
 
-public class Talker : MonoBehaviour
+public class Talker : BaseMonoBehaviour
 {
     [HideInInspector] public Game game;
     [HideInInspector] public DialogueRunner dialogueRunner;

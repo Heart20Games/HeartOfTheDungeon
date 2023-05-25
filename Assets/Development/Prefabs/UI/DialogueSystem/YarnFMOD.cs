@@ -4,7 +4,7 @@ using UnityEngine;
 using FMODUnity;
 using Yarn.Unity;
 
-public class YarnFMOD : MonoBehaviour
+public class YarnFMOD : BaseMonoBehaviour
 {
     private StudioEventEmitter emitter;
     public void Start()

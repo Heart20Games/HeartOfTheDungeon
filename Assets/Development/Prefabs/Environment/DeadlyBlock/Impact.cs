@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using static ISelectable;
 
-public class Impact : MonoBehaviour
+public class Impact : BaseMonoBehaviour
 {   
     // Properties
 
@@ -17,7 +17,7 @@ public class Impact : MonoBehaviour
 
     public bool debug = false;
 
-    public List<GameObject> touching;
+    public readonly List<GameObject> touching = new();
     [HideInInspector] public GameObject other;
     [HideInInspector] public ASelectable selectable;
 
@@ -51,11 +51,6 @@ public class Impact : MonoBehaviour
     }
 
     // Events
-
-    private void Start()
-    {
-        touching = new List<GameObject>();
-    }
 
     private void OnEventEnter(GameObject other, UnityEvent onEvent)
     {
