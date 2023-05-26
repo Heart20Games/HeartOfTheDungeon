@@ -35,7 +35,6 @@ namespace Body.Behavior
 
         // Components
         private Character character;
-        public NavPathRenderer pathRenderer;
         [HideInInspector] public NavMeshAgent agent;
         [HideInInspector] private CSController controller;
         [HideInInspector] private BalancedPathfinder pathFinder;
@@ -75,10 +74,6 @@ namespace Body.Behavior
             controller = character.body.GetComponent<CSController>();
             pathFinder = character.body.GetComponent<BalancedPathfinder>();
             agent.baseOffset = baseOffset;
-            if (pathRenderer != null && pathFinder != null)
-            {
-                pathRenderer.path = pathFinder.path;
-            }
             if (target != null)
             {
                 Target = target;
@@ -193,6 +188,8 @@ namespace Body.Behavior
         public BehaviorNode.Status Idle()
         {
             SetContext(Action.Idle);
+
+            pathFinder.target = target;
 
             if (debug) Debug.Log("Idling...");
 

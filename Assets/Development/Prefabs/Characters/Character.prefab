@@ -147,7 +147,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  pathRenderer: {fileID: 2828713679198252849}
   agent: {fileID: 0}
   navUpdate: 1
   followingDistance: 0
@@ -400,6 +399,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  hasPath: 0
 --- !u!195 &608404790986451179
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -867,6 +867,10 @@ PrefabInstance:
       propertyPath: agent
       value: 
       objectReference: {fileID: 608404790986451179}
+    - target: {fileID: 487645562934312341, guid: d1188049d2e999b48b465fd757a928c1, type: 3}
+      propertyPath: pathFinder
+      value: 
+      objectReference: {fileID: 4630028532720471171}
     - target: {fileID: 6304595911526012643, guid: d1188049d2e999b48b465fd757a928c1, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -920,17 +924,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1188049d2e999b48b465fd757a928c1, type: 3}
---- !u!114 &2828713679198252849 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 487645562934312341, guid: d1188049d2e999b48b465fd757a928c1, type: 3}
-  m_PrefabInstance: {fileID: 2415595250196730532}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc5046f164720344eb41d3f105574d28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &8573595303347455047 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6304595911526012643, guid: d1188049d2e999b48b465fd757a928c1, type: 3}

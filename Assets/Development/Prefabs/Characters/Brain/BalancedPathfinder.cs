@@ -7,6 +7,7 @@ public class BalancedPathfinder : MonoBehaviour
 {
     public NavMeshPath path;
     public Transform target;
+    public bool hasPath = false;
 
     private void Awake()
     {
@@ -15,15 +16,16 @@ public class BalancedPathfinder : MonoBehaviour
 
     private void FixedUpdate()
     {
+        hasPath = false;
         if (target != null)
         {
-            NavMesh.CalculatePath(transform.position, target.position, NavMesh.AllAreas, path);
+            hasPath = NavMesh.CalculatePath(transform.position, target.position, NavMesh.AllAreas, path);
         }
     }
 
     public bool NextPoint(out Vector3 next)
     {
-        next = path.corners.Length > 0 ? path.corners[0] : new();
-        return path.corners.Length > 0;
+        next = path.corners.Length > 1 ? path.corners[1] : new();
+        return hasPath;
     }
 }
