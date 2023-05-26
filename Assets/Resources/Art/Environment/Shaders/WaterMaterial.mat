@@ -46,7 +46,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AlphaClip: 0.85
+    - _AlphaClip: 4.5
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
@@ -55,9 +55,14 @@ Material:
     - _ChoppinessX: 0.25
     - _Cull: 2
     - _DstBlend: 10
-    - _NoiseDensity: 0.5
-    - _NormalFromVoronoi: 0
+    - _FoamChopScale: 800
+    - _FoamDistance: 1.2
+    - _NoiseDensity: 25
+    - _NoiseNormalStrength: 5
+    - _NoisePower: 6
+    - _NormalFromVoronoi: 1
     - _NormalMap: 0
+    - _NormalVoronoiPower: 3
     - _OffsetDensity: 5.31
     - _OffsetPower: 0.2
     - _QueueControl: 0
@@ -65,28 +70,32 @@ Material:
     - _RealWaterOpacity: 10
     - _ReceiveShadows: 1
     - _RiverSpeed: 50
-    - _SimpleNoiseDensity: 50
-    - _Smoothness: 0.6
+    - _SimpleNoiseDensity: 30
+    - _Smoothness: 0.5
     - _SrcBlend: 1
     - _Surface: 1
     - _VoronoiAngleOffset: 5
-    - _VoronoiNormalStrength: 0.2
-    - _WaterDensity: 5
-    - _WaterOpacity: 10
+    - _VoronoiNormalStrength: 1
+    - _WaterDensity: 3
+    - _WaterOpacity: 8
+    - _WaterPower: 3
     - _WorkflowMode: 1
     - _ZTest: 4
     - _ZWrite: 0
     - _ZWriteControl: 0
     m_Colors:
-    - _NoiseColor: {r: 0.30851966, g: 0, b: 0.6901961, a: 0}
-    - _NoiseSpeed: {r: 0.1, g: 0.1, b: 0, a: 0}
+    - _Foam: {r: 1.7824345, g: 1.7824345, b: 1.7824345, a: 0}
+    - _FoamChop: {r: 0.01, g: 0.005, b: 0, a: 0}
+    - _MainWaterColor: {r: 0, g: 0.8207547, b: 0.048154105, a: 0}
+    - _NoiseColor: {r: 0, g: 3.634022, b: 0.32999107, a: 0}
+    - _NoiseSpeed: {r: 0.4, g: 0.4, b: 0, a: 0}
     - _NoiseTiling: {r: 40, g: 5, b: 0, a: 0}
-    - _OffsetColor: {r: 1.9645668, g: 1.690592, b: 0, a: 0}
+    - _OffsetColor: {r: 0, g: 0.017717458, b: 0.13207549, a: 0}
     - _RiverSpeed_1: {r: 1, g: 1, b: 0, a: 0}
     - _Tiling: {r: 10, g: 1, b: 0, a: 0}
     - _VoronoiSpeed: {r: 0.4, g: 0, b: 0, a: 0}
     - _VoronoiTiling: {r: 30, g: 5, b: 0, a: 0}
-    - _WaterColor: {r: 1.1749239, g: 0, b: 2.6701567, a: 0}
+    - _WaterColor: {r: 0, g: 0.44433382, b: 1.414463, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &8168497136833643604
 MonoBehaviour:
