@@ -12,6 +12,8 @@ public class NavPathRenderer : BaseMonoBehaviour
     public Transform arrowhead;
     private LineRenderer line;
 
+    [HideInInspector] public NavMeshPath path;
+
     public Vector3 offset = Vector3.zero;
     public bool matchOffsetToTransform = true;
     public float edgeBuffer = 0f;
@@ -39,24 +41,24 @@ public class NavPathRenderer : BaseMonoBehaviour
 
     private void FixedUpdate()
     {
-        if (agent != null)
-        {
-            DisplayPath();
-        }
+        DisplayPath();
     }
 
     public void DisplayPath()
     {
-        line.enabled = agent.hasPath;
-        if (line.enabled)
+        if (path != null)
         {
-            DrawPath(agent.path);
-        }
-        else
-        {
-            if (arrowhead != null)
+            line.enabled = path != null;
+            if (line.enabled)
             {
-                arrowhead.gameObject.SetActive(false);
+                DrawPath(path);
+            }
+            else
+            {
+                if (arrowhead != null)
+                {
+                    arrowhead.gameObject.SetActive(false);
+                }
             }
         }
     }
