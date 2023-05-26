@@ -27,28 +27,31 @@ namespace Body.Behavior.ContextSteering
         }
         
         public Dictionary<Identity, List<Context>> contextMap = null;
-        public Dictionary<Identity, List<Context>> ContextMap
+        public Dictionary<Identity, List<Context>> ContextMap { get { return contextMap ?? Initialize(); } }
+
+        public void Awake()
         {
-            get
-            {
-                if (contextMap == null)  
-                {
-                    contextMap = new();
-                    for(int i = 0; i < contexts.Length; i++)
-                    {
-                        Context context = contexts[i];
-                        bool found = contextMap.TryGetValue(context.identity, out List<Context> values);
-                        if (!found)
-                        {
-                            values = new();
-                            contextMap.Add(context.identity, values);
-                        }
-                        values.Add(context);
-                    }
-                }
-                return contextMap;
-            }
+            Initialize();
         }
+
+        public Dictionary<Identity, List<Context>> Initialize()
+        {
+            contextMap ??= new();
+            contextMap.Clear();
+            for (int i = 0; i < contexts.Length; i++)
+            {
+                Context context = contexts[i];
+                bool found = contextMap.TryGetValue(context.identity, out List<Context> values);
+                if (!found)
+                {
+                    values = new();
+                    contextMap.Add(context.identity, values);
+                }
+                values.Add(context);
+            }
+            return ContextMap;
+        }
+
         public List<Context> this[Identity identity]
         {
             get

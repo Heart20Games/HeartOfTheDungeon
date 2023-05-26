@@ -13,6 +13,7 @@ namespace Body.Behavior
     using static ContextSteering.CSIdentity;
     using static ContextSteering.CSContext;
     using static Tree.LeafNode;
+    using UnityEditor.Animations;
 
     public class Brain : BaseMonoBehaviour, ITimeScalable
     {
@@ -36,6 +37,7 @@ namespace Body.Behavior
         private Character character;
         [HideInInspector] public NavMeshAgent agent;
         [HideInInspector] private CSController controller;
+        [HideInInspector] private BalancedPathfinder pathFinder;
 
         // Agent
         public float navUpdate = 1f;
@@ -70,6 +72,7 @@ namespace Body.Behavior
             character = GetComponent<Character>();
             agent = character.body.GetComponent<NavMeshAgent>();
             controller = character.body.GetComponent<CSController>();
+            pathFinder = character.body.GetComponent<BalancedPathfinder>();
             agent.baseOffset = baseOffset;
             if (target != null)
             {
@@ -186,14 +189,17 @@ namespace Body.Behavior
         {
             SetContext(Action.Idle);
 
+            pathFinder.target = target;
+
             if (debug) Debug.Log("Idling...");
+
             return BehaviorNode.Status.SUCCESS;
         }
 
         public BehaviorNode.Status Chase()
         {
             if (!HasTarget()) return BehaviorNode.Status.FAILURE;
-            if (TargetClose()) return BehaviorNode.Status.FAILURE;
+            //if (TargetClose()) return BehaviorNode.Status.FAILURE;
 
             if (debug) Debug.Log("Chasing...");
 
@@ -215,6 +221,19 @@ namespace Body.Behavior
                     }
                 }
             }
+            else
+            {
+                pathFinder.target = target;
+                if (pathFinder.NextPoint(out Vector3 destination))
+                {
+                    controller.Destination = destination;
+                }
+                else
+                {
+                    controller.following = false;
+                }
+            }
+
             return BehaviorNode.Status.SUCCESS;
         }
         
@@ -224,6 +243,11 @@ namespace Body.Behavior
             if (TargetFar()) return BehaviorNode.Status.FAILURE;
 
             if (debug) Debug.Log("Dueling...");
+
+            if (!useAgent)
+            {
+                controller.following = false;
+            }
 
             return BehaviorNode.Status.SUCCESS;
         }

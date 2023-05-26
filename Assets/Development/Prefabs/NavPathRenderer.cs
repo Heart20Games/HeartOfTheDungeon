@@ -7,7 +7,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(LineRenderer))]
 public class NavPathRenderer : BaseMonoBehaviour
 {
-    public NavMeshAgent agent;
+    public BalancedPathfinder pathFinder;
     public Transform body;
     public Transform arrowhead;
     private LineRenderer line;
@@ -23,13 +23,13 @@ public class NavPathRenderer : BaseMonoBehaviour
     private void Awake()
     {
         line = GetComponent<LineRenderer>();
-        if (agent == null)
+        if (pathFinder == null)
         {
-            agent = GetComponent<NavMeshAgent>();
+            pathFinder = GetComponent<BalancedPathfinder>();
         }
         if (body == null)
         {
-            body = agent.transform;
+            body = pathFinder.transform;
         }
         if (matchOffsetToTransform)
         {
@@ -39,24 +39,24 @@ public class NavPathRenderer : BaseMonoBehaviour
 
     private void FixedUpdate()
     {
-        if (agent != null)
-        {
-            DisplayPath();
-        }
+        DisplayPath();
     }
 
     public void DisplayPath()
     {
-        line.enabled = agent.hasPath;
-        if (line.enabled)
+        if (pathFinder != null)
         {
-            DrawPath(agent.path);
-        }
-        else
-        {
-            if (arrowhead != null)
+            line.enabled = pathFinder.hasPath;
+            if (line.enabled)
             {
-                arrowhead.gameObject.SetActive(false);
+                DrawPath(pathFinder.path);
+            }
+            else
+            {
+                if (arrowhead != null)
+                {
+                    arrowhead.gameObject.SetActive(false);
+                }
             }
         }
     }
