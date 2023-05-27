@@ -9,21 +9,23 @@ namespace Body.Behavior.ContextSteering
     [CreateAssetMenu(fileName = "CSContext", menuName = "Context Steering/Context", order = 1)]
     public class CSContext : ScriptableObject
     {
-        public enum ContextType { Peer, Target, Obstacle, None }
+        //public enum ContextType { Peer, Target, Obstacle, None }
+        public enum Range { Target, Close, Far, InRange, InAttackRange, None }
 
         public Context[] contexts = new Context[]
         {
             defaultContext
         };
         public static readonly Identity defaultIdentity = Identity.Neutral;
+        public static readonly Range defaultRange = Range.None;
         public static readonly Vector2 defaultWeight = new(1f, 0f);
         public static readonly Vector2 defaultGradient = new(0f, 5f);
         public static readonly Vector2 defaultDeadzone = new(0f, -1f);
         public static readonly float defaultFallof = 50f;
-        public static readonly Context defaultContext = new(defaultIdentity, defaultWeight, defaultGradient, defaultDeadzone, defaultFallof);
+        public static readonly Context defaultContext = new(defaultIdentity, defaultRange, defaultWeight, defaultGradient, defaultDeadzone, defaultFallof);
         public static Context DefaultContext(Identity identity)
         {
-            return new(identity, defaultWeight, defaultGradient, defaultDeadzone, defaultFallof);
+            return new(identity, defaultRange, defaultWeight, defaultGradient, defaultDeadzone, defaultFallof);
         }
         
         public Dictionary<Identity, List<Context>> contextMap = null;
@@ -100,10 +102,11 @@ namespace Body.Behavior.ContextSteering
         [Serializable]
         public struct Context
         {
-            public Context(Identity identity, Vector2 weight, Vector2 gradient, Vector2 deadzone, float falloff)
+            public Context(Identity identity, Range range, Vector2 weight, Vector2 gradient, Vector2 deadzone, float falloff)
             {
                 name = identity.ToString();
                 this.identity = identity;
+                this.range = range;
                 this.weight = weight;
                 this.gradient = gradient;
                 this.deadzone = new Vector2(Mathf.Repeat(deadzone.x, float.MaxValue), Mathf.Repeat(deadzone.y, float.MaxValue));
@@ -111,6 +114,7 @@ namespace Body.Behavior.ContextSteering
             }
             public string name;
             public Identity identity;
+            public Range range;
             // All vectors are one-dimensional, but defined by two points.
             // The weight vector is a bi-directional vector along the h-axis indicating the weight corresponding to the high and low ends of the gradient vector.
             public Vector2 weight;

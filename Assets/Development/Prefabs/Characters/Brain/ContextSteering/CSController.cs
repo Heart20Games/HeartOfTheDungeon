@@ -30,25 +30,11 @@ namespace Body.Behavior.ContextSteering
             set => context = value;
         }
 
-        // Idenity
-        //private CSIdentity relationships;
-        //public CSIdentity Relationships
-        //{
-        //    get
-        //    {
-        //        if (relationships == null) relationships = Preset.GetRelationships(Action.Chase);
-        //        return relationships;
-        //    }
-        //    set => relationships = value;
-        //}
-
         // Parts
         public float Speed => Preset.testSpeed;
         public float DrawScale => Preset.drawScale;
         public bool DrawRays => Preset.draw;
         public Identity Identity { get => Preset.Identity; }
-        //public IdentityMapPair[] Pairs { get => Relationships.pairs; }
-        //public Dictionary<Identity, IdentityMapPair> IdentityMap { get => Relationships.IdentityMap; }
 
         // Initialization
         private new Rigidbody rigidbody;
@@ -64,13 +50,14 @@ namespace Body.Behavior.ContextSteering
 
         // Generated
         private readonly List<Transform> obstacles = new();
+        public readonly List<Context> activeContexts = new();
         private Maps Maps { get; } = new(null, null);
 
         // Debug
-        [SerializeField] private readonly float ResultRadius = 0.5f;
-        [SerializeField] private readonly float CircleRadius = 0.55f;
-        [SerializeField] private readonly float SourceRadius = 0.15f;
-        [SerializeField] private readonly float ActualRadius = 0.05f;
+        private readonly float ResultRadius = 0.5f;
+        private readonly float CircleRadius = 0.55f;
+        private readonly float SourceRadius = 0.15f;
+        private readonly float ActualRadius = 0.05f;
 
         public bool debug = false;
 
@@ -89,6 +76,20 @@ namespace Body.Behavior.ContextSteering
             {
                 rigidbody.velocity = Vector3.zero;
             }
+        }
+
+        // Active Contexts
+        public bool HasActiveContext(Identity identity, Range range)
+        {
+            for(int i = 0; i < activeContexts.Count; i++)
+            {
+                Context context = activeContexts[i];
+                if (context.identity == identity && context.range == range)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         // Update
@@ -160,6 +161,10 @@ namespace Body.Behavior.ContextSteering
         {
             if (vector.magnitude == Mathf.Clamp(vector.magnitude, context.deadzone.x, context.deadzone.y))
             {
+                if (!activeContexts.Contains(context))
+                {
+                    activeContexts.Add(context);
+                }
 
                 // Weight
                 float distance = Mathf.Min(vector.magnitude - context.gradient.x, context.gradient.y);
