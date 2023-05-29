@@ -48,6 +48,9 @@ namespace Body.Behavior.ContextSteering
         public bool following = false;
         public Vector3 Destination { get => destination; set { destination = value; following = true; } }
 
+        // Vector
+        [HideInInspector] public Vector2 currentVector;
+
         // Generated
         private readonly List<Transform> obstacles = new();
         public readonly List<Context> activeContexts = new();
@@ -105,6 +108,7 @@ namespace Body.Behavior.ContextSteering
             {
                 rigidbody.velocity = Speed * Time.fixedDeltaTime * vector;
             }
+            currentVector = XZVector(vector);
         }
 
         // Vector

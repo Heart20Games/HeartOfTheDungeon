@@ -14,6 +14,7 @@ namespace Body.Behavior
     using static ContextSteering.CSContext;
     using static Tree.LeafNode;
     using UnityEditor.Animations;
+    using static Body.Character;
 
     public class Brain : BaseMonoBehaviour, ITimeScalable
     {
@@ -215,6 +216,8 @@ namespace Body.Behavior
             if (!useAgent)
             {
                 controller.following = false;
+                character.AimCharacter(controller.currentVector);
+                character.ActivateWeapon();
             }
 
             return BehaviorNode.Status.SUCCESS;
