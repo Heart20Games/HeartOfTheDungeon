@@ -126,7 +126,7 @@ namespace Body
             brain.Enabled = !_controllable;
             controllable = _controllable;
             movement.canMove = controllable;
-            attacker.active = controllable;
+            //attacker.enabled = controllable;
             SetComponentActive(moveReticle, _controllable);
             SetComponentActive(virtualCamera, _controllable);
         }
@@ -239,7 +239,7 @@ namespace Body
 
         public void ActivateCastable(ICastable castable)
         {
-            if (attacker != null && attacker.active)
+            if (attacker != null && attacker.enabled)
             {
                 attacker.Castable = castable;
                 attacker.Slashie(movement.castVector);
