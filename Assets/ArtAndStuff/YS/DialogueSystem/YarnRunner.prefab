@@ -177,6 +177,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2229466327454135498}
   - component: {fileID: 247714441200815817}
+  - component: {fileID: 3035490502552803009}
   - component: {fileID: 574000115014094558}
   - component: {fileID: 7120338839435959160}
   m_Layer: 0
@@ -226,12 +227,14 @@ MonoBehaviour:
   yarnProject: {fileID: 7545569452688597077, guid: b32a2a9c2259ee344a5f6724a08cd5b7, type: 3}
   _variableStorage: {fileID: 574000115014094558}
   dialogueViews:
-  - {fileID: 6426467422744738461}
-  - {fileID: 2264260657633791849}
+  - {fileID: 5882617368165854492}
+  - {fileID: 485194663673668048}
+  - {fileID: 7950540874253522717}
+  - {fileID: 949618399469515649}
   startNode: Start
   startAutomatically: 0
   runSelectedOptionAsLine: 0
-  lineProvider: {fileID: 0}
+  lineProvider: {fileID: 3035490502552803009}
   verboseLogging: 1
   onNodeStart:
     m_PersistentCalls:
@@ -245,6 +248,28 @@ MonoBehaviour:
   onCommand:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3035490502552803009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1507210881203439284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0d200d8f639e854b8cd103d326d5803, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentID: 
+  tester: {fileID: 2532045342572677719}
+  fmodEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  textLanguageCode: en-US
 --- !u!114 &574000115014094558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,6 +297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rooms: {fileID: 11400000, guid: 35ff588ae50e956429d245398ce6652b, type: 2}
+  tags: {fileID: 11400000, guid: db847cb317993d649bf82e7c2e4b3976, type: 2}
 --- !u!1 &2264260657134396167
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,7 +442,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2264260657633791861}
-  - component: {fileID: 2264260657633791849}
+  - component: {fileID: 7950540874253522717}
   - component: {fileID: 2264260657633791851}
   - component: {fileID: 2264260657633791860}
   - component: {fileID: 2264260657633791850}
@@ -449,7 +475,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 45.5}
   m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 0.5, y: 0}
---- !u!114 &2264260657633791849
+--- !u!114 &7950540874253522717
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -458,7 +484,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2264260657633791862}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ac0c40fc910845709d9cef7c876cb99, type: 3}
+  m_Script: {fileID: 11500000, guid: c08cbad4c8a236346ae33cb68d6d7677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 2264260657633791850}
@@ -804,7 +830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2607865b5e29942488414a3b6560f227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portraits: {fileID: 0}
+  portraits: {fileID: 11400000, guid: 8c8d32841b7b3e54f8a84f28d86d411b, type: 2}
   leftImage: {fileID: 0}
   rightImage: {fileID: 0}
 --- !u!1 &2814187272634311488
@@ -1026,18 +1052,18 @@ MonoBehaviour:
   skipTag: no-va
   fmodEvent:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -1261056749
+      Data2: 1181270493
+      Data3: 176127415
+      Data4: -116286681
+    Path: event:/VO/Intro VO/Intro Scene Param
   skipFmodEvent:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -262801679
+      Data2: 1288987310
+      Data3: -1901138766
+      Data4: -322447752
+    Path: event:/UI/MenuButtonDark1
 --- !u!1 &6370103729204531405
 GameObject:
   m_ObjectHideFlags: 0
@@ -1681,7 +1707,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6426467422744738461}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Yarn.Unity.LineView, Assembly-CSharp
         m_MethodName: OnContinueClicked
         m_Mode: 1
@@ -1859,7 +1885,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6426467422744738456}
-  - component: {fileID: 6426467422744738461}
+  - component: {fileID: 485194663673668048}
   - component: {fileID: 6426467422744738462}
   - component: {fileID: 6426467422744738463}
   - component: {fileID: 6426467422744738460}
@@ -1898,7 +1924,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 45.5}
   m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 0.5, y: 0}
---- !u!114 &6426467422744738461
+--- !u!114 &485194663673668048
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1907,7 +1933,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6426467422744738457}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddcdd604a328c4ab296f048eb7b3a925, type: 3}
+  m_Script: {fileID: 11500000, guid: 619050a9c8749cf4183bda5bc2bff82f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 6426467422744738460}

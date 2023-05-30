@@ -11,6 +11,7 @@ public class YarnCommands : BaseMonoBehaviour
 
     // Rooms
     [SerializeField] YarnRooms rooms;
+    [SerializeField] YarnTags tags;
 
 
     // Variable Initialization

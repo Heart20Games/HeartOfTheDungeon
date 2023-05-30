@@ -4,9 +4,11 @@ using Yarn.Unity;
 using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
+using static YarnTags;
 
 public class PortraitView : DialogueViewBase
 {
+    public readonly ViewType viewType = ViewType.Portrait;
 
     // Dictionary of Name:Image Pairs
     [SerializeField] Portraits portraits;
@@ -27,7 +29,7 @@ public class PortraitView : DialogueViewBase
 
     public override void RunLine(LocalizedLine dialogueLine, Action onDialogueLineFinished)
     {
-        if (gameObject.activeInHierarchy == false)
+        if (gameObject.activeInHierarchy == false && !Included(dialogueLine.Metadata, viewType))
         {
             onDialogueLineFinished();
             return;

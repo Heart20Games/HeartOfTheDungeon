@@ -36,13 +36,14 @@ namespace Yarn.Unity
             //currentID = line.ID;
             //emitter.Params.SetValue("B001 Rotta");
             //instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            string clean = line.ID.Remove(4, 1); // removing colon
-            currentID = clean;
+            //string clean = line.ID.Remove(4, 1); // removing colon
+            //currentID = clean;
 
             //instance.setParameterByNameWithLabel("IntroVOParam", clean); // IntroVOParam is on the Intro Scene even (Fmod event)
             //instance.start();
             
             //tester.GetComponent<SoundScript>().coolfunctionthatfindsclips(currentID);
+
             return new LocalizedLine()
             {
                 TextID = line.ID,
