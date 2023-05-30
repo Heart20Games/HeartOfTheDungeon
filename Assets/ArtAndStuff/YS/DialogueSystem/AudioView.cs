@@ -1,14 +1,12 @@
-using System.Collections;
-using UnityEngine;
 using Yarn.Unity;
-using UnityEngine.UI;
 using System;
-using System.Collections.Generic;
 using FMODUnity;
+using static YarnTags;
 
 public class AudioView : DialogueViewBase
 {
     public string skipTag = "no-va";
+    public readonly ViewType viewType = ViewType.Audio;
     public EventReference fmodEvent;
     public EventReference skipFmodEvent;
     private FMOD.Studio.EventInstance eventInstance;
@@ -36,7 +34,6 @@ public class AudioView : DialogueViewBase
                 }
             }
         }
-        
         return false;
     }
 
@@ -58,7 +55,7 @@ public class AudioView : DialogueViewBase
 
     public override void RunLine(LocalizedLine dialogueLine, Action onDialogueLineFinished)
     {
-        if (gameObject.activeInHierarchy == false)
+        if (gameObject.activeInHierarchy == false || !Included(dialogueLine.Metadata, viewType))
         {
             onDialogueLineFinished();
             return;
