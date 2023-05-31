@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Body;
+using UnityEngine.SceneManagement;
 
 public class Game : BaseMonoBehaviour
 {
@@ -35,6 +36,9 @@ public class Game : BaseMonoBehaviour
 
     // Input
     private PlayerInput input;
+
+    // Cheats / Shortcuts
+    public bool restartable = true;
 
     private void Start()
     {
@@ -146,6 +150,17 @@ public class Game : BaseMonoBehaviour
     public bool CanUseSelector()
     {
         return selector != null && Mode == GameMode.Selection;
+    }
+
+
+    // Cheats / Shortcuts
+
+    public void OnRestartLevel(InputValue inputValue)
+    {
+        if (inputValue.isPressed && restartable)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 
 
