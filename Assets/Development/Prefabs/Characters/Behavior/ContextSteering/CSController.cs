@@ -19,16 +19,8 @@ namespace Body.Behavior.ContextSteering
         public CSPreset Preset { get { return (CSPreset)preset.value; } set { preset.value = value; } }
 
         // Context
-        private CSContext context;
-        public CSContext Context
-        {
-            get
-            {
-                if (context == null) context = Preset.GetContext(Action.Chase);
-                return context;
-            }
-            set => context = value;
-        }
+        private readonly FullContext context = new();
+        public FullContext Context { get { return context.initialized ? context : context.Initialize(Preset); } }
 
         // Parts
         public float Speed => Preset.testSpeed;
@@ -68,6 +60,7 @@ namespace Body.Behavior.ContextSteering
         private void Awake()
         {
             rigidbody = GetComponent<Rigidbody>();
+            context.debug = debug;
             Active = Active;
         }
 

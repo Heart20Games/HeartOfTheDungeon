@@ -30,7 +30,7 @@ namespace Body.Behavior.ContextSteering
         [ScriptableObjectDropdown(typeof(CSIdentity), grouping = ScriptableObjectGrouping.ByFolderFlat)]
         public ScriptableObjectReference duelIdentity;
 
-        public CSContext GetContext(Action action)
+        public CSContext GetContext(Action action, bool debug=false)
         {
             ScriptableObjectReference reference = action switch
             {

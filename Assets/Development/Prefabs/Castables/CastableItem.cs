@@ -8,6 +8,5 @@ using static Body.Behavior.ContextSteering.CSIdentity;
 public class CastableItem : ScriptableObject
 {
     public Castable prefab;
-    public Identity targetIdentity = Identity.Neutral;
-    public ContextVector rangeVector = new();
+    public Context context = new();
 }
