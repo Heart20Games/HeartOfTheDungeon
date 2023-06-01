@@ -7,19 +7,17 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WaterMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: 252dda8e2bb3592429535fb8f534a8e2, type: 3}
+  m_Name: FireMaterial
+  m_Shader: {fileID: -6465566751694194690, guid: e433bef67419dc244840fa684eb11b9e, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _ALPHAPREMULTIPLY_ON
-  - _ALPHATEST_ON
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap:
     RenderType: Transparent
   disabledShaderPasses:
@@ -28,8 +26,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _WaterNormal:
-        m_Texture: {fileID: 2800000, guid: 16ea1cec028ca2e4094efc7cbc2fae7b, type: 3}
+    - _MainTexture:
+        m_Texture: {fileID: 2800000, guid: a6107cc9a172e82408ddfe8cab32a2ee, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -46,58 +44,36 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AlphaClip: 4.5
+    - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _Blend: 0
+    - _Blend: 2
     - _BlendModePreserveSpecular: 1
     - _CastShadows: 1
-    - _Choppiness: 0.1
-    - _ChoppinessX: 0.25
     - _Cull: 2
-    - _DstBlend: 10
-    - _FoamChopScale: 800
-    - _FoamDistance: 1.2
-    - _NoiseDensity: 25
-    - _NoiseNormalStrength: 5
-    - _NoisePower: 6
-    - _NormalFromVoronoi: 1
-    - _NormalMap: 0
-    - _NormalVoronoiPower: 3
-    - _OffsetDensity: 5.31
-    - _OffsetPower: 0.2
+    - _DistortionAmount: 0.15
+    - _DistortionAmount2: 0.2
+    - _DstBlend: 1
+    - _FlamePower1: 1.5
+    - _FlamePower2: 0.5
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _RealWaterOpacity: 10
     - _ReceiveShadows: 1
-    - _RiverSpeed: 50
-    - _SimpleNoiseDensity: 30
-    - _Smoothness: 0.2
-    - _SrcBlend: 1
+    - _SrcBlend: 5
     - _Surface: 1
-    - _VoronoiAngleOffset: 5
-    - _VoronoiNormalStrength: 1
-    - _WaterDensity: 3
-    - _WaterOpacity: 8
-    - _WaterPower: 3
+    - _VoronoiAngle: 20
+    - _VoronoiDensity: 5
+    - _VoronoiPower: 0.15
     - _WorkflowMode: 1
     - _ZTest: 4
     - _ZWrite: 0
     - _ZWriteControl: 0
     m_Colors:
-    - _Foam: {r: 1.7824345, g: 1.7824345, b: 1.7824345, a: 0}
-    - _FoamChop: {r: 0.01, g: 0.005, b: 0, a: 0}
-    - _MainWaterColor: {r: 0, g: 0.8207547, b: 0.048154105, a: 0}
-    - _NoiseColor: {r: 0, g: 3.634022, b: 0.32999107, a: 0}
-    - _NoiseSpeed: {r: 0.4, g: 0.4, b: 0, a: 0}
-    - _NoiseTiling: {r: 40, g: 5, b: 0, a: 0}
-    - _OffsetColor: {r: 0, g: 0.017717458, b: 0.13207549, a: 0}
-    - _RiverSpeed_1: {r: 1, g: 1, b: 0, a: 0}
-    - _Tiling: {r: 10, g: 1, b: 0, a: 0}
-    - _VoronoiSpeed: {r: 0.4, g: 0, b: 0, a: 0}
-    - _VoronoiTiling: {r: 30, g: 5, b: 0, a: 0}
-    - _WaterColor: {r: 0, g: 0.44433382, b: 1.414463, a: 0}
+    - _Color: {r: 5.132075, g: 0.2346845, b: 0, a: 0}
+    - _DistortionSpeed: {r: 0, g: -0.5, b: 0, a: 0}
+    - _DistortionSpeed2: {r: -0.2, g: -0.2, b: 0, a: 0}
+    - _VoronoiSpeed: {r: 0.1, g: -0.5, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &8168497136833643604
+--- !u!114 &6911638382952383265
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
