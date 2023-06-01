@@ -11,51 +11,51 @@ namespace Body.Behavior.ContextSteering
     {
         public enum Identity { Neutral, Friend, Foe, Obstacle, Target }
 
-        public IdentityMapPair[] pairs = new IdentityMapPair[] {
-            new(Identity.Neutral, MapType.None, 0f),
-            new IdentityMapPair(Identity.Foe, MapType.Interest, 1f),
-            new IdentityMapPair(Identity.Friend, MapType.Danger, 0.5f)
-        };
+        //public IdentityMapPair[] pairs = new IdentityMapPair[] {
+        //    new(Identity.Neutral, MapType.None, 0f),
+        //    new IdentityMapPair(Identity.Foe, MapType.Interest, 1f),
+        //    new IdentityMapPair(Identity.Friend, MapType.Danger, 0.5f)
+        //};
 
 
-        static readonly public IdentityMapPair[] defaultPairs = new IdentityMapPair[]
-        {
-            new(Identity.Neutral, MapType.None, 0f),
-            new IdentityMapPair(Identity.Foe, MapType.Interest, 1f),
-            new IdentityMapPair(Identity.Friend, MapType.Danger, 0.5f)
-        };
+        //static readonly public IdentityMapPair[] defaultPairs = new IdentityMapPair[]
+        //{
+        //    new(Identity.Neutral, MapType.None, 0f),
+        //    new IdentityMapPair(Identity.Foe, MapType.Interest, 1f),
+        //    new IdentityMapPair(Identity.Friend, MapType.Danger, 0.5f)
+        //};
 
-        public Dictionary<Identity, IdentityMapPair> identityMap = null;
-        public Dictionary<Identity, IdentityMapPair> IdentityMap
-        {
-            get
-            {
-                if (identityMap == null)
-                {
-                    identityMap = new();
-                    foreach (var pair in pairs)
-                    {
-                        identityMap[pair.identity] = pair;
-                    }
-                }
-                return identityMap; 
-            }
-        }
+        //public Dictionary<Identity, IdentityMapPair> identityMap = null;
+        //public Dictionary<Identity, IdentityMapPair> IdentityMap
+        //{
+        //    get
+        //    {
+        //        if (identityMap == null)
+        //        {
+        //            identityMap = new();
+        //            foreach (var pair in pairs)
+        //            {
+        //                identityMap[pair.identity] = pair;
+        //            }
+        //        }
+        //        return identityMap; 
+        //    }
+        //}
 
-        [Serializable]
-        public struct IdentityMapPair
-        {
-            public IdentityMapPair(Identity identity, MapType mapType, float weight)
-            {
-                name = identity.ToString();
-                this.identity = identity;
-                this.mapType = mapType;
-                this.weight = weight;
-            }
-            public string name;
-            public Identity identity;
-            public MapType mapType;
-            public float weight;
-        }
+        //[Serializable]
+        //public struct IdentityMapPair
+        //{
+        //    public IdentityMapPair(Identity identity, MapType mapType, float weight)
+        //    {
+        //        name = identity.ToString();
+        //        this.identity = identity;
+        //        this.mapType = mapType;
+        //        this.weight = weight;
+        //    }
+        //    public string name;
+        //    public Identity identity;
+        //    public MapType mapType;
+        //    public float weight;
+        //}
     }
 }

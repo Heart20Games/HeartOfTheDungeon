@@ -151,7 +151,7 @@ MonoBehaviour:
   navUpdate: 1
   followingDistance: 0
   baseOffset: 0
-  useAgent: 1
+  useAgent: 0
   modifiers: {fileID: 11400000, guid: e747a79b96270f8488105465899547d7, type: 2}
   tree: {fileID: 11400000, guid: 5140f609f0a38fb48865e6fb826fc149, type: 2}
   debug: 0
@@ -279,6 +279,7 @@ GameObject:
   - component: {fileID: 5106106832475441759}
   - component: {fileID: 852013129629387909}
   - component: {fileID: 442215480502625366}
+  - component: {fileID: 4630028532720471171}
   - component: {fileID: 608404790986451179}
   - component: {fileID: 4413256440571499932}
   - component: {fileID: 1170855021759411822}
@@ -330,6 +331,7 @@ MonoBehaviour:
   active: 0
   destination: {x: 0, y: 0, z: 0}
   following: 0
+  debug: 0
 --- !u!114 &442215480502625366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,6 +387,20 @@ MonoBehaviour:
   debug: 0
   other: {fileID: 0}
   selectable: {fileID: 0}
+--- !u!114 &4630028532720471171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4520041833351946365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1db18116c3d903b44829540182e7f5bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  hasPath: 0
 --- !u!195 &608404790986451179
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -852,6 +868,10 @@ PrefabInstance:
       propertyPath: agent
       value: 
       objectReference: {fileID: 608404790986451179}
+    - target: {fileID: 487645562934312341, guid: d1188049d2e999b48b465fd757a928c1, type: 3}
+      propertyPath: pathFinder
+      value: 
+      objectReference: {fileID: 4630028532720471171}
     - target: {fileID: 6304595911526012643, guid: d1188049d2e999b48b465fd757a928c1, type: 3}
       propertyPath: m_RootOrder
       value: -1

@@ -7,7 +7,6 @@ using Body;
 public class PlayerAttack : BaseMonoBehaviour
 {
     public bool canAttack = true;
-    public bool active = true;
     private Character character;
     private Animator animator;
     private Transform pivot;
