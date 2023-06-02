@@ -19,10 +19,6 @@ public class Talker : BaseMonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (dialogueRunner != null)
-        {
-            dialogueRunner.onDialogueComplete.AddListener(onDoneTalking.Invoke);
-        }
         onDoneTalking.AddListener(ResetMode);
     }
 
@@ -36,6 +32,11 @@ public class Talker : BaseMonoBehaviour
     }
 
     // Actions
+    public void CompleteTalking()
+    {
+        dialogueRunner.onDialogueComplete.RemoveListener(CompleteTalking);
+        onDoneTalking.Invoke();
+    }
     public void Talk() { Talk(targetNode); }
     public void Talk(string targetNode)
     {
@@ -50,6 +51,7 @@ public class Talker : BaseMonoBehaviour
                 prevMode = game.Mode;
                 game.Mode = GameMode.Dialogue;
                 dialogueRunner.Stop();
+                dialogueRunner.onDialogueComplete.AddListener(CompleteTalking);
                 dialogueRunner.StartDialogue(targetNode);
                 onStartTalking.Invoke();
             }
