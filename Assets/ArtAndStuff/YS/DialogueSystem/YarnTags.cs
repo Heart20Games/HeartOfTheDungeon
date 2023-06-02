@@ -51,11 +51,27 @@ public class YarnTags : ScriptableObject
             string include = $"{inclusionTag}:{tag}";
             for (int i = 0; i < metaData.Length; i++)
             {
+                Debug.Log("Meta: " + metaData[i]);
                 if (metaData[i] == include) return true;
                 else if (metaData[i] == exclude) return false;
             }
             return true;
         }
         else return true;
+    }
+
+    static public bool HasTag(string[] metaData, string tag)
+    {
+        if (metaData != null)
+        {
+            foreach (string meta in metaData)
+            {
+                if (meta == tag)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

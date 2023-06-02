@@ -22,21 +22,6 @@ public class AudioView : DialogueViewBase
         skipInstance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject.transform));
     }
 
-    private bool HasTag(string[] metaData, string tag)
-    {
-        if (metaData != null)
-        {
-            foreach (string meta in metaData)
-            {
-                if (meta == tag)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     private void PlaySound(LocalizedLine dialogueLine)
     {
         bool skip = HasTag(dialogueLine.Metadata, skipTag);
