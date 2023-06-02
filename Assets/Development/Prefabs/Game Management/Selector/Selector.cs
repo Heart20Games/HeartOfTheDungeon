@@ -45,7 +45,8 @@ public class Selector : BaseMonoBehaviour, IControllable
             cursor.touching.Clear();
         }
         this.controllable = controllable;
-        cursor.gameObject.SetActive(controllable);
+        //cursor.gameObject.SetActive(controllable);
+        gameObject.SetActive(controllable);
         DeSelect();
     }
 
