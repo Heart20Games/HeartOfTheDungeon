@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "YarnTags", menuName = "Yarn Spinner/Yarn Tags", order = 1)]
@@ -36,16 +37,19 @@ public class YarnTags : ScriptableObject
     }
 
     // Awake
-    private void Awake()
+    public void Initialize()
     {
+        Debug.Log("[YarnTags]");
         InitializeViewTags(viewTags);
     }
 
     // Tag Checks
     static public bool Included(string[] metaData, ViewType viewType)
     {
+        Debug.Log("Included?");
         if (metaData != null && ViewTags.TryGetValue(viewType, out ViewTag viewTag))
         {
+            Debug.Log("Checking tags...");
             string tag = viewTag.name;
             string exclude = $"{exclusionTag}:{tag}";
             string include = $"{inclusionTag}:{tag}";
