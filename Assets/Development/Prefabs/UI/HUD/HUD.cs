@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-public class HUD : MonoBehaviour
+public class HUD : BaseMonoBehaviour
 {
     [SerializeField] private List<GameObject> characterImages;
     [SerializeField] private GameObject selectedCharacter;
@@ -30,7 +30,7 @@ public class HUD : MonoBehaviour
     private void Start() 
     {
         abilityMenuAnimator = abilityMenu.GetComponent<Animator>();
-        mainCamera = GameObject.Find("Game Controller").transform.Find("Main Camera").gameObject;
+        mainCamera = FindObjectOfType<Camera>().gameObject;
         hudCanvas = this.GetComponent<Canvas>();
         hudCanvas.renderMode = RenderMode.ScreenSpaceCamera;
         hudCanvas.worldCamera = mainCamera.GetComponent<Camera>();                

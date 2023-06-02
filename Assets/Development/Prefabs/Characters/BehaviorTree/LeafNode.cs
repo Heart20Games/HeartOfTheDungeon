@@ -4,25 +4,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class LeafNode : BehaviorNode
+namespace Body.Behavior.Tree
 {
-    public delegate Status Tick();
-    public Tick ProcessMethod;
-
-    public LeafNode() { }
-
-    public LeafNode(string n, Tick pm)
+    public class LeafNode : BehaviorNode
     {
-        name = n;
-        ProcessMethod = pm;
-    }
+        public delegate Status Tick();
+        public Tick ProcessMethod;
 
-    public override Status Process()
-    {
-        if (ProcessMethod != null)
+        public LeafNode() { }
+
+        public LeafNode(string n, Tick pm)
         {
-            return ProcessMethod();
+            name = n;
+            ProcessMethod = pm;
         }
-        return Status.FAILURE;
+
+        public override Status Process()
+        {
+            if (ProcessMethod != null)
+            {
+                return ProcessMethod();
+            }
+            return Status.FAILURE;
+        }
     }
 }

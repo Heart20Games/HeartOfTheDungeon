@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Projectile : MonoBehaviour
+public class Projectile : BaseMonoBehaviour
 {
     public Vector3 direction = new Vector3();
     public float speed = 0;

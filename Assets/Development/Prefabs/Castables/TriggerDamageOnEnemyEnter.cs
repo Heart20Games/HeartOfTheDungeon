@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TriggerDamageOnEnemyEnter : MonoBehaviour
+public class TriggerDamageOnEnemyEnter : BaseMonoBehaviour
 {
     public int damage = 10;
 

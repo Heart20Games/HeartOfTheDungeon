@@ -5,7 +5,7 @@ using System.Collections;
 namespace TMPro.Examples
 {
     
-    public class TeleType : MonoBehaviour
+    public class TeleType : BaseMonoBehaviour
     {
 
 

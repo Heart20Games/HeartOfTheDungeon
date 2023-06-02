@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthbarUI : MonoBehaviour
+public class HealthbarUI : BaseMonoBehaviour
 {
     public Image fill;
     public Transform cam;

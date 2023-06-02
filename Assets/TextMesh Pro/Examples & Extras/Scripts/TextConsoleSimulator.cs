@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace TMPro.Examples
 {
-    public class TextConsoleSimulator : MonoBehaviour
+    public class TextConsoleSimulator : BaseMonoBehaviour
     {
         private TMP_Text m_TextComponent;
         private bool hasTextChanged;

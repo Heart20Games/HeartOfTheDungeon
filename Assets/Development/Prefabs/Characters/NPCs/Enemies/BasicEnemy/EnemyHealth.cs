@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyHealth : MonoBehaviour, IDamageable
+public class EnemyHealth : BaseMonoBehaviour, IDamageable
 {
     public int startingHealth = 25;
     public int currentHealth;

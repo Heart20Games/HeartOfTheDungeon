@@ -5,7 +5,7 @@ using System.Collections;
 namespace TMPro.Examples
 {
     
-    public class SimpleScript : MonoBehaviour
+    public class SimpleScript : BaseMonoBehaviour
     {
 
         private TextMeshPro m_textMeshPro;

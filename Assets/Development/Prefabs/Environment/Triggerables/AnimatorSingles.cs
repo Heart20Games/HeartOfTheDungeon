@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimatorSingles : MonoBehaviour
+public class AnimatorSingles : BaseMonoBehaviour
 {
     public Animator animator;
     public string boolName = "flying";

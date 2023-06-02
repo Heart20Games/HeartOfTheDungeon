@@ -19,12 +19,13 @@ public class FModEventLibary : ScriptableObject
         public EventReference reference;
     }
 
-    public List<FModEvent> events = new List<FModEvent>();
-    private Dictionary<string, FModEvent> bank = new Dictionary<string, FModEvent>();
+    public List<FModEvent> events = new();
+    private readonly Dictionary<string, FModEvent> bank = new();
     private bool initialized = false;
 
     public void Initialize()
     {
+        initialized = true;
         string names = "";
         bank.Clear();
         foreach (FModEvent fmodEvent in events)

@@ -4,7 +4,7 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 
-public class FModEventPlayer : MonoBehaviour
+public class FModEventPlayer : BaseMonoBehaviour
 {
     public FModEventLibary libary;
     public Vector3 offset = Vector3.zero;

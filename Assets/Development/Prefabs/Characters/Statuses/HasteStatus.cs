@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using Body;
 
 [CreateAssetMenu(fileName = "NewHasteStatus", menuName = "Statuses/HasteStatus", order = 1)]
 public class HasteStatus : StatusEffect, ITimeScalable
 {
     public float factor = 0.5f;
-    private Dictionary<Character, float> oldMovementTimeScales = new Dictionary<Character, float>();
-    private Dictionary<Character, float> oldBrainTimeScales = new Dictionary<Character, float>();
+    private readonly Dictionary<Character, float> oldMovementTimeScales = new();
+    private readonly Dictionary<Character, float> oldBrainTimeScales = new();
 
     public override void Apply(Character character, int strength)
     {

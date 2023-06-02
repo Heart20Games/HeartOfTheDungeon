@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Body;
 
 public interface ICastable
 {
@@ -13,7 +14,7 @@ public interface ICastable
     public void Cast(Vector3 direction);
     public void UnCast();
     public UnityEvent OnCasted();
-    public void Initialize(Character source);
+    public void Initialize(Body.Character source);
     public void Disable();
     public void Enable();
     public bool CanCast();

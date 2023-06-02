@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Interactable : MonoBehaviour
+public class Interactable : BaseMonoBehaviour
 {
     public UnityEvent onInteract;
     public bool canInteract = false;

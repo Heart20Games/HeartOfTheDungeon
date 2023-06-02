@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCCameraFace : MonoBehaviour
+public class NPCCameraFace : BaseMonoBehaviour
 {
     public Transform cam;
     public GameObject player;
 
     private void Start() 
     {
-        player = GameObject.Find("/Player V2/Body");
+        player = GameObject.Find("/Player V2/Character");
         cam = player.transform.Find("Main Camera");    
     }
 

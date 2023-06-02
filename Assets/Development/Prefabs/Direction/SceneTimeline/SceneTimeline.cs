@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using Yarn.Unity;
 
-public class SceneTimeline : MonoBehaviour
+public class SceneTimeline : BaseMonoBehaviour
 {
     private PlayableDirector director;
     public List<PlayableAsset> timelines = new List<PlayableAsset>();

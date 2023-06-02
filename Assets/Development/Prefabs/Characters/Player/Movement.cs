@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using Body;
 
-public class Movement : MonoBehaviour, ITimeScalable
+public class Movement : BaseMonoBehaviour, ITimeScalable
 {
     public float speed = 700f;
     public float maxVelocity = 10f;
@@ -28,7 +29,7 @@ public class Movement : MonoBehaviour, ITimeScalable
     private Animator animator;
     private Transform pivot;
 
-    private Dictionary<string, bool> parameterExists = new Dictionary<string, bool>();
+    private readonly Dictionary<string, bool> parameterExists = new();
 
     public UnityEvent OnSetCastVector;
     public UnityEvent OnSetMoveVector;

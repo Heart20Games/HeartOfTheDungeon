@@ -2,35 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectorNode : BehaviorNode
+namespace Body.Behavior.Tree
 {
-    public SelectorNode() { }
-
-    public SelectorNode(string n)
+    public class SelectorNode : BehaviorNode
     {
-        name = n;
-    }
+        public SelectorNode() { }
 
-    public override Status Process()
-    {
-        Status childStatus = children[currentChild].Process();
-
-        switch (childStatus)
+        public SelectorNode(string n)
         {
-            case Status.RUNNING:
-                return Status.RUNNING;
-            case Status.SUCCESS:
-                currentChild = 0;
-                return Status.SUCCESS;
-            case Status.FAILURE:
-                currentChild++;
-                if (currentChild >= children.Count)
-                {
-                    currentChild = 0;
-                    return Status.FAILURE;
-                }
-                break;
+            name = n;
         }
-        return Status.RUNNING;
+
+        public override Status Process()
+        {
+            Status childStatus = children[currentChild].Process();
+
+            switch (childStatus)
+            {
+                case Status.RUNNING:
+                    return Status.RUNNING;
+                case Status.SUCCESS:
+                    currentChild = 0;
+                    return Status.SUCCESS;
+                case Status.FAILURE:
+                    currentChild++;
+                    if (currentChild >= children.Count)
+                    {
+                        currentChild = 0;
+                        return Status.FAILURE;
+                    }
+                    break;
+            }
+            return Status.RUNNING;
+        }
     }
 }

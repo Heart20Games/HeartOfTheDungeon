@@ -7,6 +7,6 @@ using Yarn.Unity;
 
 
 
-public class PlayerCore : MonoBehaviour
+public class PlayerCore : BaseMonoBehaviour
 {
 }

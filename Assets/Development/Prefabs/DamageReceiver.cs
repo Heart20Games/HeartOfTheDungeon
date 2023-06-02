@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class DamageReceiver : MonoBehaviour, IDamageable
+public class DamageReceiver : BaseMonoBehaviour, IDamageable
 {
     public UnityEvent<int> onTakeDamage;
 
