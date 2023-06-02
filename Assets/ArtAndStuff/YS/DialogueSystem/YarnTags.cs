@@ -51,13 +51,12 @@ public class YarnTags : ScriptableObject
         {
             Debug.Log("Checking tags...");
             string tag = viewTag.name;
-            string exclude = $"{exclusionTag}:{tag}";
-            string include = $"{inclusionTag}:{tag}";
             for (int i = 0; i < metaData.Length; i++)
             {
                 Debug.Log("Meta: " + metaData[i]);
-                if (metaData[i] == include) return true;
-                else if (metaData[i] == exclude) return false;
+                string meta = metaData[i];
+                if (meta.StartsWith(inclusionTag) && meta.Contains(tag)) return true;
+                else if (meta.StartsWith(exclusionTag) && meta.Contains(tag)) return false;
             }
             return true;
         }
