@@ -16,7 +16,6 @@ public class Talker : BaseMonoBehaviour
     public UnityEvent onDoneTalking;
     private GameMode prevMode;
 
-    // Start is called before the first frame update
     void Start()
     {
         onDoneTalking.AddListener(ResetMode);

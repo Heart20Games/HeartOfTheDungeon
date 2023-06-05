@@ -17,9 +17,9 @@ public class AudioView : DialogueViewBase
     public void Awake()
     {
         eventInstance = RuntimeManager.CreateInstance(fmodEvent);
-        eventInstance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject.transform));
+        eventInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject.transform));
         skipInstance = RuntimeManager.CreateInstance(skipFmodEvent);
-        skipInstance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject.transform));
+        skipInstance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject.transform));
     }
 
     private void PlaySound(LocalizedLine dialogueLine)

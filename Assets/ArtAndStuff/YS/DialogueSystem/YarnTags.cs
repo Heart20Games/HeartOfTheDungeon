@@ -39,21 +39,17 @@ public class YarnTags : ScriptableObject
     // Awake
     public void Initialize()
     {
-        Debug.Log("[YarnTags]");
         InitializeViewTags(viewTags);
     }
 
     // Tag Checks
     static public bool Included(string[] metaData, ViewType viewType)
     {
-        Debug.Log("Included?");
         if (metaData != null && ViewTags.TryGetValue(viewType, out ViewTag viewTag))
         {
-            Debug.Log("Checking tags...");
             string tag = viewTag.name;
             for (int i = 0; i < metaData.Length; i++)
             {
-                Debug.Log("Meta: " + metaData[i]);
                 string meta = metaData[i];
                 if (meta.StartsWith(inclusionTag) && meta.Contains(tag)) return true;
                 else if (meta.StartsWith(exclusionTag) && meta.Contains(tag)) return false;
