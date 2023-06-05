@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Positionable : MonoBehaviour, IPositionable
+public class Positionable : BaseMonoBehaviour, IPositionable
 {
     public Transform source;
     public Transform target;

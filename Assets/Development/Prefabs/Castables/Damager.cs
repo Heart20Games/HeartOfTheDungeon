@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Unity.VisualScripting.Member;
 
-public class Damager : MonoBehaviour
+public class Damager : BaseMonoBehaviour
 {
     private readonly List<IDamageable> others = new List<IDamageable>();
     private readonly List<IDamageable> ignored = new List<IDamageable>();

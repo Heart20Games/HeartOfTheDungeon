@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Yarn.Unity;
 using static Game;
 
-public class Talker : MonoBehaviour
+public class Talker : BaseMonoBehaviour
 {
     [HideInInspector] public Game game;
     [HideInInspector] public DialogueRunner dialogueRunner;
@@ -19,10 +17,6 @@ public class Talker : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (dialogueRunner != null)
-        {
-            dialogueRunner.onDialogueComplete.AddListener(onDoneTalking.Invoke);
-        }
         onDoneTalking.AddListener(ResetMode);
     }
 
@@ -36,6 +30,11 @@ public class Talker : MonoBehaviour
     }
 
     // Actions
+    public void CompleteTalking()
+    {
+        dialogueRunner.onDialogueComplete.RemoveListener(CompleteTalking);
+        onDoneTalking.Invoke();
+    }
     public void Talk() { Talk(targetNode); }
     public void Talk(string targetNode)
     {
@@ -50,6 +49,7 @@ public class Talker : MonoBehaviour
                 prevMode = game.Mode;
                 game.Mode = GameMode.Dialogue;
                 dialogueRunner.Stop();
+                dialogueRunner.onDialogueComplete.AddListener(CompleteTalking);
                 dialogueRunner.StartDialogue(targetNode);
                 onStartTalking.Invoke();
             }

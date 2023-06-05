@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using Body;
 
 [Serializable]
 public struct Status
@@ -30,7 +31,7 @@ public abstract class StatusEffect: ScriptableObject
     private UnityEvent onProc;
     private UnityEvent onTick;
 
-    public virtual void Apply(Character character, int strength)
+    public virtual void Apply(Body.Character character, int strength)
     {
         foreach (Status status in character.statuses)
         {
@@ -42,18 +43,18 @@ public abstract class StatusEffect: ScriptableObject
         character.statuses.Add(new Status(this, strength));
     }
 
-    public virtual void Proc(int strength, Character character)
+    public virtual void Proc(int strength, Body.Character character)
     {
         character.statuses.Add(new Status(this, strength));
         onProc.Invoke();
     }
     
-    public virtual void Tick(int strength, Character character)
+    public virtual void Tick(int strength, Body.Character character)
     {
         onTick.Invoke();
     }
     
-    public virtual void Remove(Character character)
+    public virtual void Remove(Body.Character character)
     {
         for (int i = 0; i < character.statuses.Count;)
         {

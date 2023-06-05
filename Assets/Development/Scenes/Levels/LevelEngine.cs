@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 using Yarn.Unity;
 
-public class LevelEngine : MonoBehaviour
+public class LevelEngine : BaseMonoBehaviour
 {
     [SerializeField] GameState gameState;
     public int targetRoom = 4;

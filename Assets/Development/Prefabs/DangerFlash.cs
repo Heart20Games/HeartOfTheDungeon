@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DangerFlash : MonoBehaviour
+public class DangerFlash : BaseMonoBehaviour
 {
     public float flashDuration = 1.0f;
     public float flashInterval = 0.1f;

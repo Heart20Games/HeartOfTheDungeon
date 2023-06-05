@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ConditionNode : LeafNode
+namespace Body.Behavior.Tree
 {
-    public ConditionNode() { }
-
-    public ConditionNode(string n, Tick pm)
+    public class ConditionNode : LeafNode
     {
-        name = n;
-        ProcessMethod = pm;
+        public ConditionNode() { }
+
+        public ConditionNode(string n, Tick pm)
+        {
+            name = n;
+            ProcessMethod = pm;
+        }
     }
 }
