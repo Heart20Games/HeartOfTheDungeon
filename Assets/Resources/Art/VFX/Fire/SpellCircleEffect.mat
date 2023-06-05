@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8834757166954655213
+--- !u!114 &-6677046021485861387
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,15 +20,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MagicCircleParallax
-  m_Shader: {fileID: -6465566751694194690, guid: 9a2067710f8c2b64f8be0467a9d19f88, type: 3}
+  m_Name: SpellCircleEffect
+  m_Shader: {fileID: -6465566751694194690, guid: e433bef67419dc244840fa684eb11b9e, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _ALPHATEST_ON
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -40,12 +39,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _HeightMap:
-        m_Texture: {fileID: 2800000, guid: 68cabd40a7aca274d91137f7387db627, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 68cabd40a7aca274d91137f7387db627, type: 3}
+    - _MainTexture:
+        m_Texture: {fileID: 2800000, guid: b91c9f11e5287cb4f90fa088af1ce257, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -62,23 +57,29 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AlphaClip: 1
+    - _AlphaClip: 0
     - _AlphaToMask: 0
     - _Blend: 0
-    - _BlendModePreserveSpecular: 0
     - _CastShadows: 1
     - _Cull: 0
+    - _DistortionAmount: 0.05
+    - _DistortionAmount2: 0.3
     - _DstBlend: 10
-    - _ParallaxAmplitude: 2
+    - _FlamePower1: 2
+    - _FlamePower2: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _ReceiveShadows: 1
     - _SrcBlend: 5
     - _Surface: 1
-    - _WorkflowMode: 1
+    - _VoronoiAngle: 2
+    - _VoronoiDensity: 5
+    - _VoronoiPower: 0
     - _ZTest: 4
     - _ZWrite: 0
     - _ZWriteControl: 0
     m_Colors:
-    - _Color: {r: 0, g: 1.9169633, b: 56.754715, a: 0}
+    - _Color: {r: 0, g: 1.1169327, b: 0.26214936, a: 0}
+    - _DistortionSpeed: {r: 0, g: -0.2, b: 0, a: 0}
+    - _DistortionSpeed2: {r: 0, g: -0.2, b: 0, a: 0}
+    - _VoronoiSpeed: {r: 0, g: -0.5, b: 0, a: 0}
   m_BuildTextureStacks: []
