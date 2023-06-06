@@ -41,7 +41,7 @@ public class Talker : BaseMonoBehaviour
     {
         if (dialogueRunner != null)
         {
-            if (targetNode != "")
+            if (targetNode != "" && dialogueRunner.NodeExists(targetNode))
             {
                 if (virtualCamera != null)
                 {
@@ -56,7 +56,7 @@ public class Talker : BaseMonoBehaviour
             }
             else
             {
-                Debug.LogWarning("No target node");
+                Debug.LogWarning($"No target node '{targetNode}' exists. ({name})");
             }
         }
         else

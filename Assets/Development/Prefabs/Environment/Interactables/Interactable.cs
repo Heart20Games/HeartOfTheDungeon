@@ -12,7 +12,6 @@ public class Interactable : BaseMonoBehaviour
     {
         if (canInteract)
         {
-            print("Interacting");
             onInteract.Invoke();
         }
     }
