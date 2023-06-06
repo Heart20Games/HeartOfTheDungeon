@@ -176,7 +176,7 @@ MonoBehaviour:
   virtualCamera: {fileID: 3832840258595731421}
   brain: {fileID: 0}
   movement: {fileID: 0}
-  interactor: {fileID: 0}
+  talker: {fileID: 0}
   attacker: {fileID: 0}
   baseOffset: 0
   loadout: {fileID: 0}
@@ -278,10 +278,11 @@ GameObject:
   m_Component:
   - component: {fileID: 5106106832475441759}
   - component: {fileID: 852013129629387909}
-  - component: {fileID: 442215480502625366}
+  - component: {fileID: 1478009292357517548}
   - component: {fileID: 4630028532720471171}
+  - component: {fileID: 442215480502625366}
+  - component: {fileID: 1823199978716685285}
   - component: {fileID: 608404790986451179}
-  - component: {fileID: 4413256440571499932}
   - component: {fileID: 1170855021759411822}
   - component: {fileID: 1662274335675725108}
   - component: {fileID: 2627509537351594196}
@@ -332,6 +333,48 @@ MonoBehaviour:
   destination: {x: 0, y: 0, z: 0}
   following: 0
   debug: 0
+--- !u!114 &1478009292357517548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4520041833351946365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 543e0e75bcdd3264ebbfa11009f8b80d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onInteract:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1895181659443492097}
+        m_TargetAssemblyTypeName: Body.Character, Assembly-CSharp
+        m_MethodName: Interact
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  canInteract: 0
+--- !u!114 &4630028532720471171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4520041833351946365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1db18116c3d903b44829540182e7f5bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  hasPath: 0
 --- !u!114 &442215480502625366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,7 +430,7 @@ MonoBehaviour:
   debug: 0
   other: {fileID: 0}
   selectable: {fileID: 0}
---- !u!114 &4630028532720471171
+--- !u!114 &1823199978716685285
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -396,11 +439,53 @@ MonoBehaviour:
   m_GameObject: {fileID: 4520041833351946365}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1db18116c3d903b44829540182e7f5bd, type: 3}
+  m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  hasPath: 0
+  desiredTags:
+  - Character
+  selectableTypes: 
+  onCollision:
+    enter:
+      m_PersistentCalls:
+        m_Calls: []
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
+  onTrigger:
+    enter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1478009292357517548}
+          m_TargetAssemblyTypeName: Interactable, Assembly-CSharp
+          m_MethodName: SetCanInteract
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+    exit:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1478009292357517548}
+          m_TargetAssemblyTypeName: Interactable, Assembly-CSharp
+          m_MethodName: SetCanInteract
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  debug: 0
+  other: {fileID: 0}
+  selectable: {fileID: 0}
 --- !u!195 &608404790986451179
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -423,37 +508,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &4413256440571499932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4520041833351946365}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  desiredTags: []
-  selectableTypes: 
-  onCollision:
-    enter:
-      m_PersistentCalls:
-        m_Calls: []
-    exit:
-      m_PersistentCalls:
-        m_Calls: []
-  onTrigger:
-    enter:
-      m_PersistentCalls:
-        m_Calls: []
-    exit:
-      m_PersistentCalls:
-        m_Calls: []
-  debug: 0
-  other: {fileID: 0}
-  selectable: {fileID: 0}
 --- !u!114 &1170855021759411822
 MonoBehaviour:
   m_ObjectHideFlags: 0

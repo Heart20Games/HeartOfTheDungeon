@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using static YarnTags;
 
-public class PortraitView : DialogueViewBase
+public class PortraitView : DialogueViewBase, IViewable
 {
     public readonly ViewType viewType = ViewType.Portrait;
 
@@ -19,6 +19,7 @@ public class PortraitView : DialogueViewBase
 
     string lastCharacter = "";
     bool leftNext = false;
+    private Inclusion viewable = Inclusion.NA;
 
     //Action advanceHandler = null;
 
@@ -29,7 +30,7 @@ public class PortraitView : DialogueViewBase
 
     public override void RunLine(LocalizedLine dialogueLine, Action onDialogueLineFinished)
     {
-        if (gameObject.activeInHierarchy == false && !Included(dialogueLine.Metadata, viewType))
+        if (gameObject.activeInHierarchy == false || !ShouldIncludeView(dialogueLine.Metadata, viewType, viewable))
         {
             onDialogueLineFinished();
             return;
@@ -74,5 +75,15 @@ public class PortraitView : DialogueViewBase
         onDismissalComplete();
 
         //base.DismissLine(onDismissalComplete);
+    }
+
+    public void SetViewable(Inclusion viewable)
+    {
+        this.viewable = viewable;
+    }
+
+    public ViewType GetViewType()
+    {
+        return viewType;
     }
 }
