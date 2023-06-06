@@ -14,6 +14,7 @@ namespace Body.Behavior
     using static ContextSteering.CSContext;
     using static Tree.LeafNode;
     using UnityEditor.Animations;
+    using static Body.Character;
 
     public class Brain : BaseMonoBehaviour, ITimeScalable
     {
@@ -148,40 +149,10 @@ namespace Body.Behavior
             return target != null;
         }
 
-        public bool TargetClose()
+        public bool HasFoeInRange(Range range)
         {
-            Assert.IsNotNull(Target);
-            bool outcome = false;
-            if (controller.Context != null)
-            {
-                //Vector3 vector = Target.transform.position - transform.position;
-                //List<Context> contexts = controller.Context[Identity.Target];
-                //for (int i = 0; i < contexts.Count; i++)
-                //{
-                //    outcome = vector.magnitude < contexts[i].approachDistance;
-                //}
-            }
-            if (debug) Debug.Log("Target Close? " + (outcome ? "Yes" : "No"));
-            return outcome;
+            return controller.HasActiveContext(Identity.Foe, range);
         }
-
-        public bool TargetFar()
-        {
-            Assert.IsNotNull(Target);
-            bool outcome = false;
-            if (controller.Context != null)
-            {
-                //Vector3 vector = Target.transform.position - transform.position;
-                //List<Context> contexts = controller.Context[Identity.Target];
-                //for (int i = 0; i < contexts.Count; i++)
-                //{
-                //    outcome = vector.magnitude < contexts[i].escapeDistance;
-                //}
-            }
-            if (debug) Debug.Log("Target Far? " + (outcome ? "Yes" : "No"));
-            return outcome;
-        }
-
 
         // Actions
 
@@ -198,8 +169,7 @@ namespace Body.Behavior
 
         public BehaviorNode.Status Chase()
         {
-            if (!HasTarget()) return BehaviorNode.Status.FAILURE;
-            //if (TargetClose()) return BehaviorNode.Status.FAILURE;
+            if (!HasFoeInRange(Range.InRange)) return BehaviorNode.Status.FAILURE;
 
             if (debug) Debug.Log("Chasing...");
 
@@ -239,14 +209,15 @@ namespace Body.Behavior
         
         public BehaviorNode.Status Duel()
         {
-            if (!HasTarget()) return BehaviorNode.Status.FAILURE;
-            if (TargetFar()) return BehaviorNode.Status.FAILURE;
+            if (!HasFoeInRange(Range.InAttackRange)) return BehaviorNode.Status.FAILURE;
 
             if (debug) Debug.Log("Dueling...");
 
             if (!useAgent)
             {
                 controller.following = false;
+                character.AimCharacter(controller.currentVector);
+                character.ActivateWeapon();
             }
 
             return BehaviorNode.Status.SUCCESS;
