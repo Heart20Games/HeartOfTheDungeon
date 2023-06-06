@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Yarn.Unity;
 using static Game;
+using static YarnTags;
 
 public class Talker : BaseMonoBehaviour
 {
@@ -50,6 +51,7 @@ public class Talker : BaseMonoBehaviour
                 prevMode = game.Mode;
                 game.Mode = GameMode.Dialogue;
                 dialogueRunner.Stop();
+                dialogueRunner.onNodeStart.AddListener(OnNodeStarted);
                 dialogueRunner.onDialogueComplete.AddListener(CompleteTalking);
                 dialogueRunner.StartDialogue(targetNode);
                 onStartTalking.Invoke();
@@ -63,5 +65,29 @@ public class Talker : BaseMonoBehaviour
         {
             Debug.LogWarning("No Dialogue Runner to Start Talking");
         }
+    }
+
+    private readonly List<IViewable> viewables = new();
+    private List<IViewable> Viewables
+    {
+        get
+        {
+            viewables.Clear();
+            DialogueViewBase[] dialogueViews = dialogueRunner.dialogueViews;
+            for (int i = 0; i < dialogueViews.Length; i++)
+            {
+                if (dialogueViews[i] is IViewable)
+                {
+                    viewables.Add(dialogueViews[i] as IViewable);
+                }
+            }
+            return viewables;
+        }
+    }
+
+    public void OnNodeStarted(string node)
+    {
+        IEnumerable<string> tags = dialogueRunner.Dialogue.GetTagsForNode(targetNode);
+        SetNodeInclusion(tags, Viewables);
     }
 }
