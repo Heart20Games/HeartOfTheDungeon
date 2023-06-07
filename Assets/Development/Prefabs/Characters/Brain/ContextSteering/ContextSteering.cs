@@ -18,6 +18,10 @@ namespace Body.Behavior.ContextSteering
 
         private void FixedUpdate()
         {
+            for (int i = 0; i < controllers.Length; i++)
+            {
+                controllers[i].activeContexts.Clear();
+            }
             for (int i = 0; i < controllers.Length - 1; i++)
             {
                 for (int j = i + 1; j < controllers.Length; j++)

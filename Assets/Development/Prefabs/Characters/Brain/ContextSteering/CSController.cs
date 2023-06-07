@@ -30,25 +30,11 @@ namespace Body.Behavior.ContextSteering
             set => context = value;
         }
 
-        // Idenity
-        private CSIdentity relationships;
-        public CSIdentity Relationships
-        {
-            get
-            {
-                if (relationships == null) relationships = Preset.GetRelationships(Action.Chase);
-                return relationships;
-            }
-            set => relationships = value;
-        }
-
         // Parts
         public float Speed => Preset.testSpeed;
         public float DrawScale => Preset.drawScale;
         public bool DrawRays => Preset.draw;
         public Identity Identity { get => Preset.Identity; }
-        public IdentityMapPair[] Pairs { get => Relationships.pairs; }
-        public Dictionary<Identity, IdentityMapPair> IdentityMap { get => Relationships.IdentityMap; }
 
         // Initialization
         private new Rigidbody rigidbody;
@@ -62,15 +48,21 @@ namespace Body.Behavior.ContextSteering
         public bool following = false;
         public Vector3 Destination { get => destination; set { destination = value; following = true; } }
 
+        // Vector
+        [HideInInspector] public Vector2 currentVector;
+
         // Generated
         private readonly List<Transform> obstacles = new();
+        public readonly List<Context> activeContexts = new();
         private Maps Maps { get; } = new(null, null);
 
         // Debug
-        [SerializeField] private readonly float ResultRadius = 0.5f;
-        [SerializeField] private readonly float CircleRadius = 0.55f;
-        [SerializeField] private readonly float SourceRadius = 0.15f;
-        [SerializeField] private readonly float ActualRadius = 0.05f;
+        private readonly float ResultRadius = 0.5f;
+        private readonly float CircleRadius = 0.55f;
+        private readonly float SourceRadius = 0.15f;
+        private readonly float ActualRadius = 0.05f;
+
+        public bool debug = false;
 
         // Initialize
         private void Awake()
@@ -89,12 +81,26 @@ namespace Body.Behavior.ContextSteering
             }
         }
 
+        // Active Contexts
+        public bool HasActiveContext(Identity identity, Range range)
+        {
+            for(int i = 0; i < activeContexts.Count; i++)
+            {
+                Context context = activeContexts[i];
+                if (context.identity == identity && context.range == range)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         // Update
         private void FixedUpdate()
         {
             if (following)
             {
-                MapTo(transform.position - destination, Identity.Target);
+                MapTo(XZVector(destination-transform.position), Identity.Target);
             }
             Draw();
             Vector3 vector = GetVector();
@@ -102,9 +108,15 @@ namespace Body.Behavior.ContextSteering
             {
                 rigidbody.velocity = Speed * Time.fixedDeltaTime * vector;
             }
+            currentVector = XZVector(vector);
         }
 
         // Vector
+        private Vector2 XZVector(Vector3 vector)
+        {
+            return new(vector.x, vector.z);
+        }
+
         public Vector3 GetVector()
         {
             Vector3 vector = new();
@@ -123,12 +135,6 @@ namespace Body.Behavior.ContextSteering
             return vector.normalized;
         }
 
-        // Mapping
-        public Map GetMapOf(Identity id)
-        {
-            return Relationships == null ? Maps[MapType.None] : Maps[IdentityMap[id].mapType];
-        }
-
         public Identity RelativeIdentity(Identity id)
         {
             bool friendOrFoe = (id == Identity.Friend) || (id == Identity.Foe);
@@ -139,7 +145,7 @@ namespace Body.Behavior.ContextSteering
         // Set
         public void MapTo(Vector2 vector, Identity identity)
         {
-            if (Context != null && Relationships != null && vector != Vector2.zero)
+            if (Context != null && vector != Vector2.zero)
             {
                 Vector3 alt = new(vector.x, 0f, vector.y);
                 DrawPart(NA, alt.normalized, CircleRadius+SourceRadius, CircleRadius+SourceRadius+ActualRadius);
@@ -159,11 +165,15 @@ namespace Body.Behavior.ContextSteering
         {
             if (vector.magnitude == Mathf.Clamp(vector.magnitude, context.deadzone.x, context.deadzone.y))
             {
+                if (!activeContexts.Contains(context))
+                {
+                    activeContexts.Add(context);
+                }
+
                 // Weight
-                float idWeight = IdentityMap.TryGetValue(identity, out IdentityMapPair pair) ? pair.weight : 1;
                 float distance = Mathf.Min(vector.magnitude - context.gradient.x, context.gradient.y);
                 float range = (context.gradient.y - context.gradient.x);
-                float weight = Mathf.Lerp(context.weight.x, context.weight.y, distance / range) * idWeight;
+                float weight = Mathf.Lerp(context.weight.x, context.weight.y, distance / range);
 
                 if (weight != 0f)
                 {
@@ -173,11 +183,10 @@ namespace Body.Behavior.ContextSteering
                     // Angle / Slot
                     float angle = -Mathf.Rad2Deg * Mathf.Acos(vector.x / vector.magnitude);
                     angle = (vector.y > 0f) ? 360 - angle : angle;
-                    //float angle = vector.x != 0f ? Mathf.Rad2Deg * Mathf.Atan(vector.y/vector.x) : Mathf.Sign(vector.y) * 90;
                     angle = Mathf.Repeat(angle, 360);
                     float slot = Mathf.Repeat((angle / 360) * resolution, resolution - 1);
-                    DrawPart(map.sign, Baseline[Mathf.RoundToInt(slot)], CircleRadius, CircleRadius+SourceRadius);
 
+                    DrawPart(map.sign, Baseline[Mathf.RoundToInt(slot)], CircleRadius, CircleRadius+SourceRadius);
                     Assert.IsFalse(float.IsNaN(angle));
                     Assert.IsFalse(float.IsNaN(slot));
                     AssertInRange(angle, 0, 360);

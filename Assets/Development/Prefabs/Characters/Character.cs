@@ -24,7 +24,7 @@ namespace Body
         public CinemachineVirtualCamera virtualCamera;
         [HideInInspector] public Brain brain;
         [HideInInspector] public Movement movement;
-        [HideInInspector] public Talker interactor;
+        [HideInInspector] public Talker talker;
         [HideInInspector] public PlayerAttack attacker;
         [HideInInspector] public float baseOffset;
 
@@ -69,7 +69,7 @@ namespace Body
             InitBody();
             brain = GetComponent<Brain>();
             movement = GetComponent<Movement>();
-            interactor = GetComponent<Talker>();
+            talker = GetComponent<Talker>();
             attacker = GetComponent<PlayerAttack>();
             MaxHealth = MaxHealth;
             CurrentHealth = CurrentHealth;
@@ -126,7 +126,7 @@ namespace Body
             brain.Enabled = !_controllable;
             controllable = _controllable;
             movement.canMove = controllable;
-            attacker.active = controllable;
+            //attacker.enabled = controllable;
             SetComponentActive(moveReticle, _controllable);
             SetComponentActive(virtualCamera, _controllable);
         }
@@ -239,7 +239,7 @@ namespace Body
 
         public void ActivateCastable(ICastable castable)
         {
-            if (attacker != null && attacker.active)
+            if (attacker != null && attacker.enabled)
             {
                 attacker.Castable = castable;
                 attacker.Slashie(movement.castVector);
@@ -254,7 +254,7 @@ namespace Body
         public void ChangeWeapon() { ChangeCastable(CastSlot.PRIMARY); }
         public void ActivateWeapon() { ActivateCastable(primary); }
         public void ActivateAbility() { ActivateCastable(secondary); }
-        public void Interact() { interactor.Talk(); }
+        public void Interact() { talker.Talk(); }
 
 
         // Debugging

@@ -8,8 +8,8 @@ using Body;
 public class Game : BaseMonoBehaviour
 {
     // Properties
-    public Body.Character playerCharacter;
-    public List<Body.Character> playableCharacters;
+    public Character playerCharacter;
+    public List<Character> playableCharacters;
     public Selector selector;
     public string characterInputMap = "GroundMovement";
     public string selectorInputMap = "Selector";
@@ -20,8 +20,8 @@ public class Game : BaseMonoBehaviour
     [HideInInspector] public List<Interactable> interactables;
 
     // Current Character
-    private Body.Character curCharacter;
-    [HideInInspector] public Body.Character CurCharacter { get { return curCharacter; } set { SetCharacter(value); } }
+    private Character curCharacter;
+    [HideInInspector] public Character CurCharacter { get { return curCharacter; } set { SetCharacter(value); } }
     private int curCharIdx = 0;
     
     // TimeScale
@@ -45,7 +45,7 @@ public class Game : BaseMonoBehaviour
     public void InitializePlayableCharacters()
     {
         bool hasPlayer = false;
-        foreach (Body.Character character in playableCharacters)
+        foreach (Character character in playableCharacters)
         {
             if (character.GetComponent<PlayerCore>() != null)
             {
@@ -127,7 +127,7 @@ public class Game : BaseMonoBehaviour
         }
     }
 
-    public void SetCharacter(Body.Character character)
+    public void SetCharacter(Character character)
     {
         if (character != null)
         {
