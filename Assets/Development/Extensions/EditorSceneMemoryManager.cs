@@ -1,7 +1,12 @@
+#if UNITY_EDITOR
 using System;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
+
+
+
+using UnityEditor.SceneManagement;
+
 
 [InitializeOnLoad]
 public static class EditorSceneMemoryManager
@@ -23,3 +28,4 @@ public static class EditorSceneMemoryManager
         GC.Collect();
     }
 }
+#endif

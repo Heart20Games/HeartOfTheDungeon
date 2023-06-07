@@ -13,7 +13,11 @@ namespace Body.Behavior
     using static ContextSteering.CSIdentity;
     using static ContextSteering.CSContext;
     using static Tree.LeafNode;
+
+#if UNITY_EDITOR
     using UnityEditor.Animations;
+#endif
+
     using static Body.Character;
 
     public class Brain : BaseMonoBehaviour, ITimeScalable

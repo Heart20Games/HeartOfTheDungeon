@@ -1,3 +1,6 @@
+#if UNITY_EDITOR
+
+
 using UnityEditor;
 using UnityEngine;
 
@@ -13,3 +16,4 @@ public class SimpleModifiedDrawer : PropertyDrawer
         EditorGUI.PropertyField(position, valueProperty, new GUIContent("[M]  " + property.displayName));
     }
 }
+#endif
