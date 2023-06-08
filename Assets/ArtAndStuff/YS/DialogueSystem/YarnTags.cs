@@ -13,7 +13,7 @@ public class YarnTags : ScriptableObject
     static public string inclusionTag = "include";
 
     // View Tags
-    public enum ViewType { Portrait, Line, OptionList, Audio }
+    public enum ViewType { Portrait, Line, OptionList, Audio, Bubble }
     [Flags] public enum Inclusion { NA=0, Included=1<<0, Excluded=1<<1 }
     [Serializable]
     public struct ViewTag
