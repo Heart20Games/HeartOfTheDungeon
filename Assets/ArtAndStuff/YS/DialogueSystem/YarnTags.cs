@@ -144,12 +144,12 @@ public class YarnTags : ScriptableObject
         return false;
     }
 
-    static public bool ShouldIncludeView(string[] metadata, ViewType viewType, Inclusion viewable)
+    static public bool ShouldIncludeView(string[] metadata, ViewType viewType, Inclusion viewable, bool includeByDefault=true)
     {
         Inclusion inclusion = Included(metadata, viewType);
         bool exclude = (inclusion & Inclusion.Excluded) != 0;
         bool include = (inclusion & Inclusion.Included) != 0;
-        bool nodeViewable = (viewable & Inclusion.Excluded) == 0;
+        bool nodeViewable = (viewable & Inclusion.Excluded) == 0 && (includeByDefault || (viewable & Inclusion.NA) == 0);
         return !(exclude || (!nodeViewable && !include));
     }
 }

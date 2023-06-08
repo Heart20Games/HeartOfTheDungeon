@@ -9,6 +9,7 @@ using static YarnTags;
 public class BubbleView : DialogueViewBase, IViewable
 {
     public readonly ViewType viewType = ViewType.Bubble;
+    public bool includeByDefault = false;
     private Inclusion viewable = Inclusion.NA;
 
     public ViewType GetViewType()
@@ -23,7 +24,7 @@ public class BubbleView : DialogueViewBase, IViewable
 
     public override void RunLine(LocalizedLine dialogueLine, Action onDialogueLineFinished)
     {
-        if (gameObject.activeInHierarchy == false || !ShouldIncludeView(dialogueLine.Metadata, viewType, viewable))
+        if (gameObject.activeInHierarchy == false || !ShouldIncludeView(dialogueLine.Metadata, viewType, viewable, includeByDefault))
         {
             onDialogueLineFinished();
             return;
