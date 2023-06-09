@@ -15,6 +15,11 @@ public class YarnCommands : BaseMonoBehaviour
 
 
     // Variable Initialization
+    private void Awake()
+    {
+        tags.Initialize();
+    }
+
     private void Start()
     {
         storage = GetComponent<InMemoryVariableStorage>();

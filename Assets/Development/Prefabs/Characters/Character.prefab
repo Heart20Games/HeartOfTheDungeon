@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4111670441699141873}
   - component: {fileID: 7042317060604839057}
   - component: {fileID: 5512326247448771098}
+  - component: {fileID: 7959146359964767238}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -62,8 +63,8 @@ MonoBehaviour:
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
-  m_HorizontalDamping: 0.5
-  m_VerticalDamping: 0.5
+  m_HorizontalDamping: 4.5
+  m_VerticalDamping: 4.5
   m_ScreenX: 0.5
   m_ScreenY: 0.5
   m_DeadZoneWidth: 0
@@ -87,14 +88,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BindingMode: 1
   m_FollowOffset: {x: 0, y: 10, z: -10}
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
+  m_XDamping: 0.5
+  m_YDamping: 0.5
+  m_ZDamping: 0.5
   m_AngularDampingMode: 0
   m_PitchDamping: 0
   m_YawDamping: 0
   m_RollDamping: 0
   m_AngularDamping: 0
+--- !u!114 &7959146359964767238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055294153811331689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 46965f9cbaf525742a6da4c2172a99cd, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 1
+  m_FrequencyGain: 0.25
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &3324343490077819189
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,7 +150,7 @@ Transform:
   - {fileID: 5676186294004812607}
   - {fileID: 8573595303347455047}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
 --- !u!114 &4666652024189201520
 MonoBehaviour:
@@ -176,7 +194,7 @@ MonoBehaviour:
   virtualCamera: {fileID: 3832840258595731421}
   brain: {fileID: 0}
   movement: {fileID: 0}
-  interactor: {fileID: 0}
+  talker: {fileID: 0}
   attacker: {fileID: 0}
   baseOffset: 0
   loadout: {fileID: 0}
@@ -208,7 +226,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canAttack: 1
-  active: 1
 --- !u!114 &7638968927939714640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,10 +295,11 @@ GameObject:
   m_Component:
   - component: {fileID: 5106106832475441759}
   - component: {fileID: 852013129629387909}
-  - component: {fileID: 442215480502625366}
+  - component: {fileID: 1478009292357517548}
   - component: {fileID: 4630028532720471171}
+  - component: {fileID: 442215480502625366}
+  - component: {fileID: 1823199978716685285}
   - component: {fileID: 608404790986451179}
-  - component: {fileID: 4413256440571499932}
   - component: {fileID: 1170855021759411822}
   - component: {fileID: 1662274335675725108}
   - component: {fileID: 2627509537351594196}
@@ -331,7 +349,50 @@ MonoBehaviour:
   active: 0
   destination: {x: 0, y: 0, z: 0}
   following: 0
+  currentVector: {x: 0, y: 0}
   debug: 0
+--- !u!114 &1478009292357517548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4520041833351946365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 543e0e75bcdd3264ebbfa11009f8b80d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onInteract:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1895181659443492097}
+        m_TargetAssemblyTypeName: Body.Character, Assembly-CSharp
+        m_MethodName: Interact
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  canInteract: 0
+--- !u!114 &4630028532720471171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4520041833351946365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1db18116c3d903b44829540182e7f5bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  hasPath: 0
 --- !u!114 &442215480502625366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,7 +448,7 @@ MonoBehaviour:
   debug: 0
   other: {fileID: 0}
   selectable: {fileID: 0}
---- !u!114 &4630028532720471171
+--- !u!114 &1823199978716685285
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -396,11 +457,53 @@ MonoBehaviour:
   m_GameObject: {fileID: 4520041833351946365}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1db18116c3d903b44829540182e7f5bd, type: 3}
+  m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  hasPath: 0
+  desiredTags:
+  - Character
+  selectableTypes: 
+  onCollision:
+    enter:
+      m_PersistentCalls:
+        m_Calls: []
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
+  onTrigger:
+    enter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1478009292357517548}
+          m_TargetAssemblyTypeName: Interactable, Assembly-CSharp
+          m_MethodName: SetCanInteract
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+    exit:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1478009292357517548}
+          m_TargetAssemblyTypeName: Interactable, Assembly-CSharp
+          m_MethodName: SetCanInteract
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  debug: 0
+  other: {fileID: 0}
+  selectable: {fileID: 0}
 --- !u!195 &608404790986451179
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -423,37 +526,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &4413256440571499932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4520041833351946365}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  desiredTags: []
-  selectableTypes: 
-  onCollision:
-    enter:
-      m_PersistentCalls:
-        m_Calls: []
-    exit:
-      m_PersistentCalls:
-        m_Calls: []
-  onTrigger:
-    enter:
-      m_PersistentCalls:
-        m_Calls: []
-    exit:
-      m_PersistentCalls:
-        m_Calls: []
-  debug: 0
-  other: {fileID: 0}
-  selectable: {fileID: 0}
 --- !u!114 &1170855021759411822
 MonoBehaviour:
   m_ObjectHideFlags: 0
