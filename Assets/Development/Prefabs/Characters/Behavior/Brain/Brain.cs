@@ -5,16 +5,10 @@ using System.Collections.Generic;
 namespace Body.Behavior
 {
     using ContextSteering;
-    using FMOD.Studio;
-    using ScriptableObjectDropdown;
-    using System.Linq;
     using Tree;
-    using UnityEngine.Assertions;
     using static ContextSteering.CSIdentity;
     using static ContextSteering.CSContext;
     using static Tree.LeafNode;
-    using UnityEditor.Animations;
-    using static Body.Character;
 
     public class Brain : BaseMonoBehaviour, ITimeScalable
     {

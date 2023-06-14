@@ -29,7 +29,7 @@ namespace Body.Behavior.ContextSteering
         public Identity Identity { get => Preset.Identity; }
 
         // Initialization
-        private new Rigidbody rigidbody;
+        private Rigidbody rigidbody;
 
         // Active
         [SerializeField] private bool active = false;
