@@ -14,6 +14,7 @@ public class ProjectileSpawner : Positionable, ICollidables
     public bool followBody = false;
     private Collider[] exceptions;
     private readonly List<Projectile> projectiles = new();
+    public bool debug = false;
 
     private void Awake()
     {
@@ -111,7 +112,7 @@ public class ProjectileSpawner : Positionable, ICollidables
 
     public void AddExceptionsOn(Collider[] exceptions, Projectile pea)
     {
-        print($"Setting Exceptions on Projectile. ({this.exceptions?.Length} -> {exceptions?.Length})");
+        if (debug) print($"Setting Exceptions on Projectile. ({this.exceptions?.Length} -> {exceptions?.Length})");
         if (this.exceptions != null)
         {
             pea.RemoveExceptions(this.exceptions);
