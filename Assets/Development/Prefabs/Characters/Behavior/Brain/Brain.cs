@@ -53,6 +53,9 @@ namespace Body.Behavior
         [HideInInspector] public BehaviorNode root;
         private BehaviorNode.Status status;
 
+        // Castable Contexts
+        public Dictionary<Identity, List<Context>> castableMap = new();
+
         // TimeScale
         private float timeScale = 1f;
         public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
@@ -69,6 +72,9 @@ namespace Body.Behavior
             controller = character.body.GetComponent<CSController>();
             pathFinder = character.body.GetComponent<BalancedPathfinder>();
             agent.baseOffset = baseOffset;
+            RegisterCastables(character.loadout.weapons);
+            RegisterCastables(character.loadout.abilities);
+            controller.Context.castableContext = castableMap;
             if (target != null)
             {
                 Target = target;
@@ -81,7 +87,7 @@ namespace Body.Behavior
             {
                 modifiers.InitializeBrain(this);
             }
-            Debug.Log("Tree Name: " + root.name);
+            //Debug.Log("Tree Name: " + root.name);
 
             //SelectorNode hasTarget = new SelectorNode("Has Target");
             //LeafNode idle = new LeafNode("Idle", Idle);
@@ -95,10 +101,11 @@ namespace Body.Behavior
             Enabled = Enabled;
         }
 
+
         // Update
         private void Update()
         {
-            if (debug) Debug.Log("Updating Brain");
+            //if (debug) Debug.Log("Updating Brain");
             if (status == BehaviorNode.Status.FAILURE)
             {
                 Debug.LogWarning("Behavior Tree reached fail state");
@@ -106,6 +113,30 @@ namespace Body.Behavior
             status = root.Process();
         }
 
+        // Castable Contexts
+        public void RegisterCastables(List<CastableItem> castables)
+        {
+            for(int i = 0; i < castables.Count; i++)
+            {
+                CastableItem item = castables[i];
+                RegisterCastable(item);
+            }
+        }
+
+        public void RegisterCastable(CastableItem item)
+        {
+            print("Register Castable: " + item.name);
+            List<Context> contexts;
+            if (!castableMap.TryGetValue(item.context.identity, out contexts))
+            {
+                contexts = new();
+                castableMap.Add(item.context.identity, contexts);
+            }
+            if (!contexts.Contains(item.context))
+            {
+                contexts.Add(item.context);
+            }
+        }
 
         // Enabled
         public void SetEnabled(bool enabled)
@@ -129,10 +160,10 @@ namespace Body.Behavior
 
 
         // Contexts
-        public void SetContext(Action action)
-        {
-            controller.Context = controller.Preset.GetContext(action);
-        }
+        //public void SetBaseContext(Action action)
+        //{
+        //    controller.Context.baseContext = controller.Preset.GetContext(action);
+        //}
 
 
         // Checks
@@ -152,11 +183,11 @@ namespace Body.Behavior
 
         public BehaviorNode.Status Idle()
         {
-            SetContext(Action.Idle);
+            //SetBaseContext(Action.Idle);
 
             pathFinder.target = target;
 
-            if (debug) Debug.Log("Idling...");
+            //if (debug) Debug.Log("Idling...");
 
             return BehaviorNode.Status.SUCCESS;
         }
@@ -210,7 +241,7 @@ namespace Body.Behavior
             if (!useAgent)
             {
                 controller.following = false;
-                character.AimCharacter(controller.currentVector);
+                character.AimCharacter(-controller.currentVector);
                 character.ActivateWeapon();
             }
 

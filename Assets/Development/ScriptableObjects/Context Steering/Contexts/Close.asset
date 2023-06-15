@@ -16,42 +16,40 @@ MonoBehaviour:
   - name: Friend
     identity: 1
     range: 1
-    weight: {x: -1, y: 0}
-    gradient: {x: 0, y: 4}
-    deadzone: {x: 0, y: 4}
-    falloff: 50
+    vector:
+      weight: {x: -1, y: 0}
+      gradient: {x: 0, y: 3}
+      deadzone: {x: 0, y: 3}
+      falloff: 50
   - name: FoeInRange
     identity: 2
     range: 3
-    weight: {x: 0, y: 0}
-    gradient: {x: 0, y: 10}
-    deadzone: {x: 0, y: 10}
-    falloff: 50
+    vector:
+      weight: {x: 0, y: 0}
+      gradient: {x: 0, y: 0}
+      deadzone: {x: 0, y: 10}
+      falloff: 50
   - name: FoeFar
     identity: 2
     range: 2
-    weight: {x: 1, y: 0}
-    gradient: {x: 6, y: 10}
-    deadzone: {x: 6, y: 10}
-    falloff: 50
-  - name: FoeInAttackRange
-    identity: 2
-    range: 4
-    weight: {x: 0, y: 0}
-    gradient: {x: 0, y: 6}
-    deadzone: {x: 0, y: 6}
-    falloff: 50
+    vector:
+      weight: {x: 1, y: 0}
+      gradient: {x: 5.5, y: 10}
+      deadzone: {x: 5.5, y: 10}
+      falloff: 50
   - name: FoeClose
     identity: 2
     range: 1
-    weight: {x: -1, y: 0}
-    gradient: {x: 0, y: 5}
-    deadzone: {x: 0, y: 5}
-    falloff: 50
+    vector:
+      weight: {x: -1, y: 0}
+      gradient: {x: 0, y: 5}
+      deadzone: {x: 0, y: 5}
+      falloff: 50
   - name: TargetFar
     identity: 4
-    range: 2
-    weight: {x: 1, y: 1}
-    gradient: {x: 10, y: 10}
-    deadzone: {x: 9.5, y: 1000}
-    falloff: 50
+    range: 0
+    vector:
+      weight: {x: 1, y: 1}
+      gradient: {x: 10, y: 10}
+      deadzone: {x: 9.5, y: 1000}
+      falloff: 50

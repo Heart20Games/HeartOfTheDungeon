@@ -221,7 +221,7 @@ namespace Body
                         if (loadout.weapons.Count > 0)
                         {
                             weaponIdx = (weaponIdx + 1) % loadout.weapons.Count;
-                            primary = Instantiate(loadout.weapons[weaponIdx], transform);
+                            primary = Instantiate(loadout.weapons[weaponIdx].prefab, transform);
                             primary.Initialize(this);
                         }
                         break;
@@ -229,7 +229,7 @@ namespace Body
                         if (loadout.abilities.Count > 0)
                         {
                             abilityIdx = (abilityIdx + 1) % loadout.abilities.Count;
-                            secondary = Instantiate(loadout.abilities[abilityIdx], transform);
+                            secondary = Instantiate(loadout.abilities[abilityIdx].prefab, transform);
                             secondary.Initialize(this);
                         }
                         break;

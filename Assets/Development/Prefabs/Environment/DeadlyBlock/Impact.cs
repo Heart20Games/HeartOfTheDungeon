@@ -31,7 +31,11 @@ public class Impact : BaseMonoBehaviour
     {
         if (debug && desiredTags.Count != 0)
         {
-            print("Valid Tag? " + (desiredTags.Count == 0 || desiredTags.Contains(other.tag)) + " (" + other.tag + ")");
+            if (other == gameObject)
+            {
+                Debug.LogWarning($"Colliding with self: {other.tag}-{other.name}");
+            }
+            print($"Valid Tag? {(desiredTags.Count == 0 || desiredTags.Contains(other.tag))} (them:{other.tag}-{other.name} me:{gameObject.tag}-{gameObject.name})");
         }
         return desiredTags.Count == 0 || desiredTags.Contains(other.tag);
     }

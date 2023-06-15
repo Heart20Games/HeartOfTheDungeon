@@ -100,21 +100,15 @@ namespace Body.Behavior.ContextSteering
         //}
 
         [Serializable]
-        public struct Context
+        public struct ContextVector
         {
-            public Context(Identity identity, Range range, Vector2 weight, Vector2 gradient, Vector2 deadzone, float falloff)
+            public ContextVector(Vector2 weight, Vector2 gradient, Vector2 deadzone, float falloff)
             {
-                name = identity.ToString();
-                this.identity = identity;
-                this.range = range;
                 this.weight = weight;
                 this.gradient = gradient;
                 this.deadzone = new Vector2(Mathf.Repeat(deadzone.x, float.MaxValue), Mathf.Repeat(deadzone.y, float.MaxValue));
                 this.falloff = falloff;
             }
-            public string name;
-            public Identity identity;
-            public Range range;
             // All vectors are one-dimensional, but defined by two points.
             // The weight vector is a bi-directional vector along the h-axis indicating the weight corresponding to the high and low ends of the gradient vector.
             public Vector2 weight;
@@ -124,6 +118,22 @@ namespace Body.Behavior.ContextSteering
             public Vector2 deadzone;
             // The falloff is the angle from the y-axis at which the final weight drops to zero.
             public float falloff;
+        }
+
+        [Serializable]
+        public struct Context
+        {
+            public Context(Identity identity, Range range, Vector2 weight, Vector2 gradient, Vector2 deadzone, float falloff)
+            {
+                name = identity.ToString();
+                this.identity = identity;
+                this.range = range;
+                this.vector = new(weight, gradient, deadzone, falloff);
+            }
+            public string name;
+            public Identity identity;
+            public Range range;
+            public ContextVector vector;
         }
     }
 }

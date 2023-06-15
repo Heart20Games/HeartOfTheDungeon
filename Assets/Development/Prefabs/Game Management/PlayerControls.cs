@@ -170,6 +170,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart Level"",
+                    ""type"": ""Button"",
+                    ""id"": ""936e5dac-abbe-4ff8-a4a8-13f2505c2938"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -513,6 +522,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Aim"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""50c0b6f6-64e2-46e0-b93b-54ef34f9f793"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Level"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -913,6 +933,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_GroundMovement_Aim = m_GroundMovement.FindAction("Aim", throwIfNotFound: true);
         m_GroundMovement_CycleCharacterLeft = m_GroundMovement.FindAction("Cycle Character Left", throwIfNotFound: true);
         m_GroundMovement_CycleCharacterRight = m_GroundMovement.FindAction("Cycle Character Right", throwIfNotFound: true);
+        m_GroundMovement_RestartLevel = m_GroundMovement.FindAction("Restart Level", throwIfNotFound: true);
         // Dialogue
         m_Dialogue = asset.FindActionMap("Dialogue", throwIfNotFound: true);
         m_Dialogue_Continue = m_Dialogue.FindAction("Continue", throwIfNotFound: true);
@@ -1001,6 +1022,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_GroundMovement_Aim;
     private readonly InputAction m_GroundMovement_CycleCharacterLeft;
     private readonly InputAction m_GroundMovement_CycleCharacterRight;
+    private readonly InputAction m_GroundMovement_RestartLevel;
     public struct GroundMovementActions
     {
         private @PlayerControls m_Wrapper;
@@ -1021,6 +1043,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Aim => m_Wrapper.m_GroundMovement_Aim;
         public InputAction @CycleCharacterLeft => m_Wrapper.m_GroundMovement_CycleCharacterLeft;
         public InputAction @CycleCharacterRight => m_Wrapper.m_GroundMovement_CycleCharacterRight;
+        public InputAction @RestartLevel => m_Wrapper.m_GroundMovement_RestartLevel;
         public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1078,6 +1101,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @CycleCharacterRight.started += instance.OnCycleCharacterRight;
             @CycleCharacterRight.performed += instance.OnCycleCharacterRight;
             @CycleCharacterRight.canceled += instance.OnCycleCharacterRight;
+            @RestartLevel.started += instance.OnRestartLevel;
+            @RestartLevel.performed += instance.OnRestartLevel;
+            @RestartLevel.canceled += instance.OnRestartLevel;
         }
 
         private void UnregisterCallbacks(IGroundMovementActions instance)
@@ -1130,6 +1156,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @CycleCharacterRight.started -= instance.OnCycleCharacterRight;
             @CycleCharacterRight.performed -= instance.OnCycleCharacterRight;
             @CycleCharacterRight.canceled -= instance.OnCycleCharacterRight;
+            @RestartLevel.started -= instance.OnRestartLevel;
+            @RestartLevel.performed -= instance.OnRestartLevel;
+            @RestartLevel.canceled -= instance.OnRestartLevel;
         }
 
         public void RemoveCallbacks(IGroundMovementActions instance)
@@ -1297,6 +1326,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnAim(InputAction.CallbackContext context);
         void OnCycleCharacterLeft(InputAction.CallbackContext context);
         void OnCycleCharacterRight(InputAction.CallbackContext context);
+        void OnRestartLevel(InputAction.CallbackContext context);
     }
     public interface IDialogueActions
     {

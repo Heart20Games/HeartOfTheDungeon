@@ -19,16 +19,8 @@ namespace Body.Behavior.ContextSteering
         public CSPreset Preset { get { return (CSPreset)preset.value; } set { preset.value = value; } }
 
         // Context
-        private CSContext context;
-        public CSContext Context
-        {
-            get
-            {
-                if (context == null) context = Preset.GetContext(Action.Chase);
-                return context;
-            }
-            set => context = value;
-        }
+        private readonly FullContext context = new();
+        public FullContext Context { get { return context.initialized ? context : context.Initialize(Preset); } }
 
         // Parts
         public float Speed => Preset.testSpeed;
@@ -68,6 +60,7 @@ namespace Body.Behavior.ContextSteering
         private void Awake()
         {
             rigidbody = GetComponent<Rigidbody>();
+            context.debug = debug;
             Active = Active;
         }
 
@@ -155,15 +148,16 @@ namespace Body.Behavior.ContextSteering
                 {
                     for (int i = 0; i < contexts.Count; i++)
                     {
-                        MapContext(vector, identity, contexts[i]);
+                        MapContext(vector, contexts[i]);
                     }
                 }
             }
         }
 
-        public void MapContext(Vector2 vector, Identity identity, Context context)
+        public void MapContext(Vector2 vector, Context context)
         {
-            if (vector.magnitude == Mathf.Clamp(vector.magnitude, context.deadzone.x, context.deadzone.y))
+            ContextVector cVector = context.vector;
+            if (vector.magnitude == Mathf.Clamp(vector.magnitude, cVector.deadzone.x, cVector.deadzone.y))
             {
                 if (!activeContexts.Contains(context))
                 {
@@ -171,9 +165,9 @@ namespace Body.Behavior.ContextSteering
                 }
 
                 // Weight
-                float distance = Mathf.Min(vector.magnitude - context.gradient.x, context.gradient.y);
-                float range = (context.gradient.y - context.gradient.x);
-                float weight = Mathf.Lerp(context.weight.x, context.weight.y, distance / range);
+                float distance = Mathf.Min(vector.magnitude - cVector.gradient.x, cVector.gradient.y);
+                float range = (cVector.gradient.y - cVector.gradient.x);
+                float weight = Mathf.Lerp(cVector.weight.x, cVector.weight.y, distance / range);
 
                 if (weight != 0f)
                 {
@@ -193,7 +187,7 @@ namespace Body.Behavior.ContextSteering
                     AssertInRange(slot, 0, resolution - 1);
 
                     // Falloff
-                    float falloff = (context.falloff / 360) * resolution;
+                    float falloff = (cVector.falloff / 360) * resolution;
                     float falloffHigh = slot + falloff;
                     float falloffLow = slot - falloff;
 
