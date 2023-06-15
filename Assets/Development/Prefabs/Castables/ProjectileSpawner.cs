@@ -1,14 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.UIElements;
 using static Unity.VisualScripting.Member;
 
-public class ProjectileSpawner : Positionable
+public class ProjectileSpawner : Positionable, ICollidables
 {
     public float lifeSpan;
     public Transform pivot;
-    public Transform projectile;
+    public Projectile projectile;
     public bool followBody = false;
+    private Collider[] exceptions;
+    private readonly List<Projectile> projectiles = new();
 
     private void Awake()
     {
@@ -16,10 +21,9 @@ public class ProjectileSpawner : Positionable
         {
             if (projectile == null)
             {
-                Pivot pivotType = pivot.GetComponent<Pivot>();
-                if (pivotType != null)
+                if (pivot.TryGetComponent<Pivot>(out var pivotType))
                 {
-                    projectile = pivotType.body;
+                    projectile = pivotType.body.GetComponent<Projectile>();
                 }
             }
             // Projectile is a prefab
@@ -27,6 +31,7 @@ public class ProjectileSpawner : Positionable
             {
                 projectile = Instantiate(projectile, pivot);
             }
+            projectile.SetActive(false);
         }
     }
 
@@ -43,14 +48,28 @@ public class ProjectileSpawner : Positionable
     public void Spawn(Vector3 direction=new Vector3())
     {
         Transform pInstance = Instantiate(pivot, source);
-        Transform bInstance = projectile;
-        LaunchInstance(direction, pInstance.transform, bInstance);
+        pInstance.gameObject.SetActive(true);
+        Projectile bInstance = projectile;
+        if (pInstance.TryGetComponent(out Pivot pivotType))
+        {
+            if (pivotType.body.TryGetComponent(out bInstance))
+            {
+                bInstance.SetActive(true);
+                projectiles.Add(bInstance);
+                AddExceptionsOn(exceptions, bInstance);
+            }
+            else
+            {
+                Debug.LogWarning("Pivot body should be a Projectile.");
+            }
+        }
+        LaunchInstance(direction, pInstance.transform, bInstance.transform);
         StartCoroutine(CleanupInstance(pInstance.transform, bInstance));
     }
 
     public void Activate(Vector3 direction)
     {
-        LaunchInstance(direction, pivot.transform, projectile);
+        LaunchInstance(direction, pivot.transform, projectile.transform);
     }
 
     public void LaunchInstance(Vector3 direction, Transform pInstance, Transform bInstance)
@@ -63,17 +82,43 @@ public class ProjectileSpawner : Positionable
         {
             pInstance.localPosition = offset;
         }
-        bInstance.localPosition = new Vector3();
         pInstance.gameObject.SetActive(true);
-        Vector2 dir = new Vector2(direction.x, direction.z);
+        bInstance.gameObject.SetActive(true);
+        bInstance.localPosition = new Vector3();
+        Vector2 dir = new(direction.x, direction.z);
         Quaternion bRotation = bInstance.localRotation;
         pInstance.SetRotationWithVector(dir, rOffset);
         bInstance.localRotation = bRotation;
     }
 
-    public IEnumerator CleanupInstance(Transform pInstance, Transform bInstance)
+    public IEnumerator CleanupInstance(Transform pInstance, Projectile bInstance)
     {
         yield return new WaitForSeconds(lifeSpan);
+        projectiles.Remove(bInstance);
         Destroy(pInstance.gameObject);
+    }
+
+    // Collision Exceptions
+    public void SetExceptions(Collider[] exceptions)
+    {
+        for (int i = 0; i < projectiles.Count; i++)
+        {
+            Projectile pea = projectiles[i];
+            AddExceptionsOn(exceptions, pea);
+        }
+        this.exceptions = exceptions;
+    }
+
+    public void AddExceptionsOn(Collider[] exceptions, Projectile pea)
+    {
+        print($"Setting Exceptions on Projectile. ({this.exceptions?.Length} -> {exceptions?.Length})");
+        if (this.exceptions != null)
+        {
+            pea.RemoveExceptions(this.exceptions);
+        }
+        if (exceptions != null)
+        {
+            pea.AddExceptions(exceptions);
+        }
     }
 }

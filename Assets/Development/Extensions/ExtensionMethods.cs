@@ -3,6 +3,7 @@ using UnityEngine;
 
 public static class ExtensionMethods
 {
+    // Animator
     public static bool HasParameter(this Animator _animator, string parameterName)
     {
         foreach (AnimatorControllerParameter param in _animator.parameters)
@@ -12,6 +13,7 @@ public static class ExtensionMethods
         return false;
     }
 
+    // Transform
     public static void SetRotationWithVector(this Transform _transform, Vector2 vector, float rotationOffset=0, float threshold=0.5f)
     {
         Vector3 direction = Vector3.right * vector.x + Vector3.forward * vector.y;
