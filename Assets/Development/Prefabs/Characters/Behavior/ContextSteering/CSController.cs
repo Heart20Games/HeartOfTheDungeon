@@ -99,6 +99,11 @@ namespace Body.Behavior.ContextSteering
             Vector3 vector = GetVector();
             if (active)
             {
+                if (debug)
+                {
+                    if (vector.magnitude != 0 && Speed != 0) print($"{gameObject.name} is moving.");
+                    else if (vector.magnitude != Speed) print($"{gameObject.name} not moving. (vector:{vector.magnitude}, speed:{Speed})");
+                }
                 rigidbody.velocity = Speed * Time.fixedDeltaTime * vector;
             }
             currentVector = XZVector(vector);
@@ -118,8 +123,20 @@ namespace Body.Behavior.ContextSteering
             int componentCount = 1; // interests.componentCount + dangers.componentCount;
             for (int i = 0; i < resolution; i++)
             {
+                Assert.IsFalse(float.IsNaN(interests[i]));
+                Assert.IsFalse(float.IsNaN(dangers[i]));
                 vector += (interests[i] / componentCount) * interests.sign * Baseline[i];
                 vector += (dangers[i] / componentCount) * dangers.sign * Baseline[i];
+                if (debug)
+                {
+                    if (interests[i] != 0 && dangers[i] != 0)
+                        print($"Found interest or danger. (interest:{interests[i]}, danger:{dangers[i]}");
+                    if (interests.sign == 0 || dangers.sign == 0)
+                        Debug.LogWarning("Interests and Dangers should be negative or positive, not zero.");
+                    if (Baseline[i].magnitude == 0)
+                        Debug.LogWarning("Baseline value should never be zero.");
+                    Debug.DrawRay(transform.position, vector*2, Color.white, Time.fixedDeltaTime);
+                }
                 interests[i] = 0f;
                 dangers[i] = 0f;
             }
@@ -164,55 +181,70 @@ namespace Body.Behavior.ContextSteering
                     activeContexts.Add(context);
                 }
 
-                // Weight
+                // Distance and Range
                 float distance = Mathf.Min(vector.magnitude - cVector.gradient.x, cVector.gradient.y);
                 float range = (cVector.gradient.y - cVector.gradient.x);
-                float weight = Mathf.Lerp(cVector.weight.x, cVector.weight.y, distance / range);
-
-                if (weight != 0f)
+                if (range != 0)
                 {
-                    Map map = weight < 0 ? Maps.dangers : Maps.interests;
-                    weight *= map.sign;
-
-                    // Angle / Slot
-                    float angle = -Mathf.Rad2Deg * Mathf.Acos(vector.x / vector.magnitude);
-                    angle = (vector.y > 0f) ? 360 - angle : angle;
-                    angle = Mathf.Repeat(angle, 360);
-                    float slot = Mathf.Repeat((angle / 360) * resolution, resolution - 1);
-
-                    DrawPart(map.sign, Baseline[Mathf.RoundToInt(slot)], CircleRadius, CircleRadius+SourceRadius);
-                    Assert.IsFalse(float.IsNaN(angle));
-                    Assert.IsFalse(float.IsNaN(slot));
-                    AssertInRange(angle, 0, 360);
-                    AssertInRange(slot, 0, resolution - 1);
-
-                    // Falloff
-                    float falloff = (cVector.falloff / 360) * resolution;
-                    float falloffHigh = slot + falloff;
-                    float falloffLow = slot - falloff;
-
-                    // Slots
-                    int nextSlot = Mathf.CeilToInt(slot);
-                    int prevSlot = Mathf.FloorToInt(slot);
-                    int highSlot = Mathf.FloorToInt(falloffHigh);
-                    int lowSlot = Mathf.CeilToInt(falloffLow);
-
-                    // Add it up
-                    for (int i = nextSlot; i <= highSlot; i++)
+                    float t = distance / range;
+                    Assert.IsFalse(float.IsNaN(t));
+                    
+                    // Weight
+                    float weight = Mathf.Lerp(cVector.weight.x, cVector.weight.y, t);
+                    Assert.IsFalse(float.IsNaN(weight));
+                    if (weight != 0f)
                     {
-                        int ii = (int)Mathf.Repeat(i, resolution - 1);
-                        map[ii] += Mathf.Lerp(weight, 0, (i - slot) / falloff);
+                        // Map w/ Falloff
+                        float falloff = (cVector.falloff / 360) * resolution;
+                        MapToSlots(weight, vector, falloff);
                     }
-                    for (int i = prevSlot; i >= lowSlot; i--)
-                    {
-                        int ii = (int)Mathf.Repeat(i, resolution - 1);
-                        map[ii] += Mathf.Lerp(weight, 0, (slot - i) / falloff);
-                    }
-
-                    // Up the component count
-                    map.componentCount += 1;
                 }
             }
+        }
+
+        private void MapToSlots(float weight, Vector2 vector, float falloff)
+        {
+            Map map = weight < 0 ? Maps.dangers : Maps.interests;
+            weight *= map.sign;
+
+            // Angle / Slot
+            float angle = -Mathf.Rad2Deg * Mathf.Acos(vector.x / vector.magnitude);
+            angle = Mathf.Repeat((vector.y > 0f ? 360 - angle : angle), 360);
+            float slot = Mathf.Repeat((angle / 360) * resolution, resolution - 1);
+
+            // Debugging and Assertions
+            DrawPart(map.sign, Baseline[Mathf.RoundToInt(slot)], CircleRadius, CircleRadius + SourceRadius);
+            Assert.IsFalse(float.IsNaN(angle));
+            Assert.IsFalse(float.IsNaN(slot));
+            AssertInRange(angle, 0, 360);
+            AssertInRange(slot, 0, resolution - 1);
+
+            // Falloff
+            float falloffHigh = slot + falloff;
+            float falloffLow = slot - falloff;
+
+            // Slots
+            int nextSlot = Mathf.CeilToInt(slot);
+            int prevSlot = Mathf.FloorToInt(slot);
+            int highSlot = Mathf.FloorToInt(falloffHigh);
+            int lowSlot = Mathf.CeilToInt(falloffLow);
+
+            // Add it up
+            for (int i = nextSlot; i <= highSlot; i++)
+            {
+                int ii = (int)Mathf.Repeat(i, resolution - 1);
+                map[ii] += Mathf.Lerp(weight, 0, (i - slot) / falloff);
+                Assert.IsFalse(float.IsNaN(map[ii]));
+            }
+            for (int i = prevSlot; i >= lowSlot; i--)
+            {
+                int ii = (int)Mathf.Repeat(i, resolution - 1);
+                map[ii] += Mathf.Lerp(weight, 0, (slot - i) / falloff);
+                Assert.IsFalse(float.IsNaN(map[ii]));
+            }
+
+            // Up the component count
+            map.componentCount += 1;
         }
 
         private void AssertInRange(float value, float min, float max)
