@@ -93,7 +93,7 @@ namespace Body.Behavior.ContextSteering
         {
             if (following)
             {
-                MapTo(XZVector(destination-transform.position), Identity.Target);
+                MapTo((destination - transform.position).XZVector(), Identity.Target);
             }
             Draw();
             Vector3 vector = GetVector();
@@ -106,14 +106,10 @@ namespace Body.Behavior.ContextSteering
                 }
                 rigidbody.velocity = Speed * Time.fixedDeltaTime * vector;
             }
-            currentVector = XZVector(vector);
+            currentVector = vector.XZVector();
         }
 
         // Vector
-        private Vector2 XZVector(Vector3 vector)
-        {
-            return new(vector.x, vector.z);
-        }
 
         public Vector3 GetVector()
         {
