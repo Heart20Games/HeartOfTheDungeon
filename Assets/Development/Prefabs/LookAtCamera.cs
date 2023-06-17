@@ -11,7 +11,7 @@ public class LookAtCamera : BaseMonoBehaviour
 
     private void Awake()
     {
-        rotationOffset = transform.rotation.eulerAngles;
+        //rotationOffset = transform.rotation.eulerAngles;
         if (target == null)
         {
             target = Camera.main.transform;
@@ -20,12 +20,13 @@ public class LookAtCamera : BaseMonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 vector = transform.position - target.position;
-        Vector3 targetDir = vector.normalized;
-        float step = 1f;
-        Vector3 currentDir = transform.rotation.eulerAngles;
-        Vector3 newDir = Vector3.Lerp(currentDir, targetDir, step);
-        transform.rotation = Quaternion.Euler(newDir);
-        transform.Rotate(rotationOffset);
+        Vector3 direction = (target.position - transform.position).normalized;
+        Debug.DrawRay(transform.position, direction, Color.red, Time.fixedDeltaTime);
+        print($"Direction: {direction}");
+        Vector2 xzDirection = direction.XZVector();
+        transform.SetRotationWithVector(xzDirection);
+        //Vector2 fyDirection = new(direction.y, xzDirection.magnitude);
+        //Vector3 cross = Vector3.Cross(Vector3.up, direction);
+        //transform.SetRotationWithVector(fyDirection, cross);
     }
 }
