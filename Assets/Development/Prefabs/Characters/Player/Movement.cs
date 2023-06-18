@@ -105,10 +105,12 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
             }
 
             Vector2 hVelocity = myRigidbody.velocity.XZVector();
+            Vector2 hCamera = cameraDirection.XZVector().normalized;
+            Vector2 right = Vector2.Perpendicular(hCamera);
             if (hVelocity.magnitude > footstepVelocity)
             {
                 float pMag = Mathf.Abs(pivot.localScale.x);
-                float sign = myRigidbody.velocity.x > myRigidbody.velocity.z ? 1 : -1;
+                float sign = Mathf.Sign(Vector2.Dot(right, hVelocity));
                 pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
 
                 if (!hasFootsteps)
