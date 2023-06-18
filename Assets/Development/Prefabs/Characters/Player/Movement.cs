@@ -95,17 +95,22 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     {
         if (canMove)
         {
-            myRigidbody.AddRelativeForce(new Vector3(moveVector.x, 0, moveVector.y) * speed * Time.fixedDeltaTime * timeScale, ForceMode.Force);
+            Vector3 cameraDirection = character.body.position - Camera.main.transform.position;
+            Vector3 direction = moveVector.Orient(cameraDirection).FullY();
+            Debug.DrawRay(character.body.position, direction*3, Color.green, Time.fixedDeltaTime);
+            myRigidbody.AddRelativeForce(speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
             if (myRigidbody.velocity.magnitude > maxVelocity)
             {
                 myRigidbody.velocity = myRigidbody.velocity.normalized * maxVelocity;
             }
 
-            Vector2 hVelocity = new Vector2(myRigidbody.velocity.x, myRigidbody.velocity.z);
+            Vector2 hVelocity = myRigidbody.velocity.XZVector();
+            Vector2 hCamera = cameraDirection.XZVector().normalized;
+            Vector2 right = Vector2.Perpendicular(hCamera);
             if (hVelocity.magnitude > footstepVelocity)
             {
                 float pMag = Mathf.Abs(pivot.localScale.x);
-                float sign = myRigidbody.velocity.x > myRigidbody.velocity.z ? 1 : -1;
+                float sign = Mathf.Sign(Vector2.Dot(right, hVelocity));
                 pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
 
                 if (!hasFootsteps)
