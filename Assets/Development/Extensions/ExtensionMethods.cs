@@ -1,5 +1,7 @@
+using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public static class ExtensionMethods
 {
@@ -17,6 +19,27 @@ public static class ExtensionMethods
     public static Vector2 XZVector(this Vector3 _vector)
     {
         return new(_vector.x, _vector.z);
+    }
+    public static Vector3 Orient(this Vector3 _vector, Vector3 front)
+    {
+        Vector3 right = Vector3.Cross(front, Vector3.up);
+        Vector3 up = Vector3.Cross(right, front);
+        return front * _vector.z + right * _vector.x + up * _vector.y;
+    }
+
+    // Vector2
+    public static Vector3 FullY(this Vector2 _vector)
+    {
+        return new(_vector.x, 0, _vector.y);
+    }
+    public static Vector2 Orient(this Vector2 _vector, Vector2 front)
+    {
+        Vector2 right = -Vector2.Perpendicular(front);
+        return front * _vector.y + right * _vector.x;
+    }
+    public static Vector2 Orient(this Vector2 _vector, Vector3 front)
+    {
+        return _vector.Orient(front.normalized.XZVector());
     }
 
     // Transform
