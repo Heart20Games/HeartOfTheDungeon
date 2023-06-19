@@ -22,7 +22,6 @@ public class LookAtCamera : BaseMonoBehaviour
     {
         Vector3 direction = (target.position - transform.position).normalized;
         Debug.DrawRay(transform.position, direction, Color.red, Time.fixedDeltaTime);
-        print($"Direction: {direction}");
         Vector2 xzDirection = direction.XZVector();
         transform.SetRotationWithVector(xzDirection);
         //Vector2 fyDirection = new(direction.y, xzDirection.magnitude);

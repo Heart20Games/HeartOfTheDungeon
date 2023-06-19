@@ -23,6 +23,8 @@ namespace Body.Behavior.ContextSteering
         public FullContext Context { get { return context.initialized ? context : context.Initialize(Preset); } }
 
         // Parts
+        public float scale = 0f;
+        public float Scale { get { return scale == 0 ? (Preset.scale == 0 ? 1f : Preset.scale) : scale; } }
         public float Speed => Preset.testSpeed;
         public float DrawScale => Preset.drawScale;
         public bool DrawRays => Preset.draw;
@@ -104,7 +106,7 @@ namespace Body.Behavior.ContextSteering
                     if (vector.magnitude != 0 && Speed != 0) print($"{gameObject.name} is moving.");
                     else if (vector.magnitude != Speed) print($"{gameObject.name} not moving. (vector:{vector.magnitude}, speed:{Speed})");
                 }
-                rigidbody.velocity = Speed * Time.fixedDeltaTime * vector;
+                rigidbody.velocity = Speed * Scale * Time.fixedDeltaTime * vector;
             }
             currentVector = vector.XZVector();
         }
@@ -169,6 +171,7 @@ namespace Body.Behavior.ContextSteering
 
         public void MapContext(Vector2 vector, Context context)
         {
+            vector /= Scale;
             ContextVector cVector = context.vector;
             if (vector.magnitude == Mathf.Clamp(vector.magnitude, cVector.deadzone.x, cVector.deadzone.y))
             {
