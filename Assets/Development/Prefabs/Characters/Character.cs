@@ -65,7 +65,6 @@ namespace Body
         // Initialization
         private void Awake()
         {
-            transform.rotation = new(0,0,0,0);
             Awarn.IsNotNull(body, "Character has no Character");
             InitBody();
             brain = GetComponent<Brain>();
