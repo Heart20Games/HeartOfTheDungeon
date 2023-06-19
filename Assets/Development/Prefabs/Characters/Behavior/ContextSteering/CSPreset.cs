@@ -15,6 +15,7 @@ namespace Body.Behavior.ContextSteering
     [CreateAssetMenu(fileName = "CSPreset", menuName = "Context Steering/Preset", order = 1)]
     public class CSPreset : ScriptableObject
     {
+        public float scale = 1f;
         public float testSpeed = 3f;
         public float drawScale = 1.0f;
         public bool draw;
