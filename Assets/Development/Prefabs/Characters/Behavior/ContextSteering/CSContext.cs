@@ -27,7 +27,7 @@ namespace Body.Behavior.ContextSteering
         {
             return new(identity, defaultRange, defaultWeight, defaultGradient, defaultDeadzone, defaultFallof);
         }
-        
+
         public Dictionary<Identity, List<Context>> contextMap = null;
         public Dictionary<Identity, List<Context>> ContextMap { get { return contextMap ?? Initialize(); } }
 
