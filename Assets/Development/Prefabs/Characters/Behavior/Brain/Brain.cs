@@ -72,11 +72,8 @@ namespace Body.Behavior
             controller = character.body.GetComponent<CSController>();
             pathFinder = character.body.GetComponent<BalancedPathfinder>();
             agent.baseOffset = baseOffset;
-            if (character != null && character.loadout != null)
-            {
-                RegisterCastables(character.loadout.weapons);
-                RegisterCastables(character.loadout.abilities);
-            }
+            RegisterCastables(character.loadout.weapons);
+            RegisterCastables(character.loadout.abilities);
             controller.Context.castableContext = castableMap;
             if (target != null)
             {

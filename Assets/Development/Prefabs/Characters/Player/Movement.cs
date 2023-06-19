@@ -13,10 +13,6 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     public float moveDrag = 0.5f;
     public float stopDrag = 7.5f;
     public bool canMove = true;
-    public bool applyGravity = true;
-    public float normalForce = 0.1f;
-    public float gravityForce = 1f;
-    public float groundDistance = 0.01f;
 
     private float timeScale = 1f;
     public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
@@ -24,8 +20,7 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     private Vector2 moveVector = new Vector2(0,0);
     private Vector2 aimVector = new Vector2(0, 0);
     public Vector2 castVector = new Vector2(0, 0);
-    private bool onGround = false;
-
+    
     private bool hasFootsteps = false;
     FMOD.Studio.EventInstance footsteps;
 
@@ -131,13 +126,6 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
                 hasFootsteps = false;
                 footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
-        }
-
-        if (applyGravity)
-        {
-            onGround = Physics.Raycast(character.body.transform.position, Vector3.down, groundDistance);
-            float power = onGround ? normalForce : gravityForce;
-            myRigidbody.AddForce(speed * timeScale * power * Time.fixedDeltaTime * Vector3.down);
         }
     }
 
