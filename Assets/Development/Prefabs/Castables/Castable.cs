@@ -1,11 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using static Unity.VisualScripting.Member;
 using Body;
-using UnityEngine.WSA;
 
 public class Castable : BaseMonoBehaviour, ICastable
 {
