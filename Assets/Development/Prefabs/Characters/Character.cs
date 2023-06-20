@@ -19,7 +19,7 @@ namespace Body
         public Transform pivot;
         public Animator animator;
         public Transform weaponHand;
-        public Transform moveReticle;
+        public Pivot moveReticle;
         public Health healthBar;
         public CinemachineVirtualCamera virtualCamera;
         [HideInInspector] public Brain brain;
@@ -116,7 +116,8 @@ namespace Body
 
         public void OnCastVectorChanged()
         {
-            moveReticle.SetRotationWithVector(movement.castVector);
+            //moveReticle.rotationOffset.y = Vector3.Dot(movement.castVector.FullY(), Vector3.forward);//moveReticle.SetRotationWithVector(movement.castVector);
+            moveReticle.body.SetLocalRotationWithVector(movement.castVector);
         }
 
 
