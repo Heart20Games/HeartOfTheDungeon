@@ -48,6 +48,7 @@ public static class ExtensionMethods
         _transform.LookAt(cameraPosition, cameraUp);
     }
 
+    // Set Rotation With Vector
     public static void SetRotationWithVector(this Transform _transform, Vector2 vector, float rotationOffset=0, float threshold=0.5f)
     {
         SetRotationWithVector(_transform, vector, Vector3.up, Vector3.right, Vector3.forward, rotationOffset, threshold);
@@ -66,6 +67,28 @@ public static class ExtensionMethods
             _transform.Rotate(0, rotationOffset, 0);
             Vector3 euler = _transform.eulerAngles;
             _transform.eulerAngles = new Vector3(euler.x, euler.y + rotationOffset, euler.z);
+        }
+    }
+
+    // Set Local Rotation WIth Vector
+    public static void SetLocalRotationWithVector(this Transform _transform, Vector2 vector, float rotationOffset = 0, float threshold = 0.5f)
+    {
+        SetLocalRotationWithVector(_transform, vector, Vector3.up, Vector3.right, Vector3.forward, rotationOffset, threshold);
+    }
+    public static void SetLocalRotationWithVector(this Transform _transform, Vector2 vector, Vector3 up, float rotationOffset = 0, float threshold = 0.5f)
+    {
+        SetLocalRotationWithVector(_transform, vector, up, Vector3.right, Vector3.forward, rotationOffset, threshold);
+    }
+    public static void SetLocalRotationWithVector(this Transform _transform, Vector2 vector, Vector3 up, Vector3 right, Vector3 forward, float rotationOffset = 0, float threshold = 0.5f)
+    {
+        Vector3 direction = right * vector.x + forward * vector.y;
+        if (direction.sqrMagnitude > 0.0f)
+        {
+            Quaternion newRotation = Quaternion.LookRotation(direction, up);
+            _transform.localRotation = newRotation;
+            _transform.Rotate(0, rotationOffset, 0);
+            Vector3 euler = _transform.localEulerAngles;
+            _transform.localEulerAngles = new Vector3(euler.x, euler.y + rotationOffset, euler.z);
         }
     }
 }
