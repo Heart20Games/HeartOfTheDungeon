@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class HealthPips : Health
@@ -18,6 +19,11 @@ public class HealthPips : Health
     void Start()
     {
         SetHealthTotal(totalHealth);
+    }
+
+    private void FixedUpdate()
+    {
+        transform.TrueLookAt(Camera.main.transform.position);
     }
 
     private void ClearPips()

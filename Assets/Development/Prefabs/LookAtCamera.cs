@@ -20,12 +20,6 @@ public class LookAtCamera : BaseMonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 direction = (target.position - transform.position).normalized;
-        Debug.DrawRay(transform.position, direction, Color.red, Time.fixedDeltaTime);
-        Vector2 xzDirection = direction.XZVector();
-        transform.SetRotationWithVector(xzDirection);
-        //Vector2 fyDirection = new(direction.y, xzDirection.magnitude);
-        //Vector3 cross = Vector3.Cross(Vector3.up, direction);
-        //transform.SetRotationWithVector(fyDirection, cross);
+        transform.LookAt(target.position);
     }
 }

@@ -1,7 +1,4 @@
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 public static class ExtensionMethods
 {
@@ -43,6 +40,14 @@ public static class ExtensionMethods
     }
 
     // Transform
+    public static void TrueLookAt(this Transform _transform, Vector3 target)
+    {
+        Vector3 cameraPosition = Camera.main.transform.position;
+        Vector3 right = Vector3.Cross(cameraPosition, Vector3.up);
+        Vector3 cameraUp = Vector3.Cross(cameraPosition, right);
+        _transform.LookAt(cameraPosition, cameraUp);
+    }
+
     public static void SetRotationWithVector(this Transform _transform, Vector2 vector, float rotationOffset=0, float threshold=0.5f)
     {
         SetRotationWithVector(_transform, vector, Vector3.up, Vector3.right, Vector3.forward, rotationOffset, threshold);
