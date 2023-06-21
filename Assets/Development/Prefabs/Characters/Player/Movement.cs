@@ -9,6 +9,7 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
 {
     public float speed = 700f;
     public float maxVelocity = 10f;
+    public float npcModifier = 0.5f;
     public float footstepVelocity = 1f;
     public float moveDrag = 0.5f;
     public float stopDrag = 7.5f;
@@ -102,6 +103,7 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
         {
             Vector3 cameraDirection = character.body.position - Camera.main.transform.position;
 
+            float modifier = 1f;
             if (character.controllable)
             {
                 Vector3 direction = moveVector.Orient(cameraDirection).FullY();
@@ -110,14 +112,15 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
             }
             else
             {
+                modifier = npcModifier;
                 Vector3 direction = moveVector.FullY();
                 Debug.DrawRay(character.body.position, direction, Color.green, Time.fixedDeltaTime);
-                myRigidbody.AddForce(speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
+                myRigidbody.AddForce(modifier * speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
             }
             
-            if (myRigidbody.velocity.magnitude > maxVelocity)
+            if (myRigidbody.velocity.magnitude > maxVelocity * modifier)
             {
-                myRigidbody.velocity = myRigidbody.velocity.normalized * maxVelocity;
+                myRigidbody.velocity = maxVelocity * modifier * myRigidbody.velocity.normalized;
             }
 
             Vector2 hVelocity = myRigidbody.velocity.XZVector();
