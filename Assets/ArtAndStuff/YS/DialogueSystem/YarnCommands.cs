@@ -17,7 +17,8 @@ public class YarnCommands : BaseMonoBehaviour
     // Variable Initialization
     private void Awake()
     {
-        tags.Initialize();
+        if (tags != null)
+            tags.Initialize();
     }
 
     private void Start()
