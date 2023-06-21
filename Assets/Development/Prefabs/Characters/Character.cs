@@ -127,7 +127,7 @@ namespace Body
         {
             brain.Enabled = !_controllable;
             controllable = _controllable;
-            movement.canMove = controllable;
+            //movement.canMove = controllable;
             //attacker.enabled = controllable;
             SetComponentActive(moveReticle, _controllable);
             SetComponentActive(virtualCamera, _controllable);

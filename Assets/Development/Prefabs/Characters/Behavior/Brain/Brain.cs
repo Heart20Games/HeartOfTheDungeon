@@ -244,7 +244,7 @@ namespace Body.Behavior
             if (!useAgent)
             {
                 controller.following = false;
-                character.AimCharacter(-controller.currentVector);
+                character.AimCharacter(-controller.CurrentVector);
                 character.ActivateWeapon();
             }
 

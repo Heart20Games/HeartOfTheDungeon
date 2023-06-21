@@ -101,9 +101,20 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
         if (canMove)
         {
             Vector3 cameraDirection = character.body.position - Camera.main.transform.position;
-            Vector3 direction = moveVector.Orient(cameraDirection).FullY();
-            Debug.DrawRay(character.body.position, direction*3, Color.green, Time.fixedDeltaTime);
-            myRigidbody.AddRelativeForce(speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
+
+            if (character.controllable)
+            {
+                Vector3 direction = moveVector.Orient(cameraDirection).FullY();
+                Debug.DrawRay(character.body.position, direction * 3, Color.green, Time.fixedDeltaTime);
+                myRigidbody.AddRelativeForce(speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
+            }
+            else
+            {
+                Vector3 direction = moveVector.FullY();
+                Debug.DrawRay(character.body.position, direction, Color.green, Time.fixedDeltaTime);
+                myRigidbody.AddForce(speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
+            }
+            
             if (myRigidbody.velocity.magnitude > maxVelocity)
             {
                 myRigidbody.velocity = myRigidbody.velocity.normalized * maxVelocity;
