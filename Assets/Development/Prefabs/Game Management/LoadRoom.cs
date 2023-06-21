@@ -8,7 +8,8 @@ public class LoadRoom : BaseMonoBehaviour
     public InMemoryVariableStorage storage;
     public string targetRoom = "$Hub";
     public bool asynchronous = false;
-    public float asyncProgressThreshold = 0.9f;
+    public float progressThreshold = 0.9f;
+    public bool canActivate = true;
     public UnityEvent onSceneLoaded;
 
     public bool debug = false;
@@ -17,16 +18,21 @@ public class LoadRoom : BaseMonoBehaviour
 
     private void Update()
     {
-        if (debug && loading != null)
+        if (loading != null)
         {
             if (debug) print($"Progress: {loading.progress}");
-            if (loading.isDone || loading.progress >= 0.9f)
+            if (canActivate && (loading.isDone || loading.progress >= progressThreshold))
             {
                 if (debug) print("Scene done loading, activation allowed.");
                 loading.allowSceneActivation = true;
                 onSceneLoaded.Invoke();
             }
         }
+    }
+
+    public void SetCanActivate(bool canActivate)
+    {
+        this.canActivate = canActivate;
     }
 
     public void StartGameplay()

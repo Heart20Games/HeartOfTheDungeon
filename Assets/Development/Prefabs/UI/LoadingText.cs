@@ -10,12 +10,21 @@ public class LoadingText : MonoBehaviour
     private readonly string[] loadingDots = { "", ".", "..", "..." };
     private int currentDotIndex = 0;
     private float timer = 0f;
+    private string startingText = "Loading";
 
     private void Awake()
     {
         if (loadingText == null)
             loadingText = GetComponent<TMP_Text>();
-        loadingText.text = "Loading";
+        if (loadingText.text != "")
+        {
+            startingText = loadingText.text.Trim('.');
+        }
+        else
+        {
+            startingText = "Loading";
+        }
+        loadingText.text = startingText;
     }
 
     private void Update()
@@ -26,7 +35,7 @@ public class LoadingText : MonoBehaviour
         {
             timer = 0f;
             currentDotIndex = (currentDotIndex + 1) % loadingDots.Length;
-            loadingText.text = "Loading" + loadingDots[currentDotIndex];
+            loadingText.text = startingText + loadingDots[currentDotIndex];
         }
     }
 }
