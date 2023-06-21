@@ -129,6 +129,7 @@ namespace Body
             controllable = _controllable;
             //movement.canMove = controllable;
             //attacker.enabled = controllable;
+            SetComponentActive(healthBar, !_controllable);
             SetComponentActive(moveReticle, _controllable);
             SetComponentActive(virtualCamera, _controllable);
         }
