@@ -22,6 +22,7 @@ namespace Body
         public Pivot moveReticle;
         public Health healthBar;
         public CinemachineVirtualCamera virtualCamera;
+        public CharacterUIElements characterUIElements;
         [HideInInspector] public Brain brain;
         [HideInInspector] public Movement movement;
         [HideInInspector] public Talker talker;
@@ -43,8 +44,8 @@ namespace Body
         public List<Status> statuses;
 
         // Health
-        public Modified<int> maxHealth = new(25);
-        public Modified<int> currentHealth = new(25);
+        public Modified<int> maxHealth = new(20);
+        public Modified<int> currentHealth = new(20);
         public int MaxHealth
         {
             get { return maxHealth.Value; }
@@ -127,8 +128,9 @@ namespace Body
         {
             brain.Enabled = !_controllable;
             controllable = _controllable;
-            movement.canMove = controllable;
+            //movement.canMove = controllable;
             //attacker.enabled = controllable;
+            SetComponentActive(healthBar, !_controllable);
             SetComponentActive(moveReticle, _controllable);
             SetComponentActive(virtualCamera, _controllable);
         }

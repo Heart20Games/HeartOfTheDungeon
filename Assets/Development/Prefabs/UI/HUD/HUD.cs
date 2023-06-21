@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using Body;
 
 public class HUD : BaseMonoBehaviour
 {
     [SerializeField] private List<GameObject> characterImages;
+    [SerializeField] private Character character;
     [SerializeField] private GameObject selectedCharacter;
     [SerializeField] private GameObject prevSelectedCharacter;
     [SerializeField] private Animator characterSelectAnimator;
@@ -15,13 +17,13 @@ public class HUD : BaseMonoBehaviour
     [SerializeField] private Animator abilityMenuAnimator;
     [SerializeField] private Material shimmerMat;
     [SerializeField] private float shimmerSpeed = .02f;
+    [SerializeField] private PlayerHealthUI healthUI;
     private bool isShimmering = false;
     private int currentCharacter;
 
     [SerializeField] private Material defaultSpriteMat;
     private GameObject mainCamera;
     private Canvas hudCanvas;
-
 
     enum CHAR { GOBKIN, ROTTA, OSSEUS }
     
@@ -44,22 +46,26 @@ public class HUD : BaseMonoBehaviour
         }    
     }
 
-    public void CharacterSelect(int idx)
+    public void CharacterSelect(Character character)
     {
-        
-        if (selectedCharacter == characterImages[idx])
+        if (character == null)
             return;
-   
-        prevSelectedCharacter = selectedCharacter;        
-        selectedCharacter = characterImages[idx];
+
+        this.character = character;
+
+        if (healthUI != null)
+            healthUI.ConnectCharacter(character);
+        prevSelectedCharacter = selectedCharacter;
+        int portraitIndex = character.characterUIElements != null ? character.characterUIElements.portraitIndex : 0;
+        selectedCharacter = characterImages[portraitIndex];
         selectedCharacter.GetComponent<SpriteRenderer>().sortingOrder = 3;
         prevSelectedCharacter.GetComponent<SpriteRenderer>().sortingOrder = 1;
         prevSelectedCharacter.GetComponent<SpriteRenderer>().material = defaultSpriteMat;
         shimmerMat.SetFloat("_SheenPosition", 0f);
         selectedCharacter.GetComponent<SpriteRenderer>().material = shimmerMat;
-        isShimmering = true;        
-        characterSelectAnimator.SetTrigger("SelectCharacter" + idx);
-        currentCharacter = idx;
+        isShimmering = true;
+        characterSelectAnimator.SetTrigger("SelectCharacter" + portraitIndex);
+        currentCharacter = portraitIndex;
 
         AbilitySelect(false);
     }

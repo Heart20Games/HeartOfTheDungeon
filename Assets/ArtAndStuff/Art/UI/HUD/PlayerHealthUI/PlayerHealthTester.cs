@@ -24,5 +24,4 @@ public class PlayerHealthTester : BaseMonoBehaviour
             callUpdateHealth = false;
         }
     }
-    
 }

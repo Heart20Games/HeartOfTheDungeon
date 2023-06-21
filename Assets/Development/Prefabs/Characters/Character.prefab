@@ -80,9 +80,9 @@ MonoBehaviour:
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
+  m_XDamping: 0.5
+  m_YDamping: 0.5
+  m_ZDamping: 0.5
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.5
@@ -129,7 +129,7 @@ MonoBehaviour:
     m_InputAxisName: Mouse Y
     m_InputAxisValue: 0
     m_InvertInput: 1
-    m_MinValue: -70
+    m_MinValue: 0
     m_MaxValue: 70
     m_Wrap: 0
     m_Recentering:
@@ -248,6 +248,7 @@ MonoBehaviour:
   moveReticle: {fileID: 8706531923607348711}
   healthBar: {fileID: 6548638977744553781}
   virtualCamera: {fileID: 3832840258595731421}
+  characterUIElements: {fileID: 0}
   brain: {fileID: 0}
   movement: {fileID: 0}
   talker: {fileID: 0}
@@ -296,6 +297,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 15000
   maxVelocity: 3
+  npcModifier: 0.5
   footstepVelocity: 1
   moveDrag: 0.5
   stopDrag: 7.5
@@ -410,7 +412,22 @@ MonoBehaviour:
   active: 0
   destination: {x: 0, y: 0, z: 0}
   following: 0
-  currentVector: {x: 0, y: 0}
+  onSetVector:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7638968927939714640}
+        m_TargetAssemblyTypeName: Movement, Assembly-CSharp
+        m_MethodName: SetMoveVector
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  moveSelf: 0
   debug: 0
 --- !u!114 &1478009292357517548
 MonoBehaviour:
