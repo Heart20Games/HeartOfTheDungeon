@@ -28,8 +28,6 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     private bool onGround = false;
 
     private bool hasFootsteps = false;
-    FMOD.Studio.EventInstance footsteps;
-
     private Rigidbody myRigidbody;
     private Character character;
     private Animator animator;
@@ -42,7 +40,6 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
 
     private void Awake()
     {
-        footsteps = FMODUnity.RuntimeManager.CreateInstance("event:/Footsteploop");
         character = GetComponent<Character>();
         myRigidbody = character.body.GetComponent<Rigidbody>();
         animator = character.animator;
@@ -97,6 +94,9 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
 
     // Movement
     
+    public UnityEvent startWalking;
+    public UnityEvent stopWalking;
+
     private void FixedUpdate()
     {
         if (canMove)
@@ -136,14 +136,14 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
                 {
                     SetAnimBool("run", true);
                     hasFootsteps = true;
-                    footsteps.start();
+                    startWalking.Invoke();
                 }
             } 
             else if (hasFootsteps)
             {
                 SetAnimBool("run", false);
                 hasFootsteps = false;
-                footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                stopWalking.Invoke();
             }
         }
 
