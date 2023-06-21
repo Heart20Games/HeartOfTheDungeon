@@ -128,9 +128,8 @@ namespace Body.Behavior
 
         public void RegisterCastable(CastableItem item)
         {
-            print("Register Castable: " + item.name);
-            List<Context> contexts;
-            if (!castableMap.TryGetValue(item.context.identity, out contexts))
+            if (debug) print("Register Castable: " + item.name);
+            if (!castableMap.TryGetValue(item.context.identity, out List<Context> contexts))
             {
                 contexts = new();
                 castableMap.Add(item.context.identity, contexts);

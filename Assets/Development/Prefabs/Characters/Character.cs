@@ -22,6 +22,7 @@ namespace Body
         public Pivot moveReticle;
         public Health healthBar;
         public CinemachineVirtualCamera virtualCamera;
+        public CharacterUIElements characterUIElements;
         [HideInInspector] public Brain brain;
         [HideInInspector] public Movement movement;
         [HideInInspector] public Talker talker;

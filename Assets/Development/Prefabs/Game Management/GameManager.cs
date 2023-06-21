@@ -126,8 +126,9 @@ public class Game : BaseMonoBehaviour
         {
             idx = idx < 0 ? playableCharacters.Count + idx : idx;
             curCharIdx = idx % (playableCharacters.Count);
-            SetCharacter(playableCharacters[curCharIdx]);
-            hud.CharacterSelect(curCharIdx);
+            Character character = playableCharacters[curCharIdx];
+            SetCharacter(character);
+            hud.CharacterSelect(character);//curCharIdx);
         }
     }
 
