@@ -17,6 +17,7 @@ public class HUD : BaseMonoBehaviour
     [SerializeField] private Animator abilityMenuAnimator;
     [SerializeField] private Material shimmerMat;
     [SerializeField] private float shimmerSpeed = .02f;
+    [SerializeField] private PlayerHealthUI healthUI;
     private bool isShimmering = false;
     private int currentCharacter;
 
@@ -52,6 +53,8 @@ public class HUD : BaseMonoBehaviour
 
         this.character = character;
 
+        if (healthUI != null)
+            healthUI.ConnectCharacter(character);
         prevSelectedCharacter = selectedCharacter;
         int portraitIndex = character.characterUIElements != null ? character.characterUIElements.portraitIndex : 0;
         selectedCharacter = characterImages[portraitIndex];

@@ -44,8 +44,8 @@ namespace Body
         public List<Status> statuses;
 
         // Health
-        public Modified<int> maxHealth = new(25);
-        public Modified<int> currentHealth = new(25);
+        public Modified<int> maxHealth = new(20);
+        public Modified<int> currentHealth = new(20);
         public int MaxHealth
         {
             get { return maxHealth.Value; }
