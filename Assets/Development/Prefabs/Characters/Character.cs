@@ -58,6 +58,7 @@ namespace Body
         }
         public UnityEvent onDeath;
 
+
         public UnityEvent onDmg;
 
         // State
