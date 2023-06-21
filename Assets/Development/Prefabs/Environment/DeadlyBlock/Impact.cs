@@ -23,16 +23,19 @@ public class Impact : BaseMonoBehaviour
 
     private void SetSelectableTypes(List<SelectType> selectableTypes)
     {
-        print("Set Types on Impact");
+        if (debug)
+            print("Set Types on Impact");
         this.selectableTypes = selectableTypes;
     }
 
     private bool HasValidTag(GameObject other)
     {
-        if (debug && desiredTags.Count != 0)
+        if (other == gameObject)
         {
-            print("Valid Tag? " + (desiredTags.Count == 0 || desiredTags.Contains(other.tag)) + " (" + other.tag + ")");
+            Debug.LogWarning($"Colliding with self: {other.tag}-{other.name}");
         }
+        if (debug)
+            print($"Valid Tag? {(desiredTags.Count == 0 || desiredTags.Contains(other.tag))} (them:{other.tag}-{other.name} me:{gameObject.tag}-{gameObject.name})");
         return desiredTags.Count == 0 || desiredTags.Contains(other.tag);
     }
 
@@ -43,7 +46,8 @@ public class Impact : BaseMonoBehaviour
             selectable = other.GetComponent<ASelectable>();
             if (debug && selectable != null)
             {
-                print("Valid Selectable?" + (selectable != null && selectableTypes.Contains(selectable.Type)) + " (" + selectable.Type + ")");
+                if (debug)
+                    print($"Valid Selectable? {(selectable != null && selectableTypes.Contains(selectable.Type))} ({selectable.Type})");
             }
             return selectable != null && selectableTypes.Contains(selectable.Type);
         }

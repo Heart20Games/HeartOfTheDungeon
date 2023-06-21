@@ -27,11 +27,11 @@ public class NavPathRenderer : BaseMonoBehaviour
         {
             pathFinder = GetComponent<BalancedPathfinder>();
         }
-        if (body == null)
+        if (body == null && pathFinder != null)
         {
             body = pathFinder.transform;
         }
-        if (matchOffsetToTransform)
+        if (matchOffsetToTransform && body != null)
         {
             offset = transform.position - body.position;
         }

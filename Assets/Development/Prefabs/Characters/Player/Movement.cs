@@ -13,6 +13,10 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     public float moveDrag = 0.5f;
     public float stopDrag = 7.5f;
     public bool canMove = true;
+    public bool applyGravity = true;
+    public float normalForce = 0.1f;
+    public float gravityForce = 1f;
+    public float groundDistance = 0.01f;
 
     private float timeScale = 1f;
     public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
@@ -20,7 +24,8 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     private Vector2 moveVector = new Vector2(0,0);
     private Vector2 aimVector = new Vector2(0, 0);
     public Vector2 castVector = new Vector2(0, 0);
-    
+    private bool onGround = false;
+
     private bool hasFootsteps = false;
     FMOD.Studio.EventInstance footsteps;
 
@@ -95,17 +100,22 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     {
         if (canMove)
         {
-            myRigidbody.AddRelativeForce(new Vector3(moveVector.x, 0, moveVector.y) * speed * Time.fixedDeltaTime * timeScale, ForceMode.Force);
+            Vector3 cameraDirection = character.body.position - Camera.main.transform.position;
+            Vector3 direction = moveVector.Orient(cameraDirection).FullY();
+            Debug.DrawRay(character.body.position, direction*3, Color.green, Time.fixedDeltaTime);
+            myRigidbody.AddRelativeForce(speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
             if (myRigidbody.velocity.magnitude > maxVelocity)
             {
                 myRigidbody.velocity = myRigidbody.velocity.normalized * maxVelocity;
             }
 
-            Vector2 hVelocity = new Vector2(myRigidbody.velocity.x, myRigidbody.velocity.z);
+            Vector2 hVelocity = myRigidbody.velocity.XZVector();
+            Vector2 hCamera = cameraDirection.XZVector().normalized;
+            Vector2 right = Vector2.Perpendicular(hCamera);
             if (hVelocity.magnitude > footstepVelocity)
             {
                 float pMag = Mathf.Abs(pivot.localScale.x);
-                float sign = myRigidbody.velocity.x > myRigidbody.velocity.z ? 1 : -1;
+                float sign = Mathf.Sign(Vector2.Dot(right, hVelocity));
                 pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
 
                 if (!hasFootsteps)
@@ -121,6 +131,13 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
                 hasFootsteps = false;
                 footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
+        }
+
+        if (applyGravity)
+        {
+            onGround = Physics.Raycast(character.body.transform.position, Vector3.down, groundDistance);
+            float power = onGround ? normalForce : gravityForce;
+            myRigidbody.AddForce(speed * timeScale * power * Time.fixedDeltaTime * Vector3.down);
         }
     }
 

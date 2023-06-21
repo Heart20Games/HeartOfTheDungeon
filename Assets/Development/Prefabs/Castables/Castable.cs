@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using static Unity.VisualScripting.Member;
 using Body;
+using UnityEngine.WSA;
 
 public class Castable : BaseMonoBehaviour, ICastable
 {
@@ -29,11 +30,15 @@ public class Castable : BaseMonoBehaviour, ICastable
         damager = GetComponent<Damager>();
     }
 
-    public virtual void Initialize(Body.Character source)
+    public virtual void Initialize(Character source)
     {
         this.source = source;
         if (damager != null) { damager.Ignore(source.body); }
         ReportOriginToPositionables();
+        if (source.body != null)
+        {
+            ReportExceptionsToCollidables(source.body.GetComponents<Collider>());
+        }
     }
     
     public virtual bool CanCast() { return !casting; }
@@ -85,6 +90,24 @@ public class Castable : BaseMonoBehaviour, ICastable
             {
                 positionable.SetOrigin(effectParent, source.body);
                 positionable.SetOffset(source.weaponOffset, rOffset);
+            }
+        }
+    } 
+
+    private void ReportExceptionsToCollidables(Collider[] exceptions)
+    {
+        ReportExceptionsAmong(onCast, exceptions);
+        ReportExceptionsAmong(doCast, exceptions);
+    }
+
+    private void ReportExceptionsAmong(UnityEventBase uEvent, Collider[] exceptions)
+    {
+        for (int l = 0; l < uEvent.GetPersistentEventCount(); l++)
+        {
+            object target = uEvent.GetPersistentTarget(l);
+            if (target is ICollidables collidable)
+            {
+                collidable.SetExceptions(exceptions);
             }
         }
     } 
