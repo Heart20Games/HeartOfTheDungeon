@@ -22,6 +22,11 @@ public class GameController : BaseMonoBehaviour
         selector = controller.selector;
     }
 
+    public void CharacterDied(Character character)
+    {
+        controller.OnCharacterDied(character);
+    }
+
     public void OnSelectorConfirmed()
     {
         print("Selector Confirmed (" + (selector.selected != null) + ")");

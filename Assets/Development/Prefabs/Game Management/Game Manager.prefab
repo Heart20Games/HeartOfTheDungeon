@@ -136,8 +136,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4674986688963994434}
-  m_LocalRotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  m_LocalPosition: {x: 33.813732, y: 0.22204828, z: 17.925533}
+  m_LocalRotation: {x: 0.30836496, y: 0.63632625, z: -0.3083649, w: 0.63632625}
+  m_LocalPosition: {x: -14.999999, y: 19.963, z: 0.0000019073486}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -177,7 +177,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 1000
-  field of view: 45
+  field of view: 34.42828
   orthographic: 0
   orthographic size: 25.12
   m_Depth: 0
@@ -520,7 +520,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7611609939930893454}
-  m_LocalRotation: {x: 0.4360938, y: 0.00000008940696, z: -0.00000004470348, w: 0.89990115}
+  m_LocalRotation: {x: 0.4360938, y: -0, z: 0.00000004470348, w: 0.89990115}
   m_LocalPosition: {x: -2.2737368e-13, y: 20, z: -15.000001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -735,6 +735,7 @@ GameObject:
   - component: {fileID: 8636156924694284201}
   - component: {fileID: 2037490854999543379}
   - component: {fileID: 6438564664787818369}
+  - component: {fileID: 2746437236491300203}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -782,6 +783,21 @@ MonoBehaviour:
   interactables: []
   timeScale: 1
   restartable: 1
+  onPlayerDied:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2746437236491300203}
+        m_TargetAssemblyTypeName: LoadRoom, Assembly-CSharp
+        m_MethodName: StartGameplay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &8636156924694284201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -990,3 +1006,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controllers: []
+--- !u!114 &2746437236491300203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8636156924694284204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1899db93195d214fabcb31a6d039eaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storage: {fileID: 0}
+  targetRoom: $GameOver
+  asynchronous: 1
+  progressThreshold: 0.9
+  canActivate: 1
+  onSceneLoaded:
+    m_PersistentCalls:
+      m_Calls: []
+  debug: 0

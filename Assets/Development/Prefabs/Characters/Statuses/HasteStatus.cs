@@ -31,10 +31,11 @@ public class HasteStatus : StatusEffect, ITimeScalable
         oldBrainTimeScales.Remove(character);
     }
 
-    public void SetTimeScale(float timeScale)
+    public float SetTimeScale(float timeScale)
     {
         AdjustTimeScaleDictionary(oldMovementTimeScales, timeScale);
         AdjustTimeScaleDictionary(oldBrainTimeScales, timeScale);
+        return timeScale;
     }
 
     private void AdjustTimeScaleDictionary(Dictionary<Character, float> dictionary, float timeScale)

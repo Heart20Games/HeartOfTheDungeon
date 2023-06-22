@@ -20,7 +20,7 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     public float groundDistance = 0.01f;
 
     private float timeScale = 1f;
-    public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
+    public float TimeScale { get => timeScale; set => timeScale=SetTimeScale(value); }
 
     private Vector2 moveVector = new(0,0);
     private Vector2 aimVector = new(0, 0);
@@ -167,7 +167,7 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
 
     // TimeScaling
     private Vector3 tempVelocity;
-    public void SetTimeScale(float timeScale)
+    public float SetTimeScale(float timeScale)
     {
         if (myRigidbody != null && this.timeScale != timeScale)
         {
@@ -187,5 +187,6 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
             }
         }
         this.timeScale = timeScale;
+        return timeScale;
     }
 }
