@@ -282,8 +282,8 @@ MonoBehaviour:
   scale: 0.5
   active: 0
   alive: 1
-  destination: {x: 0, y: 0, z: 0}
-  following: 0
+  destinationStep: {x: 0, y: 0, z: 0}
+  destinationDistance: 0
   onSetVector:
     m_PersistentCalls:
       m_Calls:
@@ -343,6 +343,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   hasPath: 0
+  pathLength: 0
+  debug: 0
 --- !u!114 &442215480502625366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -878,6 +880,10 @@ PrefabInstance:
     - target: {fileID: 6473001147741409366, guid: d1188049d2e999b48b465fd757a928c1, type: 3}
       propertyPath: m_Name
       value: NavPathLine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6473001147741409366, guid: d1188049d2e999b48b465fd757a928c1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
