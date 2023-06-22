@@ -22,9 +22,9 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     private float timeScale = 1f;
     public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
 
-    private Vector2 moveVector = new Vector2(0,0);
-    private Vector2 aimVector = new Vector2(0, 0);
-    public Vector2 castVector = new Vector2(0, 0);
+    private Vector2 moveVector = new(0,0);
+    private Vector2 aimVector = new(0, 0);
+    public Vector2 castVector = new(0, 0);
     private bool onGround = false;
 
     private bool hasFootsteps = false;
@@ -134,16 +134,15 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
 
                 if (!hasFootsteps)
                 {
+                    print("Footsteps?");
                     SetAnimBool("run", true);
                     hasFootsteps = true;
-                    startWalking.Invoke();
                 }
             } 
             else if (hasFootsteps)
             {
                 SetAnimBool("run", false);
                 hasFootsteps = false;
-                stopWalking.Invoke();
             }
         }
 
