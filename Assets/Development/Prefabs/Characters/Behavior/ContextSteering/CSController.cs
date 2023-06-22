@@ -29,7 +29,8 @@ namespace Body.Behavior.ContextSteering
         public float Speed => Preset.testSpeed;
         public float DrawScale => Preset.drawScale;
         public bool DrawRays => Preset.draw;
-        public Identity Identity { get => Preset.Identity; }
+        public Identity identity = Identity.Neutral;
+        //public Identity Identity { get => Preset.Identity; }
 
         // Initialization
         private Rigidbody rigidbody;
@@ -117,13 +118,6 @@ namespace Body.Behavior.ContextSteering
                 {
                     Vector2 destinationVector = (destinationStep - transform.position).XZVector();
                     MapTo(destinationVector, Identity.Target, destinationDistance);
-                    //List<Context> mappable = IsIdentityMappable(destinationDistance, Identity.Target);
-                    //if (mappable.Count > 0)
-                    //{
-                    //    if (debug) print("Mapping Target");
-                    //    Vector2 destinationVector = (destinationStep - transform.position).XZVector() / Scale;
-                    //    MapContexts(destinationVector, mappable, destinationDistance);
-                    //}
                 }
                 Draw();
                 Vector3 vector = GetVector();
@@ -170,13 +164,6 @@ namespace Body.Behavior.ContextSteering
             interests.componentCount = 0;
             dangers.componentCount = 0;
             return vector.normalized;
-        }
-
-        public Identity RelativeIdentity(Identity id)
-        {
-            bool friendOrFoe = (id == Identity.Friend) || (id == Identity.Foe);
-            Identity opponent = (id == Identity ? Identity.Friend : Identity.Foe);
-            return (!friendOrFoe) ? id : opponent;
         }
 
         // Mappable

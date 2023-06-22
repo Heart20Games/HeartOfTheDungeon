@@ -31,6 +31,12 @@ namespace Body.Behavior
             set => controller.Alive=value;
         }
 
+        public Identity Identity
+        {
+            get => controller.identity;
+            set => controller.identity=value;
+        }
+
         // Target
         [SerializeField] private Transform target = null;
         public Transform Target

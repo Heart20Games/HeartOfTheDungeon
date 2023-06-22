@@ -90,6 +90,7 @@ MonoBehaviour:
   primary: {fileID: 0}
   secondary: {fileID: 0}
   weaponOffset: {x: 0, y: 1, z: 0}
+  identity: 0
   statuses: []
   maxHealth:
     value: 5
@@ -260,7 +261,6 @@ Transform:
   m_Children:
   - {fileID: 4813447189290614994}
   - {fileID: 4733614151839058327}
-  - {fileID: 7023759147009621913}
   - {fileID: 3021082883175624020}
   m_Father: {fileID: 850644614561672070}
   m_RootOrder: -1
@@ -278,8 +278,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   preset:
-    value: {fileID: 11400000, guid: 53f2beb2628ea6a46a5ae457c34209ca, type: 2}
+    value: {fileID: 11400000, guid: 312be4e2a12916a4a9df4983156614ba, type: 2}
   scale: 0.5
+  identity: 0
   active: 0
   alive: 1
   destinationStep: {x: 0, y: 0, z: 0}
@@ -492,9 +493,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onTakeDamage:
     m_PersistentCalls:
+      m_Calls: []
+  onTakeDamageFrom:
+    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1895181659443492097}
-        m_TargetAssemblyTypeName: Character, Assembly-CSharp
+        m_TargetAssemblyTypeName: Body.Character, Assembly-CSharp
         m_MethodName: TakeDamage
         m_Mode: 0
         m_Arguments:
@@ -690,7 +694,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.35000002, y: 0.34999996, z: 0.35000002}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7023759147009621913}
   m_Father: {fileID: 5106106832475441759}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
@@ -986,7 +991,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 5106106832475441759}
+    m_TransformParent: {fileID: 4813447189290614994}
     m_Modifications:
     - target: {fileID: 250899217180294028, guid: f618bd6bff53c0c4e83bc935ee154c8b, type: 3}
       propertyPath: totalHealth
@@ -1037,6 +1042,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4099199581749838624, guid: f618bd6bff53c0c4e83bc935ee154c8b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.008571427
+      objectReference: {fileID: 0}
+    - target: {fileID: 4099199581749838624, guid: f618bd6bff53c0c4e83bc935ee154c8b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.008571429
+      objectReference: {fileID: 0}
+    - target: {fileID: 4099199581749838624, guid: f618bd6bff53c0c4e83bc935ee154c8b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.008571427
+      objectReference: {fileID: 0}
+    - target: {fileID: 4099199581749838624, guid: f618bd6bff53c0c4e83bc935ee154c8b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -1046,15 +1063,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4099199581749838624, guid: f618bd6bff53c0c4e83bc935ee154c8b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -3.24
       objectReference: {fileID: 0}
     - target: {fileID: 4099199581749838624, guid: f618bd6bff53c0c4e83bc935ee154c8b, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.9659258
       objectReference: {fileID: 0}
     - target: {fileID: 4099199581749838624, guid: f618bd6bff53c0c4e83bc935ee154c8b, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.2588191
       objectReference: {fileID: 0}
     - target: {fileID: 4099199581749838624, guid: f618bd6bff53c0c4e83bc935ee154c8b, type: 3}
       propertyPath: m_LocalRotation.y
@@ -1070,7 +1087,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4099199581749838624, guid: f618bd6bff53c0c4e83bc935ee154c8b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 3.8235002
+      value: 15.7
       objectReference: {fileID: 0}
     - target: {fileID: 4099199581749838624, guid: f618bd6bff53c0c4e83bc935ee154c8b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
