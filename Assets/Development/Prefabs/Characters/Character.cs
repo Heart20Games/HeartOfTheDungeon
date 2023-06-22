@@ -57,8 +57,6 @@ namespace Body
             set { SetCurrentHealth(value); }
         }
         public UnityEvent onDeath;
-
-
         public UnityEvent onDmg;
 
         // State

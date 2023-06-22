@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,9 +23,11 @@ public class YarnRooms : ScriptableObject
     public void Initialize()
     {
         bank.Clear();
+        Debug.Log("Initialize Rooms");
         foreach (Room room in rooms)
         {
             string roomKey = room.name;
+            Debug.Log($"Room: {roomKey}");
             if (!roomKey.StartsWith("$"))
             {
                 roomKey = "$" + roomKey;
