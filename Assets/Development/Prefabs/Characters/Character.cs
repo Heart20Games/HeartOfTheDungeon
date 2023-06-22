@@ -22,6 +22,7 @@ namespace Body
         public Pivot moveReticle;
         public Health healthBar;
         public CinemachineVirtualCamera virtualCamera;
+        public CharacterUIElements characterUIElements;
         [HideInInspector] public Brain brain;
         [HideInInspector] public Movement movement;
         [HideInInspector] public Talker talker;
@@ -43,8 +44,8 @@ namespace Body
         public List<Status> statuses;
 
         // Health
-        public Modified<int> maxHealth = new(25);
-        public Modified<int> currentHealth = new(25);
+        public Modified<int> maxHealth = new(20);
+        public Modified<int> currentHealth = new(20);
         public int MaxHealth
         {
             get { return maxHealth.Value; }
@@ -57,10 +58,12 @@ namespace Body
         }
         public UnityEvent onDeath;
 
+
         public UnityEvent onDmg;
 
         // State
         public bool controllable = true;
+        public bool aimActive = false;
 
         // Initialization
         private void Awake()
@@ -127,8 +130,9 @@ namespace Body
         {
             brain.Enabled = !_controllable;
             controllable = _controllable;
-            movement.canMove = controllable;
+            //movement.canMove = controllable;
             //attacker.enabled = controllable;
+            SetComponentActive(healthBar, !_controllable);
             SetComponentActive(moveReticle, _controllable);
             SetComponentActive(virtualCamera, _controllable);
         }
@@ -248,15 +252,25 @@ namespace Body
             }
         }
 
+        public void SetAimModeActive(bool active)
+        {
+            if (virtualCamera.TryGetComponent(out CinemachineInputProvider cip))
+            {
+                cip.enabled = !active;
+            }
+            aimActive = active;
+        }
+
 
         // Actions
         public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); }
-        public void AimCharacter(Vector2 input) { movement.SetAimVector(input); }
+        public void AimCharacter(Vector2 input) { if (aimActive) movement.SetAimVector(input); }
         public void ChangeAbility() { ChangeCastable(CastSlot.SECONDARY); }
         public void ChangeWeapon() { ChangeCastable(CastSlot.PRIMARY); }
         public void ActivateWeapon() { ActivateCastable(primary); }
         public void ActivateAbility() { ActivateCastable(secondary); }
         public void Interact() { talker.Talk(); }
+        public void AimMode(bool active) { SetAimModeActive(active); }
 
 
         // Debugging

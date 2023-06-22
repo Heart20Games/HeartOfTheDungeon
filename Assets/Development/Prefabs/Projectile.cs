@@ -1,7 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using static Colliders;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -13,6 +12,8 @@ public class Projectile : BaseMonoBehaviour, ICollidable
     private Collider[] colliders;
     private Collider[] Colliders { get { return colliders ?? InitializeColliders(); } }
     public List<GameObject> collidableObjects;
+
+    public UnityEvent onStart;
 
     public void Destroy()
     {
@@ -46,6 +47,7 @@ public class Projectile : BaseMonoBehaviour, ICollidable
     private void Start()
     {
         rigidbody.velocity = speed * Time.fixedDeltaTime * -transform.forward;
+        onStart.Invoke();
     }
 
     public void SetActive(bool active)

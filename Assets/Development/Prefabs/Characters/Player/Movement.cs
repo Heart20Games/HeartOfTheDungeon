@@ -9,6 +9,7 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
 {
     public float speed = 700f;
     public float maxVelocity = 10f;
+    public float npcModifier = 0.5f;
     public float footstepVelocity = 1f;
     public float moveDrag = 0.5f;
     public float stopDrag = 7.5f;
@@ -21,14 +22,12 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     private float timeScale = 1f;
     public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
 
-    private Vector2 moveVector = new Vector2(0,0);
-    private Vector2 aimVector = new Vector2(0, 0);
-    public Vector2 castVector = new Vector2(0, 0);
+    private Vector2 moveVector = new(0,0);
+    private Vector2 aimVector = new(0, 0);
+    public Vector2 castVector = new(0, 0);
     private bool onGround = false;
 
     private bool hasFootsteps = false;
-    FMOD.Studio.EventInstance footsteps;
-
     private Rigidbody myRigidbody;
     private Character character;
     private Animator animator;
@@ -41,7 +40,6 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
 
     private void Awake()
     {
-        footsteps = FMODUnity.RuntimeManager.CreateInstance("event:/Footsteploop");
         character = GetComponent<Character>();
         myRigidbody = character.body.GetComponent<Rigidbody>();
         animator = character.animator;
@@ -96,17 +94,33 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
 
     // Movement
     
+    public UnityEvent startWalking;
+    public UnityEvent stopWalking;
+
     private void FixedUpdate()
     {
         if (canMove)
         {
             Vector3 cameraDirection = character.body.position - Camera.main.transform.position;
-            Vector3 direction = moveVector.Orient(cameraDirection).FullY();
-            Debug.DrawRay(character.body.position, direction*3, Color.green, Time.fixedDeltaTime);
-            myRigidbody.AddRelativeForce(speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
-            if (myRigidbody.velocity.magnitude > maxVelocity)
+
+            float modifier = 1f;
+            if (character.controllable)
             {
-                myRigidbody.velocity = myRigidbody.velocity.normalized * maxVelocity;
+                Vector3 direction = moveVector.Orient(cameraDirection).FullY();
+                Debug.DrawRay(character.body.position, direction * 3, Color.green, Time.fixedDeltaTime);
+                myRigidbody.AddRelativeForce(speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
+            }
+            else
+            {
+                modifier = npcModifier;
+                Vector3 direction = moveVector.FullY();
+                Debug.DrawRay(character.body.position, direction, Color.green, Time.fixedDeltaTime);
+                myRigidbody.AddForce(modifier * speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
+            }
+            
+            if (myRigidbody.velocity.magnitude > maxVelocity * modifier)
+            {
+                myRigidbody.velocity = maxVelocity * modifier * myRigidbody.velocity.normalized;
             }
 
             Vector2 hVelocity = myRigidbody.velocity.XZVector();
@@ -120,16 +134,15 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
 
                 if (!hasFootsteps)
                 {
+                    print("Footsteps?");
                     SetAnimBool("run", true);
                     hasFootsteps = true;
-                    footsteps.start();
                 }
             } 
             else if (hasFootsteps)
             {
                 SetAnimBool("run", false);
                 hasFootsteps = false;
-                footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
         }
 

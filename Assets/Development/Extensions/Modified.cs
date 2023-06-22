@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 [Serializable]
 public class Modified <T>
@@ -22,12 +20,14 @@ public class Modified <T>
 
     public void Subscribe(Modify modify)
     {
-        modifiers.Add(modify);
+        if (!modifiers.Contains(modify))
+            modifiers.Add(modify);
     }
 
     public void UnSubscribe(Modify modify)
     {
-        modifiers.Remove(modify);
+        if (modifiers.Contains(modify))
+            modifiers.Remove(modify);
     }
 
     private void SetValue(T value)

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using ScriptableObjectDropdown;
+using UnityEngine.Events;
 
 namespace Body.Behavior.ContextSteering
 {
@@ -43,7 +44,10 @@ namespace Body.Behavior.ContextSteering
         public Vector3 Destination { get => destination; set { destination = value; following = true; } }
 
         // Vector
-        [HideInInspector] public Vector2 currentVector;
+        private Vector2 currentVector;
+        public Vector2 CurrentVector { get => currentVector; set { currentVector = value; onSetVector.Invoke(currentVector); } }
+        public UnityEvent<Vector2> onSetVector;
+        public bool moveSelf = true;
 
         // Generated
         private readonly List<Transform> obstacles = new();
@@ -93,22 +97,25 @@ namespace Body.Behavior.ContextSteering
         // Update
         private void FixedUpdate()
         {
-            if (following)
-            {
-                MapTo((destination - transform.position).XZVector(), Identity.Target);
-            }
-            Draw();
-            Vector3 vector = GetVector();
             if (active)
             {
-                if (debug)
+                if (following)
                 {
-                    if (vector.magnitude != 0 && Speed != 0) print($"{gameObject.name} is moving.");
-                    else if (vector.magnitude != Speed) print($"{gameObject.name} not moving. (vector:{vector.magnitude}, speed:{Speed})");
+                    MapTo((destination - transform.position).XZVector(), Identity.Target);
                 }
-                rigidbody.velocity = Speed * Scale * Time.fixedDeltaTime * vector;
+                Draw();
+                Vector3 vector = GetVector();
+                if (moveSelf)
+                {
+                    if (debug)
+                    {
+                        if (vector.magnitude != 0 && Speed != 0) print($"{gameObject.name} is moving.");
+                        else if (vector.magnitude != Speed) print($"{gameObject.name} not moving. (vector:{vector.magnitude}, speed:{Speed})");
+                    }
+                    rigidbody.velocity = Speed * Scale * Time.fixedDeltaTime * vector;
+                }
+                CurrentVector = vector.XZVector();
             }
-            currentVector = vector.XZVector();
         }
 
         // Vector

@@ -59,14 +59,17 @@ public class HealthPips : Health
     {
         currentHealth = amount;
         int damage = totalHealth - currentHealth;
-        for (int i = 0; i < damage; i++)
+        if (isActiveAndEnabled)
         {
-            pipAnimator[i].SetBool("IsDamaged", true);
-            lastDamaged = i;          
-        }
-        for (int i = damage; i < healthPips.Count; i++)
-        {
-            pipAnimator[i].SetBool("IsDamaged", false);
+            for (int i = 0; i < damage; i++)
+            {
+                pipAnimator[i].SetBool("IsDamaged", true);
+                lastDamaged = i;          
+            }
+            for (int i = damage; i < healthPips.Count; i++)
+            {
+                pipAnimator[i].SetBool("IsDamaged", false);
+            }
         }
     }
 
@@ -76,7 +79,10 @@ public class HealthPips : Health
         for(int i = 0; i < damageToTake; i++)
         {                                               
             lastDamaged++;
-            pipAnimator[lastDamaged].SetBool("IsDamaged", true);                                        
+            if (isActiveAndEnabled)
+            {
+                pipAnimator[lastDamaged].SetBool("IsDamaged", true);                                        
+            }
         }
     }
 
@@ -84,8 +90,11 @@ public class HealthPips : Health
     {
         int damageToHeal = Mathf.Clamp(amount, 0, (lastDamaged + 1));
         for(int i = 0; i < damageToHeal; i++)
-        {                                                    
-            pipAnimator[lastDamaged].SetBool("IsDamaged", false);
+        {                                    
+            if (isActiveAndEnabled)
+            {
+                pipAnimator[lastDamaged].SetBool("IsDamaged", false);
+            }
             lastDamaged--;                                       
         }
     }
