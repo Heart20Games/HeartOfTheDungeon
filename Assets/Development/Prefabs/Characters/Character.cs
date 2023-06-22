@@ -7,6 +7,7 @@ using UnityEngine.Events;
 namespace Body
 {
     using Behavior;
+    using System.Collections;
     using static Body.Behavior.ContextSteering.CSIdentity;
 
     [RequireComponent(typeof(Brain))]
@@ -57,6 +58,8 @@ namespace Body
         public List<Status> statuses;
 
         // Health
+        public bool alwaysHideHealth = false;
+        public float hideHealthWaitTime = 15f;
         public Modified<int> maxHealth = new(20);
         public Modified<int> currentHealth = new(20);
         public int MaxHealth
@@ -95,6 +98,7 @@ namespace Body
         private void Start()
         {
             InitializeCastables();
+            SetComponentActive(healthBar, false);
             healthBar.SetHealthBase(CurrentHealth, MaxHealth);
             Identity = Identity;
         }
@@ -145,7 +149,7 @@ namespace Body
             controllable = _controllable;
             //movement.canMove = controllable;
             //attacker.enabled = controllable;
-            SetComponentActive(healthBar, !_controllable);
+            //SetComponentActive(healthBar, !_controllable && !hideHealth);
             SetComponentActive(moveReticle, _controllable);
             SetComponentActive(virtualCamera, _controllable);
         }
@@ -189,21 +193,41 @@ namespace Body
 
         // Damagable
 
+        public void Die()
+        {
+            onDeath.Invoke();
+            SetAlive(false);
+        }
+
+        private Coroutine coroutine;
+        private float currentHideHealthTime;
         public void TakeDamage(int damageAmount, Identity id=Identity.Neutral)
         {
             if (RelativeIdentity(id, Identity) == Identity.Foe)
             {
                 CurrentHealth -= damageAmount;
+                SetComponentActive(healthBar, !alwaysHideHealth);
                 healthBar.SetHealth(CurrentHealth);
                 onDmg.Invoke();
                 if (CurrentHealth <= 0f) Die();
+                if (coroutine == null)
+                    coroutine = StartCoroutine(DeactivateHealthbar(hideHealthWaitTime));
+                else
+                    currentHideHealthTime = hideHealthWaitTime;
             }
         }
 
-        public void Die()
+        public IEnumerator DeactivateHealthbar(float waitTime)
         {
-            onDeath.Invoke();
-            SetAlive(false);
+            currentHideHealthTime = waitTime;
+            while (currentHideHealthTime > 0)
+            {
+                float timeToWait = Mathf.Min(currentHideHealthTime, 1f);
+                yield return new WaitForSeconds(timeToWait);
+                currentHideHealthTime -= timeToWait;
+            }
+            SetComponentActive(healthBar, false);
+            coroutine = null;
         }
 
 
