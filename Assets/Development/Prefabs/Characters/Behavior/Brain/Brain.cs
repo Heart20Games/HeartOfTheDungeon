@@ -116,7 +116,7 @@ namespace Body.Behavior
             //hasTarget.AddChild(interest);
             //hasTarget.AddChild(idle);
 
-            root.PrintTree();
+            if (debug) root.PrintTree();
             Enabled = Enabled;
         }
 

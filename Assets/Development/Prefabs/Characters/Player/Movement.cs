@@ -134,7 +134,6 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
 
                 if (!hasFootsteps)
                 {
-                    print("Footsteps?");
                     SetAnimBool("run", true);
                     hasFootsteps = true;
                 }

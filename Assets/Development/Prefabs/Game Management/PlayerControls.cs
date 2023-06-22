@@ -158,7 +158,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""type"": ""PassThrough"",
                     ""id"": ""f8d44166-fe49-4de3-b83a-2ca1854a7cbb"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
+                    ""processors"": ""ScaleVector2(x=0.25,y=0.25)"",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
