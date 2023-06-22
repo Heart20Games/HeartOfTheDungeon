@@ -46,7 +46,7 @@ namespace Body.Behavior.ContextSteering
         {
             Identity identity = bCon.RelativeIdentity(aCon.Identity);
             Vector3 sourceVector = aCon.transform.position - bCon.transform.position;
-            Vector2 vector = new(sourceVector.x, sourceVector.z);
+            Vector2 vector = sourceVector.XZVector();
             bCon.MapTo(vector, identity);
         }
     }
