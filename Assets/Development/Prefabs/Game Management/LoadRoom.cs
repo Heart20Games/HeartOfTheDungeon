@@ -16,6 +16,16 @@ public class LoadRoom : BaseMonoBehaviour
 
     private AsyncOperation loading;
 
+    private void Start()
+    {
+        if (storage == null)
+        {
+            storage = FindObjectOfType<InMemoryVariableStorage>();
+            if (storage == null)
+                Debug.LogWarning("Can't find InMemoryVariableStorage componenent in scene.");
+        }
+    }
+
     private void Update()
     {
         if (loading != null)
@@ -40,8 +50,7 @@ public class LoadRoom : BaseMonoBehaviour
         if (debug) print("Game starts here!");
         if (targetRoom.StartsWith("$") && storage != null)
         {
-            string targetScene;
-            if (storage.TryGetValue(targetRoom, out targetScene))
+            if (storage.TryGetValue(targetRoom, out string targetScene))
             {
                 LoadScene(targetScene);
             }
@@ -53,9 +62,9 @@ public class LoadRoom : BaseMonoBehaviour
         }
         else
         {
-            if (storage == null)
+            if (targetRoom.StartsWith("$"))
             {
-                Debug.LogWarning("Cannot find InMemoryVariableStorage componenent.");
+                Debug.LogWarning("No InMemoryVariableStorage componenent.");
             }
             LoadScene(targetRoom);
         }

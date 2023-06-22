@@ -36,7 +36,26 @@ namespace Body.Behavior.ContextSteering
 
         // Active
         [SerializeField] private bool active = false;
-        public bool Active { get => active; set => SetActive(value); }
+        public bool Active
+        { 
+            get => active;
+            set
+            {
+                active = value;
+                if (!active && rigidbody != null)
+                    rigidbody.velocity = Vector3.zero;
+            }
+        }
+        [SerializeField] private bool alive = true;
+        public bool Alive
+        {
+            get => alive;
+            set
+            {
+                alive = value;
+                if (!value) Active = false;
+            }
+        }
 
         // Destination
         [SerializeField] private Vector3 destination = new();
@@ -68,16 +87,7 @@ namespace Body.Behavior.ContextSteering
             rigidbody = GetComponent<Rigidbody>();
             context.debug = debug;
             Active = Active;
-        }
-
-        // Activate
-        public void SetActive(bool active)
-        {
-            this.active = active;
-            if (!active && rigidbody != null)
-            {
-                rigidbody.velocity = Vector3.zero;
-            }
+            Alive = Alive;
         }
 
         // Active Contexts

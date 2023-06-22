@@ -16,16 +16,27 @@ namespace Body.Behavior
         public bool Enabled
         {
             get => enabled;
-            set { SetEnabled(value); }
+            set
+            {
+                enabled = value;
+                if (agent != null) agent.enabled = useAgent && value;
+                if (controller != null) controller.Active = !useAgent && value;
+            }
+        }
+
+        // Alive
+        public bool Alive
+        {
+            get => controller.Alive;
+            set => controller.Alive=value;
         }
 
         // Target
-        [SerializeField]
-        private Transform target = null;
+        [SerializeField] private Transform target = null;
         public Transform Target
         {
-            get { return target; }
-            set { target = value.TryGetComponent(out Character targetChar) ? targetChar.body : value; }
+            get => target;
+            set => target = (value.TryGetComponent(out Character targetChar) ? targetChar.body : value);
         }
 
         // Components
@@ -47,7 +58,7 @@ namespace Body.Behavior
         private Dictionary<Action, Tick> actions;
         public Dictionary<Action, Tick> Actions
         {
-            get { return actions ??= new Dictionary<Action, Tick>() { { Action.Idle, Idle }, { Action.Chase, Chase }, { Action.Duel, Duel } }; }
+            get => actions ??= new Dictionary<Action, Tick>() { { Action.Idle, Idle }, { Action.Chase, Chase }, { Action.Duel, Duel } };
         }
         public BehaviorTree tree;
         [HideInInspector] public BehaviorNode root;
@@ -58,7 +69,11 @@ namespace Body.Behavior
 
         // TimeScale
         private float timeScale = 1f;
-        public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
+        public float TimeScale
+        {
+            get => timeScale;
+            set => timeScale = SetTimeScale(value);
+        }
 
         // Helpers
         private float timeKeeper = 0f;
@@ -90,6 +105,7 @@ namespace Body.Behavior
             {
                 modifiers.InitializeBrain(this);
             }
+            Alive = true;
             //Debug.Log("Tree Name: " + root.name);
 
             //SelectorNode hasTarget = new SelectorNode("Has Target");
@@ -119,7 +135,7 @@ namespace Body.Behavior
         // Castable Contexts
         public void RegisterCastables(List<CastableItem> castables)
         {
-            for(int i = 0; i < castables.Count; i++)
+            for (int i = 0; i < castables.Count; i++)
             {
                 CastableItem item = castables[i];
                 RegisterCastable(item);
@@ -137,20 +153,6 @@ namespace Body.Behavior
             if (!contexts.Contains(item.context))
             {
                 contexts.Add(item.context);
-            }
-        }
-
-        // Enabled
-        public void SetEnabled(bool enabled)
-        {
-            this.enabled = enabled;
-            if (agent != null)
-            {
-                agent.enabled = useAgent && enabled;
-            }
-            if (controller != null)
-            {
-                controller.Active = !useAgent && enabled;
             }
         }
 
@@ -233,7 +235,7 @@ namespace Body.Behavior
 
             return BehaviorNode.Status.SUCCESS;
         }
-        
+
         public BehaviorNode.Status Duel()
         {
             if (!HasFoeInRange(Range.InAttackRange)) return BehaviorNode.Status.FAILURE;
@@ -255,7 +257,7 @@ namespace Body.Behavior
         private float tempSpeed;
         private float tempAngularSpeed;
         private float tempAcceleration;
-        public void SetTimeScale(float timeScale)
+        public float SetTimeScale(float timeScale)
         {
             if (this.timeScale != timeScale)
             {
@@ -283,19 +285,7 @@ namespace Body.Behavior
                 }
             }
             this.timeScale = timeScale;
+            return timeScale;
         }
-
-        //public class ActionComparer : IEqualityComparer<Action>
-        //{
-        //    public bool Equals(Action x, Action y)
-        //    {
-        //        return x == y;
-        //    }
-
-        //    public int GetHashCode(Action x)
-        //    {
-        //        return (int)x;
-        //    }
-        //}
     }
 }

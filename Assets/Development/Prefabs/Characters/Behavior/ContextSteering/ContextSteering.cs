@@ -29,10 +29,15 @@ namespace Body.Behavior.ContextSteering
                     var iCon = controllers[i];
                     var jCon = controllers[j];
 
-                    Assert.AreNotEqual(iCon, jCon);
+                    if (iCon.Alive && jCon.Alive)
+                    {
+                        Assert.AreNotEqual(iCon, jCon);
 
-                    MapOntoPeer(iCon, jCon);
-                    MapOntoPeer(jCon, iCon);
+                        if (jCon.Active)
+                            MapOntoPeer(iCon, jCon);
+                        if (iCon.Active)
+                            MapOntoPeer(jCon, iCon);
+                    }
                 }
             }
         }

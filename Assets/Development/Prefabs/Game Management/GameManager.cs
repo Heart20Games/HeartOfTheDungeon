@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Body;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class Game : BaseMonoBehaviour
 {
@@ -39,6 +40,9 @@ public class Game : BaseMonoBehaviour
 
     // Cheats / Shortcuts
     public bool restartable = true;
+
+    // Events
+    public UnityEvent onPlayerDied;
 
     private void Start()
     {
@@ -164,6 +168,19 @@ public class Game : BaseMonoBehaviour
         }
     }
 
+    // Events
+
+    public void OnCharacterDied(Character character)
+    {
+        if (character == playerCharacter)
+        {
+            onPlayerDied.Invoke();
+        }
+        else if (character == curCharacter)
+        {
+            SetCharacter(playerCharacter);
+        }
+    }
 
     // Actions
 

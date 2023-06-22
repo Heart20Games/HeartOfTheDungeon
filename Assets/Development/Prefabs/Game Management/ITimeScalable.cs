@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface ITimeScalable
 {
-    public void SetTimeScale(float timeScale);
+    public float SetTimeScale(float timeScale);
 }
