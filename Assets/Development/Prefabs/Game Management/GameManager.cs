@@ -44,6 +44,11 @@ public class Game : BaseMonoBehaviour
     // Events
     public UnityEvent onPlayerDied;
 
+    private void Awake()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
     private void Start()
     {
         input = GetComponent<PlayerInput>();

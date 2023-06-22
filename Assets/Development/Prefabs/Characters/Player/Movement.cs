@@ -53,27 +53,13 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
 
     public void UpdateCastVector()
     {
+        //castVector = new();
         if (moveVector.magnitude > 0 || aimVector.magnitude > 0)
         {
             castVector = aimVector.magnitude > 0 ? aimVector : moveVector;
             if (castVector.magnitude > 0)
             {
                 OnSetCastVector.Invoke();
-            }
-        }
-        else
-        {
-            float absY = Mathf.Abs(castVector.y);
-            float absX = Mathf.Abs(castVector.x);
-            if (absY >= absX)
-            {
-                float signY = Mathf.Sign(castVector.y);
-                castVector = signY >= 0 ? Vector2.right : Vector2.left;
-            }
-            else
-            {
-                float signX = Mathf.Sign(castVector.x);
-                castVector = signX >= 0 ? Vector2.up : Vector2.down;
             }
         }
     }
