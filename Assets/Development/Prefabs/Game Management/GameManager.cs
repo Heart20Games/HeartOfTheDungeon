@@ -185,10 +185,20 @@ public class Game : BaseMonoBehaviour
         }
     }
 
+    //public void OnLook(InputValue inputValue)
+    //{
+    //    Vector2 inputVector = inputValue.Get<Vector2>();
+    //}
+
     public void OnAim(InputValue inputValue)
     {
         Vector2 inputVector = inputValue.Get<Vector2>();
         curCharacter.AimCharacter(inputVector);
+    }
+
+    public void OnToggleAiming(InputValue inputValue)
+    {
+        curCharacter.SetAimModeActive(inputValue.isPressed);
     }
 
     public void SetCharacterInput(InputValue inputValue, int idx)
