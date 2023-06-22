@@ -64,6 +64,7 @@ namespace Body
         // State
         public bool controllable = true;
         public bool aimActive = false;
+        public bool alive = false;
 
         // Initialization
         private void Awake()
@@ -148,13 +149,11 @@ namespace Body
 
         // Health
 
-        //public void UpdateHealthUI()
-        //{
-        //    if (healthBar != null)
-        //    {
-        //        healthBar.SetHealth(CurrentHealth);
-        //    }
-        //}
+        public void SetAlive(bool alive)
+        {
+            body.gameObject.SetActive(alive);
+            brain.Alive = alive;
+        }
 
         public void SetMaxHealth(int amount)
         {
@@ -189,8 +188,7 @@ namespace Body
         public void Die()
         {
             onDeath.Invoke();
-            body.gameObject.SetActive(false);
-            //Destroy(gameObject);
+            SetAlive(false);
         }
 
 
