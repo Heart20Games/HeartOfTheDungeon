@@ -44,7 +44,7 @@ namespace Body.Behavior.ContextSteering
 
         public void MapOntoPeer(CSController aCon, CSController bCon)
         {
-            Identity identity = bCon.RelativeIdentity(aCon.Identity);
+            Identity identity = bCon.RelativeIdentity(aCon.identity);
             Vector3 sourceVector = aCon.transform.position - bCon.transform.position;
             Vector2 vector = sourceVector.XZVector();
             bCon.MapTo(vector, identity);

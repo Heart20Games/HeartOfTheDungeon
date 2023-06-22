@@ -7,6 +7,7 @@ using UnityEngine.Events;
 namespace Body
 {
     using Behavior;
+    using static Body.Behavior.ContextSteering.CSIdentity;
 
     [RequireComponent(typeof(Brain))]
     [RequireComponent(typeof(Movement))]
@@ -39,6 +40,18 @@ namespace Body
         private int abilityIdx = -1;
         private int weaponIdx = -1;
         public enum CastSlot { PRIMARY, SECONDARY };
+
+        // Identity
+        public Identity identity = Identity.Neutral;
+        public Identity Identity
+        {
+            get => identity;
+            set
+            {
+                identity = value;
+                brain.Identity = value;
+            }
+        }
 
         // Statuses
         public List<Status> statuses;
@@ -83,6 +96,7 @@ namespace Body
         {
             InitializeCastables();
             healthBar.SetHealthBase(CurrentHealth, MaxHealth);
+            Identity = Identity;
         }
 
         private void InitBody()
