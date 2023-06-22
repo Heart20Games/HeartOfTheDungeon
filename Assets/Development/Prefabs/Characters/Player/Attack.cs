@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Body;
 
-public class PlayerAttack : BaseMonoBehaviour
+public class Attack : BaseMonoBehaviour
 {
     public bool canAttack = true;
     private Character character;

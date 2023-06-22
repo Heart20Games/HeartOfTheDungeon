@@ -8,12 +8,13 @@ namespace Body
 {
     using Behavior;
     using System.Collections;
+    using UnityEngine.TextCore.Text;
     using static Body.Behavior.ContextSteering.CSIdentity;
 
     [RequireComponent(typeof(Brain))]
     [RequireComponent(typeof(Movement))]
     [RequireComponent(typeof(Talker))]
-    [RequireComponent(typeof(PlayerAttack))]
+    [RequireComponent(typeof(Attack))]
     public class Character : BaseMonoBehaviour, IDamageable, IControllable
     {
         // Character Parts
@@ -28,7 +29,7 @@ namespace Body
         [HideInInspector] public Brain brain;
         [HideInInspector] public Movement movement;
         [HideInInspector] public Talker talker;
-        [HideInInspector] public PlayerAttack attacker;
+        [HideInInspector] public Attack attacker;
         [HideInInspector] public float baseOffset;
 
         // Castables
@@ -89,7 +90,7 @@ namespace Body
             brain = GetComponent<Brain>();
             movement = GetComponent<Movement>();
             talker = GetComponent<Talker>();
-            attacker = GetComponent<PlayerAttack>();
+            attacker = GetComponent<Attack>();
             MaxHealth = MaxHealth;
             CurrentHealth = CurrentHealth;
             SetControllable(false);
@@ -285,7 +286,15 @@ namespace Body
             if (attacker != null && attacker.enabled)
             {
                 attacker.Castable = castable;
-                attacker.Slashie(movement.castVector);
+                Vector2 castVector = movement.castVector;
+                if (controllable)
+                {
+                    Debug.DrawRay(body.position, castVector.FullY() * 2f, Color.blue, 0.5f);
+                    Vector3 cameraDirection = body.position - Camera.main.transform.position;
+                    castVector = castVector.Orient(cameraDirection.XZVector().normalized).normalized;
+                    Debug.DrawRay(body.position, castVector.FullY() * 2f, Color.yellow, 0.5f);
+                }
+                attacker.Slashie(castVector);
             }
         }
 
