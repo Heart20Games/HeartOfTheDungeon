@@ -186,14 +186,17 @@ namespace Body
             }
         }
 
-        public void TakeDamage(int damageAmount)
+
+        // Damagable
+
+        public void TakeDamage(int damageAmount, Identity id=Identity.Neutral)
         {
-            CurrentHealth -= damageAmount;
-            healthBar.SetHealth(CurrentHealth);
-            onDmg.Invoke();
-            if (CurrentHealth <= 0f)
+            if (RelativeIdentity(id, Identity) == Identity.Foe)
             {
-                Die();
+                CurrentHealth -= damageAmount;
+                healthBar.SetHealth(CurrentHealth);
+                onDmg.Invoke();
+                if (CurrentHealth <= 0f) Die();
             }
         }
 

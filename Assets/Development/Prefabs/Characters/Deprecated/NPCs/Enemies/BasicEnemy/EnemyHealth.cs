@@ -1,4 +1,5 @@
 using UnityEngine;
+using static Body.Behavior.ContextSteering.CSIdentity;
 
 public class EnemyHealth : BaseMonoBehaviour, IDamageable
 {
@@ -21,7 +22,7 @@ public class EnemyHealth : BaseMonoBehaviour, IDamageable
         healthBarUI.UpdateFill(currentHealth, startingHealth);      
     }
 
-    public void TakeDamage(int damageAmount)
+    public void TakeDamage(int damageAmount, Identity id=Identity.Neutral)
     {
         currentHealth -= damageAmount;
         healthBarUI.UpdateFill(currentHealth, startingHealth);

@@ -166,13 +166,6 @@ namespace Body.Behavior.ContextSteering
             return vector.normalized;
         }
 
-        public Identity RelativeIdentity(Identity id)
-        {
-            bool friendOrFoe = (id == Identity.Friend) || (id == Identity.Foe);
-            Identity opponent = (id == identity ? Identity.Friend : Identity.Foe);
-            return (!friendOrFoe) ? id : opponent;
-        }
-
         // Mappable
         private readonly List<Context> mappableContexts = new();
         public List<Context> IsIdentityMappable(float distance, Identity identity)
