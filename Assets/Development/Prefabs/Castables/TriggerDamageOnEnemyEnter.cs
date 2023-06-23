@@ -8,8 +8,7 @@ public class TriggerDamageOnEnemyEnter : BaseMonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
-            if (damageable != null)
+            if (other.gameObject.TryGetComponent<IDamageable>(out var damageable))
             {
                 damageable.TakeDamage(damage);
             }

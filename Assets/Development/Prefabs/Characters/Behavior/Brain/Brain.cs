@@ -31,6 +31,12 @@ namespace Body.Behavior
             set => controller.Alive=value;
         }
 
+        public Identity Identity
+        {
+            get => controller.identity;
+            set => controller.identity=value;
+        }
+
         // Target
         [SerializeField] private Transform target = null;
         public Transform Target
@@ -116,7 +122,7 @@ namespace Body.Behavior
             //hasTarget.AddChild(interest);
             //hasTarget.AddChild(idle);
 
-            root.PrintTree();
+            if (debug) root.PrintTree();
             Enabled = Enabled;
         }
 
@@ -189,7 +195,7 @@ namespace Body.Behavior
         {
             //SetBaseContext(Action.Idle);
 
-            pathFinder.target = target;
+            TargetNavigation();
 
             //if (debug) Debug.Log("Idling...");
 
@@ -222,15 +228,7 @@ namespace Body.Behavior
             }
             else
             {
-                pathFinder.target = target;
-                if (pathFinder.NextPoint(out Vector3 destination))
-                {
-                    controller.Destination = destination;
-                }
-                else
-                {
-                    controller.following = false;
-                }
+                TargetNavigation();
             }
 
             return BehaviorNode.Status.SUCCESS;
@@ -244,12 +242,23 @@ namespace Body.Behavior
 
             if (!useAgent)
             {
-                controller.following = false;
                 character.AimCharacter(-controller.CurrentVector);
                 character.ActivateWeapon();
             }
 
             return BehaviorNode.Status.SUCCESS;
+        }
+
+
+        // Behavior
+
+        public void TargetNavigation()
+        {
+            pathFinder.target = target;
+            if (pathFinder.NextPoint(out Vector3 destination))
+            {
+                controller.SetDestination(destination, pathFinder.pathLength);
+            }
         }
 
 

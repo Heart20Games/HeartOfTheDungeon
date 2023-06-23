@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Body;
+using static Body.Behavior.ContextSteering.CSIdentity;
 
 public class Weapon : Castable
 {
@@ -30,7 +31,7 @@ public class Weapon : Castable
 
     // Castable
 
-    public override void Initialize(Body.Character source)
+    public override void Initialize(Character source)
     {
         base.Initialize(source);
         Transform origin = followBody ? source.body : transform;
@@ -92,7 +93,7 @@ public class Weapon : Castable
         if (other != null && !ignored.Contains(other) && !others.Contains(other))
         {
             others.Add(other);
-            other.TakeDamage(damage);
+            other.TakeDamage(damage, Identity);
         }
     }
 

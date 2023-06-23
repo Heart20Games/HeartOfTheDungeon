@@ -20,39 +20,50 @@ namespace Body.Behavior.ContextSteering
         public float drawScale = 1.0f;
         public bool draw;
 
-        public Identity identity = Identity.Neutral;
-
         [ScriptableObjectDropdown(typeof(CSContext), grouping = ScriptableObjectGrouping.ByFolderFlat)]
-        public ScriptableObjectReference chaseContext;
-        [ScriptableObjectDropdown(typeof(CSContext), grouping = ScriptableObjectGrouping.ByFolderFlat)]
-        public ScriptableObjectReference duelContext;
-        [ScriptableObjectDropdown(typeof(CSIdentity), grouping = ScriptableObjectGrouping.ByFolderFlat)]
-        public ScriptableObjectReference chaseIdentity;
-        [ScriptableObjectDropdown(typeof(CSIdentity), grouping = ScriptableObjectGrouping.ByFolderFlat)]
-        public ScriptableObjectReference duelIdentity;
+        public ScriptableObjectReference context;
 
-        public CSContext GetContext(Action action, bool debug=false)
+        public CSContext GetContext()
         {
-            ScriptableObjectReference reference = action switch
-            {
-                Action.Chase => chaseContext,
-                Action.Duel => duelContext,
-                _ => null
-            };
-            return reference == null ? null : (CSContext)reference.value;
+            return (CSContext)context?.value;
         }
 
-        public CSIdentity GetRelationships(Action action)
-        {
-            ScriptableObjectReference reference = action switch
-            {
-                Action.Chase => chaseIdentity,
-                Action.Duel => duelIdentity,
-                _ => null
-            };
-            return reference == null ? null : (CSIdentity)reference.value;
-        }
+        //public Identity identity = Identity.Neutral;
 
-        public Identity Identity => identity;
+        //[ScriptableObjectDropdown(typeof(CSContext), grouping = ScriptableObjectGrouping.ByFolderFlat)]
+        //public ScriptableObjectReference chaseContext;
+
+        //[ScriptableObjectDropdown(typeof(CSContext), grouping = ScriptableObjectGrouping.ByFolderFlat)]
+        //public ScriptableObjectReference chaseContext;
+        //[ScriptableObjectDropdown(typeof(CSContext), grouping = ScriptableObjectGrouping.ByFolderFlat)]
+        //public ScriptableObjectReference duelContext;
+        //[ScriptableObjectDropdown(typeof(CSIdentity), grouping = ScriptableObjectGrouping.ByFolderFlat)]
+        //public ScriptableObjectReference chaseIdentity;
+        //[ScriptableObjectDropdown(typeof(CSIdentity), grouping = ScriptableObjectGrouping.ByFolderFlat)]
+        //public ScriptableObjectReference duelIdentity;
+
+        //public CSContext GetContext(Action action, bool debug=false)
+        //{
+        //    ScriptableObjectReference reference = action switch
+        //    {
+        //        Action.Chase => chaseContext,
+        //        Action.Duel => duelContext,
+        //        _ => null
+        //    };
+        //    return reference == null ? null : (CSContext)reference.value;
+        //}
+
+        //public CSIdentity GetRelationships(Action action)
+        //{
+        //    ScriptableObjectReference reference = action switch
+        //    {
+        //        Action.Chase => chaseIdentity,
+        //        Action.Duel => duelIdentity,
+        //        _ => null
+        //    };
+        //    return reference == null ? null : (CSIdentity)reference.value;
+        //}
+
+        //public Identity Identity => identity;
     }
 }

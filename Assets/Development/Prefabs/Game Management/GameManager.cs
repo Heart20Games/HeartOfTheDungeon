@@ -44,6 +44,11 @@ public class Game : BaseMonoBehaviour
     // Events
     public UnityEvent onPlayerDied;
 
+    private void Awake()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
     private void Start()
     {
         input = GetComponent<PlayerInput>();
@@ -157,6 +162,14 @@ public class Game : BaseMonoBehaviour
         return selector != null && Mode == GameMode.Selection;
     }
 
+    public void SwitchToCompanion(InputValue inputValue, int idx)
+    {
+        if (curCharIdx == idx)
+            SetCharacterInput(inputValue, 0);
+        else
+            SetCharacterInput(inputValue, idx);
+    }
+
 
     // Cheats / Shortcuts
 
@@ -228,12 +241,12 @@ public class Game : BaseMonoBehaviour
 
     public void OnSwitchCharacterLeft(InputValue inputValue)
     {
-        SetCharacterInput(inputValue, 2);
+        SwitchToCompanion(inputValue, 2);
     }
 
     public void OnSwitchCharacterRight(InputValue inputValue)
     {
-        SetCharacterInput(inputValue, 1);
+        SwitchToCompanion(inputValue, 1);
     }
 
     public void OnSwitchCharacterCenter(InputValue inputValue)

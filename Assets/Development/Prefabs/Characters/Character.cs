@@ -7,11 +7,14 @@ using UnityEngine.Events;
 namespace Body
 {
     using Behavior;
+    using System.Collections;
+    using UnityEngine.TextCore.Text;
+    using static Body.Behavior.ContextSteering.CSIdentity;
 
     [RequireComponent(typeof(Brain))]
     [RequireComponent(typeof(Movement))]
     [RequireComponent(typeof(Talker))]
-    [RequireComponent(typeof(PlayerAttack))]
+    [RequireComponent(typeof(Attack))]
     public class Character : BaseMonoBehaviour, IDamageable, IControllable
     {
         // Character Parts
@@ -26,7 +29,7 @@ namespace Body
         [HideInInspector] public Brain brain;
         [HideInInspector] public Movement movement;
         [HideInInspector] public Talker talker;
-        [HideInInspector] public PlayerAttack attacker;
+        [HideInInspector] public Attack attacker;
         [HideInInspector] public float baseOffset;
 
         // Castables
@@ -40,10 +43,24 @@ namespace Body
         private int weaponIdx = -1;
         public enum CastSlot { PRIMARY, SECONDARY };
 
+        // Identity
+        public Identity identity = Identity.Neutral;
+        public Identity Identity
+        {
+            get => identity;
+            set
+            {
+                identity = value;
+                brain.Identity = value;
+            }
+        }
+
         // Statuses
         public List<Status> statuses;
 
         // Health
+        public bool alwaysHideHealth = false;
+        public float hideHealthWaitTime = 15f;
         public Modified<int> maxHealth = new(20);
         public Modified<int> currentHealth = new(20);
         public int MaxHealth
@@ -73,7 +90,7 @@ namespace Body
             brain = GetComponent<Brain>();
             movement = GetComponent<Movement>();
             talker = GetComponent<Talker>();
-            attacker = GetComponent<PlayerAttack>();
+            attacker = GetComponent<Attack>();
             MaxHealth = MaxHealth;
             CurrentHealth = CurrentHealth;
             SetControllable(false);
@@ -82,7 +99,9 @@ namespace Body
         private void Start()
         {
             InitializeCastables();
+            SetComponentActive(healthBar, false);
             healthBar.SetHealthBase(CurrentHealth, MaxHealth);
+            Identity = Identity;
         }
 
         private void InitBody()
@@ -131,7 +150,7 @@ namespace Body
             controllable = _controllable;
             //movement.canMove = controllable;
             //attacker.enabled = controllable;
-            SetComponentActive(healthBar, !_controllable);
+            //SetComponentActive(healthBar, !_controllable && !hideHealth);
             SetComponentActive(moveReticle, _controllable);
             SetComponentActive(virtualCamera, _controllable);
         }
@@ -172,21 +191,44 @@ namespace Body
             }
         }
 
-        public void TakeDamage(int damageAmount)
-        {
-            CurrentHealth -= damageAmount;
-            healthBar.SetHealth(CurrentHealth);
-            onDmg.Invoke();
-            if (CurrentHealth <= 0f)
-            {
-                Die();
-            }
-        }
+
+        // Damagable
 
         public void Die()
         {
             onDeath.Invoke();
             SetAlive(false);
+        }
+
+        private Coroutine coroutine;
+        private float currentHideHealthTime;
+        public void TakeDamage(int damageAmount, Identity id=Identity.Neutral)
+        {
+            if (RelativeIdentity(id, Identity) == Identity.Foe)
+            {
+                CurrentHealth -= damageAmount;
+                SetComponentActive(healthBar, !alwaysHideHealth);
+                healthBar.SetHealth(CurrentHealth);
+                onDmg.Invoke();
+                if (CurrentHealth <= 0f) Die();
+                if (coroutine == null)
+                    coroutine = StartCoroutine(DeactivateHealthbar(hideHealthWaitTime));
+                else
+                    currentHideHealthTime = hideHealthWaitTime;
+            }
+        }
+
+        public IEnumerator DeactivateHealthbar(float waitTime)
+        {
+            currentHideHealthTime = waitTime;
+            while (currentHideHealthTime > 0)
+            {
+                float timeToWait = Mathf.Min(currentHideHealthTime, 1f);
+                yield return new WaitForSeconds(timeToWait);
+                currentHideHealthTime -= timeToWait;
+            }
+            SetComponentActive(healthBar, false);
+            coroutine = null;
         }
 
 
@@ -244,7 +286,15 @@ namespace Body
             if (attacker != null && attacker.enabled)
             {
                 attacker.Castable = castable;
-                attacker.Slashie(movement.castVector);
+                Vector2 castVector = movement.castVector;
+                if (controllable)
+                {
+                    Debug.DrawRay(body.position, castVector.FullY() * 2f, Color.blue, 0.5f);
+                    Vector3 cameraDirection = body.position - Camera.main.transform.position;
+                    castVector = castVector.Orient(cameraDirection.XZVector().normalized).normalized;
+                    Debug.DrawRay(body.position, castVector.FullY() * 2f, Color.yellow, 0.5f);
+                }
+                attacker.Slashie(castVector);
             }
         }
 

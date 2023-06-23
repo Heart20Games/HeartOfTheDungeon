@@ -29,7 +29,8 @@ namespace Body.Behavior.ContextSteering
         public float Speed => Preset.testSpeed;
         public float DrawScale => Preset.drawScale;
         public bool DrawRays => Preset.draw;
-        public Identity Identity { get => Preset.Identity; }
+        public Identity identity = Identity.Neutral;
+        //public Identity Identity { get => Preset.Identity; }
 
         // Initialization
         private Rigidbody rigidbody;
@@ -58,9 +59,13 @@ namespace Body.Behavior.ContextSteering
         }
 
         // Destination
-        [SerializeField] private Vector3 destination = new();
-        public bool following = false;
-        public Vector3 Destination { get => destination; set { destination = value; following = true; } }
+        [SerializeField] private Vector3 destinationStep = new();
+        [SerializeField] private float destinationDistance = 0f;
+        public void SetDestination(Vector3 step, float distance)
+        {
+            destinationStep = step;
+            destinationDistance = distance;
+        }
 
         // Vector
         private Vector2 currentVector;
@@ -109,9 +114,10 @@ namespace Body.Behavior.ContextSteering
         {
             if (active)
             {
-                if (following)
+                if (destinationDistance > 0)
                 {
-                    MapTo((destination - transform.position).XZVector(), Identity.Target);
+                    Vector2 destinationVector = (destinationStep - transform.position).XZVector();
+                    MapTo(destinationVector, Identity.Target, destinationDistance);
                 }
                 Draw();
                 Vector3 vector = GetVector();
@@ -160,15 +166,34 @@ namespace Body.Behavior.ContextSteering
             return vector.normalized;
         }
 
-        public Identity RelativeIdentity(Identity id)
+        // Mappable
+        private readonly List<Context> mappableContexts = new();
+        public List<Context> IsIdentityMappable(float distance, Identity identity)
         {
-            bool friendOrFoe = (id == Identity.Friend) || (id == Identity.Foe);
-            Identity opponent = (id == Identity ? Identity.Friend : Identity.Foe);
-            return (!friendOrFoe) ? id : opponent;
+            mappableContexts.Clear();
+            if (Context != null && distance > 0)
+            {
+                // Map Context
+                if (Context.TryGet(identity, out List<Context> contexts))
+                {
+                    for (int i = 0; i < contexts.Count; i++)
+                    {
+                        if (IsContextMappable(distance, contexts[i]))
+                            mappableContexts.Add(contexts[i]);
+                    }
+                }
+            }
+            return mappableContexts;
         }
 
-        // Set
-        public void MapTo(Vector2 vector, Identity identity)
+        public bool IsContextMappable(float distance, Context context)
+        {
+            ContextVector cVector = context.vector;
+            return distance == Mathf.Clamp(distance, cVector.deadzone.x, cVector.deadzone.y);
+        }
+
+        // Map To
+        public void MapTo(Vector2 vector, Identity identity, float distanceOverride=-1)
         {
             if (Context != null && vector != Vector2.zero)
             {
@@ -178,42 +203,56 @@ namespace Body.Behavior.ContextSteering
                 // Map Context
                 if (Context.TryGet(identity, out List<Context> contexts))
                 {
-                    for (int i = 0; i < contexts.Count; i++)
-                    {
-                        MapContext(vector, contexts[i]);
-                    }
+                    MapContexts(vector, contexts, distanceOverride);
                 }
             }
         }
 
-        public void MapContext(Vector2 vector, Context context)
+        public void MapContexts(Vector2 vector, List<Context> contexts, float distanceOverride=-1)
+        {
+            for (int i = 0; i < contexts.Count; i++)
+            {
+                MapContext(vector, contexts[i], distanceOverride);
+            }
+        }
+
+        public void MapContext(Vector2 vector, Context context, float distanceOverride=-1)
         {
             vector /= Scale;
             ContextVector cVector = context.vector;
-            if (vector.magnitude == Mathf.Clamp(vector.magnitude, cVector.deadzone.x, cVector.deadzone.y))
+            float magnitude = distanceOverride >= 0 ? distanceOverride : vector.magnitude;
+            if (magnitude == Mathf.Clamp(magnitude, cVector.deadzone.x, cVector.deadzone.y))
             {
                 if (!activeContexts.Contains(context))
                 {
                     activeContexts.Add(context);
                 }
 
+                if (debug) print("Calculating distance.");
+
                 // Distance and Range
-                float distance = Mathf.Min(vector.magnitude - cVector.gradient.x, cVector.gradient.y);
+                float distance = Mathf.Min(magnitude - cVector.gradient.x, cVector.gradient.y);
                 float range = (cVector.gradient.y - cVector.gradient.x);
+
+                float t = 0.5f;
                 if (range != 0)
                 {
-                    float t = distance / range;
+                    t = distance / range;
                     Assert.IsFalse(float.IsNaN(t));
-                    
-                    // Weight
-                    float weight = Mathf.Lerp(cVector.weight.x, cVector.weight.y, t);
-                    Assert.IsFalse(float.IsNaN(weight));
-                    if (weight != 0f)
-                    {
-                        // Map w/ Falloff
-                        float falloff = (cVector.falloff / 360) * resolution;
-                        MapToSlots(weight, vector, falloff);
-                    }
+                }
+
+                if (debug) print("Calculating weight");
+
+                // Weight
+                float weight = Mathf.Lerp(cVector.weight.x, cVector.weight.y, t);
+                Assert.IsFalse(float.IsNaN(weight));
+                if (weight != 0f)
+                {
+                    if (debug) print("Calculating falloff");
+
+                    // Map w/ Falloff
+                    float falloff = (cVector.falloff / 360) * resolution;
+                    MapToSlots(weight, vector, falloff);
                 }
             }
         }
