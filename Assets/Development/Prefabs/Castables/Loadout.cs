@@ -7,4 +7,6 @@ public class Loadout : ScriptableObject
 {
     public List<CastableItem> abilities;
     public List<CastableItem> weapons;
+
+    public CastableItem mobility;
 }
