@@ -1167,15 +1167,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Review Puzzle"",
-                    ""type"": ""Button"",
-                    ""id"": ""eb0bc3b9-03fa-4045-b2b2-6bbb3ceb62a2"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Restart Level"",
                     ""type"": ""Button"",
                     ""id"": ""480fe164-1fd1-4253-a9de-38cb4d7078d1"",
@@ -1203,7 +1194,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Cast Primary"",
+                    ""name"": ""Cast Primary Weapon"",
                     ""type"": ""Button"",
                     ""id"": ""878ac51a-f2d7-40e4-877e-1c1eb7ee7e2b"",
                     ""expectedControlType"": ""Button"",
@@ -1212,7 +1203,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Cast Secondary"",
+                    ""name"": ""Cast Secondary Weapon"",
                     ""type"": ""Button"",
                     ""id"": ""06449f62-29b1-4d4c-a25f-7369c7feeaf8"",
                     ""expectedControlType"": ""Button"",
@@ -1221,9 +1212,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Cast Tertiary"",
+                    ""name"": ""Cast Primary Ability"",
                     ""type"": ""Button"",
                     ""id"": ""b588de10-e478-4cb1-8004-b61ebe494638"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cast Secondary Ability"",
+                    ""type"": ""Button"",
+                    ""id"": ""ec74ea63-2abd-437e-95e9-fce34bdaadf2"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press"",
@@ -1625,28 +1625,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""cdd77e7a-f979-4fa1-8b57-44b268a25678"",
-                    ""path"": ""<Gamepad>/dpad/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Review Puzzle"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5bfdeeae-2970-4fa8-b148-b24c32c4a9ae"",
-                    ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Review Puzzle"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""2515ca30-ba1d-409b-b144-ea996f296318"",
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
@@ -1696,7 +1674,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cast Primary"",
+                    ""action"": ""Cast Primary Weapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1707,18 +1685,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cast Primary"",
+                    ""action"": ""Cast Primary Weapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""da067128-eadc-4233-8c0b-09384dcc7cff"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cast Secondary"",
+                    ""action"": ""Cast Secondary Weapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1729,40 +1707,29 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cast Secondary"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""dccc146a-ded6-486e-8da1-3347af84c131"",
-                    ""path"": ""<Mouse>/middleButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Cast Tertiary"",
+                    ""action"": ""Cast Secondary Weapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""6a79c5e7-833f-436b-8743-48280dfff18c"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Gamepad>/dpad/left"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cast Tertiary"",
+                    ""action"": ""Cast Primary Ability"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""8fa93bc9-251d-4832-bbbc-0c0b98169afc"",
-                    ""path"": ""<Keyboard>/r"",
+                    ""path"": ""<Keyboard>/1"",
                     ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cast Tertiary"",
+                    ""action"": ""Cast Primary Ability"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1803,7 +1770,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""d6d9521a-8bb7-4de1-902d-201cbf3909ab"",
                     ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Switch Character Left"",
@@ -1825,10 +1792,32 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""b75879b0-e0d7-4f3c-8a2f-299b73a55ede"",
                     ""path"": ""<Keyboard>/2"",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Switch Character Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fad8c3dc-5d7e-46f3-b0e8-2369fa7b11f4"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cast Secondary Ability"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""789e97c3-e678-4b56-859a-55537c2b5604"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cast Secondary Ability"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1876,13 +1865,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
         m_Player_ToggleSkillWheel = m_Player.FindAction("Toggle Skill Wheel", throwIfNotFound: true);
-        m_Player_ReviewPuzzle = m_Player.FindAction("Review Puzzle", throwIfNotFound: true);
         m_Player_RestartLevel = m_Player.FindAction("Restart Level", throwIfNotFound: true);
         m_Player_ToggleAiming = m_Player.FindAction("ToggleAiming", throwIfNotFound: true);
         m_Player_UseAgility = m_Player.FindAction("Use Agility", throwIfNotFound: true);
-        m_Player_CastPrimary = m_Player.FindAction("Cast Primary", throwIfNotFound: true);
-        m_Player_CastSecondary = m_Player.FindAction("Cast Secondary", throwIfNotFound: true);
-        m_Player_CastTertiary = m_Player.FindAction("Cast Tertiary", throwIfNotFound: true);
+        m_Player_CastPrimaryWeapon = m_Player.FindAction("Cast Primary Weapon", throwIfNotFound: true);
+        m_Player_CastSecondaryWeapon = m_Player.FindAction("Cast Secondary Weapon", throwIfNotFound: true);
+        m_Player_CastPrimaryAbility = m_Player.FindAction("Cast Primary Ability", throwIfNotFound: true);
+        m_Player_CastSecondaryAbility = m_Player.FindAction("Cast Secondary Ability", throwIfNotFound: true);
         m_Player_SwitchCharacterLeft = m_Player.FindAction("Switch Character Left", throwIfNotFound: true);
         m_Player_SwitchCharacterRight = m_Player.FindAction("Switch Character Right", throwIfNotFound: true);
     }
@@ -2273,13 +2262,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Aim;
     private readonly InputAction m_Player_ToggleSkillWheel;
-    private readonly InputAction m_Player_ReviewPuzzle;
     private readonly InputAction m_Player_RestartLevel;
     private readonly InputAction m_Player_ToggleAiming;
     private readonly InputAction m_Player_UseAgility;
-    private readonly InputAction m_Player_CastPrimary;
-    private readonly InputAction m_Player_CastSecondary;
-    private readonly InputAction m_Player_CastTertiary;
+    private readonly InputAction m_Player_CastPrimaryWeapon;
+    private readonly InputAction m_Player_CastSecondaryWeapon;
+    private readonly InputAction m_Player_CastPrimaryAbility;
+    private readonly InputAction m_Player_CastSecondaryAbility;
     private readonly InputAction m_Player_SwitchCharacterLeft;
     private readonly InputAction m_Player_SwitchCharacterRight;
     public struct PlayerActions
@@ -2291,13 +2280,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Aim => m_Wrapper.m_Player_Aim;
         public InputAction @ToggleSkillWheel => m_Wrapper.m_Player_ToggleSkillWheel;
-        public InputAction @ReviewPuzzle => m_Wrapper.m_Player_ReviewPuzzle;
         public InputAction @RestartLevel => m_Wrapper.m_Player_RestartLevel;
         public InputAction @ToggleAiming => m_Wrapper.m_Player_ToggleAiming;
         public InputAction @UseAgility => m_Wrapper.m_Player_UseAgility;
-        public InputAction @CastPrimary => m_Wrapper.m_Player_CastPrimary;
-        public InputAction @CastSecondary => m_Wrapper.m_Player_CastSecondary;
-        public InputAction @CastTertiary => m_Wrapper.m_Player_CastTertiary;
+        public InputAction @CastPrimaryWeapon => m_Wrapper.m_Player_CastPrimaryWeapon;
+        public InputAction @CastSecondaryWeapon => m_Wrapper.m_Player_CastSecondaryWeapon;
+        public InputAction @CastPrimaryAbility => m_Wrapper.m_Player_CastPrimaryAbility;
+        public InputAction @CastSecondaryAbility => m_Wrapper.m_Player_CastSecondaryAbility;
         public InputAction @SwitchCharacterLeft => m_Wrapper.m_Player_SwitchCharacterLeft;
         public InputAction @SwitchCharacterRight => m_Wrapper.m_Player_SwitchCharacterRight;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -2324,9 +2313,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ToggleSkillWheel.started += instance.OnToggleSkillWheel;
             @ToggleSkillWheel.performed += instance.OnToggleSkillWheel;
             @ToggleSkillWheel.canceled += instance.OnToggleSkillWheel;
-            @ReviewPuzzle.started += instance.OnReviewPuzzle;
-            @ReviewPuzzle.performed += instance.OnReviewPuzzle;
-            @ReviewPuzzle.canceled += instance.OnReviewPuzzle;
             @RestartLevel.started += instance.OnRestartLevel;
             @RestartLevel.performed += instance.OnRestartLevel;
             @RestartLevel.canceled += instance.OnRestartLevel;
@@ -2336,15 +2322,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @UseAgility.started += instance.OnUseAgility;
             @UseAgility.performed += instance.OnUseAgility;
             @UseAgility.canceled += instance.OnUseAgility;
-            @CastPrimary.started += instance.OnCastPrimary;
-            @CastPrimary.performed += instance.OnCastPrimary;
-            @CastPrimary.canceled += instance.OnCastPrimary;
-            @CastSecondary.started += instance.OnCastSecondary;
-            @CastSecondary.performed += instance.OnCastSecondary;
-            @CastSecondary.canceled += instance.OnCastSecondary;
-            @CastTertiary.started += instance.OnCastTertiary;
-            @CastTertiary.performed += instance.OnCastTertiary;
-            @CastTertiary.canceled += instance.OnCastTertiary;
+            @CastPrimaryWeapon.started += instance.OnCastPrimaryWeapon;
+            @CastPrimaryWeapon.performed += instance.OnCastPrimaryWeapon;
+            @CastPrimaryWeapon.canceled += instance.OnCastPrimaryWeapon;
+            @CastSecondaryWeapon.started += instance.OnCastSecondaryWeapon;
+            @CastSecondaryWeapon.performed += instance.OnCastSecondaryWeapon;
+            @CastSecondaryWeapon.canceled += instance.OnCastSecondaryWeapon;
+            @CastPrimaryAbility.started += instance.OnCastPrimaryAbility;
+            @CastPrimaryAbility.performed += instance.OnCastPrimaryAbility;
+            @CastPrimaryAbility.canceled += instance.OnCastPrimaryAbility;
+            @CastSecondaryAbility.started += instance.OnCastSecondaryAbility;
+            @CastSecondaryAbility.performed += instance.OnCastSecondaryAbility;
+            @CastSecondaryAbility.canceled += instance.OnCastSecondaryAbility;
             @SwitchCharacterLeft.started += instance.OnSwitchCharacterLeft;
             @SwitchCharacterLeft.performed += instance.OnSwitchCharacterLeft;
             @SwitchCharacterLeft.canceled += instance.OnSwitchCharacterLeft;
@@ -2370,9 +2359,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ToggleSkillWheel.started -= instance.OnToggleSkillWheel;
             @ToggleSkillWheel.performed -= instance.OnToggleSkillWheel;
             @ToggleSkillWheel.canceled -= instance.OnToggleSkillWheel;
-            @ReviewPuzzle.started -= instance.OnReviewPuzzle;
-            @ReviewPuzzle.performed -= instance.OnReviewPuzzle;
-            @ReviewPuzzle.canceled -= instance.OnReviewPuzzle;
             @RestartLevel.started -= instance.OnRestartLevel;
             @RestartLevel.performed -= instance.OnRestartLevel;
             @RestartLevel.canceled -= instance.OnRestartLevel;
@@ -2382,15 +2368,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @UseAgility.started -= instance.OnUseAgility;
             @UseAgility.performed -= instance.OnUseAgility;
             @UseAgility.canceled -= instance.OnUseAgility;
-            @CastPrimary.started -= instance.OnCastPrimary;
-            @CastPrimary.performed -= instance.OnCastPrimary;
-            @CastPrimary.canceled -= instance.OnCastPrimary;
-            @CastSecondary.started -= instance.OnCastSecondary;
-            @CastSecondary.performed -= instance.OnCastSecondary;
-            @CastSecondary.canceled -= instance.OnCastSecondary;
-            @CastTertiary.started -= instance.OnCastTertiary;
-            @CastTertiary.performed -= instance.OnCastTertiary;
-            @CastTertiary.canceled -= instance.OnCastTertiary;
+            @CastPrimaryWeapon.started -= instance.OnCastPrimaryWeapon;
+            @CastPrimaryWeapon.performed -= instance.OnCastPrimaryWeapon;
+            @CastPrimaryWeapon.canceled -= instance.OnCastPrimaryWeapon;
+            @CastSecondaryWeapon.started -= instance.OnCastSecondaryWeapon;
+            @CastSecondaryWeapon.performed -= instance.OnCastSecondaryWeapon;
+            @CastSecondaryWeapon.canceled -= instance.OnCastSecondaryWeapon;
+            @CastPrimaryAbility.started -= instance.OnCastPrimaryAbility;
+            @CastPrimaryAbility.performed -= instance.OnCastPrimaryAbility;
+            @CastPrimaryAbility.canceled -= instance.OnCastPrimaryAbility;
+            @CastSecondaryAbility.started -= instance.OnCastSecondaryAbility;
+            @CastSecondaryAbility.performed -= instance.OnCastSecondaryAbility;
+            @CastSecondaryAbility.canceled -= instance.OnCastSecondaryAbility;
             @SwitchCharacterLeft.started -= instance.OnSwitchCharacterLeft;
             @SwitchCharacterLeft.performed -= instance.OnSwitchCharacterLeft;
             @SwitchCharacterLeft.canceled -= instance.OnSwitchCharacterLeft;
@@ -2456,13 +2445,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
         void OnToggleSkillWheel(InputAction.CallbackContext context);
-        void OnReviewPuzzle(InputAction.CallbackContext context);
         void OnRestartLevel(InputAction.CallbackContext context);
         void OnToggleAiming(InputAction.CallbackContext context);
         void OnUseAgility(InputAction.CallbackContext context);
-        void OnCastPrimary(InputAction.CallbackContext context);
-        void OnCastSecondary(InputAction.CallbackContext context);
-        void OnCastTertiary(InputAction.CallbackContext context);
+        void OnCastPrimaryWeapon(InputAction.CallbackContext context);
+        void OnCastSecondaryWeapon(InputAction.CallbackContext context);
+        void OnCastPrimaryAbility(InputAction.CallbackContext context);
+        void OnCastSecondaryAbility(InputAction.CallbackContext context);
         void OnSwitchCharacterLeft(InputAction.CallbackContext context);
         void OnSwitchCharacterRight(InputAction.CallbackContext context);
     }

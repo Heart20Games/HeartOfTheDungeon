@@ -1145,15 +1145,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Review Puzzle",
-                    "type": "Button",
-                    "id": "eb0bc3b9-03fa-4045-b2b2-6bbb3ceb62a2",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Restart Level",
                     "type": "Button",
                     "id": "480fe164-1fd1-4253-a9de-38cb4d7078d1",
@@ -1181,7 +1172,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Cast Primary",
+                    "name": "Cast Primary Weapon",
                     "type": "Button",
                     "id": "878ac51a-f2d7-40e4-877e-1c1eb7ee7e2b",
                     "expectedControlType": "Button",
@@ -1190,7 +1181,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Cast Secondary",
+                    "name": "Cast Secondary Weapon",
                     "type": "Button",
                     "id": "06449f62-29b1-4d4c-a25f-7369c7feeaf8",
                     "expectedControlType": "Button",
@@ -1199,9 +1190,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Cast Tertiary",
+                    "name": "Cast Primary Ability",
                     "type": "Button",
                     "id": "b588de10-e478-4cb1-8004-b61ebe494638",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cast Secondary Ability",
+                    "type": "Button",
+                    "id": "ec74ea63-2abd-437e-95e9-fce34bdaadf2",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press",
@@ -1603,28 +1603,6 @@
                 },
                 {
                     "name": "",
-                    "id": "cdd77e7a-f979-4fa1-8b57-44b268a25678",
-                    "path": "<Gamepad>/dpad/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Review Puzzle",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "5bfdeeae-2970-4fa8-b148-b24c32c4a9ae",
-                    "path": "<Keyboard>/tab",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Review Puzzle",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "2515ca30-ba1d-409b-b144-ea996f296318",
                     "path": "<Keyboard>/r",
                     "interactions": "",
@@ -1674,7 +1652,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Cast Primary",
+                    "action": "Cast Primary Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -1685,18 +1663,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Cast Primary",
+                    "action": "Cast Primary Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "da067128-eadc-4233-8c0b-09384dcc7cff",
-                    "path": "<Keyboard>/q",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Cast Secondary",
+                    "action": "Cast Secondary Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -1707,40 +1685,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Cast Secondary",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "dccc146a-ded6-486e-8da1-3347af84c131",
-                    "path": "<Mouse>/middleButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Cast Tertiary",
+                    "action": "Cast Secondary Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "6a79c5e7-833f-436b-8743-48280dfff18c",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Gamepad>/dpad/left",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Cast Tertiary",
+                    "action": "Cast Primary Ability",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "8fa93bc9-251d-4832-bbbc-0c0b98169afc",
-                    "path": "<Keyboard>/r",
+                    "path": "<Keyboard>/1",
                     "interactions": "Hold",
                     "processors": "",
                     "groups": "",
-                    "action": "Cast Tertiary",
+                    "action": "Cast Primary Ability",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -1781,7 +1748,7 @@
                     "name": "",
                     "id": "d6d9521a-8bb7-4de1-902d-201cbf3909ab",
                     "path": "<Keyboard>/1",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "processors": "",
                     "groups": "",
                     "action": "Switch Character Left",
@@ -1803,10 +1770,32 @@
                     "name": "",
                     "id": "b75879b0-e0d7-4f3c-8a2f-299b73a55ede",
                     "path": "<Keyboard>/2",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "processors": "",
                     "groups": "",
                     "action": "Switch Character Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fad8c3dc-5d7e-46f3-b0e8-2369fa7b11f4",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cast Secondary Ability",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "789e97c3-e678-4b56-859a-55537c2b5604",
+                    "path": "<Keyboard>/2",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cast Secondary Ability",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
