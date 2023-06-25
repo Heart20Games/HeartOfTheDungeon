@@ -76,7 +76,7 @@ namespace Body.Behavior.ContextSteering
         // Generated
         private readonly List<Transform> obstacles = new();
         public readonly List<Context> activeContexts = new();
-        private Maps Maps { get; } = new(null, null);
+        private Maps Maps { get; } = new((float[])null, null);
 
         // Debug
         private readonly float ResultRadius = 0.5f;
@@ -119,7 +119,7 @@ namespace Body.Behavior.ContextSteering
                     Vector2 destinationVector = (destinationStep - transform.position).XZVector();
                     MapTo(destinationVector, Identity.Target, destinationDistance);
                 }
-                Draw();
+                DrawMaps();
                 Vector3 vector = GetVector();
                 if (moveSelf)
                 {
@@ -139,11 +139,8 @@ namespace Body.Behavior.ContextSteering
         public Vector3 GetVector()
         {
             Vector3 vector = new();
-            Map interests = Maps.interests; //Maps[MapType.Interest];
-            Map dangers = Maps.dangers; //Maps[MapType.Danger];
-            int icc = interests.componentCount;
-            int dcc = interests.componentCount;
-            print($"icc: {icc} dcc:{dcc}");
+            Map interests = Maps.interests;
+            Map dangers = Maps.dangers;
             int componentCount = interests.componentCount + dangers.componentCount;
             if (componentCount > 0)
             {
@@ -166,13 +163,10 @@ namespace Body.Behavior.ContextSteering
                     interests[i] = 0f;
                     dangers[i] = 0f;
                 }
-                //vector /= componentCount;
-                vector /= vector.magnitude;
+                vector /= componentCount;
 
                 interests.ResetComponentCount();
                 dangers.ResetComponentCount();
-                //interests.componentCount = 0;
-                //dangers.componentCount = 0;
             }
             else
             {
@@ -180,7 +174,6 @@ namespace Body.Behavior.ContextSteering
                 {
                     Assert.IsTrue(interests[i] == 0 && dangers[i] == 0);
                 }
-                print($"icc: {interests.componentCount} dcc:{dangers.componentCount}");
                 Assert.IsTrue(interests.componentCount == 0 && dangers.componentCount == 0);
             }
             return vector;
@@ -366,7 +359,7 @@ namespace Body.Behavior.ContextSteering
 
 
         // Draw
-        public void Draw()
+        public void DrawMaps()
         {
             if (DrawRays)
             {
