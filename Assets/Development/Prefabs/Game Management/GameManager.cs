@@ -66,9 +66,13 @@ public class Game : BaseMonoBehaviour
                 break;
             }
         }
-        if (!hasPlayer && playerCharacter != null)
+        if (playerCharacter != null)
         {
-            playableCharacters.Insert(0, playerCharacter);
+            hud.MainCharacterSelect(playerCharacter);
+            if (!hasPlayer)
+            {
+                playableCharacters.Insert(0, playerCharacter);
+            }
         }
         SetCharacterIdx(0);
         if (curCharacter == null)

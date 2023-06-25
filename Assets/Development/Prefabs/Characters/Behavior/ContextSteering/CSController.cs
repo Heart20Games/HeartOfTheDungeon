@@ -76,7 +76,7 @@ namespace Body.Behavior.ContextSteering
         // Generated
         private readonly List<Transform> obstacles = new();
         public readonly List<Context> activeContexts = new();
-        private Maps Maps { get; } = new(null, null);
+        private Maps Maps { get; } = new((float[])null, null);
 
         // Debug
         private readonly float ResultRadius = 0.5f;
@@ -119,7 +119,7 @@ namespace Body.Behavior.ContextSteering
                     Vector2 destinationVector = (destinationStep - transform.position).XZVector();
                     MapTo(destinationVector, Identity.Target, destinationDistance);
                 }
-                Draw();
+                DrawMaps();
                 Vector3 vector = GetVector();
                 if (moveSelf)
                 {
@@ -139,34 +139,49 @@ namespace Body.Behavior.ContextSteering
         public Vector3 GetVector()
         {
             Vector3 vector = new();
-            Map interests = Maps[MapType.Interest];
-            Map dangers = Maps[MapType.Danger];
-            int componentCount = 1; // interests.componentCount + dangers.componentCount;
-            for (int i = 0; i < resolution; i++)
+            Map interests = Maps.interests;
+            Map dangers = Maps.dangers;
+            int componentCount = interests.componentCount + dangers.componentCount;
+            if (componentCount > 0)
             {
-                Assert.IsFalse(float.IsNaN(interests[i]));
-                Assert.IsFalse(float.IsNaN(dangers[i]));
-                vector += (interests[i] / componentCount) * interests.sign * Baseline[i];
-                vector += (dangers[i] / componentCount) * dangers.sign * Baseline[i];
-                if (debug)
+                for (int i = 0; i < resolution; i++)
                 {
-                    if (interests[i] != 0 && dangers[i] != 0)
-                        print($"Found interest or danger. (interest:{interests[i]}, danger:{dangers[i]}");
-                    if (interests.sign == 0 || dangers.sign == 0)
-                        Debug.LogWarning("Interests and Dangers should be negative or positive, not zero.");
-                    if (Baseline[i].magnitude == 0)
-                        Debug.LogWarning("Baseline value should never be zero.");
-                    Debug.DrawRay(transform.position, vector*2, Color.white, Time.fixedDeltaTime);
+                    Assert.IsFalse(float.IsNaN(interests[i]));
+                    Assert.IsFalse(float.IsNaN(dangers[i]));
+                    vector += (interests[i]) * interests.sign * Baseline[i];
+                    vector += (dangers[i]) * dangers.sign * Baseline[i];
+                    if (debug)
+                    {
+                        if (interests[i] != 0 && dangers[i] != 0)
+                            print($"Found interest or danger. (interest:{interests[i]}, danger:{dangers[i]}");
+                        if (interests.sign == 0 || dangers.sign == 0)
+                            Debug.LogWarning("Interests and Dangers should be negative or positive, not zero.");
+                        if (Baseline[i].magnitude == 0)
+                            Debug.LogWarning("Baseline value should never be zero.");
+                        Debug.DrawRay(transform.position, vector*2, Color.white, Time.fixedDeltaTime);
+                    }
+                    interests[i] = 0f;
+                    dangers[i] = 0f;
                 }
-                interests[i] = 0f;
-                dangers[i] = 0f;
+                vector /= componentCount;
+
+                interests.ResetComponentCount();
+                dangers.ResetComponentCount();
             }
-            interests.componentCount = 0;
-            dangers.componentCount = 0;
-            return vector.normalized;
+            else
+            {
+                for (int i = 0; i < resolution; i++)
+                {
+                    Assert.IsTrue(interests[i] == 0 && dangers[i] == 0);
+                }
+                Assert.IsTrue(interests.componentCount == 0 && dangers.componentCount == 0);
+            }
+            return vector;
         }
 
+
         // Mappable
+
         private readonly List<Context> mappableContexts = new();
         public List<Context> IsIdentityMappable(float distance, Identity identity)
         {
@@ -192,7 +207,9 @@ namespace Body.Behavior.ContextSteering
             return distance == Mathf.Clamp(distance, cVector.deadzone.x, cVector.deadzone.y);
         }
 
+
         // Map To
+
         public void MapTo(Vector2 vector, Identity identity, float distanceOverride=-1)
         {
             if (Context != null && vector != Vector2.zero)
@@ -299,16 +316,15 @@ namespace Body.Behavior.ContextSteering
             }
 
             // Up the component count
-            map.componentCount += 1;
+            int mcc = map.componentCount;
+            map.IncrementComponentCount();
+            print($"mcc: {mcc} -> {map.componentCount}");
+            //map.componentCount += 1;
         }
 
-        private void AssertInRange(float value, float min, float max)
-        {
-            Assert.IsTrue(value >= min);
-            Assert.IsTrue(value <= max);
-        }
 
         // Obstacles
+
         public void AddObstacle(Impact impact)
         {
             if (!impact.other.TryGetComponent<CSController>(out _))
@@ -332,8 +348,18 @@ namespace Body.Behavior.ContextSteering
             }
         }
 
+
+        // Assertion
+
+        private void AssertInRange(float value, float min, float max)
+        {
+            Assert.IsTrue(value >= min);
+            Assert.IsTrue(value <= max);
+        }
+
+
         // Draw
-        public void Draw()
+        public void DrawMaps()
         {
             if (DrawRays)
             {
@@ -343,7 +369,6 @@ namespace Body.Behavior.ContextSteering
                     Map map = Maps[i];
                     if (!map.IsZero())
                     {
-                        //print("Draw: " + (map.sign < 0 ? "Danger" : "Interest"));
                         for (int j = 0; j < resolution; j++)
                         {
                             if (map[j] > 0)

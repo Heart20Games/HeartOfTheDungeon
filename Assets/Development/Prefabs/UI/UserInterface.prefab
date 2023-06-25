@@ -499,10 +499,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6970746341825045475}
+  - component: {fileID: 4731180189519494381}
   - component: {fileID: 5571942877778772241}
   - component: {fileID: 3059728018811413050}
   - component: {fileID: 6320417088392752948}
-  - component: {fileID: 4731180189519494381}
   - component: {fileID: 2807552172127431414}
   - component: {fileID: 5881618791446945834}
   m_Layer: 5
@@ -535,6 +535,36 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &4731180189519494381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7148830681040627160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9281ea625af9b646a8b8fc8e5e4bb89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityMenu: {fileID: 7605802887412773316}
+  abilityMenuAnimator: {fileID: 4359975830524462548}
+  abilityMenuActive: 0
+  selectedAbility: {fileID: 0}
+  defaultSpriteMat: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  shimmerMat: {fileID: 2100000, guid: 03907656904008b4084a991e2ba7d75c, type: 2}
+  shimmerSpeed: 0.02
+  healthUI: {fileID: 242848123378496160}
+  mainCharacter: {fileID: 0}
+  characterImages:
+  - {fileID: 3506696270145025320}
+  - {fileID: 578449007069282277}
+  - {fileID: 6589399405051725164}
+  portraitAnimator: {fileID: 2807552172127431414}
+  currentPortrait: {fileID: 0}
+  prevPortrait: {fileID: 0}
+  controlledCharacter: {fileID: 0}
+  selectedCharacter: {fileID: 0}
 --- !u!223 &5571942877778772241
 Canvas:
   m_ObjectHideFlags: 0
@@ -597,34 +627,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &4731180189519494381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7148830681040627160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9281ea625af9b646a8b8fc8e5e4bb89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterImages:
-  - {fileID: 3506696270145025320}
-  - {fileID: 578449007069282277}
-  - {fileID: 6589399405051725164}
-  character: {fileID: 0}
-  selectedCharacter: {fileID: 3506696270145025320}
-  prevSelectedCharacter: {fileID: 0}
-  characterSelectAnimator: {fileID: 2807552172127431414}
-  abilityMenu: {fileID: 7605802887412773316}
-  abilityMenuActive: 0
-  abilityMenuAnimator: {fileID: 4359975830524462548}
-  shimmerMat: {fileID: 2100000, guid: 03907656904008b4084a991e2ba7d75c, type: 2}
-  shimmerSpeed: 0.02
-  healthUI: {fileID: 242848123378496160}
-  defaultSpriteMat: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  selectedAbility: {fileID: 0}
 --- !u!95 &2807552172127431414
 Animator:
   serializedVersion: 5
