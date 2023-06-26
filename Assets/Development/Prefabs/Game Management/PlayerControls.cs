@@ -1144,7 +1144,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""type"": ""PassThrough"",
                     ""id"": ""a2fe85a6-d37c-45b4-ae4d-135093600209"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": ""ScaleVector2(x=0.25,y=0.25),NormalizeVector2"",
+                    ""processors"": ""ScaleVector2(x=0.125,y=0.125),NormalizeVector2"",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
@@ -1153,7 +1153,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""type"": ""PassThrough"",
                     ""id"": ""752664f3-3332-45c6-8089-aab09c323148"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": ""NormalizeVector2,StickDeadzone"",
+                    ""processors"": ""NormalizeVector2,StickDeadzone,ScaleVector2(x=0.125,y=0.125)"",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
