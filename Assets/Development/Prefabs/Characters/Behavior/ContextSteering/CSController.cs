@@ -318,8 +318,6 @@ namespace Body.Behavior.ContextSteering
             // Up the component count
             int mcc = map.componentCount;
             map.IncrementComponentCount();
-            print($"mcc: {mcc} -> {map.componentCount}");
-            //map.componentCount += 1;
         }
 
 

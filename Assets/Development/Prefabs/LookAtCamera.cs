@@ -6,6 +6,7 @@ using UnityEngine;
 public class LookAtCamera : BaseMonoBehaviour
 {
     public Transform target;
+    public bool flipOverX;
     public Vector3 up = Vector3.up;
 
     private void Awake()
@@ -29,6 +30,16 @@ public class LookAtCamera : BaseMonoBehaviour
             Vector3 relativePosition = transform.position + new Vector3(direction.x, 0f, direction.z);
             transform.LookAt(relativePosition, up);
         }
+
+        //if (flipOverX)
+        //{
+        //    Vector2 targetDirection = (target.position - transform.position).normalized.XZVector();
+        //    //Vector2 right = -Vector2.Perpendicular(direction);
+            
+        //    float pMag = Mathf.Abs(transform.localScale.z);
+        //    float sign = Mathf.Sign(Vector2.Dot(right, ));
+        //    transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, pMag * sign);
+        //}
 
         //Vector3 direction = (target.position - transform.position).normalized;
         //Debug.DrawRay(transform.position, direction, Color.red, Time.fixedDeltaTime);
