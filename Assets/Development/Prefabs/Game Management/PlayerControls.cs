@@ -1144,7 +1144,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""type"": ""PassThrough"",
                     ""id"": ""a2fe85a6-d37c-45b4-ae4d-135093600209"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": ""ScaleVector2(x=0.125,y=0.125),NormalizeVector2"",
+                    ""processors"": ""ScaleVector2(x=0.0625,y=0.0625),NormalizeVector2"",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
