@@ -1,18 +1,22 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Unity.VisualScripting.Member;
+using static Body.Behavior.ContextSteering.CSIdentity;
 
-public class Damager : MonoBehaviour
+public class Damager : BaseMonoBehaviour
 {
-    private readonly List<IDamageable> others = new List<IDamageable>();
-    private readonly List<IDamageable> ignored = new List<IDamageable>();
+    private readonly List<IDamageable> others = new();
+    private readonly List<IDamageable> ignored = new();
     public int damage = 1;
+    public Identity identity = Identity.Neutral;
+
+    public void SetIdentity(Identity identity)
+    {
+        this.identity = identity;
+    }
 
     public void Ignore(Transform toIgnore)
     {
-        IDamageable damageable = toIgnore.GetComponent<IDamageable>();
-        if (damageable != null)
+        if (toIgnore.TryGetComponent<IDamageable>(out var damageable))
         {
             ignored.Add(damageable);
         }
@@ -24,7 +28,7 @@ public class Damager : MonoBehaviour
         if (other != null && !ignored.Contains(other) && !others.Contains(other))
         {
             others.Add(other);
-            other.TakeDamage(damage);
+            other.TakeDamage(damage, identity);
         }
     }
 

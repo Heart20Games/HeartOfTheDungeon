@@ -5,7 +5,7 @@ using FMODUnity;
 using FMOD.Studio;
 using System;
 
-public class ObjectAnimationSounds : MonoBehaviour
+public class ObjectAnimationSounds : BaseMonoBehaviour
 {
     [field: SerializeField] public EventReference objectMoveOne { get; private set; }
 

@@ -1,6 +1,7 @@
 using UnityEngine;
+using Body.Behavior;
 
-public class FireProjectile : MonoBehaviour
+public class FireProjectile : BaseMonoBehaviour
 {
     private Brain agentFollower;
     private Transform player;

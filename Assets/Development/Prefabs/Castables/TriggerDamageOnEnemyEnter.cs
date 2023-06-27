@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TriggerDamageOnEnemyEnter : MonoBehaviour
+public class TriggerDamageOnEnemyEnter : BaseMonoBehaviour
 {
     public int damage = 10;
 
@@ -8,8 +8,7 @@ public class TriggerDamageOnEnemyEnter : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
-            if (damageable != null)
+            if (other.gameObject.TryGetComponent<IDamageable>(out var damageable))
             {
                 damageable.TakeDamage(damage);
             }

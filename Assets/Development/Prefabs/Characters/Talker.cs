@@ -1,11 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Yarn.Unity;
 using static Game;
+using static YarnTags;
 
-public class Talker : MonoBehaviour
+public class Talker : BaseMonoBehaviour
 {
     [HideInInspector] public Game game;
     [HideInInspector] public DialogueRunner dialogueRunner;
@@ -16,13 +16,8 @@ public class Talker : MonoBehaviour
     public UnityEvent onDoneTalking;
     private GameMode prevMode;
 
-    // Start is called before the first frame update
     void Start()
     {
-        if (dialogueRunner != null)
-        {
-            dialogueRunner.onDialogueComplete.AddListener(onDoneTalking.Invoke);
-        }
         onDoneTalking.AddListener(ResetMode);
     }
 
@@ -36,12 +31,17 @@ public class Talker : MonoBehaviour
     }
 
     // Actions
+    public void CompleteTalking()
+    {
+        dialogueRunner.onDialogueComplete.RemoveListener(CompleteTalking);
+        onDoneTalking.Invoke();
+    }
     public void Talk() { Talk(targetNode); }
     public void Talk(string targetNode)
     {
         if (dialogueRunner != null)
         {
-            if (targetNode != "")
+            if (targetNode != "" && dialogueRunner.NodeExists(targetNode))
             {
                 if (virtualCamera != null)
                 {
@@ -50,17 +50,43 @@ public class Talker : MonoBehaviour
                 prevMode = game.Mode;
                 game.Mode = GameMode.Dialogue;
                 dialogueRunner.Stop();
+                dialogueRunner.onNodeStart.AddListener(OnNodeStarted);
+                dialogueRunner.onDialogueComplete.AddListener(CompleteTalking);
                 dialogueRunner.StartDialogue(targetNode);
                 onStartTalking.Invoke();
             }
             else
             {
-                Debug.LogWarning("No target node");
+                Debug.LogWarning($"No target node '{targetNode}' exists. ({name})");
             }
         }
         else
         {
             Debug.LogWarning("No Dialogue Runner to Start Talking");
         }
+    }
+
+    private readonly List<IViewable> viewables = new();
+    private List<IViewable> Viewables
+    {
+        get
+        {
+            viewables.Clear();
+            DialogueViewBase[] dialogueViews = dialogueRunner.dialogueViews;
+            for (int i = 0; i < dialogueViews.Length; i++)
+            {
+                if (dialogueViews[i] is IViewable)
+                {
+                    viewables.Add(dialogueViews[i] as IViewable);
+                }
+            }
+            return viewables;
+        }
+    }
+
+    public void OnNodeStarted(string node)
+    {
+        IEnumerable<string> tags = dialogueRunner.Dialogue.GetTagsForNode(targetNode);
+        SetNodeInclusion(tags, Viewables);
     }
 }

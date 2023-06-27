@@ -4,14 +4,23 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using Yarn.Unity;
+using Body;
 
-public class UserInterface : MonoBehaviour
+public class UserInterface : BaseMonoBehaviour
 {
-    public Character controlledCharacter;
+    public Body.Character controlledCharacter;
+    public DialogueRunner dialogueRunner;
+    public Canvas dialogueCanvas;
 
     public UnityEvent onContinue;
 
-    public void SetCharacter(Character character)
+    public void Start()
+    {
+        dialogueCanvas.gameObject.SetActive(false);
+    }
+
+    public void SetCharacter(Body.Character character)
     {
         controlledCharacter = character;
     }
