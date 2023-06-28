@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 35249090926773502}
     m_Modifications:
     - target: {fileID: 1683947718073257189, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683947718073257189, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
       propertyPath: onTrigger.exit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 9040208779780292039}
@@ -17,8 +21,32 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9040208779780292039}
     - target: {fileID: 1683947718073257189, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1435725472590127945}
+    - target: {fileID: 1683947718073257189, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
       propertyPath: onTrigger.exit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683947718073257189, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683947718073257189, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PlayEvent
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683947718073257189, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: FModEventPlayer, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683947718073257189, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Magic-bolt-hit
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683947718073257189, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
+      propertyPath: onCollision.enter.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Magic-bolt-hit
       objectReference: {fileID: 0}
     - target: {fileID: 1688725526845993424, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
       propertyPath: m_Name
@@ -42,7 +70,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8917140233178982478, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.92387956
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8917140233178982478, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
       propertyPath: m_LocalRotation.x
@@ -50,7 +78,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8917140233178982478, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.38268343
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8917140233178982478, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
       propertyPath: m_LocalRotation.z
@@ -73,6 +101,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
+--- !u!114 &1435725472590127945 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5696855107703442685, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
+  m_PrefabInstance: {fileID: 6693460911891312564}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d26e83e53b19e62469a39c2a92901175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2820371503114373114 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8917140233178982478, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
@@ -154,16 +193,72 @@ PrefabInstance:
       value: Magic Bolt
       objectReference: {fileID: 0}
     - target: {fileID: 8666214379601827426, guid: 4e79bbb13a84fa9469ca11b71b830736, type: 3}
+      propertyPath: doCast.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666214379601827426, guid: 4e79bbb13a84fa9469ca11b71b830736, type: 3}
+      propertyPath: onCast.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666214379601827426, guid: 4e79bbb13a84fa9469ca11b71b830736, type: 3}
+      propertyPath: doCast.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666214379601827426, guid: 4e79bbb13a84fa9469ca11b71b830736, type: 3}
+      propertyPath: onCast.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666214379601827426, guid: 4e79bbb13a84fa9469ca11b71b830736, type: 3}
       propertyPath: onCast.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2520852228942606540}
+    - target: {fileID: 8666214379601827426, guid: 4e79bbb13a84fa9469ca11b71b830736, type: 3}
+      propertyPath: doCast.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666214379601827426, guid: 4e79bbb13a84fa9469ca11b71b830736, type: 3}
+      propertyPath: onCast.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666214379601827426, guid: 4e79bbb13a84fa9469ca11b71b830736, type: 3}
+      propertyPath: doCast.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PlayEvent
+      objectReference: {fileID: 0}
     - target: {fileID: 8666214379601827426, guid: 4e79bbb13a84fa9469ca11b71b830736, type: 3}
       propertyPath: onCast.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: Play
       objectReference: {fileID: 0}
     - target: {fileID: 8666214379601827426, guid: 4e79bbb13a84fa9469ca11b71b830736, type: 3}
+      propertyPath: onCast.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PlayEvent
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666214379601827426, guid: 4e79bbb13a84fa9469ca11b71b830736, type: 3}
+      propertyPath: doCast.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: FModEventPlayer, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666214379601827426, guid: 4e79bbb13a84fa9469ca11b71b830736, type: 3}
       propertyPath: onCast.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Timer, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666214379601827426, guid: 4e79bbb13a84fa9469ca11b71b830736, type: 3}
+      propertyPath: onCast.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: FModEventPlayer, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666214379601827426, guid: 4e79bbb13a84fa9469ca11b71b830736, type: 3}
+      propertyPath: doCast.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Magic-bolt-fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666214379601827426, guid: 4e79bbb13a84fa9469ca11b71b830736, type: 3}
+      propertyPath: onCast.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Magic-bolt-fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666214379601827426, guid: 4e79bbb13a84fa9469ca11b71b830736, type: 3}
+      propertyPath: doCast.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666214379601827426, guid: 4e79bbb13a84fa9469ca11b71b830736, type: 3}
+      propertyPath: onCast.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -211,6 +306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   length: 0.5
+  playOnStart: 0
   onPlay:
     m_PersistentCalls:
       m_Calls: []

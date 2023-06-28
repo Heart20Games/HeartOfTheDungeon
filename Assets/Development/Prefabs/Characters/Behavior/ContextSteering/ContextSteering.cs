@@ -29,19 +29,24 @@ namespace Body.Behavior.ContextSteering
                     var iCon = controllers[i];
                     var jCon = controllers[j];
 
-                    Assert.AreNotEqual(iCon, jCon);
+                    if (iCon.Alive && jCon.Alive)
+                    {
+                        Assert.AreNotEqual(iCon, jCon);
 
-                    MapOntoPeer(iCon, jCon);
-                    MapOntoPeer(jCon, iCon);
+                        if (jCon.Active)
+                            MapOntoPeer(iCon, jCon);
+                        if (iCon.Active)
+                            MapOntoPeer(jCon, iCon);
+                    }
                 }
             }
         }
 
         public void MapOntoPeer(CSController aCon, CSController bCon)
         {
-            Identity identity = bCon.RelativeIdentity(aCon.Identity);
+            Identity identity = RelativeIdentity(aCon.identity, bCon.identity);
             Vector3 sourceVector = aCon.transform.position - bCon.transform.position;
-            Vector2 vector = new(sourceVector.x, sourceVector.z);
+            Vector2 vector = sourceVector.XZVector();
             bCon.MapTo(vector, identity);
         }
     }

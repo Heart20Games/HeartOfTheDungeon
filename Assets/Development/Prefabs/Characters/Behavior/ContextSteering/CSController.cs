@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using ScriptableObjectDropdown;
+using UnityEngine.Events;
 
 namespace Body.Behavior.ContextSteering
 {
@@ -28,27 +29,54 @@ namespace Body.Behavior.ContextSteering
         public float Speed => Preset.testSpeed;
         public float DrawScale => Preset.drawScale;
         public bool DrawRays => Preset.draw;
-        public Identity Identity { get => Preset.Identity; }
+        public Identity identity = Identity.Neutral;
+        //public Identity Identity { get => Preset.Identity; }
 
         // Initialization
         private Rigidbody rigidbody;
 
         // Active
         [SerializeField] private bool active = false;
-        public bool Active { get => active; set => SetActive(value); }
+        public bool Active
+        { 
+            get => active;
+            set
+            {
+                active = value;
+                if (!active && rigidbody != null)
+                    rigidbody.velocity = Vector3.zero;
+            }
+        }
+        [SerializeField] private bool alive = true;
+        public bool Alive
+        {
+            get => alive;
+            set
+            {
+                alive = value;
+                if (!value) Active = false;
+            }
+        }
 
         // Destination
-        [SerializeField] private Vector3 destination = new();
-        public bool following = false;
-        public Vector3 Destination { get => destination; set { destination = value; following = true; } }
+        [SerializeField] private Vector3 destinationStep = new();
+        [SerializeField] private float destinationDistance = 0f;
+        public void SetDestination(Vector3 step, float distance)
+        {
+            destinationStep = step;
+            destinationDistance = distance;
+        }
 
         // Vector
-        [HideInInspector] public Vector2 currentVector;
+        private Vector2 currentVector;
+        public Vector2 CurrentVector { get => currentVector; set { currentVector = value; onSetVector.Invoke(currentVector); } }
+        public UnityEvent<Vector2> onSetVector;
+        public bool moveSelf = true;
 
         // Generated
         private readonly List<Transform> obstacles = new();
         public readonly List<Context> activeContexts = new();
-        private Maps Maps { get; } = new(null, null);
+        private Maps Maps { get; } = new((float[])null, null);
 
         // Debug
         private readonly float ResultRadius = 0.5f;
@@ -64,16 +92,7 @@ namespace Body.Behavior.ContextSteering
             rigidbody = GetComponent<Rigidbody>();
             context.debug = debug;
             Active = Active;
-        }
-
-        // Activate
-        public void SetActive(bool active)
-        {
-            this.active = active;
-            if (!active && rigidbody != null)
-            {
-                rigidbody.velocity = Vector3.zero;
-            }
+            Alive = Alive;
         }
 
         // Active Contexts
@@ -93,22 +112,26 @@ namespace Body.Behavior.ContextSteering
         // Update
         private void FixedUpdate()
         {
-            if (following)
-            {
-                MapTo((destination - transform.position).XZVector(), Identity.Target);
-            }
-            Draw();
-            Vector3 vector = GetVector();
             if (active)
             {
-                if (debug)
+                if (destinationDistance > 0)
                 {
-                    if (vector.magnitude != 0 && Speed != 0) print($"{gameObject.name} is moving.");
-                    else if (vector.magnitude != Speed) print($"{gameObject.name} not moving. (vector:{vector.magnitude}, speed:{Speed})");
+                    Vector2 destinationVector = (destinationStep - transform.position).XZVector();
+                    MapTo(destinationVector, Identity.Target, destinationDistance);
                 }
-                rigidbody.velocity = Speed * Scale * Time.fixedDeltaTime * vector;
+                DrawMaps();
+                Vector3 vector = GetVector();
+                if (moveSelf)
+                {
+                    if (debug)
+                    {
+                        if (vector.magnitude != 0 && Speed != 0) print($"{gameObject.name} is moving.");
+                        else if (vector.magnitude != Speed) print($"{gameObject.name} not moving. (vector:{vector.magnitude}, speed:{Speed})");
+                    }
+                    rigidbody.velocity = Speed * Scale * Time.fixedDeltaTime * vector;
+                }
+                CurrentVector = vector.XZVector();
             }
-            currentVector = vector.XZVector();
         }
 
         // Vector
@@ -116,42 +139,78 @@ namespace Body.Behavior.ContextSteering
         public Vector3 GetVector()
         {
             Vector3 vector = new();
-            Map interests = Maps[MapType.Interest];
-            Map dangers = Maps[MapType.Danger];
-            int componentCount = 1; // interests.componentCount + dangers.componentCount;
-            for (int i = 0; i < resolution; i++)
+            Map interests = Maps.interests;
+            Map dangers = Maps.dangers;
+            int componentCount = interests.componentCount + dangers.componentCount;
+            if (componentCount > 0)
             {
-                Assert.IsFalse(float.IsNaN(interests[i]));
-                Assert.IsFalse(float.IsNaN(dangers[i]));
-                vector += (interests[i] / componentCount) * interests.sign * Baseline[i];
-                vector += (dangers[i] / componentCount) * dangers.sign * Baseline[i];
-                if (debug)
+                for (int i = 0; i < resolution; i++)
                 {
-                    if (interests[i] != 0 && dangers[i] != 0)
-                        print($"Found interest or danger. (interest:{interests[i]}, danger:{dangers[i]}");
-                    if (interests.sign == 0 || dangers.sign == 0)
-                        Debug.LogWarning("Interests and Dangers should be negative or positive, not zero.");
-                    if (Baseline[i].magnitude == 0)
-                        Debug.LogWarning("Baseline value should never be zero.");
-                    Debug.DrawRay(transform.position, vector*2, Color.white, Time.fixedDeltaTime);
+                    Assert.IsFalse(float.IsNaN(interests[i]));
+                    Assert.IsFalse(float.IsNaN(dangers[i]));
+                    vector += (interests[i]) * interests.sign * Baseline[i];
+                    vector += (dangers[i]) * dangers.sign * Baseline[i];
+                    if (debug)
+                    {
+                        if (interests[i] != 0 && dangers[i] != 0)
+                            print($"Found interest or danger. (interest:{interests[i]}, danger:{dangers[i]}");
+                        if (interests.sign == 0 || dangers.sign == 0)
+                            Debug.LogWarning("Interests and Dangers should be negative or positive, not zero.");
+                        if (Baseline[i].magnitude == 0)
+                            Debug.LogWarning("Baseline value should never be zero.");
+                        Debug.DrawRay(transform.position, vector*2, Color.white, Time.fixedDeltaTime);
+                    }
+                    interests[i] = 0f;
+                    dangers[i] = 0f;
                 }
-                interests[i] = 0f;
-                dangers[i] = 0f;
+                vector /= componentCount;
+
+                interests.ResetComponentCount();
+                dangers.ResetComponentCount();
             }
-            interests.componentCount = 0;
-            dangers.componentCount = 0;
-            return vector.normalized;
+            else
+            {
+                for (int i = 0; i < resolution; i++)
+                {
+                    Assert.IsTrue(interests[i] == 0 && dangers[i] == 0);
+                }
+                Assert.IsTrue(interests.componentCount == 0 && dangers.componentCount == 0);
+            }
+            return vector;
         }
 
-        public Identity RelativeIdentity(Identity id)
+
+        // Mappable
+
+        private readonly List<Context> mappableContexts = new();
+        public List<Context> IsIdentityMappable(float distance, Identity identity)
         {
-            bool friendOrFoe = (id == Identity.Friend) || (id == Identity.Foe);
-            Identity opponent = (id == Identity ? Identity.Friend : Identity.Foe);
-            return (!friendOrFoe) ? id : opponent;
+            mappableContexts.Clear();
+            if (Context != null && distance > 0)
+            {
+                // Map Context
+                if (Context.TryGet(identity, out List<Context> contexts))
+                {
+                    for (int i = 0; i < contexts.Count; i++)
+                    {
+                        if (IsContextMappable(distance, contexts[i]))
+                            mappableContexts.Add(contexts[i]);
+                    }
+                }
+            }
+            return mappableContexts;
         }
 
-        // Set
-        public void MapTo(Vector2 vector, Identity identity)
+        public bool IsContextMappable(float distance, Context context)
+        {
+            ContextVector cVector = context.vector;
+            return distance == Mathf.Clamp(distance, cVector.deadzone.x, cVector.deadzone.y);
+        }
+
+
+        // Map To
+
+        public void MapTo(Vector2 vector, Identity identity, float distanceOverride=-1)
         {
             if (Context != null && vector != Vector2.zero)
             {
@@ -161,42 +220,56 @@ namespace Body.Behavior.ContextSteering
                 // Map Context
                 if (Context.TryGet(identity, out List<Context> contexts))
                 {
-                    for (int i = 0; i < contexts.Count; i++)
-                    {
-                        MapContext(vector, contexts[i]);
-                    }
+                    MapContexts(vector, contexts, distanceOverride);
                 }
             }
         }
 
-        public void MapContext(Vector2 vector, Context context)
+        public void MapContexts(Vector2 vector, List<Context> contexts, float distanceOverride=-1)
+        {
+            for (int i = 0; i < contexts.Count; i++)
+            {
+                MapContext(vector, contexts[i], distanceOverride);
+            }
+        }
+
+        public void MapContext(Vector2 vector, Context context, float distanceOverride=-1)
         {
             vector /= Scale;
             ContextVector cVector = context.vector;
-            if (vector.magnitude == Mathf.Clamp(vector.magnitude, cVector.deadzone.x, cVector.deadzone.y))
+            float magnitude = distanceOverride >= 0 ? distanceOverride : vector.magnitude;
+            if (magnitude == Mathf.Clamp(magnitude, cVector.deadzone.x, cVector.deadzone.y))
             {
                 if (!activeContexts.Contains(context))
                 {
                     activeContexts.Add(context);
                 }
 
+                if (debug) print("Calculating distance.");
+
                 // Distance and Range
-                float distance = Mathf.Min(vector.magnitude - cVector.gradient.x, cVector.gradient.y);
+                float distance = Mathf.Min(magnitude - cVector.gradient.x, cVector.gradient.y);
                 float range = (cVector.gradient.y - cVector.gradient.x);
+
+                float t = 0.5f;
                 if (range != 0)
                 {
-                    float t = distance / range;
+                    t = distance / range;
                     Assert.IsFalse(float.IsNaN(t));
-                    
-                    // Weight
-                    float weight = Mathf.Lerp(cVector.weight.x, cVector.weight.y, t);
-                    Assert.IsFalse(float.IsNaN(weight));
-                    if (weight != 0f)
-                    {
-                        // Map w/ Falloff
-                        float falloff = (cVector.falloff / 360) * resolution;
-                        MapToSlots(weight, vector, falloff);
-                    }
+                }
+
+                if (debug) print("Calculating weight");
+
+                // Weight
+                float weight = Mathf.Lerp(cVector.weight.x, cVector.weight.y, t);
+                Assert.IsFalse(float.IsNaN(weight));
+                if (weight != 0f)
+                {
+                    if (debug) print("Calculating falloff");
+
+                    // Map w/ Falloff
+                    float falloff = (cVector.falloff / 360) * resolution;
+                    MapToSlots(weight, vector, falloff);
                 }
             }
         }
@@ -243,16 +316,13 @@ namespace Body.Behavior.ContextSteering
             }
 
             // Up the component count
-            map.componentCount += 1;
+            int mcc = map.componentCount;
+            map.IncrementComponentCount();
         }
 
-        private void AssertInRange(float value, float min, float max)
-        {
-            Assert.IsTrue(value >= min);
-            Assert.IsTrue(value <= max);
-        }
 
         // Obstacles
+
         public void AddObstacle(Impact impact)
         {
             if (!impact.other.TryGetComponent<CSController>(out _))
@@ -276,8 +346,18 @@ namespace Body.Behavior.ContextSteering
             }
         }
 
+
+        // Assertion
+
+        private void AssertInRange(float value, float min, float max)
+        {
+            Assert.IsTrue(value >= min);
+            Assert.IsTrue(value <= max);
+        }
+
+
         // Draw
-        public void Draw()
+        public void DrawMaps()
         {
             if (DrawRays)
             {
@@ -287,7 +367,6 @@ namespace Body.Behavior.ContextSteering
                     Map map = Maps[i];
                     if (!map.IsZero())
                     {
-                        //print("Draw: " + (map.sign < 0 ? "Danger" : "Interest"));
                         for (int j = 0; j < resolution; j++)
                         {
                             if (map[j] > 0)

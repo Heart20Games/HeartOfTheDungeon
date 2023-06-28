@@ -37,8 +37,15 @@ namespace Body.Behavior.ContextSteering
         // Map Structs
 
         [Serializable]
-        public struct Map
+        public class Map
         {
+            public Map()
+            {
+                dirs = null;
+                componentCount = -1;
+                sign = NAN;
+                valid = false;
+            }
             public Map(float[] dirs, sbyte sign)
             {
                 this.dirs = dirs ?? new float[resolution];
@@ -58,6 +65,14 @@ namespace Body.Behavior.ContextSteering
             public sbyte sign;
             public bool valid;
             public int Length => dirs.Length;
+            public void IncrementComponentCount()
+            {
+                componentCount += 1;
+            }
+            public void ResetComponentCount()
+            {
+                componentCount = 0;
+            }
             public float this[int index]
             {
                 get { return dirs[index]; }

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Body;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class Game : BaseMonoBehaviour
 {
@@ -40,6 +41,14 @@ public class Game : BaseMonoBehaviour
     // Cheats / Shortcuts
     public bool restartable = true;
 
+    // Events
+    public UnityEvent onPlayerDied;
+
+    private void Awake()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
     private void Start()
     {
         input = GetComponent<PlayerInput>();
@@ -57,9 +66,13 @@ public class Game : BaseMonoBehaviour
                 break;
             }
         }
-        if (!hasPlayer && playerCharacter != null)
+        if (playerCharacter != null)
         {
-            playableCharacters.Insert(0, playerCharacter);
+            hud.MainCharacterSelect(playerCharacter);
+            if (!hasPlayer)
+            {
+                playableCharacters.Insert(0, playerCharacter);
+            }
         }
         SetCharacterIdx(0);
         if (curCharacter == null)
@@ -126,8 +139,9 @@ public class Game : BaseMonoBehaviour
         {
             idx = idx < 0 ? playableCharacters.Count + idx : idx;
             curCharIdx = idx % (playableCharacters.Count);
-            SetCharacter(playableCharacters[curCharIdx]);
-            hud.CharacterSelect(curCharIdx);
+            Character character = playableCharacters[curCharIdx];
+            SetCharacter(character);
+            hud.CharacterSelect(character);//curCharIdx);
         }
     }
 
@@ -152,6 +166,14 @@ public class Game : BaseMonoBehaviour
         return selector != null && Mode == GameMode.Selection;
     }
 
+    public void SwitchToCompanion(InputValue inputValue, int idx)
+    {
+        if (curCharIdx == idx)
+            SetCharacterInput(inputValue, 0);
+        else
+            SetCharacterInput(inputValue, idx);
+    }
+
 
     // Cheats / Shortcuts
 
@@ -163,6 +185,19 @@ public class Game : BaseMonoBehaviour
         }
     }
 
+    // Events
+
+    public void OnCharacterDied(Character character)
+    {
+        if (character == playerCharacter)
+        {
+            onPlayerDied.Invoke();
+        }
+        else if (character == curCharacter)
+        {
+            SetCharacter(playerCharacter);
+        }
+    }
 
     // Actions
 
@@ -184,10 +219,20 @@ public class Game : BaseMonoBehaviour
         }
     }
 
+    //public void OnLook(InputValue inputValue)
+    //{
+    //    Vector2 inputVector = inputValue.Get<Vector2>();
+    //}
+
     public void OnAim(InputValue inputValue)
     {
         Vector2 inputVector = inputValue.Get<Vector2>();
         curCharacter.AimCharacter(inputVector);
+    }
+
+    public void OnToggleAiming(InputValue inputValue)
+    {
+        curCharacter.SetAimModeActive(inputValue.isPressed);
     }
 
     public void SetCharacterInput(InputValue inputValue, int idx)
@@ -200,12 +245,12 @@ public class Game : BaseMonoBehaviour
 
     public void OnSwitchCharacterLeft(InputValue inputValue)
     {
-        SetCharacterInput(inputValue, 2);
+        SwitchToCompanion(inputValue, 2);
     }
 
     public void OnSwitchCharacterRight(InputValue inputValue)
     {
-        SetCharacterInput(inputValue, 1);
+        SwitchToCompanion(inputValue, 1);
     }
 
     public void OnSwitchCharacterCenter(InputValue inputValue)

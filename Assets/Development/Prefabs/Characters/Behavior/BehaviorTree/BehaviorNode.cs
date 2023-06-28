@@ -7,7 +7,7 @@ namespace Body.Behavior.Tree
     {
         public enum Status { SUCCESS, RUNNING, FAILURE };
         public Status status;
-        public List<BehaviorNode> children = new List<BehaviorNode>();
+        public List<BehaviorNode> children = new();
         public int currentChild = 0;
         public string name;
 

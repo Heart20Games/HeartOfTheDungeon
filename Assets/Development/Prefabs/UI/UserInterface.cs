@@ -11,8 +11,14 @@ public class UserInterface : BaseMonoBehaviour
 {
     public Body.Character controlledCharacter;
     public DialogueRunner dialogueRunner;
+    public Canvas dialogueCanvas;
 
     public UnityEvent onContinue;
+
+    public void Start()
+    {
+        dialogueCanvas.gameObject.SetActive(false);
+    }
 
     public void SetCharacter(Body.Character character)
     {

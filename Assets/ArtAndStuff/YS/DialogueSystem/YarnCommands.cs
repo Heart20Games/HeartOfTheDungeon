@@ -17,13 +17,15 @@ public class YarnCommands : BaseMonoBehaviour
     // Variable Initialization
     private void Awake()
     {
-        tags.Initialize();
+        if (tags != null)
+            tags.Initialize();
+        if (rooms != null)
+            rooms.Initialize();
     }
 
     private void Start()
     {
-        storage = GetComponent<InMemoryVariableStorage>();
-        rooms.Initialize();
+        storage = GetComponent<InMemoryVariableStorage>();;
         Dictionary<string, float> tempFloats = new();
         Dictionary<string, bool> tempBools = new();
         storage.SetAllVariables(tempFloats, rooms.bank, tempBools);

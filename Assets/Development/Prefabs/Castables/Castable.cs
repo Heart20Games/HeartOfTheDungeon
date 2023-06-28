@@ -1,11 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using static Unity.VisualScripting.Member;
 using Body;
-using UnityEngine.WSA;
+using static Body.Behavior.ContextSteering.CSIdentity;
 
 public class Castable : BaseMonoBehaviour, ICastable
 {
@@ -16,9 +13,21 @@ public class Castable : BaseMonoBehaviour, ICastable
     public UnityEvent onUnCast;
     public UnityEvent onCasted;
     public bool casting = false;
+    public UnityEvent<Identity> onSetIdentity;
 
     public List<Status> castStatuses;
     public List<Status> hitStatuses;
+
+    private Identity identity = Identity.Neutral;
+    public Identity Identity
+    {
+        get => identity;
+        set
+        {
+            identity = value;
+            onSetIdentity.Invoke(identity);
+        }
+    }
 
     public float rOffset = 0;
     public bool followBody = true;
@@ -33,6 +42,7 @@ public class Castable : BaseMonoBehaviour, ICastable
     public virtual void Initialize(Character source)
     {
         this.source = source;
+        Identity = source.Identity;
         if (damager != null) { damager.Ignore(source.body); }
         ReportOriginToPositionables();
         if (source.body != null)

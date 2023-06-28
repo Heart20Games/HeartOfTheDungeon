@@ -4,12 +4,20 @@ using UnityEngine;
 
 namespace Body.Behavior.ContextSteering
 {
+    using static Body.Behavior.ContextSteering.CSIdentity;
     using static CSMapping;
 
     [CreateAssetMenu(fileName = "CSIdentity", menuName = "Context Steering/Identity", order = 1)]
     public class CSIdentity : ScriptableObject
     {
         public enum Identity { Neutral, Friend, Foe, Obstacle, Target }
+
+        static public Identity RelativeIdentity(Identity idA, Identity idB)
+        {
+            bool friendOrFoe = (idA == Identity.Friend) || (idA == Identity.Foe);
+            Identity opponent = (idA == idB ? Identity.Friend : Identity.Foe);
+            return (!friendOrFoe) ? idA : opponent;
+        }
 
         //public IdentityMapPair[] pairs = new IdentityMapPair[] {
         //    new(Identity.Neutral, MapType.None, 0f),

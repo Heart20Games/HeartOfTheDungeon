@@ -20,7 +20,7 @@ public class FullContext
     {
         if (!initialized)
         {
-            baseContext ??= preset.GetContext(Body.Behavior.Brain.Action.Chase, debug).ContextMap;
+            baseContext ??= preset.GetContext().ContextMap; //Body.Behavior.Brain.Action.Chase, debug).ContextMap;
             initialized = true;
         }
         return this;
