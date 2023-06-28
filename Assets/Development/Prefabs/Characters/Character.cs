@@ -35,14 +35,9 @@ namespace Body
 
         // Castables
         public Loadout loadout;
-        public ICastable primaryCastable;
-        public ICastable secondaryCastable;
         public Castable primary;
         public Castable secondary;
         public Vector3 weaponOffset = Vector3.up;
-        private int abilityIdx = -1;
-        private int weaponIdx = -1;
-        public enum CastSlot { PRIMARY, SECONDARY };
 
         // Identity
         public Identity identity = Identity.Neutral;
@@ -238,50 +233,31 @@ namespace Body
 
         // Castables
 
+        private readonly Castable[] castables = new Castable[5];
         public void InitializeCastables()
         {
             if (loadout != null)
             {
-                if (secondary == null)
+                for (int i = 0; i < Mathf.Min(loadout.abilities.Count, 2); i++)
                 {
-                    ChangeCastable(CastSlot.SECONDARY);
+                    SetCastable(i, loadout.abilities[i]);
                 }
-                if (primary == null)
+                for (int i = 0; i < Mathf.Min(loadout.weapons.Count, 2); i++)
                 {
-                    ChangeCastable(CastSlot.PRIMARY);
+                    SetCastable(2 + i, loadout.weapons[i]);
                 }
+                SetCastable(4, loadout.mobility);
             }
         }
 
-        public void ChangeCastable(CastSlot slot)
+        public void SetCastable(int idx, CastableItem item)
         {
-            ICastable castable = slot == CastSlot.PRIMARY ? primary as ICastable : secondary as ICastable;
-            if (castable != null)
-            {
-                castable.UnEquip();
-            }
+            castables[idx]?.UnEquip();
 
             if (loadout != null)
             {
-                switch (slot)
-                {
-                    case CastSlot.PRIMARY:
-                        if (loadout.weapons.Count > 0)
-                        {
-                            weaponIdx = (weaponIdx + 1) % loadout.weapons.Count;
-                            primary = Instantiate(loadout.weapons[weaponIdx].prefab, transform);
-                            primary.Initialize(this);
-                        }
-                        break;
-                    case CastSlot.SECONDARY:
-                        if (loadout.abilities.Count > 0)
-                        {
-                            abilityIdx = (abilityIdx + 1) % loadout.abilities.Count;
-                            secondary = Instantiate(loadout.abilities[abilityIdx].prefab, transform);
-                            secondary.Initialize(this);
-                        }
-                        break;
-                }
+                castables[idx] = Instantiate(item.prefab, transform);
+                castables[idx].Initialize(this);
             }
         }
 
@@ -315,10 +291,7 @@ namespace Body
         // Actions
         public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); }
         public void AimCharacter(Vector2 input) { if (aimActive) movement.SetAimVector(input); }
-        public void ChangeAbility() { ChangeCastable(CastSlot.SECONDARY); }
-        public void ChangeWeapon() { ChangeCastable(CastSlot.PRIMARY); }
-        public void ActivateWeapon() { ActivateCastable(primary); }
-        public void ActivateAbility() { ActivateCastable(secondary); }
+        public void ActivateCastable(int idx) { ActivateCastable(castables[idx]); }
         public void Interact() { talker.Talk(); }
         public void AimMode(bool active) { SetAimModeActive(active); }
 

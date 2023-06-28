@@ -243,7 +243,7 @@ namespace Body.Behavior
             if (!useAgent)
             {
                 character.AimCharacter(-controller.CurrentVector);
-                character.ActivateWeapon();
+                character.ActivateCastable((int)Game.CastableIdx.Weapon1);
             }
 
             return BehaviorNode.Status.SUCCESS;
