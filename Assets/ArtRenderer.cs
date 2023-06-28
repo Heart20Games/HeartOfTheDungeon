@@ -10,10 +10,12 @@ public class ArtRenderer : MonoBehaviour
 
     [Header("Animation")]
     public Animator animator;
-    public List<string> animationParameters = new();
+    private readonly List<string> animationParameters = new() { "run", "hit", "attack", "dead" };
     private readonly Dictionary<string, bool> parameterExists = new();
     public bool Running { get => GetAnimBool("run"); set => SetAnimBool("run", value); }
-    public void Attack() { }
+    public void Attack() { AnimTrigger("attack"); }
+    public void Hit() { AnimTrigger("hit"); }
+    public bool Dead { get => GetAnimBool("dead"); set => SetAnimBool("dead", value); }
 
     [Header("Camera Shader Layers")]
     public bool useCameraShaderLayers;
