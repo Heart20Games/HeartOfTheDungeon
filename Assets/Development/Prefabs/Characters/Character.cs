@@ -21,6 +21,7 @@ namespace Body
         public Transform body;
         public Transform pivot;
         public ArtRenderer artRenderer;
+        public Interactor interactor;
         public Transform weaponHand;
         public Pivot moveReticle;
         public Health healthBar;
@@ -153,14 +154,17 @@ namespace Body
             //SetComponentActive(healthBar, !_controllable && !hideHealth);
             SetComponentActive(moveReticle, _controllable);
             SetComponentActive(virtualCamera, _controllable);
+            SetBehaviourEnabled(interactor, _controllable);
+        }
+
+        public void SetBehaviourEnabled(Behaviour behaviour, bool _enabled)
+        {
+            if (behaviour != null) behaviour.enabled = _enabled;
         }
 
         public void SetComponentActive(Component component, bool _active)
         {
-            if (component != null)
-            {
-                component.gameObject.SetActive(_active);
-            }
+            if (component != null) component.gameObject.SetActive(_active);
         }
 
 

@@ -6,9 +6,16 @@ using UnityEngine.InputSystem;
 using Body;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using System;
 
 public class Game : BaseMonoBehaviour
 {
+    [Serializable]
+    public struct GameSettings
+    {
+        public bool useD20Menu;
+    }
+
     // Properties
     public Character playerCharacter;
     public List<Character> playableCharacters;
@@ -16,6 +23,7 @@ public class Game : BaseMonoBehaviour
     public string characterInputMap = "GroundMovement";
     public string selectorInputMap = "Selector";
     public string dialogueInputMap = "Dialogue";
+    public GameSettings settings = new();
     [HideInInspector] public UserInterface userInterface;
     [HideInInspector] public HUD hud;
     [HideInInspector] public List<ITimeScalable> timeScalables;
@@ -106,7 +114,7 @@ public class Game : BaseMonoBehaviour
             case GameMode.Selection:
                 SetControllable(selector, false); break;
             case GameMode.Dialogue:
-                break;
+                userInterface.SetDialogueActive(false); break;
         }
         switch (mode)
         {
@@ -123,6 +131,7 @@ public class Game : BaseMonoBehaviour
                 TimeScale = 0.1f;
                 SetControllable(selector, true); break;
             case GameMode.Dialogue:
+                userInterface.SetDialogueActive(true);
                 input.SwitchCurrentActionMap(dialogueInputMap); break;
         }
         this.mode = mode;
@@ -335,10 +344,20 @@ public class Game : BaseMonoBehaviour
 
     public void OnToggleSkillWheel(InputValue inputValue)
     {
-        if (inputValue.isPressed)
+        if (settings.useD20Menu && inputValue.isPressed)
         {
             Mode = mode == GameMode.Character ? GameMode.Selection : GameMode.Character;
             hud.AbilityToggle();
+        }
+    }
+
+    // Dialogue
+
+    public void OnContinue(InputValue inputValue)
+    {
+        if (inputValue.isPressed)
+        {
+            userInterface.Continue();
         }
     }
 }

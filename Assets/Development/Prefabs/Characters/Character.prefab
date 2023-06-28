@@ -76,6 +76,7 @@ MonoBehaviour:
   body: {fileID: 5106106832475441759}
   pivot: {fileID: 4813447189290614994}
   artRenderer: {fileID: 4122626737896113915}
+  interactor: {fileID: 5701398888138556133}
   weaponHand: {fileID: 0}
   moveReticle: {fileID: 8706531923607348711}
   healthBar: {fileID: 6548638977744553781}
@@ -231,8 +232,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5106106832475441759}
   - component: {fileID: 852013129629387909}
-  - component: {fileID: 1478009292357517548}
   - component: {fileID: 4630028532720471171}
+  - component: {fileID: 1478009292357517548}
+  - component: {fileID: 5701398888138556133}
   - component: {fileID: 442215480502625366}
   - component: {fileID: 1823199978716685285}
   - component: {fileID: 608404790986451179}
@@ -305,6 +307,22 @@ MonoBehaviour:
         m_CallState: 2
   moveSelf: 0
   debug: 0
+--- !u!114 &4630028532720471171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4520041833351946365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1db18116c3d903b44829540182e7f5bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  hasPath: 0
+  pathLength: 0
+  debug: 0
 --- !u!114 &1478009292357517548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,23 +350,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  canInteract: 0
---- !u!114 &4630028532720471171
+  interactors: []
+--- !u!114 &5701398888138556133
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4520041833351946365}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1db18116c3d903b44829540182e7f5bd, type: 3}
+  m_Script: {fileID: 11500000, guid: 9fe7c53324dbf8843a2021503354413f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  hasPath: 0
-  pathLength: 0
-  debug: 0
+  onSubscribe:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &442215480502625366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,6 +380,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   desiredTags: []
   selectableTypes: 
+  desireInteractors: 0
   onCollision:
     enter:
       m_PersistentCalls:
@@ -416,9 +434,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  desiredTags:
-  - Character
+  desiredTags: []
   selectableTypes: 
+  desireInteractors: 1
   onCollision:
     enter:
       m_PersistentCalls:
@@ -432,11 +450,11 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1478009292357517548}
           m_TargetAssemblyTypeName: Interactable, Assembly-CSharp
-          m_MethodName: SetCanInteract
-          m_Mode: 6
+          m_MethodName: AddInteractor
+          m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_ObjectArgument: {fileID: 1823199978716685285}
+            m_ObjectArgumentAssemblyTypeName: Impact, Assembly-CSharp
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -447,11 +465,11 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1478009292357517548}
           m_TargetAssemblyTypeName: Interactable, Assembly-CSharp
-          m_MethodName: SetCanInteract
-          m_Mode: 6
+          m_MethodName: RemoveInteractor
+          m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_ObjectArgument: {fileID: 1823199978716685285}
+            m_ObjectArgumentAssemblyTypeName: Impact, Assembly-CSharp
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
