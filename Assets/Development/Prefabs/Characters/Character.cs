@@ -35,8 +35,6 @@ namespace Body
 
         // Castables
         public Loadout loadout;
-        public Castable primary;
-        public Castable secondary;
         public Vector3 weaponOffset = Vector3.up;
 
         // Identity
