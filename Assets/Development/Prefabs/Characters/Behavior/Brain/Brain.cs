@@ -234,7 +234,7 @@ namespace Body.Behavior
                 character.AimCharacter(-controller.CurrentVector, true);
                 //character.ActivateCastable((int)Game.CastableIdx.Weapon1);
 
-                int closest = -1;
+                int closest = int.MaxValue;
                 int closestIdx = -1;
                 for (int i = 0; i < character.castableItems.Length; i++)
                 {
@@ -245,7 +245,8 @@ namespace Body.Behavior
                             closestIdx = i;
                     }
                 }
-                character.ActivateCastable(closestIdx);
+                if (closestIdx >= 0)
+                    character.ActivateCastable(closestIdx);
             }
 
             return BehaviorNode.Status.SUCCESS;
