@@ -85,6 +85,7 @@ namespace Body
             movement = GetComponent<Movement>();
             talker = GetComponent<Talker>();
             attacker = GetComponent<Attack>();
+            InitializeCastables();
             MaxHealth = MaxHealth;
             CurrentHealth = CurrentHealth;
             SetControllable(false);
@@ -92,7 +93,6 @@ namespace Body
 
         private void Start()
         {
-            InitializeCastables();
             SetComponentActive(healthBar, false);
             healthBar.SetHealthBase(CurrentHealth, MaxHealth);
             Identity = Identity;
@@ -231,7 +231,8 @@ namespace Body
 
         // Castables
 
-        private readonly Castable[] castables = new Castable[5];
+        public readonly CastableItem[] castableItems = new CastableItem[5];
+        public readonly Castable[] castables = new Castable[5];
         public void InitializeCastables()
         {
             if (loadout != null)
@@ -246,14 +247,17 @@ namespace Body
                 }
                 SetCastable(4, loadout.mobility);
             }
+            if (brain != null)
+                brain.RegisterCastables(castableItems);
         }
 
         public void SetCastable(int idx, CastableItem item)
         {
             castables[idx]?.UnEquip();
 
-            if (loadout != null)
+            if (loadout != null && item != null)
             {
+                castableItems[idx] = item;
                 castables[idx] = Instantiate(item.prefab, transform);
                 castables[idx].Initialize(this);
             }
@@ -288,7 +292,7 @@ namespace Body
 
         // Actions
         public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); }
-        public void AimCharacter(Vector2 input) { if (aimActive) movement.SetAimVector(input); }
+        public void AimCharacter(Vector2 input, bool aim=false) { if (aimActive || aim) movement.SetAimVector(input); }
         public void ActivateCastable(int idx) { ActivateCastable(castables[idx]); }
         public void Interact() { talker.Talk(); }
         public void AimMode(bool active) { SetAimModeActive(active); }

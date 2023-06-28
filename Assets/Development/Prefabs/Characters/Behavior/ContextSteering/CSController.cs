@@ -101,12 +101,21 @@ namespace Body.Behavior.ContextSteering
             for(int i = 0; i < activeContexts.Count; i++)
             {
                 Context context = activeContexts[i];
+                if (debug && (range == Range.InAttackRange && identity == Identity.Foe) && (context.identity == identity || context.range == range))
+                {
+                    print($"Context ({identity}, {range}) -> ({context.identity}, {context.range})");
+                }
                 if (context.identity == identity && context.range == range)
                 {
                     return true;
                 }
             }
             return false;
+        }
+
+        public bool HasActiveContext(Context context)
+        {
+            return activeContexts.Contains(context);
         }
 
         // Update
@@ -240,14 +249,14 @@ namespace Body.Behavior.ContextSteering
             float magnitude = distanceOverride >= 0 ? distanceOverride : vector.magnitude;
             if (magnitude == Mathf.Clamp(magnitude, cVector.deadzone.x, cVector.deadzone.y))
             {
+                if (debug && context.range == Range.InAttackRange) print("Attack Range!");
                 if (!activeContexts.Contains(context))
                 {
                     activeContexts.Add(context);
                 }
 
-                if (debug) print("Calculating distance.");
-
                 // Distance and Range
+                if (debug) print("Calculating distance.");
                 float distance = Mathf.Min(magnitude - cVector.gradient.x, cVector.gradient.y);
                 float range = (cVector.gradient.y - cVector.gradient.x);
 

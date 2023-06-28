@@ -93,11 +93,6 @@ namespace Body.Behavior
             controller = character.body.GetComponent<CSController>();
             pathFinder = character.body.GetComponent<BalancedPathfinder>();
             agent.baseOffset = baseOffset;
-            if (character != null && character.loadout != null)
-            {
-                RegisterCastables(character.loadout.weapons);
-                RegisterCastables(character.loadout.abilities);
-            }
             controller.Context.castableContext = castableMap;
             if (target != null)
             {
@@ -139,12 +134,12 @@ namespace Body.Behavior
         }
 
         // Castable Contexts
-        public void RegisterCastables(List<CastableItem> castables)
+        public void RegisterCastables(CastableItem[] items)
         {
-            for (int i = 0; i < castables.Count; i++)
+            for (int i = 0; i < items.Length; i++)
             {
-                CastableItem item = castables[i];
-                RegisterCastable(item);
+                if (items[i] != null)
+                    RegisterCastable(items[i]);
             }
         }
 
@@ -169,13 +164,6 @@ namespace Body.Behavior
         }
 
 
-        // Contexts
-        //public void SetBaseContext(Action action)
-        //{
-        //    controller.Context.baseContext = controller.Preset.GetContext(action);
-        //}
-
-
         // Checks
 
         public bool HasTarget()
@@ -186,15 +174,15 @@ namespace Body.Behavior
 
         public bool HasFoeInRange(Range range)
         {
-            return controller.HasActiveContext(Identity.Foe, range);
+            bool result = controller.HasActiveContext(Identity.Foe, range);
+            if (debug) print($"Has Foe In Range: {range}");
+            return result;
         }
 
         // Actions
 
         public BehaviorNode.Status Idle()
         {
-            //SetBaseContext(Action.Idle);
-
             TargetNavigation();
 
             //if (debug) Debug.Log("Idling...");
@@ -242,8 +230,22 @@ namespace Body.Behavior
 
             if (!useAgent)
             {
-                character.AimCharacter(-controller.CurrentVector);
-                character.ActivateCastable((int)Game.CastableIdx.Weapon1);
+                if (debug) print("Trying to attack");
+                character.AimCharacter(-controller.CurrentVector, true);
+                //character.ActivateCastable((int)Game.CastableIdx.Weapon1);
+
+                int closest = -1;
+                int closestIdx = -1;
+                for (int i = 0; i < character.castableItems.Length; i++)
+                {
+                    CastableItem item = character.castableItems[i];
+                    if (item != null && controller.HasActiveContext(item.context))
+                    {
+                        if (item.context.vector.deadzone.y < closest)
+                            closestIdx = i;
+                    }
+                }
+                character.ActivateCastable(closestIdx);
             }
 
             return BehaviorNode.Status.SUCCESS;

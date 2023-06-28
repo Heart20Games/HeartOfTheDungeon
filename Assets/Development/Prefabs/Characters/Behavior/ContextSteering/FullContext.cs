@@ -34,6 +34,7 @@ public class FullContext
             currentContexts.Clear();
             if (castableContext != null && castableContext.TryGetValue(identity, out List<Context> cContext))
             {
+                if (debug && cContext.Count > 0) Debug.Log($"{cContext.Count} Castable Contexts");
                 currentContexts.AddRange(cContext);
             }
             if (baseContext != null && baseContext.TryGetValue(identity, out List<Context> bContext))
