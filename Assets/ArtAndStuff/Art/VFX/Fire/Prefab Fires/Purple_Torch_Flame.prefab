@@ -41,7 +41,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2132700146918115104}
   serializedVersion: 8
-  lengthInSec: 1
+  lengthInSec: 10
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -116,7 +116,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 10
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -870,7 +870,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -973,8 +973,66 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    m_BurstCount: 0
-    m_Bursts: []
+    m_BurstCount: 1
+    m_Bursts:
+    - serializedVersion: 2
+      time: 0
+      countCurve:
+        serializedVersion: 2
+        minMaxState: 0
+        scalar: 1
+        minScalar: 30
+        maxCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        minCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+      cycleCount: 1
+      repeatInterval: 0.01
+      probability: 1
   SizeModule:
     enabled: 0
     curve:
@@ -1325,12 +1383,12 @@ ParticleSystem:
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 10176
-        atime2: 19200
-        atime3: 24000
-        atime4: 33215
-        atime5: 46847
-        atime6: 59711
+        atime1: 8640
+        atime2: 17472
+        atime3: 27072
+        atime4: 34751
+        atime5: 44543
+        atime6: 55871
         atime7: 65535
         m_Mode: 0
         m_ColorSpace: 0
@@ -3829,7 +3887,7 @@ ParticleSystem:
     rangeCurve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 10
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -3882,7 +3940,7 @@ ParticleSystem:
     intensityCurve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 5
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -4853,13 +4911,14 @@ Transform:
   m_GameObject: {fileID: 3010099292582892557}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -20.683542, y: 0.663, z: -4.866743}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 2803810119006352113}
   - {fileID: 63125693964164070}
   - {fileID: 5675310610005600129}
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8556237941422368727
 GameObject:
@@ -4921,7 +4980,7 @@ VisualEffect:
       - m_Value: 0.7
         m_Name: FlameSize
         m_Overridden: 1
-      - m_Value: 0.3
+      - m_Value: 0.5
         m_Name: Smoke_Size
         m_Overridden: 1
       - m_Value: 8
@@ -4949,8 +5008,11 @@ VisualEffect:
         m_Overridden: 1
     m_Vector3f:
       m_Array:
-      - m_Value: {x: 0.7, y: 1.3, z: 1}
+      - m_Value: {x: 0.6, y: 1.5, z: 1}
         m_Name: FlameScale
+        m_Overridden: 1
+      - m_Value: {x: 0.4, y: 0.2, z: 0.2}
+        m_Name: SparksScale
         m_Overridden: 1
     m_Vector4f:
       m_Array:
@@ -5011,3 +5073,81 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1001 &2803810119006218353
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4430551226069652450}
+    m_Modifications:
+    - target: {fileID: 100000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
+      propertyPath: m_Name
+      value: SM_Prop_BottleTorch_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
+      propertyPath: m_RootOrder
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.4285713
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.4285713
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.4285713
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.00053950713
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.3085713
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.00094379694
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
+--- !u!4 &2803810119006352113 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
+  m_PrefabInstance: {fileID: 2803810119006218353}
+  m_PrefabAsset: {fileID: 0}
