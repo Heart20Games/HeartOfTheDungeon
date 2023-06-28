@@ -20,7 +20,7 @@ namespace Body
         // Character Parts
         public Transform body;
         public Transform pivot;
-        public Animator animator;
+        public ArtRenderer artRenderer;
         public Transform weaponHand;
         public Pivot moveReticle;
         public Health healthBar;
