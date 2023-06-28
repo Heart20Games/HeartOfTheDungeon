@@ -57,6 +57,9 @@ public class Game : BaseMonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
+
+    // Initialization
+
     private void Start()
     {
         input = GetComponent<PlayerInput>();
@@ -66,14 +69,6 @@ public class Game : BaseMonoBehaviour
     public void InitializePlayableCharacters()
     {
         bool hasPlayer = false;
-        foreach (Character character in playableCharacters)
-        {
-            if (character.GetComponent<PlayerCore>() != null)
-            {
-                hasPlayer = true;
-                break;
-            }
-        }
         if (playerCharacter != null)
         {
             hud.MainCharacterSelect(playerCharacter);
@@ -89,6 +84,10 @@ public class Game : BaseMonoBehaviour
         }
     }
 
+
+    // Setters
+
+    // Time Scale
     public void SetTimeScale(float timeScale)
     {
         this.timeScale = timeScale;
@@ -105,6 +104,7 @@ public class Game : BaseMonoBehaviour
         }
     }
 
+    // Mode
     public void SetMode(GameMode mode)
     {
         switch (this.mode)
@@ -142,6 +142,8 @@ public class Game : BaseMonoBehaviour
         controllable?.SetControllable(shouldControl);
     }
 
+    // Set Characters
+
     public void SetCharacterIdx(int idx)
     {
         if (playableCharacters.Count > 0)
@@ -164,17 +166,7 @@ public class Game : BaseMonoBehaviour
             SetMode(GameMode.Character);
         }
     }
-
-    public bool CanUseCharacter()
-    {
-        return curCharacter != null && Mode == GameMode.Character;
-    }
-
-    public bool CanUseSelector()
-    {
-        return selector != null && Mode == GameMode.Selection;
-    }
-
+    
     public void SwitchToCompanion(InputValue inputValue, int idx)
     {
         if (curCharIdx == idx)
@@ -184,15 +176,11 @@ public class Game : BaseMonoBehaviour
     }
 
 
-    // Cheats / Shortcuts
+    // Checks
+    public bool CanUseCharacter() { return curCharacter != null && Mode == GameMode.Character; }
+    public bool CanUseSelector() { return selector != null && Mode == GameMode.Selection; }
 
-    public void OnRestartLevel(InputValue inputValue)
-    {
-        if (inputValue.isPressed && restartable)
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
-    }
+
 
     // Events
 
@@ -208,7 +196,20 @@ public class Game : BaseMonoBehaviour
         }
     }
 
+
     // Actions
+
+    // Cheats / Shortcuts
+
+    public void OnRestartLevel(InputValue inputValue)
+    {
+        if (inputValue.isPressed && restartable)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+    }
+
+    // Movement
 
     public void OnMove(InputValue inputValue)
     {
@@ -228,21 +229,26 @@ public class Game : BaseMonoBehaviour
         }
     }
 
-    //public void OnLook(InputValue inputValue)
-    //{
-    //    Vector2 inputVector = inputValue.Get<Vector2>();
-    //}
+    // Aiming
 
-    public void OnAim(InputValue inputValue)
-    {
-        Vector2 inputVector = inputValue.Get<Vector2>();
-        curCharacter.AimCharacter(inputVector);
-    }
+    public void OnAim(InputValue inputValue) { curCharacter.AimCharacter(inputValue.Get<Vector2>()); }
+    public void OnToggleAiming(InputValue inputValue) { curCharacter.SetAimModeActive(inputValue.isPressed); }
 
-    public void OnToggleAiming(InputValue inputValue)
+    // Castables
+
+    public enum CastableIdx { Ability1, Ability2, Weapon1, Weapon2, Agility }
+    public void UseCastable(InputValue inputValue, CastableIdx idx)
     {
-        curCharacter.SetAimModeActive(inputValue.isPressed);
+        if (inputValue.isPressed)
+            curCharacter.ActivateCastable((int)idx);
     }
+    public void OnUseAgility(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Agility); }
+    public void OnUseWeapon1(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Weapon1); }
+    public void OnUseWeapon2(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Weapon2); }
+    public void OnUseAbility1(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Ability1); }
+    public void OnUseAbility2(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Ability2); }
+
+    // Character Switching
 
     public void SetCharacterInput(InputValue inputValue, int idx)
     {
@@ -251,63 +257,13 @@ public class Game : BaseMonoBehaviour
             SetCharacterIdx(idx);
         }
     }
+    public void OnSwitchCharacterLeft(InputValue inputValue) { SwitchToCompanion(inputValue, 2); }
+    public void OnSwitchCharacterRight(InputValue inputValue) { SwitchToCompanion(inputValue, 1); }
+    public void OnSwitchCharacterCenter(InputValue inputValue) { SetCharacterInput(inputValue, 0); }
+    public void OnCycleCharacterLeft(InputValue inputValue) { SetCharacterInput(inputValue, curCharIdx - 1); }
+    public void OnCycleCharacterRight(InputValue inputValue) { SetCharacterInput(inputValue, curCharIdx + 1); }
 
-    public void OnSwitchCharacterLeft(InputValue inputValue)
-    {
-        SwitchToCompanion(inputValue, 2);
-    }
-
-    public void OnSwitchCharacterRight(InputValue inputValue)
-    {
-        SwitchToCompanion(inputValue, 1);
-    }
-
-    public void OnSwitchCharacterCenter(InputValue inputValue)
-    {
-        SetCharacterInput(inputValue, 0);
-    }
-
-    public void OnCycleCharacterLeft(InputValue inputValue)
-    {
-        SetCharacterInput(inputValue, curCharIdx - 1);
-    }
-
-    public void OnCycleCharacterRight(InputValue inputValue)
-    {
-        SetCharacterInput(inputValue, curCharIdx + 1);
-    }
-
-    public void OnSwitchSecondary(InputValue inputValue)
-    {
-        if (inputValue.isPressed && CanUseCharacter())
-        {
-            curCharacter.ChangeAbility();
-        }
-    }
-
-    public void OnSwitchPrimary(InputValue inputValue)
-    {
-        if (inputValue.isPressed && CanUseCharacter())
-        {
-            curCharacter.ChangeWeapon();
-        }
-    }
-
-    public void OnCastPrimary(InputValue inputValue)
-    {
-        if (inputValue.isPressed && CanUseCharacter())
-        {
-            curCharacter.ActivateWeapon();
-        }
-    }
-
-    public void OnCastSecondary(InputValue inputValue)
-    {
-        if (inputValue.isPressed && CanUseCharacter())
-        {
-            curCharacter.ActivateAbility();
-        }
-    }
+    // Interaction
 
     public void OnInteract(InputValue inputValue)
     {
@@ -319,6 +275,8 @@ public class Game : BaseMonoBehaviour
             }
         }
     }
+
+    // Selector
 
     public void OnSelect(InputValue inputValue)
     {
@@ -341,6 +299,8 @@ public class Game : BaseMonoBehaviour
             }
         }
     }
+
+    // Skill Wheel
 
     public void OnToggleSkillWheel(InputValue inputValue)
     {

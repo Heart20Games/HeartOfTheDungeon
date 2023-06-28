@@ -24,724 +24,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     ""name"": ""PlayerControls"",
     ""maps"": [
         {
-            ""name"": ""GroundMovement"",
-            ""id"": ""68936ce1-7dac-4e3a-afbc-8dc23e83038f"",
-            ""actions"": [
-                {
-                    ""name"": ""Move"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""5afb2a4c-38f9-42a6-95bb-f9788364c85c"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""DieTest"",
-                    ""type"": ""Button"",
-                    ""id"": ""434f2936-6ea5-4ebc-aed2-76351019f43a"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Interact"",
-                    ""type"": ""Button"",
-                    ""id"": ""f20b9006-d9ce-40ef-bf16-fde5f04afb33"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Cast Primary"",
-                    ""type"": ""Button"",
-                    ""id"": ""ab2ff5e6-76e1-4188-8b31-e550d4e66d1d"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Cast Secondary"",
-                    ""type"": ""Button"",
-                    ""id"": ""aa7655b0-1dc7-4e21-9541-def6bfd63dd6"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Switch Primary"",
-                    ""type"": ""Button"",
-                    ""id"": ""9c8d0cd9-3328-4fd6-b860-3330f80a7959"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Switch Secondary"",
-                    ""type"": ""Button"",
-                    ""id"": ""0ca15d03-d446-4370-ae98-256ab25941ba"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Toggle Skill Wheel"",
-                    ""type"": ""Button"",
-                    ""id"": ""216f075d-ea50-4bc4-8bc2-de338f8b2575"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Switch Character Left"",
-                    ""type"": ""Button"",
-                    ""id"": ""9b4d422a-4563-4e56-9c2a-2675c39d78b6"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Switch Character Right"",
-                    ""type"": ""Button"",
-                    ""id"": ""c2b927cd-76e6-4070-878c-27e5f2a3d228"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Switch Character Center"",
-                    ""type"": ""Button"",
-                    ""id"": ""d6550c58-45d5-4fde-b826-b51adc9d2fe0"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ToggleFollowers"",
-                    ""type"": ""Button"",
-                    ""id"": ""b078f247-3f63-4992-bcfe-0202b328d762"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Test"",
-                    ""type"": ""Button"",
-                    ""id"": ""b7a22a2d-9eb5-4675-a18a-bd28587fe8fd"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Aim"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""bde91a51-f0b0-4f69-93df-953a75e9bcf7"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Look"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""f8d44166-fe49-4de3-b83a-2ca1854a7cbb"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": ""ScaleVector2(x=0.125,y=0.125)"",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Cycle Character Left"",
-                    ""type"": ""Button"",
-                    ""id"": ""1fbf7a26-cc4a-444e-9128-e1a1de4db185"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Cycle Character Right"",
-                    ""type"": ""Button"",
-                    ""id"": ""28d5642f-5d6c-4406-8eb3-63001598f40e"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Restart Level"",
-                    ""type"": ""Button"",
-                    ""id"": ""936e5dac-abbe-4ff8-a4a8-13f2505c2938"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ToggleAiming"",
-                    ""type"": ""Button"",
-                    ""id"": ""9325096d-2a38-4a36-8141-5fdf4a195526"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press(behavior=2)"",
-                    ""initialStateCheck"": true
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": ""WASD"",
-                    ""id"": ""e5e43ab4-6a8d-4021-8850-a2bb633d0218"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""ab13f2c1-90c7-4447-b248-5769dc6089a0"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""996b43f3-b7c5-439a-8215-790ea288a4c7"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""1cfa3d63-d9d3-4566-8de1-4e2a8a062ebb"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""75fbe57e-722d-4021-b1ec-78fde27dcfd0"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Left JoyStick"",
-                    ""id"": ""f4e1178b-dfdd-450a-b1e7-79b6bb75276a"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""da726ce9-e5ff-453f-a3b8-4ea33920d94e"",
-                    ""path"": ""<Gamepad>/leftStick/up"",
-                    ""interactions"": """",
-                    ""processors"": ""AxisDeadzone"",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""ad88f92f-b134-4da1-9fee-717ea8d08679"",
-                    ""path"": ""<Gamepad>/leftStick/down"",
-                    ""interactions"": """",
-                    ""processors"": ""AxisDeadzone"",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""2f896057-ea70-432e-b91f-7230ec40ecfb"",
-                    ""path"": ""<Gamepad>/leftStick/left"",
-                    ""interactions"": """",
-                    ""processors"": ""AxisDeadzone"",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""35b293fe-5866-4da2-b371-82224b4d66b4"",
-                    ""path"": ""<Gamepad>/leftStick/right"",
-                    ""interactions"": """",
-                    ""processors"": ""AxisDeadzone"",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""4575b443-be01-4a07-8c35-ebe69a5f87ee"",
-                    ""path"": ""<Keyboard>/k"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""DieTest"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7b66dff0-341f-4c1c-85a0-e95816000acd"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": ""Press"",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b91392e3-38e7-490f-be7e-33d06be862e1"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": ""Press"",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""08bcc911-170f-4dae-8c3b-53e4d27ac362"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Press"",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Cast Primary"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8ede39a6-7910-46b6-9f40-62b46eca27e3"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": ""Press"",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Cast Primary"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5b871c23-33c5-44f3-ba40-aa3b63a71194"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": ""Press"",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Cast Secondary"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""51627623-c437-452c-a3ee-db1b730264c1"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
-                    ""interactions"": ""Press"",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Cast Secondary"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""dc1ecd1e-4a82-4102-978a-53d8b1c15505"",
-                    ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Switch Primary"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""22aff08f-8c35-49a2-8e71-1dfd6df94817"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Switch Primary"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""54c38d64-7f14-408a-ac73-5d06cd3ee310"",
-                    ""path"": ""<Keyboard>/2"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Switch Secondary"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""0918806a-9d28-4cc5-bf9b-2add6a8c88b8"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Switch Secondary"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""fee31364-f1c1-43d4-a416-a360fd573bc1"",
-                    ""path"": ""<Gamepad>/dpad/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Toggle Skill Wheel"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""429e9fc7-8c86-48e4-ad86-b57ce09450dc"",
-                    ""path"": ""<Gamepad>/dpad/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Switch Character Right"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""d30793cc-f603-4289-9ac8-73649f999556"",
-                    ""path"": ""<Gamepad>/dpad/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Switch Character Center"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""cf71ce4a-8fc9-4ca3-bf99-12111b5081c1"",
-                    ""path"": ""<Gamepad>/dpad/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Switch Character Left"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8e645a03-cb6f-45a9-9cba-eb3ca02ba76e"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Test"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Gamepad"",
-                    ""id"": ""d84240aa-b9af-4a6d-908f-32d3a41b629c"",
-                    ""path"": ""2DVector(mode=2)"",
-                    ""interactions"": """",
-                    ""processors"": ""NormalizeVector2"",
-                    ""groups"": """",
-                    ""action"": ""Aim"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""6423447a-5a01-4921-b0bf-7e10cfa62c17"",
-                    ""path"": ""<Gamepad>/rightStick/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Aim"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""58b2e1bc-d351-43c5-8046-ec5584315c11"",
-                    ""path"": ""<Gamepad>/rightStick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Aim"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""7b679475-9381-4296-a569-1ee6ea3efae4"",
-                    ""path"": ""<Gamepad>/rightStick/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Aim"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""36c99ed9-8ab0-4ac2-bd2e-4b1f31419191"",
-                    ""path"": ""<Gamepad>/rightStick/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Aim"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Mouse"",
-                    ""id"": ""52729004-f8e2-40e7-9235-851822be5c36"",
-                    ""path"": ""2DVector(mode=2)"",
-                    ""interactions"": """",
-                    ""processors"": ""NormalizeVector2"",
-                    ""groups"": """",
-                    ""action"": ""Aim"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""fc9c0318-0860-4aa9-8892-dda48cac7c1a"",
-                    ""path"": ""<Mouse>/delta/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Aim"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""44e307f8-0fa4-4292-9a51-061de9206713"",
-                    ""path"": ""<Mouse>/delta/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Aim"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""73e65676-c021-4e11-b5d7-10161739ac20"",
-                    ""path"": ""<Mouse>/delta/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Aim"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""5cf84a89-604d-4a90-b1ff-c5f1eca2b0ca"",
-                    ""path"": ""<Mouse>/delta/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Aim"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""50c0b6f6-64e2-46e0-b93b-54ef34f9f793"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Restart Level"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Gamepad"",
-                    ""id"": ""0da42f55-52fa-40f8-bfd7-1d42559ec1d9"",
-                    ""path"": ""2DVector(mode=2)"",
-                    ""interactions"": """",
-                    ""processors"": ""NormalizeVector2"",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""f02bc3e4-6e24-49d9-9655-43c7652b210f"",
-                    ""path"": ""<Gamepad>/rightStick/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""1afe5e3e-7052-4345-85db-abc04d7ce7a2"",
-                    ""path"": ""<Gamepad>/rightStick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""49e2ea1e-8d67-4c9a-b6a0-e805ae03dd2f"",
-                    ""path"": ""<Gamepad>/rightStick/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""6a02aad3-c875-4209-bf5d-2e52ffe45c81"",
-                    ""path"": ""<Gamepad>/rightStick/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Mouse"",
-                    ""id"": ""f01f4b95-62d7-420e-89d5-a6892e9fa8ac"",
-                    ""path"": ""2DVector(mode=2)"",
-                    ""interactions"": """",
-                    ""processors"": ""NormalizeVector2"",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""7a1371a3-f231-492b-b798-f85009d9b951"",
-                    ""path"": ""<Mouse>/delta/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""cd43fed8-ee02-49f7-97f1-ef8f937f124e"",
-                    ""path"": ""<Mouse>/delta/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""735d5f0f-25f5-4730-b15e-159233771471"",
-                    ""path"": ""<Mouse>/delta/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""4997ed80-2c5d-4b08-a05d-fc87758843c5"",
-                    ""path"": ""<Mouse>/delta/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""16742f01-c081-4713-8307-76cf65ebf65c"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ToggleAiming"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b0574163-7278-4f89-bc84-7eed3cf9cdeb"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ToggleAiming"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
             ""name"": ""Dialogue"",
             ""id"": ""de396bac-c3a7-43f4-93f2-4d361a8bf6ef"",
             ""actions"": [
@@ -1194,7 +476,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Cast Primary Weapon"",
+                    ""name"": ""Use Weapon 1"",
                     ""type"": ""Button"",
                     ""id"": ""878ac51a-f2d7-40e4-877e-1c1eb7ee7e2b"",
                     ""expectedControlType"": ""Button"",
@@ -1203,7 +485,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Cast Secondary Weapon"",
+                    ""name"": ""Use Weapon 2"",
                     ""type"": ""Button"",
                     ""id"": ""06449f62-29b1-4d4c-a25f-7369c7feeaf8"",
                     ""expectedControlType"": ""Button"",
@@ -1212,7 +494,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Cast Primary Ability"",
+                    ""name"": ""Use Ability 1"",
                     ""type"": ""Button"",
                     ""id"": ""b588de10-e478-4cb1-8004-b61ebe494638"",
                     ""expectedControlType"": ""Button"",
@@ -1221,7 +503,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Cast Secondary Ability"",
+                    ""name"": ""Use Ability 2"",
                     ""type"": ""Button"",
                     ""id"": ""ec74ea63-2abd-437e-95e9-fce34bdaadf2"",
                     ""expectedControlType"": ""Button"",
@@ -1245,6 +527,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart Level1"",
+                    ""type"": ""Button"",
+                    ""id"": ""597c9b68-87bb-43d9-bf2e-aae16e08459c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 }
             ],
@@ -1674,7 +965,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cast Primary Weapon"",
+                    ""action"": ""Use Weapon 1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1685,7 +976,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cast Primary Weapon"",
+                    ""action"": ""Use Weapon 1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1696,7 +987,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cast Secondary Weapon"",
+                    ""action"": ""Use Weapon 2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1707,7 +998,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cast Secondary Weapon"",
+                    ""action"": ""Use Weapon 2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1718,7 +1009,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cast Primary Ability"",
+                    ""action"": ""Use Ability 1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1729,7 +1020,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cast Primary Ability"",
+                    ""action"": ""Use Ability 1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1806,7 +1097,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cast Secondary Ability"",
+                    ""action"": ""Use Ability 2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1817,7 +1108,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cast Secondary Ability"",
+                    ""action"": ""Use Ability 2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cd455edf-bfb9-4f8d-91b9-e536e97897fb"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Level1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1826,27 +1128,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     ],
     ""controlSchemes"": []
 }");
-        // GroundMovement
-        m_GroundMovement = asset.FindActionMap("GroundMovement", throwIfNotFound: true);
-        m_GroundMovement_Move = m_GroundMovement.FindAction("Move", throwIfNotFound: true);
-        m_GroundMovement_DieTest = m_GroundMovement.FindAction("DieTest", throwIfNotFound: true);
-        m_GroundMovement_Interact = m_GroundMovement.FindAction("Interact", throwIfNotFound: true);
-        m_GroundMovement_CastPrimary = m_GroundMovement.FindAction("Cast Primary", throwIfNotFound: true);
-        m_GroundMovement_CastSecondary = m_GroundMovement.FindAction("Cast Secondary", throwIfNotFound: true);
-        m_GroundMovement_SwitchPrimary = m_GroundMovement.FindAction("Switch Primary", throwIfNotFound: true);
-        m_GroundMovement_SwitchSecondary = m_GroundMovement.FindAction("Switch Secondary", throwIfNotFound: true);
-        m_GroundMovement_ToggleSkillWheel = m_GroundMovement.FindAction("Toggle Skill Wheel", throwIfNotFound: true);
-        m_GroundMovement_SwitchCharacterLeft = m_GroundMovement.FindAction("Switch Character Left", throwIfNotFound: true);
-        m_GroundMovement_SwitchCharacterRight = m_GroundMovement.FindAction("Switch Character Right", throwIfNotFound: true);
-        m_GroundMovement_SwitchCharacterCenter = m_GroundMovement.FindAction("Switch Character Center", throwIfNotFound: true);
-        m_GroundMovement_ToggleFollowers = m_GroundMovement.FindAction("ToggleFollowers", throwIfNotFound: true);
-        m_GroundMovement_Test = m_GroundMovement.FindAction("Test", throwIfNotFound: true);
-        m_GroundMovement_Aim = m_GroundMovement.FindAction("Aim", throwIfNotFound: true);
-        m_GroundMovement_Look = m_GroundMovement.FindAction("Look", throwIfNotFound: true);
-        m_GroundMovement_CycleCharacterLeft = m_GroundMovement.FindAction("Cycle Character Left", throwIfNotFound: true);
-        m_GroundMovement_CycleCharacterRight = m_GroundMovement.FindAction("Cycle Character Right", throwIfNotFound: true);
-        m_GroundMovement_RestartLevel = m_GroundMovement.FindAction("Restart Level", throwIfNotFound: true);
-        m_GroundMovement_ToggleAiming = m_GroundMovement.FindAction("ToggleAiming", throwIfNotFound: true);
         // Dialogue
         m_Dialogue = asset.FindActionMap("Dialogue", throwIfNotFound: true);
         m_Dialogue_Continue = m_Dialogue.FindAction("Continue", throwIfNotFound: true);
@@ -1868,12 +1149,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_RestartLevel = m_Player.FindAction("Restart Level", throwIfNotFound: true);
         m_Player_ToggleAiming = m_Player.FindAction("ToggleAiming", throwIfNotFound: true);
         m_Player_UseAgility = m_Player.FindAction("Use Agility", throwIfNotFound: true);
-        m_Player_CastPrimaryWeapon = m_Player.FindAction("Cast Primary Weapon", throwIfNotFound: true);
-        m_Player_CastSecondaryWeapon = m_Player.FindAction("Cast Secondary Weapon", throwIfNotFound: true);
-        m_Player_CastPrimaryAbility = m_Player.FindAction("Cast Primary Ability", throwIfNotFound: true);
-        m_Player_CastSecondaryAbility = m_Player.FindAction("Cast Secondary Ability", throwIfNotFound: true);
+        m_Player_UseWeapon1 = m_Player.FindAction("Use Weapon 1", throwIfNotFound: true);
+        m_Player_UseWeapon2 = m_Player.FindAction("Use Weapon 2", throwIfNotFound: true);
+        m_Player_UseAbility1 = m_Player.FindAction("Use Ability 1", throwIfNotFound: true);
+        m_Player_UseAbility2 = m_Player.FindAction("Use Ability 2", throwIfNotFound: true);
         m_Player_SwitchCharacterLeft = m_Player.FindAction("Switch Character Left", throwIfNotFound: true);
         m_Player_SwitchCharacterRight = m_Player.FindAction("Switch Character Right", throwIfNotFound: true);
+        m_Player_RestartLevel1 = m_Player.FindAction("Restart Level1", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1931,196 +1213,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         return asset.FindBinding(bindingMask, out action);
     }
-
-    // GroundMovement
-    private readonly InputActionMap m_GroundMovement;
-    private List<IGroundMovementActions> m_GroundMovementActionsCallbackInterfaces = new List<IGroundMovementActions>();
-    private readonly InputAction m_GroundMovement_Move;
-    private readonly InputAction m_GroundMovement_DieTest;
-    private readonly InputAction m_GroundMovement_Interact;
-    private readonly InputAction m_GroundMovement_CastPrimary;
-    private readonly InputAction m_GroundMovement_CastSecondary;
-    private readonly InputAction m_GroundMovement_SwitchPrimary;
-    private readonly InputAction m_GroundMovement_SwitchSecondary;
-    private readonly InputAction m_GroundMovement_ToggleSkillWheel;
-    private readonly InputAction m_GroundMovement_SwitchCharacterLeft;
-    private readonly InputAction m_GroundMovement_SwitchCharacterRight;
-    private readonly InputAction m_GroundMovement_SwitchCharacterCenter;
-    private readonly InputAction m_GroundMovement_ToggleFollowers;
-    private readonly InputAction m_GroundMovement_Test;
-    private readonly InputAction m_GroundMovement_Aim;
-    private readonly InputAction m_GroundMovement_Look;
-    private readonly InputAction m_GroundMovement_CycleCharacterLeft;
-    private readonly InputAction m_GroundMovement_CycleCharacterRight;
-    private readonly InputAction m_GroundMovement_RestartLevel;
-    private readonly InputAction m_GroundMovement_ToggleAiming;
-    public struct GroundMovementActions
-    {
-        private @PlayerControls m_Wrapper;
-        public GroundMovementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_GroundMovement_Move;
-        public InputAction @DieTest => m_Wrapper.m_GroundMovement_DieTest;
-        public InputAction @Interact => m_Wrapper.m_GroundMovement_Interact;
-        public InputAction @CastPrimary => m_Wrapper.m_GroundMovement_CastPrimary;
-        public InputAction @CastSecondary => m_Wrapper.m_GroundMovement_CastSecondary;
-        public InputAction @SwitchPrimary => m_Wrapper.m_GroundMovement_SwitchPrimary;
-        public InputAction @SwitchSecondary => m_Wrapper.m_GroundMovement_SwitchSecondary;
-        public InputAction @ToggleSkillWheel => m_Wrapper.m_GroundMovement_ToggleSkillWheel;
-        public InputAction @SwitchCharacterLeft => m_Wrapper.m_GroundMovement_SwitchCharacterLeft;
-        public InputAction @SwitchCharacterRight => m_Wrapper.m_GroundMovement_SwitchCharacterRight;
-        public InputAction @SwitchCharacterCenter => m_Wrapper.m_GroundMovement_SwitchCharacterCenter;
-        public InputAction @ToggleFollowers => m_Wrapper.m_GroundMovement_ToggleFollowers;
-        public InputAction @Test => m_Wrapper.m_GroundMovement_Test;
-        public InputAction @Aim => m_Wrapper.m_GroundMovement_Aim;
-        public InputAction @Look => m_Wrapper.m_GroundMovement_Look;
-        public InputAction @CycleCharacterLeft => m_Wrapper.m_GroundMovement_CycleCharacterLeft;
-        public InputAction @CycleCharacterRight => m_Wrapper.m_GroundMovement_CycleCharacterRight;
-        public InputAction @RestartLevel => m_Wrapper.m_GroundMovement_RestartLevel;
-        public InputAction @ToggleAiming => m_Wrapper.m_GroundMovement_ToggleAiming;
-        public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(GroundMovementActions set) { return set.Get(); }
-        public void AddCallbacks(IGroundMovementActions instance)
-        {
-            if (instance == null || m_Wrapper.m_GroundMovementActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_GroundMovementActionsCallbackInterfaces.Add(instance);
-            @Move.started += instance.OnMove;
-            @Move.performed += instance.OnMove;
-            @Move.canceled += instance.OnMove;
-            @DieTest.started += instance.OnDieTest;
-            @DieTest.performed += instance.OnDieTest;
-            @DieTest.canceled += instance.OnDieTest;
-            @Interact.started += instance.OnInteract;
-            @Interact.performed += instance.OnInteract;
-            @Interact.canceled += instance.OnInteract;
-            @CastPrimary.started += instance.OnCastPrimary;
-            @CastPrimary.performed += instance.OnCastPrimary;
-            @CastPrimary.canceled += instance.OnCastPrimary;
-            @CastSecondary.started += instance.OnCastSecondary;
-            @CastSecondary.performed += instance.OnCastSecondary;
-            @CastSecondary.canceled += instance.OnCastSecondary;
-            @SwitchPrimary.started += instance.OnSwitchPrimary;
-            @SwitchPrimary.performed += instance.OnSwitchPrimary;
-            @SwitchPrimary.canceled += instance.OnSwitchPrimary;
-            @SwitchSecondary.started += instance.OnSwitchSecondary;
-            @SwitchSecondary.performed += instance.OnSwitchSecondary;
-            @SwitchSecondary.canceled += instance.OnSwitchSecondary;
-            @ToggleSkillWheel.started += instance.OnToggleSkillWheel;
-            @ToggleSkillWheel.performed += instance.OnToggleSkillWheel;
-            @ToggleSkillWheel.canceled += instance.OnToggleSkillWheel;
-            @SwitchCharacterLeft.started += instance.OnSwitchCharacterLeft;
-            @SwitchCharacterLeft.performed += instance.OnSwitchCharacterLeft;
-            @SwitchCharacterLeft.canceled += instance.OnSwitchCharacterLeft;
-            @SwitchCharacterRight.started += instance.OnSwitchCharacterRight;
-            @SwitchCharacterRight.performed += instance.OnSwitchCharacterRight;
-            @SwitchCharacterRight.canceled += instance.OnSwitchCharacterRight;
-            @SwitchCharacterCenter.started += instance.OnSwitchCharacterCenter;
-            @SwitchCharacterCenter.performed += instance.OnSwitchCharacterCenter;
-            @SwitchCharacterCenter.canceled += instance.OnSwitchCharacterCenter;
-            @ToggleFollowers.started += instance.OnToggleFollowers;
-            @ToggleFollowers.performed += instance.OnToggleFollowers;
-            @ToggleFollowers.canceled += instance.OnToggleFollowers;
-            @Test.started += instance.OnTest;
-            @Test.performed += instance.OnTest;
-            @Test.canceled += instance.OnTest;
-            @Aim.started += instance.OnAim;
-            @Aim.performed += instance.OnAim;
-            @Aim.canceled += instance.OnAim;
-            @Look.started += instance.OnLook;
-            @Look.performed += instance.OnLook;
-            @Look.canceled += instance.OnLook;
-            @CycleCharacterLeft.started += instance.OnCycleCharacterLeft;
-            @CycleCharacterLeft.performed += instance.OnCycleCharacterLeft;
-            @CycleCharacterLeft.canceled += instance.OnCycleCharacterLeft;
-            @CycleCharacterRight.started += instance.OnCycleCharacterRight;
-            @CycleCharacterRight.performed += instance.OnCycleCharacterRight;
-            @CycleCharacterRight.canceled += instance.OnCycleCharacterRight;
-            @RestartLevel.started += instance.OnRestartLevel;
-            @RestartLevel.performed += instance.OnRestartLevel;
-            @RestartLevel.canceled += instance.OnRestartLevel;
-            @ToggleAiming.started += instance.OnToggleAiming;
-            @ToggleAiming.performed += instance.OnToggleAiming;
-            @ToggleAiming.canceled += instance.OnToggleAiming;
-        }
-
-        private void UnregisterCallbacks(IGroundMovementActions instance)
-        {
-            @Move.started -= instance.OnMove;
-            @Move.performed -= instance.OnMove;
-            @Move.canceled -= instance.OnMove;
-            @DieTest.started -= instance.OnDieTest;
-            @DieTest.performed -= instance.OnDieTest;
-            @DieTest.canceled -= instance.OnDieTest;
-            @Interact.started -= instance.OnInteract;
-            @Interact.performed -= instance.OnInteract;
-            @Interact.canceled -= instance.OnInteract;
-            @CastPrimary.started -= instance.OnCastPrimary;
-            @CastPrimary.performed -= instance.OnCastPrimary;
-            @CastPrimary.canceled -= instance.OnCastPrimary;
-            @CastSecondary.started -= instance.OnCastSecondary;
-            @CastSecondary.performed -= instance.OnCastSecondary;
-            @CastSecondary.canceled -= instance.OnCastSecondary;
-            @SwitchPrimary.started -= instance.OnSwitchPrimary;
-            @SwitchPrimary.performed -= instance.OnSwitchPrimary;
-            @SwitchPrimary.canceled -= instance.OnSwitchPrimary;
-            @SwitchSecondary.started -= instance.OnSwitchSecondary;
-            @SwitchSecondary.performed -= instance.OnSwitchSecondary;
-            @SwitchSecondary.canceled -= instance.OnSwitchSecondary;
-            @ToggleSkillWheel.started -= instance.OnToggleSkillWheel;
-            @ToggleSkillWheel.performed -= instance.OnToggleSkillWheel;
-            @ToggleSkillWheel.canceled -= instance.OnToggleSkillWheel;
-            @SwitchCharacterLeft.started -= instance.OnSwitchCharacterLeft;
-            @SwitchCharacterLeft.performed -= instance.OnSwitchCharacterLeft;
-            @SwitchCharacterLeft.canceled -= instance.OnSwitchCharacterLeft;
-            @SwitchCharacterRight.started -= instance.OnSwitchCharacterRight;
-            @SwitchCharacterRight.performed -= instance.OnSwitchCharacterRight;
-            @SwitchCharacterRight.canceled -= instance.OnSwitchCharacterRight;
-            @SwitchCharacterCenter.started -= instance.OnSwitchCharacterCenter;
-            @SwitchCharacterCenter.performed -= instance.OnSwitchCharacterCenter;
-            @SwitchCharacterCenter.canceled -= instance.OnSwitchCharacterCenter;
-            @ToggleFollowers.started -= instance.OnToggleFollowers;
-            @ToggleFollowers.performed -= instance.OnToggleFollowers;
-            @ToggleFollowers.canceled -= instance.OnToggleFollowers;
-            @Test.started -= instance.OnTest;
-            @Test.performed -= instance.OnTest;
-            @Test.canceled -= instance.OnTest;
-            @Aim.started -= instance.OnAim;
-            @Aim.performed -= instance.OnAim;
-            @Aim.canceled -= instance.OnAim;
-            @Look.started -= instance.OnLook;
-            @Look.performed -= instance.OnLook;
-            @Look.canceled -= instance.OnLook;
-            @CycleCharacterLeft.started -= instance.OnCycleCharacterLeft;
-            @CycleCharacterLeft.performed -= instance.OnCycleCharacterLeft;
-            @CycleCharacterLeft.canceled -= instance.OnCycleCharacterLeft;
-            @CycleCharacterRight.started -= instance.OnCycleCharacterRight;
-            @CycleCharacterRight.performed -= instance.OnCycleCharacterRight;
-            @CycleCharacterRight.canceled -= instance.OnCycleCharacterRight;
-            @RestartLevel.started -= instance.OnRestartLevel;
-            @RestartLevel.performed -= instance.OnRestartLevel;
-            @RestartLevel.canceled -= instance.OnRestartLevel;
-            @ToggleAiming.started -= instance.OnToggleAiming;
-            @ToggleAiming.performed -= instance.OnToggleAiming;
-            @ToggleAiming.canceled -= instance.OnToggleAiming;
-        }
-
-        public void RemoveCallbacks(IGroundMovementActions instance)
-        {
-            if (m_Wrapper.m_GroundMovementActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        public void SetCallbacks(IGroundMovementActions instance)
-        {
-            foreach (var item in m_Wrapper.m_GroundMovementActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_GroundMovementActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    public GroundMovementActions @GroundMovement => new GroundMovementActions(this);
 
     // Dialogue
     private readonly InputActionMap m_Dialogue;
@@ -2265,12 +1357,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_RestartLevel;
     private readonly InputAction m_Player_ToggleAiming;
     private readonly InputAction m_Player_UseAgility;
-    private readonly InputAction m_Player_CastPrimaryWeapon;
-    private readonly InputAction m_Player_CastSecondaryWeapon;
-    private readonly InputAction m_Player_CastPrimaryAbility;
-    private readonly InputAction m_Player_CastSecondaryAbility;
+    private readonly InputAction m_Player_UseWeapon1;
+    private readonly InputAction m_Player_UseWeapon2;
+    private readonly InputAction m_Player_UseAbility1;
+    private readonly InputAction m_Player_UseAbility2;
     private readonly InputAction m_Player_SwitchCharacterLeft;
     private readonly InputAction m_Player_SwitchCharacterRight;
+    private readonly InputAction m_Player_RestartLevel1;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -2283,12 +1376,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @RestartLevel => m_Wrapper.m_Player_RestartLevel;
         public InputAction @ToggleAiming => m_Wrapper.m_Player_ToggleAiming;
         public InputAction @UseAgility => m_Wrapper.m_Player_UseAgility;
-        public InputAction @CastPrimaryWeapon => m_Wrapper.m_Player_CastPrimaryWeapon;
-        public InputAction @CastSecondaryWeapon => m_Wrapper.m_Player_CastSecondaryWeapon;
-        public InputAction @CastPrimaryAbility => m_Wrapper.m_Player_CastPrimaryAbility;
-        public InputAction @CastSecondaryAbility => m_Wrapper.m_Player_CastSecondaryAbility;
+        public InputAction @UseWeapon1 => m_Wrapper.m_Player_UseWeapon1;
+        public InputAction @UseWeapon2 => m_Wrapper.m_Player_UseWeapon2;
+        public InputAction @UseAbility1 => m_Wrapper.m_Player_UseAbility1;
+        public InputAction @UseAbility2 => m_Wrapper.m_Player_UseAbility2;
         public InputAction @SwitchCharacterLeft => m_Wrapper.m_Player_SwitchCharacterLeft;
         public InputAction @SwitchCharacterRight => m_Wrapper.m_Player_SwitchCharacterRight;
+        public InputAction @RestartLevel1 => m_Wrapper.m_Player_RestartLevel1;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2322,24 +1416,27 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @UseAgility.started += instance.OnUseAgility;
             @UseAgility.performed += instance.OnUseAgility;
             @UseAgility.canceled += instance.OnUseAgility;
-            @CastPrimaryWeapon.started += instance.OnCastPrimaryWeapon;
-            @CastPrimaryWeapon.performed += instance.OnCastPrimaryWeapon;
-            @CastPrimaryWeapon.canceled += instance.OnCastPrimaryWeapon;
-            @CastSecondaryWeapon.started += instance.OnCastSecondaryWeapon;
-            @CastSecondaryWeapon.performed += instance.OnCastSecondaryWeapon;
-            @CastSecondaryWeapon.canceled += instance.OnCastSecondaryWeapon;
-            @CastPrimaryAbility.started += instance.OnCastPrimaryAbility;
-            @CastPrimaryAbility.performed += instance.OnCastPrimaryAbility;
-            @CastPrimaryAbility.canceled += instance.OnCastPrimaryAbility;
-            @CastSecondaryAbility.started += instance.OnCastSecondaryAbility;
-            @CastSecondaryAbility.performed += instance.OnCastSecondaryAbility;
-            @CastSecondaryAbility.canceled += instance.OnCastSecondaryAbility;
+            @UseWeapon1.started += instance.OnUseWeapon1;
+            @UseWeapon1.performed += instance.OnUseWeapon1;
+            @UseWeapon1.canceled += instance.OnUseWeapon1;
+            @UseWeapon2.started += instance.OnUseWeapon2;
+            @UseWeapon2.performed += instance.OnUseWeapon2;
+            @UseWeapon2.canceled += instance.OnUseWeapon2;
+            @UseAbility1.started += instance.OnUseAbility1;
+            @UseAbility1.performed += instance.OnUseAbility1;
+            @UseAbility1.canceled += instance.OnUseAbility1;
+            @UseAbility2.started += instance.OnUseAbility2;
+            @UseAbility2.performed += instance.OnUseAbility2;
+            @UseAbility2.canceled += instance.OnUseAbility2;
             @SwitchCharacterLeft.started += instance.OnSwitchCharacterLeft;
             @SwitchCharacterLeft.performed += instance.OnSwitchCharacterLeft;
             @SwitchCharacterLeft.canceled += instance.OnSwitchCharacterLeft;
             @SwitchCharacterRight.started += instance.OnSwitchCharacterRight;
             @SwitchCharacterRight.performed += instance.OnSwitchCharacterRight;
             @SwitchCharacterRight.canceled += instance.OnSwitchCharacterRight;
+            @RestartLevel1.started += instance.OnRestartLevel1;
+            @RestartLevel1.performed += instance.OnRestartLevel1;
+            @RestartLevel1.canceled += instance.OnRestartLevel1;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -2368,24 +1465,27 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @UseAgility.started -= instance.OnUseAgility;
             @UseAgility.performed -= instance.OnUseAgility;
             @UseAgility.canceled -= instance.OnUseAgility;
-            @CastPrimaryWeapon.started -= instance.OnCastPrimaryWeapon;
-            @CastPrimaryWeapon.performed -= instance.OnCastPrimaryWeapon;
-            @CastPrimaryWeapon.canceled -= instance.OnCastPrimaryWeapon;
-            @CastSecondaryWeapon.started -= instance.OnCastSecondaryWeapon;
-            @CastSecondaryWeapon.performed -= instance.OnCastSecondaryWeapon;
-            @CastSecondaryWeapon.canceled -= instance.OnCastSecondaryWeapon;
-            @CastPrimaryAbility.started -= instance.OnCastPrimaryAbility;
-            @CastPrimaryAbility.performed -= instance.OnCastPrimaryAbility;
-            @CastPrimaryAbility.canceled -= instance.OnCastPrimaryAbility;
-            @CastSecondaryAbility.started -= instance.OnCastSecondaryAbility;
-            @CastSecondaryAbility.performed -= instance.OnCastSecondaryAbility;
-            @CastSecondaryAbility.canceled -= instance.OnCastSecondaryAbility;
+            @UseWeapon1.started -= instance.OnUseWeapon1;
+            @UseWeapon1.performed -= instance.OnUseWeapon1;
+            @UseWeapon1.canceled -= instance.OnUseWeapon1;
+            @UseWeapon2.started -= instance.OnUseWeapon2;
+            @UseWeapon2.performed -= instance.OnUseWeapon2;
+            @UseWeapon2.canceled -= instance.OnUseWeapon2;
+            @UseAbility1.started -= instance.OnUseAbility1;
+            @UseAbility1.performed -= instance.OnUseAbility1;
+            @UseAbility1.canceled -= instance.OnUseAbility1;
+            @UseAbility2.started -= instance.OnUseAbility2;
+            @UseAbility2.performed -= instance.OnUseAbility2;
+            @UseAbility2.canceled -= instance.OnUseAbility2;
             @SwitchCharacterLeft.started -= instance.OnSwitchCharacterLeft;
             @SwitchCharacterLeft.performed -= instance.OnSwitchCharacterLeft;
             @SwitchCharacterLeft.canceled -= instance.OnSwitchCharacterLeft;
             @SwitchCharacterRight.started -= instance.OnSwitchCharacterRight;
             @SwitchCharacterRight.performed -= instance.OnSwitchCharacterRight;
             @SwitchCharacterRight.canceled -= instance.OnSwitchCharacterRight;
+            @RestartLevel1.started -= instance.OnRestartLevel1;
+            @RestartLevel1.performed -= instance.OnRestartLevel1;
+            @RestartLevel1.canceled -= instance.OnRestartLevel1;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -2403,28 +1503,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
-    public interface IGroundMovementActions
-    {
-        void OnMove(InputAction.CallbackContext context);
-        void OnDieTest(InputAction.CallbackContext context);
-        void OnInteract(InputAction.CallbackContext context);
-        void OnCastPrimary(InputAction.CallbackContext context);
-        void OnCastSecondary(InputAction.CallbackContext context);
-        void OnSwitchPrimary(InputAction.CallbackContext context);
-        void OnSwitchSecondary(InputAction.CallbackContext context);
-        void OnToggleSkillWheel(InputAction.CallbackContext context);
-        void OnSwitchCharacterLeft(InputAction.CallbackContext context);
-        void OnSwitchCharacterRight(InputAction.CallbackContext context);
-        void OnSwitchCharacterCenter(InputAction.CallbackContext context);
-        void OnToggleFollowers(InputAction.CallbackContext context);
-        void OnTest(InputAction.CallbackContext context);
-        void OnAim(InputAction.CallbackContext context);
-        void OnLook(InputAction.CallbackContext context);
-        void OnCycleCharacterLeft(InputAction.CallbackContext context);
-        void OnCycleCharacterRight(InputAction.CallbackContext context);
-        void OnRestartLevel(InputAction.CallbackContext context);
-        void OnToggleAiming(InputAction.CallbackContext context);
-    }
     public interface IDialogueActions
     {
         void OnContinue(InputAction.CallbackContext context);
@@ -2448,11 +1526,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnRestartLevel(InputAction.CallbackContext context);
         void OnToggleAiming(InputAction.CallbackContext context);
         void OnUseAgility(InputAction.CallbackContext context);
-        void OnCastPrimaryWeapon(InputAction.CallbackContext context);
-        void OnCastSecondaryWeapon(InputAction.CallbackContext context);
-        void OnCastPrimaryAbility(InputAction.CallbackContext context);
-        void OnCastSecondaryAbility(InputAction.CallbackContext context);
+        void OnUseWeapon1(InputAction.CallbackContext context);
+        void OnUseWeapon2(InputAction.CallbackContext context);
+        void OnUseAbility1(InputAction.CallbackContext context);
+        void OnUseAbility2(InputAction.CallbackContext context);
         void OnSwitchCharacterLeft(InputAction.CallbackContext context);
         void OnSwitchCharacterRight(InputAction.CallbackContext context);
+        void OnRestartLevel1(InputAction.CallbackContext context);
     }
 }
