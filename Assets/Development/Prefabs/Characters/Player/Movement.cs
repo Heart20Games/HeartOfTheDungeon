@@ -30,10 +30,8 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     private bool hasFootsteps = false;
     private Rigidbody myRigidbody;
     private Character character;
-    private Animator animator;
     private Transform pivot;
-
-    private readonly Dictionary<string, bool> parameterExists = new();
+    private ArtRenderer artRenderer;
 
     public UnityEvent OnSetCastVector;
     public UnityEvent OnSetMoveVector;
@@ -42,10 +40,8 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     {
         character = GetComponent<Character>();
         myRigidbody = character.body.GetComponent<Rigidbody>();
-        animator = character.animator;
         pivot = character.pivot;
-
-        parameterExists["run"] = animator.HasParameter("run");
+        artRenderer = character.artRenderer;
     }
 
 
@@ -58,9 +54,7 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
         {
             castVector = aimVector.magnitude > 0 ? aimVector : moveVector;
             if (castVector.magnitude > 0)
-            {
                 OnSetCastVector.Invoke();
-            }
         }
     }
 
@@ -105,9 +99,7 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
             }
             
             if (myRigidbody.velocity.magnitude > maxVelocity * modifier)
-            {
                 myRigidbody.velocity = maxVelocity * modifier * myRigidbody.velocity.normalized;
-            }
 
             Vector2 hVelocity = myRigidbody.velocity.XZVector();
             Vector2 hCamera = cameraDirection.XZVector().normalized;
@@ -120,13 +112,13 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
 
                 if (!hasFootsteps)
                 {
-                    SetAnimBool("run", true);
+                    artRenderer.Running = true;
                     hasFootsteps = true;
                 }
             } 
             else if (hasFootsteps)
             {
-                SetAnimBool("run", false);
+                artRenderer.Running = false;
                 hasFootsteps = false;
             }
         }
@@ -139,16 +131,6 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
         }
     }
 
-
-    // Animation
-
-    private void SetAnimBool(string parameter, bool value)
-    {
-        if (parameterExists[parameter])
-        {
-            animator.SetBool(parameter, value);
-        }
-    }
 
     // TimeScaling
     private Vector3 tempVelocity;
