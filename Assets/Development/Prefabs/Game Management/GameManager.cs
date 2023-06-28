@@ -106,7 +106,7 @@ public class Game : BaseMonoBehaviour
             case GameMode.Selection:
                 SetControllable(selector, false); break;
             case GameMode.Dialogue:
-                break;
+                userInterface.SetDialogueActive(false); break;
         }
         switch (mode)
         {
@@ -123,6 +123,7 @@ public class Game : BaseMonoBehaviour
                 TimeScale = 0.1f;
                 SetControllable(selector, true); break;
             case GameMode.Dialogue:
+                userInterface.SetDialogueActive(true);
                 input.SwitchCurrentActionMap(dialogueInputMap); break;
         }
         this.mode = mode;
@@ -339,6 +340,16 @@ public class Game : BaseMonoBehaviour
         {
             Mode = mode == GameMode.Character ? GameMode.Selection : GameMode.Character;
             hud.AbilityToggle();
+        }
+    }
+
+    // Dialogue
+
+    public void OnContinue(InputValue inputValue)
+    {
+        if (inputValue.isPressed)
+        {
+            userInterface.Continue();
         }
     }
 }
