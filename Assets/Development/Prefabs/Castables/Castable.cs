@@ -6,18 +6,22 @@ using static Body.Behavior.ContextSteering.CSIdentity;
 
 public class Castable : BaseMonoBehaviour, ICastable
 {
-    [HideInInspector] public Body.Character source;
 
-    public UnityEvent<Vector3> doCast;
-    public UnityEvent onCast;
-    public UnityEvent onUnCast;
-    public UnityEvent onCasted;
-    public bool casting = false;
-    public UnityEvent<Identity> onSetIdentity;
+    // Positioning
+    [Header("Positioning and Following")]
+    public Transform weaponArt;
+    public Transform pivot;
+    public float rOffset = 0;
+    public bool followBody = true;
+    [HideInInspector] public Character source;
 
+    // Statuses
+    [Header("Statuses")]
     public List<Status> castStatuses;
     public List<Status> hitStatuses;
 
+    // Damage
+    [Header("Identity and Damage")]
     private Identity identity = Identity.Neutral;
     public Identity Identity
     {
@@ -28,11 +32,19 @@ public class Castable : BaseMonoBehaviour, ICastable
             onSetIdentity.Invoke(identity);
         }
     }
-
-    public float rOffset = 0;
-    public bool followBody = true;
-
+    public UnityEvent<Identity> onSetIdentity;
     private Damager damager;
+
+    // Events
+    [Header("Casting")]
+    public bool casting = false;
+    public UnityEvent<Vector3> doCast;
+    public UnityEvent onCast;
+    public UnityEvent onUnCast;
+    public UnityEvent onCasted;
+
+
+    // Iniaitlization
 
     private void Awake()
     {
@@ -48,9 +60,20 @@ public class Castable : BaseMonoBehaviour, ICastable
         if (source.body != null)
         {
             ReportExceptionsToCollidables(source.body.GetComponents<Collider>());
+            PositionCastable();
         }
+        source.artRenderer.DisplayWeapon(weaponArt);
     }
+
+
+    // Equipping
+    public virtual void Disable() { }
+    public virtual void Enable() { }
+    public virtual void UnEquip() { Destroy(gameObject); }
     
+
+    // Casting
+
     public virtual bool CanCast() { return !casting; }
 
     public virtual void Cast(Vector3 direction)
@@ -75,15 +98,22 @@ public class Castable : BaseMonoBehaviour, ICastable
         onCasted.Invoke();
     }
 
-    public virtual void Disable() { }
-
-    public virtual void Enable() { }
-
     public virtual UnityEvent OnCasted() { return onCasted; }
 
-    public virtual void UnEquip() { Destroy(gameObject); }
 
     // Extras
+
+    private void PositionCastable()
+    {
+        if (pivot != null)
+        {
+            Transform origin = followBody ? source.body : transform;
+            Vector3 pivotLocalPosition = pivot.localPosition;
+            pivot.SetParent(origin, false);
+            pivot.localPosition = pivotLocalPosition;
+        }
+    }
+
     private void ReportOriginToPositionables()
     {
         Transform effectParent = followBody ? source.body : source.transform;

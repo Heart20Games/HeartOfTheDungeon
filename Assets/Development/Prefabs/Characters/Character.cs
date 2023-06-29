@@ -17,27 +17,43 @@ namespace Body
     [RequireComponent(typeof(Attack))]
     public class Character : BaseMonoBehaviour, IDamageable, IControllable
     {
-        // Character Parts
+        // Movement and Positioning
+        [Header("Movement and Positioning")]
         public Transform body;
         public Transform pivot;
-        public ArtRenderer artRenderer;
-        public Interactor interactor;
-        public Transform weaponHand;
         public Pivot moveReticle;
-        public Health healthBar;
-        public CinemachineVirtualCamera virtualCamera;
-        public CharacterUIElements characterUIElements;
-        [HideInInspector] public Brain brain;
         [HideInInspector] public Movement movement;
-        [HideInInspector] public Talker talker;
-        [HideInInspector] public Attack attacker;
         [HideInInspector] public float baseOffset;
 
+        // State
+        [Header("State")]
+        public bool controllable = true;
+        public bool aimActive = false;
+        public bool alive = false;
+
+        // Appearance
+        [Header("Appearance")]
+        public ArtRenderer artRenderer;
+        public CinemachineVirtualCamera virtualCamera;
+        public CharacterUIElements characterUIElements;
+
+        // Interaction
+        [Header("Interaction")]
+        public Interactor interactor;
+        [HideInInspector] public Talker talker;
+
+        // Behaviour
+        [Header("Behaviour")]
+        [HideInInspector] public Brain brain;
+
         // Castables
+        [Header("Casting")]
         public Loadout loadout;
         public Transform weaponOffset;
+        [HideInInspector] public Attack attacker;
 
         // Identity
+        [Header("Identity")]
         public Identity identity = Identity.Neutral;
         public Identity Identity
         {
@@ -50,9 +66,12 @@ namespace Body
         }
 
         // Statuses
+        [Header("Status Effects")]
         public List<Status> statuses;
 
         // Health
+        [Header("Health and Damage")]
+        public Health healthBar;
         public bool alwaysHideHealth = false;
         public float hideHealthWaitTime = 15f;
         public Modified<int> maxHealth = new(20);
@@ -70,10 +89,6 @@ namespace Body
         public UnityEvent onDeath;
         public UnityEvent onDmg;
 
-        // State
-        public bool controllable = true;
-        public bool aimActive = false;
-        public bool alive = false;
 
         // Initialization
         private void Awake()
@@ -165,8 +180,9 @@ namespace Body
 
         public void SetAlive(bool alive)
         {
-            body.gameObject.SetActive(alive);
+            movement.SetMoveVector(new());
             brain.Alive = alive;
+            artRenderer.Dead = alive;
         }
 
         public void SetMaxHealth(int amount)
@@ -176,7 +192,6 @@ namespace Body
             {
                 healthBar.SetHealthTotal(MaxHealth);
             }
-            //CurrentHealth = CurrentHealth;
         }
 
         public void SetCurrentHealth(int amount)
