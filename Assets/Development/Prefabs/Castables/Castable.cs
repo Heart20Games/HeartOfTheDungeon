@@ -116,6 +116,7 @@ public class Castable : BaseMonoBehaviour, ICastable
 
     private void ReportOriginToPositionables()
     {
+
         Transform effectParent = followBody ? source.body : source.transform;
         ReportOriginAmong(onCast, effectParent);
         ReportOriginAmong(doCast, effectParent);

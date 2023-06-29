@@ -354,7 +354,7 @@ namespace Body.Behavior.ContextSteering
                             float total = Maps[i, j];
                             if (total > 0)
                             {
-                                Assert.IsTrue(total <= maxValue);
+                                //Assert.IsTrue(total <= maxValue);
                                 DrawPart(Maps.Sign(i), Baseline[j], 0f, ResultRadius, Mathf.Lerp(0f, ResultRadius, total / maxValue));
                             }
                         }

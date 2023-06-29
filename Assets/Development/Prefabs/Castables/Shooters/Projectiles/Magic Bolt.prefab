@@ -69,12 +69,12 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2133279280376860803, guid: 311300ecfbd938b48ae10571780ec3dc, type: 3}
-      propertyPath: onTrigger.exit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
+      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2133279280376860803, guid: 311300ecfbd938b48ae10571780ec3dc, type: 3}
-      propertyPath: onTrigger.enter.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
+      propertyPath: onCollision.enter.m_PersistentCalls.m_Calls.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2138072239630478774, guid: 311300ecfbd938b48ae10571780ec3dc, type: 3}
       propertyPath: m_Name
@@ -86,7 +86,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1a498da6c378c11499fe22f03c8ae071, type: 2}
     - target: {fileID: 8143757690908996648, guid: 311300ecfbd938b48ae10571780ec3dc, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 8143757690908996648, guid: 311300ecfbd938b48ae10571780ec3dc, type: 3}
       propertyPath: m_LocalScale.x
@@ -147,14 +147,66 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8143757690908996648, guid: 311300ecfbd938b48ae10571780ec3dc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4222212335347303402}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2138072239630478774, guid: 311300ecfbd938b48ae10571780ec3dc, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 2979775521294132918}
   m_SourcePrefab: {fileID: 100100000, guid: 311300ecfbd938b48ae10571780ec3dc, type: 3}
+--- !u!1 &1688725526845993424 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2138072239630478774, guid: 311300ecfbd938b48ae10571780ec3dc, type: 3}
+  m_PrefabInstance: {fileID: 775881052689685606}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2979775521294132918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1688725526845993424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  desiredTags: []
+  selectableTypes: 
+  desireInteractors: 0
+  onCollision:
+    enter:
+      m_PersistentCalls:
+        m_Calls: []
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
+  onTrigger:
+    enter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 5696855107703442685}
+          m_TargetAssemblyTypeName: FModEventPlayer, Assembly-CSharp
+          m_MethodName: PlayEvent
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Magic-bolt-hit
+            m_BoolArgument: 0
+          m_CallState: 2
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
+  debug: 0
+  other: {fileID: 0}
+  selectable: {fileID: 0}
 --- !u!114 &5696855107703442685 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5029166449085567131, guid: 311300ecfbd938b48ae10571780ec3dc, type: 3}
   m_PrefabInstance: {fileID: 775881052689685606}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1688725526845993424}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d26e83e53b19e62469a39c2a92901175, type: 3}
