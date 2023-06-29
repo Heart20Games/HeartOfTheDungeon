@@ -17,33 +17,43 @@ namespace Body
     [RequireComponent(typeof(Attack))]
     public class Character : BaseMonoBehaviour, IDamageable, IControllable
     {
-        // Character Parts
+        // Movement and Positioning
+        [Header("Movement and Positioning")]
         public Transform body;
         public Transform pivot;
-        public ArtRenderer artRenderer;
-        public Transform weaponHand;
         public Pivot moveReticle;
-        public Health healthBar;
-        public CinemachineVirtualCamera virtualCamera;
-        public CharacterUIElements characterUIElements;
-        [HideInInspector] public Brain brain;
         [HideInInspector] public Movement movement;
-        [HideInInspector] public Talker talker;
-        [HideInInspector] public Attack attacker;
         [HideInInspector] public float baseOffset;
 
+        // State
+        [Header("State")]
+        public bool controllable = true;
+        public bool aimActive = false;
+        public bool alive = false;
+
+        // Appearance
+        [Header("Appearance")]
+        public ArtRenderer artRenderer;
+        public CinemachineVirtualCamera virtualCamera;
+        public CharacterUIElements characterUIElements;
+
+        // Interaction
+        [Header("Interaction")]
+        public Interactor interactor;
+        [HideInInspector] public Talker talker;
+
+        // Behaviour
+        [Header("Behaviour")]
+        [HideInInspector] public Brain brain;
+
         // Castables
+        [Header("Casting")]
         public Loadout loadout;
-        public ICastable primaryCastable;
-        public ICastable secondaryCastable;
-        public Castable primary;
-        public Castable secondary;
-        public Vector3 weaponOffset = Vector3.up;
-        private int abilityIdx = -1;
-        private int weaponIdx = -1;
-        public enum CastSlot { PRIMARY, SECONDARY };
+        public Transform weaponOffset;
+        [HideInInspector] public Attack attacker;
 
         // Identity
+        [Header("Identity")]
         public Identity identity = Identity.Neutral;
         public Identity Identity
         {
@@ -56,9 +66,12 @@ namespace Body
         }
 
         // Statuses
+        [Header("Status Effects")]
         public List<Status> statuses;
 
         // Health
+        [Header("Health and Damage")]
+        public Health healthBar;
         public bool alwaysHideHealth = false;
         public float hideHealthWaitTime = 15f;
         public Modified<int> maxHealth = new(20);
@@ -76,10 +89,6 @@ namespace Body
         public UnityEvent onDeath;
         public UnityEvent onDmg;
 
-        // State
-        public bool controllable = true;
-        public bool aimActive = false;
-        public bool alive = false;
 
         // Initialization
         private void Awake()
@@ -91,6 +100,7 @@ namespace Body
             movement = GetComponent<Movement>();
             talker = GetComponent<Talker>();
             attacker = GetComponent<Attack>();
+            InitializeCastables();
             MaxHealth = MaxHealth;
             CurrentHealth = CurrentHealth;
             SetControllable(false);
@@ -98,7 +108,6 @@ namespace Body
 
         private void Start()
         {
-            InitializeCastables();
             SetComponentActive(healthBar, false);
             healthBar.SetHealthBase(CurrentHealth, MaxHealth);
             Identity = Identity;
@@ -153,14 +162,17 @@ namespace Body
             //SetComponentActive(healthBar, !_controllable && !hideHealth);
             SetComponentActive(moveReticle, _controllable);
             SetComponentActive(virtualCamera, _controllable);
+            SetBehaviourEnabled(interactor, _controllable);
+        }
+
+        public void SetBehaviourEnabled(Behaviour behaviour, bool _enabled)
+        {
+            if (behaviour != null) behaviour.enabled = _enabled;
         }
 
         public void SetComponentActive(Component component, bool _active)
         {
-            if (component != null)
-            {
-                component.gameObject.SetActive(_active);
-            }
+            if (component != null) component.gameObject.SetActive(_active);
         }
 
 
@@ -168,8 +180,9 @@ namespace Body
 
         public void SetAlive(bool alive)
         {
-            body.gameObject.SetActive(alive);
+            movement.SetMoveVector(new());
             brain.Alive = alive;
+            artRenderer.Dead = alive;
         }
 
         public void SetMaxHealth(int amount)
@@ -179,7 +192,6 @@ namespace Body
             {
                 healthBar.SetHealthTotal(MaxHealth);
             }
-            //CurrentHealth = CurrentHealth;
         }
 
         public void SetCurrentHealth(int amount)
@@ -234,50 +246,35 @@ namespace Body
 
         // Castables
 
+        public readonly CastableItem[] castableItems = new CastableItem[5];
+        public readonly Castable[] castables = new Castable[5];
         public void InitializeCastables()
         {
             if (loadout != null)
             {
-                if (secondary == null)
+                for (int i = 0; i < Mathf.Min(loadout.abilities.Count, 2); i++)
                 {
-                    ChangeCastable(CastSlot.SECONDARY);
+                    SetCastable(i, loadout.abilities[i]);
                 }
-                if (primary == null)
+                for (int i = 0; i < Mathf.Min(loadout.weapons.Count, 2); i++)
                 {
-                    ChangeCastable(CastSlot.PRIMARY);
+                    SetCastable(2 + i, loadout.weapons[i]);
                 }
+                SetCastable(4, loadout.mobility);
             }
+            if (brain != null)
+                brain.RegisterCastables(castableItems);
         }
 
-        public void ChangeCastable(CastSlot slot)
+        public void SetCastable(int idx, CastableItem item)
         {
-            ICastable castable = slot == CastSlot.PRIMARY ? primary as ICastable : secondary as ICastable;
-            if (castable != null)
-            {
-                castable.UnEquip();
-            }
+            castables[idx]?.UnEquip();
 
-            if (loadout != null)
+            if (loadout != null && item != null)
             {
-                switch (slot)
-                {
-                    case CastSlot.PRIMARY:
-                        if (loadout.weapons.Count > 0)
-                        {
-                            weaponIdx = (weaponIdx + 1) % loadout.weapons.Count;
-                            primary = Instantiate(loadout.weapons[weaponIdx].prefab, transform);
-                            primary.Initialize(this);
-                        }
-                        break;
-                    case CastSlot.SECONDARY:
-                        if (loadout.abilities.Count > 0)
-                        {
-                            abilityIdx = (abilityIdx + 1) % loadout.abilities.Count;
-                            secondary = Instantiate(loadout.abilities[abilityIdx].prefab, transform);
-                            secondary.Initialize(this);
-                        }
-                        break;
-                }
+                castableItems[idx] = item;
+                castables[idx] = Instantiate(item.prefab, transform);
+                castables[idx].Initialize(this);
             }
         }
 
@@ -310,11 +307,8 @@ namespace Body
 
         // Actions
         public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); }
-        public void AimCharacter(Vector2 input) { if (aimActive) movement.SetAimVector(input); }
-        public void ChangeAbility() { ChangeCastable(CastSlot.SECONDARY); }
-        public void ChangeWeapon() { ChangeCastable(CastSlot.PRIMARY); }
-        public void ActivateWeapon() { ActivateCastable(primary); }
-        public void ActivateAbility() { ActivateCastable(secondary); }
+        public void AimCharacter(Vector2 input, bool aim=false) { if (aimActive || aim) movement.SetAimVector(input); }
+        public void ActivateCastable(int idx) { ActivateCastable(castables[idx]); }
         public void Interact() { talker.Talk(); }
         public void AimMode(bool active) { SetAimModeActive(active); }
 

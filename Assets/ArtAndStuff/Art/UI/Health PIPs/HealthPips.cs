@@ -58,13 +58,13 @@ public class HealthPips : Health
     public override void SetHealth(int amount)
     {
         currentHealth = amount;
-        int damage = totalHealth - currentHealth;
+        int damage = Mathf.Max(totalHealth - currentHealth, 0);
         if (isActiveAndEnabled)
         {
             for (int i = 0; i < damage; i++)
             {
                 pipAnimator[i].SetBool("IsDamaged", true);
-                lastDamaged = i;          
+                lastDamaged = i;
             }
             for (int i = damage; i < healthPips.Count; i++)
             {

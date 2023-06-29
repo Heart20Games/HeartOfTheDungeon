@@ -1,6 +1,14 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Assertions;
+using static Body.Behavior.ContextSteering.CSContext;
+using static Body.Behavior.ContextSteering.CSIdentity;
+using static Body.Behavior.ContextSteering.CSMapping;
 
 namespace Body.Behavior.ContextSteering
 {
@@ -60,19 +68,15 @@ namespace Body.Behavior.ContextSteering
                 this.sign = sign;
                 valid = true;
             }
+            
             public float[] dirs;
             public int componentCount;
             public sbyte sign;
             public bool valid;
             public int Length => dirs.Length;
-            public void IncrementComponentCount()
-            {
-                componentCount += 1;
-            }
-            public void ResetComponentCount()
-            {
-                componentCount = 0;
-            }
+
+            public void IncrementComponentCount() { componentCount += 1; }
+            public void ResetComponentCount() { componentCount = 0; }
             public float this[int index]
             {
                 get { return dirs[index]; }
@@ -97,57 +101,148 @@ namespace Body.Behavior.ContextSteering
                 }
                 componentCount = 0;
             }
-            public new string ToString()
-            {
-                return dirs.ToString();
-            }
+            public new string ToString() { return dirs.ToString(); }
+            public float MaxValue() { return Mathf.Max(dirs); }
         }
 
         [Serializable]
         public struct Maps
         {
-            public Maps(Map interests, Map dangers)
+            public Maps(Dictionary<Identity, Map> interests, Dictionary<Identity, Map> dangers)
             {
-                this.interests = interests;
-                this.dangers = dangers;
+                this.interests = interests ?? new();
+                this.dangers = dangers ?? new();
+                this.vectors = new();
+                this.counts = new();
+                this.identities = new();
             }
-            public Maps(float[] interests, float[] dangers)
-            {
-                this.interests = new(interests, POS);
-                this.dangers = new(dangers, NEG);
-            }
-            public Map interests;
-            public Map dangers;
+            
+            public Dictionary<Identity, Map> interests;
+            public Dictionary<Identity, Map> dangers;
+            public Dictionary<Identity, Vector3> vectors;
+            public Dictionary<Identity, int> counts;
+            private List<Identity> identities;
             public int Length => 2;
-            public Map this[int index]
+
+            // Indexing
+            public Dictionary<Identity, Map> this[int i] { get { return i switch { 0 => interests, 1 => dangers, _ => null, }; } }
+            public Dictionary<Identity, Map> this[MapType type] { get { return type switch { MapType.Interest => interests, MapType.Danger => dangers, _ => null, }; } }
+            public Map this[MapType type, Identity identity]
             {
                 get
                 {
-                    return index switch
+                    Dictionary<Identity, Map> maps = this[type];
+                    if (!maps.ContainsKey(identity))
                     {
-                        0 => interests,
-                        1 => dangers,
-                        _ => new(),
-                    };
+                        maps[identity] = type switch
+                        {
+                            MapType.Interest => new(null, POS, true),
+                            MapType.Danger => new(null, NEG, true),
+                            _ => null
+                        };
+                        identities.Add(identity);
+                    }
+                    return maps[identity];
                 }
             }
-            public Map this[MapType type]
+
+            // Vector
+            public void CalculateVector(Dictionary<Identity, Map> maps, sbyte sign, int i)
             {
-                get
+                foreach (Identity identity in maps.Keys)
                 {
-                    return type switch
-                    {
-                        MapType.Interest => interests,
-                        MapType.Danger => dangers,
-                        _ => new(),
-                    };
+                    Assert.IsFalse(float.IsNaN(maps[identity][i]));
+                    if (!vectors.ContainsKey(identity))
+                        vectors.Add(identity, new());
+                    vectors[identity] += maps[identity][i] * sign * Baseline[i];
+                    maps[identity][i] = 0;
+                    Assert.IsFalse(float.IsNaN(vectors[identity].x) || float.IsNaN(vectors[identity].y) || float.IsNaN(vectors[identity].z));
                 }
             }
+            public void SumComponentCount(Dictionary<Identity, Map> maps, Identity identity)
+            {
+                if (interests.TryGetValue(identity, out Map map))
+                {
+                    counts[identity] += map.componentCount;
+                    map.componentCount = 0;
+                }
+            }
+            public void CalculateVectors()
+            {
+                vectors.Clear();
+                counts.Clear();
+                for (int i = 0; i < resolution; i++)
+                {
+                    CalculateVector(interests, POS, i);
+                    CalculateVector(dangers, NEG, i);
+                }
+                foreach (Identity identity in vectors.Keys)
+                {
+                    counts[identity] = 0;
+                    SumComponentCount(interests, identity);
+                }
+                foreach (Identity identity in counts.Keys)
+                {
+                    if (counts[identity] > 0)
+                        vectors[identity] /= counts[identity];
+                }
+            }
+
+            // Map Totals
+            public float MapTotal(Dictionary<Identity, Map> maps, int idx)
+            {
+                float total = 0f;
+                int count = 0;
+                foreach (Identity identity in maps.Keys)
+                {
+                    total += maps[identity][idx];
+                    count += maps[identity].componentCount;
+                }
+                return count > 0 ? total/count : 0;
+            }
+            public float this[int i, int j] { get => MapTotal(this[i], j); }
+
+            // Max Value
             public float MaxValue()
             {
-                float interestMax = Mathf.Max(interests.dirs);
-                float dangerMax = Mathf.Max(dangers.dirs);
-                return Mathf.Max(interestMax, dangerMax);
+                float max = 0;
+                for (int j = 0; j < resolution; j++)
+                {
+                    float iSum = 0f;
+                    int iCount = 0;
+                    float dSum = 0f;
+                    float dCount = 0;
+                    for (int i = 0; i < identities.Count; i++)
+                    {
+                        Identity identity = identities[i];
+                        if (interests.TryGetValue(identity, out Map map))
+                        {
+                            iSum += map[j];
+                            iCount += map.componentCount;
+                        }
+                        if (dangers.TryGetValue(identity, out map))
+                        {
+                            dSum += map[j];
+                            dCount += map.componentCount;
+                        }
+                    }
+                    if (iCount > 0)
+                        max = Mathf.Max(max, iSum/iCount);
+                    if (dCount > 0)
+                        max = Mathf.Max(max, dSum/dCount);
+                }
+                return max;
+            }
+
+            // Sign
+            public sbyte Sign(int idx)
+            {
+                return idx switch
+                {
+                    0 => POS,
+                    1 => NEG,
+                    _ => NA
+                };
             }
         }
 
