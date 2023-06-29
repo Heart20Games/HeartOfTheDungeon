@@ -35,7 +35,7 @@ namespace Body
 
         // Castables
         public Loadout loadout;
-        public Vector3 weaponOffset = Vector3.up;
+        public Transform weaponOffset;
 
         // Identity
         public Identity identity = Identity.Neutral;

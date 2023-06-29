@@ -99,7 +99,7 @@ public class Castable : BaseMonoBehaviour, ICastable
             if (target is IPositionable positionable)
             {
                 positionable.SetOrigin(effectParent, source.body);
-                positionable.SetOffset(source.weaponOffset, rOffset);
+                positionable.SetOffset(source.weaponOffset.localPosition, rOffset);
             }
         }
     } 

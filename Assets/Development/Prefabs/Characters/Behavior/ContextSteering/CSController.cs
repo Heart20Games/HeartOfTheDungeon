@@ -76,7 +76,7 @@ namespace Body.Behavior.ContextSteering
         // Generated
         private readonly List<Transform> obstacles = new();
         public readonly List<Context> activeContexts = new();
-        private Maps Maps { get; } = new((float[])null, null);
+        private Maps Maps { get; } = new(null, null);
 
         // Debug
         private readonly float ResultRadius = 0.5f;
@@ -148,43 +148,17 @@ namespace Body.Behavior.ContextSteering
         public Vector3 GetVector()
         {
             Vector3 vector = new();
-            Map interests = Maps.interests;
-            Map dangers = Maps.dangers;
-            int componentCount = interests.componentCount + dangers.componentCount;
-            if (componentCount > 0)
-            {
-                for (int i = 0; i < resolution; i++)
-                {
-                    Assert.IsFalse(float.IsNaN(interests[i]));
-                    Assert.IsFalse(float.IsNaN(dangers[i]));
-                    vector += (interests[i]) * interests.sign * Baseline[i];
-                    vector += (dangers[i]) * dangers.sign * Baseline[i];
-                    if (debug)
-                    {
-                        if (interests[i] != 0 && dangers[i] != 0)
-                            print($"Found interest or danger. (interest:{interests[i]}, danger:{dangers[i]}");
-                        if (interests.sign == 0 || dangers.sign == 0)
-                            Debug.LogWarning("Interests and Dangers should be negative or positive, not zero.");
-                        if (Baseline[i].magnitude == 0)
-                            Debug.LogWarning("Baseline value should never be zero.");
-                        Debug.DrawRay(transform.position, vector*2, Color.white, Time.fixedDeltaTime);
-                    }
-                    interests[i] = 0f;
-                    dangers[i] = 0f;
-                }
-                vector /= componentCount;
+            Maps.CalculateVectors();
+            Dictionary<Identity, Vector3> vectors = Maps.vectors;
 
-                interests.ResetComponentCount();
-                dangers.ResetComponentCount();
-            }
-            else
-            {
-                for (int i = 0; i < resolution; i++)
-                {
-                    Assert.IsTrue(interests[i] == 0 && dangers[i] == 0);
-                }
-                Assert.IsTrue(interests.componentCount == 0 && dangers.componentCount == 0);
-            }
+            foreach (Identity identity in vectors.Keys)
+                vector += vectors[identity];
+
+            if (vectors.Count > 0)
+                vector /= vectors.Count;
+
+            Assert.IsFalse(float.IsNaN(vector.x) || float.IsNaN(vector.y) || float.IsNaN(vector.z));
+
             return vector;
         }
 
@@ -278,14 +252,14 @@ namespace Body.Behavior.ContextSteering
 
                     // Map w/ Falloff
                     float falloff = (cVector.falloff / 360) * resolution;
-                    MapToSlots(weight, vector, falloff);
+                    MapType type = weight < 0 ? MapType.Danger : MapType.Interest;
+                    MapToSlots(weight, vector, falloff, Maps[type, context.identity]);
                 }
             }
         }
 
-        private void MapToSlots(float weight, Vector2 vector, float falloff)
+        private void MapToSlots(float weight, Vector2 vector, float falloff, Map map)
         {
-            Map map = weight < 0 ? Maps.dangers : Maps.interests;
             weight *= map.sign;
 
             // Angle / Slot
@@ -373,15 +347,15 @@ namespace Body.Behavior.ContextSteering
                 float maxValue = Maps.MaxValue();
                 for (int i = 0; i < Maps.Length; i++)
                 {
-                    Map map = Maps[i];
-                    if (!map.IsZero())
+                    if (Maps[i].Count > 0)
                     {
                         for (int j = 0; j < resolution; j++)
                         {
-                            if (map[j] > 0)
+                            float total = Maps[i, j];
+                            if (total > 0)
                             {
-                                Assert.IsTrue(map[j] <= maxValue);
-                                DrawPart(map.sign, Baseline[j], 0f, ResultRadius, Mathf.Lerp(0f, ResultRadius, map[j] / maxValue));
+                                Assert.IsTrue(total <= maxValue);
+                                DrawPart(Maps.Sign(i), Baseline[j], 0f, ResultRadius, Mathf.Lerp(0f, ResultRadius, total / maxValue));
                             }
                         }
                     }
