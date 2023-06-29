@@ -48,6 +48,7 @@ public class ProjectileSpawner : Positionable, ICollidables
 
     public void Spawn(Vector3 direction=new Vector3())
     {
+        pivot.localPosition = offset;
         Transform pInstance = Instantiate(pivot, source);
         pInstance.gameObject.SetActive(true);
         Projectile bInstance = projectile;

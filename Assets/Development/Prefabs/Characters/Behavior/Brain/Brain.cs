@@ -95,27 +95,12 @@ namespace Body.Behavior
             agent.baseOffset = baseOffset;
             controller.Context.castableContext = castableMap;
             if (target != null)
-            {
                 Target = target;
-            }
             if (tree != null)
-            {
                 root = tree.GenerateTree(this);
-            }
             if (agent != null && modifiers != null)
-            {
                 modifiers.InitializeBrain(this);
-            }
             Alive = true;
-            //Debug.Log("Tree Name: " + root.name);
-
-            //SelectorNode hasTarget = new SelectorNode("Has Target");
-            //LeafNode idle = new LeafNode("Idle", Idle);
-            //LeafNode interest = new LeafNode("Chase", Chase);
-
-            //tree.AddChild(hasTarget);
-            //hasTarget.AddChild(interest);
-            //hasTarget.AddChild(idle);
 
             if (debug) root.PrintTree();
             Enabled = Enabled;
@@ -146,15 +131,15 @@ namespace Body.Behavior
         public void RegisterCastable(CastableItem item)
         {
             if (debug) print("Register Castable: " + item.name);
+            
             if (!castableMap.TryGetValue(item.context.identity, out List<Context> contexts))
             {
                 contexts = new();
                 castableMap.Add(item.context.identity, contexts);
             }
+
             if (!contexts.Contains(item.context))
-            {
                 contexts.Add(item.context);
-            }
         }
 
         // Target
@@ -231,8 +216,7 @@ namespace Body.Behavior
             if (!useAgent)
             {
                 if (debug) print("Trying to attack");
-                character.AimCharacter(-controller.CurrentVector, true);
-                //character.ActivateCastable((int)Game.CastableIdx.Weapon1);
+                character.AimCharacter(-controller.CurrentVector.normalized, true);
 
                 int closest = int.MaxValue;
                 int closestIdx = -1;
@@ -242,7 +226,10 @@ namespace Body.Behavior
                     if (item != null && controller.HasActiveContext(item.context))
                     {
                         if (item.context.vector.deadzone.y < closest)
+                        {
+                            closest = (int)item.context.vector.deadzone.y;
                             closestIdx = i;
+                        }
                     }
                 }
                 if (closestIdx >= 0)

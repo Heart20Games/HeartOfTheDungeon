@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Body;
+using UnityEngine.Assertions;
 
 public class Movement : BaseMonoBehaviour, ITimeScalable
 {
@@ -94,6 +95,7 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
             {
                 modifier = npcModifier;
                 Vector3 direction = moveVector.FullY();
+                Assert.IsFalse(float.IsNaN(direction.x) || float.IsNaN(direction.y) || float.IsNaN(direction.z));
                 Debug.DrawRay(character.body.position, direction, Color.green, Time.fixedDeltaTime);
                 myRigidbody.AddForce(modifier * speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
             }

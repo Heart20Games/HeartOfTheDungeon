@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.VisualScripting.Member;
 
 public class ArtRenderer : MonoBehaviour
 {
@@ -7,6 +8,9 @@ public class ArtRenderer : MonoBehaviour
 
     public Transform baseArt;
     public Material baseMaterial;
+
+    [Header("Equipment")]
+    public Transform weaponHand;
 
     [Header("Animation")]
     public Animator animator;
@@ -59,6 +63,18 @@ public class ArtRenderer : MonoBehaviour
         for (int i = 0; i < animationParameters.Count; i++)
         {
             parameterExists[animationParameters[i]] = animator.HasParameter(animationParameters[i]);
+        }
+    }
+
+
+    // Equipment
+    public void DisplayWeapon(Transform weaponArt)
+    {
+        if (weaponHand != null && weaponArt)
+        {
+            Vector3 weaponLocalPosition = weaponArt.localPosition;
+            weaponArt.SetParent(weaponHand, false);
+            weaponArt.localPosition = weaponLocalPosition;
         }
     }
 
