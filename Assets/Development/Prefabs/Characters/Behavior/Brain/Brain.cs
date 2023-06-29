@@ -216,8 +216,7 @@ namespace Body.Behavior
             if (!useAgent)
             {
                 if (debug) print("Trying to attack");
-                character.AimCharacter(-controller.CurrentVector, true);
-                //character.ActivateCastable((int)Game.CastableIdx.Weapon1);
+                character.AimCharacter(-controller.CurrentVector.normalized, true);
 
                 int closest = int.MaxValue;
                 int closestIdx = -1;
@@ -227,7 +226,10 @@ namespace Body.Behavior
                     if (item != null && controller.HasActiveContext(item.context))
                     {
                         if (item.context.vector.deadzone.y < closest)
+                        {
+                            closest = (int)item.context.vector.deadzone.y;
                             closestIdx = i;
+                        }
                     }
                 }
                 if (closestIdx >= 0)

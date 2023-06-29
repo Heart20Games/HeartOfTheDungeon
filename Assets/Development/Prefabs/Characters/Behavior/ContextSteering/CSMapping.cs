@@ -68,19 +68,15 @@ namespace Body.Behavior.ContextSteering
                 this.sign = sign;
                 valid = true;
             }
+            
             public float[] dirs;
             public int componentCount;
             public sbyte sign;
             public bool valid;
             public int Length => dirs.Length;
-            public void IncrementComponentCount()
-            {
-                componentCount += 1;
-            }
-            public void ResetComponentCount()
-            {
-                componentCount = 0;
-            }
+
+            public void IncrementComponentCount() { componentCount += 1; }
+            public void ResetComponentCount() { componentCount = 0; }
             public float this[int index]
             {
                 get { return dirs[index]; }
@@ -105,14 +101,8 @@ namespace Body.Behavior.ContextSteering
                 }
                 componentCount = 0;
             }
-            public new string ToString()
-            {
-                return dirs.ToString();
-            }
-            public float MaxValue()
-            {
-                return Mathf.Max(dirs);
-            }
+            public new string ToString() { return dirs.ToString(); }
+            public float MaxValue() { return Mathf.Max(dirs); }
         }
 
         [Serializable]
@@ -126,6 +116,7 @@ namespace Body.Behavior.ContextSteering
                 this.counts = new();
                 this.identities = new();
             }
+            
             public Dictionary<Identity, Map> interests;
             public Dictionary<Identity, Map> dangers;
             public Dictionary<Identity, Vector3> vectors;
@@ -134,30 +125,8 @@ namespace Body.Behavior.ContextSteering
             public int Length => 2;
 
             // Indexing
-            public Dictionary<Identity, Map> this[int i]
-            {
-                get
-                {
-                    return i switch
-                    {
-                        0 => interests,
-                        1 => dangers,
-                        _ => null,
-                    };
-                }
-            }
-            public Dictionary<Identity, Map> this[MapType type]
-            {
-                get
-                {
-                    return type switch
-                    {
-                        MapType.Interest => interests,
-                        MapType.Danger => dangers,
-                        _ => null,
-                    };
-                }
-            }
+            public Dictionary<Identity, Map> this[int i] { get { return i switch { 0 => interests, 1 => dangers, _ => null, }; } }
+            public Dictionary<Identity, Map> this[MapType type] { get { return type switch { MapType.Interest => interests, MapType.Danger => dangers, _ => null, }; } }
             public Map this[MapType type, Identity identity]
             {
                 get
@@ -231,14 +200,7 @@ namespace Body.Behavior.ContextSteering
                 }
                 return count > 0 ? total/count : 0;
             }
-            public float this[int i, int j]
-            {
-                get
-                {
-                    Dictionary<Identity, Map> maps = this[i];
-                    return MapTotal(maps, j);
-                }
-            }
+            public float this[int i, int j] { get => MapTotal(this[i], j); }
 
             // Max Value
             public float MaxValue()
