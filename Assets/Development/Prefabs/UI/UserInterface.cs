@@ -20,6 +20,11 @@ public class UserInterface : BaseMonoBehaviour
         dialogueCanvas.gameObject.SetActive(false);
     }
 
+    public void SetDialogueActive(bool active)
+    {
+        dialogueCanvas.gameObject.SetActive(active);
+    }
+
     public void SetCharacter(Body.Character character)
     {
         controlledCharacter = character;
@@ -30,11 +35,8 @@ public class UserInterface : BaseMonoBehaviour
 
     }
 
-    public void OnContinue(InputValue inputValue)
+    public void Continue()
     {
-        if (inputValue.isPressed)
-        {
-            onContinue.Invoke();
-        }
+        onContinue.Invoke();
     }
 }

@@ -5,11 +5,12 @@ using UnityEngine.Events;
 using static ISelectable;
 
 public class Impact : BaseMonoBehaviour
-{   
+{
     // Properties
 
     public List<string> desiredTags;
     [SerializeField] private List<SelectType> selectableTypes;
+    public bool desireInteractors = false;
     public List<SelectType> SelectableTypes { get { return selectableTypes; } set { SetSelectableTypes(value); } }
 
     public BinaryEvent onCollision;
@@ -54,12 +55,17 @@ public class Impact : BaseMonoBehaviour
         else return true;
     }
 
+    private bool IsValidInteractor(GameObject other)
+    {
+        return !desireInteractors || (other.TryGetComponent<Interactor>(out var interactor) && interactor.enabled);
+    }
+
     // Events
 
     private void OnEventEnter(GameObject other, UnityEvent onEvent)
     {
         this.other = other;
-        if (HasValidTag(other) && IsValidSelectable(other) && !touching.Contains(other))
+        if (HasValidTag(other) && IsValidSelectable(other) && IsValidInteractor(other) && !touching.Contains(other))
         {
             touching.Add(other);
             onEvent.Invoke();
@@ -69,7 +75,7 @@ public class Impact : BaseMonoBehaviour
     private void OnEventExit(GameObject other, UnityEvent onEvent)
     {
         this.other = other;
-        if (HasValidTag(other) && IsValidSelectable(other))
+        if (HasValidTag(other) && IsValidSelectable(other) && IsValidInteractor(other))
         {
             if (touching.Contains(other))
             {
