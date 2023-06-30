@@ -25,6 +25,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _RECEIVE_SHADOWS_OFF
   - _SPECULAR_SETUP
   m_InvalidKeywords: []
   m_LightmapFlags: 2
@@ -33,11 +34,16 @@ Material:
   m_CustomRenderQueue: 2000
   stringTagMap:
     RenderType: Opaque
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - SHADOWCASTER
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Texture:
+        m_Texture: {fileID: 2800000, guid: 8a0adbef38e50fa4794fc12d0b0ce848, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -56,24 +62,25 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
-    - _BottomLine: 0.8
-    - _CastShadows: 1
+    - _BottomLine: 0.55
+    - _CastShadows: 0
     - _Cull: 2
     - _DstBlend: 0
+    - _ExternalTexture: 1
     - _Metallic: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _ReceiveShadows: 1
+    - _ReceiveShadows: 0
     - _Smoothness: 0
     - _SrcBlend: 1
     - _Surface: 0
-    - _TopLine: 0.3
+    - _TopLine: 0.6
     - _WorkflowMode: 0
     - _ZTest: 4
     - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
-    - _BaseColor: {r: 0, g: 0, b: 0, a: 0}
-    - _BottomColor: {r: 0.5262233, g: 0.4932904, b: 1.4660408, a: 0}
-    - _TopColor: {r: 0, g: 20.08811, b: 1.6827722, a: 0}
+    - _BaseColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 0}
+    - _BottomColor: {r: 0.0074839005, g: 0.47597915, b: 0.09270632, a: 0}
+    - _TopColor: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []

@@ -64,7 +64,7 @@ public class HUD : BaseMonoBehaviour
     }
 
 
-    // Selection
+    //Selection
 
     public void CharacterSelect(Character character)
     {
