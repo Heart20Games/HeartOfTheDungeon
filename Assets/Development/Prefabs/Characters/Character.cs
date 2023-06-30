@@ -86,8 +86,11 @@ namespace Body
             get { return currentHealth.Value; }
             set { SetCurrentHealth(value); }
         }
+
+        // Events
         public UnityEvent onDeath;
         public UnityEvent onDmg;
+        public UnityEvent<bool> onControl;
 
 
         // Initialization
@@ -163,6 +166,7 @@ namespace Body
             SetComponentActive(moveReticle, _controllable);
             SetComponentActive(virtualCamera, _controllable);
             SetBehaviourEnabled(interactor, _controllable);
+            onControl.Invoke(_controllable);
         }
 
         public void SetBehaviourEnabled(Behaviour behaviour, bool _enabled)
