@@ -23,6 +23,7 @@ public class Game : BaseMonoBehaviour
     public string characterInputMap = "GroundMovement";
     public string selectorInputMap = "Selector";
     public string dialogueInputMap = "Dialogue";
+    public string dismissInputMap = "Dismiss";
     public GameSettings settings = new();
     [HideInInspector] public UserInterface userInterface;
     [HideInInspector] public HUD hud;
@@ -39,7 +40,7 @@ public class Game : BaseMonoBehaviour
     public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
     
     // Game Mode
-    public enum GameMode { Selection, Character, Dialogue };
+    public enum GameMode { Selection, Character, Dialogue, Dismiss };
     private GameMode mode = GameMode.Character;
     public GameMode Mode { get { return mode; } set { SetMode(value); } }
 
@@ -110,19 +111,25 @@ public class Game : BaseMonoBehaviour
         switch (this.mode)
         {
             case GameMode.Character:
+                userInterface.SetHudActive(false);
                 SetControllable(curCharacter, false); break;
             case GameMode.Selection:
+                userInterface.SetHudActive(false);
                 SetControllable(selector, false); break;
             case GameMode.Dialogue:
                 userInterface.SetDialogueActive(false); break;
+            case GameMode.Dismiss:
+                userInterface.SetControlScreenActive(false); break;
         }
         switch (mode)
         {
             case GameMode.Character:
+                userInterface.SetHudActive(true);
                 input.SwitchCurrentActionMap(characterInputMap);
                 TimeScale = 1;
                 SetControllable(curCharacter, true); break;
             case GameMode.Selection:
+                userInterface.SetHudActive(true);
                 input.SwitchCurrentActionMap(selectorInputMap);
                 if (selector != null && curCharacter != null)
                 {
@@ -132,7 +139,12 @@ public class Game : BaseMonoBehaviour
                 SetControllable(selector, true); break;
             case GameMode.Dialogue:
                 userInterface.SetDialogueActive(true);
+                TimeScale = 0f;
                 input.SwitchCurrentActionMap(dialogueInputMap); break;
+            case GameMode.Dismiss:
+                userInterface.SetControlScreenActive(true);
+                TimeScale = 0f;
+                input.SwitchCurrentActionMap(dismissInputMap); break;
         }
         this.mode = mode;
     }
@@ -308,6 +320,24 @@ public class Game : BaseMonoBehaviour
         {
             Mode = mode == GameMode.Character ? GameMode.Selection : GameMode.Character;
             hud.abilityMenu.Toggle();
+        }
+    }
+
+    // Control Screen
+
+    public void OnToggleControls(InputValue inputValue)
+    {
+        if (inputValue.isPressed)
+        {
+            Mode = GameMode.Dismiss;
+        }
+    }
+
+    public void OnDismiss(InputValue inputValue)
+    {
+        if (inputValue.isPressed)
+        {
+            Mode = GameMode.Character;
         }
     }
 
