@@ -2,6 +2,7 @@ using Body.Behavior.ContextSteering;
 using System.Collections.Generic;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.Assertions;
 using static Body.Behavior.ContextSteering.CSContext;
 using static Body.Behavior.ContextSteering.CSIdentity;
 
@@ -20,7 +21,10 @@ public class FullContext
     {
         if (!initialized)
         {
-            baseContext ??= preset.GetContext().ContextMap; //Body.Behavior.Brain.Action.Chase, debug).ContextMap;
+            Assert.IsTrue(preset != null);
+            CSContext csContext = preset.GetContext();
+            Assert.IsTrue(csContext != null);
+            baseContext ??= csContext.ContextMap; //Body.Behavior.Brain.Action.Chase, debug).ContextMap;
             initialized = true;
         }
         return this;
