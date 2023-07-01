@@ -34,6 +34,9 @@ public class Talker : BaseMonoBehaviour
     public void CompleteTalking()
     {
         dialogueRunner.onDialogueComplete.RemoveListener(CompleteTalking);
+        game.Mode = prevMode;
+        if (virtualCamera != null)
+            virtualCamera.SetActive(false);
         onDoneTalking.Invoke();
     }
     public void Talk() { Talk(targetNode); }
@@ -52,9 +55,7 @@ public class Talker : BaseMonoBehaviour
             else
             {
                 if (virtualCamera != null)
-                {
                     virtualCamera.SetActive(true);
-                }
                 prevMode = game.Mode;
                 game.Mode = GameMode.Dialogue;
                 dialogueRunner.Stop();
