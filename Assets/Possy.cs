@@ -7,6 +7,7 @@ public class Possy : BaseMonoBehaviour
 {
     public Character leader;
     public List<Character> characters = new();
+    public List<Character> pets = new();
     public bool aggroed;
     public UnityEvent onAggro;
     public UnityEvent onAllDead;
