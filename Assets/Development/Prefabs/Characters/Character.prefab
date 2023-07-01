@@ -147,15 +147,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 15000
   maxVelocity: 3
-  npcModifier: 1
   footstepVelocity: 1
   moveDrag: 0.5
-  stopDrag: 7.5
+  stopDrag: 75
   canMove: 1
   applyGravity: 1
   normalForce: 0
   gravityForce: 1
   groundDistance: 0.25
+  npcModifier: 1
+  moveVector: {x: 0, y: 0}
   castVector: {x: 0, y: 0}
   OnSetCastVector:
     m_PersistentCalls:
@@ -291,6 +292,10 @@ MonoBehaviour:
   alive: 1
   destinationStep: {x: 0, y: 0, z: 0}
   destinationDistance: 0
+  destinationDistanceScale: 0.75
+  debug: 0
+  currentVector: {x: 0, y: 0}
+  moveSelf: 0
   onSetVector:
     m_PersistentCalls:
       m_Calls:
@@ -306,8 +311,16 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  moveSelf: 0
-  debug: 0
+  useNoise: 1
+  scaleOnDelta: 0
+  factorInPosition: 0
+  factorInTime: 1
+  noiseWeight: 1
+  noiseScale: 0.05
+  noiseCutoff: 0.2
+  noiseAmount: 0
+  noiseColor: {r: 0, g: 0, b: 0, a: 1}
+  activeContexts: []
 --- !u!114 &4630028532720471171
 MonoBehaviour:
   m_ObjectHideFlags: 0
