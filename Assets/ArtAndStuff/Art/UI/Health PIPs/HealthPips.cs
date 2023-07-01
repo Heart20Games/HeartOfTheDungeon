@@ -63,7 +63,6 @@ public class HealthPips : Health
         {
             for (int i = 0; i < damage; i++)
             {
-                print($"Idx: {i}");
                 pipAnimator[i].SetBool("IsDamaged", true);
                 lastDamaged = i;
             }
