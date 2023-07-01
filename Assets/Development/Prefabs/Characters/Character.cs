@@ -140,6 +140,7 @@ namespace Body
         {
             foreach (Status status in statuses)
             {
+                Assert.IsFalse(status.effect == null);
                 status.effect.Tick(status.strength, this);
             }
         }
