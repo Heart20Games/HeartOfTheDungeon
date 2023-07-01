@@ -15,6 +15,7 @@ namespace Body.Behavior.ContextSteering
     public class CSController : BaseMonoBehaviour
     {
         // Presets
+        [Header("Preset")]
         [ScriptableObjectDropdown(typeof(CSPreset), grouping = ScriptableObjectGrouping.ByFolderFlat)]
         public ScriptableObjectReference preset;
         public CSPreset Preset { get { return (CSPreset)preset.value; } set { preset.value = value; } }
@@ -23,19 +24,17 @@ namespace Body.Behavior.ContextSteering
         private readonly FullContext context = new();
         public FullContext Context { get { return context.initialized ? context : context.Initialize(Preset); } }
 
-        // Parts
+        // Scaling
         public float scale = 0f;
         public float Scale { get { return scale == 0 ? (Preset.scale == 0 ? 1f : Preset.scale) : scale; } }
-        public float Speed => Preset.testSpeed;
         public float DrawScale => Preset.drawScale;
         public bool DrawRays => Preset.draw;
-        public Identity identity = Identity.Neutral;
-        //public Identity Identity { get => Preset.Identity; }
 
-        // Initialization
-        private Rigidbody rigidbody;
+        // Identity
+        public Identity identity = Identity.Neutral;
 
         // Active
+        [Header("State")]
         [SerializeField] private bool active = false;
         public bool Active
         { 
@@ -59,32 +58,45 @@ namespace Body.Behavior.ContextSteering
         }
 
         // Destination
+        [Header("Destination")]
         [SerializeField] private Vector3 destinationStep = new();
         [SerializeField] private float destinationDistance = 0f;
+        public float destinationScale = 1f;
         public void SetDestination(Vector3 step, float distance)
         {
             destinationStep = step;
             destinationDistance = distance;
         }
 
-        // Vector
-        private Vector2 currentVector;
-        public Vector2 CurrentVector { get => currentVector; set { currentVector = value; onSetVector.Invoke(currentVector); } }
-        public UnityEvent<Vector2> onSetVector;
-        public bool moveSelf = true;
-
-        // Generated
-        private readonly List<Transform> obstacles = new();
-        public readonly List<Context> activeContexts = new();
-        private Maps Maps { get; } = new(null, null);
-
         // Debug
+        [Header("Debugging")]
+        public bool debug = false;
         private readonly float ResultRadius = 0.5f;
         private readonly float CircleRadius = 0.55f;
         private readonly float SourceRadius = 0.15f;
         private readonly float ActualRadius = 0.05f;
+        
+        // Vector
+        [Header("Movement")]
+        [SerializeField] private Vector2 currentVector;
+        public Vector2 CurrentVector { get => currentVector; set { currentVector = value; onSetVector.Invoke(currentVector); } }
+        public float Speed => Preset.testSpeed;
+        public bool moveSelf = true;
+        private Rigidbody rigidbody;
+        public UnityEvent<Vector2> onSetVector;
 
-        public bool debug = false;
+        [Header("Noise")]
+        public MovementNoise noise;
+        public bool useNoise = false;
+        private float noiseOffset;
+
+        // Generated
+        [Header("Context Data")]
+        public List<Context> activeContexts = new();
+        private readonly List<Transform> obstacles = new();
+        private Maps Maps { get; } = new(null, null);
+        public UnityEvent onFoeContextActive;
+
 
         // Initialize
         private void Awake()
@@ -93,6 +105,7 @@ namespace Body.Behavior.ContextSteering
             context.debug = debug;
             Active = Active;
             Alive = Alive;
+            noiseOffset = Random.value * 1000;
         }
 
         // Active Contexts
@@ -126,7 +139,7 @@ namespace Body.Behavior.ContextSteering
                 if (destinationDistance > 0)
                 {
                     Vector2 destinationVector = (destinationStep - transform.position).XZVector();
-                    MapTo(destinationVector, Identity.Target, destinationDistance);
+                    MapTo(destinationVector, Identity.Target, destinationDistance * destinationScale);
                 }
                 DrawMaps();
                 Vector3 vector = GetVector();
@@ -156,6 +169,11 @@ namespace Body.Behavior.ContextSteering
 
             if (vectors.Count > 0)
                 vector /= vectors.Count;
+
+            if (useNoise && noise != null)
+            {
+                noise.ApplyNoise(ref vector, noiseOffset);
+            }
 
             Assert.IsFalse(float.IsNaN(vector.x) || float.IsNaN(vector.y) || float.IsNaN(vector.z));
 
@@ -227,6 +245,8 @@ namespace Body.Behavior.ContextSteering
                 if (!activeContexts.Contains(context))
                 {
                     activeContexts.Add(context);
+                    if (context.identity == Identity.Foe)
+                        onFoeContextActive.Invoke();
                 }
 
                 // Distance and Range

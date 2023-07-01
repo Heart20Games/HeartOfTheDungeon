@@ -7,6 +7,7 @@ using UnityEngine.Events;
 namespace Body
 {
     using Behavior;
+    using Body.Behavior.ContextSteering;
     using System.Collections;
     using UnityEngine.TextCore.Text;
     using static Body.Behavior.ContextSteering.CSIdentity;
@@ -45,6 +46,7 @@ namespace Body
         // Behaviour
         [Header("Behaviour")]
         [HideInInspector] public Brain brain;
+        public CSController Controller { get => brain.controller; }
 
         // Castables
         [Header("Casting")]
