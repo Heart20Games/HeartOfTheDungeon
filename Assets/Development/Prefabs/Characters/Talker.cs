@@ -39,7 +39,7 @@ public class Talker : BaseMonoBehaviour
     public void Talk() { Talk(targetNode); }
     public void Talk(string targetNode)
     {
-        if (dialogueRunner != null)
+        if (enabled && dialogueRunner != null)
         {
             if (targetNode != "" && dialogueRunner.NodeExists(targetNode))
             {
