@@ -69,6 +69,7 @@ public class Possy : BaseMonoBehaviour
             aggroed = true;
             foreach (var character in characters)
             {
+                character.Controller.destinationScale = 1f;
                 character.Controller.useNoise = false;
             }
             onAggro.Invoke();
