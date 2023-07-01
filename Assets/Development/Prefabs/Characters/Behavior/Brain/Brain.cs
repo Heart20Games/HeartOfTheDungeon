@@ -46,9 +46,10 @@ namespace Body.Behavior
         }
 
         // Components
+        public CSController controller;
         private Character character;
+        private Transform body;
         [HideInInspector] public NavMeshAgent agent;
-        [HideInInspector] public CSController controller;
         [HideInInspector] private BalancedPathfinder pathFinder;
 
         // Agent
@@ -88,12 +89,20 @@ namespace Body.Behavior
         // Initialization
         private void Awake()
         {
-            character = GetComponent<Character>();
-            agent = character.body.GetComponent<NavMeshAgent>();
-            controller = character.body.GetComponent<CSController>();
-            pathFinder = character.body.GetComponent<BalancedPathfinder>();
-            agent.baseOffset = baseOffset;
-            controller.Context.castableContext = castableMap;
+            if (TryGetComponent(out character))
+            {
+                body = character.body;
+            }
+            if (body == null)
+                body = transform;
+            if (body != null)
+            {
+                if (body.TryGetComponent(out agent))
+                    agent.baseOffset = baseOffset;
+                if (body.TryGetComponent(out controller))
+                    controller.Context.castableContext = castableMap;
+                pathFinder = body.GetComponent<BalancedPathfinder>();
+            }
             if (target != null)
                 Target = target;
             if (tree != null)

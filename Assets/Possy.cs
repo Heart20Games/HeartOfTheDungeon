@@ -1,4 +1,5 @@
 using Body;
+using Body.Behavior;
 using Body.Behavior.ContextSteering;
 using System.Collections.Generic;
 using UnityEngine;
@@ -71,6 +72,10 @@ public class Possy : BaseMonoBehaviour
             {
                 character.Controller.destinationScale = 1f;
                 character.Controller.useNoise = false;
+            }
+            if (mainPossy != this && followTarget.TryGetComponent(out Brain brain))
+            {
+                brain.Target = mainPossy.followTarget;
             }
             onAggro.Invoke();
         }
