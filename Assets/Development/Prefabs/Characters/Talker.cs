@@ -39,9 +39,17 @@ public class Talker : BaseMonoBehaviour
     public void Talk() { Talk(targetNode); }
     public void Talk(string targetNode)
     {
-        if (enabled && dialogueRunner != null)
+        if (enabled)
         {
-            if (targetNode != "" && dialogueRunner.NodeExists(targetNode))
+            if (dialogueRunner == null)
+            {
+                Debug.LogWarning("No Dialogue Runner to Start Talking");
+            }
+            else if (targetNode == "" || !dialogueRunner.NodeExists(targetNode))
+            {
+                Debug.LogWarning($"No target node '{targetNode}' exists. ({name})");
+            }
+            else
             {
                 if (virtualCamera != null)
                 {
@@ -55,14 +63,6 @@ public class Talker : BaseMonoBehaviour
                 dialogueRunner.StartDialogue(targetNode);
                 onStartTalking.Invoke();
             }
-            else
-            {
-                Debug.LogWarning($"No target node '{targetNode}' exists. ({name})");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("No Dialogue Runner to Start Talking");
         }
     }
 

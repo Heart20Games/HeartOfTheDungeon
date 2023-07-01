@@ -48,7 +48,7 @@ namespace Body.Behavior
         // Components
         private Character character;
         [HideInInspector] public NavMeshAgent agent;
-        [HideInInspector] private CSController controller;
+        [HideInInspector] public CSController controller;
         [HideInInspector] private BalancedPathfinder pathFinder;
 
         // Agent

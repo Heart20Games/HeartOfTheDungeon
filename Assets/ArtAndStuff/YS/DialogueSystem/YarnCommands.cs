@@ -7,7 +7,7 @@ using Yarn.Unity;
 
 public class YarnCommands : BaseMonoBehaviour
 {
-    private InMemoryVariableStorage storage;
+    public InMemoryVariableStorage storage;
 
     // Rooms
     [SerializeField] YarnRooms rooms;
@@ -25,7 +25,7 @@ public class YarnCommands : BaseMonoBehaviour
 
     private void Start()
     {
-        storage = GetComponent<InMemoryVariableStorage>();;
+        if (storage == null) storage = GetComponent<InMemoryVariableStorage>();;
         Dictionary<string, float> tempFloats = new();
         Dictionary<string, bool> tempBools = new();
         storage.SetAllVariables(tempFloats, rooms.bank, tempBools);

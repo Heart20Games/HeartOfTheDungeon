@@ -8,9 +8,9 @@ using UnityEngine.Assertions;
 
 public class Movement : BaseMonoBehaviour, ITimeScalable
 {
+    [Header("Physics")]
     public float speed = 700f;
     public float maxVelocity = 10f;
-    public float npcModifier = 0.5f;
     public float footstepVelocity = 1f;
     public float moveDrag = 0.5f;
     public float stopDrag = 7.5f;
@@ -20,10 +20,13 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     public float gravityForce = 1f;
     public float groundDistance = 0.01f;
 
+    [Header("Scale")]
     private float timeScale = 1f;
     public float TimeScale { get => timeScale; set => timeScale=SetTimeScale(value); }
+    public float npcModifier = 0.5f;
 
-    private Vector2 moveVector = new(0,0);
+    [Header("Vectors")]
+    [SerializeField] private Vector2 moveVector = new(0,0);
     private Vector2 aimVector = new(0, 0);
     public Vector2 castVector = new(0, 0);
     private bool onGround = false;
