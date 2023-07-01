@@ -23,7 +23,7 @@ public class FullContext
         {
             Assert.IsTrue(preset != null);
             CSContext csContext = preset.GetContext();
-            Assert.IsTrue(csContext != null);
+            Assert.IsFalse(csContext == null);
             baseContext ??= csContext.ContextMap; //Body.Behavior.Brain.Action.Chase, debug).ContextMap;
             initialized = true;
         }
