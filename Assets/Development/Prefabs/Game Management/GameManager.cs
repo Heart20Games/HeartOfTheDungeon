@@ -307,7 +307,7 @@ public class Game : BaseMonoBehaviour
         if (settings.useD20Menu && inputValue.isPressed)
         {
             Mode = mode == GameMode.Character ? GameMode.Selection : GameMode.Character;
-            hud.AbilityToggle();
+            hud.abilityMenu.Toggle();
         }
     }
 
