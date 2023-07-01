@@ -21,30 +21,6 @@ MonoBehaviour:
       gradient: {x: 0, y: 2}
       deadzone: {x: 0, y: 2}
       falloff: 50
-  - name: FoeInRange
-    identity: 2
-    range: 3
-    vector:
-      weight: {x: 0, y: 0}
-      gradient: {x: 0, y: 0}
-      deadzone: {x: 0, y: 13}
-      falloff: 50
-  - name: FoeFar
-    identity: 2
-    range: 2
-    vector:
-      weight: {x: 1, y: 0}
-      gradient: {x: 7, y: 13}
-      deadzone: {x: 7, y: 13}
-      falloff: 50
-  - name: FoeClose
-    identity: 2
-    range: 1
-    vector:
-      weight: {x: -1, y: 0}
-      gradient: {x: 0, y: 5}
-      deadzone: {x: 0, y: 5}
-      falloff: 50
   - name: TargetFar
     identity: 4
     range: 0
@@ -52,4 +28,38 @@ MonoBehaviour:
       weight: {x: 0, y: 1}
       gradient: {x: 5, y: 10}
       deadzone: {x: 5, y: 1000}
+      falloff: 50
+  test:
+  - name: FoeClose
+    identity: 2
+    range: 1
+    vector:
+      weight: {x: -1, y: -0}
+      gradient: {x: 0, y: 5}
+      deadzone: {x: 0, y: 5}
+      falloff: 50
+  - name: FoeFar
+    identity: 2
+    range: 2
+    vector:
+      weight: {x: 0, y: 1}
+      gradient: {x: 7, y: 13}
+      deadzone: {x: 7, y: 13}
+      falloff: 50
+  - name: FoeInRange
+    identity: 2
+    range: 3
+    vector:
+      weight: {x: 0, y: 0}
+      gradient: {x: 0, y: 13}
+      deadzone: {x: 0, y: 13}
+      falloff: 50
+  generator:
+    generationData:
+    - identity: 2
+      range: {x: 0, y: 13}
+      magnetized: 0
+      deadzones:
+      - {x: 5, y: 1}
+      - {x: 10, y: 1}
       falloff: 50

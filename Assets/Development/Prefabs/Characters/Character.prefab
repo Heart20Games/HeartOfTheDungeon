@@ -75,22 +75,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   body: {fileID: 5106106832475441759}
   pivot: {fileID: 4813447189290614994}
-  artRenderer: {fileID: 4122626737896113915}
-  interactor: {fileID: 5701398888138556133}
-  weaponHand: {fileID: 0}
   moveReticle: {fileID: 8706531923607348711}
-  healthBar: {fileID: 6548638977744553781}
+  movement: {fileID: 0}
+  baseOffset: 0
+  controllable: 1
+  aimActive: 0
+  alive: 0
+  artRenderer: {fileID: 4122626737896113915}
   virtualCamera: {fileID: 3832840258595731421}
   characterUIElements: {fileID: 0}
-  brain: {fileID: 0}
-  movement: {fileID: 0}
+  interactor: {fileID: 5701398888138556133}
   talker: {fileID: 0}
-  attacker: {fileID: 0}
-  baseOffset: 0
+  brain: {fileID: 0}
   loadout: {fileID: 0}
   weaponOffset: {fileID: 844723266406932610}
+  attacker: {fileID: 0}
   identity: 0
   statuses: []
+  healthBar: {fileID: 6548638977744553781}
   alwaysHideHealth: 0
   hideHealthWaitTime: 15
   maxHealth:
@@ -115,9 +117,9 @@ MonoBehaviour:
   onDmg:
     m_PersistentCalls:
       m_Calls: []
-  controllable: 1
-  aimActive: 0
-  alive: 0
+  onControl:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1211649189196671348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,7 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 15000
   maxVelocity: 3
-  npcModifier: 0.5
+  npcModifier: 1
   footstepVelocity: 1
   moveDrag: 0.5
   stopDrag: 7.5

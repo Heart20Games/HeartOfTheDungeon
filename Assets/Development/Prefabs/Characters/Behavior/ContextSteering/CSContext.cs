@@ -16,6 +16,7 @@ namespace Body.Behavior.ContextSteering
         {
             defaultContext
         };
+        public List<Context> test = new();
         public static readonly Identity defaultIdentity = Identity.Neutral;
         public static readonly Range defaultRange = Range.None;
         public static readonly Vector2 defaultWeight = new(1f, 0f);
@@ -30,6 +31,9 @@ namespace Body.Behavior.ContextSteering
 
         public Dictionary<Identity, List<Context>> contextMap = null;
         public Dictionary<Identity, List<Context>> ContextMap { get { return contextMap ?? Initialize(); } }
+
+        public ContextGenerator generator = new();
+
 
         public void Awake()
         {
@@ -51,6 +55,9 @@ namespace Body.Behavior.ContextSteering
                 }
                 values.Add(context);
             }
+            generator.GenerateContexts(ref contextMap);
+            test.Clear();
+            generator.GenerateContexts(test);
             return ContextMap;
         }
 
@@ -66,6 +73,7 @@ namespace Body.Behavior.ContextSteering
         {
             return ContextMap.TryGetValue(identity, out result);
         }
+
 
         //public Contexts contexts = defaultContexts;
 
@@ -125,7 +133,7 @@ namespace Body.Behavior.ContextSteering
         {
             public Context(Identity identity, Range range, Vector2 weight, Vector2 gradient, Vector2 deadzone, float falloff)
             {
-                name = identity.ToString();
+                name = identity.ToString() + range.ToString();
                 this.identity = identity;
                 this.range = range;
                 this.vector = new(weight, gradient, deadzone, falloff);
