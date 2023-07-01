@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7089046255802975072}
+  - component: {fileID: 8451733738849401372}
   m_Layer: 0
   m_Name: Attack Clump
   m_TagString: Untagged
@@ -30,8 +31,31 @@ Transform:
   m_Children:
   - {fileID: 2030687909458231140}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8451733738849401372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8112543736919863584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398e3879a49b3434fb40b8d40289c18a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leader: {fileID: 0}
+  characters:
+  - {fileID: 985552254382301667}
+  aggroed: 0
+  onAggro:
+    m_PersistentCalls:
+      m_Calls: []
+  onAllDead:
+    m_PersistentCalls:
+      m_Calls: []
+  isMainPossy: 0
 --- !u!1001 &4181841340273424554
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -101,6 +125,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0780efc176abeba4e9ee960b551f95ca, type: 3}
+--- !u!114 &985552254382301667 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4009751812205746505, guid: 0780efc176abeba4e9ee960b551f95ca, type: 3}
+  m_PrefabInstance: {fileID: 4181841340273424554}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a77fa9df3c0af344f95e71811150e915, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2030687909458231140 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2749044532493043662, guid: 0780efc176abeba4e9ee960b551f95ca, type: 3}
