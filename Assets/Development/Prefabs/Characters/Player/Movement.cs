@@ -8,9 +8,9 @@ using UnityEngine.Assertions;
 
 public class Movement : BaseMonoBehaviour, ITimeScalable
 {
+    [Header("Physics")]
     public float speed = 700f;
     public float maxVelocity = 10f;
-    public float npcModifier = 0.5f;
     public float footstepVelocity = 1f;
     public float moveDrag = 0.5f;
     public float stopDrag = 7.5f;
@@ -20,10 +20,13 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     public float gravityForce = 1f;
     public float groundDistance = 0.01f;
 
+    [Header("Scale")]
     private float timeScale = 1f;
     public float TimeScale { get => timeScale; set => timeScale=SetTimeScale(value); }
+    public float npcModifier = 0.5f;
 
-    private Vector2 moveVector = new(0,0);
+    [Header("Vectors")]
+    [SerializeField] private Vector2 moveVector = new(0,0);
     private Vector2 aimVector = new(0, 0);
     public Vector2 castVector = new(0, 0);
     private bool onGround = false;
@@ -31,6 +34,7 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     private bool hasFootsteps = false;
     private Rigidbody myRigidbody;
     private Character character;
+    private Transform body;
     private Transform pivot;
     private ArtRenderer artRenderer;
 
@@ -39,10 +43,17 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
 
     private void Awake()
     {
-        character = GetComponent<Character>();
-        myRigidbody = character.body.GetComponent<Rigidbody>();
-        pivot = character.pivot;
-        artRenderer = character.artRenderer;
+        if (TryGetComponent(out character))
+        {
+            body = character.body;
+            pivot = character.pivot;
+            artRenderer = character.artRenderer;
+        }
+        if (body == null)
+            body = transform;
+        if (body != null)
+            myRigidbody = body.GetComponent<Rigidbody>();
+
     }
 
 
@@ -82,13 +93,13 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     {
         if (canMove)
         {
-            Vector3 cameraDirection = character.body.position - Camera.main.transform.position;
+            Vector3 cameraDirection = body.position - Camera.main.transform.position;
 
             float modifier = 1f;
-            if (character.controllable)
+            if (character != null && character.controllable)
             {
                 Vector3 direction = moveVector.Orient(cameraDirection).FullY();
-                Debug.DrawRay(character.body.position, direction * 3, Color.green, Time.fixedDeltaTime);
+                Debug.DrawRay(body.position, direction * 3, Color.green, Time.fixedDeltaTime);
                 myRigidbody.AddRelativeForce(speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
             }
             else
@@ -96,38 +107,41 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
                 modifier = npcModifier;
                 Vector3 direction = moveVector.FullY();
                 Assert.IsFalse(float.IsNaN(direction.x) || float.IsNaN(direction.y) || float.IsNaN(direction.z));
-                Debug.DrawRay(character.body.position, direction, Color.green, Time.fixedDeltaTime);
+                Debug.DrawRay(body.position, direction, Color.green, Time.fixedDeltaTime);
                 myRigidbody.AddForce(modifier * speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
             }
             
             if (myRigidbody.velocity.magnitude > maxVelocity * modifier)
                 myRigidbody.velocity = maxVelocity * modifier * myRigidbody.velocity.normalized;
 
-            Vector2 hVelocity = myRigidbody.velocity.XZVector();
-            Vector2 hCamera = cameraDirection.XZVector().normalized;
-            Vector2 right = Vector2.Perpendicular(hCamera);
-            if (hVelocity.magnitude > footstepVelocity)
+            if (artRenderer != null && pivot != null)
             {
-                float pMag = Mathf.Abs(pivot.localScale.x);
-                float sign = Mathf.Sign(Vector2.Dot(right, hVelocity));
-                pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
-
-                if (!hasFootsteps)
+                Vector2 hVelocity = myRigidbody.velocity.XZVector();
+                Vector2 hCamera = cameraDirection.XZVector().normalized;
+                Vector2 right = Vector2.Perpendicular(hCamera);
+                if (hVelocity.magnitude > footstepVelocity)
                 {
-                    artRenderer.Running = true;
-                    hasFootsteps = true;
+                    float pMag = Mathf.Abs(pivot.localScale.x);
+                    float sign = Mathf.Sign(Vector2.Dot(right, hVelocity));
+                    pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
+
+                    if (!hasFootsteps)
+                    {
+                        artRenderer.Running = true;
+                        hasFootsteps = true;
+                    }
+                } 
+                else if (hasFootsteps)
+                {
+                    artRenderer.Running = false;
+                    hasFootsteps = false;
                 }
-            } 
-            else if (hasFootsteps)
-            {
-                artRenderer.Running = false;
-                hasFootsteps = false;
             }
         }
 
         if (applyGravity)
         {
-            onGround = Physics.Raycast(character.body.transform.position, Vector3.down, groundDistance);
+            onGround = Physics.Raycast(body.transform.position, Vector3.down, groundDistance);
             float power = onGround ? normalForce : gravityForce;
             myRigidbody.AddForce(speed * timeScale * power * Time.fixedDeltaTime * Vector3.down);
         }

@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -9,6 +10,7 @@ public class Selector : BaseMonoBehaviour, IControllable
 {
     public Rigidbody myRigidbody;
     public Impact cursor;
+    public CinemachineVirtualCamera virtualCamera;
 
     public float speed = 700f;
     public float maxVelocity = 10f;
@@ -31,9 +33,7 @@ public class Selector : BaseMonoBehaviour, IControllable
     private void Awake()
     {
         if (myRigidbody == null)
-        {
             myRigidbody = GetComponent<Rigidbody>();
-        }
         Controllable = false;
     }
 
@@ -41,9 +41,9 @@ public class Selector : BaseMonoBehaviour, IControllable
     {
         hoveringOver.Clear();
         if (cursor != null && cursor.touching.Count > 0)
-        {
             cursor.touching.Clear();
-        }
+        if (virtualCamera != null)
+            virtualCamera.gameObject.SetActive(controllable);
         this.controllable = controllable;
         gameObject.SetActive(controllable);
         DeSelect();
