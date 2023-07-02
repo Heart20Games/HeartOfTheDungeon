@@ -18,6 +18,8 @@ namespace Body.Behavior
             get => enabled;
             set
             {
+                if (debug && !value)
+                    print("Brain disabled");
                 enabled = value;
                 if (agent != null) agent.enabled = useAgent && value;
                 if (controller != null) controller.Active = !useAgent && value;
@@ -42,15 +44,15 @@ namespace Body.Behavior
         public Transform Target
         {
             get => target;
-            set => target = (value.TryGetComponent(out Character targetChar) ? targetChar.body : value);
+            set => SetTarget(value);
         }
 
         // Components
         public CSController controller;
         private Character character;
         private Transform body;
-        [HideInInspector] public NavMeshAgent agent;
-        [HideInInspector] private BalancedPathfinder pathFinder;
+        public NavMeshAgent agent;
+        public BalancedPathfinder pathFinder;
 
         // Agent
         public float navUpdate = 1f;
@@ -89,6 +91,7 @@ namespace Body.Behavior
         // Initialization
         private void Awake()
         {
+            if (debug) print("Awake!");
             if (TryGetComponent(out character))
             {
                 body = character.body;
@@ -97,11 +100,12 @@ namespace Body.Behavior
                 body = transform;
             if (body != null)
             {
-                if (body.TryGetComponent(out agent))
+                if (agent == null && body.TryGetComponent(out agent))
                     agent.baseOffset = baseOffset;
-                if (body.TryGetComponent(out controller))
+                if (controller == null && body.TryGetComponent(out controller))
                     controller.Context.castableContext = castableMap;
-                pathFinder = body.GetComponent<BalancedPathfinder>();
+                if (pathFinder == null)
+                    body.TryGetComponent(out pathFinder);
             }
             if (target != null)
                 Target = target;
@@ -152,9 +156,13 @@ namespace Body.Behavior
         }
 
         // Target
-        public void SetTarget(Transform _target)
+        public void SetTarget(Transform target)
         {
-            target = _target;
+            this.target = (target.TryGetComponent(out Character targetChar) ? targetChar.body : target);
+            if (pathFinder != null)
+                pathFinder.target = this.target;
+            if (agent != null && agent.isActiveAndEnabled)
+                agent.destination = this.target.position;
         }
 
 

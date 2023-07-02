@@ -20,11 +20,14 @@ public class FullContext
     {
         if (!initialized)
         {
-            Assert.IsTrue(preset != null);
+            Assert.IsTrue(preset != null, "Preset is null when initializing FullContext.");
             CSContext csContext = preset.GetContext();
-            Assert.IsFalse(csContext == null);
-            baseContext ??= csContext.ContextMap; //Body.Behavior.Brain.Action.Chase, debug).ContextMap;
-            initialized = true;
+            if (csContext != null)
+            {
+                Assert.IsFalse(csContext == null, $"CSContext is null when initializing FullContext for preset {preset.name}");
+                baseContext ??= csContext.ContextMap; //Body.Behavior.Brain.Action.Chase, debug).ContextMap;
+                initialized = true;
+            }
         }
         return this;
     }
