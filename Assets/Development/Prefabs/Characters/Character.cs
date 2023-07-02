@@ -223,7 +223,7 @@ namespace Body
         private float currentHideHealthTime;
         public void TakeDamage(int damageAmount, Identity id=Identity.Neutral)
         {
-            if (RelativeIdentity(id, Identity) == Identity.Foe)
+            if (RelativeIdentity(id, Identity) != Identity.Friend)
             {
                 CurrentHealth -= damageAmount;
                 SetComponentActive(healthBar, !alwaysHideHealth);
