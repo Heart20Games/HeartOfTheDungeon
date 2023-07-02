@@ -1,10 +1,7 @@
 using Cinemachine;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SocialPlatforms;
 using static ISelectable;
 
 public class Selector : BaseMonoBehaviour, IControllable, ITimeScalable
