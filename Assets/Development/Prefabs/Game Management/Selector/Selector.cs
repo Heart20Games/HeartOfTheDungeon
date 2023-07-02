@@ -37,6 +37,7 @@ public class Selector : BaseMonoBehaviour, IControllable, ITimeScalable
     [SerializeField] private Vector2 moveVector = new(0, 0);
     public Vector2 MoveVector { get { return moveVector; } set { SetMoveVector(value); } }
     private bool onGround = false;
+    public bool swapAxes = true;
 
     [Header("Selection")]
     [SerializeField] private List<SelectType> selectableTypes;
@@ -74,7 +75,7 @@ public class Selector : BaseMonoBehaviour, IControllable, ITimeScalable
     public void SetMoveVector(Vector2 vector)
     {
         print("Setting move vector");
-        moveVector = vector;
+        moveVector = vector.SwapAxes(swapAxes) * (swapAxes ? new Vector2(-1, 1) : Vector2.one);
         myRigidbody.drag = moveVector.magnitude == 0 ? stopDrag : moveDrag;
         cursor.transform.SetLocalRotationWithVector(MoveVector);
     }
