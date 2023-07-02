@@ -26,6 +26,10 @@ public static class ExtensionMethods
     }
 
     // Vector2
+    public static Vector2 SwapAxes(this Vector2 _vector, bool swap=true)
+    {
+        return swap ? new(_vector.y, _vector.x) : _vector;
+    }
     public static Vector3 FullY(this Vector2 _vector)
     {
         return new(_vector.x, 0, _vector.y);
