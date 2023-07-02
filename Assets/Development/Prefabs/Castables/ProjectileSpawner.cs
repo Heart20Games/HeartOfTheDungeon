@@ -12,7 +12,7 @@ public class ProjectileSpawner : Positionable, ICollidables
     public Transform pivot;
     public Projectile projectile;
     public bool followBody = false;
-    private Collider[] exceptions;
+    public Collider[] exceptions;
     private readonly List<Projectile> projectiles = new();
     public bool debug = false;
 
