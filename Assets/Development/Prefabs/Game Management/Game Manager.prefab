@@ -51,17 +51,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myRigidbody: {fileID: 5208886900196461002}
   cursor: {fileID: 2457179566564455721}
-  virtualCamera: {fileID: 0}
+  virtualCamera: {fileID: 358344581889934415}
   speed: 15000
   maxVelocity: 3
+  footstepVelocity: 1
   moveDrag: 0.5
   stopDrag: 7.5
-  onConfirm:
-    m_PersistentCalls:
-      m_Calls: []
+  canMove: 1
+  applyGravity: 1
+  normalForce: 0
+  gravityForce: 1
+  groundDistance: 0.25
+  timeScale: 1
+  moveVector: {x: 0, y: 0}
   selectableTypes: 
   hoveringOver: []
   selected: {fileID: 0}
+  onConfirm:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &5208886900196461002
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -72,19 +80,19 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 1032
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 247
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
@@ -137,8 +145,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4674986688963994434}
-  m_LocalRotation: {x: -0.2707425, y: 0.7221523, z: -0.5056564, w: -0.3866604}
-  m_LocalPosition: {x: 44.216515, y: 9.552943, z: 28.04612}
+  m_LocalRotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
+  m_LocalPosition: {x: -11.690276, y: 0.48349592, z: -15.888823}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -978,7 +986,7 @@ Transform:
   - {fileID: 8292553340632565787}
   - {fileID: 2671980372747319973}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8636156924694284206
 MonoBehaviour:
@@ -1000,6 +1008,7 @@ MonoBehaviour:
   characterInputMap: Player
   selectorInputMap: Selector
   dialogueInputMap: Dialogue
+  dismissInputMap: Dismiss
   settings:
     useD20Menu: 0
   userInterface: {fileID: 0}
@@ -1356,6 +1365,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
+--- !u!114 &358344581889934415 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2206954000367361876, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
+  m_PrefabInstance: {fileID: 1898747213270113051}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &9154761186784278701 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7301894431231517622, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}

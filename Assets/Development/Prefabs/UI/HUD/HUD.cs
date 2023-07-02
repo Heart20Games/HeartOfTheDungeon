@@ -8,10 +8,13 @@ public class HUD : BaseMonoBehaviour
     [Header("Components")]
     public AbilityMenu abilityMenu;
     public CharacterSelectPanel characterPanel;
+    public GameObject controlScreen;
 
     [Header("Main Character")]
     [SerializeField] private PlayerHealthUI healthUI;
+    [SerializeField] private SpellSlots spellSlots;
     [SerializeField] private Character mainCharacter;
+    [SerializeField] private bool useSpellSlots = false;
 
     [Header("Controlled Character")]
     [SerializeField] private Character controlledCharacter;
@@ -32,9 +35,29 @@ public class HUD : BaseMonoBehaviour
     {
         hudCanvas = GetComponent<Canvas>();
         hudCanvas.renderMode = RenderMode.ScreenSpaceCamera;
-        
+
         mainCamera = Camera.main.gameObject;
         hudCanvas.worldCamera = mainCamera.GetComponent<Camera>();
+
+        SetControlScreenActive(false);
+    }
+
+
+    // Toggle Controller Screen
+
+    private bool controlScreenOn = false;
+    public void ToggleControlScreen()
+    {
+        SetControlScreenActive(!controlScreenOn);
+    }
+    public void SetControlScreenActive(bool active)
+    {
+        controlScreenOn = active;
+        controlScreen.SetActive(controlScreenOn);
+        characterPanel.gameObject.SetActive(!controlScreenOn);
+        abilityMenu.gameObject.SetActive(!controlScreenOn);
+        healthUI.gameObject.SetActive(!controlScreenOn);
+        spellSlots.gameObject.SetActive(!controlScreenOn && useSpellSlots);
     }
 
 

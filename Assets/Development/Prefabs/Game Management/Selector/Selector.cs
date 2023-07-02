@@ -4,31 +4,47 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SocialPlatforms;
 using static ISelectable;
 
-public class Selector : BaseMonoBehaviour, IControllable
+public class Selector : BaseMonoBehaviour, IControllable, ITimeScalable
 {
     public Rigidbody myRigidbody;
     public Impact cursor;
     public CinemachineVirtualCamera virtualCamera;
 
+    [Header("Physics")]
     public float speed = 700f;
     public float maxVelocity = 10f;
+    public float footstepVelocity = 1f;
     public float moveDrag = 0.5f;
     public float stopDrag = 7.5f;
-    public UnityEvent onConfirm;
+    public bool canMove = true;
+    public bool applyGravity = true;
+    public float normalForce = 0.1f;
+    public float gravityForce = 1f;
+    public float groundDistance = 0.01f;
 
-    [SerializeField] private List<SelectType> selectableTypes;
-    public List<SelectType> SelectableTypes { get { return selectableTypes; } set { SetSelectableTypes(value); } }
-
+    [Header("Control")]
     private bool controllable = false; 
     public bool Controllable { get { return controllable; } set { SetControllable(value); } }
 
-    private Vector2 moveVector = new Vector2(0, 0);
-    public Vector2 MoveVector { get { return moveVector; } set { SetMoveVector(value); } }
+    [Header("Scale")]
+    [SerializeField] private float timeScale = 1f;
+    public float TimeScale { get => timeScale; set => timeScale = SetTimeScale(value); }
 
-    public List<ASelectable> hoveringOver = new List<ASelectable>();
+    [Header("Vectors")]
+    [SerializeField] private Vector2 moveVector = new(0, 0);
+    public Vector2 MoveVector { get { return moveVector; } set { SetMoveVector(value); } }
+    private bool onGround = false;
+
+    [Header("Selection")]
+    [SerializeField] private List<SelectType> selectableTypes;
+    public List<SelectType> SelectableTypes { get { return selectableTypes; } set { SetSelectableTypes(value); } }
+    public List<ASelectable> hoveringOver = new();
     public ASelectable selected;
+    public UnityEvent onConfirm;
+
 
     private void Awake()
     {
@@ -57,20 +73,35 @@ public class Selector : BaseMonoBehaviour, IControllable
 
     public void SetMoveVector(Vector2 vector)
     {
+        print("Setting move vector");
         moveVector = vector;
         myRigidbody.drag = moveVector.magnitude == 0 ? stopDrag : moveDrag;
+        cursor.transform.SetLocalRotationWithVector(MoveVector);
     }
 
     private void FixedUpdate()
     {
-        myRigidbody.AddRelativeForce(new Vector3(moveVector.x, 0, moveVector.y) * speed * Time.fixedDeltaTime, ForceMode.Force);
-        if (myRigidbody.velocity.magnitude > maxVelocity)
+        Vector3 cameraDirection = transform.position - Camera.main.transform.position;
+
+        if (controllable)
         {
+            Vector3 direction = moveVector.Orient(cameraDirection).FullY();
+            Debug.DrawRay(transform.position, direction * 3, Color.green, Time.fixedDeltaTime);
+            myRigidbody.AddRelativeForce(speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
+        }
+
+        if (myRigidbody.velocity.magnitude > maxVelocity)
             myRigidbody.velocity = myRigidbody.velocity.normalized * maxVelocity;
+
+        if (applyGravity)
+        {
+            onGround = Physics.Raycast(transform.position, Vector3.down, groundDistance);
+            float power = onGround ? normalForce : gravityForce;
+            myRigidbody.AddForce(speed * timeScale * power * Time.fixedDeltaTime * Vector3.down);
         }
     }
 
-    
+
     // Selectables
 
     public void Hover(Impact impact)
@@ -80,7 +111,7 @@ public class Selector : BaseMonoBehaviour, IControllable
         {
             if (hoveringOver.Count > 0)
             {
-                hoveringOver[hoveringOver.Count - 1].UnHover();
+                hoveringOver[^1].UnHover();
             }
             hoveringOver.Add(selectable);
             selectable.Hover();
@@ -100,7 +131,7 @@ public class Selector : BaseMonoBehaviour, IControllable
             selectable.UnHover();
             if (hoveringOver.Count > 0)
             {
-                hoveringOver[hoveringOver.Count - 1].Hover();
+                hoveringOver[^1].Hover();
             }
         }
     }
@@ -109,7 +140,7 @@ public class Selector : BaseMonoBehaviour, IControllable
     {
         if (hoveringOver.Count > 0)
         {
-            selected = hoveringOver[hoveringOver.Count - 1];
+            selected = hoveringOver[^1];
             if (selected.isSelected)
             {
                 Confirm();
@@ -134,5 +165,32 @@ public class Selector : BaseMonoBehaviour, IControllable
     {
         selected.Confirm();
         onConfirm.Invoke();
+    }
+
+
+    // TimeScale
+
+    private Vector3 tempVelocity;
+    public float SetTimeScale(float timeScale)
+    {
+        if (myRigidbody != null && this.timeScale != timeScale)
+        {
+            if (timeScale == 0)
+            {
+                tempVelocity = myRigidbody.velocity;
+                myRigidbody.velocity = new Vector3();
+            }
+            else if (this.timeScale == 0)
+            {
+                myRigidbody.velocity = tempVelocity;
+            }
+            else
+            {
+                float ratio = timeScale / this.timeScale;
+                myRigidbody.velocity *= ratio;
+            }
+        }
+        this.timeScale = timeScale;
+        return timeScale;
     }
 }
