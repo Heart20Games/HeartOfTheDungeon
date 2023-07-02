@@ -64,6 +64,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1170855021759411822, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+      propertyPath: onTakeDamageFrom.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170855021759411822, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+      propertyPath: onTakeDamageFrom.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170855021759411822, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+      propertyPath: onTakeDamageFrom.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 8650663574497036510}
+    - target: {fileID: 1170855021759411822, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+      propertyPath: onTakeDamageFrom.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170855021759411822, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+      propertyPath: onTakeDamageFrom.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170855021759411822, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+      propertyPath: onTakeDamageFrom.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: FMODUnity.StudioEventEmitter, FMODUnity
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170855021759411822, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+      propertyPath: onTakeDamageFrom.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1230430943143690019, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: m_Height
       value: 2.812671
@@ -138,8 +166,46 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 961364758086329560, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8251735751250961343}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4520041833351946365, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8650663574497036510}
   m_SourcePrefab: {fileID: 100100000, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+--- !u!1 &1392425595588004917 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4520041833351946365, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
+  m_PrefabInstance: {fileID: 3308045293030108232}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8650663574497036510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1392425595588004917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -487005891
+      Data2: 1341787428
+      Data3: 1226297018
+      Data4: 2042265222
+    Path: event:/NPC SFX/Slime/LittleSlime/LittleSlime_DMG
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!4 &2359883514593593488 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 961364758086329560, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
