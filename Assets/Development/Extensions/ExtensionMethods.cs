@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public static class ExtensionMethods
 {
@@ -25,6 +26,10 @@ public static class ExtensionMethods
     }
 
     // Vector2
+    public static Vector2 SwapAxes(this Vector2 _vector, bool swap=true)
+    {
+        return swap ? new(_vector.y, _vector.x) : _vector;
+    }
     public static Vector3 FullY(this Vector2 _vector)
     {
         return new(_vector.x, 0, _vector.y);
@@ -71,18 +76,19 @@ public static class ExtensionMethods
     }
 
     // Set Local Rotation WIth Vector
-    public static void SetLocalRotationWithVector(this Transform _transform, Vector2 vector, float rotationOffset = 0, float threshold = 0.5f)
+    public static void SetLocalRotationWithVector(this Transform _transform, Vector2 vector, float rotationOffset = 0, float threshold = 0.005f)
     {
         SetLocalRotationWithVector(_transform, vector, Vector3.up, Vector3.right, Vector3.forward, rotationOffset, threshold);
     }
-    public static void SetLocalRotationWithVector(this Transform _transform, Vector2 vector, Vector3 up, float rotationOffset = 0, float threshold = 0.5f)
+    public static void SetLocalRotationWithVector(this Transform _transform, Vector2 vector, Vector3 up, float rotationOffset = 0, float threshold = 0.005f)
     {
         SetLocalRotationWithVector(_transform, vector, up, Vector3.right, Vector3.forward, rotationOffset, threshold);
     }
-    public static void SetLocalRotationWithVector(this Transform _transform, Vector2 vector, Vector3 up, Vector3 right, Vector3 forward, float rotationOffset = 0, float threshold = 0.5f)
+    public static void SetLocalRotationWithVector(this Transform _transform, Vector2 vector, Vector3 up, Vector3 right, Vector3 forward, float rotationOffset = 0, float threshold = 0.005f)
     {
+        Assert.IsFalse(float.IsNaN(vector.x) || float.IsNaN(vector.y));
         Vector3 direction = right * vector.x + forward * vector.y;
-        if (direction.sqrMagnitude > 0.0f)
+        if (direction.sqrMagnitude > threshold)
         {
             Quaternion newRotation = Quaternion.LookRotation(direction, up);
             _transform.localRotation = newRotation;

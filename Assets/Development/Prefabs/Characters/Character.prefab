@@ -53,6 +53,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  controller: {fileID: 0}
   agent: {fileID: 0}
   navUpdate: 1
   followingDistance: 0
@@ -147,15 +148,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 15000
   maxVelocity: 3
-  npcModifier: 1
   footstepVelocity: 1
   moveDrag: 0.5
-  stopDrag: 7.5
+  stopDrag: 75
   canMove: 1
   applyGravity: 1
   normalForce: 0
   gravityForce: 1
   groundDistance: 0.25
+  npcModifier: 1
+  moveVector: {x: 0, y: 0}
   castVector: {x: 0, y: 0}
   OnSetCastVector:
     m_PersistentCalls:
@@ -291,6 +293,10 @@ MonoBehaviour:
   alive: 1
   destinationStep: {x: 0, y: 0, z: 0}
   destinationDistance: 0
+  destinationScale: 1
+  debug: 0
+  currentVector: {x: 0, y: 0}
+  moveSelf: 0
   onSetVector:
     m_PersistentCalls:
       m_Calls:
@@ -306,8 +312,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  moveSelf: 0
-  debug: 0
+  noise: {fileID: 0}
+  useNoise: 1
+  activeContexts: []
+  onFoeContextActive:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &4630028532720471171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -958,7 +968,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6473001147741409366, guid: d1188049d2e999b48b465fd757a928c1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

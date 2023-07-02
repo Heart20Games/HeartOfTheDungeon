@@ -435,7 +435,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""type"": ""PassThrough"",
                     ""id"": ""752664f3-3332-45c6-8089-aab09c323148"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": ""NormalizeVector2,StickDeadzone"",
+                    ""processors"": ""NormalizeVector2,StickDeadzone(min=0.01)"",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
@@ -533,6 +533,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""Restart Level1"",
                     ""type"": ""Button"",
                     ""id"": ""597c9b68-87bb-43d9-bf2e-aae16e08459c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Toggle Controls"",
+                    ""type"": ""Button"",
+                    ""id"": ""62e0296d-8e52-4702-b2b3-7bb1c9482ef4"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1122,6 +1131,67 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Restart Level1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ef7340a8-1f35-4374-b041-832db0c58479"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Controls"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""636e8e47-f019-4ae1-b356-3a99a0b0929c"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Controls"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Dismiss"",
+            ""id"": ""3a63b7db-9d1e-4cdd-ba64-15d88c346430"",
+            ""actions"": [
+                {
+                    ""name"": ""Dismiss"",
+                    ""type"": ""Button"",
+                    ""id"": ""ab51f92b-6b0b-4984-8b23-101b40f9ed23"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""466e80ad-72ff-4a32-9f0c-9628c700cd3a"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dismiss"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""094e97e3-d4ab-4e09-bff8-41ae45d11071"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dismiss"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1156,6 +1226,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_SwitchCharacterLeft = m_Player.FindAction("Switch Character Left", throwIfNotFound: true);
         m_Player_SwitchCharacterRight = m_Player.FindAction("Switch Character Right", throwIfNotFound: true);
         m_Player_RestartLevel1 = m_Player.FindAction("Restart Level1", throwIfNotFound: true);
+        m_Player_ToggleControls = m_Player.FindAction("Toggle Controls", throwIfNotFound: true);
+        // Dismiss
+        m_Dismiss = asset.FindActionMap("Dismiss", throwIfNotFound: true);
+        m_Dismiss_Dismiss = m_Dismiss.FindAction("Dismiss", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1364,6 +1438,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SwitchCharacterLeft;
     private readonly InputAction m_Player_SwitchCharacterRight;
     private readonly InputAction m_Player_RestartLevel1;
+    private readonly InputAction m_Player_ToggleControls;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1383,6 +1458,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @SwitchCharacterLeft => m_Wrapper.m_Player_SwitchCharacterLeft;
         public InputAction @SwitchCharacterRight => m_Wrapper.m_Player_SwitchCharacterRight;
         public InputAction @RestartLevel1 => m_Wrapper.m_Player_RestartLevel1;
+        public InputAction @ToggleControls => m_Wrapper.m_Player_ToggleControls;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1437,6 +1513,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RestartLevel1.started += instance.OnRestartLevel1;
             @RestartLevel1.performed += instance.OnRestartLevel1;
             @RestartLevel1.canceled += instance.OnRestartLevel1;
+            @ToggleControls.started += instance.OnToggleControls;
+            @ToggleControls.performed += instance.OnToggleControls;
+            @ToggleControls.canceled += instance.OnToggleControls;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1486,6 +1565,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RestartLevel1.started -= instance.OnRestartLevel1;
             @RestartLevel1.performed -= instance.OnRestartLevel1;
             @RestartLevel1.canceled -= instance.OnRestartLevel1;
+            @ToggleControls.started -= instance.OnToggleControls;
+            @ToggleControls.performed -= instance.OnToggleControls;
+            @ToggleControls.canceled -= instance.OnToggleControls;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1503,6 +1585,52 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Dismiss
+    private readonly InputActionMap m_Dismiss;
+    private List<IDismissActions> m_DismissActionsCallbackInterfaces = new List<IDismissActions>();
+    private readonly InputAction m_Dismiss_Dismiss;
+    public struct DismissActions
+    {
+        private @PlayerControls m_Wrapper;
+        public DismissActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Dismiss => m_Wrapper.m_Dismiss_Dismiss;
+        public InputActionMap Get() { return m_Wrapper.m_Dismiss; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DismissActions set) { return set.Get(); }
+        public void AddCallbacks(IDismissActions instance)
+        {
+            if (instance == null || m_Wrapper.m_DismissActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_DismissActionsCallbackInterfaces.Add(instance);
+            @Dismiss.started += instance.OnDismiss;
+            @Dismiss.performed += instance.OnDismiss;
+            @Dismiss.canceled += instance.OnDismiss;
+        }
+
+        private void UnregisterCallbacks(IDismissActions instance)
+        {
+            @Dismiss.started -= instance.OnDismiss;
+            @Dismiss.performed -= instance.OnDismiss;
+            @Dismiss.canceled -= instance.OnDismiss;
+        }
+
+        public void RemoveCallbacks(IDismissActions instance)
+        {
+            if (m_Wrapper.m_DismissActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IDismissActions instance)
+        {
+            foreach (var item in m_Wrapper.m_DismissActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_DismissActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public DismissActions @Dismiss => new DismissActions(this);
     public interface IDialogueActions
     {
         void OnContinue(InputAction.CallbackContext context);
@@ -1533,5 +1661,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSwitchCharacterLeft(InputAction.CallbackContext context);
         void OnSwitchCharacterRight(InputAction.CallbackContext context);
         void OnRestartLevel1(InputAction.CallbackContext context);
+        void OnToggleControls(InputAction.CallbackContext context);
+    }
+    public interface IDismissActions
+    {
+        void OnDismiss(InputAction.CallbackContext context);
     }
 }
