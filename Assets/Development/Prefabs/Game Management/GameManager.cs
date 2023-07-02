@@ -133,7 +133,7 @@ public class Game : BaseMonoBehaviour
                 input.SwitchCurrentActionMap(selectorInputMap);
                 if (selector != null && curCharacter != null)
                 {
-                    selector.transform.position = curCharacter.transform.position;
+                    selector.transform.position = curCharacter.body.position;
                 }
                 TimeScale = 0.1f;
                 SetControllable(selector, true); break;
@@ -236,6 +236,7 @@ public class Game : BaseMonoBehaviour
             case GameMode.Selection:
                 if (CanUseSelector())
                 {
+                    print("Pass move vector to selector");
                     selector.MoveVector = inputVector;
                 } break;
         }

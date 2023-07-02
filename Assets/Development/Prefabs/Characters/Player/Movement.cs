@@ -21,9 +21,9 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     public float groundDistance = 0.01f;
 
     [Header("Scale")]
+    public float npcModifier = 0.5f;
     private float timeScale = 1f;
     public float TimeScale { get => timeScale; set => timeScale=SetTimeScale(value); }
-    public float npcModifier = 0.5f;
 
     [Header("Vectors")]
     [SerializeField] private Vector2 moveVector = new(0,0);
