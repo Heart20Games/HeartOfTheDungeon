@@ -1,12 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using static Body.Behavior.ContextSteering.CSIdentity;
 
 public abstract class Health : BaseMonoBehaviour, IHealth
 {
-    public abstract void HealDamage(int amount);
-    public abstract void SetHealth(int amount);
-    public abstract void SetHealthBase(int amount, int total);
-    public abstract void SetHealthTotal(int amount);
-    public abstract void TakeDamage(int amount);
+    public int healthTotal = 0;
+    public int health = 0;
+    public UnityEvent<int> onTakeDamage;
+    public UnityEvent<int, Identity> onTakeDamageFrom;
+    public UnityEvent onNoHealth;
+
+    public virtual void HealDamage(int amount)
+    {
+        health += amount;
+    }
+    public virtual void SetHealth(int amount)
+    {
+        health = amount;
+    }
+    public virtual void SetHealthBase(int amount, int total)
+    {
+        health = amount;
+        SetHealthTotal(amount);
+    }
+    public virtual void SetHealthTotal(int amount)
+    {
+        healthTotal = amount;
+    }
+    public virtual void TakeDamage(int amount, Identity id = Identity.Neutral)
+    {
+        health -= amount;
+        onTakeDamage.Invoke(amount);
+        onTakeDamageFrom.Invoke(amount, id);
+        if (health <= 0)
+        {
+            health = Mathf.Max(health, 0);
+            onNoHealth.Invoke();
+        }
+    }
 }
