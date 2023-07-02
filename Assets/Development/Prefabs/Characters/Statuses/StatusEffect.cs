@@ -12,9 +12,11 @@ public struct Status
 {
     public Status(StatusEffect _effect, int _strength)
     {
+        name = _effect.name;
         effect = _effect;
         strength = _strength;
     }
+    public string name;
     public StatusEffect effect;
     public int strength;
 }
@@ -29,8 +31,8 @@ public abstract class StatusEffect: ScriptableObject
      */
 
     public new string name;
-    private UnityEvent onProc;
-    private UnityEvent onTick;
+    private UnityEvent onProc = new();
+    private UnityEvent onTick = new();
 
     public virtual void Apply(Character character, int strength)
     {

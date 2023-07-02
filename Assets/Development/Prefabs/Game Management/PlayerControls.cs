@@ -435,7 +435,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""type"": ""PassThrough"",
                     ""id"": ""752664f3-3332-45c6-8089-aab09c323148"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": ""NormalizeVector2,StickDeadzone,ScaleVector2(x=0.125,y=0.125)"",
+                    ""processors"": ""NormalizeVector2,StickDeadzone(min=0.01)"",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },

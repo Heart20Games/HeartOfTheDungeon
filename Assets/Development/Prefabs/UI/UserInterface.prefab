@@ -74,8 +74,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
-  m_ReferencePixelsPerUnit: 75
+  m_UiScaleMode: 1
+  m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 3.5
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
@@ -114,6 +114,8 @@ GameObject:
   - component: {fileID: 5879095054503257125}
   - component: {fileID: 8229274895447285697}
   - component: {fileID: 2806409545018912321}
+  - component: {fileID: 6758579907827900007}
+  - component: {fileID: 5540591621382805057}
   m_Layer: 0
   m_Name: UserInterface
   m_TagString: Untagged
@@ -322,6 +324,35 @@ MonoBehaviour:
       Data3: 379652225
       Data4: -473811388
     Path: event:/UI/UI_Menu_Swipe
+--- !u!114 &6758579907827900007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5228559661474112977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 610c541718d694070a21327d1ae62e75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showDebug: 0
+  debugTextView: {fileID: 0}
+--- !u!114 &5540591621382805057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5228559661474112977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f4d7475fe7b66a4c978bf47e6ed0528, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storage: {fileID: 6758579907827900007}
+  rooms: {fileID: 11400000, guid: 35ff588ae50e956429d245398ce6652b, type: 2}
+  tags: {fileID: 11400000, guid: db847cb317993d649bf82e7c2e4b3976, type: 2}
 --- !u!1 &5361198058841974356
 GameObject:
   m_ObjectHideFlags: 0
@@ -755,6 +786,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1363493481069434397}
     m_Modifications:
+    - target: {fileID: 247714441200815817, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: _variableStorage
+      value: 
+      objectReference: {fileID: 6758579907827900007}
     - target: {fileID: 521903565293069686, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1055,8 +1090,13 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7120338839435959160, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+      propertyPath: storage
+      value: 
+      objectReference: {fileID: 6758579907827900007}
     m_RemovedComponents:
     - {fileID: 5100788739113593643, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
+    - {fileID: 574000115014094558, guid: 13190c28e7ec9274f8c98c824f7f4680, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

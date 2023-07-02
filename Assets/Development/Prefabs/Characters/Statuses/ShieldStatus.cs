@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using Body;
 
@@ -10,7 +7,7 @@ public class ShieldStatus : StatusEffect
     public float maxStrength = 1.0f;
     private int strength;
 
-    public override void Apply(Body.Character character, int strength)
+    public override void Apply(Character character, int strength)
     {
         base.Apply(character, strength);
         this.strength = strength;
