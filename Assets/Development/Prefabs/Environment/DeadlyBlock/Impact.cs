@@ -16,6 +16,13 @@ public class Impact : BaseMonoBehaviour
     public BinaryEvent onCollision;
     public BinaryEvent onTrigger;
 
+    public bool oneShot = false;
+    public bool hasCollided = false;
+
+    public void SetHasCollided(bool collided)
+    {
+        hasCollided = collided;
+    }
     public bool debug = false;
 
     public readonly List<GameObject> touching = new();
@@ -65,10 +72,11 @@ public class Impact : BaseMonoBehaviour
     private void OnEventEnter(GameObject other, UnityEvent onEvent)
     {
         this.other = other;
-        if (HasValidTag(other) && IsValidSelectable(other) && IsValidInteractor(other) && !touching.Contains(other))
+        if ((!oneShot || !hasCollided) && HasValidTag(other) && IsValidSelectable(other) && IsValidInteractor(other) && !touching.Contains(other))
         {
             touching.Add(other);
             onEvent.Invoke();
+            hasCollided = true;
         }
     }
 

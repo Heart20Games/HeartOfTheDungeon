@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
+using static Body.Behavior.ContextSteering.CSIdentity;
 
 public class HealthPips : Health
 {
-    public int totalHealth;
-    public int currentHealth;
     [SerializeField]
     private List<GameObject> healthPips = new();
     private readonly List<Animator> pipAnimator = new();
@@ -18,7 +17,7 @@ public class HealthPips : Health
 
     void Start()
     {
-        SetHealthTotal(totalHealth);
+        SetHealthTotal(healthTotal);
     }
 
     private void FixedUpdate()
@@ -38,27 +37,27 @@ public class HealthPips : Health
 
     public override void SetHealthBase(int amount, int total)
     {
-        currentHealth = amount;
+        health = amount;
         SetHealthTotal(total);
     }
 
     public override void SetHealthTotal(int amount)
     {
-        totalHealth = amount;
+        healthTotal = amount;
         ClearPips();
-        for (int i = 0; i < totalHealth; i++)
+        for (int i = 0; i < healthTotal; i++)
         {
             GameObject pip = Instantiate(healthPipPrefab, healthPipCanvas);
             healthPips.Add(pip);
             pipAnimator.Add(pip.GetComponent<Animator>());
         }
-        SetHealth(Mathf.Min(totalHealth, currentHealth));
+        SetHealth(Mathf.Min(healthTotal, health));
     }
 
     public override void SetHealth(int amount)
     {
-        currentHealth = amount;
-        int damage = Mathf.Min(totalHealth - currentHealth, totalHealth);
+        health = amount;
+        int damage = Mathf.Min(healthTotal - health, healthTotal);
         if (isActiveAndEnabled)
         {
             for (int i = 0; i < damage; i++)
@@ -73,9 +72,9 @@ public class HealthPips : Health
         }
     }
 
-    public override void TakeDamage(int amount)
+    public override void TakeDamage(int amount, Identity id = Identity.Neutral)
     {
-        int damageToTake = Mathf.Clamp(amount, 0, (totalHealth - (lastDamaged + 1)));
+        int damageToTake = Mathf.Clamp(amount, 0, (healthTotal - (lastDamaged + 1)));
         for(int i = 0; i < damageToTake; i++)
         {                                               
             lastDamaged++;
