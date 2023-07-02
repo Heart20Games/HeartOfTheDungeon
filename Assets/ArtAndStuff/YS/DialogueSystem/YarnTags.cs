@@ -1,9 +1,6 @@
-using FMOD;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
-using static YarnTags;
 
 [CreateAssetMenu(fileName = "YarnTags", menuName = "Yarn Spinner/Yarn Tags", order = 1)]
 public class YarnTags : ScriptableObject

@@ -243,6 +243,9 @@ GameObject:
   - component: {fileID: 3768621718914703536}
   - component: {fileID: 8350877443523919289}
   - component: {fileID: 6148482581922819521}
+  - component: {fileID: 8891901288805265759}
+  - component: {fileID: 2190948465695001676}
+  - component: {fileID: 6407208043330870515}
   m_Layer: 0
   m_Name: ExplodingBarrel
   m_TagString: Damageable
@@ -472,6 +475,108 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.364917, z: 1}
   m_Center: {x: 0, y: 0.6824585, z: 0}
+--- !u!114 &8891901288805265759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4326658211653343975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 713eaac9f3b58bd468143d5b9de4dcd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactor: {fileID: 0}
+  target: {fileID: 0}
+--- !u!114 &2190948465695001676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4326658211653343975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 543e0e75bcdd3264ebbfa11009f8b80d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onInteract:
+    m_PersistentCalls:
+      m_Calls: []
+  onInteractSendInteractor:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8891901288805265759}
+        m_TargetAssemblyTypeName: Pickupable, Assembly-CSharp
+        m_MethodName: Pickup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: Interactor, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  releasable: 1
+  interactors: []
+--- !u!114 &6407208043330870515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4326658211653343975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  desiredTags: []
+  selectableTypes: 
+  desireInteractors: 1
+  onCollision:
+    enter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2190948465695001676}
+          m_TargetAssemblyTypeName: Interactable, Assembly-CSharp
+          m_MethodName: AddInteractor
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 6407208043330870515}
+            m_ObjectArgumentAssemblyTypeName: Impact, Assembly-CSharp
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    exit:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2190948465695001676}
+          m_TargetAssemblyTypeName: Interactable, Assembly-CSharp
+          m_MethodName: RemoveInteractor
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 6407208043330870515}
+            m_ObjectArgumentAssemblyTypeName: Impact, Assembly-CSharp
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  onTrigger:
+    enter:
+      m_PersistentCalls:
+        m_Calls: []
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
+  debug: 0
+  other: {fileID: 0}
+  selectable: {fileID: 0}
 --- !u!1 &5828609398805429908
 GameObject:
   m_ObjectHideFlags: 0
