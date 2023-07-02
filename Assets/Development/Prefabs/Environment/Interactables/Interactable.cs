@@ -5,14 +5,28 @@ using UnityEngine.Events;
 public class Interactable : BaseMonoBehaviour
 {
     public UnityEvent onInteract;
+    public UnityEvent<Interactor> onInteractSendInteractor;
+
+    public bool releasable = false;
+    private bool canRelease = false;
 
     public List<Interactor> interactors;
 
     public void Interact()
     {
-        if (interactors.Count > 0)
+        if (releasable && canRelease)
         {
             onInteract.Invoke();
+            onInteractSendInteractor.Invoke(null);
+        }
+        for (int i = 0; i < interactors.Count; i++)
+        {
+            Interactor interactor = interactors[i];
+            if (interactor.canInteract)
+            {
+                onInteract.Invoke();
+                onInteractSendInteractor.Invoke(interactor);
+            }
         }
     }
 
