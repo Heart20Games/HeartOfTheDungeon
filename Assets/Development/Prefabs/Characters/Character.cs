@@ -215,10 +215,20 @@ namespace Body
 
         public void SetCurrentHealth(int amount)
         {
+            int prevHealth = currentHealth.Value;
             currentHealth.Value = Mathf.Min(amount, maxHealth.Value);
-            if (healthBar != null)
+            if (prevHealth > currentHealth.Value)
             {
-                healthBar.SetHealth(amount);
+                artRenderer.Hit();
+                SetComponentActive(healthBar, !alwaysHideHealth);
+                if (healthBar != null)
+                    healthBar.SetHealth(CurrentHealth);
+                onDmg.Invoke();
+                if (CurrentHealth <= 0f) Die();
+                if (coroutine == null)
+                    coroutine = StartCoroutine(DeactivateHealthbar(hideHealthWaitTime));
+                else
+                    currentHideHealthTime = hideHealthWaitTime;
             }
         }
 
@@ -237,15 +247,8 @@ namespace Body
         {
             if (RelativeIdentity(id, Identity) != Identity.Friend)
             {
+                int prevHealth = CurrentHealth;
                 CurrentHealth -= damageAmount;
-                SetComponentActive(healthBar, !alwaysHideHealth);
-                healthBar.SetHealth(CurrentHealth);
-                onDmg.Invoke();
-                if (CurrentHealth <= 0f) Die();
-                if (coroutine == null)
-                    coroutine = StartCoroutine(DeactivateHealthbar(hideHealthWaitTime));
-                else
-                    currentHideHealthTime = hideHealthWaitTime;
             }
         }
 
