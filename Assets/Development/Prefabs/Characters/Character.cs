@@ -38,6 +38,11 @@ namespace Body
         public CinemachineVirtualCamera virtualCamera;
         public CharacterUIElements characterUIElements;
 
+        // Collision
+        [Header("Collision")]
+        public Collider aliveCollider;
+        public Collider deadCollider;
+
         // Interaction
         [Header("Interaction")]
         public Interactor interactor;
@@ -116,6 +121,7 @@ namespace Body
             SetComponentActive(healthBar, false);
             healthBar.SetHealthBase(CurrentHealth, MaxHealth);
             Identity = Identity;
+            SetAlive(true);
         }
 
         private void InitBody()
@@ -188,8 +194,14 @@ namespace Body
         public void SetAlive(bool alive)
         {
             movement.SetMoveVector(new());
-            brain.Alive = alive;
-            artRenderer.Dead = alive;
+            if (brain != null)
+                brain.Alive = alive;
+            if (artRenderer != null)
+                artRenderer.Dead = !alive;
+            if (aliveCollider != null)
+                aliveCollider.enabled = alive;
+            if (deadCollider != null)
+                deadCollider.enabled = !alive;
         }
 
         public void SetMaxHealth(int amount)

@@ -55,6 +55,7 @@ MonoBehaviour:
   target: {fileID: 0}
   controller: {fileID: 0}
   agent: {fileID: 0}
+  pathFinder: {fileID: 0}
   navUpdate: 1
   followingDistance: 0
   baseOffset: 0
@@ -85,6 +86,8 @@ MonoBehaviour:
   artRenderer: {fileID: 4122626737896113915}
   virtualCamera: {fileID: 3832840258595731421}
   characterUIElements: {fileID: 0}
+  aliveCollider: {fileID: 0}
+  deadCollider: {fileID: 0}
   interactor: {fileID: 5701398888138556133}
   talker: {fileID: 0}
   brain: {fileID: 0}
@@ -277,6 +280,7 @@ GameObject:
   - component: {fileID: 2627509537351594196}
   - component: {fileID: 2698830970327350241}
   - component: {fileID: 1230430943143690019}
+  - component: {fileID: 8707232818922164438}
   - component: {fileID: 2485834102352749627}
   m_Layer: 7
   m_Name: Body
@@ -468,6 +472,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  oneShot: 0
+  hasCollided: 0
   debug: 0
   other: {fileID: 0}
   selectable: {fileID: 0}
@@ -524,6 +530,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  oneShot: 0
+  hasCollided: 0
   debug: 0
   other: {fileID: 0}
   selectable: {fileID: 0}
@@ -698,6 +706,29 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!136 &8707232818922164438
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4520041833351946365}
+  m_Material: {fileID: 13400000, guid: 783ade628ff2c86419d9860839b5f746, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Height: 0.25
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.125, z: 0}
 --- !u!65 &2485834102352749627
 BoxCollider:
   m_ObjectHideFlags: 0
