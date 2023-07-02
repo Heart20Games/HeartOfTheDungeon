@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using static Body.Behavior.ContextSteering.CSIdentity;
 
-public abstract class Health : BaseMonoBehaviour, IHealth
+public class Health : BaseMonoBehaviour, IHealth
 {
     public int healthTotal = 0;
     public int health = 0;
@@ -29,6 +29,12 @@ public abstract class Health : BaseMonoBehaviour, IHealth
     {
         healthTotal = amount;
     }
+
+    public void TakeDamage(int amount)
+    {
+        TakeDamage(amount, Identity.Neutral);
+    }
+
     public virtual void TakeDamage(int amount, Identity id = Identity.Neutral)
     {
         health -= amount;
