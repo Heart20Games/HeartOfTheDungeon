@@ -8,10 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ScriptableObjectDropdown.Extension;
-using Unity.VisualScripting.FullSerializer;
-using Unity.Collections;
-using PlasticPipe.PlasticProtocol.Messages;
-using UnityEngine.UIElements;
 
 namespace ScriptableObjectDropdown.Editor
 {

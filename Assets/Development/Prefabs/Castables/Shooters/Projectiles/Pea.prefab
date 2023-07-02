@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8143757690908996648}
   - component: {fileID: 1969719491241460694}
+  - component: {fileID: 2566543505948310224}
   - component: {fileID: 2133279280376860803}
   - component: {fileID: 5547293998782812372}
   - component: {fileID: 3296465146998070345}
@@ -55,7 +56,101 @@ MonoBehaviour:
   collidableObjects: []
   onStart:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5029166449085567131}
+        m_TargetAssemblyTypeName: FModEventPlayer, Assembly-CSharp
+        m_MethodName: PlayEvent
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Magic-bolt-fire
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2566543505948310224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2138072239630478774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  desiredTags: []
+  selectableTypes: 
+  desireInteractors: 0
+  onCollision:
+    enter:
+      m_PersistentCalls:
+        m_Calls: []
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
+  onTrigger:
+    enter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 5029166449085567131}
+          m_TargetAssemblyTypeName: FModEventPlayer, Assembly-CSharp
+          m_MethodName: PlayEvent
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Magic-bolt-hit
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
+          m_MethodName: Play
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Magic-bolt-hit
+            m_BoolArgument: 1
+          m_CallState: 2
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Magic-bolt-hit
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 2566543505948310224}
+          m_TargetAssemblyTypeName: Impact, Assembly-CSharp
+          m_MethodName: SetHasCollided
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Magic-bolt-hit
+            m_BoolArgument: 1
+          m_CallState: 2
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
+  oneShot: 1
+  hasCollided: 0
+  debug: 0
+  other: {fileID: 0}
+  selectable: {fileID: 0}
 --- !u!114 &2133279280376860803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,7 +165,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   desiredTags:
   - Character
+  - Damageable
   selectableTypes: 
+  desireInteractors: 0
   onCollision:
     enter:
       m_PersistentCalls:
@@ -145,6 +242,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  oneShot: 1
+  hasCollided: 0
   debug: 0
   other: {fileID: 0}
   selectable: {fileID: 0}

@@ -7,8 +7,8 @@ using static YarnTags;
 
 public class Talker : BaseMonoBehaviour
 {
-    [HideInInspector] public Game game;
-    [HideInInspector] public DialogueRunner dialogueRunner;
+    public Game game;
+    public DialogueRunner dialogueRunner;
     public GameObject virtualCamera;
     public string targetNode = "";
 
