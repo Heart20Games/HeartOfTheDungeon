@@ -94,16 +94,21 @@ namespace Body
             set { SetCurrentHealth(value); }
         }
 
+        // Respawn
+        [Header("Respawn")]
+        public Transform spawn;
+
         // Events
         public UnityEvent onDeath;
         public UnityEvent onDmg;
+        public UnityEvent onRespawn;
         public UnityEvent<bool> onControl;
 
 
         // Initialization
         private void Awake()
         {
-            transform.rotation = new(0,0,0,0);
+            transform.rotation = new(0, 0, 0, 0);
             Awarn.IsNotNull(body, "Character has no Character");
             InitBody();
             brain = GetComponent<Brain>();
@@ -113,6 +118,7 @@ namespace Body
             InitializeCastables();
             MaxHealth = MaxHealth;
             CurrentHealth = CurrentHealth;
+            InitializeSpawn();
             SetControllable(false);
         }
 
@@ -132,6 +138,33 @@ namespace Body
                 baseOffset = capsuleCollider.height / 2;
                 capsuleCollider.center = new Vector3(capsuleCollider.center.x, baseOffset, capsuleCollider.center.z);
             }
+        }
+
+        public void InitializeSpawn()
+        {
+            if (spawn != null)
+            {
+                spawn.position = body.position;
+                spawn.rotation = body.rotation;
+                spawn.localScale = body.localScale;
+            }
+        }
+
+
+        // Respawning and Refreshing
+
+        public void Refresh()
+        {
+            CurrentHealth = MaxHealth;
+            SetAlive(true);
+        }
+
+        public void Respawn()
+        {
+            body.position = spawn.position;
+            body.rotation = spawn.rotation;
+            body.localScale = spawn.localScale;
+            Refresh();
         }
 
         // Updates
@@ -296,7 +329,7 @@ namespace Body
             {
                 castableItems[idx] = item;
                 castables[idx] = Instantiate(item.prefab, transform);
-                castables[idx].Initialize(this);
+                castables[idx].Initialize(this, item);
             }
         }
 

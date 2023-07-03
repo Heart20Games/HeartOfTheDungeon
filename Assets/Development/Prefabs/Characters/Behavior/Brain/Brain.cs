@@ -158,11 +158,13 @@ namespace Body.Behavior
         // Target
         public void SetTarget(Transform target)
         {
-            this.target = (target.TryGetComponent(out Character targetChar) ? targetChar.body : target);
+            this.target = target;
+            if (this.target != null)
+                this.target = (target.TryGetComponent(out Character targetChar) ? targetChar.body : target);
+            if (agent != null && agent.isActiveAndEnabled)
+                agent.destination = this.target == null ? new() : this.target.position;
             if (pathFinder != null)
                 pathFinder.target = this.target;
-            if (agent != null && agent.isActiveAndEnabled)
-                agent.destination = this.target.position;
         }
 
 

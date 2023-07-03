@@ -7,14 +7,18 @@ using UnityEngine;
 public class Portraits : ScriptableObject
 {
     public Portrait[] portraits = new Portrait[5];
-    public Dictionary<string, Portrait> bank = new();
+    public Dictionary<string, Dictionary<string, PortraitImage>> bank = new();
 
     public void Initialize()
     {
         bank.Clear();
         foreach (Portrait portrait in portraits)
         {
-            bank[portrait.name] = portrait;
+            bank[portrait.name] = new();
+            foreach (var image in portrait.images)
+            {
+                bank[portrait.name][image.name] = image;
+            }
         }
     }
 }

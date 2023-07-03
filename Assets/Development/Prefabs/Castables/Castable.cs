@@ -9,6 +9,8 @@ public class Castable : BaseMonoBehaviour, ICastable
 
     // Positioning
     [Header("Positioning and Following")]
+    public CastableItem item;
+    public CastableItem GetItem() { return item; }
     public Transform weaponArt;
     public Transform pivot;
     public float rOffset = 0;
@@ -53,6 +55,11 @@ public class Castable : BaseMonoBehaviour, ICastable
 
     public virtual void Initialize(Character source)
     {
+        Initialize(source, null);
+    }
+    public virtual void Initialize(Character source, CastableItem item=null)
+    {
+        this.item = item;
         this.source = source;
         Identity = source.Identity;
         if (damager != null) { damager.Ignore(source.body); }

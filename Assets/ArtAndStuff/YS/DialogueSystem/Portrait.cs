@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public struct Portrait
+public struct PortraitImage
 {
-    public Portrait(string _name, Sprite _image, bool _orientation)
+    public PortraitImage(string _name, Sprite _image, bool _orientation)
     {
         name = _name;
         image = _image;
@@ -15,4 +15,16 @@ public struct Portrait
     public string name;
     public Sprite image;
     public bool orientation;
+}
+
+[Serializable]
+public struct Portrait
+{
+    public Portrait(string _name, PortraitImage[] _images)
+    {
+        name = _name;
+        images = _images;
+    }
+    public string name;
+    public PortraitImage[] images;
 }
