@@ -102,7 +102,7 @@ namespace Body
         public UnityEvent onDeath;
         public UnityEvent onDmg;
         public UnityEvent onRespawn;
-        public UnityEvent<bool> onControl;
+        public UnityEvent<bool, Character> onControl;
 
 
         // Initialization
@@ -208,7 +208,7 @@ namespace Body
             SetComponentActive(moveReticle, _controllable);
             SetComponentActive(virtualCamera, _controllable);
             SetBehaviourEnabled(interactor, _controllable);
-            onControl.Invoke(_controllable);
+            onControl.Invoke(_controllable, this);
         }
 
         public void SetBehaviourEnabled(Behaviour behaviour, bool _enabled)
@@ -329,7 +329,7 @@ namespace Body
             {
                 castableItems[idx] = item;
                 castables[idx] = Instantiate(item.prefab, transform);
-                castables[idx].Initialize(this);
+                castables[idx].Initialize(this, item);
             }
         }
 

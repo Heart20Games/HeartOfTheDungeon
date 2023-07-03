@@ -22,6 +22,7 @@ public class Possy : BaseMonoBehaviour
     public bool allDead = false;
     public UnityEvent onAggro = new();
     public UnityEvent onAllDead = new();
+    private bool aggroedThisFrame = false;
 
     [Header("Follow Target")]
     public Transform followTargeter;
@@ -32,7 +33,10 @@ public class Possy : BaseMonoBehaviour
 
     [Header("Noise and Scaling")]
     public MovementNoise noise;
-    public float destinationScale = 1f;
+    public float tightness = 1f;
+    public float tightnessIdle = 1f;
+    public float tightnessAggro = 2f;
+    public float Tightness { get => tightness; set => SetTightness(value); }
 
     public bool debug = false;
 
@@ -40,6 +44,14 @@ public class Possy : BaseMonoBehaviour
     private void Awake()
     {
         possies.Add(this);
+    }
+
+    private void FixedUpdate()
+    {
+        if (aggroed && !aggroedThisFrame)
+        {
+            SetAggroed(false);
+        }
     }
 
     private void Start()
@@ -60,7 +72,7 @@ public class Possy : BaseMonoBehaviour
             if (noise != null)
             {
                 character.Controller.noise = noise;
-                character.Controller.destinationScale = destinationScale;
+                character.Controller.destinationScale = tightnessIdle;
             }
             character.Controller.onFoeContextActive.AddListener(CharacterAggroed);
             character.onDmg.AddListener(CharacterDamaged);
@@ -105,40 +117,17 @@ public class Possy : BaseMonoBehaviour
     {
         leader = character;
         defaultFollowTarget = leader.body.transform;
-    }
-
-
-    // Events
-
-    public void RivalPossyDied()
-    {
-        if (debug) print("Rival Possy Died");
-        Refresh();
-        aggroed = false;
-        TargetPossy = null;
-        SetFollowTarget(defaultFollowTarget);
-    }
-
-    public void CharacterControlled(bool controlled)
-    {
-        if (debug) print("Controlled");
-        if (mainPossy && leader != null)
-        {
-            foreach (var character in characters)
-            {
-                if (character.controllable)
-                    Leader = character;
-            }
-        }
-    }
-
-    public void CharacterAggroed()
-    {
-        if (debug) print("Aggroed");
         if (!aggroed)
+            SetFollowTarget(defaultFollowTarget);
+    }
+
+    public void SetAggroed(bool aggro)
+    {
+        if (debug) print("Aggro!");
+        if (aggro)
         {
-            if (debug) print("Aggro!");
-            aggroed = true;
+            Tightness = tightnessAggro;
+            aggroedThisFrame = true;
             foreach (var character in characters)
             {
                 character.Controller.destinationScale = 1f;
@@ -150,6 +139,65 @@ public class Possy : BaseMonoBehaviour
                 mainPossy.SetTargetPossy(this, false);
             }
             onAggro.Invoke();
+            aggroed = true;
+        }
+        else
+        {
+            Tightness = tightnessIdle;
+            aggroed = false;
+            TargetPossy = null;
+            SetFollowTarget(defaultFollowTarget);
+        }
+    }
+
+    public void SetTightness(float tightness)
+    {
+        foreach (var character in characters)
+        {
+            if (noise != null)
+            {
+                character.Controller.destinationScale = tightnessIdle;
+            }
+        }
+    }
+
+
+// Events
+
+public void RivalPossyDied()
+    {
+        if (debug) print("Rival Possy Died");
+        if (isMainPossy)
+            Refresh();
+        SetAggroed(false);
+    }
+
+    public void CharacterControlled(bool controllable, Character controlled)
+    {
+        if (debug) print("Control changed");
+        if (controllable)
+        {
+            if (mainPossy)
+            {
+                Leader = controlled;
+            }
+            else
+            {
+                foreach (var character in characters)
+                {
+                    if (!character.controllable)
+                        Leader = character;
+                }
+            }
+        }
+    }
+
+    public void CharacterAggroed()
+    {
+        if (debug) print("Aggroed");
+        if (!aggroed)
+        {
+            SetAggroed(true);
         }
     }
 
