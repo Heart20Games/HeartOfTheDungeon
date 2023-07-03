@@ -130,10 +130,10 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Osseus_Bone_Land
+            m_StringArgument: Magic-bolt-hit
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 485424403346524287}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
           m_MethodName: Stop
           m_Mode: 1
@@ -160,6 +160,18 @@ MonoBehaviour:
         - m_Target: {fileID: 2566543505948310224}
           m_TargetAssemblyTypeName: Impact, Assembly-CSharp
           m_MethodName: SetHasCollided
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Magic-bolt-hit
+            m_BoolArgument: 1
+          m_CallState: 2
+        - m_Target: {fileID: 2566543505948310224}
+          m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+          m_MethodName: set_enabled
           m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -197,43 +209,7 @@ MonoBehaviour:
   onCollision:
     enter:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1969719491241460694}
-          m_TargetAssemblyTypeName: Projectile, Assembly-CSharp
-          m_MethodName: Destroy
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 485424403346524287}
-          m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-          m_MethodName: 
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: CannonImpact
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 485424403346524287}
-          m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
-          m_MethodName: 
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: CannonImpact
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
     exit:
       m_PersistentCalls:
         m_Calls: []
@@ -241,7 +217,19 @@ MonoBehaviour:
     enter:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 485424403346524287}
+        - m_Target: {fileID: 5029166449085567131}
+          m_TargetAssemblyTypeName: FModEventPlayer, Assembly-CSharp
+          m_MethodName: PlayEvent
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 2133279280376860803}
+            m_ObjectArgumentAssemblyTypeName: Impact, Assembly-CSharp
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Magic-bolt-hit
+            m_BoolArgument: 0
+          m_CallState: 1
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
           m_MethodName: set_enabled
           m_Mode: 6
@@ -250,21 +238,21 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: 
+            m_StringArgument: Magic-bolt-hit
             m_BoolArgument: 0
-          m_CallState: 2
+          m_CallState: 1
         - m_Target: {fileID: 4752624519185834967}
-          m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
-          m_MethodName: Play
-          m_Mode: 1
+          m_TargetAssemblyTypeName: Damager, Assembly-CSharp
+          m_MethodName: HitDamagable
+          m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_ObjectArgument: {fileID: 2133279280376860803}
+            m_ObjectArgumentAssemblyTypeName: Impact, Assembly-CSharp
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: 
+            m_StringArgument: Magic-bolt-hit
             m_BoolArgument: 0
-          m_CallState: 2
+          m_CallState: 1
     exit:
       m_PersistentCalls:
         m_Calls:

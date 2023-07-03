@@ -35,6 +35,8 @@ public class ArtRenderer : MonoBehaviour
     public string renderLayer = "CharacterRender";
     public string maskLayer = "CharacterMask";
 
+    public bool debug = false;
+
 
     // Initialization
 
@@ -116,7 +118,7 @@ public class ArtRenderer : MonoBehaviour
 
     private void SetAnimBoolTrigger(string boolParameter, bool value, string triggerParameter)
     {
-        print($"Set Anim BoolTrigger: {boolParameter} / {triggerParameter} ({value})");
+        if (debug) print($"Set Anim BoolTrigger: {boolParameter} / {triggerParameter} ({value})");
         SetAnimBool(boolParameter, value);
         if (value)
             AnimTrigger(triggerParameter);
