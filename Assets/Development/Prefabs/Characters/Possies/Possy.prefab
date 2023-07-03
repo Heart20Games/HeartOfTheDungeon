@@ -54,6 +54,7 @@ MonoBehaviour:
   pets: []
   isMainPossy: 0
   aggroed: 0
+  allDead: 0
   onAggro:
     m_PersistentCalls:
       m_Calls: []
@@ -72,8 +73,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  followTarget: {fileID: 9049492250913320960}
-  useLeaderAsFollowTarget: 0
+  followTargeter: {fileID: 9049492250913320960}
+  useLeaderAsFollowTargeter: 0
+  defaultFollowTarget: {fileID: 0}
   noise: {fileID: 3763881640399658337}
   destinationScale: 1
   debug: 0
@@ -255,7 +257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15000
-  maxVelocity: 3
+  maxVelocity: 6
   footstepVelocity: 1
   moveDrag: 0.5
   stopDrag: 75
@@ -273,6 +275,7 @@ MonoBehaviour:
   OnSetMoveVector:
     m_PersistentCalls:
       m_Calls: []
+  flipBuffer: 0.01
   startWalking:
     m_PersistentCalls:
       m_Calls: []
