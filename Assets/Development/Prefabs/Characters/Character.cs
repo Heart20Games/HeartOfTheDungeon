@@ -99,7 +99,7 @@ namespace Body
         public Transform spawn;
 
         // Events
-        public UnityEvent onDeath;
+        public UnityEvent<Character> onDeath;
         public UnityEvent onDmg;
         public UnityEvent onRespawn;
         public UnityEvent<bool, Character> onControl;
@@ -227,6 +227,11 @@ namespace Body
         public void SetAlive(bool alive)
         {
             movement.SetMoveVector(new());
+            this.alive = alive;
+            if (movement != null)
+                movement.enabled = alive;
+            if (attacker != null) 
+                attacker.enabled = alive;
             if (brain != null)
                 brain.Alive = alive;
             if (artRenderer != null)
@@ -270,8 +275,11 @@ namespace Body
 
         public void Die()
         {
-            onDeath.Invoke();
-            SetAlive(false);
+            if (alive)
+            {
+                onDeath.Invoke(this);
+                SetAlive(false);
+            }
         }
 
         private Coroutine coroutine;
@@ -280,7 +288,6 @@ namespace Body
         {
             if (RelativeIdentity(id, Identity) != Identity.Friend)
             {
-                int prevHealth = CurrentHealth;
                 CurrentHealth -= damageAmount;
             }
         }

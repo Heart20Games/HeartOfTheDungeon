@@ -83,6 +83,10 @@ public class Game : BaseMonoBehaviour
         {
             SetMode(GameMode.Selection);
         }
+        foreach (var character in playableCharacters)
+        {
+            character.onDeath.AddListener(OnCharacterDied);
+        }
     }
 
 

@@ -63,14 +63,6 @@ public class ArtRenderer : MonoBehaviour
                 renderSurface.enabled = true;
             }
         }
-
-        //for (int i = 0; i < animationParameters.Count; i++)
-        //{
-        //    print("Initialize parameter");
-        //    parameterExists[animationParameters[i]] = HasParameter(animationParameters[i]);
-        //    if (parameterExists[animationParameters[i]])
-        //        existingParameters.Add(animationParameters[i]);
-        //}
     }
 
 
