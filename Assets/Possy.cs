@@ -207,12 +207,12 @@ public void RivalPossyDied()
         CharacterAggroed();
     }
 
-    public void CharacterDied()
+    public void CharacterDied(Character character)
     {
         if (debug) print("Died");
-        foreach (var character in characters)
+        foreach (var other in characters)
         {
-            if (character.alive) return;
+            if (other.alive) return;
         }
         allDead = true;
         aggroed = false;
