@@ -22,6 +22,7 @@ public class Possy : BaseMonoBehaviour
     public bool allDead = false;
     public UnityEvent onAggro = new();
     public UnityEvent onAllDead = new();
+    private bool aggroedThisFrame = false;
 
     [Header("Follow Target")]
     public Transform followTargeter;
@@ -40,6 +41,14 @@ public class Possy : BaseMonoBehaviour
     private void Awake()
     {
         possies.Add(this);
+    }
+
+    private void FixedUpdate()
+    {
+        if (aggroed && !aggroedThisFrame)
+        {
+            SetAggroed(false);
+        }
     }
 
     private void Start()
@@ -107,16 +116,42 @@ public class Possy : BaseMonoBehaviour
         defaultFollowTarget = leader.body.transform;
     }
 
+    public void SetAggroed(bool aggro)
+    {
+        if (debug) print("Aggro!");
+        if (aggro)
+        {
+            aggroedThisFrame = true;
+            foreach (var character in characters)
+            {
+                character.Controller.destinationScale = 1f;
+                character.Controller.useNoise = false;
+            }
+            if (mainPossy != this)
+            {
+                SetTargetPossy(mainPossy);
+                mainPossy.SetTargetPossy(this, false);
+            }
+            onAggro.Invoke();
+            aggroed = true;
+        }
+        else
+        {
+            aggroed = false;
+            TargetPossy = null;
+            SetFollowTarget(defaultFollowTarget);
+        }
+    }
+
 
     // Events
 
     public void RivalPossyDied()
     {
         if (debug) print("Rival Possy Died");
-        Refresh();
-        aggroed = false;
-        TargetPossy = null;
-        SetFollowTarget(defaultFollowTarget);
+        if (isMainPossy)
+            Refresh();
+        SetAggroed(false);
     }
 
     public void CharacterControlled(bool controlled)
@@ -137,19 +172,7 @@ public class Possy : BaseMonoBehaviour
         if (debug) print("Aggroed");
         if (!aggroed)
         {
-            if (debug) print("Aggro!");
-            aggroed = true;
-            foreach (var character in characters)
-            {
-                character.Controller.destinationScale = 1f;
-                character.Controller.useNoise = false;
-            }
-            if (mainPossy != this)
-            {
-                SetTargetPossy(mainPossy);
-                mainPossy.SetTargetPossy(this, false);
-            }
-            onAggro.Invoke();
+            SetAggroed(true);
         }
     }
 
