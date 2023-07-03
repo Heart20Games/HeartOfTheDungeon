@@ -94,7 +94,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80a7ea508bfd494c8639b88a320691c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponArt: {fileID: 0}
+  pivot: {fileID: 0}
+  rOffset: 0
+  followBody: 1
   source: {fileID: 0}
+  castStatuses: []
+  hitStatuses: []
+  onSetIdentity:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 816360339111934779}
+        m_TargetAssemblyTypeName: Damager, Assembly-CSharp
+        m_MethodName: SetIdentity
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  casting: 0
   doCast:
     m_PersistentCalls:
       m_Calls:
@@ -131,26 +153,6 @@ MonoBehaviour:
   onCasted:
     m_PersistentCalls:
       m_Calls: []
-  casting: 0
-  onSetIdentity:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 816360339111934779}
-        m_TargetAssemblyTypeName: Damager, Assembly-CSharp
-        m_MethodName: SetIdentity
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  castStatuses: []
-  hitStatuses: []
-  rOffset: 0
-  followBody: 1
 --- !u!114 &-8678082863888368465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,6 +173,7 @@ MonoBehaviour:
   pivot: {fileID: 8528749275021607426}
   projectile: {fileID: 6258354108924013221}
   followBody: 0
+  exceptions: []
   debug: 0
 --- !u!114 &816360339111934779
 MonoBehaviour:
@@ -198,7 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d0c656f4854e7a4698ad4df13b973aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  length: 0.5
+  length: 2
   playOnStart: 0
   onPlay:
     m_PersistentCalls:
