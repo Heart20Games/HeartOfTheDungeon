@@ -12,17 +12,22 @@ public class Possy : BaseMonoBehaviour
     public List<Character> characters = new();
     public List<Character> pets = new();
 
+    static List<Possy> possies = new();
     static Possy mainPossy;
     public bool isMainPossy = false;
 
     [Header("Events")]
     public bool aggroed = false;
+    public bool allDead = false;
     public UnityEvent onAggro;
     public UnityEvent onAllDead;
 
     [Header("Follow Target")]
-    public Transform followTarget;
-    public bool useLeaderAsFollowTarget;
+    public Transform followTargeter;
+    public bool useLeaderAsFollowTargeter;
+    public Transform defaultFollowTarget;
+    private Possy targetPossy;
+    public Possy TargetPossy { get => targetPossy; set => SetTargetPossy(value); }
 
     [Header("Noise and Scaling")]
     public MovementNoise noise;
@@ -31,16 +36,26 @@ public class Possy : BaseMonoBehaviour
     public bool debug = false;
 
 
+    private void Awake()
+    {
+        possies.Add(this);
+    }
+
     private void Start()
     {
-        if (useLeaderAsFollowTarget)
-            followTarget = leader.body.transform;
+        if (useLeaderAsFollowTargeter)
+            followTargeter = leader.body.transform;
         if (isMainPossy)
             mainPossy = this;
+        if (leader != null)
+        {
+            defaultFollowTarget = leader.body.transform;
+            SetFollowTarget(defaultFollowTarget);
+        }
         foreach (var character in characters)
         {
-            if (followTarget)
-                character.brain.Target = followTarget;
+            if (followTargeter)
+                character.brain.Target = followTargeter;
             if (noise != null)
             {
                 character.Controller.noise = noise;
@@ -51,6 +66,44 @@ public class Possy : BaseMonoBehaviour
             character.onDeath.AddListener(CharacterDied);
             character.onControl.AddListener(CharacterControlled);
         }
+    }
+
+
+    // Actions
+
+    public void Refresh()
+    {
+
+    }
+
+    public void Respawn()
+    {
+
+    }
+
+    public void SetTargetPossy(Possy target, bool preferNew=true)
+    {
+        if (preferNew || targetPossy == null)
+        {
+            targetPossy = mainPossy;
+            SetFollowTarget(mainPossy.followTargeter);
+        }
+    }
+
+    public void SetFollowTarget(Transform target)
+    {
+        if (followTargeter.TryGetComponent(out Brain brain))
+            brain.Target = target;
+    }
+
+
+    // Events
+
+    public void RivalPossyDied()
+    {
+        aggroed = false;
+        TargetPossy = null;
+        SetFollowTarget(defaultFollowTarget);
     }
 
     public void CharacterControlled(bool controlled)
@@ -78,9 +131,10 @@ public class Possy : BaseMonoBehaviour
                 character.Controller.destinationScale = 1f;
                 character.Controller.useNoise = false;
             }
-            if (mainPossy != this && followTarget.TryGetComponent(out Brain brain))
+            if (mainPossy != this)
             {
-                brain.Target = mainPossy.followTarget;
+                SetTargetPossy(mainPossy);
+                mainPossy.SetTargetPossy(this, false);
             }
             onAggro.Invoke();
         }
@@ -99,6 +153,11 @@ public class Possy : BaseMonoBehaviour
         {
             if (character.alive) return;
         }
+        aggroed = false;
+        if (TargetPossy != null)
+            TargetPossy.RivalPossyDied();
+        TargetPossy = null;
+        allDead = true;
         onAllDead.Invoke();
     }
 }
