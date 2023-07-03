@@ -30,7 +30,7 @@ public class Attack : BaseMonoBehaviour
                 weapRotation = Vector3.right * -attackVector.x + Vector3.forward * -attackVector.y;
             
             if (artRenderer != null)
-                artRenderer.Attack();
+                artRenderer.Attack(Castable.GetItem() == null ? 0 : Castable.GetItem().attackIdx);
             
             if (weapRotation != lastDirection)
                 lastDirection = weapRotation;
