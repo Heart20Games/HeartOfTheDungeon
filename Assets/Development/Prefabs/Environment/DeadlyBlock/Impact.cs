@@ -1,3 +1,4 @@
+using Body;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class Impact : BaseMonoBehaviour
     public List<string> desiredTags;
     [SerializeField] private List<SelectType> selectableTypes;
     public bool desireInteractors = false;
+    public bool controlledCharactersOnly = false;
     public List<SelectType> SelectableTypes { get { return selectableTypes; } set { SetSelectableTypes(value); } }
 
     public BinaryEvent onCollision;
@@ -67,12 +69,21 @@ public class Impact : BaseMonoBehaviour
         return !desireInteractors || (other.TryGetComponent<Interactor>(out var interactor) && interactor.enabled);
     }
 
+    private bool IsValidCharacter(GameObject other)
+    {
+        if (controlledCharactersOnly && other.TryGetComponent(out Character character))
+        {
+            return character.controllable;
+        }
+        else return true;
+    }
+
     // Events
 
     private void OnEventEnter(GameObject other, UnityEvent onEvent)
     {
         this.other = other;
-        if ((!oneShot || !hasCollided) && HasValidTag(other) && IsValidSelectable(other) && IsValidInteractor(other) && !touching.Contains(other))
+        if ((!oneShot || !hasCollided) && HasValidTag(other) && IsValidSelectable(other) && IsValidInteractor(other) && IsValidCharacter(other) && !touching.Contains(other))
         {
             touching.Add(other);
             onEvent.Invoke();

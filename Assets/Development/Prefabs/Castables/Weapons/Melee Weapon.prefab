@@ -50,6 +50,7 @@ MonoBehaviour:
   - Character
   selectableTypes: 
   desireInteractors: 0
+  controlledCharactersOnly: 0
   onCollision:
     enter:
       m_PersistentCalls:
@@ -88,6 +89,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  oneShot: 0
+  hasCollided: 0
   debug: 0
   other: {fileID: 0}
   selectable: {fileID: 0}
@@ -156,7 +159,7 @@ GameObject:
   - component: {fileID: 6198877529759635688}
   m_Layer: 0
   m_Name: Melee Weapon
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -189,6 +192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80a7ea508bfd494c8639b88a320691c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item: {fileID: 0}
   weaponArt: {fileID: 0}
   pivot: {fileID: 6975279941231171404}
   rOffset: 0

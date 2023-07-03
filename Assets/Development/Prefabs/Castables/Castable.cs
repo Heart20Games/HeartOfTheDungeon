@@ -37,6 +37,8 @@ public class Castable : BaseMonoBehaviour, ICastable
     public UnityEvent<Identity> onSetIdentity;
     private Damager damager;
 
+    public List<Transform> positionables;
+
     // Events
     [Header("Casting")]
     public bool casting = false;
@@ -86,6 +88,8 @@ public class Castable : BaseMonoBehaviour, ICastable
     public virtual void Cast(Vector3 direction)
     {
         doCast.Invoke(direction);
+        if (pivot != null)
+            pivot.SetRotationWithVector(direction.XZVector());
         casting = true;
         foreach (Status status in castStatuses)
         {
