@@ -111,11 +111,11 @@ public class Game : BaseMonoBehaviour
         switch (this.mode)
         {
             case GameMode.Character:
-                userInterface.SetHudActive(false);
-                SetControllable(curCharacter, false); break;
+                userInterface.SetHudActive(false); break;
+                //SetControllable(curCharacter, false); break;
             case GameMode.Selection:
-                userInterface.SetHudActive(false);
-                SetControllable(selector, false); break;
+                userInterface.SetHudActive(false); break;
+                //SetControllable(selector, false); break;
             case GameMode.Dialogue:
                 userInterface.SetDialogueActive(false); break;
             case GameMode.Dismiss:
@@ -126,7 +126,7 @@ public class Game : BaseMonoBehaviour
             case GameMode.Character:
                 userInterface.SetHudActive(true);
                 input.SwitchCurrentActionMap(characterInputMap);
-                TimeScale = 1;
+                TimeScale = 1; break;
                 SetControllable(curCharacter, true); break;
             case GameMode.Selection:
                 userInterface.SetHudActive(true);
