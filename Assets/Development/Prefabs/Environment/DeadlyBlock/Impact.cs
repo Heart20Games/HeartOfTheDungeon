@@ -85,6 +85,7 @@ public class Impact : BaseMonoBehaviour
         this.other = other;
         if ((!oneShot || !hasCollided) && HasValidTag(other) && IsValidSelectable(other) && IsValidInteractor(other) && IsValidCharacter(other) && !touching.Contains(other))
         {
+            print($"Other: {other.name}");
             touching.Add(other);
             onEvent.Invoke();
             hasCollided = true;
