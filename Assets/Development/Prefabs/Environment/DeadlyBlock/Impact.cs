@@ -71,9 +71,11 @@ public class Impact : BaseMonoBehaviour
 
     private bool IsValidCharacter(GameObject other)
     {
-        if (controlledCharactersOnly && other.TryGetComponent(out Character character))
+        if (controlledCharactersOnly)
         {
-            return character.controllable;
+            if (other.TryGetComponent(out Character character))
+                return character.controllable;
+            else return false;
         }
         else return true;
     }
