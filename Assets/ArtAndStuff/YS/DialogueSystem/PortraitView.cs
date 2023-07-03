@@ -13,6 +13,9 @@ public class PortraitView : DialogueViewBase, IViewable
     // Dictionary of Name:Image Pairs
     [SerializeField] Portraits portraits;
 
+    public string emotionTag = "emotion";
+    public string defaultEmotion = "neutral";
+
     // UI Images to Update with Characters
     [SerializeField] public Image leftImage;
     [SerializeField] public Image rightImage;
@@ -40,8 +43,10 @@ public class PortraitView : DialogueViewBase, IViewable
         if (portraits.bank.ContainsKey(character))
         {
             bool sameCharacter = lastCharacter == character;
+
+            HasPairTag(dialogueLine.Metadata, emotionTag, out string emotion, defaultEmotion);
             
-            Portrait portrait = portraits.bank[character];
+            PortraitImage portrait = portraits.bank[character][emotion];
             bool orientation = portrait.orientation;
             if (!sameCharacter)
             {
