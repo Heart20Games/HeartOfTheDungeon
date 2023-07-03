@@ -153,6 +153,7 @@ namespace Body.Behavior.ContextSteering
                     rigidbody.velocity = Speed * Scale * Time.fixedDeltaTime * vector;
                 }
                 CurrentVector = vector.XZVector();
+                onSetVector.Invoke( CurrentVector );
             }
         }
 

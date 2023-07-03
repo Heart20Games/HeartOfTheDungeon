@@ -13,12 +13,15 @@ public class ArtRenderer : MonoBehaviour
 
     [Header("Animation")]
     public Animator animator;
-    private readonly List<string> animationParameters = new() { "run", "hit", "attack", "dead" };
-    private readonly Dictionary<string, bool> parameterExists = new();
+    //public List<string> animationParameters = new() { "run", "hit", "attack", "dead", "die" };
+    //private readonly Dictionary<string, bool> parameterExists = new();
+    //public List<string> existingParameters = new();
     public bool Running { get => GetAnimBool("run"); set => SetAnimBool("run", value); }
     public void Attack() { AnimTrigger("attack"); }
     public void Hit() { AnimTrigger("hit"); }
-    public bool Dead { get => GetAnimBool("dead"); set => SetAnimBool("dead", value); }
+    public bool Dead { get => GetAnimBool("dead"); set => SetAnimBoolTrigger("dead", value, "die"); }
+
+    public bool toggleDead = false;
 
     [Header("Camera Shader Layers")]
     public bool useCameraShaderLayers;
@@ -31,6 +34,8 @@ public class ArtRenderer : MonoBehaviour
 
     public string renderLayer = "CharacterRender";
     public string maskLayer = "CharacterMask";
+
+    public bool debug = false;
 
 
     // Initialization
@@ -59,9 +64,22 @@ public class ArtRenderer : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < animationParameters.Count; i++)
+        //for (int i = 0; i < animationParameters.Count; i++)
+        //{
+        //    print("Initialize parameter");
+        //    parameterExists[animationParameters[i]] = HasParameter(animationParameters[i]);
+        //    if (parameterExists[animationParameters[i]])
+        //        existingParameters.Add(animationParameters[i]);
+        //}
+    }
+
+
+    public void Update()
+    {
+        if (toggleDead)
         {
-            parameterExists[animationParameters[i]] = animator.HasParameter(animationParameters[i]);
+            Dead = !Dead;
+            toggleDead = false;
         }
     }
 
@@ -80,22 +98,35 @@ public class ArtRenderer : MonoBehaviour
 
     // Animation
 
+    private bool HasParameter(string parameter)
+    {
+        return animator.HasParameter(parameter);
+    }
+
     private void AnimTrigger(string parameter)
     {
-        if (parameterExists[parameter])
+        if (HasParameter(parameter))
             animator.SetTrigger(parameter);
     }
 
     private bool GetAnimBool(string parameter)
     {
-        if (parameterExists[parameter])
+        if (HasParameter(parameter))
             return animator.GetBool(parameter);
         return false;
     }
 
+    private void SetAnimBoolTrigger(string boolParameter, bool value, string triggerParameter)
+    {
+        if (debug) print($"Set Anim BoolTrigger: {boolParameter} / {triggerParameter} ({value})");
+        SetAnimBool(boolParameter, value);
+        if (value)
+            AnimTrigger(triggerParameter);
+    }
+
     private void SetAnimBool(string parameter, bool value)
     {
-        if (parameterExists[parameter])
+        if (HasParameter(parameter))
             animator.SetBool(parameter, value);
     }
 

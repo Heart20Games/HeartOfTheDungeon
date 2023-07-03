@@ -76,6 +76,7 @@ MonoBehaviour:
   useLeaderAsFollowTarget: 0
   noise: {fileID: 3763881640399658337}
   destinationScale: 1
+  debug: 0
 --- !u!114 &3763881640399658337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,6 +173,7 @@ MonoBehaviour:
   target: {fileID: 0}
   controller: {fileID: 3920419301028268776}
   agent: {fileID: 0}
+  pathFinder: {fileID: 5885684141737888567}
   navUpdate: 1
   followingDistance: 0
   baseOffset: 0
@@ -205,7 +207,19 @@ MonoBehaviour:
   moveSelf: 1
   onSetVector:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5180969800388655949}
+        m_TargetAssemblyTypeName: Movement, Assembly-CSharp
+        m_MethodName: SetMoveVector
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   noise: {fileID: 0}
   useNoise: 1
   activeContexts: []

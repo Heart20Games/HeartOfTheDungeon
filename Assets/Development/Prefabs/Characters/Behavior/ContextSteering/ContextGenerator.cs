@@ -18,7 +18,7 @@ public class ContextGenerator
         public float falloff;
     }
 
-    public List<ContextGenerationData> generationData;
+    public List<ContextGenerationData> generationData = new();
 
     // Setup
     public void GenerateContexts(ref Dictionary<Identity, List<Context>> contextMap)

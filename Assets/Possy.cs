@@ -16,7 +16,7 @@ public class Possy : BaseMonoBehaviour
     public bool isMainPossy = false;
 
     [Header("Events")]
-    public bool aggroed;
+    public bool aggroed = false;
     public UnityEvent onAggro;
     public UnityEvent onAllDead;
 
@@ -27,6 +27,8 @@ public class Possy : BaseMonoBehaviour
     [Header("Noise and Scaling")]
     public MovementNoise noise;
     public float destinationScale = 1f;
+
+    public bool debug = false;
 
 
     private void Start()
@@ -45,7 +47,7 @@ public class Possy : BaseMonoBehaviour
                 character.Controller.destinationScale = destinationScale;
             }
             character.Controller.onFoeContextActive.AddListener(CharacterAggroed);
-            character.onDmg.AddListener(CharacterDied);
+            character.onDmg.AddListener(CharacterDamaged);
             character.onDeath.AddListener(CharacterDied);
             character.onControl.AddListener(CharacterControlled);
         }
@@ -53,6 +55,7 @@ public class Possy : BaseMonoBehaviour
 
     public void CharacterControlled(bool controlled)
     {
+        if (debug) print("Controlled");
         if (mainPossy && leader != null)
         {
             foreach (var character in characters)
@@ -65,8 +68,10 @@ public class Possy : BaseMonoBehaviour
 
     public void CharacterAggroed()
     {
+        if (debug) print("Aggroed");
         if (!aggroed)
         {
+            if (debug) print("Aggro!");
             aggroed = true;
             foreach (var character in characters)
             {
@@ -83,11 +88,13 @@ public class Possy : BaseMonoBehaviour
 
     public void CharacterDamaged()
     {
+        if (debug) print("Damaged");
         CharacterAggroed();
     }
 
     public void CharacterDied()
     {
+        if (debug) print("Died");
         foreach (var character in characters)
         {
             if (character.alive) return;
