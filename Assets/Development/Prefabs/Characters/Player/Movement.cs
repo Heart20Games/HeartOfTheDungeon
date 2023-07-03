@@ -31,7 +31,6 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     public Vector2 castVector = new(0, 0);
     private bool onGround = false;
 
-    private bool hasFootsteps = false;
     private Rigidbody myRigidbody;
     private Character character;
     private Transform body;
@@ -85,7 +84,11 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
 
 
     // Movement
-    
+
+    [Header("Animation")]
+    public float flipBuffer = 0.01f;
+    private bool hasFootsteps = false;
+    private bool flip = false;
     public UnityEvent startWalking;
     public UnityEvent stopWalking;
 
@@ -122,8 +125,16 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
                 if (hVelocity.magnitude > footstepVelocity)
                 {
                     float pMag = Mathf.Abs(pivot.localScale.x);
-                    float sign = Mathf.Sign(Vector2.Dot(right, hVelocity));
-                    pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
+                    float angle = Vector2.Dot(right, hVelocity);
+
+                    float upperAngle = flipBuffer;
+                    float lowerAngle = -flipBuffer;
+                    if ((flip && angle > flipBuffer) || (!flip && angle < -flipBuffer))
+                    {
+                        flip = !flip;
+                        float sign = Mathf.Sign(angle);
+                        pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
+                    }
 
                     if (!hasFootsteps)
                     {
