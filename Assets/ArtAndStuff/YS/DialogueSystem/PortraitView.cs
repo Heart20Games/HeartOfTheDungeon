@@ -45,18 +45,29 @@ public class PortraitView : DialogueViewBase, IViewable
             bool sameCharacter = lastCharacter == character;
 
             HasPairTag(dialogueLine.Metadata, emotionTag, out string emotion, defaultEmotion);
-            
-            PortraitImage portrait = portraits.bank[character][emotion];
-            bool orientation = portrait.orientation;
+
             if (!sameCharacter)
             {
                 leftNext = !leftNext;
             }
             Image image = leftNext ? leftImage : rightImage;
-            int xScale = (leftNext && !orientation) || (!leftNext && orientation) ? -1 : 1;
-            image.rectTransform.localScale = new Vector2(xScale, 1);
-            image.sprite = portrait.image;
-            image.color = Color.white;
+            image.sprite = null;
+
+            if (portraits.bank.ContainsKey(character))
+            {
+                if (emotion != defaultEmotion && !portraits.bank[character].ContainsKey(emotion))
+                    emotion = defaultEmotion;
+                if (portraits.bank[character].TryGetValue(emotion, out var portrait))
+                {
+                    bool orientation = portrait.orientation;
+
+                    int xScale = (leftNext && !orientation) || (!leftNext && orientation) ? -1 : 1;
+                    image.rectTransform.localScale = new Vector2(xScale, 1);
+                    image.sprite = portrait.image;
+                    image.color = Color.white;
+                }
+            }
+            
             lastCharacter = character;
         }
 
