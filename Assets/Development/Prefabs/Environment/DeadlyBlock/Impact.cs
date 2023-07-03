@@ -1,6 +1,7 @@
 using Body;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.Events;
 using static ISelectable;
@@ -73,9 +74,15 @@ public class Impact : BaseMonoBehaviour
     {
         if (controlledCharactersOnly)
         {
-            if (other.TryGetComponent(out Character character))
-                return character.controllable;
-            else return false;
+            if (other.gameObject.tag == "Character")
+            {
+                Character character = other.GetComponentInParent<Character>();
+                if (character != null)
+                    return character.controllable;
+                else return true;
+
+            }
+            else return true;
         }
         else return true;
     }
@@ -87,7 +94,7 @@ public class Impact : BaseMonoBehaviour
         this.other = other;
         if ((!oneShot || !hasCollided) && HasValidTag(other) && IsValidSelectable(other) && IsValidInteractor(other) && IsValidCharacter(other) && !touching.Contains(other))
         {
-            print($"Other: {other.name}");
+            if (debug) print($"Other: {other.name}");
             touching.Add(other);
             onEvent.Invoke();
             hasCollided = true;

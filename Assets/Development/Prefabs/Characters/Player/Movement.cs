@@ -88,7 +88,7 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     [Header("Animation")]
     public float flipBuffer = 0.01f;
     private bool hasFootsteps = false;
-    private bool flip = false;
+    public bool flip = false;
     public UnityEvent startWalking;
     public UnityEvent stopWalking;
 
