@@ -9,6 +9,7 @@ public class Possy : BaseMonoBehaviour
 {
     [Header("Members")]
     public Character leader;
+    public Character Leader { get => leader; set => SetLeader(value); }
     public List<Character> characters = new();
     public List<Character> pets = new();
 
@@ -19,8 +20,8 @@ public class Possy : BaseMonoBehaviour
     [Header("Events")]
     public bool aggroed = false;
     public bool allDead = false;
-    public UnityEvent onAggro;
-    public UnityEvent onAllDead;
+    public UnityEvent onAggro = new();
+    public UnityEvent onAllDead = new();
 
     [Header("Follow Target")]
     public Transform followTargeter;
@@ -73,20 +74,24 @@ public class Possy : BaseMonoBehaviour
 
     public void Refresh()
     {
-
+        foreach (var character in characters)
+            character.Refresh();
     }
 
     public void Respawn()
     {
-
+        foreach (var character in characters)
+            character.Respawn();
     }
 
     public void SetTargetPossy(Possy target, bool preferNew=true)
     {
         if (preferNew || targetPossy == null)
         {
-            targetPossy = mainPossy;
-            SetFollowTarget(mainPossy.followTargeter);
+            targetPossy = target;
+            if (targetPossy != null)
+                targetPossy.onAllDead.AddListener(RivalPossyDied);
+            SetFollowTarget(target == null ? null : target.followTargeter);
         }
     }
 
@@ -96,11 +101,19 @@ public class Possy : BaseMonoBehaviour
             brain.Target = target;
     }
 
+    public void SetLeader(Character character)
+    {
+        leader = character;
+        defaultFollowTarget = leader.body.transform;
+    }
+
 
     // Events
 
     public void RivalPossyDied()
     {
+        if (debug) print("Rival Possy Died");
+        Refresh();
         aggroed = false;
         TargetPossy = null;
         SetFollowTarget(defaultFollowTarget);
@@ -114,7 +127,7 @@ public class Possy : BaseMonoBehaviour
             foreach (var character in characters)
             {
                 if (character.controllable)
-                    leader = character;
+                    Leader = character;
             }
         }
     }
@@ -153,11 +166,10 @@ public class Possy : BaseMonoBehaviour
         {
             if (character.alive) return;
         }
-        aggroed = false;
-        if (TargetPossy != null)
-            TargetPossy.RivalPossyDied();
-        TargetPossy = null;
         allDead = true;
+        aggroed = false;
+        TargetPossy = null;
         onAllDead.Invoke();
+        onAllDead.RemoveAllListeners();
     }
 }
