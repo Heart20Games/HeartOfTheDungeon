@@ -33,7 +33,10 @@ public class Possy : BaseMonoBehaviour
 
     [Header("Noise and Scaling")]
     public MovementNoise noise;
-    public float destinationScale = 1f;
+    public float tightness = 1f;
+    public float tightnessIdle = 1f;
+    public float tightnessAggro = 2f;
+    public float Tightness { get => tightness; set => SetTightness(value); }
 
     public bool debug = false;
 
@@ -69,7 +72,7 @@ public class Possy : BaseMonoBehaviour
             if (noise != null)
             {
                 character.Controller.noise = noise;
-                character.Controller.destinationScale = destinationScale;
+                character.Controller.destinationScale = tightnessIdle;
             }
             character.Controller.onFoeContextActive.AddListener(CharacterAggroed);
             character.onDmg.AddListener(CharacterDamaged);
@@ -114,6 +117,8 @@ public class Possy : BaseMonoBehaviour
     {
         leader = character;
         defaultFollowTarget = leader.body.transform;
+        if (!aggroed)
+            SetFollowTarget(defaultFollowTarget);
     }
 
     public void SetAggroed(bool aggro)
@@ -121,6 +126,7 @@ public class Possy : BaseMonoBehaviour
         if (debug) print("Aggro!");
         if (aggro)
         {
+            Tightness = tightnessAggro;
             aggroedThisFrame = true;
             foreach (var character in characters)
             {
@@ -137,16 +143,28 @@ public class Possy : BaseMonoBehaviour
         }
         else
         {
+            Tightness = tightnessIdle;
             aggroed = false;
             TargetPossy = null;
             SetFollowTarget(defaultFollowTarget);
         }
     }
 
+    public void SetTightness(float tightness)
+    {
+        foreach (var character in characters)
+        {
+            if (noise != null)
+            {
+                character.Controller.destinationScale = tightnessIdle;
+            }
+        }
+    }
 
-    // Events
 
-    public void RivalPossyDied()
+// Events
+
+public void RivalPossyDied()
     {
         if (debug) print("Rival Possy Died");
         if (isMainPossy)
@@ -154,15 +172,22 @@ public class Possy : BaseMonoBehaviour
         SetAggroed(false);
     }
 
-    public void CharacterControlled(bool controlled)
+    public void CharacterControlled(bool controllable, Character controlled)
     {
-        if (debug) print("Controlled");
-        if (mainPossy && leader != null)
+        if (debug) print("Control changed");
+        if (controllable)
         {
-            foreach (var character in characters)
+            if (mainPossy)
             {
-                if (character.controllable)
-                    Leader = character;
+                Leader = controlled;
+            }
+            else
+            {
+                foreach (var character in characters)
+                {
+                    if (!character.controllable)
+                        Leader = character;
+                }
             }
         }
     }
