@@ -329,7 +329,7 @@ namespace Body
             {
                 castableItems[idx] = item;
                 castables[idx] = Instantiate(item.prefab, transform);
-                castables[idx].Initialize(this);
+                castables[idx].Initialize(this, item);
             }
         }
 
