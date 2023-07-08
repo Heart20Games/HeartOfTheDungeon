@@ -1,9 +1,6 @@
-using FMOD;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
-using static YarnTags;
 
 [CreateAssetMenu(fileName = "YarnTags", menuName = "Yarn Spinner/Yarn Tags", order = 1)]
 public class YarnTags : ScriptableObject
@@ -13,7 +10,7 @@ public class YarnTags : ScriptableObject
     static public string inclusionTag = "include";
 
     // View Tags
-    public enum ViewType { Portrait, Line, OptionList, Audio }
+    public enum ViewType { Portrait, Line, OptionList, Audio, Bubble }
     [Flags] public enum Inclusion { NA=0, Included=1<<0, Excluded=1<<1 }
     [Serializable]
     public struct ViewTag
@@ -144,12 +141,12 @@ public class YarnTags : ScriptableObject
         return false;
     }
 
-    static public bool ShouldIncludeView(string[] metadata, ViewType viewType, Inclusion viewable)
+    static public bool ShouldIncludeView(string[] metadata, ViewType viewType, Inclusion viewable, bool includeByDefault=true)
     {
         Inclusion inclusion = Included(metadata, viewType);
         bool exclude = (inclusion & Inclusion.Excluded) != 0;
         bool include = (inclusion & Inclusion.Included) != 0;
-        bool nodeViewable = (viewable & Inclusion.Excluded) == 0;
+        bool nodeViewable = (viewable & Inclusion.Excluded) == 0 && (includeByDefault || (viewable & Inclusion.NA) == 0);
         return !(exclude || (!nodeViewable && !include));
     }
 }

@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Body;
+using static Body.Behavior.ContextSteering.CSIdentity;
 
 public class Weapon : Castable
 {
-    public Transform weaponArt;
     private Animator animator;
-    public Transform pivot;
-    public Transform body;
     public bool swinging = false; // toggled in weapon 
     public float swingLength = 1; // Non-animation swing time
     public float speed = 3f; // speed of the animation
@@ -30,23 +28,13 @@ public class Weapon : Castable
 
     // Castable
 
-    public override void Initialize(Body.Character source)
+    public override void Initialize(Character source)
     {
         base.Initialize(source);
-        Transform origin = followBody ? source.body : transform;
         IDamageable damageable = source.body.GetComponent<IDamageable>();
         if (damageable != null)
         {
             ignored.Add(damageable);
-        }
-        Vector3 pivotLocalPosition = pivot.localPosition;
-        pivot.SetParent(origin, false);
-        pivot.localPosition = pivotLocalPosition;
-        if (source.weaponHand != null && weaponArt)
-        {
-            Vector3 weaponLocalPosition = weaponArt.localPosition;
-            weaponArt.SetParent(source.weaponHand, false);
-            weaponArt.localPosition = weaponLocalPosition;
         }
     }
 
@@ -92,7 +80,7 @@ public class Weapon : Castable
         if (other != null && !ignored.Contains(other) && !others.Contains(other))
         {
             others.Add(other);
-            other.TakeDamage(damage);
+            other.TakeDamage(damage, Identity);
         }
     }
 

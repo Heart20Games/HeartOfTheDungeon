@@ -13,9 +13,7 @@ public class FModEventPlayer : BaseMonoBehaviour
     private void Awake()
     {
         if (source == null)
-        {
             source = gameObject.transform;
-        }
     }
 
     public void HelloWorld(string key)

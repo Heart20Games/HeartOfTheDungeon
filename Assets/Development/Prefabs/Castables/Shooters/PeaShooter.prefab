@@ -58,6 +58,7 @@ GameObject:
   - component: {fileID: 8666214379601827426}
   - component: {fileID: -8678082863888368465}
   - component: {fileID: 816360339111934779}
+  - component: {fileID: 6114431599006201392}
   m_Layer: 0
   m_Name: PeaShooter
   m_TagString: Untagged
@@ -93,7 +94,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80a7ea508bfd494c8639b88a320691c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponArt: {fileID: 0}
+  pivot: {fileID: 0}
+  rOffset: 0
+  followBody: 1
   source: {fileID: 0}
+  castStatuses: []
+  hitStatuses: []
+  onSetIdentity:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 816360339111934779}
+        m_TargetAssemblyTypeName: Damager, Assembly-CSharp
+        m_MethodName: SetIdentity
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  casting: 0
   doCast:
     m_PersistentCalls:
       m_Calls:
@@ -112,9 +135,9 @@ MonoBehaviour:
   onCast:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8666214379601827426}
-        m_TargetAssemblyTypeName: Castable, Assembly-CSharp
-        m_MethodName: UnCast
+      - m_Target: {fileID: 6114431599006201392}
+        m_TargetAssemblyTypeName: Timer, Assembly-CSharp
+        m_MethodName: Play
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -130,11 +153,6 @@ MonoBehaviour:
   onCasted:
     m_PersistentCalls:
       m_Calls: []
-  casting: 0
-  castStatuses: []
-  hitStatuses: []
-  rOffset: 0
-  followBody: 1
 --- !u!114 &-8678082863888368465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,8 +171,10 @@ MonoBehaviour:
   rOffset: 0
   lifeSpan: 2
   pivot: {fileID: 8528749275021607426}
-  projectile: {fileID: 4362733425235696987}
+  projectile: {fileID: 6258354108924013221}
   followBody: 0
+  exceptions: []
+  debug: 0
 --- !u!114 &816360339111934779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,6 +188,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
+  identity: 0
+--- !u!114 &6114431599006201392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7671084196221756564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0c656f4854e7a4698ad4df13b973aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  length: 2
+  playOnStart: 0
+  onPlay:
+    m_PersistentCalls:
+      m_Calls: []
+  onComplete:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8666214379601827426}
+        m_TargetAssemblyTypeName: Castable, Assembly-CSharp
+        m_MethodName: UnCast
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &5588961191513418099
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -210,19 +263,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8143757690908996648, guid: 311300ecfbd938b48ae10571780ec3dc, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.92387956
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8143757690908996648, guid: 311300ecfbd938b48ae10571780ec3dc, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8143757690908996648, guid: 311300ecfbd938b48ae10571780ec3dc, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.38268343
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8143757690908996648, guid: 311300ecfbd938b48ae10571780ec3dc, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8143757690908996648, guid: 311300ecfbd938b48ae10571780ec3dc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -247,3 +300,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8143757690908996648, guid: 311300ecfbd938b48ae10571780ec3dc, type: 3}
   m_PrefabInstance: {fileID: 5588961191513418099}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6258354108924013221 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1969719491241460694, guid: 311300ecfbd938b48ae10571780ec3dc, type: 3}
+  m_PrefabInstance: {fileID: 5588961191513418099}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 516072af4a9de6647b3b949f82947569, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

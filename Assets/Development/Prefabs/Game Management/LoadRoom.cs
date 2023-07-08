@@ -1,37 +1,85 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Yarn.Unity;
 
 public class LoadRoom : BaseMonoBehaviour
 {
     public InMemoryVariableStorage storage;
-    [SerializeField] public string targetRoom = "$Hub";
+    public string targetRoom = "$Hub";
+    public bool asynchronous = false;
+    public float progressThreshold = 0.9f;
+    public bool canActivate = true;
+    public UnityEvent onSceneLoaded;
+
+    public bool debug = false;
+
+    private AsyncOperation loading;
+
+    private void Start()
+    {
+        if (storage == null)
+        {
+            storage = FindObjectOfType<InMemoryVariableStorage>();
+            if (storage == null)
+                Debug.LogWarning("Can't find InMemoryVariableStorage componenent in scene.");
+        }
+    }
+
+    private void Update()
+    {
+        if (loading != null)
+        {
+            if (debug) print($"Progress: {loading.progress}");
+            if (canActivate && (loading.isDone || loading.progress >= progressThreshold))
+            {
+                if (debug) print("Scene done loading, activation allowed.");
+                loading.allowSceneActivation = true;
+                onSceneLoaded.Invoke();
+            }
+        }
+    }
+
+    public void SetCanActivate(bool canActivate)
+    {
+        this.canActivate = canActivate;
+    }
 
     public void StartGameplay()
     {
-        print("Game starts here!");
+        if (debug) print("Game starts here!");
         if (targetRoom.StartsWith("$") && storage != null)
         {
-            string targetScene;
-            if (storage.TryGetValue<string>(targetRoom, out targetScene))
+            if (storage.TryGetValue(targetRoom, out string targetScene))
             {
-                SceneManager.LoadScene(targetScene);
+                LoadScene(targetScene);
             }
             else
             {
                 Debug.LogWarning("Can't find room " + targetRoom + ", using as Scene name instead.");
-                SceneManager.LoadScene(targetRoom);
+                LoadScene(targetRoom);
             }
         }
         else
         {
-            if (storage == null)
+            if (targetRoom.StartsWith("$"))
             {
-                Debug.LogWarning("Cannot find InMemoryVariableStorage componenent.");
+                Debug.LogWarning("No InMemoryVariableStorage componenent.");
             }
-            SceneManager.LoadScene(targetRoom);
+            LoadScene(targetRoom);
+        }
+    }
+
+    public void LoadScene(string sceneName)
+    {
+        if (asynchronous)
+        {
+            loading = SceneManager.LoadSceneAsync(sceneName);
+            loading.allowSceneActivation = false;
+        }
+        else
+        {
+            SceneManager.LoadScene(sceneName);
         }
     }
 }

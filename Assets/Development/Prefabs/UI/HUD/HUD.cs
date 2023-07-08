@@ -1,97 +1,65 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;
+using Body;
 
 public class HUD : BaseMonoBehaviour
 {
-    [SerializeField] private List<GameObject> characterImages;
-    [SerializeField] private GameObject selectedCharacter;
-    [SerializeField] private GameObject prevSelectedCharacter;
-    [SerializeField] private Animator characterSelectAnimator;
-    [SerializeField] private Canvas abilityMenu;
-    [SerializeField] private bool abilityMenuActive = false;
-    [SerializeField] private Animator abilityMenuAnimator;
-    [SerializeField] private Material shimmerMat;
-    [SerializeField] private float shimmerSpeed = .02f;
-    private bool isShimmering = false;
-    private int currentCharacter;
+    [Header("Components")]
+    public AbilityMenu abilityMenu;
+    public CharacterSelectPanel characterPanel;
 
-    [SerializeField] private Material defaultSpriteMat;
+    [Header("Main Character")]
+    [SerializeField] private PlayerHealthUI healthUI;
+    [SerializeField] private SpellSlots spellSlots;
+    [SerializeField] private Character mainCharacter;
+    [SerializeField] private bool useSpellSlots = false;
+
+    [Header("Controlled Character")]
+    [SerializeField] private Character controlledCharacter;
+
+    [Header("Selected Character")]
+    [SerializeField] private Character selectedCharacter;
+
     private GameObject mainCamera;
     private Canvas hudCanvas;
 
-
     enum CHAR { GOBKIN, ROTTA, OSSEUS }
-    
-    public Image selectedAbility;
 
-    private void Start() 
+
+
+    // Builtin
+
+    private void Awake()
     {
-        abilityMenuAnimator = abilityMenu.GetComponent<Animator>();
-        mainCamera = FindObjectOfType<Camera>().gameObject;
-        hudCanvas = this.GetComponent<Canvas>();
+        hudCanvas = GetComponent<Canvas>();
         hudCanvas.renderMode = RenderMode.ScreenSpaceCamera;
-        hudCanvas.worldCamera = mainCamera.GetComponent<Camera>();                
+
+        mainCamera = Camera.main.gameObject;
+        hudCanvas.worldCamera = mainCamera.GetComponent<Camera>();
     }
 
-    private void FixedUpdate() 
+
+    //Selection
+
+    public void CharacterSelect(Character character)
     {
-        if(isShimmering)
+        if (character != null)
         {
-            Shimmer(currentCharacter);
-        }    
+            controlledCharacter = character;
+            int idx = character.characterUIElements != null ? character.characterUIElements.portraitIndex : 0;
+            characterPanel.Select(idx);
+            abilityMenu.Select(false);
+        }
     }
 
-    public void CharacterSelect(int idx)
+    public void MainCharacterSelect(Character character)
     {
-        
-        if (selectedCharacter == characterImages[idx])
-            return;
-   
-        prevSelectedCharacter = selectedCharacter;        
-        selectedCharacter = characterImages[idx];
-        selectedCharacter.GetComponent<SpriteRenderer>().sortingOrder = 3;
-        prevSelectedCharacter.GetComponent<SpriteRenderer>().sortingOrder = 1;
-        prevSelectedCharacter.GetComponent<SpriteRenderer>().material = defaultSpriteMat;
-        shimmerMat.SetFloat("_SheenPosition", 0f);
-        selectedCharacter.GetComponent<SpriteRenderer>().material = shimmerMat;
-        isShimmering = true;        
-        characterSelectAnimator.SetTrigger("SelectCharacter" + idx);
-        currentCharacter = idx;
-
-        AbilitySelect(false);
-    }
-
-    public void AbilityToggle()
-    {
-        AbilitySelect(!abilityMenuActive);
-    }
-
-    public void Shimmer(int idx)
-    {
-        float endingPos = -.9f;
-        float currentPos = shimmerMat.GetFloat("_SheenPosition");
-        if(currentPos >= endingPos)                
-            shimmerMat.SetFloat("_SheenPosition", currentPos - shimmerSpeed);
-        else
-            isShimmering = false;
-    }
-    
-    public void AbilitySelect(bool activate)
-    {
-        if (abilityMenuActive != activate)
+        if (character != null)
         {
-            if (abilityMenuAnimator.HasParameter("AbilityMenuActive"))
-            {
-                abilityMenuAnimator.SetBool("AbilityMenuActive", activate);
-                abilityMenuActive = activate;            
-            }
-            else
-            {
-                Debug.LogWarning("HUD cannot find Animator parameter: AbilityMenuActive");
-            }
+            mainCharacter = character;
+            if (healthUI != null)
+                healthUI.ConnectCharacter(character);
         }
     }
 }

@@ -7,44 +7,82 @@ using UnityEngine.Events;
 namespace Body
 {
     using Behavior;
+    using Body.Behavior.ContextSteering;
+    using System.Collections;
+    using UnityEngine.TextCore.Text;
+    using static Body.Behavior.ContextSteering.CSIdentity;
 
     [RequireComponent(typeof(Brain))]
     [RequireComponent(typeof(Movement))]
     [RequireComponent(typeof(Talker))]
-    [RequireComponent(typeof(PlayerAttack))]
+    [RequireComponent(typeof(Attack))]
     public class Character : BaseMonoBehaviour, IDamageable, IControllable
     {
-        // Character Parts
+        // Movement and Positioning
+        [Header("Movement and Positioning")]
         public Transform body;
         public Transform pivot;
-        public Animator animator;
-        public Transform weaponHand;
-        public Transform moveReticle;
-        public Health healthBar;
-        public CinemachineVirtualCamera virtualCamera;
-        [HideInInspector] public Brain brain;
+        public Pivot moveReticle;
         [HideInInspector] public Movement movement;
-        [HideInInspector] public Talker talker;
-        [HideInInspector] public PlayerAttack attacker;
         [HideInInspector] public float baseOffset;
 
+        // State
+        [Header("State")]
+        public bool controllable = true;
+        public bool aimActive = false;
+        public bool alive = false;
+
+        // Appearance
+        [Header("Appearance")]
+        public ArtRenderer artRenderer;
+        public CinemachineVirtualCamera virtualCamera;
+        public CharacterUIElements characterUIElements;
+
+        // Collision
+        [Header("Collision")]
+        public Collider aliveCollider;
+        public Collider deadCollider;
+
+        // Interaction
+        [Header("Interaction")]
+        public Interactor interactor;
+        [HideInInspector] public Talker talker;
+
+        // Behaviour
+        [Header("Behaviour")]
+        [HideInInspector] public Brain brain;
+        public CSController Controller { get => brain.controller; }
+
         // Castables
+        [Header("Casting")]
         public Loadout loadout;
-        public ICastable primaryCastable;
-        public ICastable secondaryCastable;
-        public Castable primary;
-        public Castable secondary;
-        public Vector3 weaponOffset = Vector3.up;
-        private int abilityIdx = -1;
-        private int weaponIdx = -1;
-        public enum CastSlot { PRIMARY, SECONDARY };
+        public Transform weaponOffset;
+        [HideInInspector] public Attack attacker;
+
+        // Identity
+        [Header("Identity")]
+        public Identity identity = Identity.Neutral;
+        public Identity Identity
+        {
+            get => identity;
+            set
+            {
+                identity = value;
+                brain.Identity = value;
+            }
+        }
 
         // Statuses
+        [Header("Status Effects")]
         public List<Status> statuses;
 
         // Health
-        public Modified<int> maxHealth = new(25);
-        public Modified<int> currentHealth = new(25);
+        [Header("Health and Damage")]
+        public Health healthBar;
+        public bool alwaysHideHealth = false;
+        public float hideHealthWaitTime = 15f;
+        public Modified<int> maxHealth = new(20);
+        public Modified<int> currentHealth = new(20);
         public int MaxHealth
         {
             get { return maxHealth.Value; }
@@ -55,31 +93,41 @@ namespace Body
             get { return currentHealth.Value; }
             set { SetCurrentHealth(value); }
         }
-        public UnityEvent onDeath;
 
+        // Respawn
+        [Header("Respawn")]
+        public Transform spawn;
+
+        // Events
+        public UnityEvent<Character> onDeath;
         public UnityEvent onDmg;
+        public UnityEvent onRespawn;
+        public UnityEvent<bool, Character> onControl;
 
-        // State
-        public bool controllable = true;
 
         // Initialization
         private void Awake()
         {
+            transform.rotation = new(0, 0, 0, 0);
             Awarn.IsNotNull(body, "Character has no Character");
             InitBody();
             brain = GetComponent<Brain>();
             movement = GetComponent<Movement>();
             talker = GetComponent<Talker>();
-            attacker = GetComponent<PlayerAttack>();
+            attacker = GetComponent<Attack>();
+            InitializeCastables();
             MaxHealth = MaxHealth;
             CurrentHealth = CurrentHealth;
+            InitializeSpawn();
             SetControllable(false);
         }
 
         private void Start()
         {
-            InitializeCastables();
+            SetComponentActive(healthBar, false);
             healthBar.SetHealthBase(CurrentHealth, MaxHealth);
+            Identity = Identity;
+            SetAlive(true);
         }
 
         private void InitBody()
@@ -90,6 +138,33 @@ namespace Body
                 baseOffset = capsuleCollider.height / 2;
                 capsuleCollider.center = new Vector3(capsuleCollider.center.x, baseOffset, capsuleCollider.center.z);
             }
+        }
+
+        public void InitializeSpawn()
+        {
+            if (spawn != null)
+            {
+                spawn.position = body.position;
+                spawn.rotation = body.rotation;
+                spawn.localScale = body.localScale;
+            }
+        }
+
+
+        // Respawning and Refreshing
+
+        public void Refresh()
+        {
+            CurrentHealth = MaxHealth;
+            SetAlive(true);
+        }
+
+        public void Respawn()
+        {
+            body.position = spawn.position;
+            body.rotation = spawn.rotation;
+            body.localScale = spawn.localScale;
+            Refresh();
         }
 
         // Updates
@@ -106,6 +181,7 @@ namespace Body
         {
             foreach (Status status in statuses)
             {
+                Assert.IsFalse(status.effect == null);
                 status.effect.Tick(status.strength, this);
             }
         }
@@ -115,7 +191,8 @@ namespace Body
 
         public void OnCastVectorChanged()
         {
-            moveReticle.SetRotationWithVector(movement.castVector);
+            //moveReticle.rotationOffset.y = Vector3.Dot(movement.castVector.FullY(), Vector3.forward);//moveReticle.SetRotationWithVector(movement.castVector);
+            moveReticle.body.SetLocalRotationWithVector(movement.castVector);
         }
 
 
@@ -125,30 +202,45 @@ namespace Body
         {
             brain.Enabled = !_controllable;
             controllable = _controllable;
-            movement.canMove = controllable;
+            //movement.canMove = controllable;
             //attacker.enabled = controllable;
+            //SetComponentActive(healthBar, !_controllable && !hideHealth);
             SetComponentActive(moveReticle, _controllable);
             SetComponentActive(virtualCamera, _controllable);
+            SetBehaviourEnabled(interactor, _controllable);
+            onControl.Invoke(_controllable, this);
+        }
+
+        public void SetBehaviourEnabled(Behaviour behaviour, bool _enabled)
+        {
+            if (behaviour != null) behaviour.enabled = _enabled;
         }
 
         public void SetComponentActive(Component component, bool _active)
         {
-            if (component != null)
-            {
-                component.gameObject.SetActive(_active);
-            }
+            if (component != null) component.gameObject.SetActive(_active);
         }
 
 
         // Health
 
-        //public void UpdateHealthUI()
-        //{
-        //    if (healthBar != null)
-        //    {
-        //        healthBar.SetHealth(CurrentHealth);
-        //    }
-        //}
+        public void SetAlive(bool alive)
+        {
+            movement.SetMoveVector(new());
+            this.alive = alive;
+            if (movement != null)
+                movement.enabled = alive;
+            if (attacker != null) 
+                attacker.enabled = alive;
+            if (brain != null)
+                brain.Alive = alive;
+            if (artRenderer != null)
+                artRenderer.Dead = !alive;
+            if (aliveCollider != null)
+                aliveCollider.enabled = alive;
+            if (deadCollider != null)
+                deadCollider.enabled = !alive;
+        }
 
         public void SetMaxHealth(int amount)
         {
@@ -157,83 +249,94 @@ namespace Body
             {
                 healthBar.SetHealthTotal(MaxHealth);
             }
-            //CurrentHealth = CurrentHealth;
         }
 
         public void SetCurrentHealth(int amount)
         {
+            int prevHealth = currentHealth.Value;
             currentHealth.Value = Mathf.Min(amount, maxHealth.Value);
-            if (healthBar != null)
+            if (prevHealth > currentHealth.Value)
             {
-                healthBar.SetHealth(amount);
+                artRenderer.Hit();
+                SetComponentActive(healthBar, !alwaysHideHealth);
+                if (healthBar != null)
+                    healthBar.SetHealth(CurrentHealth);
+                onDmg.Invoke();
+                if (CurrentHealth <= 0f) Die();
+                if (coroutine == null)
+                    coroutine = StartCoroutine(DeactivateHealthbar(hideHealthWaitTime));
+                else
+                    currentHideHealthTime = hideHealthWaitTime;
             }
         }
 
-        public void TakeDamage(int damageAmount)
-        {
-            CurrentHealth -= damageAmount;
-            healthBar.SetHealth(CurrentHealth);
-            onDmg.Invoke();
-            if (CurrentHealth <= 0f)
-            {
-                Die();
-            }
-        }
+
+        // Damagable
 
         public void Die()
         {
-            onDeath.Invoke();
-            body.gameObject.SetActive(false);
-            //Destroy(gameObject);
+            if (alive)
+            {
+                onDeath.Invoke(this);
+                SetAlive(false);
+            }
+        }
+
+        private Coroutine coroutine;
+        private float currentHideHealthTime;
+        public void TakeDamage(int damageAmount, Identity id=Identity.Neutral)
+        {
+            if (RelativeIdentity(id, Identity) != Identity.Friend)
+            {
+                CurrentHealth -= damageAmount;
+            }
+        }
+
+        public IEnumerator DeactivateHealthbar(float waitTime)
+        {
+            currentHideHealthTime = waitTime;
+            while (currentHideHealthTime > 0)
+            {
+                float timeToWait = Mathf.Min(currentHideHealthTime, 1f);
+                yield return new WaitForSeconds(timeToWait);
+                currentHideHealthTime -= timeToWait;
+            }
+            SetComponentActive(healthBar, false);
+            coroutine = null;
         }
 
 
         // Castables
 
+        public readonly CastableItem[] castableItems = new CastableItem[5];
+        public readonly Castable[] castables = new Castable[5];
         public void InitializeCastables()
         {
             if (loadout != null)
             {
-                if (secondary == null)
+                for (int i = 0; i < Mathf.Min(loadout.abilities.Count, 2); i++)
                 {
-                    ChangeCastable(CastSlot.SECONDARY);
+                    SetCastable(i, loadout.abilities[i]);
                 }
-                if (primary == null)
+                for (int i = 0; i < Mathf.Min(loadout.weapons.Count, 2); i++)
                 {
-                    ChangeCastable(CastSlot.PRIMARY);
+                    SetCastable(2 + i, loadout.weapons[i]);
                 }
+                SetCastable(4, loadout.mobility);
             }
+            if (brain != null)
+                brain.RegisterCastables(castableItems);
         }
 
-        public void ChangeCastable(CastSlot slot)
+        public void SetCastable(int idx, CastableItem item)
         {
-            ICastable castable = slot == CastSlot.PRIMARY ? primary as ICastable : secondary as ICastable;
-            if (castable != null)
-            {
-                castable.UnEquip();
-            }
+            castables[idx]?.UnEquip();
 
-            if (loadout != null)
+            if (loadout != null && item != null)
             {
-                switch (slot)
-                {
-                    case CastSlot.PRIMARY:
-                        if (loadout.weapons.Count > 0)
-                        {
-                            weaponIdx = (weaponIdx + 1) % loadout.weapons.Count;
-                            primary = Instantiate(loadout.weapons[weaponIdx], transform);
-                            primary.Initialize(this);
-                        }
-                        break;
-                    case CastSlot.SECONDARY:
-                        if (loadout.abilities.Count > 0)
-                        {
-                            abilityIdx = (abilityIdx + 1) % loadout.abilities.Count;
-                            secondary = Instantiate(loadout.abilities[abilityIdx], transform);
-                            secondary.Initialize(this);
-                        }
-                        break;
-                }
+                castableItems[idx] = item;
+                castables[idx] = Instantiate(item.prefab, transform);
+                castables[idx].Initialize(this, item);
             }
         }
 
@@ -242,19 +345,34 @@ namespace Body
             if (attacker != null && attacker.enabled)
             {
                 attacker.Castable = castable;
-                attacker.Slashie(movement.castVector);
+                Vector2 castVector = movement.castVector;
+                if (controllable)
+                {
+                    Debug.DrawRay(body.position, castVector.FullY() * 2f, Color.blue, 0.5f);
+                    Vector3 cameraDirection = body.position - Camera.main.transform.position;
+                    castVector = castVector.Orient(cameraDirection.XZVector().normalized).normalized;
+                    Debug.DrawRay(body.position, castVector.FullY() * 2f, Color.yellow, 0.5f);
+                }
+                attacker.Slashie(castVector);
             }
+        }
+
+        public void SetAimModeActive(bool active)
+        {
+            if (virtualCamera.TryGetComponent(out CinemachineInputProvider cip))
+            {
+                cip.enabled = !active;
+            }
+            aimActive = active;
         }
 
 
         // Actions
         public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); }
-        public void AimCharacter(Vector2 input) { movement.SetAimVector(input); }
-        public void ChangeAbility() { ChangeCastable(CastSlot.SECONDARY); }
-        public void ChangeWeapon() { ChangeCastable(CastSlot.PRIMARY); }
-        public void ActivateWeapon() { ActivateCastable(primary); }
-        public void ActivateAbility() { ActivateCastable(secondary); }
+        public void AimCharacter(Vector2 input, bool aim=false) { if (aimActive || aim) movement.SetAimVector(input); }
+        public void ActivateCastable(int idx) { ActivateCastable(castables[idx]); }
         public void Interact() { talker.Talk(); }
+        public void AimMode(bool active) { SetAimModeActive(active); }
 
 
         // Debugging

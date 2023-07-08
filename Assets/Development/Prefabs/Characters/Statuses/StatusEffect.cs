@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using Body;
@@ -11,9 +8,11 @@ public struct Status
 {
     public Status(StatusEffect _effect, int _strength)
     {
+        name = _effect.name;
         effect = _effect;
         strength = _strength;
     }
+    public string name;
     public StatusEffect effect;
     public int strength;
 }
@@ -28,10 +27,10 @@ public abstract class StatusEffect: ScriptableObject
      */
 
     public new string name;
-    private UnityEvent onProc;
-    private UnityEvent onTick;
+    private UnityEvent onProc = new();
+    private UnityEvent onTick = new();
 
-    public virtual void Apply(Body.Character character, int strength)
+    public virtual void Apply(Character character, int strength)
     {
         foreach (Status status in character.statuses)
         {
@@ -43,18 +42,18 @@ public abstract class StatusEffect: ScriptableObject
         character.statuses.Add(new Status(this, strength));
     }
 
-    public virtual void Proc(int strength, Body.Character character)
+    public virtual void Proc(int strength, Character character)
     {
         character.statuses.Add(new Status(this, strength));
         onProc.Invoke();
     }
     
-    public virtual void Tick(int strength, Body.Character character)
+    public virtual void Tick(int strength, Character character)
     {
         onTick.Invoke();
     }
     
-    public virtual void Remove(Body.Character character)
+    public virtual void Remove(Character character)
     {
         for (int i = 0; i < character.statuses.Count;)
         {

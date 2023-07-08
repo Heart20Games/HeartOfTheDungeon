@@ -4,45 +4,55 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Body;
+using UnityEngine.Assertions;
 
 public class Movement : BaseMonoBehaviour, ITimeScalable
 {
+    [Header("Physics")]
     public float speed = 700f;
     public float maxVelocity = 10f;
     public float footstepVelocity = 1f;
     public float moveDrag = 0.5f;
     public float stopDrag = 7.5f;
     public bool canMove = true;
+    public bool applyGravity = true;
+    public float normalForce = 0.1f;
+    public float gravityForce = 1f;
+    public float groundDistance = 0.01f;
 
+    [Header("Scale")]
+    public float npcModifier = 0.5f;
     private float timeScale = 1f;
-    public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
+    public float TimeScale { get => timeScale; set => timeScale=SetTimeScale(value); }
 
-    private Vector2 moveVector = new Vector2(0,0);
-    private Vector2 aimVector = new Vector2(0, 0);
-    public Vector2 castVector = new Vector2(0, 0);
-    
-    private bool hasFootsteps = false;
-    FMOD.Studio.EventInstance footsteps;
+    [Header("Vectors")]
+    [SerializeField] private Vector2 moveVector = new(0,0);
+    private Vector2 aimVector = new(0, 0);
+    public Vector2 castVector = new(0, 0);
+    private bool onGround = false;
 
     private Rigidbody myRigidbody;
     private Character character;
-    private Animator animator;
+    private Transform body;
     private Transform pivot;
-
-    private readonly Dictionary<string, bool> parameterExists = new();
+    private ArtRenderer artRenderer;
 
     public UnityEvent OnSetCastVector;
     public UnityEvent OnSetMoveVector;
 
     private void Awake()
     {
-        footsteps = FMODUnity.RuntimeManager.CreateInstance("event:/Footsteploop");
-        character = GetComponent<Character>();
-        myRigidbody = character.body.GetComponent<Rigidbody>();
-        animator = character.animator;
-        pivot = character.pivot;
+        if (TryGetComponent(out character))
+        {
+            body = character.body;
+            pivot = character.pivot;
+            artRenderer = character.artRenderer;
+        }
+        if (body == null)
+            body = transform;
+        if (body != null)
+            myRigidbody = body.GetComponent<Rigidbody>();
 
-        parameterExists["run"] = animator.HasParameter("run");
     }
 
 
@@ -50,28 +60,12 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
 
     public void UpdateCastVector()
     {
+        //castVector = new();
         if (moveVector.magnitude > 0 || aimVector.magnitude > 0)
         {
             castVector = aimVector.magnitude > 0 ? aimVector : moveVector;
             if (castVector.magnitude > 0)
-            {
                 OnSetCastVector.Invoke();
-            }
-        }
-        else
-        {
-            float absY = Mathf.Abs(castVector.y);
-            float absX = Mathf.Abs(castVector.x);
-            if (absY >= absX)
-            {
-                float signY = Mathf.Sign(castVector.y);
-                castVector = signY >= 0 ? Vector2.right : Vector2.left;
-            }
-            else
-            {
-                float signX = Mathf.Sign(castVector.x);
-                castVector = signX >= 0 ? Vector2.up : Vector2.down;
-            }
         }
     }
 
@@ -90,54 +84,84 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
 
 
     // Movement
-    
+
+    [Header("Animation")]
+    public float flipBuffer = 0.01f;
+    private bool hasFootsteps = false;
+    public bool flip = false;
+    public UnityEvent startWalking;
+    public UnityEvent stopWalking;
+
     private void FixedUpdate()
     {
         if (canMove)
         {
-            myRigidbody.AddRelativeForce(new Vector3(moveVector.x, 0, moveVector.y) * speed * Time.fixedDeltaTime * timeScale, ForceMode.Force);
-            if (myRigidbody.velocity.magnitude > maxVelocity)
+            Vector3 cameraDirection = body.position - Camera.main.transform.position;
+
+            float modifier = 1f;
+            if (character != null && character.controllable)
             {
-                myRigidbody.velocity = myRigidbody.velocity.normalized * maxVelocity;
+                Vector3 direction = moveVector.Orient(cameraDirection).FullY();
+                Debug.DrawRay(body.position, direction * 3, Color.green, Time.fixedDeltaTime);
+                myRigidbody.AddRelativeForce(speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
             }
-
-            Vector2 hVelocity = new Vector2(myRigidbody.velocity.x, myRigidbody.velocity.z);
-            if (hVelocity.magnitude > footstepVelocity)
+            else
             {
-                float pMag = Mathf.Abs(pivot.localScale.x);
-                float sign = myRigidbody.velocity.x > myRigidbody.velocity.z ? 1 : -1;
-                pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
+                modifier = npcModifier;
+                Vector3 direction = moveVector.FullY();
+                Assert.IsFalse(float.IsNaN(direction.x) || float.IsNaN(direction.y) || float.IsNaN(direction.z));
+                Debug.DrawRay(body.position, direction, Color.green, Time.fixedDeltaTime);
+                myRigidbody.AddForce(modifier * speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
+            }
+            
+            if (myRigidbody.velocity.magnitude > maxVelocity * modifier)
+                myRigidbody.velocity = maxVelocity * modifier * myRigidbody.velocity.normalized;
 
-                if (!hasFootsteps)
+            if (artRenderer != null && pivot != null)
+            {
+                Vector2 hVelocity = myRigidbody.velocity.XZVector();
+                Vector2 hCamera = cameraDirection.XZVector().normalized;
+                Vector2 right = Vector2.Perpendicular(hCamera);
+                if (hVelocity.magnitude > footstepVelocity)
                 {
-                    SetAnimBool("run", true);
-                    hasFootsteps = true;
-                    footsteps.start();
+                    float pMag = Mathf.Abs(pivot.localScale.x);
+                    float angle = Vector2.Dot(right, hVelocity);
+
+                    float upperAngle = flipBuffer;
+                    float lowerAngle = -flipBuffer;
+                    if ((flip && angle > flipBuffer) || (!flip && angle < -flipBuffer))
+                    {
+                        flip = !flip;
+                        float sign = Mathf.Sign(angle);
+                        pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
+                    }
+
+                    if (!hasFootsteps)
+                    {
+                        artRenderer.Running = true;
+                        hasFootsteps = true;
+                    }
+                } 
+                else if (hasFootsteps)
+                {
+                    artRenderer.Running = false;
+                    hasFootsteps = false;
                 }
-            } 
-            else if (hasFootsteps)
-            {
-                SetAnimBool("run", false);
-                hasFootsteps = false;
-                footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
         }
-    }
 
-
-    // Animation
-
-    private void SetAnimBool(string parameter, bool value)
-    {
-        if (parameterExists[parameter])
+        if (applyGravity)
         {
-            animator.SetBool(parameter, value);
+            onGround = Physics.Raycast(body.transform.position, Vector3.down, groundDistance);
+            float power = onGround ? normalForce : gravityForce;
+            myRigidbody.AddForce(speed * timeScale * power * Time.fixedDeltaTime * Vector3.down);
         }
     }
+
 
     // TimeScaling
     private Vector3 tempVelocity;
-    public void SetTimeScale(float timeScale)
+    public float SetTimeScale(float timeScale)
     {
         if (myRigidbody != null && this.timeScale != timeScale)
         {
@@ -157,5 +181,6 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
             }
         }
         this.timeScale = timeScale;
+        return timeScale;
     }
 }

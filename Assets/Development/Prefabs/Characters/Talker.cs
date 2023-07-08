@@ -7,8 +7,8 @@ using static YarnTags;
 
 public class Talker : BaseMonoBehaviour
 {
-    [HideInInspector] public Game game;
-    [HideInInspector] public DialogueRunner dialogueRunner;
+    public Game game;
+    public DialogueRunner dialogueRunner;
     public GameObject virtualCamera;
     public string targetNode = "";
 
@@ -34,19 +34,28 @@ public class Talker : BaseMonoBehaviour
     public void CompleteTalking()
     {
         dialogueRunner.onDialogueComplete.RemoveListener(CompleteTalking);
+        game.Mode = prevMode;
+        if (virtualCamera != null)
+            virtualCamera.SetActive(false);
         onDoneTalking.Invoke();
     }
     public void Talk() { Talk(targetNode); }
     public void Talk(string targetNode)
     {
-        if (dialogueRunner != null)
+        if (enabled)
         {
-            if (targetNode != "" && dialogueRunner.NodeExists(targetNode))
+            if (dialogueRunner == null)
+            {
+                Debug.LogWarning("No Dialogue Runner to Start Talking");
+            }
+            else if (targetNode == "" || !dialogueRunner.NodeExists(targetNode))
+            {
+                Debug.LogWarning($"No target node '{targetNode}' exists. ({name})");
+            }
+            else
             {
                 if (virtualCamera != null)
-                {
                     virtualCamera.SetActive(true);
-                }
                 prevMode = game.Mode;
                 game.Mode = GameMode.Dialogue;
                 dialogueRunner.Stop();
@@ -55,14 +64,6 @@ public class Talker : BaseMonoBehaviour
                 dialogueRunner.StartDialogue(targetNode);
                 onStartTalking.Invoke();
             }
-            else
-            {
-                Debug.LogWarning($"No target node '{targetNode}' exists. ({name})");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("No Dialogue Runner to Start Talking");
         }
     }
 

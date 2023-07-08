@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
+using static Body.Behavior.ContextSteering.CSIdentity;
 
 public class HealthPips : Health
 {
-    public int totalHealth;
-    public int currentHealth;
     [SerializeField]
     private List<GameObject> healthPips = new();
     private readonly List<Animator> pipAnimator = new();
@@ -17,7 +17,12 @@ public class HealthPips : Health
 
     void Start()
     {
-        SetHealthTotal(totalHealth);
+        SetHealthTotal(healthTotal);
+    }
+
+    private void FixedUpdate()
+    {
+        transform.TrueLookAt(Camera.main.transform.position);
     }
 
     private void ClearPips()
@@ -32,45 +37,51 @@ public class HealthPips : Health
 
     public override void SetHealthBase(int amount, int total)
     {
-        currentHealth = amount;
+        health = amount;
         SetHealthTotal(total);
     }
 
     public override void SetHealthTotal(int amount)
     {
-        totalHealth = amount;
+        healthTotal = amount;
         ClearPips();
-        for (int i = 0; i < totalHealth; i++)
+        for (int i = 0; i < healthTotal; i++)
         {
             GameObject pip = Instantiate(healthPipPrefab, healthPipCanvas);
             healthPips.Add(pip);
             pipAnimator.Add(pip.GetComponent<Animator>());
         }
-        SetHealth(Mathf.Min(totalHealth, currentHealth));
+        SetHealth(Mathf.Min(healthTotal, health));
     }
 
     public override void SetHealth(int amount)
     {
-        currentHealth = amount;
-        int damage = totalHealth - currentHealth;
-        for (int i = 0; i < damage; i++)
+        health = amount;
+        int damage = Mathf.Min(healthTotal - health, healthTotal);
+        if (isActiveAndEnabled)
         {
-            pipAnimator[i].SetBool("IsDamaged", true);
-            lastDamaged = i;          
-        }
-        for (int i = damage; i < healthPips.Count; i++)
-        {
-            pipAnimator[i].SetBool("IsDamaged", false);
+            for (int i = 0; i < damage; i++)
+            {
+                pipAnimator[i].SetBool("IsDamaged", true);
+                lastDamaged = i;
+            }
+            for (int i = damage; i < healthPips.Count; i++)
+            {
+                pipAnimator[i].SetBool("IsDamaged", false);
+            }
         }
     }
 
-    public override void TakeDamage(int amount)
+    public override void TakeDamage(int amount, Identity id = Identity.Neutral)
     {
-        int damageToTake = Mathf.Clamp(amount, 0, (totalHealth - (lastDamaged + 1)));
+        int damageToTake = Mathf.Clamp(amount, 0, (healthTotal - (lastDamaged + 1)));
         for(int i = 0; i < damageToTake; i++)
         {                                               
             lastDamaged++;
-            pipAnimator[lastDamaged].SetBool("IsDamaged", true);                                        
+            if (isActiveAndEnabled)
+            {
+                pipAnimator[lastDamaged].SetBool("IsDamaged", true);                                        
+            }
         }
     }
 
@@ -78,8 +89,11 @@ public class HealthPips : Health
     {
         int damageToHeal = Mathf.Clamp(amount, 0, (lastDamaged + 1));
         for(int i = 0; i < damageToHeal; i++)
-        {                                                    
-            pipAnimator[lastDamaged].SetBool("IsDamaged", false);
+        {                                    
+            if (isActiveAndEnabled)
+            {
+                pipAnimator[lastDamaged].SetBool("IsDamaged", false);
+            }
             lastDamaged--;                                       
         }
     }

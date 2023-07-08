@@ -13,45 +13,69 @@ MonoBehaviour:
   m_Name: Close
   m_EditorClassIdentifier: 
   contexts:
-  - name: Friend
+  - name: FriendClose
     identity: 1
     range: 1
-    weight: {x: -1, y: 0}
-    gradient: {x: 0, y: 4}
-    deadzone: {x: 0, y: 4}
-    falloff: 50
-  - name: FoeInRange
-    identity: 2
-    range: 3
-    weight: {x: 0, y: 0}
-    gradient: {x: 0, y: 10}
-    deadzone: {x: 0, y: 10}
-    falloff: 50
-  - name: FoeFar
-    identity: 2
-    range: 2
-    weight: {x: 1, y: 0}
-    gradient: {x: 6, y: 10}
-    deadzone: {x: 6, y: 10}
-    falloff: 50
-  - name: FoeInAttackRange
-    identity: 2
-    range: 4
-    weight: {x: 0, y: 0}
-    gradient: {x: 0, y: 6}
-    deadzone: {x: 0, y: 6}
-    falloff: 50
+    vector:
+      weight: {x: -1, y: 0}
+      gradient: {x: 0, y: 2}
+      deadzone: {x: 0, y: 2}
+      falloff: 50
+  - name: TargetFar
+    identity: 4
+    range: 0
+    vector:
+      weight: {x: 0, y: 2}
+      gradient: {x: 2, y: 12}
+      deadzone: {x: 1, y: 1000}
+      falloff: 50
+  test:
   - name: FoeClose
     identity: 2
     range: 1
-    weight: {x: -1, y: 0}
-    gradient: {x: 0, y: 5}
-    deadzone: {x: 0, y: 5}
-    falloff: 50
-  - name: TargetFar
-    identity: 4
+    vector:
+      weight: {x: -1, y: -0}
+      gradient: {x: 0, y: 4}
+      deadzone: {x: 0, y: 4}
+      falloff: 50
+  - name: FoeFar
+    identity: 2
     range: 2
-    weight: {x: 1, y: 1}
-    gradient: {x: 10, y: 10}
-    deadzone: {x: 9.5, y: 1000}
-    falloff: 50
+    vector:
+      weight: {x: 0, y: 1}
+      gradient: {x: 6, y: 7.5}
+      deadzone: {x: 6, y: 7.5}
+      falloff: 50
+  - name: FoeClose
+    identity: 2
+    range: 1
+    vector:
+      weight: {x: -1, y: -0}
+      gradient: {x: 7.5, y: 9}
+      deadzone: {x: 7.5, y: 9}
+      falloff: 50
+  - name: FoeFar
+    identity: 2
+    range: 2
+    vector:
+      weight: {x: 0, y: 1}
+      gradient: {x: 11, y: 13}
+      deadzone: {x: 11, y: 13}
+      falloff: 50
+  - name: FoeInRange
+    identity: 2
+    range: 3
+    vector:
+      weight: {x: 0, y: 0}
+      gradient: {x: 0, y: 13}
+      deadzone: {x: 0, y: 13}
+      falloff: 50
+  generator:
+    generationData:
+    - identity: 2
+      range: {x: 0, y: 13}
+      magnetized: 0
+      deadzones:
+      - {x: 5, y: 1}
+      - {x: 10, y: 1}
+      falloff: 50

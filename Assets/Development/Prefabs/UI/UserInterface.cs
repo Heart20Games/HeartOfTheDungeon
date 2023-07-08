@@ -9,12 +9,49 @@ using Body;
 
 public class UserInterface : BaseMonoBehaviour
 {
-    public Body.Character controlledCharacter;
+    public Character controlledCharacter;
     public DialogueRunner dialogueRunner;
+    public HUD hud;
+    public GameObject controlScreen;
+
+    private readonly List<GameObject> panels = new();
 
     public UnityEvent onContinue;
 
-    public void SetCharacter(Body.Character character)
+    private void Awake()
+    {
+        panels.Add(dialogueRunner.gameObject);
+        panels.Add(hud.gameObject);
+        panels.Add(controlScreen);
+    }
+
+    public void Start()
+    {
+        SetDialogueActive(false);
+        SetHudActive(true);
+        SetControlScreenActive(false);
+    }
+
+    // Setters
+
+    public void SetDialogueActive(bool active)
+    {
+        dialogueRunner.gameObject.SetActive(active);
+    }
+
+    public void SetHudActive(bool active)
+    {
+        hud.gameObject.SetActive(active);
+    }
+
+    public void SetControlScreenActive(bool active)
+    {
+        controlScreen.SetActive(active);
+    }
+
+    // Set Character
+
+    public void SetCharacter(Character character)
     {
         controlledCharacter = character;
     }
@@ -24,11 +61,10 @@ public class UserInterface : BaseMonoBehaviour
 
     }
 
-    public void OnContinue(InputValue inputValue)
+    // Continue
+
+    public void Continue()
     {
-        if (inputValue.isPressed)
-        {
-            onContinue.Invoke();
-        }
+        onContinue.Invoke();
     }
 }
