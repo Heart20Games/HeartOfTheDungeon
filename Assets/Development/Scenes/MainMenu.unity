@@ -842,7 +842,7 @@ PrefabInstance:
     - target: {fileID: 8579107955598865975, guid: c7afdc09368cd604a91553429544cdbb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 121425703}
+      objectReference: {fileID: 1919628653}
     - target: {fileID: 8579107955598865975, guid: c7afdc09368cd604a91553429544cdbb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -920,38 +920,13 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 8579107954662709675, guid: c7afdc09368cd604a91553429544cdbb, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8579107955598865970, guid: c7afdc09368cd604a91553429544cdbb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 121425703}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7afdc09368cd604a91553429544cdbb, type: 3}
 --- !u!224 &121425698 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8579107955598865969, guid: c7afdc09368cd604a91553429544cdbb, type: 3}
   m_PrefabInstance: {fileID: 121425697}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &121425699 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8579107955598865970, guid: c7afdc09368cd604a91553429544cdbb, type: 3}
-  m_PrefabInstance: {fileID: 121425697}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &121425703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 121425699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0953059c11e5b48418615f856042c2f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Panel: {fileID: 1919628649}
-  eventSystem: {fileID: 0}
-  previouslySelected: {fileID: 0}
-  firstSelected: {fileID: 0}
-  alwaysOpenToFirst: 0
 --- !u!1 &132631017
 GameObject:
   m_ObjectHideFlags: 0
@@ -2131,11 +2106,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8579107955598865969, guid: d2fcdaf453d3c864d88ae87748eb6f5d, type: 3}
   m_PrefabInstance: {fileID: 1353074437}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1353074439 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8579107955598865970, guid: d2fcdaf453d3c864d88ae87748eb6f5d, type: 3}
-  m_PrefabInstance: {fileID: 1353074437}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1368516898
 GameObject:
   m_ObjectHideFlags: 0
@@ -2210,6 +2180,7 @@ GameObject:
   - component: {fileID: 1370060167}
   - component: {fileID: 1370060166}
   - component: {fileID: 1370060168}
+  - component: {fileID: 1370060169}
   m_Layer: 5
   m_Name: CreditsScreen
   m_TagString: Untagged
@@ -2290,8 +2261,64 @@ MonoBehaviour:
   Panel: {fileID: 1370060164}
   eventSystem: {fileID: 490290054}
   previouslySelected: {fileID: 0}
-  firstSelected: {fileID: 1353074439}
+  firstSelected: {fileID: 1370060164}
   alwaysOpenToFirst: 0
+--- !u!114 &1370060169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370060164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 0
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1370060166}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1370060168}
+        m_TargetAssemblyTypeName: PanelOpener, Assembly-CSharp
+        m_MethodName: OpenPanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1392757734
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3351,6 +3378,7 @@ GameObject:
   - component: {fileID: 1919628652}
   - component: {fileID: 1919628651}
   - component: {fileID: 1919628653}
+  - component: {fileID: 1919628655}
   m_Layer: 5
   m_Name: ControllerScreen
   m_TagString: Untagged
@@ -3431,8 +3459,64 @@ MonoBehaviour:
   Panel: {fileID: 1919628649}
   eventSystem: {fileID: 490290054}
   previouslySelected: {fileID: 0}
-  firstSelected: {fileID: 121425699}
+  firstSelected: {fileID: 1919628649}
   alwaysOpenToFirst: 0
+--- !u!114 &1919628655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919628649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 0
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1919628651}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1919628653}
+        m_TargetAssemblyTypeName: PanelOpener, Assembly-CSharp
+        m_MethodName: OpenPanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1931005462
 GameObject:
   m_ObjectHideFlags: 0
