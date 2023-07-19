@@ -8,7 +8,7 @@ using UnityEngine.Events;
 
 public class Party : BaseMonoBehaviour
 {
-    [Header("Members")]
+    [Header("Party Members")]
     public Character leader;
     public Character Leader { get => leader; set => SetLeader(value); }
     public List<Character> characters = new();
@@ -18,10 +18,11 @@ public class Party : BaseMonoBehaviour
     static Party mainParty;
     public bool isMainParty = false;
 
-    [Header("Events")]
-    public bool aggroed = false;
-    public bool allDead = false;
+    [Space()]
+    [Header("Status Events")]
+    [ReadOnly] public bool aggroed = false;
     public UnityEvent onAggro = new();
+    [ReadOnly] public bool allDead = false;
     public UnityEvent onAllDead = new();
     private bool aggroedThisFrame = false;
 
@@ -32,6 +33,7 @@ public class Party : BaseMonoBehaviour
     [ReadOnly][SerializeField] private Party targetParty;
     public Party TargetParty { get => targetParty; set => SetTargetParty(value); }
 
+    [Space()]
     [Header("Noise and Scaling")]
     public MovementNoise noise;
     public float tightness = 1f;
