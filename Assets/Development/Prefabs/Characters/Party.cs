@@ -29,7 +29,7 @@ public class Party : BaseMonoBehaviour
     public Transform followTargeter;
     public bool useLeaderAsFollowTargeter;
     public Transform defaultFollowTarget;
-    private Party targetParty;
+    [ReadOnly][SerializeField] private Party targetParty;
     public Party TargetParty { get => targetParty; set => SetTargetParty(value); }
 
     [Header("Noise and Scaling")]
@@ -107,12 +107,13 @@ public class Party : BaseMonoBehaviour
             targetParty = target;
             if (targetParty != null)
                 targetParty.onAllDead.AddListener(RivalPartyDied);
-            SetFollowTarget(target == null ? null : target.followTargeter);
+            SetFollowTarget(target == null ? defaultFollowTarget : target.followTargeter);
         }
     }
 
     public void SetFollowTarget(Transform target)
     {
+        print($"Set {name}'s follow target: {(transform == null ? "none" : transform.name)}");
         if (followTargeter.TryGetComponent(out Brain brain))
             brain.Target = target;
     }
@@ -151,7 +152,7 @@ public class Party : BaseMonoBehaviour
             Tightness = tightnessIdle;
             aggroed = false;
             TargetParty = null;
-            SetFollowTarget(defaultFollowTarget);
+            //SetFollowTarget(defaultFollowTarget);
         }
     }
 
@@ -175,7 +176,6 @@ public class Party : BaseMonoBehaviour
         if (isMainParty)
             Refresh();
         SetAggroed(false);
-        //targetParty.onAllDead.RemoveAllListeners();
     }
 
     public void CharacterControlled(bool controllable, Character controlled)
@@ -224,8 +224,7 @@ public class Party : BaseMonoBehaviour
         }
         if (debug) print($"Party {name} Died.");
         allDead = true;
-        aggroed = false;
-        TargetParty = null;
+        SetAggroed(false);
         onAllDead.Invoke();
     }
 }
