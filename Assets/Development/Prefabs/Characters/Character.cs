@@ -227,6 +227,7 @@ namespace Body
         public void SetAlive(bool alive)
         {
             movement.SetMoveVector(new());
+            bool died = !alive && this.alive;
             this.alive = alive;
             if (movement != null)
                 movement.enabled = alive;
@@ -240,6 +241,8 @@ namespace Body
                 aliveCollider.enabled = alive;
             if (deadCollider != null)
                 deadCollider.enabled = !alive;
+            if (died)
+                onDeath.Invoke(this);
         }
 
         public void SetMaxHealth(int amount)
@@ -262,7 +265,7 @@ namespace Body
                 if (healthBar != null)
                     healthBar.SetHealth(CurrentHealth);
                 onDmg.Invoke();
-                if (CurrentHealth <= 0f) Die();
+                if (CurrentHealth <= 0f && alive) SetAlive(false);
                 if (coroutine == null)
                     coroutine = StartCoroutine(DeactivateHealthbar(hideHealthWaitTime));
                 else
@@ -272,15 +275,6 @@ namespace Body
 
 
         // Damagable
-
-        public void Die()
-        {
-            if (alive)
-            {
-                onDeath.Invoke(this);
-                SetAlive(false);
-            }
-        }
 
         private Coroutine coroutine;
         private float currentHideHealthTime;
