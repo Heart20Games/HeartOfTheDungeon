@@ -258,12 +258,15 @@ namespace Body
         {
             int prevHealth = currentHealth.Value;
             currentHealth.Value = Mathf.Min(amount, maxHealth.Value);
-            if (prevHealth > currentHealth.Value)
+            if (prevHealth != currentHealth.Value)
             {
-                artRenderer.Hit();
                 SetComponentActive(healthBar, !alwaysHideHealth);
                 if (healthBar != null)
                     healthBar.SetHealth(CurrentHealth);
+            }
+            if (prevHealth > currentHealth.Value)
+            {
+                artRenderer.Hit();
                 onDmg.Invoke();
                 if (CurrentHealth <= 0f && alive) SetAlive(false);
                 if (coroutine == null)
