@@ -741,7 +741,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""ee15e431-15bc-4584-b858-68b8403211cb"",
                     ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""NormalizeVector2,StickDeadzone"",
                     ""groups"": """",
                     ""action"": ""Look"",
                     ""isComposite"": true,
