@@ -152,7 +152,6 @@ public class Party : BaseMonoBehaviour
             Tightness = tightnessIdle;
             aggroed = false;
             TargetParty = null;
-            //SetFollowTarget(defaultFollowTarget);
         }
     }
 

@@ -1,6 +1,11 @@
 using UnityEditor;
 using UnityEngine;
 
+/* Custom ReadOnly Attribute Drawer
+ * 
+ * Used in conjunction with ReadOnlyAttribute.
+ * As seen at: https://forum.unity.com/threads/read-only-fields.68976/
+ */
 [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
 public class ReadOnlyDrawer : PropertyDrawer
 {
