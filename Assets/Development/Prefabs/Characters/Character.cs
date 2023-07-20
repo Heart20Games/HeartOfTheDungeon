@@ -102,19 +102,29 @@ namespace Body
         public UnityEvent<Character> onDeath;
         public UnityEvent onDmg;
         public UnityEvent onRespawn;
-        public UnityEvent<bool, Character> onControl;
+        public UnityEvent<bool> onControl;
 
 
         // Initialization
         private void Awake()
         {
+            // Body Initialization
             transform.rotation = new(0, 0, 0, 0);
             Awarn.IsNotNull(body, "Character has no Character");
             InitBody();
+
+            // Components
             brain = GetComponent<Brain>();
             movement = GetComponent<Movement>();
             talker = GetComponent<Talker>();
             attacker = GetComponent<Attack>();
+            
+            // Connections
+            onControl.AddListener(moveReticle.gameObject.SetActive);
+            onControl.AddListener(virtualCamera.gameObject.SetActive);
+            onControl.AddListener(interactor.gameObject.SetActive);
+            
+            // Initialization
             InitializeCastables();
             MaxHealth = MaxHealth;
             CurrentHealth = CurrentHealth;
@@ -124,8 +134,11 @@ namespace Body
 
         private void Start()
         {
-            SetComponentActive(healthBar, false);
-            healthBar.SetHealthBase(CurrentHealth, MaxHealth);
+            if (healthBar != null)
+            {
+                healthBar.enabled = false;
+                healthBar.SetHealthBase(CurrentHealth, MaxHealth);
+            }
             Identity = Identity;
             SetAlive(true);
         }
@@ -187,38 +200,23 @@ namespace Body
         }
 
 
-        // Aiming
-
-        public void OnCastVectorChanged()
-        {
-            //moveReticle.rotationOffset.y = Vector3.Dot(movement.castVector.FullY(), Vector3.forward);//moveReticle.SetRotationWithVector(movement.castVector);
-            moveReticle.body.SetLocalRotationWithVector(movement.castVector);
-        }
-
-
         // State
 
         public void SetControllable(bool _controllable)
         {
             brain.Enabled = !_controllable;
             controllable = _controllable;
-            //movement.canMove = controllable;
-            //attacker.enabled = controllable;
-            //SetComponentActive(healthBar, !_controllable && !hideHealth);
-            SetComponentActive(moveReticle, _controllable);
-            SetComponentActive(virtualCamera, _controllable);
-            SetBehaviourEnabled(interactor, _controllable);
-            onControl.Invoke(_controllable, this);
+            onControl.Invoke(_controllable);
         }
 
-        public void SetBehaviourEnabled(Behaviour behaviour, bool _enabled)
+        public void SubscribeToControl(Behaviour behaviour)
         {
-            if (behaviour != null) behaviour.enabled = _enabled;
+            if (behaviour != null) onControl.AddListener((bool controlled) => { behaviour.enabled = controlled; });
         }
 
-        public void SetComponentActive(Component component, bool _active)
+        public void SubscribeToControl(Component component)
         {
-            if (component != null) component.gameObject.SetActive(_active);
+            if (component != null) onControl.AddListener(component.gameObject.SetActive);
         }
 
 
@@ -258,18 +256,17 @@ namespace Body
         {
             int prevHealth = currentHealth.Value;
             currentHealth.Value = Mathf.Min(amount, maxHealth.Value);
-            if (prevHealth != currentHealth.Value)
+            if (prevHealth != currentHealth.Value && healthBar != null)
             {
-                SetComponentActive(healthBar, !alwaysHideHealth);
-                if (healthBar != null)
-                    healthBar.SetHealth(CurrentHealth);
+                healthBar.enabled = !alwaysHideHealth;
+                healthBar.SetHealth(CurrentHealth);
             }
             if (prevHealth > currentHealth.Value)
             {
                 artRenderer.Hit();
                 onDmg.Invoke();
                 if (CurrentHealth <= 0f && alive) SetAlive(false);
-                if (coroutine == null)
+                if (coroutine == null && healthBar != null)
                     coroutine = StartCoroutine(DeactivateHealthbar(hideHealthWaitTime));
                 else
                     currentHideHealthTime = hideHealthWaitTime;
@@ -291,6 +288,7 @@ namespace Body
 
         public IEnumerator DeactivateHealthbar(float waitTime)
         {
+            Assert.IsNotNull(healthBar);
             currentHideHealthTime = waitTime;
             while (currentHideHealthTime > 0)
             {
@@ -298,7 +296,7 @@ namespace Body
                 yield return new WaitForSeconds(timeToWait);
                 currentHideHealthTime -= timeToWait;
             }
-            SetComponentActive(healthBar, false);
+            healthBar.enabled = false;
             coroutine = null;
         }
 

@@ -37,8 +37,8 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     private Transform pivot;
     private ArtRenderer artRenderer;
 
-    public UnityEvent OnSetCastVector;
-    public UnityEvent OnSetMoveVector;
+    public UnityEvent<Vector2> OnSetCastVector;
+    public UnityEvent<Vector2> OnSetMoveVector;
 
     private void Awake()
     {
@@ -65,7 +65,7 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
         {
             castVector = aimVector.magnitude > 0 ? aimVector : moveVector;
             if (castVector.magnitude > 0)
-                OnSetCastVector.Invoke();
+                OnSetCastVector.Invoke(castVector);
         }
     }
 
@@ -79,6 +79,7 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     {
         moveVector = vector;
         myRigidbody.drag = moveVector.magnitude == 0 ? stopDrag : moveDrag;
+        OnSetMoveVector.Invoke(moveVector);
         UpdateCastVector();
     }
 

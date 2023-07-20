@@ -80,7 +80,7 @@ public class Party : BaseMonoBehaviour
             character.Controller.onFoeContextActive.AddListener(CharacterAggroed);
             character.onDmg.AddListener(CharacterDamaged);
             character.onDeath.AddListener(CharacterDied);
-            character.onControl.AddListener(CharacterControlled);
+            character.onControl.AddListener((bool controlled) => CharacterControlled(controlled, character));
             if (debug) print($"Character {character.name} connected to party {name}.");
         }
     }
