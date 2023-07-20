@@ -22,6 +22,8 @@ public class GameInput : MonoBehaviour
     public Character CurCharacter { get => Game.CurCharacter; }
     public Selector CurSelector { get => Game.curSelector; }
     public SimpleController CurController { get => Game.curController; }
+    public Targeter Targeter { get => Game.targeter; }
+    public ILooker CurLooker { get => Game.curLooker; }
     public GameMode Mode { get => Game.Mode; set => Game.Mode = value; }
 
 
@@ -69,7 +71,7 @@ public class GameInput : MonoBehaviour
     }
 
     // Aiming
-    public void OnAim(InputValue inputValue) { CurCharacter.AimCharacter(inputValue.Get<Vector2>()); }
+    public void OnAim(InputValue inputValue) { CurCharacter.Aim(inputValue.Get<Vector2>()); }
     public void OnToggleAiming(InputValue inputValue) { CurCharacter.SetAimModeActive(inputValue.isPressed); }
 
     // Castables
@@ -110,6 +112,10 @@ public class GameInput : MonoBehaviour
     }
     public void OnSelect(InputValue inputValue) { SelectValue(inputValue, true); }
     public void OnDeSelect(InputValue inputValue) { SelectValue(inputValue, false); }
+
+    // Lock-On
+    public void OnToggleLockOn(InputValue inputValue) { IsPressed(inputValue, () => { Mode = Mode == GameMode.LockedOn ? GameMode.Character : GameMode.LockedOn; }); }
+    public void SwitchTargets(InputValue inputValue) { Targeter.SwitchTargets(inputValue.Get<float>() < 0); }
 
     // Skill Wheel
     public void OnToggleSkillWheel(InputValue inputValue)

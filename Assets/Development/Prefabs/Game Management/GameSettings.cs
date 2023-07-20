@@ -6,7 +6,7 @@ using static GameModes;
 
 public class GameModes
 {
-    public enum GameMode { Selection, Character, Dialogue, Dismiss };
+    public enum GameMode { Selection, Character, Dialogue, LockedOn, Dismiss };
     public static Dictionary<GameMode, ModeParameters> ModeBank { get { return game.settings.ModeBank; } }
 
     [Serializable]
@@ -19,17 +19,26 @@ public class GameModes
         public bool controlScreenActive;
         public string inputMap;
         public float timeScale;
-        public readonly IControllable Controllable
+        public readonly IControllable Controllable { get => GetControllable(); }
+        public readonly IControllable GetControllable()
         {
-            get
+            return mode switch
             {
-                return mode switch
-                {
-                    GameMode.Character => game.CurCharacter,
-                    GameMode.Selection => game.curController,
-                    _ => null,
-                };
-            }
+                GameMode.Character => game.CurCharacter,
+                GameMode.Selection => game.curController,
+                GameMode.LockedOn => game.CurCharacter,
+                _ => null,
+            };
+        }
+        public readonly ILooker Looker { get => GetLooker(); }
+        public readonly ILooker GetLooker()
+        {
+            return mode switch
+            {
+                GameMode.Character => game.CurCharacter,
+                GameMode.LockedOn => game.targeter,
+                _ => null,
+            };
         }
     }
 }

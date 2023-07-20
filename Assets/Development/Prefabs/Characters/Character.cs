@@ -17,7 +17,7 @@ namespace Body
     [RequireComponent(typeof(Movement))]
     [RequireComponent(typeof(Talker))]
     [RequireComponent(typeof(Attack))]
-    public class Character : BaseMonoBehaviour, IDamageable, IControllable
+    public class Character : BaseMonoBehaviour, IDamageable, IControllable, ILooker
     {
         [Header("Movement and Positioning")]
         public Transform body;
@@ -352,7 +352,7 @@ namespace Body
 
         // Actions
         public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); }
-        public void AimCharacter(Vector2 input, bool aim=false) { if (aimActive || aim) movement.SetAimVector(input); }
+        public void Aim(Vector2 input, bool aim=false) { if (aimActive || aim) movement.SetAimVector(input); }
         public void ActivateCastable(int idx) { ActivateCastable(castables[idx]); }
         public void Interact() { talker.Talk(); }
         public void AimMode(bool active) { SetAimModeActive(active); }

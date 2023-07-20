@@ -16,8 +16,9 @@ public class Game : BaseMonoBehaviour
     // Properties
     public Character playerCharacter;
     public List<Character> playableCharacters;
-    public List<SimpleController> simpleControllers;
-    public List<Selector> selectors;
+    public Selector selector;
+    public SimpleController selectorController;
+    public Targeter targeter;
     public GameSettings settings;
     [HideInInspector] public UserInterface userInterface;
     [HideInInspector] public HUD hud;
@@ -25,9 +26,10 @@ public class Game : BaseMonoBehaviour
     [HideInInspector] public List<Interactable> interactables;
 
     // Current Character
-    private Character curCharacter;
-    public SimpleController curController;
-    public Selector curSelector;
+    [ReadOnly][SerializeField] private Character curCharacter;
+    [ReadOnly] public SimpleController curController;
+    [ReadOnly] public Selector curSelector;
+    [ReadOnly] public ILooker curLooker;
 
     [HideInInspector] public Character CurCharacter { get { return curCharacter; } set { SetCharacter(value); } }
     private int curCharIdx = 0;
