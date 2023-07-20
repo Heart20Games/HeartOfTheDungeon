@@ -64,6 +64,7 @@ MonoBehaviour:
   groundDistance: 0.25
   timeScale: 1
   moveVector: {x: 0, y: 0}
+  swapAxes: 1
   selectableTypes: 
   hoveringOver: []
   selected: {fileID: 0}
@@ -676,6 +677,7 @@ MonoBehaviour:
   desiredTags: []
   selectableTypes: 01000000020000000300000000000000
   desireInteractors: 0
+  controlledCharactersOnly: 0
   onCollision:
     enter:
       m_PersistentCalls:
@@ -714,6 +716,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  oneShot: 0
+  hasCollided: 0
   debug: 0
   other: {fileID: 0}
   selectable: {fileID: 0}
@@ -959,6 +963,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8636156924694284207}
   - component: {fileID: 8636156924694284206}
+  - component: {fileID: 8198051129787963149}
   - component: {fileID: 8636156924694284201}
   - component: {fileID: 2037490854999543379}
   - component: {fileID: 6438564664787818369}
@@ -1005,12 +1010,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   selector: {fileID: 914866286546759462}
-  characterInputMap: Player
-  selectorInputMap: Selector
-  dialogueInputMap: Dialogue
-  dismissInputMap: Dismiss
-  settings:
-    useD20Menu: 0
+  settings: {fileID: 11400000, guid: 1eeb75a2b83131147acb2c779806a8af, type: 2}
   userInterface: {fileID: 0}
   hud: {fileID: 0}
   interactables: []
@@ -1031,6 +1031,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8198051129787963149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8636156924694284204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b2003fc2945a249a82f0fc3ccc10e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  game: {fileID: 8636156924694284206}
 --- !u!114 &8636156924694284201
 MonoBehaviour:
   m_ObjectHideFlags: 0
