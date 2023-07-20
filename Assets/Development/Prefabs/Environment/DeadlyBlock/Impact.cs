@@ -1,98 +1,29 @@
-using Body;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.Events;
 using static ISelectable;
 
-public class Impact : BaseMonoBehaviour
+public class Impact : Validator
 {
-    // Properties
-
-    public List<string> desiredTags;
-    [SerializeField] private List<SelectType> selectableTypes;
-    public bool desireInteractors = false;
-    public bool controlledCharactersOnly = false;
-    public List<SelectType> SelectableTypes { get { return selectableTypes; } set { SetSelectableTypes(value); } }
-
-    public BinaryEvent onCollision;
-    public BinaryEvent onTrigger;
-
+    // Settings
+    [Header("Settings")]
     public bool oneShot = false;
     public bool hasCollided = false;
 
-    public void SetHasCollided(bool collided)
-    {
-        hasCollided = collided;
-    }
-    public bool debug = false;
+    [Header("Connections")]
+    public BinaryEvent onCollision;
+    public BinaryEvent onTrigger;
 
+    // Tracking
     public readonly List<GameObject> touching = new();
     [HideInInspector] public GameObject other;
-    [HideInInspector] public ASelectable selectable;
-
-    private void SetSelectableTypes(List<SelectType> selectableTypes)
-    {
-        if (debug)
-            print("Set Types on Impact");
-        this.selectableTypes = selectableTypes;
-    }
-
-    private bool HasValidTag(GameObject other)
-    {
-        if (other == gameObject)
-        {
-            Debug.LogWarning($"Colliding with self: {other.tag}-{other.name}");
-        }
-        if (debug)
-            print($"Valid Tag? {(desiredTags.Count == 0 || desiredTags.Contains(other.tag))} (them:{other.tag}-{other.name} me:{gameObject.tag}-{gameObject.name})");
-        return desiredTags.Count == 0 || desiredTags.Contains(other.tag);
-    }
-
-    private bool IsValidSelectable(GameObject other)
-    {
-        if (selectableTypes.Count > 0)
-        {
-            selectable = other.GetComponent<ASelectable>();
-            if (debug && selectable != null)
-            {
-                if (debug)
-                    print($"Valid Selectable? {(selectable != null && selectableTypes.Contains(selectable.Type))} ({selectable.Type})");
-            }
-            return selectable != null && selectableTypes.Contains(selectable.Type);
-        }
-        else return true;
-    }
-
-    private bool IsValidInteractor(GameObject other)
-    {
-        return !desireInteractors || (other.TryGetComponent<Interactor>(out var interactor) && interactor.enabled);
-    }
-
-    private bool IsValidCharacter(GameObject other)
-    {
-        if (controlledCharactersOnly)
-        {
-            if (other.gameObject.tag == "Character")
-            {
-                Character character = other.GetComponentInParent<Character>();
-                if (character != null)
-                    return character.controllable;
-                else return true;
-
-            }
-            else return true;
-        }
-        else return true;
-    }
 
     // Events
 
     private void OnEventEnter(GameObject other, UnityEvent onEvent)
     {
         this.other = other;
-        if ((!oneShot || !hasCollided) && HasValidTag(other) && IsValidSelectable(other) && IsValidInteractor(other) && IsValidCharacter(other) && !touching.Contains(other))
+        if ((!oneShot || !hasCollided) && Validate(other) && !touching.Contains(other))
         {
             if (debug) print($"Other: {other.name}");
             touching.Add(other);
@@ -104,12 +35,9 @@ public class Impact : BaseMonoBehaviour
     private void OnEventExit(GameObject other, UnityEvent onEvent)
     {
         this.other = other;
-        if (HasValidTag(other) && IsValidSelectable(other) && IsValidInteractor(other))
+        if (Validate(other))
         {
-            if (touching.Contains(other))
-            {
-                touching.Remove(other);
-            }
+            touching.Remove(other);
             onEvent.Invoke();
         }
     }
