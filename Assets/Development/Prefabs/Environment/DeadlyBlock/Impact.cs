@@ -1,10 +1,30 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using static ISelectable;
 
 public class Impact : Validator
 {
+    [Serializable]
+    public struct ImpactEvents
+    {
+        public BinaryEvent<Impact> impact;
+        public BinaryEvent<GameObject> other;
+        public BinaryEvent<ASelectable> selectable;
+        public void InvokeEnter(Impact impact)
+        {
+            this.impact.enter.Invoke(impact);
+            this.other.enter.Invoke(impact.other);
+            this.selectable.enter.Invoke(impact.selectable);
+        }
+        public void InvokeExit(Impact impact)
+        {
+            this.impact.exit.Invoke(impact);
+            this.other.exit.Invoke(impact.other);
+            this.selectable.exit.Invoke(impact.selectable);
+        }
+    }
+
     // Settings
     [Header("Settings")]
     public bool oneShot = false;
@@ -13,6 +33,7 @@ public class Impact : Validator
     [Header("Connections")]
     public BinaryEvent onCollision;
     public BinaryEvent onTrigger;
+    public ImpactEvents onImpact;
 
     // Tracking
     public readonly List<GameObject> touching = new();
@@ -27,8 +48,9 @@ public class Impact : Validator
         {
             if (debug) print($"Other: {other.name}");
             touching.Add(other);
-            onEvent.Invoke();
             hasCollided = true;
+            onEvent.Invoke();
+            onImpact.InvokeEnter(this);
         }
     }
 
@@ -39,6 +61,7 @@ public class Impact : Validator
         {
             touching.Remove(other);
             onEvent.Invoke();
+            onImpact.InvokeExit(this);
         }
     }
 

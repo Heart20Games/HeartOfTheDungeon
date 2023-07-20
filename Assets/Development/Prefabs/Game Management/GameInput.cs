@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using Body;
 using Body.Behavior;
+using static GameModes;
 
 [RequireComponent(typeof(Game))]
 [RequireComponent(typeof(PlayerInput))]
@@ -16,10 +17,11 @@ public class GameInput : MonoBehaviour
     // Systems
     public UserInterface UserInterface { get => Game.userInterface; }
     public HUD Hud { get => Game.hud; }
-    public Selector Selector { get => Game.selector; }
 
     // Fields
     public Character CurCharacter { get => Game.CurCharacter; }
+    public Selector CurSelector { get => Game.curSelector; }
+    public SimpleController CurController { get => Game.curController; }
     public GameMode Mode { get => Game.Mode; set => Game.Mode = value; }
 
 
@@ -61,7 +63,7 @@ public class GameInput : MonoBehaviour
                 break;
             case GameMode.Selection:
                 if (Game.CanUseSelector())
-                    Selector.MoveVector = inputVector;
+                    CurController.MoveVector = inputVector;
                 break;
         }
     }
@@ -101,7 +103,7 @@ public class GameInput : MonoBehaviour
     {
         if (inputValue.isPressed)
         {
-            Delegate del = deSelect ? Selector.DeSelect : Selector.Select;
+            Delegate del = deSelect ? CurSelector.DeSelect : CurSelector.Select;
             if (Game.CanUseSelector())
                 del.Invoke();
         }

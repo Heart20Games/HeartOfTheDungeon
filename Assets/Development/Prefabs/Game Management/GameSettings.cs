@@ -2,30 +2,38 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static Game;
+using static GameModes;
 
-[Serializable]
-public struct ModeParameters
+public class GameModes
 {
-    public string name;
-    public GameMode mode;
-    public bool hudActive;
-    public bool dialogueActive;
-    public bool controlScreenActive;
-    public string inputMap;
-    public float timeScale;
-    public readonly IControllable Controllable
+    public enum GameMode { Selection, Character, Dialogue, Dismiss };
+    public static Dictionary<GameMode, ModeParameters> ModeBank { get { return game.settings.ModeBank; } }
+
+    [Serializable]
+    public struct ModeParameters
     {
-        get
+        public string name;
+        public GameMode mode;
+        public bool hudActive;
+        public bool dialogueActive;
+        public bool controlScreenActive;
+        public string inputMap;
+        public float timeScale;
+        public readonly IControllable Controllable
         {
-            return mode switch
+            get
             {
-                GameMode.Character => game.CurCharacter,
-                GameMode.Selection => game.selector,
-                _ => null,
-            };
+                return mode switch
+                {
+                    GameMode.Character => game.CurCharacter,
+                    GameMode.Selection => game.curController,
+                    _ => null,
+                };
+            }
         }
     }
 }
+
 
 [CreateAssetMenu(fileName = "GameSettings", menuName = "Game/Settings", order = 1)]
 public class GameSettings : ScriptableObject
