@@ -8,21 +8,22 @@ public class HUD : BaseMonoBehaviour
     [Header("Components")]
     public AbilityMenu abilityMenu;
     public CharacterSelectPanel characterPanel;
+    public TargetCharacterPanel targetCharacterPanel;
+    private GameObject mainCamera;
+    private Canvas hudCanvas;
 
+    [Space]
     [Header("Main Character")]
     [SerializeField] private PlayerHealthUI healthUI;
     [SerializeField] private SpellSlots spellSlots;
-    [SerializeField] private Character mainCharacter;
     [SerializeField] private bool useSpellSlots = false;
+    [ReadOnly][SerializeField] private Character mainCharacter;
 
-    [Header("Controlled Character")]
-    [SerializeField] private Character controlledCharacter;
-
-    [Header("Selected Character")]
-    [SerializeField] private Character selectedCharacter;
-
-    private GameObject mainCamera;
-    private Canvas hudCanvas;
+    [Space]
+    [Header("Other Characters")]
+    [ReadOnly][SerializeField] private Character controlledCharacter;
+    [ReadOnly][SerializeField] private Character selectedCharacter;
+    [ReadOnly][SerializeField] private Character targetCharacter;
 
     enum CHAR { GOBKIN, ROTTA, OSSEUS }
 
@@ -32,6 +33,9 @@ public class HUD : BaseMonoBehaviour
 
     private void Awake()
     {
+        if (targetCharacterPanel != null)
+            TargetCharacterSelect(null);
+
         hudCanvas = GetComponent<Canvas>();
         hudCanvas.renderMode = RenderMode.ScreenSpaceCamera;
 
@@ -51,6 +55,12 @@ public class HUD : BaseMonoBehaviour
             characterPanel.Select(idx);
             abilityMenu.Select(false);
         }
+    }
+
+    public void TargetCharacterSelect(Character character)
+    {
+        targetCharacterPanel.gameObject.SetActive(character != null);
+        targetCharacterPanel.SetCharacter(character);
     }
 
     public void MainCharacterSelect(Character character)

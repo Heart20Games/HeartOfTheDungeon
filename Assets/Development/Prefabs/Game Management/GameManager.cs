@@ -7,6 +7,7 @@ using Body;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using System;
+using static GameModes;
 
 public class Game : BaseMonoBehaviour
 {
@@ -16,6 +17,8 @@ public class Game : BaseMonoBehaviour
     public Character playerCharacter;
     public List<Character> playableCharacters;
     public Selector selector;
+    public SimpleController selectorController;
+    public Targeter targeter;
     public GameSettings settings;
     [HideInInspector] public UserInterface userInterface;
     [HideInInspector] public HUD hud;
@@ -23,7 +26,11 @@ public class Game : BaseMonoBehaviour
     [HideInInspector] public List<Interactable> interactables;
 
     // Current Character
-    private Character curCharacter;
+    [ReadOnly][SerializeField] private Character curCharacter;
+    [ReadOnly] public SimpleController curController;
+    [ReadOnly] public Selector curSelector;
+    [ReadOnly] public ILooker curLooker;
+
     [HideInInspector] public Character CurCharacter { get { return curCharacter; } set { SetCharacter(value); } }
     private int curCharIdx = 0;
     public int CurCharIdx { get => curCharIdx; }
@@ -90,19 +97,16 @@ public class Game : BaseMonoBehaviour
     }
 
     // Game Mode
-    public enum GameMode { Selection, Character, Dialogue, Dismiss };
     private GameMode mode = GameMode.Character;
     public GameMode Mode { get { return mode; } set { SetMode(value); } }
-    private Dictionary<GameMode, ModeParameters> modeBank;
-    public Dictionary<GameMode, ModeParameters> ModeBank { get { return settings.ModeBank; } }
     
     public void SetMode(GameMode mode)
     {
         ActivateMode(ModeBank[mode]);
         if (mode == GameMode.Selection)
         {
-            if (selector != null && curCharacter != null)
-                selector.transform.position = curCharacter.body.position;
+            if (curController != null && curCharacter != null)
+                curController.transform.position = curCharacter.body.position;
         }
         this.mode = mode;
     }
@@ -116,6 +120,8 @@ public class Game : BaseMonoBehaviour
         TimeScale = mode.timeScale;
         if (mode.Controllable != null) SetControllable(mode.Controllable, true);
     }
+
+    // Controllables
 
     public void SetControllable(IControllable controllable, bool shouldControl)
     {
@@ -158,7 +164,7 @@ public class Game : BaseMonoBehaviour
 
     // Checks
     public bool CanUseCharacter() { return curCharacter != null && Mode == GameMode.Character; }
-    public bool CanUseSelector() { return selector != null && Mode == GameMode.Selection; }
+    public bool CanUseSelector() { return curController != null && Mode == GameMode.Selection; }
 
 
 

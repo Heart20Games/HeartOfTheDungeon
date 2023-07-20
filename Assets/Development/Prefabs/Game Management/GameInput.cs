@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using Body;
 using Body.Behavior;
+using static GameModes;
 
 [RequireComponent(typeof(Game))]
 [RequireComponent(typeof(PlayerInput))]
@@ -16,10 +17,13 @@ public class GameInput : MonoBehaviour
     // Systems
     public UserInterface UserInterface { get => Game.userInterface; }
     public HUD Hud { get => Game.hud; }
-    public Selector Selector { get => Game.selector; }
 
     // Fields
     public Character CurCharacter { get => Game.CurCharacter; }
+    public Selector CurSelector { get => Game.curSelector; }
+    public SimpleController CurController { get => Game.curController; }
+    public Targeter Targeter { get => Game.targeter; }
+    public ILooker CurLooker { get => Game.curLooker; }
     public GameMode Mode { get => Game.Mode; set => Game.Mode = value; }
 
 
@@ -61,13 +65,13 @@ public class GameInput : MonoBehaviour
                 break;
             case GameMode.Selection:
                 if (Game.CanUseSelector())
-                    Selector.MoveVector = inputVector;
+                    CurController.MoveVector = inputVector;
                 break;
         }
     }
 
     // Aiming
-    public void OnAim(InputValue inputValue) { CurCharacter.AimCharacter(inputValue.Get<Vector2>()); }
+    public void OnAim(InputValue inputValue) { CurCharacter.Aim(inputValue.Get<Vector2>()); }
     public void OnToggleAiming(InputValue inputValue) { CurCharacter.SetAimModeActive(inputValue.isPressed); }
 
     // Castables
@@ -101,13 +105,17 @@ public class GameInput : MonoBehaviour
     {
         if (inputValue.isPressed)
         {
-            Delegate del = deSelect ? Selector.DeSelect : Selector.Select;
+            Delegate del = deSelect ? CurSelector.DeSelect : CurSelector.Select;
             if (Game.CanUseSelector())
                 del.Invoke();
         }
     }
     public void OnSelect(InputValue inputValue) { SelectValue(inputValue, true); }
     public void OnDeSelect(InputValue inputValue) { SelectValue(inputValue, false); }
+
+    // Lock-On
+    public void OnToggleLockOn(InputValue inputValue) { IsPressed(inputValue, () => { Mode = Mode == GameMode.LockedOn ? GameMode.Character : GameMode.LockedOn; }); }
+    public void SwitchTargets(InputValue inputValue) { Targeter.SwitchTargets(inputValue.Get<float>() < 0); }
 
     // Skill Wheel
     public void OnToggleSkillWheel(InputValue inputValue)

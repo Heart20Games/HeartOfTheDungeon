@@ -9,6 +9,7 @@ namespace Body
     using Behavior;
     using Body.Behavior.ContextSteering;
     using System.Collections;
+    using System.ComponentModel;
     using UnityEngine.TextCore.Text;
     using static Body.Behavior.ContextSteering.CSIdentity;
 
@@ -16,9 +17,8 @@ namespace Body
     [RequireComponent(typeof(Movement))]
     [RequireComponent(typeof(Talker))]
     [RequireComponent(typeof(Attack))]
-    public class Character : BaseMonoBehaviour, IDamageable, IControllable
+    public class Character : BaseMonoBehaviour, IDamageable, IControllable, ILooker
     {
-        // Movement and Positioning
         [Header("Movement and Positioning")]
         public Transform body;
         public Transform pivot;
@@ -26,40 +26,35 @@ namespace Body
         [HideInInspector] public Movement movement;
         [HideInInspector] public float baseOffset;
 
-        // State
         [Header("State")]
         public bool controllable = true;
         public bool aimActive = false;
         public bool alive = false;
+        [Space]
+        public UnityEvent<bool> onControl;
 
-        // Appearance
         [Header("Appearance")]
         public ArtRenderer artRenderer;
         public CinemachineVirtualCamera virtualCamera;
         public CharacterUIElements characterUIElements;
 
-        // Collision
         [Header("Collision")]
         public Collider aliveCollider;
         public Collider deadCollider;
 
-        // Interaction
         [Header("Interaction")]
         public Interactor interactor;
         [HideInInspector] public Talker talker;
 
-        // Behaviour
         [Header("Behaviour")]
         [HideInInspector] public Brain brain;
         public CSController Controller { get => brain.controller; }
 
-        // Castables
         [Header("Casting")]
         public Loadout loadout;
         public Transform weaponOffset;
         [HideInInspector] public Attack attacker;
 
-        // Identity
         [Header("Identity")]
         public Identity identity = Identity.Neutral;
         public Identity Identity
@@ -72,17 +67,17 @@ namespace Body
             }
         }
 
-        // Statuses
         [Header("Status Effects")]
         public List<Status> statuses;
 
-        // Health
         [Header("Health and Damage")]
         public Health healthBar;
         public bool alwaysHideHealth = false;
         public float hideHealthWaitTime = 15f;
         public Modified<int> maxHealth = new(20);
         public Modified<int> currentHealth = new(20);
+        [Space]
+        public UnityEvent onDmg;
         public int MaxHealth
         {
             get { return maxHealth.Value; }
@@ -94,27 +89,33 @@ namespace Body
             set { SetCurrentHealth(value); }
         }
 
-        // Respawn
-        [Header("Respawn")]
+        [Header("Death and Respawning")]
         public Transform spawn;
-
-        // Events
+        [Space]
         public UnityEvent<Character> onDeath;
-        public UnityEvent onDmg;
         public UnityEvent onRespawn;
-        public UnityEvent<bool, Character> onControl;
+        public UnityEvent<bool> onAlive;
 
 
         // Initialization
         private void Awake()
         {
+            // Body Initialization
             transform.rotation = new(0, 0, 0, 0);
             Awarn.IsNotNull(body, "Character has no Character");
             InitBody();
+
+            // Components
             brain = GetComponent<Brain>();
             movement = GetComponent<Movement>();
             talker = GetComponent<Talker>();
             attacker = GetComponent<Attack>();
+
+            // Connections
+            ConnectAlive();
+            ConnectControl();
+
+            // Initialization
             InitializeCastables();
             MaxHealth = MaxHealth;
             CurrentHealth = CurrentHealth;
@@ -124,8 +125,11 @@ namespace Body
 
         private void Start()
         {
-            SetComponentActive(healthBar, false);
-            healthBar.SetHealthBase(CurrentHealth, MaxHealth);
+            if (healthBar != null)
+            {
+                healthBar.enabled = false;
+                healthBar.SetHealthBase(CurrentHealth, MaxHealth);
+            }
             Identity = Identity;
             SetAlive(true);
         }
@@ -161,8 +165,7 @@ namespace Body
 
         public void Respawn()
         {
-            body.position = spawn.position;
-            body.rotation = spawn.rotation;
+            body.SetPositionAndRotation(spawn.position, spawn.rotation);
             body.localScale = spawn.localScale;
             Refresh();
         }
@@ -187,60 +190,43 @@ namespace Body
         }
 
 
-        // Aiming
-
-        public void OnCastVectorChanged()
-        {
-            //moveReticle.rotationOffset.y = Vector3.Dot(movement.castVector.FullY(), Vector3.forward);//moveReticle.SetRotationWithVector(movement.castVector);
-            moveReticle.body.SetLocalRotationWithVector(movement.castVector);
-        }
-
-
         // State
 
         public void SetControllable(bool _controllable)
         {
             brain.Enabled = !_controllable;
             controllable = _controllable;
-            //movement.canMove = controllable;
-            //attacker.enabled = controllable;
-            //SetComponentActive(healthBar, !_controllable && !hideHealth);
-            SetComponentActive(moveReticle, _controllable);
-            SetComponentActive(virtualCamera, _controllable);
-            SetBehaviourEnabled(interactor, _controllable);
-            onControl.Invoke(_controllable, this);
+            onControl.Invoke(_controllable);
         }
 
-        public void SetBehaviourEnabled(Behaviour behaviour, bool _enabled)
+        public void ConnectControl()
         {
-            if (behaviour != null) behaviour.enabled = _enabled;
+            if (moveReticle != null) onControl.AddListener(moveReticle.gameObject.SetActive);
+            if (virtualCamera != null) onControl.AddListener(virtualCamera.gameObject.SetActive);
+            if (interactor != null) onControl.AddListener(DoEnable(interactor));
         }
-
-        public void SetComponentActive(Component component, bool _active)
-        {
-            if (component != null) component.gameObject.SetActive(_active);
-        }
+        private UnityAction<bool> DoEnable(Behaviour behaviour, bool disable=false) { return (bool enable) => { behaviour.enabled = enable && !disable; }; }
 
 
         // Health
+
+        private void ConnectAlive()
+        {
+            onAlive.AddListener((bool alive) => { brain.Alive = alive; });
+            onAlive.AddListener(DoEnable(movement));
+            onAlive.AddListener(DoEnable(attacker));
+
+            if (artRenderer != null) onAlive.AddListener((bool alive) => { artRenderer.Dead = !alive; });
+            if (aliveCollider != null) onAlive.AddListener((bool alive) => { aliveCollider.enabled = alive; });
+            if (deadCollider != null) onAlive.AddListener((bool alive) => { deadCollider.enabled = alive; });
+        }
 
         public void SetAlive(bool alive)
         {
             movement.SetMoveVector(new());
             bool died = !alive && this.alive;
             this.alive = alive;
-            if (movement != null)
-                movement.enabled = alive;
-            if (attacker != null) 
-                attacker.enabled = alive;
-            if (brain != null)
-                brain.Alive = alive;
-            if (artRenderer != null)
-                artRenderer.Dead = !alive;
-            if (aliveCollider != null)
-                aliveCollider.enabled = alive;
-            if (deadCollider != null)
-                deadCollider.enabled = !alive;
+            onAlive.Invoke(alive);
             if (died)
                 onDeath.Invoke(this);
         }
@@ -258,18 +244,17 @@ namespace Body
         {
             int prevHealth = currentHealth.Value;
             currentHealth.Value = Mathf.Min(amount, maxHealth.Value);
-            if (prevHealth != currentHealth.Value)
+            if (prevHealth != currentHealth.Value && healthBar != null)
             {
-                SetComponentActive(healthBar, !alwaysHideHealth);
-                if (healthBar != null)
-                    healthBar.SetHealth(CurrentHealth);
+                healthBar.enabled = !alwaysHideHealth;
+                healthBar.SetHealth(CurrentHealth);
             }
             if (prevHealth > currentHealth.Value)
             {
                 artRenderer.Hit();
                 onDmg.Invoke();
                 if (CurrentHealth <= 0f && alive) SetAlive(false);
-                if (coroutine == null)
+                if (coroutine == null && healthBar != null)
                     coroutine = StartCoroutine(DeactivateHealthbar(hideHealthWaitTime));
                 else
                     currentHideHealthTime = hideHealthWaitTime;
@@ -291,6 +276,7 @@ namespace Body
 
         public IEnumerator DeactivateHealthbar(float waitTime)
         {
+            Assert.IsNotNull(healthBar);
             currentHideHealthTime = waitTime;
             while (currentHideHealthTime > 0)
             {
@@ -298,7 +284,7 @@ namespace Body
                 yield return new WaitForSeconds(timeToWait);
                 currentHideHealthTime -= timeToWait;
             }
-            SetComponentActive(healthBar, false);
+            healthBar.enabled = false;
             coroutine = null;
         }
 
@@ -366,7 +352,7 @@ namespace Body
 
         // Actions
         public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); }
-        public void AimCharacter(Vector2 input, bool aim=false) { if (aimActive || aim) movement.SetAimVector(input); }
+        public void Aim(Vector2 input, bool aim=false) { if (aimActive || aim) movement.SetAimVector(input); }
         public void ActivateCastable(int idx) { ActivateCastable(castables[idx]); }
         public void Interact() { talker.Talk(); }
         public void AimMode(bool active) { SetAimModeActive(active); }

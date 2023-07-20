@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Yarn.Unity;
 using static Game;
+using static GameModes;
 using static YarnTags;
 
 public class Talker : BaseMonoBehaviour

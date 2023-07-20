@@ -15,3 +15,15 @@ public struct BinaryEvent
     public UnityEvent enter;
     public UnityEvent exit;
 }
+
+[Serializable]
+public struct BinaryEvent<T>
+{
+    public BinaryEvent(UnityEvent<T> _enter, UnityEvent<T> _exit)
+    {
+        enter = _enter;
+        exit = _exit;
+    }
+    public UnityEvent<T> enter;
+    public UnityEvent<T> exit;
+}

@@ -235,7 +235,7 @@ namespace Body.Behavior
             if (!useAgent)
             {
                 if (debug) print("Trying to attack");
-                character.AimCharacter(-controller.CurrentVector.normalized, true);
+                character.Aim(-controller.CurrentVector.normalized, true);
 
                 int closest = int.MaxValue;
                 int closestIdx = -1;
