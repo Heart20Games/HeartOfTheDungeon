@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3763881640399658337}
   - component: {fileID: 6195072847112246993}
   m_Layer: 0
-  m_Name: Possy
+  m_Name: Party
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52,12 +52,12 @@ MonoBehaviour:
   characters:
   - {fileID: 8875271757410050262}
   pets: []
-  isMainPossy: 0
+  isMainParty: 0
   aggroed: 0
-  allDead: 0
   onAggro:
     m_PersistentCalls:
       m_Calls: []
+  allDead: 0
   onAllDead:
     m_PersistentCalls:
       m_Calls:
@@ -76,6 +76,7 @@ MonoBehaviour:
   followTargeter: {fileID: 9049492250913320960}
   useLeaderAsFollowTargeter: 0
   defaultFollowTarget: {fileID: 0}
+  targetParty: {fileID: 0}
   noise: {fileID: 3763881640399658337}
   tightness: 1
   tightnessIdle: 0.5
@@ -139,7 +140,7 @@ GameObject:
   - component: {fileID: 5180969800388655949}
   - component: {fileID: 8525546322699412718}
   - component: {fileID: 1507231519435963581}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Follow Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -301,7 +302,7 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 128
@@ -322,7 +323,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 128
@@ -355,6 +356,10 @@ PrefabInstance:
       propertyPath: pathFinder
       value: 
       objectReference: {fileID: 5885684141737888567}
+    - target: {fileID: 5471761640970649015, guid: d1188049d2e999b48b465fd757a928c1, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 6304595911526012643, guid: d1188049d2e999b48b465fd757a928c1, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -416,8 +421,16 @@ PrefabInstance:
       value: NavPathLine
       objectReference: {fileID: 0}
     - target: {fileID: 6473001147741409366, guid: d1188049d2e999b48b465fd757a928c1, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6473001147741409366, guid: d1188049d2e999b48b465fd757a928c1, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6937231639729761755, guid: d1188049d2e999b48b465fd757a928c1, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
