@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using System;
 using static GameModes;
+using Selection;
 
 public class Game : BaseMonoBehaviour
 {
@@ -119,6 +120,11 @@ public class Game : BaseMonoBehaviour
         input.SwitchCurrentActionMap(mode.inputMap);
         TimeScale = mode.timeScale;
         if (mode.Controllable != null) SetControllable(mode.Controllable, true);
+        if (mode.Finder != null)
+        {
+            targeter.Finder = mode.Finder;
+            targeter.SetTargetLock(mode.targetLock);
+        }
     }
 
     // Controllables

@@ -11,6 +11,10 @@ public abstract class ASelectable : BaseMonoBehaviour, ISelectable
     [HideInInspector] public bool isSelected = false;
     [HideInInspector] public bool isHovering = false;
 
+    [ReadOnly] public ASelectable next;
+    [ReadOnly] public ASelectable last;
+    [ReadOnly] public bool visible = false;
+
     private void Awake()
     {
         if (source == null)
@@ -40,4 +44,14 @@ public abstract class ASelectable : BaseMonoBehaviour, ISelectable
     }
 
     public abstract void Confirm();
+
+    private void OnBecameVisible()
+    {
+        visible = true;
+    }
+
+    private void OnBecameInvisible()
+    {
+        visible = false;
+    }
 }

@@ -55,6 +55,8 @@ MonoBehaviour:
       m_Calls: []
   range: 10
   selectableBank: []
+  targetLock: 0
+  finder: {fileID: 0}
 --- !u!1 &75974081518780841
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,7 +85,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 75974081518780841}
   m_LocalRotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  m_LocalPosition: {x: -14.483201, y: 1.8355563, z: -10.760689}
+  m_LocalPosition: {x: -13.671087, y: 0.27804807, z: -14.999287}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -159,7 +161,7 @@ Camera:
   far clip plane: 1000
   field of view: 45
   orthographic: 0
-  orthographic size: 5
+  orthographic size: 25.12
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -862,9 +864,9 @@ MonoBehaviour:
   playableCharacters:
   - {fileID: 0}
   - {fileID: 0}
-  selector: {fileID: 0}
-  selectorController: {fileID: 0}
-  targeter: {fileID: 0}
+  selector: {fileID: 914866286546759462}
+  selectorController: {fileID: 7429232415349204401}
+  targeter: {fileID: 2971230082445628784}
   settings: {fileID: 11400000, guid: 1eeb75a2b83131147acb2c779806a8af, type: 2}
   userInterface: {fileID: 0}
   hud: {fileID: 0}
@@ -1194,6 +1196,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 7429232415349204401}
   m_SourcePrefab: {fileID: 100100000, guid: a75af7bf64c7ede4c91b19a9c88676b5, type: 3}
+--- !u!114 &914866286546759462 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6968636648620251966, guid: a75af7bf64c7ede4c91b19a9c88676b5, type: 3}
+  m_PrefabInstance: {fileID: 7784419274166039576}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2311561732216912483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 829d245623292634c89addbf5a8f9b37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2311561732216912483 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5481867231349575291, guid: a75af7bf64c7ede4c91b19a9c88676b5, type: 3}

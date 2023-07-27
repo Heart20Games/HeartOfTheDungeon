@@ -1,3 +1,4 @@
+using Selection;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,7 @@ public class GameModes
         public bool hudActive;
         public bool dialogueActive;
         public bool controlScreenActive;
+        public bool targetLock;
         public string inputMap;
         public float timeScale;
         public readonly IControllable Controllable { get => GetControllable(); }
@@ -40,6 +42,7 @@ public class GameModes
                 _ => null,
             };
         }
+        public readonly TargetFinder Finder { get => game.CurCharacter.targetFinder; }
     }
 }
 

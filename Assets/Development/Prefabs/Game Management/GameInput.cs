@@ -1,15 +1,14 @@
 using UnityEngine;
-using static Game;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using Body;
-using Body.Behavior;
 using static GameModes;
+using Selection;
 
 [RequireComponent(typeof(Game))]
 [RequireComponent(typeof(PlayerInput))]
 
-public class GameInput : MonoBehaviour
+public class GameInput : BaseMonoBehaviour
 {
     private Game game;
     public Game Game { get { game = game != null ? game : GetComponent<Game>(); return game; } }

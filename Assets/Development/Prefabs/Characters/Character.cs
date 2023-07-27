@@ -8,6 +8,7 @@ namespace Body
 {
     using Behavior;
     using Body.Behavior.ContextSteering;
+    using Selection;
     using System.Collections;
     using System.ComponentModel;
     using UnityEngine.TextCore.Text;
@@ -42,8 +43,9 @@ namespace Body
         public Collider aliveCollider;
         public Collider deadCollider;
 
-        [Header("Interaction")]
+        [Header("Interaction, Selection, and Targeting")]
         public Interactor interactor;
+        public TargetFinder targetFinder;
         [HideInInspector] public Talker talker;
 
         [Header("Behaviour")]

@@ -1,11 +1,17 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-public class BaseMonoBehaviour : MonoBehaviour
+public interface IBaseMonoBehavior
 {
+    public Transform GetTransform();
+}
+
+public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehavior
+{
+    public Transform GetTransform() { return transform; }
+
     void OnDestroy()
     {
         foreach (FieldInfo field in GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
