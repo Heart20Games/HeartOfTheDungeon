@@ -10,6 +10,12 @@ public class TargetCharacterPanel : BaseMonoBehaviour
     public void SetCharacter(Character character)
     {
         this.character = character;
-        PortraitImage portrait = portraits.bank[character.characterUIElements.characterName]["neutral"];
+        if (character != null)
+        {
+            if (portraits.bank.TryGetValue(character.characterUIElements.characterName, out var emotions))
+            {
+                PortraitImage portrait = emotions["neutral"];
+            }
+        }
     }
 }

@@ -24,13 +24,13 @@ public class Selector : BaseMonoBehaviour
 
     // Selectables
 
-    public void Clear()
+    public virtual void Clear()
     {
         hoveringOver.Clear();
         DeSelect();
     }
 
-    public void Hover(ASelectable selectable)
+    public virtual void Hover(ASelectable selectable)
     {
         if (selectable != null)
         {
@@ -43,7 +43,7 @@ public class Selector : BaseMonoBehaviour
         }
     }
 
-    public void UnHover(ASelectable selectable)
+    public virtual void UnHover(ASelectable selectable)
     {
         if (selectable != null)
         {
@@ -60,7 +60,7 @@ public class Selector : BaseMonoBehaviour
         }
     }
 
-    public void Select()
+    public virtual void Select()
     {
         if (hoveringOver.Count > 0)
         {
@@ -76,7 +76,7 @@ public class Selector : BaseMonoBehaviour
         }
     }
 
-    public void DeSelect()
+    public virtual void DeSelect()
     {
         if (selected != null)
         {
@@ -85,7 +85,7 @@ public class Selector : BaseMonoBehaviour
         }
     }
 
-    public void Confirm()
+    public virtual void Confirm()
     {
         selected.Confirm();
         onConfirm.Invoke();

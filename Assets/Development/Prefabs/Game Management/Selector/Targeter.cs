@@ -1,18 +1,73 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Targeter : Selector, ILooker
+namespace Selection
 {
-    public float range = 10f;
-    [ReadOnly][SerializeField] private List<ASelectable> selectableBank = new();
-
-    private void Awake()
+    public class Targeter : Selector, ILooker
     {
-        // Initialize full list of selectables here.
-    }
+        public static Targeter main;
 
-    public void SwitchTargets(bool left)
-    {
-        // Set selected to the next nearest selectable in the given direction.
+        [ReadOnly] public List<ASelectable> selectableBank = new();
+
+        [Header("Targeting")]
+        [ReadOnly][SerializeField] private TargetFinder finder;
+        [ReadOnly][SerializeField] private bool targetLock = false;
+        public TargetFinder Finder
+        {
+            get => finder;
+            set {
+                if (finder != null)
+                    finder.enabled = false;
+                finder = value;
+                if (finder != null)
+                    finder.enabled = !targetLock;
+            }
+        }
+
+        private void Awake()
+        {
+            main = this;
+            selectableBank.AddRange(FindObjectsByType<ASelectable>(FindObjectsSortMode.None));
+        }
+
+
+        // Swaps and Locks
+        public void SetTargetLock(bool targetLock)
+        {
+            this.targetLock = targetLock;
+            Finder.enabled = !targetLock;
+            if (targetLock) Select();
+            else DeSelect();
+        }
+
+        public void SwitchTargets(bool left)
+        {
+            if (finder.selectables.Count > 1)
+            {
+                // Set selected to the next nearest selectable in the given direction.
+                DeSelect();
+                finder.TargetIdx += (left ? -1 : 1);
+                Select();
+            }
+        }
+
+
+        // Validation
+        public bool Validate(ASelectable selectable)
+        {
+            return selectable.visible && SelectableTypes.Contains(selectable.Type);
+        }
+
+
+        // Overrides
+        public override void Select()
+        {
+            base.Select();
+        }
+
+        public override void DeSelect()
+        {
+            base.DeSelect();
+        }
     }
 }

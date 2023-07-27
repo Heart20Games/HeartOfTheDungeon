@@ -19,6 +19,7 @@ MonoBehaviour:
     hudActive: 1
     dialogueActive: 0
     controlScreenActive: 0
+    targetLock: 0
     inputMap: Selector
     timeScale: 1
   - name: Lock-On
@@ -26,13 +27,15 @@ MonoBehaviour:
     hudActive: 1
     dialogueActive: 0
     controlScreenActive: 0
-    inputMap: Player LockOn
+    targetLock: 1
+    inputMap: LockOn
     timeScale: 1
   - name: Character
     mode: 1
     hudActive: 1
     dialogueActive: 0
     controlScreenActive: 0
+    targetLock: 0
     inputMap: Player
     timeScale: 0.1
   - name: Dialogue
@@ -40,12 +43,14 @@ MonoBehaviour:
     hudActive: 0
     dialogueActive: 1
     controlScreenActive: 0
+    targetLock: 0
     inputMap: Dialogue
     timeScale: 0
   - name: Dismiss
-    mode: 3
+    mode: 4
     hudActive: 0
     dialogueActive: 0
     controlScreenActive: 1
+    targetLock: 0
     inputMap: Dismiss
     timeScale: 0
