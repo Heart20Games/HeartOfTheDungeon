@@ -1,8 +1,29 @@
 using Cinemachine;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using static ISelectable;
+
+
+[Serializable]
+public struct SelectorEvent
+{
+    public BinaryEvent trigger;
+    public BinaryEvent<ASelectable> selectable;
+    public void InvokeEnter(ASelectable selectable)
+    {
+        this.trigger.enter.Invoke();
+        this.selectable.enter.Invoke(selectable);
+    }
+    public void InvokeExit(ASelectable selectable)
+    {
+        this.trigger.exit.Invoke();
+        this.selectable.exit.Invoke(selectable);
+    }
+}
+
 
 public class Selector : BaseMonoBehaviour
 {
@@ -11,7 +32,9 @@ public class Selector : BaseMonoBehaviour
     public List<SelectType> SelectableTypes { get { return selectableTypes; } set { SetSelectableTypes(value); } }
     public List<ASelectable> hoveringOver = new();
     public ASelectable selected;
-    public UnityEvent onConfirm;
+    public SelectorEvent onConfirm;
+    public SelectorEvent onSelect;
+    public SelectorEvent onHover;
     public UnityEvent<List<SelectType>> onSetTypes;
     
 
@@ -40,6 +63,7 @@ public class Selector : BaseMonoBehaviour
             }
             hoveringOver.Add(selectable);
             selectable.Hover();
+            onHover.InvokeEnter(selectable);
         }
     }
 
@@ -53,6 +77,7 @@ public class Selector : BaseMonoBehaviour
             }
             hoveringOver.Remove(selectable);
             selectable.UnHover();
+            onHover.InvokeExit(selectable);
             if (hoveringOver.Count > 0)
             {
                 hoveringOver[^1].Hover();
@@ -72,6 +97,7 @@ public class Selector : BaseMonoBehaviour
             else
             {
                 selected.Select();
+                onSelect.InvokeEnter(selected);
             }
         }
     }
@@ -81,6 +107,7 @@ public class Selector : BaseMonoBehaviour
         if (selected != null)
         {
             selected.DeSelect();
+            onSelect.InvokeExit(selected);
             selected = null;
         }
     }
@@ -88,6 +115,6 @@ public class Selector : BaseMonoBehaviour
     public virtual void Confirm()
     {
         selected.Confirm();
-        onConfirm.Invoke();
+        onConfirm.InvokeEnter(selected);
     }
 }

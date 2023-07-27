@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,9 +8,12 @@ namespace Selection
     {
         public static Targeter main;
 
+
         [ReadOnly] public List<ASelectable> selectableBank = new();
 
         [Header("Targeting")]
+        public CinemachineVirtualCamera virtualCamera;
+        public CinemachineTargetGroup targetGroup;
         [ReadOnly][SerializeField] private TargetFinder finder;
         [ReadOnly][SerializeField] private bool targetLock = false;
         public TargetFinder Finder
@@ -36,8 +40,11 @@ namespace Selection
         {
             this.targetLock = targetLock;
             Finder.enabled = !targetLock;
+            virtualCamera.enabled = targetLock;
             if (targetLock) Select();
             else DeSelect();
+            targetGroup.m_Targets[0].target = finder == null ? null : finder.transform;
+            targetGroup.m_Targets[1].target = selected == null ? null : selected.transform;
         }
 
         public void SwitchTargets(bool left)

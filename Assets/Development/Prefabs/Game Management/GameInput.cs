@@ -114,7 +114,7 @@ public class GameInput : BaseMonoBehaviour
     public void OnDeSelect(InputValue inputValue) { SelectValue(inputValue, false); }
 
     // Lock-On
-    private bool reachedZero = false;
+    private bool reachedZero = true;
     public float holdTime = 0.4f;
     [ReadOnly] public float switchTargetValue = 0f;
     public void OnToggleLockOn(InputValue inputValue) { IsPressed(inputValue, () => { Mode = Mode == GameMode.LockedOn ? GameMode.Character : GameMode.LockedOn; }); }
