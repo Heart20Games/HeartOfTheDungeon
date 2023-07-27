@@ -1173,6 +1173,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Toggle LockOn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2830157a-312b-4075-a9a2-a19d6cb738c5"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle LockOn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1206,6 +1217,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""094e97e3-d4ab-4e09-bff8-41ae45d11071"",
                     ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dismiss"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2c360942-79ba-4361-97bc-b600aa62bede"",
+                    ""path"": ""<Gamepad>/dpad/down"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1489,7 +1511,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""type"": ""Value"",
                     ""id"": ""c24a8053-49b0-4480-83ff-86b82116ba0b"",
                     ""expectedControlType"": ""Axis"",
-                    ""processors"": ""AxisDeadzone"",
+                    ""processors"": """",
                     ""interactions"": ""Hold"",
                     ""initialStateCheck"": true
                 },
@@ -2287,6 +2309,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""be29c964-0d26-4dbe-96f5-f6ea38f37e98"",
                     ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle LockOn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a479b615-22c4-4f6e-964f-d8fac44addb9"",
+                    ""path"": ""<Keyboard>/l"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

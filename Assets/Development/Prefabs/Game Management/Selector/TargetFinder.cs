@@ -12,6 +12,7 @@ namespace Selection
         public float range = 10f;
         public Vector3 offset = Vector3.up;
         public LayerMask obstacleMask;
+        public bool requireClearPath = false;
         public bool debug = false;
 
         [Header("Selectables")]
@@ -28,7 +29,7 @@ namespace Selection
         {
             enabled = false;
             attachedSelectable = GetComponent<ASelectable>();
-            distanceSort = new(selectables, transform, offset);
+            distanceSort = new(selectables, Camera.main.transform);
         }
 
         public void FixedUpdate()
@@ -45,7 +46,7 @@ namespace Selection
 
         private void SetTargetIdx(int newIdx)
         {
-            targetIdx = (newIdx < 0 && selectables.Count > 0) ? 0 : newIdx;
+            targetIdx = selectables.Count > 0 ? Mod(newIdx, selectables.Count) : newIdx;
 
             // Unhover the old, Hover the new
             ASelectable newTarget = GetSelectable(targetIdx);
@@ -90,12 +91,19 @@ namespace Selection
                     if (vector.magnitude <= range)
                     {
                         numInRange += 1;
-                        // Ignore things that are blocked.
-                        if (Physics.Raycast(origin, vector, out var hit, obstacleMask))
-                            if (hit.collider.gameObject == selectable.gameObject)
-                                selectables.Add(selectable);
-                        Debug.DrawRay(origin, vector.normalized * hit.distance, Color.green);
-                        Debug.DrawRay(origin + (vector.normalized * hit.distance), vector.normalized * (vector.magnitude - hit.distance), Color.red);
+                        if (requireClearPath)
+                        {
+                            // Ignore things that are blocked.
+                            if (Physics.Raycast(origin, vector, out var hit, obstacleMask))
+                                if (hit.collider.gameObject == selectable.gameObject)
+                                    selectables.Add(selectable);
+                            Debug.DrawRay(origin, vector.normalized * hit.distance, Color.green);
+                            Debug.DrawRay(origin + (vector.normalized * hit.distance), vector.normalized * (vector.magnitude - hit.distance), Color.red);
+                        }
+                        else
+                        {
+                            selectables.Add(selectable);
+                        }
                     }
                 }
             }

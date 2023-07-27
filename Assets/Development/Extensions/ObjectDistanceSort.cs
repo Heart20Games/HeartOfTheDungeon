@@ -13,7 +13,7 @@ namespace Sorting
 
         // Constructor
         public ObjectDistanceSort() { }
-        public ObjectDistanceSort(List<T> list, Transform transform, Vector3 offset)
+        public ObjectDistanceSort(List<T> list, Transform transform, Vector3 offset=new())
         {
             this.transform = transform;
             this.list = list;

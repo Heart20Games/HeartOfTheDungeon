@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using Body;
 using static GameModes;
 using Selection;
+using System.Collections;
 
 [RequireComponent(typeof(Game))]
 [RequireComponent(typeof(PlayerInput))]
@@ -113,8 +114,34 @@ public class GameInput : BaseMonoBehaviour
     public void OnDeSelect(InputValue inputValue) { SelectValue(inputValue, false); }
 
     // Lock-On
+    private bool reachedZero = false;
+    public float holdTime = 0.4f;
+    [ReadOnly] public float switchTargetValue = 0f;
     public void OnToggleLockOn(InputValue inputValue) { IsPressed(inputValue, () => { Mode = Mode == GameMode.LockedOn ? GameMode.Character : GameMode.LockedOn; }); }
-    public void SwitchTargets(InputValue inputValue) { Targeter.SwitchTargets(inputValue.Get<float>() < 0); }
+    public void OnSwitchTargets(InputValue inputValue)
+    {
+        switchTargetValue = inputValue.Get<float>();
+        print($"OnSwitchTargets ({switchTargetValue})");
+        if (switchTargetValue != 0 && reachedZero)
+        {
+            reachedZero = false;
+            StartCoroutine(SwitchTargetLoop());
+        }
+        else
+        {
+            print("Reached Zero");
+            reachedZero = true;
+        }
+    }
+    private IEnumerator SwitchTargetLoop()
+    {
+        while (!reachedZero)
+        {
+            print("Switch Targets");
+            Targeter.SwitchTargets(switchTargetValue < 0);
+            yield return new WaitForSeconds(holdTime);
+        }
+    }
 
     // Skill Wheel
     public void OnToggleSkillWheel(InputValue inputValue)

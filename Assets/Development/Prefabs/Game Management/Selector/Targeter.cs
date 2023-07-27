@@ -46,7 +46,7 @@ namespace Selection
             {
                 // Set selected to the next nearest selectable in the given direction.
                 DeSelect();
-                finder.TargetIdx += left ? -1 : 1;
+                finder.TargetIdx += (left ? -1 : 1);
                 Select();
             }
         }
