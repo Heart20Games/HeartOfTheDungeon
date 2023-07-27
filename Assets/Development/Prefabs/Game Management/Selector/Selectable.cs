@@ -4,11 +4,13 @@ using static ISelectable;
 
 public class Selectable : ASelectable
 {
+    [SerializeField] private SelectType selectType = SelectType.Default;
+
+    [Header("Events")]
     public BinaryEvent onSelection;
     public BinaryEvent onHover;
     public UnityEvent onConfirm;
 
-    [SerializeField] private SelectType selectType = SelectType.Default;
     public override SelectType Type { get => selectType; set => selectType = value; }
 
     public override void Select()

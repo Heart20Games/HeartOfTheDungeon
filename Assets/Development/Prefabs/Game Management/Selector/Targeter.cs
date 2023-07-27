@@ -7,15 +7,21 @@ namespace Selection
     {
         public static Targeter main;
 
-        public float range = 10f;
-        [ReadOnly][SerializeField] public List<ASelectable> selectableBank = new();
-        public bool targetLock = false;
+        [ReadOnly] public List<ASelectable> selectableBank = new();
 
-        private TargetFinder finder;
+        [Header("Targeting")]
+        [ReadOnly][SerializeField] private TargetFinder finder;
+        [ReadOnly][SerializeField] private bool targetLock = false;
         public TargetFinder Finder
         {
             get => finder;
-            set { finder = value; finder.enabled = !targetLock; }
+            set {
+                if (finder != null)
+                    finder.enabled = false;
+                finder = value;
+                if (finder != null)
+                    finder.enabled = !targetLock;
+            }
         }
 
         private void Awake()

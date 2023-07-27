@@ -103,6 +103,7 @@ public class Game : BaseMonoBehaviour
     
     public void SetMode(GameMode mode)
     {
+        print($"Change Mode to {mode} (in bank? {(ModeBank.ContainsKey(mode) ? "yes" : "no")})");
         ActivateMode(ModeBank[mode]);
         if (mode == GameMode.Selection)
         {

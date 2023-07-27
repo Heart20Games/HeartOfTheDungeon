@@ -8,22 +8,25 @@ namespace Sorting
         // Fields
         private Transform transform;
         private List<T> list;
+        private Vector3 offset = Vector3.zero;
 
 
         // Constructor
         public ObjectDistanceSort() { }
-        public ObjectDistanceSort(List<T> list, Transform transform)
+        public ObjectDistanceSort(List<T> list, Transform transform, Vector3 offset)
         {
             this.transform = transform;
             this.list = list;
+            this.offset = offset;
         }
 
 
         // Start Sorting
-        public void Sort(List<T> list, Transform transform)
+        public void Sort(List<T> list, Transform transform, Vector3 origin=new Vector3())
         {
             this.list = list;
             this.transform = transform;
+            this.offset = origin;
             Sort();
         }
         public void Sort()
@@ -52,12 +55,12 @@ namespace Sorting
 
         private int Partition(int left, int right)
         {
-            float pivotDistance = Vector3.Distance(transform.position, list[right].GetTransform().position);
+            float pivotDistance = Vector3.Distance(transform.position + offset, list[right].GetTransform().position);
             int i = left - 1;
 
             for (int j = left; j < right; j++)
             {
-                float currentDistance = Vector3.Distance(transform.position, list[j].GetTransform().position);
+                float currentDistance = Vector3.Distance(transform.position + offset, list[j].GetTransform().position);
 
                 if (currentDistance <= pivotDistance)
                 {

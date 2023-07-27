@@ -8,20 +8,27 @@ namespace Selection
     {
         public Targeter Main { get => Targeter.main; }
 
+        [Header("Settings")]
         public float range = 10f;
+        public Vector3 offset = Vector3.up;
         public LayerMask obstacleMask;
-        [ReadOnly] public List<ASelectable> selectables = new();
-        private ASelectable attachedSelectable;
-        ObjectDistanceSort<ASelectable> distanceSort;
+        public bool debug = false;
 
-        private int targetIdx = 0;
+        [Header("Selectables")]
+        [ReadOnly] public List<ASelectable> selectables = new();
+        [ReadOnly][SerializeField] private ASelectable attachedSelectable;
+        ObjectDistanceSort<ASelectable> distanceSort;
+        [ReadOnly][SerializeField] private int targetIdx = 0;
+        [ReadOnly][SerializeField] private int numValid = 0;
+        [ReadOnly][SerializeField] private int numInRange = 0;
         public int TargetIdx { get => targetIdx; set => SetTargetIdx(value); }
-        private ASelectable lastTarget;
+        [ReadOnly][SerializeField] private ASelectable lastTarget;
 
         private void Awake()
         {
+            enabled = false;
             attachedSelectable = GetComponent<ASelectable>();
-            distanceSort = new(selectables, transform);
+            distanceSort = new(selectables, transform, offset);
         }
 
         public void FixedUpdate()
@@ -64,6 +71,8 @@ namespace Selection
                 selectables[i].last = null;
                 selectables[i].next = null;
             }
+            numValid = 0;
+            numInRange = 0;
             selectables.Clear();
         }
 
@@ -74,14 +83,19 @@ namespace Selection
                 ASelectable selectable = Main.selectableBank[i];
                 if (selectable != attachedSelectable && Main.Validate(selectable))
                 {
-                    Vector3 origin = transform.position;
-                    Vector3 vector = selectable.transform.position - origin;
+                    numValid += 1;
+                    Vector3 origin = transform.position + offset;
+                    Vector3 vector = (selectable.transform.position + selectable.offset) - origin;
                     // Ignore things that aren't in range.
                     if (vector.magnitude <= range)
                     {
+                        numInRange += 1;
                         // Ignore things that are blocked.
-                        if (!Physics.Raycast(origin, vector.normalized, vector.magnitude, obstacleMask))
-                            selectables.Add(selectable);
+                        if (Physics.Raycast(origin, vector, out var hit, obstacleMask))
+                            if (hit.collider.gameObject == selectable.gameObject)
+                                selectables.Add(selectable);
+                        Debug.DrawRay(origin, vector.normalized * hit.distance, Color.green);
+                        Debug.DrawRay(origin + (vector.normalized * hit.distance), vector.normalized * (vector.magnitude - hit.distance), Color.red);
                     }
                 }
             }
@@ -92,9 +106,14 @@ namespace Selection
             distanceSort.Sort();
             for (int i = 0; i < selectables.Count; i++)
             {
-                selectables[i].last = selectables[(i - 1) % selectables.Count];
-                selectables[i].next = selectables[(i + 1) % selectables.Count];
+                selectables[i].last = selectables[Mod(i - 1, selectables.Count)];
+                selectables[i].next = selectables[Mod(i + 1, selectables.Count)];
             }
+        }
+
+        private int Mod(int x, int m)
+        {
+            return (x % m + m) % m;
         }
     }
 }

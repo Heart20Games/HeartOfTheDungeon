@@ -8,6 +8,7 @@ public abstract class ASelectable : BaseMonoBehaviour, ISelectable
     public abstract SelectType Type { get; set; }
     public void NoOpSelectType(SelectType value) { }
     public GameObject source;
+    public Vector3 offset = Vector3.up;
     [HideInInspector] public bool isSelected = false;
     [HideInInspector] public bool isHovering = false;
 
