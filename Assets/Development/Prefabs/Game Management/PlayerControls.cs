@@ -1512,7 +1512,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""c24a8053-49b0-4480-83ff-86b82116ba0b"",
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Switch Targets Scroll"",
+                    ""type"": ""Value"",
+                    ""id"": ""1015ffec-9889-45a2-bf83-d80f4a5a407b"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
                     ""initialStateCheck"": true
                 },
                 {
@@ -2243,7 +2252,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""Gamepad"",
                     ""id"": ""dd8df68f-59ae-46a1-9a7a-c22c5b1be888"",
                     ""path"": ""1DAxis"",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Switch Targets"",
@@ -2273,39 +2282,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""7d91af77-2c36-41aa-b73a-e0b60a735226"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Switch Targets"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""fca8dc82-ffc9-4f3f-ad34-49067c98dcfa"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Switch Targets"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""91afd5d0-5bc0-46f9-abba-32830d26068e"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Switch Targets"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": """",
                     ""id"": ""be29c964-0d26-4dbe-96f5-f6ea38f37e98"",
                     ""path"": ""<Gamepad>/rightStickPress"",
@@ -2324,6 +2300,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Toggle LockOn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3cfa7de5-553b-4be3-aa66-2e3b19c0ef88"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": ""Normalize(min=-1,max=1,zero=1E-06),Scale(factor=3.402823E+38),Clamp(min=-1,max=1)"",
+                    ""groups"": """",
+                    ""action"": ""Switch Targets Scroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2379,6 +2366,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_LockOn_Look = m_LockOn.FindAction("Look", throwIfNotFound: true);
         m_LockOn_Aim = m_LockOn.FindAction("Aim", throwIfNotFound: true);
         m_LockOn_SwitchTargets = m_LockOn.FindAction("Switch Targets", throwIfNotFound: true);
+        m_LockOn_SwitchTargetsScroll = m_LockOn.FindAction("Switch Targets Scroll", throwIfNotFound: true);
         m_LockOn_ToggleLockOn = m_LockOn.FindAction("Toggle LockOn", throwIfNotFound: true);
         m_LockOn_ToggleSkillWheel = m_LockOn.FindAction("Toggle Skill Wheel", throwIfNotFound: true);
         m_LockOn_RestartLevel = m_LockOn.FindAction("Restart Level", throwIfNotFound: true);
@@ -2888,6 +2876,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_LockOn_Look;
     private readonly InputAction m_LockOn_Aim;
     private readonly InputAction m_LockOn_SwitchTargets;
+    private readonly InputAction m_LockOn_SwitchTargetsScroll;
     private readonly InputAction m_LockOn_ToggleLockOn;
     private readonly InputAction m_LockOn_ToggleSkillWheel;
     private readonly InputAction m_LockOn_RestartLevel;
@@ -2910,6 +2899,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_LockOn_Look;
         public InputAction @Aim => m_Wrapper.m_LockOn_Aim;
         public InputAction @SwitchTargets => m_Wrapper.m_LockOn_SwitchTargets;
+        public InputAction @SwitchTargetsScroll => m_Wrapper.m_LockOn_SwitchTargetsScroll;
         public InputAction @ToggleLockOn => m_Wrapper.m_LockOn_ToggleLockOn;
         public InputAction @ToggleSkillWheel => m_Wrapper.m_LockOn_ToggleSkillWheel;
         public InputAction @RestartLevel => m_Wrapper.m_LockOn_RestartLevel;
@@ -2947,6 +2937,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwitchTargets.started += instance.OnSwitchTargets;
             @SwitchTargets.performed += instance.OnSwitchTargets;
             @SwitchTargets.canceled += instance.OnSwitchTargets;
+            @SwitchTargetsScroll.started += instance.OnSwitchTargetsScroll;
+            @SwitchTargetsScroll.performed += instance.OnSwitchTargetsScroll;
+            @SwitchTargetsScroll.canceled += instance.OnSwitchTargetsScroll;
             @ToggleLockOn.started += instance.OnToggleLockOn;
             @ToggleLockOn.performed += instance.OnToggleLockOn;
             @ToggleLockOn.canceled += instance.OnToggleLockOn;
@@ -3005,6 +2998,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwitchTargets.started -= instance.OnSwitchTargets;
             @SwitchTargets.performed -= instance.OnSwitchTargets;
             @SwitchTargets.canceled -= instance.OnSwitchTargets;
+            @SwitchTargetsScroll.started -= instance.OnSwitchTargetsScroll;
+            @SwitchTargetsScroll.performed -= instance.OnSwitchTargetsScroll;
+            @SwitchTargetsScroll.canceled -= instance.OnSwitchTargetsScroll;
             @ToggleLockOn.started -= instance.OnToggleLockOn;
             @ToggleLockOn.performed -= instance.OnToggleLockOn;
             @ToggleLockOn.canceled -= instance.OnToggleLockOn;
@@ -3113,6 +3109,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
         void OnSwitchTargets(InputAction.CallbackContext context);
+        void OnSwitchTargetsScroll(InputAction.CallbackContext context);
         void OnToggleLockOn(InputAction.CallbackContext context);
         void OnToggleSkillWheel(InputAction.CallbackContext context);
         void OnRestartLevel(InputAction.CallbackContext context);

@@ -5,6 +5,7 @@ using Body;
 using static GameModes;
 using Selection;
 using System.Collections;
+using System.Diagnostics.Tracing;
 
 [RequireComponent(typeof(Game))]
 [RequireComponent(typeof(PlayerInput))]
@@ -114,32 +115,82 @@ public class GameInput : BaseMonoBehaviour
     public void OnDeSelect(InputValue inputValue) { SelectValue(inputValue, false); }
 
     // Lock-On
-    private bool reachedZero = true;
-    public float holdTime = 0.4f;
-    [ReadOnly] public float switchTargetValue = 0f;
     public void OnToggleLockOn(InputValue inputValue) { IsPressed(inputValue, () => { Mode = Mode == GameMode.LockedOn ? GameMode.Character : GameMode.LockedOn; }); }
     public void OnSwitchTargets(InputValue inputValue)
     {
-        switchTargetValue = inputValue.Get<float>();
-        print($"OnSwitchTargets ({switchTargetValue})");
+        SwitchTargets(inputValue.Get<float>());
+    }
+    public void OnSwitchTargetsScroll(InputValue inputValue)
+    {
+        print("Target Scroll");
+        scroll += inputValue.Get<float>();
+        if (!scrollerStarted)
+            scroller = StartCoroutine(ScrollPoll());
+    }
+
+    [Header("Target Switching")]
+    [SerializeField] private float holdTime = 0.8f;
+    [ReadOnly][SerializeField] private bool reachedZero = true;
+    [ReadOnly][SerializeField] int triggerCount = 0;
+    [ReadOnly][SerializeField] private float switchTargetValue = 0f;
+    [SerializeField] private bool debugTS;
+    public void SwitchTargets(float value)
+    {
+        switchTargetValue = value;
+        if (debugTS) print($"OnSwitchTargets ({switchTargetValue})");
         if (switchTargetValue != 0 && reachedZero)
         {
             reachedZero = false;
-            StartCoroutine(SwitchTargetLoop());
+            triggerCount += 1;
+            StartCoroutine(SwitchTarget(triggerCount));
         }
-        else
+        else if (switchTargetValue == 0 && !reachedZero)
         {
-            print("Reached Zero");
             reachedZero = true;
         }
     }
-    private IEnumerator SwitchTargetLoop()
+    private IEnumerator SwitchTarget(int triggerIdx)
     {
-        while (!reachedZero)
+        Targeter.SwitchTargets(switchTargetValue < 0);
+        yield return new WaitForSeconds(holdTime);
+        if (triggerIdx == triggerCount)
+            reachedZero = true;
+    }
+
+    [Header("Target Scroll Polling")]
+    [SerializeField] private float scrollPollPerHold = 10;
+    [SerializeField] private bool polling = true;
+    [SerializeField] private float scrollHoldTime = 0.4f;
+    [ReadOnly][SerializeField] private float pollTime = 0f;
+    private Coroutine scroller;
+    [ReadOnly][SerializeField] private bool scrollerStarted = false;
+    [ReadOnly][SerializeField] private float scroll = 0f;
+    [ReadOnly][SerializeField] private float scrollHold = 0f;
+    [SerializeField] private bool debugSP = false;
+    private IEnumerator ScrollPoll()
+    {
+        scrollerStarted = true;
+        if (debugSP) print("Starting Scroll Polling");
+        while (polling)
         {
-            print("Switch Targets");
-            Targeter.SwitchTargets(switchTargetValue < 0);
-            yield return new WaitForSeconds(holdTime);
+            //float time = Mathf.Min(holdTime / scrollPollPerHold, holdTime - Mathf.Clamp(pollTime, 0, holdTime));
+            float time = holdTime / scrollPollPerHold;
+            yield return new WaitForSeconds(time);
+            scrollHold += scroll;
+            pollTime += time;
+            if (debugSP) print($"Zero? {scroll == 0}");
+            if (scroll == 0f)
+            {
+                if (scrollHold != 0)
+                    SwitchTargets(0f);
+                scrollHold = 0f;
+                pollTime = 0f;
+            }
+            else if (pollTime >= scrollHoldTime)
+            {
+                SwitchTargets(Mathf.Clamp(scrollHold, -1, 1));
+            }
+            scroll = 0f;
         }
     }
 
@@ -159,4 +210,11 @@ public class GameInput : BaseMonoBehaviour
 
     // Dialogue
     public void OnContinue(InputValue inputValue) { IsPressed(inputValue, UserInterface.Continue ); }
+
+    // Tests
+    public void OnTest(InputValue inputValue)
+    {
+        float testFloat = inputValue.Get<float>();
+        print($"Test float: {testFloat}");
+    }
 }
