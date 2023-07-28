@@ -6,4 +6,5 @@ using UnityEngine;
 public class CharacterUIElements : ScriptableObject
 {
     public int portraitIndex = 0;
+    public string characterName = "Nobody";
 }

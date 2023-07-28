@@ -20,16 +20,11 @@ public class Triggerable : ASelectable
         {
             if (togglable)
             {
+                on = !on;
                 if (on)
-                {
-                    on = false;
-                    onTriggeredOff.Invoke();
-                }
-                else
-                {
-                    on = true;
                     onTriggeredOn.Invoke();
-                }
+                else
+                    onTriggeredOff.Invoke();
             }
             else
             {

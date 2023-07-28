@@ -178,6 +178,7 @@ GameObject:
   - component: {fileID: 4532589602222673150}
   - component: {fileID: 6185414037764334885}
   - component: {fileID: 6697185094046278660}
+  - component: {fileID: 3148768422452921714}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Untagged
@@ -213,7 +214,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3d121ca4831c904a977e5bc4d6b414a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item: {fileID: 0}
+  weaponArt: {fileID: 0}
+  pivot: {fileID: 0}
+  rOffset: 0
+  followBody: 1
   source: {fileID: 0}
+  castStatuses:
+  - name: 
+    effect: {fileID: 11400000, guid: 33cc3ac5086c359489e77991f45991d8, type: 2}
+    strength: 1
+  hitStatuses: []
+  onSetIdentity:
+    m_PersistentCalls:
+      m_Calls: []
+  positionables: []
+  casting: 0
   doCast:
     m_PersistentCalls:
       m_Calls: []
@@ -256,6 +272,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 3148768422452921714}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   onUnCast:
     m_PersistentCalls:
       m_Calls: []
@@ -274,13 +302,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  casting: 0
-  castStatuses:
-  - effect: {fileID: 11400000, guid: 33cc3ac5086c359489e77991f45991d8, type: 2}
-    strength: 1
-  hitStatuses: []
-  rOffset: 0
-  followBody: 1
 --- !u!114 &6697185094046278660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,6 +315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   length: 2
+  playOnStart: 0
   onPlay:
     m_PersistentCalls:
       m_Calls: []
@@ -312,3 +334,33 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3148768422452921714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9152011286040638265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1511136447
+      Data2: 1339438115
+      Data3: -680321662
+      Data4: 1648239408
+    Path: event:/SFX/Baelor/Abilities/HotD_SFX_Baelor_Abilities_ShieldSpell_01
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20

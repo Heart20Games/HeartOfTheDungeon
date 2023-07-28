@@ -13,4 +13,9 @@ public class Pivot : BaseMonoBehaviour
             body = GetComponentInChildren<Transform>();
         }
     }
+
+    public void OrientBody(Vector2 vector)
+    {
+        body.SetLocalRotationWithVector(vector);
+    }
 }

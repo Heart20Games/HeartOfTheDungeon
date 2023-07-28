@@ -5,39 +5,40 @@ using UnityEngine.Events;
 using static Game;
 using static ISelectable;
 using Body;
+using static GameModes;
 
 public class GameController : BaseMonoBehaviour
 {
     public GameMode mode = GameMode.Character;
     public List<SelectType> selectableTypes;
-    [HideInInspector] public Game controller;
-    [HideInInspector] public Selector selector;
+    [HideInInspector] public Game game;
     public UnityEvent onSelectorConfirmed;
+
+    public Selector Selector { get => game.curSelector; }
 
     private readonly Stack<Character> characterStack = new();
 
     private void Awake()
     {
-        controller = FindObjectOfType<Game>();
-        selector = controller.selector;
+        game = FindObjectOfType<Game>();
     }
 
     public void CharacterDied(Character character)
     {
-        controller.OnCharacterDied(character);
+        game.OnCharacterDied(character);
     }
 
     public void OnSelectorConfirmed()
     {
-        print("Selector Confirmed (" + (selector.selected != null) + ")");
-        selector.onConfirm.RemoveListener(OnSelectorConfirmed);
+        print("Selector Confirmed (" + (Selector.selected != null) + ")");
+        Selector.onConfirm.trigger.enter.RemoveListener(OnSelectorConfirmed);
         onSelectorConfirmed.Invoke();
     }
 
     public void UseSelector()
     {
-        selector.onConfirm.AddListener(OnSelectorConfirmed);
-        selector.SelectableTypes = selectableTypes;
+        Selector.onConfirm.trigger.enter.AddListener(OnSelectorConfirmed);
+        Selector.SelectableTypes = selectableTypes;
         SetMode(GameMode.Selection);
     }
 
@@ -53,22 +54,22 @@ public class GameController : BaseMonoBehaviour
 
     public void SetMode(GameMode mode)
     {
-        controller.Mode = mode;
+        game.Mode = mode;
     }
 
     public void PushCharacter()
     {
-        if (controller.selector.selected != null)
+        if (Selector.selected != null)
         {
-            Character character = selector.selected.source.GetComponent<Character>();
+            Character character = Selector.selected.source.GetComponent<Character>();
             if (character != null)
             {
-                characterStack.Push(controller.CurCharacter);
-                controller.SetCharacter(character);
+                characterStack.Push(game.CurCharacter);
+                game.SetCharacter(character);
             }
             else
             {
-                Debug.LogWarning("Selectable Not A Character. (" + selector.selected + ")");
+                Debug.LogWarning("Selectable Not A Character. (" + Selector.selected + ")");
             }
         }
         else
@@ -81,12 +82,12 @@ public class GameController : BaseMonoBehaviour
     {
         if (characterStack.Count > 0)
         {
-            controller.SetCharacter(characterStack.Pop());
+            game.SetCharacter(characterStack.Pop());
         }
     }
 
     public void SetTimeScale(float timeScale)
     {
-        controller.TimeScale = timeScale;
+        game.TimeScale = timeScale;
     }
 }
