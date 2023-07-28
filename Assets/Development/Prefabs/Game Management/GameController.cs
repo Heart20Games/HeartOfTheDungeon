@@ -31,13 +31,13 @@ public class GameController : BaseMonoBehaviour
     public void OnSelectorConfirmed()
     {
         print("Selector Confirmed (" + (Selector.selected != null) + ")");
-        Selector.onConfirm.RemoveListener(OnSelectorConfirmed);
+        Selector.onConfirm.trigger.enter.RemoveListener(OnSelectorConfirmed);
         onSelectorConfirmed.Invoke();
     }
 
     public void UseSelector()
     {
-        Selector.onConfirm.AddListener(OnSelectorConfirmed);
+        Selector.onConfirm.trigger.enter.AddListener(OnSelectorConfirmed);
         Selector.SelectableTypes = selectableTypes;
         SetMode(GameMode.Selection);
     }
