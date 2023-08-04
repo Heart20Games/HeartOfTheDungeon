@@ -15,6 +15,7 @@ public class Game : BaseMonoBehaviour
     public static Game game;
 
     // Properties
+    [Header("Parts")]
     public Character playerCharacter;
     public List<Character> playableCharacters;
     public Selector selector;
@@ -25,28 +26,30 @@ public class Game : BaseMonoBehaviour
     [HideInInspector] public HUD hud;
     [HideInInspector] public List<ITimeScalable> timeScalables;
     [HideInInspector] public List<Interactable> interactables;
+    private PlayerInput input;
 
     // Current Character
+    [Header("Current Character")]
     [ReadOnly][SerializeField] private Character curCharacter;
     [ReadOnly] public SimpleController curController;
     [ReadOnly] public Selector curSelector;
     [ReadOnly] public ILooker curLooker;
-
     [HideInInspector] public Character CurCharacter { get { return curCharacter; } set { SetCharacter(value); } }
     private int curCharIdx = 0;
     public int CurCharIdx { get => curCharIdx; }
-    
+
     // TimeScale
+    [Header("TimeScale")]
     public float timeScale = 1.0f;
     public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
 
-    // Inputs
-    private PlayerInput input;
-
     // Cheats / Shortcuts
+    [Header("Cheats and Shortcuts")]
     public bool restartable = true;
+    public bool debug = false;
 
     // Events
+    [Header("Events")]
     public UnityEvent onPlayerDied;
 
 
@@ -61,6 +64,7 @@ public class Game : BaseMonoBehaviour
     private void Start()
     {
         InitializePlayableCharacters();
+        Mode = Mode;
     }
 
     public void InitializePlayableCharacters()
@@ -103,8 +107,8 @@ public class Game : BaseMonoBehaviour
     
     public void SetMode(GameMode mode)
     {
-        print($"Change Mode to {mode} (in bank? {(ModeBank.ContainsKey(mode) ? "yes" : "no")})");
-        ActivateMode(ModeBank[mode]);
+        if (debug) print($"Change Mode to {mode} (in bank? {(ModeBank.ContainsKey(mode) ? "yes" : "no")})");
+        ActivateMode(ModeBank[mode], ModeBank[this.mode]);
         if (mode == GameMode.Selection)
         {
             if (curController != null && curCharacter != null)
@@ -113,19 +117,31 @@ public class Game : BaseMonoBehaviour
         this.mode = mode;
     }
 
-    public void ActivateMode(ModeParameters mode)
+    public void ActivateMode(ModeParameters mode, ModeParameters lastMode)
     {
+        if (debug) print($"Activate mode {mode}.");
         userInterface.SetHudActive(mode.hudActive);
         userInterface.SetDialogueActive(mode.dialogueActive);
         userInterface.SetControlScreenActive(mode.controlScreenActive);
         input.SwitchCurrentActionMap(mode.inputMap);
         TimeScale = mode.timeScale;
-        if (mode.Controllable != null) SetControllable(mode.Controllable, true);
+
+        // Swap Controllables
+        IControllable newControllable = mode.Controllable;
+        IControllable oldControllable = lastMode.Controllable;
+        if (newControllable != null)
+            SetControllable(newControllable, true);
+        if (oldControllable != null && oldControllable != newControllable)
+            SetControllable(oldControllable, false);
+
+        // Swap Finders
+        TargetFinder newFinder = mode.Finder;
+        TargetFinder oldFinder = lastMode.Finder;
         if (mode.Finder != null)
-        {
             targeter.Finder = mode.Finder;
-            targeter.SetTargetLock(mode.targetLock);
-        }
+        if (oldFinder != null && oldFinder != newFinder)
+            targeter.Finder = null;
+        targeter.SetTargetLock(mode.targetLock);
     }
 
     // Controllables
