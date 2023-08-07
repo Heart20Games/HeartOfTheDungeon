@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Body.Behavior.ContextSteering.CSIdentity;
 using static ISelectable;
 
 public abstract class ASelectable : BaseMonoBehaviour, ISelectable
@@ -8,6 +9,7 @@ public abstract class ASelectable : BaseMonoBehaviour, ISelectable
     public abstract SelectType Type { get; set; }
     public void NoOpSelectType(SelectType value) { }
     public GameObject source;
+    public Identity Identity { get => !source.TryGetComponent<Identifiable>(out var idable) ? Identity.Neutral : idable.Identity; }
     public Vector3 offset = Vector3.up;
     [HideInInspector] public bool isSelected = false;
     [HideInInspector] public bool isHovering = false;
