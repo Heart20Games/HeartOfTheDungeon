@@ -1,10 +1,12 @@
+using Body.Behavior;
 using Sorting;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Selection
 {
-    public class TargetFinder : BaseMonoBehaviour
+    [RequireComponent(typeof(Selectable))]
+    public class TargetFinder : Validator
     {
         public Targeter Main { get => Targeter.main; }
 
@@ -13,7 +15,6 @@ namespace Selection
         public Vector3 offset = Vector3.up;
         public LayerMask obstacleMask;
         public bool requireClearPath = false;
-        public bool debug = false;
 
         [Header("Selectables")]
         [ReadOnly] public List<ASelectable> selectables = new();
@@ -96,16 +97,24 @@ namespace Selection
                             // Ignore things that are blocked.
                             if (Physics.Raycast(origin, vector, out var hit, obstacleMask))
                                 if (hit.collider.gameObject == selectable.gameObject)
-                                    selectables.Add(selectable);
+                                    AddSelectable(selectable);
                             Debug.DrawRay(origin, vector.normalized * hit.distance, Color.green);
                             Debug.DrawRay(origin + (vector.normalized * hit.distance), vector.normalized * (vector.magnitude - hit.distance), Color.red);
                         }
                         else
                         {
-                            selectables.Add(selectable);
+                            AddSelectable(selectable);
                         }
                     }
                 }
+            }
+        }
+
+        private void AddSelectable(ASelectable selectable)
+        {
+            if (Validate(selectable.gameObject, attachedSelectable.Identity))
+            {
+                selectables.Add(selectable);
             }
         }
 
