@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,4 +20,43 @@ public class Portraits : ScriptableObject
             }
         }
     }
+
+    public PortraitImage GetPortrait(string name, string emotion)
+    {
+        if (portraits != null && bank.TryGetValue(name, out var emotions))
+            if (emotions.TryGetValue(emotion, out PortraitImage portrait))
+                return portrait;
+        return new();
+    }
+
+    public Sprite GetImage(string name, string emotion)
+    {
+        return GetPortrait(name, emotion).image;
+    }
+}
+
+[Serializable]
+public struct PortraitImage
+{
+    public PortraitImage(string _name, Sprite _image, bool _orientation)
+    {
+        name = _name;
+        image = _image;
+        orientation = _orientation;
+    }
+    public string name;
+    public Sprite image;
+    public bool orientation;
+}
+
+[Serializable]
+public struct Portrait
+{
+    public Portrait(string _name, PortraitImage[] _images)
+    {
+        name = _name;
+        images = _images;
+    }
+    public string name;
+    public PortraitImage[] images;
 }

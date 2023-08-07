@@ -10,15 +10,13 @@ namespace Body
     using Body.Behavior.ContextSteering;
     using Selection;
     using System.Collections;
-    using System.ComponentModel;
-    using UnityEngine.TextCore.Text;
     using static Body.Behavior.ContextSteering.CSIdentity;
 
     [RequireComponent(typeof(Brain))]
     [RequireComponent(typeof(Movement))]
     [RequireComponent(typeof(Talker))]
     [RequireComponent(typeof(Attack))]
-    public class Character : BaseMonoBehaviour, IDamageable, IControllable, ILooker
+    public class Character : Identifiable, IDamageable, IControllable, ILooker
     {
         [Header("Movement and Positioning")]
         public Transform body;
@@ -57,9 +55,10 @@ namespace Body
         public Transform weaponOffset;
         [HideInInspector] public Attack attacker;
 
-        [Header("Identity")]
-        public Identity identity = Identity.Neutral;
-        public Identity Identity
+        // Identifiable
+        //[Header("Identity")]
+        //[SerializeField] private Identity identity = Identity.Neutral;
+        public override Identity Identity
         {
             get => identity;
             set
@@ -68,6 +67,7 @@ namespace Body
                 brain.Identity = value;
             }
         }
+        public override string Name { get => characterUIElements.characterName; set => characterUIElements.characterName = value; }
 
         [Header("Status Effects")]
         public List<Status> statuses;

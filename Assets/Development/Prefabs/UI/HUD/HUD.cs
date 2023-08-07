@@ -20,10 +20,10 @@ public class HUD : BaseMonoBehaviour
     [ReadOnly][SerializeField] private Character mainCharacter;
 
     [Space]
-    [Header("Other Characters")]
+    [Header("Identifiables")]
     [ReadOnly][SerializeField] private Character controlledCharacter;
     [ReadOnly][SerializeField] private Character selectedCharacter;
-    [ReadOnly][SerializeField] private Character targetCharacter;
+    [ReadOnly][SerializeField] private IIdentifiable target;
 
     enum CHAR { GOBKIN, ROTTA, OSSEUS }
 
@@ -34,7 +34,7 @@ public class HUD : BaseMonoBehaviour
     private void Awake()
     {
         if (targetCharacterPanel != null)
-            TargetCharacterSelect(null);
+            SetTarget(null);
 
         hudCanvas = GetComponent<Canvas>();
         hudCanvas.renderMode = RenderMode.ScreenSpaceCamera;
@@ -57,10 +57,11 @@ public class HUD : BaseMonoBehaviour
         }
     }
 
-    public void TargetCharacterSelect(Character character)
+    public void SetTarget(IIdentifiable identifiable)
     {
-        targetCharacterPanel.gameObject.SetActive(character != null);
-        targetCharacterPanel.SetCharacter(character);
+        target = identifiable;
+        targetCharacterPanel.gameObject.SetActive(identifiable != null);
+        targetCharacterPanel.Target = identifiable;
     }
 
     public void MainCharacterSelect(Character character)
