@@ -1,22 +1,26 @@
 using Body;
 using System.Collections.Generic;
 using UnityEngine;
+using static Body.Behavior.ContextSteering.CSIdentity;
 using static ISelectable;
 
 public class Validator : BaseMonoBehaviour
 {
+    [Header("Validation: Flags")]
     public bool desireInteractors = false;
     public bool controlledCharactersOnly = false;
+    public bool useTargetIdentity = false;
+    public Identity targetIdentity = Identity.Neutral;
 
-    [Header("Tags")]
+    [Header("Validation: Tags")]
     public List<string> desiredTags;
 
-    [Header("Selectable")]
+    [Header("Validation: Selectable")]
     [SerializeField] private List<SelectType> selectableTypes;
     public List<SelectType> SelectableTypes { get { return selectableTypes; } set { SetSelectableTypes(value); } }
     [HideInInspector] public ASelectable selectable;
 
-    [Space]
+    [Header("Debugging")]
     public bool debug = false;
 
     // Setters
@@ -28,13 +32,21 @@ public class Validator : BaseMonoBehaviour
 
 
     // Validation
-    public bool Validate(GameObject other)
+    public bool Validate(GameObject other, Identity identity=Identity.Neutral)
     {
-        return HasValidTag(other) && IsValidSelectable(other) && IsValidInteractor(other) && IsValidCharacter(other);
+        return HasValidTag(other) && IsValidSelectable(other) && IsValidInteractor(other) && IsValidCharacter(other) && IsValidTarget(identity, other);
     }
 
 
     // Validators
+    private bool IsValidTarget(Identity identity, GameObject other)
+    {
+        if (useTargetIdentity)
+            if (other.TryGetComponent<Identifiable>(out var idable))
+                return RelativeIdentity(identity, idable.Identity) == targetIdentity;
+        return false;
+    }
+
     private bool HasValidTag(GameObject other)
     {
         if (other == gameObject)
