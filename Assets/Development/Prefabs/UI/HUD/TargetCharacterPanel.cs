@@ -4,27 +4,19 @@ using UnityEngine;
 
 public class TargetCharacterPanel : BaseMonoBehaviour
 {
-    [ReadOnly] [SerializeField] private Character character;
-    public Character Character { get => character; set => SetCharacter(value); }
+    [ReadOnly] [SerializeField] private IIdentifiable target;
+    public IIdentifiable Target { get => target; set => SetTarget(value); }
     public Portraits portraits;
     public SpriteRenderer portrait;
     public TMP_Text text;
 
-    public void SetCharacter(Character character)
+    public void SetTarget(IIdentifiable target)
     {
-        this.character = character;
-        if (character != null)
+        this.target = target;
+        if (target != null)
         {
-            // Find the portrait for the character.
-            if (portraits.bank.TryGetValue(character.characterUIElements.characterName, out var emotions))
-            {
-                // Choose an emmotion, and set the image of the character in the UI.
-                PortraitImage portrait = emotions["neutral"];
-                this.portrait.sprite = portrait.image;
-            }
-
-            // Set the name of the character in the UI.
-            text.text = character.characterUIElements.characterName;
+            portrait.sprite = target.Image;
+            text.text = target.Name;
         }
     }
 }

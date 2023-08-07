@@ -151,6 +151,20 @@ public class Game : BaseMonoBehaviour
         controllable?.SetControllable(shouldControl);
     }
 
+    // Selectables
+
+    public void OnTargetSelected(ASelectable selectable)
+    {
+        if (selectable.source.TryGetComponent<Character>(out var character))
+        {
+            hud.SetTarget(character);
+        }
+        else if (selectable.source.TryGetComponent<Identifiable>(out var identifiable))
+        {
+            hud.SetTarget(identifiable);
+        }
+    }
+
     // Set Characters
 
     public void SetCharacterIdx(int idx)
