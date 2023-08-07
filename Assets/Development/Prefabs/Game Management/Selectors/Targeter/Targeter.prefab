@@ -247,16 +247,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5eb80d8e62d9d145bb50fb783c0f731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PositionMode: 0
+  m_PositionMode: 1
   m_RotationMode: 0
   m_UpdateMethod: 2
   m_Targets:
   - target: {fileID: 0}
     weight: 1
-    radius: 5
+    radius: 3
   - target: {fileID: 0}
     weight: 1
-    radius: 10
+    radius: 5
 --- !u!1 &8034775660249584682
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,6 +380,22 @@ PrefabInstance:
       propertyPath: m_LookAt
       value: 
       objectReference: {fileID: 9101443009508104008}
+    - target: {fileID: 4369389749095197038, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
+      propertyPath: m_Strategy
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4369389749095197038, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
+      propertyPath: m_DistanceLimit
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4369389749095197038, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
+      propertyPath: m_CollideAgainst.m_Bits
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4369389749095197038, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
+      propertyPath: m_OptimalTargetDistance
+      value: 7.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5981726259459339073, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
       propertyPath: m_Name
       value: OrbitalCamera
@@ -430,12 +446,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1429996656081612783, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
+    - {fileID: 1927010917115684141, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
+    - {fileID: 8255008194251655981, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2681189208136393440, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3300856229596045592}
+    - targetCorrespondingSourceObject: {fileID: 2681189208136393440, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5087941514760778812}
   m_SourcePrefab: {fileID: 100100000, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
 --- !u!4 &3360070410774249755 stripped
 Transform:
@@ -488,12 +509,66 @@ MonoBehaviour:
   m_GroupFramingSize: 0.8
   m_FramingMode: 2
   m_FrameDamping: 2
-  m_AdjustmentMode: 0
-  m_MaxDollyIn: 5000
-  m_MaxDollyOut: 5000
+  m_AdjustmentMode: 2
+  m_MaxDollyIn: 10
+  m_MaxDollyOut: 10
   m_MinimumDistance: 1
-  m_MaximumDistance: 5000
+  m_MaximumDistance: 10
   m_MinimumFOV: 3
   m_MaximumFOV: 60
   m_MinimumOrthoSize: 1
   m_MaximumOrthoSize: 5000
+--- !u!114 &5087941514760778812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7980848105000108109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9384ab8608cdc3d479fe89cd51eed48f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BindingMode: 1
+  m_FollowOffset: {x: 0, y: 10, z: 10}
+  m_XDamping: 1
+  m_YDamping: 1
+  m_ZDamping: 1
+  m_AngularDampingMode: 0
+  m_PitchDamping: 0
+  m_YawDamping: 0
+  m_RollDamping: 0
+  m_AngularDamping: 0
+  m_Heading:
+    m_Definition: 2
+    m_VelocityFilterStrength: 4
+    m_Bias: 0
+  m_RecenterToTargetHeading:
+    m_enabled: 1
+    m_WaitTime: 0
+    m_RecenteringTime: 0.3
+    m_LegacyHeadingDefinition: -1
+    m_LegacyVelocityFilterStrength: -1
+  m_XAxis:
+    Value: 0
+    m_SpeedMode: 0
+    m_MaxSpeed: 300
+    m_AccelTime: 0.1
+    m_DecelTime: 0.1
+    m_InputAxisName: Mouse X
+    m_InputAxisValue: 0
+    m_InvertInput: 1
+    m_MinValue: -180
+    m_MaxValue: 180
+    m_Wrap: 1
+    m_Recentering:
+      m_enabled: 0
+      m_WaitTime: 1
+      m_RecenteringTime: 2
+      m_LegacyHeadingDefinition: -1
+      m_LegacyVelocityFilterStrength: -1
+  m_LegacyRadius: 3.4028235e+38
+  m_LegacyHeightOffset: 3.4028235e+38
+  m_LegacyHeadingBias: 3.4028235e+38
+  m_HeadingIsSlave: 0
