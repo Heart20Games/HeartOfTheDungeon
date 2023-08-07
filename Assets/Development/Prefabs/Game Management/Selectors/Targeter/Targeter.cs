@@ -40,7 +40,7 @@ namespace Selection
         {
             this.targetLock = targetLock;
             Finder.enabled = !targetLock;
-            virtualCamera.enabled = targetLock;
+            virtualCamera.gameObject.SetActive(targetLock);
             if (targetLock) Select();
             else DeSelect();
             targetGroup.m_Targets[0].target = finder == null ? null : finder.transform;
