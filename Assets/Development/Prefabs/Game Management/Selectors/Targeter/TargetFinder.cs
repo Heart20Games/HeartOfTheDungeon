@@ -114,6 +114,7 @@ namespace Selection
         {
             if (Validate(selectable.gameObject, attachedSelectable.Identity))
             {
+                if (debug) print("Found a valid selectable!");
                 selectables.Add(selectable);
             }
         }

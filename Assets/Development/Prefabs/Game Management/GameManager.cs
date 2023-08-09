@@ -149,16 +149,28 @@ public class Game : BaseMonoBehaviour
 
     // Selectables
 
+    [ReadOnly][SerializeField] private ASelectable selectedTarget;
     public void OnTargetSelected(ASelectable selectable)
     {
-        if (selectable.source.TryGetComponent<Character>(out var character))
+        
+        if (selectedTarget == selectable || selectable == null)
         {
-            hud.SetTarget(character);
+            if (debug) print($"Target deselected: {selectable}");
+            hud.SetTarget(null);
         }
-        else if (selectable.source.TryGetComponent<Identifiable>(out var identifiable))
+        else
         {
-            hud.SetTarget(identifiable);
+            if (debug) print($"Target selected: {selectable}");
+            if (selectable.source.TryGetComponent<Character>(out var character))
+            {
+                hud.SetTarget(character);
+            }
+            else if (selectable.source.TryGetComponent<Identifiable>(out var identifiable))
+            {
+                hud.SetTarget(identifiable);
+            }
         }
+        selectedTarget = selectable;
     }
 
     // Set Characters

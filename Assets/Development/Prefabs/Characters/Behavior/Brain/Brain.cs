@@ -71,6 +71,7 @@ namespace Body.Behavior
         }
         public BehaviorTree tree;
         [HideInInspector] public BehaviorNode root;
+        public BehaviorNode Root { get => root ??= tree != null ? tree.GenerateTree(this) : new(); set => root = value; }
         private BehaviorNode.Status status;
 
         // Castable Contexts
@@ -109,8 +110,7 @@ namespace Body.Behavior
             }
             if (target != null)
                 Target = target;
-            if (tree != null)
-                root = tree.GenerateTree(this);
+            Root = Root;
             if (agent != null && modifiers != null)
                 modifiers.InitializeBrain(this);
             Alive = true;
@@ -128,7 +128,7 @@ namespace Body.Behavior
             {
                 Debug.LogWarning("Behavior Tree reached fail state");
             }
-            status = root.Process();
+            status = Root.Process();
         }
 
         // Castable Contexts

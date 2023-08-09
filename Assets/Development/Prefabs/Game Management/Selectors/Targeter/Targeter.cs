@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Selection
 {
@@ -10,6 +11,7 @@ namespace Selection
 
 
         [ReadOnly] public List<ASelectable> selectableBank = new();
+        [SerializeField] private bool debug = false;
 
         [Header("Targeting")]
         public CinemachineVirtualCamera virtualCamera;
@@ -27,6 +29,7 @@ namespace Selection
                     finder.enabled = !targetLock;
             }
         }
+        public BinaryEvent<ASelectable> onTargetSet;
 
         private void Awake()
         {
@@ -41,20 +44,30 @@ namespace Selection
             this.targetLock = targetLock;
             Finder.enabled = !targetLock;
             virtualCamera.gameObject.SetActive(targetLock);
-            if (targetLock) Select();
-            else DeSelect();
+            if (targetLock)
+            {
+                Select();
+                onTargetSet.enter.Invoke(selected);
+            }
+            else
+            {
+                onTargetSet.exit.Invoke(selected);
+                DeSelect();
+            } 
             targetGroup.m_Targets[0].target = finder == null ? null : finder.transform;
             targetGroup.m_Targets[1].target = selected == null ? null : selected.transform;
         }
 
         public void SwitchTargets(bool left)
         {
+            if (debug) print($"Switch targets {(left ? "left" : "right")}.");
             if (finder.selectables.Count > 1)
             {
                 // Set selected to the next nearest selectable in the given direction.
                 DeSelect();
                 finder.TargetIdx += (left ? -1 : 1);
                 Select();
+                onTargetSet.enter.Invoke(selected);
             }
         }
 
@@ -70,11 +83,13 @@ namespace Selection
         public override void Select()
         {
             base.Select();
+            targetGroup.m_Targets[1].target = selected.transform;
         }
 
         public override void DeSelect()
         {
             base.DeSelect();
+            targetGroup.m_Targets[1].target = null;
         }
     }
 }
