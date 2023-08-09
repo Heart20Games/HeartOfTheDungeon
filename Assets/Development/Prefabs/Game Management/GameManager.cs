@@ -30,7 +30,7 @@ public class Game : BaseMonoBehaviour
     [ReadOnly] public SimpleController curController;
     [ReadOnly] public Selector curSelector;
     [ReadOnly] public ILooker curLooker;
-    [HideInInspector] public Character CurCharacter { get { return curCharacter; } set { SetCharacter(value); } }
+    [HideInInspector] public Character CurCharacter { get => curCharacter; set => SetCharacter(value); }
     private int curCharIdx = 0;
     public int CurCharIdx { get => curCharIdx; }
 
@@ -60,7 +60,7 @@ public class Game : BaseMonoBehaviour
     private void Start()
     {
         InitializePlayableCharacters();
-        Mode = Mode;
+        InputMode = InputMode;
     }
 
     public void InitializePlayableCharacters()
@@ -75,10 +75,27 @@ public class Game : BaseMonoBehaviour
 
         SetCharacterIdx(0);
         if (curCharacter == null)
-            SetMode(GameMode.Selection);
+            SetMode(InputMode.Selection);
 
         foreach (var character in playableCharacters)
             character.onDeath.AddListener(OnCharacterDied);
+    }
+
+
+    // Updates
+
+    private void Update()
+    {
+        if (reactivateMode)
+        {
+            reactivateMode = false;
+            Mode = Mode;
+        }
+        if (swapModes)
+        {
+            swapModes = false;
+            InputMode = InputMode;
+        }
     }
 
 
@@ -97,25 +114,32 @@ public class Game : BaseMonoBehaviour
         }
     }
 
-    // Game Mode
-    private GameMode mode = GameMode.Character;
-    public GameMode Mode { get { return mode; } set { SetMode(value); } }
+    // Game InputMode
+    [SerializeField] private GameMode mode = new();
+    public GameMode Mode { get => mode; set => SetMode(value); }
+    public InputMode InputMode { get => mode.inputMode; set => SetMode(value); }
+    public MoveMode MoveMode { get => mode.moveMode; }
+    public bool swapModes = false;
+    public bool reactivateMode = false;
     
+    public void SetMode(InputMode inputMode)
+    {
+        if (debug) print($"Change InputMode to {inputMode} (in bank? {(ModeBank.ContainsKey(inputMode) ? "yes" : "no")})");
+        if (ModeBank.TryGetValue(inputMode, out GameMode mode))
+            SetMode(mode);
+        else
+            Debug.LogWarning($"Can't find game mode for \"{inputMode}\"");
+    }
+
     public void SetMode(GameMode mode)
     {
-        if (debug) print($"Change Mode to {mode} (in bank? {(ModeBank.ContainsKey(mode) ? "yes" : "no")})");
-        ActivateMode(ModeBank[mode], ModeBank[this.mode]);
-        if (mode == GameMode.Selection)
-        {
-            if (curController != null && curCharacter != null)
-                curController.transform.position = curCharacter.body.position;
-        }
+        ActivateMode(mode, this.mode);
         this.mode = mode;
     }
 
-    public void ActivateMode(ModeParameters mode, ModeParameters lastMode)
+    public void ActivateMode(GameMode mode, GameMode lastMode)
     {
-        if (debug) print($"Activate mode {mode}.");
+        if (debug) print($"Activate inputMode {mode}.");
         userInterface.SetHudActive(mode.hudActive);
         userInterface.SetDialogueActive(mode.dialogueActive);
         userInterface.SetControlScreenActive(mode.controlScreenActive);
@@ -138,6 +162,12 @@ public class Game : BaseMonoBehaviour
         if (oldFinder != null && oldFinder != newFinder)
             targeter.Finder = null;
         targeter.SetTargetLock(mode.targetLock);
+
+        if (mode.inputMode == InputMode.Selection)
+        {
+            if (curController != null && curCharacter != null)
+                curController.transform.position = curCharacter.body.position;
+        }
     }
 
     // Controllables
@@ -192,9 +222,9 @@ public class Game : BaseMonoBehaviour
         if (character != null)
         {
             SetControllable(curCharacter, false);
+            SetControllable(character, true);
             curCharacter = character;
-            SetControllable(curCharacter, true);
-            SetMode(GameMode.Character);
+            SetMode(InputMode.Character);
         }
     }
     
@@ -208,8 +238,8 @@ public class Game : BaseMonoBehaviour
 
 
     // Checks
-    public bool CanUseCharacter() { return curCharacter != null && Mode == GameMode.Character; }
-    public bool CanUseSelector() { return curController != null && Mode == GameMode.Selection; }
+    public bool CanUseCharacter() { return curCharacter != null && MoveMode == MoveMode.Character; }
+    public bool CanUseSelector() { return curController != null && MoveMode == MoveMode.Selector; }
 
 
 

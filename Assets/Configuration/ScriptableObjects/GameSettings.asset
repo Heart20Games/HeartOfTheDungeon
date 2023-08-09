@@ -15,15 +15,17 @@ MonoBehaviour:
   useD20Menu: 0
   modes:
   - name: Selection
-    mode: 0
+    inputMode: 1
+    moveMode: 1
     hudActive: 1
     dialogueActive: 0
     controlScreenActive: 0
     targetLock: 0
     inputMap: Selector
-    timeScale: 1
+    timeScale: 0.1
   - name: Lock-On
-    mode: 3
+    inputMode: 4
+    moveMode: 2
     hudActive: 1
     dialogueActive: 0
     controlScreenActive: 0
@@ -31,15 +33,17 @@ MonoBehaviour:
     inputMap: LockOn
     timeScale: 1
   - name: Character
-    mode: 1
+    inputMode: 2
+    moveMode: 2
     hudActive: 1
     dialogueActive: 0
     controlScreenActive: 0
     targetLock: 0
     inputMap: Player
-    timeScale: 0.1
+    timeScale: 1
   - name: Dialogue
-    mode: 2
+    inputMode: 3
+    moveMode: 0
     hudActive: 0
     dialogueActive: 1
     controlScreenActive: 0
@@ -47,7 +51,8 @@ MonoBehaviour:
     inputMap: Dialogue
     timeScale: 0
   - name: Dismiss
-    mode: 4
+    inputMode: 5
+    moveMode: 0
     hudActive: 0
     dialogueActive: 0
     controlScreenActive: 1

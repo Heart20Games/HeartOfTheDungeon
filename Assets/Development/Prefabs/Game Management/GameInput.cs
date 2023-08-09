@@ -25,7 +25,7 @@ public class GameInput : BaseMonoBehaviour
     public SimpleController CurController { get => Game.curController; }
     public Targeter Targeter { get => Game.targeter; }
     public ILooker CurLooker { get => Game.curLooker; }
-    public GameMode Mode { get => Game.Mode; set => Game.Mode = value; }
+    public InputMode Mode { get => Game.InputMode; set => Game.InputMode = value; }
 
 
     // Initialization
@@ -54,17 +54,21 @@ public class GameInput : BaseMonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    [Header("Debugs")]
+    [SerializeField] private bool debugMove;
+    [SerializeField] private bool debugAim;
+
     // Movement
     public void OnMove(InputValue inputValue)
     {
         Vector2 inputVector = inputValue.Get<Vector2>();
-        switch (Game.Mode)
+        switch (Game.MoveMode)
         {
-            case GameMode.Character:
+            case MoveMode.Character:
                 if (Game.CanUseCharacter())
                     CurCharacter.MoveCharacter(inputVector);
                 break;
-            case GameMode.Selection:
+            case MoveMode.Selector:
                 if (Game.CanUseSelector())
                     CurController.MoveVector = inputVector;
                 break;
@@ -115,7 +119,7 @@ public class GameInput : BaseMonoBehaviour
     public void OnDeSelect(InputValue inputValue) { SelectValue(inputValue, false); }
 
     // Lock-On
-    public void OnToggleLockOn(InputValue inputValue) { IsPressed(inputValue, () => { Mode = Mode == GameMode.LockedOn ? GameMode.Character : GameMode.LockedOn; }); }
+    public void OnToggleLockOn(InputValue inputValue) { IsPressed(inputValue, () => { Mode = Mode == InputMode.LockedOn ? InputMode.Character : InputMode.LockedOn; }); }
     public void OnSwitchTargets(InputValue inputValue)
     {
         SwitchTargets(inputValue.Get<float>());
@@ -199,14 +203,14 @@ public class GameInput : BaseMonoBehaviour
     {
         if (Game.settings.useD20Menu && inputValue.isPressed)
         {
-            Mode = Mode == GameMode.Character ? GameMode.Selection : GameMode.Character;
+            Mode = Mode == InputMode.Character ? InputMode.Selection : InputMode.Character;
             Hud.abilityMenu.Toggle();
         }
     }
 
     // Control Screen
-    public void OnToggleControls(InputValue inputValue) { IsPressed(inputValue, () => { Mode = GameMode.Dismiss; }); }
-    public void OnDismiss(InputValue inputValue) { IsPressed(inputValue, () => { Mode = GameMode.Character; }); }
+    public void OnToggleControls(InputValue inputValue) { IsPressed(inputValue, () => { Mode = InputMode.Dismiss; }); }
+    public void OnDismiss(InputValue inputValue) { IsPressed(inputValue, () => { Mode = InputMode.Character; }); }
 
     // Dialogue
     public void OnContinue(InputValue inputValue) { IsPressed(inputValue, UserInterface.Continue ); }
