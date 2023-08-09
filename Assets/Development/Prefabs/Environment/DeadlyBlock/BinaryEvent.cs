@@ -27,3 +27,9 @@ public struct BinaryEvent<T>
     public UnityEvent<T> enter;
     public UnityEvent<T> exit;
 }
+
+public struct BinaryEvents<T>
+{
+    public BinaryEvent trigger;
+    public BinaryEvent<T> value;
+}

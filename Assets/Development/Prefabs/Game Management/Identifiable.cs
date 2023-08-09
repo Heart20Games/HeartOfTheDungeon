@@ -15,7 +15,7 @@ public interface IIdentifiable
 public class Identifiable : BaseMonoBehaviour, IIdentifiable
 {
     [Header("Identity")]
-    static public Portraits portraits = null;
+    public Portraits portraits = null;
     public Identity identity = Identity.Neutral;
     public string emotion = "neutral";
 

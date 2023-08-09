@@ -24,6 +24,7 @@ public class HUD : BaseMonoBehaviour
     [ReadOnly][SerializeField] private Character controlledCharacter;
     [ReadOnly][SerializeField] private Character selectedCharacter;
     [ReadOnly][SerializeField] private IIdentifiable target;
+    [ReadOnly][SerializeField] private bool hasTarget = false;
 
     enum CHAR { GOBKIN, ROTTA, OSSEUS }
 
@@ -41,6 +42,9 @@ public class HUD : BaseMonoBehaviour
 
         mainCamera = Camera.main.gameObject;
         hudCanvas.worldCamera = mainCamera.GetComponent<Camera>();
+
+        if (spellSlots != null)
+            spellSlots.gameObject.SetActive(useSpellSlots);
     }
 
 
@@ -60,7 +64,7 @@ public class HUD : BaseMonoBehaviour
     public void SetTarget(IIdentifiable identifiable)
     {
         target = identifiable;
-        targetCharacterPanel.gameObject.SetActive(identifiable != null);
+        hasTarget = identifiable != null;
         targetCharacterPanel.Target = identifiable;
     }
 

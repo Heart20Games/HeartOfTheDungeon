@@ -70,19 +70,7 @@ MonoBehaviour:
     trigger:
       enter:
         m_PersistentCalls:
-          m_Calls:
-          - m_Target: {fileID: 4217905835576394470}
-            m_TargetAssemblyTypeName: FModEventPlayer, Assembly-CSharp
-            m_MethodName: PlayEvent
-            m_Mode: 5
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: UI_EnemySelect
-              m_BoolArgument: 0
-            m_CallState: 2
+          m_Calls: []
       exit:
         m_PersistentCalls:
           m_Calls: []
@@ -112,10 +100,30 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   selectableBank: []
+  debug: 0
   virtualCamera: {fileID: 6148671918086241785}
   targetGroup: {fileID: 6371564159870136585}
   finder: {fileID: 0}
   targetLock: 0
+  onTargetSet:
+    enter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4217905835576394470}
+          m_TargetAssemblyTypeName: FModEventPlayer, Assembly-CSharp
+          m_MethodName: PlayEvent
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: UI_EnemySelect
+            m_BoolArgument: 0
+          m_CallState: 2
+    exit:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!114 &4217905835576394470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,6 +403,10 @@ PrefabInstance:
     - target: {fileID: 4369389749095197038, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
       propertyPath: m_OptimalTargetDistance
       value: 7.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5316303613631632309, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5981726259459339073, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
       propertyPath: m_Name

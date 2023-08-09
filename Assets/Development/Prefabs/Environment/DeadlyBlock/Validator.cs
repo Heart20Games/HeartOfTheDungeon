@@ -42,20 +42,27 @@ public class Validator : BaseMonoBehaviour
     private bool IsValidTarget(Identity identity, GameObject other)
     {
         if (useTargetIdentity)
-            if (other.TryGetComponent<Identifiable>(out var idable))
+        {
+            if (!other.TryGetComponent<Identifiable>(out var idable))
+                idable = other.GetComponentInParent<Identifiable>();
+            if (idable != null)
                 return RelativeIdentity(identity, idable.Identity) == targetIdentity;
-        return false;
+            else return false;
+        }
+        else return true;
     }
 
     private bool HasValidTag(GameObject other)
     {
-        if (other == gameObject)
+        if (desiredTags.Count > 0)
         {
-            Debug.LogWarning($"Colliding with self: {other.tag}-{other.name}");
+            if (other == gameObject)
+                Debug.LogWarning($"Colliding with self: {other.tag}-{other.name}");
+            if (debug)
+                print($"Valid Tag? {(desiredTags.Count == 0 || desiredTags.Contains(other.tag))} (them:{other.tag}-{other.name} me:{gameObject.tag}-{gameObject.name})");
+            return desiredTags.Count == 0 || desiredTags.Contains(other.tag);
         }
-        if (debug)
-            print($"Valid Tag? {(desiredTags.Count == 0 || desiredTags.Contains(other.tag))} (them:{other.tag}-{other.name} me:{gameObject.tag}-{gameObject.name})");
-        return desiredTags.Count == 0 || desiredTags.Contains(other.tag);
+        else return true;
     }
 
     private bool IsValidSelectable(GameObject other)
@@ -79,16 +86,13 @@ public class Validator : BaseMonoBehaviour
     {
         if (controlledCharactersOnly)
         {
-            if (other.gameObject.tag == "Character")
+            if (other.CompareTag("Character"))
             {
                 Character character = other.GetComponentInParent<Character>();
                 if (character != null)
                     return character.controllable;
-                else return true;
-
             }
-            else return true;
         }
-        else return true;
+        return true;
     }
 }

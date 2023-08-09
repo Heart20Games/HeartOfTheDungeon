@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
-public class MimicCamera : MonoBehaviour
+public class MimicCamera : BaseMonoBehaviour
 {
-    private Camera camera;
+    private new Camera camera;
 
     private void Awake()
     {
