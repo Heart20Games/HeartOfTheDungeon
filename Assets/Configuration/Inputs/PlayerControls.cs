@@ -693,7 +693,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Gamepad"",
                     ""id"": ""5e528783-b6b7-429f-8f51-6ecf431f6aaf"",
-                    ""path"": ""2DVector(mode=2)"",
+                    ""path"": ""2DVector(inputMode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -748,7 +748,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Mouse"",
                     ""id"": ""ee15e431-15bc-4584-b858-68b8403211cb"",
-                    ""path"": ""2DVector(mode=2)"",
+                    ""path"": ""2DVector(inputMode=2)"",
                     ""interactions"": """",
                     ""processors"": ""NormalizeVector2,StickDeadzone"",
                     ""groups"": """",
@@ -803,7 +803,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Gamepad"",
                     ""id"": ""048b29f1-0453-4dae-a360-fe17e7080c3e"",
-                    ""path"": ""2DVector(mode=2)"",
+                    ""path"": ""2DVector(inputMode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -858,7 +858,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Mouse"",
                     ""id"": ""2c3a624d-15ca-4595-8acd-5656509019f3"",
-                    ""path"": ""2DVector(mode=2)"",
+                    ""path"": ""2DVector(inputMode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1778,7 +1778,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Gamepad"",
                     ""id"": ""9a03dff0-adb8-4a1f-bed0-e754ada6d653"",
-                    ""path"": ""2DVector(mode=2)"",
+                    ""path"": ""2DVector(inputMode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1833,7 +1833,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Mouse"",
                     ""id"": ""dc9db347-4e7f-4be4-8aa1-ce28d27cb76b"",
-                    ""path"": ""2DVector(mode=2)"",
+                    ""path"": ""2DVector(inputMode=2)"",
                     ""interactions"": """",
                     ""processors"": ""NormalizeVector2,StickDeadzone"",
                     ""groups"": """",
@@ -1888,7 +1888,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Gamepad"",
                     ""id"": ""0c07a794-ee24-42aa-83c2-56a9ee85f896"",
-                    ""path"": ""2DVector(mode=2)"",
+                    ""path"": ""2DVector(inputMode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1943,7 +1943,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Mouse"",
                     ""id"": ""bc7d973f-98c4-4be3-9422-84394e7c4a92"",
-                    ""path"": ""2DVector(mode=2)"",
+                    ""path"": ""2DVector(inputMode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

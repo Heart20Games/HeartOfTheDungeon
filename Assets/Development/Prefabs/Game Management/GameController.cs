@@ -9,7 +9,7 @@ using static GameModes;
 
 public class GameController : BaseMonoBehaviour
 {
-    public GameMode mode = GameMode.Character;
+    public InputMode mode = InputMode.Character;
     public List<SelectType> selectableTypes;
     [HideInInspector] public Game game;
     public UnityEvent onSelectorConfirmed;
@@ -39,22 +39,22 @@ public class GameController : BaseMonoBehaviour
     {
         Selector.onConfirm.trigger.enter.AddListener(OnSelectorConfirmed);
         Selector.SelectableTypes = selectableTypes;
-        SetMode(GameMode.Selection);
+        SetMode(InputMode.Selection);
     }
 
     public void UseCharacter()
     {
-        SetMode(GameMode.Character);
+        SetMode(InputMode.Character);
     }
 
     public void UseDialoge()
     {
-        SetMode(GameMode.Dialogue);
+        SetMode(InputMode.Dialogue);
     }
 
-    public void SetMode(GameMode mode)
+    public void SetMode(InputMode mode)
     {
-        game.Mode = mode;
+        game.InputMode = mode;
     }
 
     public void PushCharacter()

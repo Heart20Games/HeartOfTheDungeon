@@ -15,7 +15,7 @@ public class Talker : BaseMonoBehaviour
 
     public UnityEvent onStartTalking;
     public UnityEvent onDoneTalking;
-    private GameMode prevMode;
+    private InputMode prevMode;
 
     void Start()
     {
@@ -24,7 +24,7 @@ public class Talker : BaseMonoBehaviour
 
     private void ResetMode()
     {
-        game.Mode = prevMode;
+        game.InputMode = prevMode;
         if (virtualCamera != null)
         {
             virtualCamera.SetActive(false);
@@ -35,7 +35,7 @@ public class Talker : BaseMonoBehaviour
     public void CompleteTalking()
     {
         dialogueRunner.onDialogueComplete.RemoveListener(CompleteTalking);
-        game.Mode = prevMode;
+        game.InputMode = prevMode;
         if (virtualCamera != null)
             virtualCamera.SetActive(false);
         onDoneTalking.Invoke();
@@ -57,8 +57,8 @@ public class Talker : BaseMonoBehaviour
             {
                 if (virtualCamera != null)
                     virtualCamera.SetActive(true);
-                prevMode = game.Mode;
-                game.Mode = GameMode.Dialogue;
+                prevMode = game.InputMode;
+                game.InputMode = InputMode.Dialogue;
                 dialogueRunner.Stop();
                 dialogueRunner.onNodeStart.AddListener(OnNodeStarted);
                 dialogueRunner.onDialogueComplete.AddListener(CompleteTalking);

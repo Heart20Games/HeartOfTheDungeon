@@ -115,7 +115,7 @@ public class Party : BaseMonoBehaviour
 
     public void SetFollowTarget(Transform target)
     {
-        print($"Set {name}'s follow target: {(transform == null ? "none" : transform.name)}");
+        if (debug) print($"Set {name}'s follow target: {(transform == null ? "none" : transform.name)}");
         if (followTargeter.TryGetComponent(out Brain brain))
             brain.Target = target;
     }
