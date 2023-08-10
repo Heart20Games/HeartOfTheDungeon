@@ -56,12 +56,14 @@ public class GameInput : BaseMonoBehaviour
 
     [Header("Debugs")]
     [SerializeField] private bool debugMove;
+    [SerializeField] private bool debugLook;
     [SerializeField] private bool debugAim;
 
     // Movement
     public void OnMove(InputValue inputValue)
     {
         Vector2 inputVector = inputValue.Get<Vector2>();
+        if (debugLook) print($"OnMove: {inputVector} in {Game.MoveMode}");
         switch (Game.MoveMode)
         {
             case MoveMode.Character:
@@ -79,10 +81,11 @@ public class GameInput : BaseMonoBehaviour
     public void OnLook(InputValue inputValue)
     {
         Vector2 inputVector = inputValue.Get<Vector2>();
+        if (debugLook) print($"OnLook: {inputVector} in {Game.LookMode}");
         switch (Game.LookMode)
         {
             case LookMode.Targeter:
-                CurLooker?.Look(inputVector); break;
+                Game.Mode.Looker?.Look(inputVector); break;
         }
     }
 
