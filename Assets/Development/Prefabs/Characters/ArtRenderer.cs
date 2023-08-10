@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class ArtRenderer : MonoBehaviour
 {
@@ -124,6 +125,11 @@ public class ArtRenderer : MonoBehaviour
 
 
     // Recursive Initializers
+
+    public void RecursiveBaseLayer(string layerName)
+    {
+        baseArt.ApplyLayerRecursive(layerName);
+    }
 
     public void RecursiveBase(Transform root)
     {
