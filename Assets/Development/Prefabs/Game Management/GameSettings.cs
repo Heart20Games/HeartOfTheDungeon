@@ -9,6 +9,7 @@ public class GameModes
 {
     public enum InputMode { None, Selection, Character, Dialogue, LockedOn, Dismiss };
     public enum MoveMode { None, Selector, Character }
+    public enum LookMode { None, Targeter }
     public static Dictionary<InputMode, GameMode> ModeBank { get { return game.settings.ModeBank; } }
 
     [Serializable]
@@ -17,6 +18,7 @@ public class GameModes
         public string name;
         public InputMode inputMode;
         public MoveMode moveMode;
+        public LookMode lookMode;
         public bool hudActive;
         public bool dialogueActive;
         public bool controlScreenActive;
@@ -39,10 +41,9 @@ public class GameModes
         {
             get
             {
-                return inputMode switch
+                return lookMode switch
                 {
-                    InputMode.Character => game.CurCharacter,
-                    InputMode.LockedOn => game.targeter,
+                    LookMode.Targeter => game.targeter,
                     _ => null,
                 };
             }

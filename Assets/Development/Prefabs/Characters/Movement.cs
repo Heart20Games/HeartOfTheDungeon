@@ -89,9 +89,23 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     [Header("Animation")]
     public float flipBuffer = 0.01f;
     private bool hasFootsteps = false;
-    public bool flip = false;
+    [ReadOnly] private bool flip = false;
     public UnityEvent startWalking;
     public UnityEvent stopWalking;
+    public UnityEvent<bool> onFlip;
+
+    public bool Flip
+    {
+        get => flip;
+        set
+        {
+            flip = value;
+            float pMag = Mathf.Abs(pivot.localScale.x);
+            float sign = flip ? -1 : 1; // Mathf.Sign(angle);
+            pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
+            onFlip.Invoke(flip);
+        }
+    }
 
     private void FixedUpdate()
     {
@@ -125,16 +139,11 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
                 Vector2 right = Vector2.Perpendicular(hCamera);
                 if (hVelocity.magnitude > footstepVelocity)
                 {
-                    float pMag = Mathf.Abs(pivot.localScale.x);
                     float angle = Vector2.Dot(right, hVelocity);
 
-                    float upperAngle = flipBuffer;
-                    float lowerAngle = -flipBuffer;
-                    if ((flip && angle > flipBuffer) || (!flip && angle < -flipBuffer))
+                    if ((Flip && angle > flipBuffer) || (!Flip && angle < -flipBuffer))
                     {
-                        flip = !flip;
-                        float sign = Mathf.Sign(angle);
-                        pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
+                        Flip = !Flip;
                     }
 
                     if (!hasFootsteps)

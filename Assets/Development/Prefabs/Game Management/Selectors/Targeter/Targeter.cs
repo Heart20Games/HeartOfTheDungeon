@@ -37,6 +37,16 @@ namespace Selection
             selectableBank.AddRange(FindObjectsByType<ASelectable>(FindObjectsSortMode.None));
         }
 
+        // Looking
+
+        [Header("Looking")]
+        public float zoomSpeed = 100f;
+        private float maxDistance = 0f;
+        public void Look(Vector2 vector)
+        {
+
+        }
+
 
         // Swaps and Locks
         public void SetTargetLock(bool targetLock)
