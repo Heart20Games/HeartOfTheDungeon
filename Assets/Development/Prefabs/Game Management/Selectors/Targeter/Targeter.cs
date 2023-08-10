@@ -1,7 +1,6 @@
 using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Selection
 {
@@ -15,6 +14,7 @@ namespace Selection
 
         [Header("Targeting")]
         public CinemachineVirtualCamera virtualCamera;
+        public CinemachineCollider cmCollider;
         public CinemachineTargetGroup targetGroup;
         [ReadOnly][SerializeField] private TargetFinder finder;
         [ReadOnly][SerializeField] private bool targetLock = false;
@@ -33,6 +33,8 @@ namespace Selection
 
         private void Awake()
         {
+            if (virtualCamera != null)
+                cmCollider = virtualCamera.GetComponent<CinemachineCollider>();
             main = this;
             selectableBank.AddRange(FindObjectsByType<ASelectable>(FindObjectsSortMode.None));
         }
@@ -40,11 +42,36 @@ namespace Selection
         // Looking
 
         [Header("Looking")]
-        public float zoomSpeed = 100f;
-        private float maxDistance = 0f;
+        [SerializeField] private float zoomSpeed = 100f;
+        [SerializeField] private float minDistance = 1f;
+        [SerializeField] private float maxDistance = 10f;
+        [SerializeField] private float rotationSpeed = 1f;
+        [ReadOnly][SerializeField] private Vector2 lookVector = Vector2.zero;
         public void Look(Vector2 vector)
         {
+            if (debug) print($"Targeter Looking ({vector})");
+            lookVector = vector;
+            cmCollider.m_MinimumDistanceFromTarget = minDistance;
+            cmCollider.m_DistanceLimit = maxDistance;
+        }
 
+        private void FixedUpdate()
+        {
+            if (lookVector != Vector2.zero)
+            {
+                if (debug) print("Targeter Zooming");
+                //virtualCamera.zoom += zoomSpeed * Time.fixedDeltaTime * Mathf.Sign(lookVector.y);
+                //cmCollider.m_DistanceLimit = Mathf.Clamp(cmCollider.m_DistanceLimit, cmCollider.m_MinimumDistanceFromTarget, cmCollider.m_DistanceLimit);
+            }
+            Transform target = targetGroup.m_Targets[0].target;
+            if (targetGroup != null && target != null)
+            {
+                var targetRotation = Quaternion.LookRotation(target.transform.position - targetGroup.transform.position);
+
+                // Smoothly rotate towards the target point.
+                targetGroup.transform.rotation = Quaternion.Slerp(targetGroup.transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
+                //targetGroup.transform.LookAt(targetGroup.m_Targets[0].target);
+            }
         }
 
 
