@@ -122,8 +122,7 @@ public class GameInput : BaseMonoBehaviour
         if (inputValue.isPressed)
         {
             Delegate del = deSelect ? CurSelector.DeSelect : CurSelector.Select;
-            if (Game.CanUseSelector())
-                del.Invoke();
+            del.Invoke();
         }
     }
     public void OnSelect(InputValue inputValue) { SelectValue(inputValue, true); }

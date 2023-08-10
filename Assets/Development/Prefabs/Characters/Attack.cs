@@ -24,7 +24,7 @@ public class Attack : BaseMonoBehaviour
         {
             float pMag = Mathf.Abs(pivot.localScale.x);
             float sign = attackVector.x < 0 ? -1 : 1;
-            sign *= character.movement.flip ? 1 : -1;
+            sign *= character.movement.Flip ? 1 : -1;
             pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
 
             if (Mathf.Abs(attackVector.x) > 0.5f || Mathf.Abs(attackVector.y) > 0.5f)

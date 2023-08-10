@@ -52,7 +52,7 @@ public static class ExtensionMethods
     {
         ApplyLayerRecursive(_root, LayerMask.NameToLayer(layerName));
     }
-    public static void ApplyLayerRecursive(this Transform _root, LayerMask layerMask)
+    public static void ApplyLayerRecursive(this Transform _root, int layerMask)
     {
         Assert.IsNotNull(_root);
         _root.gameObject.layer = layerMask;
