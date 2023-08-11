@@ -179,6 +179,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canAttack: 1
+  debug: 0
+  fallback: {x: 0, y: 0}
+  fbOverride: {x: 0, y: 0}
   castVector: {x: 0, y: 0}
   OnSetCastVector:
     m_PersistentCalls:
@@ -441,7 +444,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   desireInteractors: 0
   controlledCharactersOnly: 0
-  useTargetIdentity: 1
+  useTargetIdentity: 0
   targetIdentity: 1
   desiredTags: []
   selectableTypes: 
@@ -459,6 +462,25 @@ MonoBehaviour:
   numValid: 0
   numInRange: 0
   lastTarget: {fileID: 0}
+  onSetTarget:
+    trigger:
+      m_PersistentCalls:
+        m_Calls: []
+    value:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1211649189196671348}
+          m_TargetAssemblyTypeName: Caster, Assembly-CSharp
+          m_MethodName: SetTarget
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &1891658906475348255
 MonoBehaviour:
   m_ObjectHideFlags: 0

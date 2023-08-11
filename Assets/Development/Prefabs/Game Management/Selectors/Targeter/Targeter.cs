@@ -1,4 +1,5 @@
 using Cinemachine;
+using CustomUnityEvents;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -57,20 +58,23 @@ namespace Selection
 
         private void FixedUpdate()
         {
-            if (lookVector != Vector2.zero)
+            if (targetLock)
             {
-                if (debug) print("Targeter Zooming");
-                //virtualCamera.zoom += zoomSpeed * Time.fixedDeltaTime * Mathf.Sign(lookVector.y);
-                //cmCollider.m_DistanceLimit = Mathf.Clamp(cmCollider.m_DistanceLimit, cmCollider.m_MinimumDistanceFromTarget, cmCollider.m_DistanceLimit);
-            }
-            Transform target = targetGroup.m_Targets[0].target;
-            if (targetGroup != null && target != null)
-            {
-                var targetRotation = Quaternion.LookRotation(target.transform.position - targetGroup.transform.position);
+                if (lookVector != Vector2.zero)
+                {
+                    if (debug) print("Targeter Zooming");
+                    //virtualCamera.zoom += zoomSpeed * Time.fixedDeltaTime * Mathf.Sign(lookVector.y);
+                    //cmCollider.m_DistanceLimit = Mathf.Clamp(cmCollider.m_DistanceLimit, cmCollider.m_MinimumDistanceFromTarget, cmCollider.m_DistanceLimit);
+                }
+                Transform target = targetGroup.m_Targets[0].target;
+                if (targetGroup != null && target != null)
+                {
+                    var targetRotation = Quaternion.LookRotation(target.transform.position - targetGroup.transform.position);
 
-                // Smoothly rotate towards the target point.
-                targetGroup.transform.rotation = Quaternion.Slerp(targetGroup.transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
-                //targetGroup.transform.LookAt(targetGroup.m_Targets[0].target);
+                    // Smoothly rotate towards the target point.
+                    targetGroup.transform.rotation = Quaternion.Slerp(targetGroup.transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
+                    //targetGroup.transform.LookAt(targetGroup.m_Targets[0].target);
+                }
             }
         }
 
@@ -120,7 +124,8 @@ namespace Selection
         public override void Select()
         {
             base.Select();
-            targetGroup.m_Targets[1].target = selected.transform;
+            if (selected != null)
+                targetGroup.m_Targets[1].target = selected.transform;
         }
 
         public override void DeSelect()

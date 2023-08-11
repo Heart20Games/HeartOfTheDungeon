@@ -12,14 +12,13 @@ public interface IIdentifiable
     public string Description { get; set; }
 }
 
-public class Identifiable : BaseMonoBehaviour, IIdentifiable
+public abstract class AIdentifiable : BaseMonoBehaviour, IIdentifiable
 {
     [Header("Identity")]
     public Portraits portraits = null;
     public Identity identity = Identity.Neutral;
     public string emotion = "neutral";
-
-    public virtual Identity Identity { get => identity; set => identity=value; }
+    public abstract Identity Identity { get; set; }
     public virtual PortraitImage Portrait
     {
         get => portraits.GetPortrait(Name, Emotion);
@@ -30,9 +29,15 @@ public class Identifiable : BaseMonoBehaviour, IIdentifiable
         get => portraits.GetImage(Name, Emotion);
         set => NULL();
     }
-    public virtual string Emotion { get => emotion; set => emotion=value; }
-    public virtual string Name { get => name; set => name=value; }
+    public virtual string Emotion { get => emotion; set => emotion = value; }
+    public virtual string Name { get; set; }
     public virtual string Description { get => ""; set => NULL(); }
 
     private void NULL() { /* Do Nothing */ }
+}
+
+public class Identifiable : AIdentifiable
+{
+    public override Identity Identity { get => identity; set => identity = value; }
+    public override string Name { get => name; set => name = value; }
 }

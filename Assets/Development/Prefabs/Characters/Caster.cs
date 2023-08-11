@@ -1,6 +1,7 @@
 using UnityEngine;
 using Body;
 using UnityEngine.Events;
+using UnityEditor.AnimatedValues;
 
 public class Caster : BaseMonoBehaviour
 {
@@ -10,9 +11,11 @@ public class Caster : BaseMonoBehaviour
     private Transform pivot;
     public ICastable Castable;
     private Vector3 weapRotation = Vector3.forward;
+    [SerializeField] private bool debug;
 
     [Header("Vector")]
     public Vector2 fallback = new();
+    public Vector2 fbOverride = new();
     public Vector2 castVector = new();
     public UnityEvent<Vector2> OnSetCastVector;
 
@@ -24,15 +27,29 @@ public class Caster : BaseMonoBehaviour
     }
 
     // Cast Vector
-    public void SetFallback(Vector2 fallback)
+    public void SetTarget(Transform target)
     {
-        this.fallback = fallback;
+        if (target != null)
+        {
+            if (debug) print($"Set target: {target} (on {character.Name})");
+            Vector3 castPoint = (character.body.position + (Vector3.up * character.baseOffset)).XZVector();
+            SetFallback(target.position - castPoint, true);
+        }
+        else SetFallback(new(), true);
+    }
+    public void SetFallback(Vector2 fallback, bool setOverride=false)
+    {
+        if (debug) print($"Set fallback{(setOverride ? " override" : "")}: {fallback} (on {character.Name})");
+        if (setOverride) fbOverride = fallback;
+        else this.fallback = fallback;
         SetVector(castVector);
     }
     public void SetVector(Vector2 aimVector)
     {
         if (fallback.magnitude > 0 || aimVector.magnitude > 0)
         {
+            if (debug) print($"Set vector: {aimVector} (on {character.Name}");
+            Vector2 fallback = fbOverride.magnitude > 0 ? fbOverride : this.fallback;
             castVector = aimVector.magnitude > 0 ? aimVector : fallback;
             if (castVector.magnitude > 0)
                 OnSetCastVector.Invoke(castVector);
