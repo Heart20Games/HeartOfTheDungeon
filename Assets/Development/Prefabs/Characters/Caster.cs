@@ -12,7 +12,8 @@ public class Caster : BaseMonoBehaviour
     private Vector3 weapRotation = Vector3.forward;
 
     [Header("Vector")]
-    public Vector2 castVector = new(0, 0);
+    public Vector2 fallback = new();
+    public Vector2 castVector = new();
     public UnityEvent<Vector2> OnSetCastVector;
 
     private void Awake()
@@ -23,7 +24,12 @@ public class Caster : BaseMonoBehaviour
     }
 
     // Cast Vector
-    public void SetCastVector(Vector2 aimVector, Vector2 fallback = new())
+    public void SetFallback(Vector2 fallback)
+    {
+        this.fallback = fallback;
+        SetVector(castVector);
+    }
+    public void SetVector(Vector2 aimVector)
     {
         if (fallback.magnitude > 0 || aimVector.magnitude > 0)
         {
@@ -33,9 +39,20 @@ public class Caster : BaseMonoBehaviour
         }
     }
 
+
     // Cast
     private Vector3 lastDirection;
-    public void Cast() { Cast(castVector); }
+
+    // Cast based on the given Transform's position relative to the Camera.
+    public void Cast(Transform body, Vector2 castVector) 
+    {
+        Debug.DrawRay(body.position, castVector.FullY() * 2f, Color.blue, 0.5f);
+        Vector3 cameraDirection = body.position - Camera.main.transform.position;
+        castVector = castVector.Orient(cameraDirection.XZVector().normalized).normalized;
+        Debug.DrawRay(body.position, castVector.FullY() * 2f, Color.yellow, 0.5f);
+        Cast(castVector);
+    }
+    // Cast using the given vector
     public void Cast(Vector2 castVector)
     {
         if (Castable != null && Castable.CanCast())

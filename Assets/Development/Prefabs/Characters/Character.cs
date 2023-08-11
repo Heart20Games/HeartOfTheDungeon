@@ -332,13 +332,9 @@ namespace Body
                 caster.Castable = castable;
                 Vector2 castVector = caster.castVector;
                 if (controllable)
-                {
-                    Debug.DrawRay(body.position, castVector.FullY() * 2f, Color.blue, 0.5f);
-                    Vector3 cameraDirection = body.position - Camera.main.transform.position;
-                    castVector = castVector.Orient(cameraDirection.XZVector().normalized).normalized;
-                    Debug.DrawRay(body.position, castVector.FullY() * 2f, Color.yellow, 0.5f);
-                }
-                caster.Cast(castVector);
+                    caster.Cast(body, castVector);
+                else
+                    caster.Cast(castVector);
             }
         }
 
@@ -353,8 +349,8 @@ namespace Body
 
 
         // Actions
-        public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); }
-        public void Aim(Vector2 input, bool aim=false) { if (aimActive || aim) caster.SetCastVector(input); }
+        public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); caster.SetFallback(movement.moveVector); }
+        public void Aim(Vector2 input, bool aim=false) { if (aimActive || aim) caster.SetVector(input); }
         public void ActivateCastable(int idx) { ActivateCastable(castables[idx]); }
         public void Interact() { talker.Talk(); }
         public void AimMode(bool active) { SetAimModeActive(active); }

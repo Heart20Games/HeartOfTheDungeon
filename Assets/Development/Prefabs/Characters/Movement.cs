@@ -23,7 +23,7 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     public float TimeScale { get => timeScale; set => timeScale=SetTimeScale(value); }
 
     [Header("Vectors")]
-    [SerializeField] private Vector2 moveVector = new(0,0);
+    [SerializeField] public Vector2 moveVector = new(0,0);
     private bool onGround = false;
 
     private Rigidbody myRigidbody;
