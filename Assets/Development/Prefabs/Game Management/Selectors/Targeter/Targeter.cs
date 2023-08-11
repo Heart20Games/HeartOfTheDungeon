@@ -80,6 +80,11 @@ namespace Selection
 
 
         // Swaps and Locks
+        public bool HasTarget()
+        {
+            return hoveringOver.Count > 0;
+        }
+
         public void SetTargetLock(bool targetLock)
         {
             this.targetLock = targetLock;
