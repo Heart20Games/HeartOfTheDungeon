@@ -51,7 +51,7 @@ public class Validator : BaseMonoBehaviour
             if (idable != null)
             {
                 if (debug) print($"Target Valid? {RelativeIdentity(identity, idable.Identity) == targetIdentity} ({idable}, {identity} vs {idable.Identity})");
-                return RelativeIdentity(identity, idable.Identity) == targetIdentity;
+                return Match(RelativeIdentity(identity, idable.Identity), targetIdentity);
             }
             else return false;
         }
