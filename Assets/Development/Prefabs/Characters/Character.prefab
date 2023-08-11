@@ -223,13 +223,27 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   flipBuffer: 0.01
-  flip: 0
   startWalking:
     m_PersistentCalls:
       m_Calls: []
   stopWalking:
     m_PersistentCalls:
       m_Calls: []
+  onFlip:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1175589890402843507}
+        m_TargetAssemblyTypeName: OutlineRenderer, Assembly-CSharp
+        m_MethodName: FlipX
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 0
 --- !u!114 &7892170351578171540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,8 +490,8 @@ MonoBehaviour:
     enter:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 6923030318686351702}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        - m_Target: {fileID: 1175589890402843507}
+          m_TargetAssemblyTypeName: OutlineRenderer, Assembly-CSharp
           m_MethodName: SetActive
           m_Mode: 6
           m_Arguments:
@@ -491,8 +505,8 @@ MonoBehaviour:
     exit:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 6923030318686351702}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        - m_Target: {fileID: 1175589890402843507}
+          m_TargetAssemblyTypeName: OutlineRenderer, Assembly-CSharp
           m_MethodName: SetActive
           m_Mode: 6
           m_Arguments:
@@ -1641,18 +1655,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9021074354862561676, guid: 59c66d14aff56d0428f2c9eeca661e61, type: 3}
+      propertyPath: autoflip
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9021074354862561676, guid: 59c66d14aff56d0428f2c9eeca661e61, type: 3}
+      propertyPath: toRender
+      value: 
+      objectReference: {fileID: 961364758086329560}
+    - target: {fileID: 9021074354862561676, guid: 59c66d14aff56d0428f2c9eeca661e61, type: 3}
+      propertyPath: flipTarget
+      value: 
+      objectReference: {fileID: 4813447189290614994}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59c66d14aff56d0428f2c9eeca661e61, type: 3}
+--- !u!114 &1175589890402843507 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9021074354862561676, guid: 59c66d14aff56d0428f2c9eeca661e61, type: 3}
+  m_PrefabInstance: {fileID: 7881795857509016319}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a7f5d7c7c1bc64cab09cd4e6205959, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &3702175746035484640 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6773702648072463647, guid: 59c66d14aff56d0428f2c9eeca661e61, type: 3}
-  m_PrefabInstance: {fileID: 7881795857509016319}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6923030318686351702 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 968917097754612649, guid: 59c66d14aff56d0428f2c9eeca661e61, type: 3}
   m_PrefabInstance: {fileID: 7881795857509016319}
   m_PrefabAsset: {fileID: 0}

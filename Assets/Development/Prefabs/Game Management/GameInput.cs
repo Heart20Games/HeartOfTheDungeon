@@ -56,22 +56,36 @@ public class GameInput : BaseMonoBehaviour
 
     [Header("Debugs")]
     [SerializeField] private bool debugMove;
+    [SerializeField] private bool debugLook;
     [SerializeField] private bool debugAim;
 
     // Movement
     public void OnMove(InputValue inputValue)
     {
         Vector2 inputVector = inputValue.Get<Vector2>();
+        if (debugLook) print($"OnMove: {inputVector} in {Game.MoveMode}");
         switch (Game.MoveMode)
         {
             case MoveMode.Character:
-                if (Game.CanUseCharacter())
+                if (CurCharacter != null)
                     CurCharacter.MoveCharacter(inputVector);
                 break;
             case MoveMode.Selector:
-                if (Game.CanUseSelector())
+                if (CurController != null)
                     CurController.MoveVector = inputVector;
                 break;
+        }
+    }
+
+    // Looking
+    public void OnLook(InputValue inputValue)
+    {
+        Vector2 inputVector = inputValue.Get<Vector2>();
+        if (debugLook) print($"OnLook: {inputVector} in {Game.LookMode}");
+        switch (Game.LookMode)
+        {
+            case LookMode.Targeter:
+                Game.Mode.Looker?.Look(inputVector); break;
         }
     }
 
@@ -111,8 +125,7 @@ public class GameInput : BaseMonoBehaviour
         if (inputValue.isPressed)
         {
             Delegate del = deSelect ? CurSelector.DeSelect : CurSelector.Select;
-            if (Game.CanUseSelector())
-                del.Invoke();
+            del.Invoke();
         }
     }
     public void OnSelect(InputValue inputValue) { SelectValue(inputValue, true); }

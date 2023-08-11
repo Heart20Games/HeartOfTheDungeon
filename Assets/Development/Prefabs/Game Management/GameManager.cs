@@ -119,6 +119,7 @@ public class Game : BaseMonoBehaviour
     public GameMode Mode { get => mode; set => SetMode(value); }
     public InputMode InputMode { get => mode.inputMode; set => SetMode(value); }
     public MoveMode MoveMode { get => mode.moveMode; }
+    public LookMode LookMode { get => mode.lookMode; }
     public bool swapModes = false;
     public bool reactivateMode = false;
     
@@ -235,12 +236,6 @@ public class Game : BaseMonoBehaviour
         else
             SetCharacterIdx(idx);
     }
-
-
-    // Checks
-    public bool CanUseCharacter() { return curCharacter != null && MoveMode == MoveMode.Character; }
-    public bool CanUseSelector() { return curController != null && MoveMode == MoveMode.Selector; }
-
 
 
     // Events

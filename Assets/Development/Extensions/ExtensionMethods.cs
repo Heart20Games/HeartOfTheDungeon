@@ -44,7 +44,25 @@ public static class ExtensionMethods
         return _vector.Orient(front.normalized.XZVector());
     }
 
+
     // Transform
+
+    // Recursively Apply Layer
+    public static void ApplyLayerRecursive(this Transform _root, string layerName)
+    {
+        ApplyLayerRecursive(_root, LayerMask.NameToLayer(layerName));
+    }
+    public static void ApplyLayerRecursive(this Transform _root, int layerMask)
+    {
+        Assert.IsNotNull(_root);
+        _root.gameObject.layer = layerMask;
+
+        for (int i = 0; i < _root.childCount; i++)
+        {
+            ApplyLayerRecursive(_root.GetChild(i), layerMask);
+        }
+    }
+
     public static void TrueLookAt(this Transform _transform, Vector3 target)
     {
         Vector3 cameraPosition = Camera.main.transform.position;

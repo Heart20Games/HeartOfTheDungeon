@@ -16,7 +16,7 @@ namespace Body
     [RequireComponent(typeof(Movement))]
     [RequireComponent(typeof(Talker))]
     [RequireComponent(typeof(Attack))]
-    public class Character : Identifiable, IDamageable, IControllable, ILooker
+    public class Character : Identifiable, IDamageable, IControllable
     {
         [Header("Movement and Positioning")]
         public Transform body;
