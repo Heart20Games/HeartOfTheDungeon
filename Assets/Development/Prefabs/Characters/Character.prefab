@@ -132,7 +132,7 @@ MonoBehaviour:
   brain: {fileID: 0}
   loadout: {fileID: 0}
   weaponOffset: {fileID: 844723266406932610}
-  attacker: {fileID: 0}
+  caster: {fileID: 0}
   statuses: []
   healthBar: {fileID: 6548638977744553781}
   alwaysHideHealth: 0
@@ -175,10 +175,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 3324343490077819189}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b0f0a6202e8cae409f550be7e47640b, type: 3}
+  m_Script: {fileID: 11500000, guid: aa7ce0bf50a48e04cbc70180ef616e60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   canAttack: 1
+  castVector: {x: 0, y: 0}
+  OnSetCastVector:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8706531923607348711}
+        m_TargetAssemblyTypeName: Pivot, Assembly-CSharp
+        m_MethodName: OrientBody
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &7638968927939714640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,22 +219,6 @@ MonoBehaviour:
   groundDistance: 0.25
   npcModifier: 1
   moveVector: {x: 0, y: 0}
-  castVector: {x: 0, y: 0}
-  OnSetCastVector:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8706531923607348711}
-        m_TargetAssemblyTypeName: Pivot, Assembly-CSharp
-        m_MethodName: OrientBody
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   OnSetMoveVector:
     m_PersistentCalls:
       m_Calls: []

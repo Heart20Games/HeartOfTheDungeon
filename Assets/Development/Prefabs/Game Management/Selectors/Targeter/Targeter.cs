@@ -42,7 +42,7 @@ namespace Selection
         // Looking
 
         [Header("Looking")]
-        [SerializeField] private float zoomSpeed = 100f;
+        //[SerializeField] private float zoomSpeed = 100f;
         [SerializeField] private float minDistance = 1f;
         [SerializeField] private float maxDistance = 10f;
         [SerializeField] private float rotationSpeed = 1f;
