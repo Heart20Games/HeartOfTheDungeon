@@ -15,8 +15,8 @@ namespace Body
     [RequireComponent(typeof(Brain))]
     [RequireComponent(typeof(Movement))]
     [RequireComponent(typeof(Talker))]
-    [RequireComponent(typeof(Attack))]
-    public class Character : Identifiable, IDamageable, IControllable
+    [RequireComponent(typeof(Caster))]
+    public class Character : AIdentifiable, IDamageable, IControllable
     {
         [Header("Movement and Positioning")]
         public Transform body;
@@ -53,7 +53,7 @@ namespace Body
         [Header("Casting")]
         public Loadout loadout;
         public Transform weaponOffset;
-        [HideInInspector] public Attack attacker;
+        [HideInInspector] public Caster caster;
 
         // Identifiable
         //[Header("Identity")]
@@ -111,7 +111,7 @@ namespace Body
             brain = GetComponent<Brain>();
             movement = GetComponent<Movement>();
             talker = GetComponent<Talker>();
-            attacker = GetComponent<Attack>();
+            caster = GetComponent<Caster>();
 
             // Connections
             ConnectAlive();
@@ -216,7 +216,7 @@ namespace Body
         {
             onAlive.AddListener((bool alive) => { brain.Alive = alive; });
             onAlive.AddListener(DoEnable(movement));
-            onAlive.AddListener(DoEnable(attacker));
+            onAlive.AddListener(DoEnable(caster));
 
             if (artRenderer != null) onAlive.AddListener((bool alive) => { artRenderer.Dead = !alive; });
             if (aliveCollider != null) onAlive.AddListener((bool alive) => { aliveCollider.enabled = alive; });
@@ -327,18 +327,14 @@ namespace Body
 
         public void ActivateCastable(ICastable castable)
         {
-            if (attacker != null && attacker.enabled)
+            if (caster != null && caster.enabled)
             {
-                attacker.Castable = castable;
-                Vector2 castVector = movement.castVector;
+                caster.Castable = castable;
+                Vector2 castVector = caster.castVector;
                 if (controllable)
-                {
-                    Debug.DrawRay(body.position, castVector.FullY() * 2f, Color.blue, 0.5f);
-                    Vector3 cameraDirection = body.position - Camera.main.transform.position;
-                    castVector = castVector.Orient(cameraDirection.XZVector().normalized).normalized;
-                    Debug.DrawRay(body.position, castVector.FullY() * 2f, Color.yellow, 0.5f);
-                }
-                attacker.Slashie(castVector);
+                    caster.Cast(body, castVector);
+                else
+                    caster.Cast(castVector);
             }
         }
 
@@ -353,8 +349,8 @@ namespace Body
 
 
         // Actions
-        public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); }
-        public void Aim(Vector2 input, bool aim=false) { if (aimActive || aim) movement.SetAimVector(input); }
+        public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); caster.SetFallback(movement.moveVector); }
+        public void Aim(Vector2 input, bool aim=false) { if (aimActive || aim) caster.SetVector(input); }
         public void ActivateCastable(int idx) { ActivateCastable(castables[idx]); }
         public void Interact() { talker.Talk(); }
         public void AimMode(bool active) { SetAimModeActive(active); }

@@ -242,7 +242,7 @@ namespace Body.Behavior.ContextSteering
             float magnitude = distanceOverride >= 0 ? distanceOverride : vector.magnitude;
             if (magnitude == Mathf.Clamp(magnitude, cVector.deadzone.x, cVector.deadzone.y))
             {
-                if (debug && context.range == Range.InAttackRange) print("Attack Range!");
+                if (debug && context.range == Range.InAttackRange) print("Caster Range!");
                 if (!activeContexts.Contains(context))
                 {
                     activeContexts.Add(context);

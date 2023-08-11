@@ -192,11 +192,11 @@ public class Game : BaseMonoBehaviour
         else
         {
             if (debug) print($"Target selected: {selectable}");
-            if (selectable.source.TryGetComponent<Character>(out var character))
-            {
-                hud.SetTarget(character);
-            }
-            else if (selectable.source.TryGetComponent<Identifiable>(out var identifiable))
+            //if (selectable.source.TryGetComponent<Character>(out var character))
+            //{
+            //    hud.SetTarget(character);
+            //}
+            if (selectable.source.TryGetComponent<AIdentifiable>(out var identifiable))
             {
                 hud.SetTarget(identifiable);
             }

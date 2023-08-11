@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
 using Body;
 using UnityEngine.Assertions;
 
@@ -26,9 +23,7 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     public float TimeScale { get => timeScale; set => timeScale=SetTimeScale(value); }
 
     [Header("Vectors")]
-    [SerializeField] private Vector2 moveVector = new(0,0);
-    private Vector2 aimVector = new(0, 0);
-    public Vector2 castVector = new(0, 0);
+    [SerializeField] public Vector2 moveVector = new(0,0);
     private bool onGround = false;
 
     private Rigidbody myRigidbody;
@@ -37,7 +32,6 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     private Transform pivot;
     private ArtRenderer artRenderer;
 
-    public UnityEvent<Vector2> OnSetCastVector;
     public UnityEvent<Vector2> OnSetMoveVector;
 
     private void Awake()
@@ -56,31 +50,13 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     }
 
 
-    // Vectors
-
-    public void UpdateCastVector()
-    {
-        //castVector = new();
-        if (moveVector.magnitude > 0 || aimVector.magnitude > 0)
-        {
-            castVector = aimVector.magnitude > 0 ? aimVector : moveVector;
-            if (castVector.magnitude > 0)
-                OnSetCastVector.Invoke(castVector);
-        }
-    }
-
-    public void SetAimVector(Vector2 vector)
-    {
-        aimVector = vector;
-        UpdateCastVector();
-    }
+    // Move Vector
 
     public void SetMoveVector(Vector2 vector)
     {
         moveVector = vector;
         myRigidbody.drag = moveVector.magnitude == 0 ? stopDrag : moveDrag;
         OnSetMoveVector.Invoke(moveVector);
-        UpdateCastVector();
     }
 
 
