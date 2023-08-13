@@ -132,7 +132,19 @@ public class GameInput : BaseMonoBehaviour
     public void OnDeSelect(InputValue inputValue) { SelectValue(inputValue, false); }
 
     // Lock-On
-    public void OnToggleLockOn(InputValue inputValue) { IsPressed(inputValue, () => { Mode = Mode == InputMode.LockedOn ? InputMode.Character : InputMode.LockedOn; }); }
+    public void OnToggleLockOn(InputValue inputValue)
+    {
+        IsPressed(inputValue, () =>
+        {
+            switch (Mode)
+            {
+                case InputMode.LockedOn:
+                    Mode = InputMode.Character; break;
+                default:
+                    if (Targeter.HasTarget()) Mode = InputMode.LockedOn; break;
+            };
+        });
+    }
     public void OnSwitchTargets(InputValue inputValue)
     {
         SwitchTargets(inputValue.Get<float>());

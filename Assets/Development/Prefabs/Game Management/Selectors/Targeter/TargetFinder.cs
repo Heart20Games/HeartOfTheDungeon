@@ -1,7 +1,9 @@
 using Body.Behavior;
+using CustomUnityEvents;
 using Sorting;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Selection
 {
@@ -25,6 +27,7 @@ namespace Selection
         [ReadOnly][SerializeField] private int numInRange = 0;
         public int TargetIdx { get => targetIdx; set => SetTargetIdx(value); }
         [ReadOnly][SerializeField] private ASelectable lastTarget;
+        public UnityEvents<Transform> onSetTarget;
 
         private void Awake()
         {
@@ -56,6 +59,13 @@ namespace Selection
             if (newTarget != null && lastTarget != newTarget)
                 Main.Hover(newTarget);
 
+            if (lastTarget != newTarget)
+            {
+                if (debug) print($"Changed targets: {lastTarget} -> {newTarget}");
+            }
+
+            Transform targetTransform = newTarget == null ? null : newTarget.transform;
+            onSetTarget.Invoke(targetTransform);
             lastTarget = newTarget;
         }
 

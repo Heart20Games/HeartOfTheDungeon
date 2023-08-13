@@ -43,10 +43,16 @@ public class Validator : BaseMonoBehaviour
     {
         if (useTargetIdentity)
         {
-            if (!other.TryGetComponent<Identifiable>(out var idable))
-                idable = other.GetComponentInParent<Identifiable>();
+            if (!other.TryGetComponent<AIdentifiable>(out var idable))
+            {
+                idable = other.GetComponentInParent<AIdentifiable>();
+            }
+            if (debug) print($"Found target: {idable}");
             if (idable != null)
-                return RelativeIdentity(identity, idable.Identity) == targetIdentity;
+            {
+                if (debug) print($"Target Valid? {RelativeIdentity(identity, idable.Identity) == targetIdentity} ({idable}, {identity} vs {idable.Identity})");
+                return Match(RelativeIdentity(identity, idable.Identity), targetIdentity);
+            }
             else return false;
         }
         else return true;
