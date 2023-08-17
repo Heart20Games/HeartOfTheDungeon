@@ -14,6 +14,7 @@ namespace Selection
         [SerializeField] private bool debug = false;
 
         [Header("Targeting")]
+        public List<CinemachineVirtualCamera> zoomLevels = new();
         public CinemachineVirtualCamera virtualCamera;
         public CinemachineCollider cmCollider;
         public CinemachineTargetGroup targetGroup;
@@ -38,6 +39,9 @@ namespace Selection
                 cmCollider = virtualCamera.GetComponent<CinemachineCollider>();
             main = this;
             selectableBank.AddRange(FindObjectsByType<ASelectable>(FindObjectsSortMode.None));
+            if (!zoomLevels.Contains(virtualCamera))
+                zoomLevels.Add(virtualCamera);
+
         }
 
         // Looking
@@ -63,6 +67,7 @@ namespace Selection
                 if (lookVector != Vector2.zero)
                 {
                     if (debug) print("Targeter Zooming");
+
                     //virtualCamera.zoom += zoomSpeed * Time.fixedDeltaTime * Mathf.Sign(lookVector.y);
                     //cmCollider.m_DistanceLimit = Mathf.Clamp(cmCollider.m_DistanceLimit, cmCollider.m_MinimumDistanceFromTarget, cmCollider.m_DistanceLimit);
                 }
@@ -80,6 +85,21 @@ namespace Selection
 
 
         // Swaps and Locks
+        private int zoomLevel = 0;
+        public void SetZoom(int level)
+        {
+            zoomLevels[level].gameObject.SetActive(true);
+            zoomLevels[zoomLevel].gameObject.SetActive(false);
+            zoomLevel = level;
+            virtualCamera = zoomLevels[zoomLevel];
+        }
+        public void Zoom(bool zoomIn)
+        {
+            int dir = zoomIn ? -1 : 1;
+            if (zoomLevel + dir == Mathf.Clamp(zoomLevel + dir, 0, zoomLevels.Count-1))
+                SetZoom(zoomLevel + dir);
+        }
+
         public bool HasTarget()
         {
             return hoveringOver.Count > 0;

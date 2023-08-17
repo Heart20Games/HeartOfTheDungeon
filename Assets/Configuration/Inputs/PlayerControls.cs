@@ -1489,15 +1489,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Look"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""fbf2fe00-d0f2-49cf-906e-587fa932ea6d"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Aim"",
                     ""type"": ""PassThrough"",
                     ""id"": ""3ff6a8fa-05ef-4a60-bb44-5ac01cdc68eb"",
@@ -1510,6 +1501,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""Switch Targets"",
                     ""type"": ""Value"",
                     ""id"": ""c24a8053-49b0-4480-83ff-86b82116ba0b"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Zoom"",
+                    ""type"": ""Value"",
+                    ""id"": ""0be20095-2c23-40d0-82c8-4651b64ab179"",
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1774,61 +1774,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Gamepad"",
-                    ""id"": ""9a03dff0-adb8-4a1f-bed0-e754ada6d653"",
-                    ""path"": ""2DVector(mode=2)"",
-                    ""interactions"": """",
-                    ""processors"": ""NormalizeVector2"",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""63832a87-dfa3-4ce5-a999-7f721aeee5d6"",
-                    ""path"": ""<Gamepad>/rightStick/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""84fa8031-2b2e-4f60-994d-dc66468b59d9"",
-                    ""path"": ""<Gamepad>/rightStick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""10fc6ea0-90d6-482b-ab9e-2378dfaf9903"",
-                    ""path"": ""<Gamepad>/rightStick/left"",
-                    ""interactions"": """",
-                    ""processors"": ""Scale(factor=0)"",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""c267a971-274f-4fe0-8876-27951405cabc"",
-                    ""path"": ""<Gamepad>/rightStick/right"",
-                    ""interactions"": """",
-                    ""processors"": ""Scale(factor=0)"",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""Gamepad"",
@@ -2258,6 +2203,39 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Switch Targets Scroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Gamepad"",
+                    ""id"": ""bb71b50b-8ddf-4d63-a6a7-2ff8dec22b38"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""0cf6f4b3-93ee-40b3-b2c0-ebaadf21efea"",
+                    ""path"": ""<Gamepad>/rightStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""3c255110-bf1e-4d10-8a59-a5daf6678ab9"",
+                    ""path"": ""<Gamepad>/rightStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -2308,9 +2286,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_LockOn = asset.FindActionMap("LockOn", throwIfNotFound: true);
         m_LockOn_Move = m_LockOn.FindAction("Move", throwIfNotFound: true);
         m_LockOn_Interact = m_LockOn.FindAction("Interact", throwIfNotFound: true);
-        m_LockOn_Look = m_LockOn.FindAction("Look", throwIfNotFound: true);
         m_LockOn_Aim = m_LockOn.FindAction("Aim", throwIfNotFound: true);
         m_LockOn_SwitchTargets = m_LockOn.FindAction("Switch Targets", throwIfNotFound: true);
+        m_LockOn_Zoom = m_LockOn.FindAction("Zoom", throwIfNotFound: true);
         m_LockOn_SwitchTargetsScroll = m_LockOn.FindAction("Switch Targets Scroll", throwIfNotFound: true);
         m_LockOn_ToggleLockOn = m_LockOn.FindAction("Toggle LockOn", throwIfNotFound: true);
         m_LockOn_ToggleSkillWheel = m_LockOn.FindAction("Toggle Skill Wheel", throwIfNotFound: true);
@@ -2818,9 +2796,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<ILockOnActions> m_LockOnActionsCallbackInterfaces = new List<ILockOnActions>();
     private readonly InputAction m_LockOn_Move;
     private readonly InputAction m_LockOn_Interact;
-    private readonly InputAction m_LockOn_Look;
     private readonly InputAction m_LockOn_Aim;
     private readonly InputAction m_LockOn_SwitchTargets;
+    private readonly InputAction m_LockOn_Zoom;
     private readonly InputAction m_LockOn_SwitchTargetsScroll;
     private readonly InputAction m_LockOn_ToggleLockOn;
     private readonly InputAction m_LockOn_ToggleSkillWheel;
@@ -2841,9 +2819,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public LockOnActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_LockOn_Move;
         public InputAction @Interact => m_Wrapper.m_LockOn_Interact;
-        public InputAction @Look => m_Wrapper.m_LockOn_Look;
         public InputAction @Aim => m_Wrapper.m_LockOn_Aim;
         public InputAction @SwitchTargets => m_Wrapper.m_LockOn_SwitchTargets;
+        public InputAction @Zoom => m_Wrapper.m_LockOn_Zoom;
         public InputAction @SwitchTargetsScroll => m_Wrapper.m_LockOn_SwitchTargetsScroll;
         public InputAction @ToggleLockOn => m_Wrapper.m_LockOn_ToggleLockOn;
         public InputAction @ToggleSkillWheel => m_Wrapper.m_LockOn_ToggleSkillWheel;
@@ -2873,15 +2851,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
-            @Look.started += instance.OnLook;
-            @Look.performed += instance.OnLook;
-            @Look.canceled += instance.OnLook;
             @Aim.started += instance.OnAim;
             @Aim.performed += instance.OnAim;
             @Aim.canceled += instance.OnAim;
             @SwitchTargets.started += instance.OnSwitchTargets;
             @SwitchTargets.performed += instance.OnSwitchTargets;
             @SwitchTargets.canceled += instance.OnSwitchTargets;
+            @Zoom.started += instance.OnZoom;
+            @Zoom.performed += instance.OnZoom;
+            @Zoom.canceled += instance.OnZoom;
             @SwitchTargetsScroll.started += instance.OnSwitchTargetsScroll;
             @SwitchTargetsScroll.performed += instance.OnSwitchTargetsScroll;
             @SwitchTargetsScroll.canceled += instance.OnSwitchTargetsScroll;
@@ -2934,15 +2912,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
-            @Look.started -= instance.OnLook;
-            @Look.performed -= instance.OnLook;
-            @Look.canceled -= instance.OnLook;
             @Aim.started -= instance.OnAim;
             @Aim.performed -= instance.OnAim;
             @Aim.canceled -= instance.OnAim;
             @SwitchTargets.started -= instance.OnSwitchTargets;
             @SwitchTargets.performed -= instance.OnSwitchTargets;
             @SwitchTargets.canceled -= instance.OnSwitchTargets;
+            @Zoom.started -= instance.OnZoom;
+            @Zoom.performed -= instance.OnZoom;
+            @Zoom.canceled -= instance.OnZoom;
             @SwitchTargetsScroll.started -= instance.OnSwitchTargetsScroll;
             @SwitchTargetsScroll.performed -= instance.OnSwitchTargetsScroll;
             @SwitchTargetsScroll.canceled -= instance.OnSwitchTargetsScroll;
@@ -3051,9 +3029,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
-        void OnLook(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
         void OnSwitchTargets(InputAction.CallbackContext context);
+        void OnZoom(InputAction.CallbackContext context);
         void OnSwitchTargetsScroll(InputAction.CallbackContext context);
         void OnToggleLockOn(InputAction.CallbackContext context);
         void OnToggleSkillWheel(InputAction.CallbackContext context);
