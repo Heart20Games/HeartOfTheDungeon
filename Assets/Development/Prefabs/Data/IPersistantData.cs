@@ -1,5 +1,3 @@
-using System;
-using static GameData;
 
 public interface IPersistent
 {
@@ -11,6 +9,6 @@ public interface IPersistent
 public interface IData
 {
     public void RegisterOn(GameData gameData);
-    public void LoadData();
-    public void SaveData();
+    public bool LoadData(GameData gameData);
+    public bool SaveData(GameData gameData);
 }

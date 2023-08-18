@@ -16,7 +16,8 @@ public class DataManager : MonoBehaviour
     private GameData gameData;
     private FileDataHandler dataHandler;
 
-    public List<IPersistent> persistents;
+    public List<IPersistent> persistents = new();
+    public bool initialLoadComplete = false;
     public static DataManager Instance { get; private set; }
 
     private void Awake()
@@ -30,18 +31,20 @@ public class DataManager : MonoBehaviour
 
     private void Start()
     {
-        ScriptableObject[] objects = FindObjectsOfType<ScriptableObject>();
-        print($"Scriptable objects: {objects.Length}");
-        IEnumerable<IPersistent> iePersistents = objects.OfType<IPersistent>();
-        print($"IE Persistents: {iePersistents.Count()}");
-        persistents = iePersistents.ToList();
+        string final = "";
+        foreach (var obj in persistents)
+        {
+            final += obj + "\n";
+        }
+        print($"{final}({persistents.Count})");
+
         this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
         LoadGame();
     }
 
     public void NewGame()
     {
-        this.gameData = new GameData(persistents);
+        this.gameData = new GameData();
     }
 
     public void LoadGame()
@@ -57,11 +60,16 @@ public class DataManager : MonoBehaviour
         }
 
         // TODO - push the loaded data to all other scripts that need it
+        this.gameData.Initialize();
+        LoadPersistents(persistents);
+
+        initialLoadComplete = true;
     }
 
     public void SaveGame()
     {
         // TODO - pass the data to other scripts so they can update it
+        SavePersistents(persistents);
 
         // TODO - save that data to a file using the data handler
         dataHandler.Save(gameData);
@@ -70,5 +78,62 @@ public class DataManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         SaveGame();
+    }
+
+    // IPersistent Registry
+    public void RegisterPersistent(IPersistent persistent)
+    {
+        if (!persistents.Contains(persistent))
+        {
+            persistents.Add(persistent);
+            if (initialLoadComplete)
+            {
+                LoadPersistent(persistent);
+            }
+        }
+    }
+
+    public void LoadPersistent(IPersistent persistent)
+    {
+        if (persistent != null)
+        {
+            IData data = persistent.GetData();
+            if (!data.LoadData(this.gameData))
+                data.RegisterOn(this.gameData);
+            persistent.LoadFromData();
+        }
+    }
+
+    public void LoadPersistents(List<IPersistent> persistents)
+    {
+        if (persistents != null)
+        {
+            foreach (IPersistent persistent in persistents)
+            {
+                LoadPersistent(persistent);
+            }
+        }
+    }
+
+    public void SavePersistent(IPersistent persistent)
+    {
+        if (persistent != null)
+        {
+            persistent.SaveToData();
+            IData data = persistent.GetData();
+            if (!data.SaveData(this.gameData))
+                data.RegisterOn(this.gameData);
+        }
+    }
+
+    public void SavePersistents(List<IPersistent> persistents)
+    {
+        if (persistents != null)
+        {
+            foreach (IPersistent persistent in persistents)
+            {
+                SavePersistent(persistent);
+            }
+        }
     }
 }
