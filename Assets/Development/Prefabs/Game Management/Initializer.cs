@@ -8,6 +8,7 @@ public class Initializer : BaseMonoBehaviour
 {
     public FModEventLibary defaultFModLibrary;
 
+    private BaseScriptableObject[] scriptableObjects;
     private Character player;
     private Character[] characters;
     private Talker[] talkers;
@@ -23,18 +24,16 @@ public class Initializer : BaseMonoBehaviour
 
     private void Awake()
     {
+        characters = FindObjectsOfType<Character>();
+
+        scriptableObjects = (BaseScriptableObject[])Resources.FindObjectsOfTypeAll(typeof(BaseScriptableObject));
+        foreach (var scriptableObject in scriptableObjects)
+        {
+            scriptableObject.Init();
+        }
+
         game = GetComponent<Game>();
         player = FindObjectOfType<Character>();
-        characters = FindObjectsOfType<Character>();
-        talkers = FindObjectsOfType<Talker>();
-        fmodPlayers = FindObjectsOfType<FModEventPlayer>();
-        dialogueRunner = FindObjectOfType<DialogueRunner>();
-        userInterface = FindObjectOfType<UserInterface>();
-        timeScalables = new List<ITimeScalable>(FindObjectsOfType<BaseMonoBehaviour>().OfType<ITimeScalable>());
-        interactables = new List<Interactable>(FindObjectsOfType<Interactable>());
-        hud = FindAnyObjectByType<HUD>();
-
-
         if (game.playerCharacter == null)
         {
             game.playerCharacter = player;
@@ -45,6 +44,8 @@ public class Initializer : BaseMonoBehaviour
             dialogueRunner = userInterface.dialogueRunner;
         }
 
+        talkers = FindObjectsOfType<Talker>();
+        dialogueRunner = FindObjectOfType<DialogueRunner>();
         foreach (Talker talker in talkers)
         {
             talker.game = game;
@@ -54,6 +55,7 @@ public class Initializer : BaseMonoBehaviour
         if (defaultFModLibrary != null)
         {
             defaultFModLibrary.Initialize();
+            fmodPlayers = FindObjectsOfType<FModEventPlayer>();
             foreach (FModEventPlayer fmodPlayer in fmodPlayers)
             {
                 if (fmodPlayer.libary == null)
@@ -62,10 +64,17 @@ public class Initializer : BaseMonoBehaviour
                 }
             }
         }
-
+        
+        userInterface = FindObjectOfType<UserInterface>();
         game.userInterface = userInterface;
+
+        timeScalables = new List<ITimeScalable>(FindObjectsOfType<BaseMonoBehaviour>().OfType<ITimeScalable>());
         game.timeScalables = timeScalables;
+        
+        interactables = new List<Interactable>(FindObjectsOfType<Interactable>());
         game.interactables = interactables;
+        
+        hud = FindAnyObjectByType<HUD>();
         game.hud = hud;
 
         AssetNonNull("Game", game, "on GameObject");
