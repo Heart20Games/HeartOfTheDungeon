@@ -223,6 +223,20 @@ public class GameInput : BaseMonoBehaviour
         }
     }
 
+    // Zoom
+    public void OnZoom(InputValue inputValue)
+    {
+        float value = inputValue.Get<float>();
+        if (value != 0f)
+        {
+            switch (Game.LookMode)
+            {
+                case LookMode.Targeter:
+                    Game.Mode.Looker?.Zoom(value < 0); break;
+            }
+        }
+    }
+
     // Skill Wheel
     public void OnToggleSkillWheel(InputValue inputValue)
     {
