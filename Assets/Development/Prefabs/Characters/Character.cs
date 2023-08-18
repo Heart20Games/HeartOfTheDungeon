@@ -35,7 +35,7 @@ namespace Body
         [Header("Appearance")]
         public ArtRenderer artRenderer;
         public CinemachineVirtualCamera virtualCamera;
-        public CharacterUIElements characterUIElements;
+        public CharacterBlock characterUIElements;
 
         [Header("Collision")]
         public Collider aliveCollider;
