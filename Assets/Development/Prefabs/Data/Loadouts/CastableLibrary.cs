@@ -6,8 +6,8 @@ using UnityEngine.Playables;
 [CreateAssetMenu(fileName = "CastableLibrary", menuName = "Loadouts/CastableLibrary", order = 1)]
 public class CastableLibrary : BaseScriptableObject
 {
-    List<Loadout> loadouts = new();
-    List<CastableItem> castableItems = new();
+    public List<Loadout> loadouts = new();
+    public List<CastableItem> castableItems = new();
 
     public override void Init()
     {

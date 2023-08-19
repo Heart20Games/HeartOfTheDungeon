@@ -36,10 +36,10 @@ public class CharacterBlock : StatBlock
 
     public override void LoadFromData()
     {
-        if (charData != null)
-        {
-            loadout = castableBank.GetLoadout(charData.name);
-        }
+        if (charData.loadout == "None")
+            charData = null;
+        else if (charData != null)
+            loadout = castableBank.GetLoadout(charData.loadout);
         base.LoadFromData();
     }
 
@@ -48,6 +48,8 @@ public class CharacterBlock : StatBlock
         charData ??= new CharacterData(name);
         if (loadout != null)
             charData.loadout = loadout.name;
+        else
+            charData.loadout = "None";
         data.Add(charData);
         base.SaveToData();
     }
