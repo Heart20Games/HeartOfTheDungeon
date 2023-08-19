@@ -55,7 +55,7 @@ public class HUD : BaseMonoBehaviour
         if (character != null)
         {
             controlledCharacter = character;
-            int idx = character.characterUIElements != null ? character.characterUIElements.portraitIndex : 0;
+            int idx = character.statBlock != null ? character.statBlock.portraitIndex : 0;
             characterPanel.Select(idx);
             abilityMenu.Select(false);
         }

@@ -387,31 +387,37 @@ namespace Body.Behavior.ContextSteering
 
         public void DrawCircle(float radius)
         {
-            for (int i = 0; i < resolution; i++)
+            if (DrawRays)
             {
-                Vector3 start = transform.position + (DrawScale * radius * Baseline[i]);
-                Vector3 end = transform.position + (DrawScale * radius * Baseline[(i + 1) % resolution]);
-                Debug.DrawLine(start, end, Color.white, Time.fixedDeltaTime * 2);
+                for (int i = 0; i < resolution; i++)
+                {
+                    Vector3 start = transform.position + (DrawScale * radius * Baseline[i]);
+                    Vector3 end = transform.position + (DrawScale * radius * Baseline[(i + 1) % resolution]);
+                    Debug.DrawLine(start, end, Color.white, Time.fixedDeltaTime * 2);
+                }
             }
         }
 
         public void DrawPart(sbyte sign, Vector3 dir, float buffer=0f, float limit=float.MaxValue, float magnitude = 1f, float duration=1f)
         {
-            Color color = sign switch
+            if (DrawRays)
             {
-                POS => Color.green,
-                NEG => Color.red,
-                NA => Color.cyan,
-                _ => Color.yellow,
-            };
-            //print("Color: " + ColorString(color));
-            sign = sign == 0 ? (sbyte)1 : sign;
-            sign = (Mathf.Abs(sign) > 1) ? (sbyte)(1 * Mathf.Sign(sign)) : sign;
-            Vector3 direction = DrawScale * sign * dir;
-            float mag = Mathf.Min(magnitude, limit-buffer);
-            Vector3 vector = mag * direction;
-            Vector3 start = transform.position + (buffer * direction);
-            Debug.DrawRay(start, vector, color, Time.fixedDeltaTime * duration);
+                Color color = sign switch
+                {
+                    POS => Color.green,
+                    NEG => Color.red,
+                    NA => Color.cyan,
+                    _ => Color.yellow,
+                };
+                //print("Color: " + ColorString(color));
+                sign = sign == 0 ? (sbyte)1 : sign;
+                sign = (Mathf.Abs(sign) > 1) ? (sbyte)(1 * Mathf.Sign(sign)) : sign;
+                Vector3 direction = DrawScale * sign * dir;
+                float mag = Mathf.Min(magnitude, limit-buffer);
+                Vector3 vector = mag * direction;
+                Vector3 start = transform.position + (buffer * direction);
+                Debug.DrawRay(start, vector, color, Time.fixedDeltaTime * duration);
+            }
         }
 
         private string ColorString(Color color)
