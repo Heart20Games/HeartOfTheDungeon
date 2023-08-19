@@ -217,7 +217,7 @@ namespace Body.Behavior.ContextSteering
             if (Context != null && vector != Vector2.zero)
             {
                 Vector3 alt = new(vector.x, 0f, vector.y);
-                DrawPart(NA, alt.normalized, CircleRadius+SourceRadius, CircleRadius+SourceRadius+ActualRadius);
+                if (DrawRays) DrawPart(NA, alt.normalized, CircleRadius+SourceRadius, CircleRadius+SourceRadius+ActualRadius);
 
                 // Map Context
                 if (Context.TryGet(identity, out List<Context> contexts))
@@ -289,7 +289,7 @@ namespace Body.Behavior.ContextSteering
             float slot = Mathf.Repeat((angle / 360) * resolution, resolution - 1);
 
             // Debugging and Assertions
-            DrawPart(map.sign, Baseline[Mathf.RoundToInt(slot)], CircleRadius, CircleRadius + SourceRadius);
+            if (DrawRays) DrawPart(map.sign, Baseline[Mathf.RoundToInt(slot)], CircleRadius, CircleRadius + SourceRadius);
             Assert.IsFalse(float.IsNaN(angle));
             Assert.IsFalse(float.IsNaN(slot));
             AssertInRange(angle, 0, 360);

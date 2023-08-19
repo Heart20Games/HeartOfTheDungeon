@@ -20,8 +20,7 @@ public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehavior
 
             if (typeof(IList).IsAssignableFrom(fieldType))
             {
-                IList list = field.GetValue(this) as IList;
-                if (list != null)
+                if (field.GetValue(this) is IList list)
                 {
                     list.Clear();
                 }
@@ -29,8 +28,7 @@ public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehavior
 
             if (typeof(IDictionary).IsAssignableFrom(fieldType))
             {
-                IDictionary dictionary = field.GetValue(this) as IDictionary;
-                if (dictionary != null)
+                if (field.GetValue(this) is IDictionary dictionary)
                 {
                     dictionary.Clear();
                 }
