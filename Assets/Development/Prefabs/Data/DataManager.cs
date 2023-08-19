@@ -31,13 +31,6 @@ public class DataManager : MonoBehaviour
 
     private void Start()
     {
-        string final = "";
-        foreach (var obj in persistents)
-        {
-            final += obj + "\n";
-        }
-        print($"{final}({persistents.Count})");
-
         this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
         LoadGame();
     }

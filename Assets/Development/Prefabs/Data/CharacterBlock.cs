@@ -22,7 +22,6 @@ public class CharacterBlock : StatBlock
     public override IPersistent GetInstance() => this;
     public override void ClearData()
     {
-        Debug.Log("Clear Character Data?");
         charData = null;
         base.ClearData();
     }
