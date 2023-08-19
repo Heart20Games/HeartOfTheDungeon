@@ -97,9 +97,12 @@ public class DataManager : MonoBehaviour
     {
         if (persistent != null)
         {
-            IData data = persistent.GetData();
-            if (!data.LoadData(this.gameData))
-                data.RegisterOn(this.gameData);
+            List<IData> data = persistent.GetData();
+            foreach (IData datum in data)
+            {
+                if (!datum.LoadData(this.gameData))
+                    datum.RegisterOn(this.gameData);
+            }
             persistent.LoadFromData();
         }
     }
@@ -120,9 +123,12 @@ public class DataManager : MonoBehaviour
         if (persistent != null)
         {
             persistent.SaveToData();
-            IData data = persistent.GetData();
-            if (!data.SaveData(this.gameData))
-                data.RegisterOn(this.gameData);
+            List<IData> data = persistent.GetData();
+            foreach ( IData datum in data)
+            {
+                if (!datum.SaveData(this.gameData))
+                    datum.RegisterOn(this.gameData);
+            }
         }
     }
 

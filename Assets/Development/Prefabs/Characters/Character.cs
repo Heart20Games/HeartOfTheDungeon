@@ -35,7 +35,7 @@ namespace Body
         [Header("Appearance")]
         public ArtRenderer artRenderer;
         public CinemachineVirtualCamera virtualCamera;
-        public CharacterBlock characterUIElements;
+        public CharacterBlock statBlock;
 
         [Header("Collision")]
         public Collider aliveCollider;
@@ -51,13 +51,11 @@ namespace Body
         public CSController Controller { get => brain.controller; }
 
         [Header("Casting")]
-        public Loadout loadout;
-        public Transform weaponOffset;
         [HideInInspector] public Caster caster;
+        public Transform weaponOffset;
+        public Loadout Loadout { get => statBlock.loadout; }
 
         // Identifiable
-        //[Header("Identity")]
-        //[SerializeField] private Identity identity = Identity.Neutral;
         public override Identity Identity
         {
             get => identity;
@@ -67,7 +65,7 @@ namespace Body
                 brain.Identity = value;
             }
         }
-        public override string Name { get => characterUIElements.characterName; set => characterUIElements.characterName = value; }
+        public override string Name { get => statBlock.characterName; set => statBlock.characterName = value; }
 
         [Header("Status Effects")]
         public List<Status> statuses;
@@ -297,17 +295,17 @@ namespace Body
         public readonly Castable[] castables = new Castable[5];
         public void InitializeCastables()
         {
-            if (loadout != null)
+            if (Loadout != null)
             {
-                for (int i = 0; i < Mathf.Min(loadout.abilities.Count, 2); i++)
+                for (int i = 0; i < Mathf.Min(Loadout.abilities.Count, 2); i++)
                 {
-                    SetCastable(i, loadout.abilities[i]);
+                    SetCastable(i, Loadout.abilities[i]);
                 }
-                for (int i = 0; i < Mathf.Min(loadout.weapons.Count, 2); i++)
+                for (int i = 0; i < Mathf.Min(Loadout.weapons.Count, 2); i++)
                 {
-                    SetCastable(2 + i, loadout.weapons[i]);
+                    SetCastable(2 + i, Loadout.weapons[i]);
                 }
-                SetCastable(4, loadout.mobility);
+                SetCastable(4, Loadout.mobility);
             }
             if (brain != null)
                 brain.RegisterCastables(castableItems);
@@ -317,7 +315,7 @@ namespace Body
         {
             castables[idx]?.UnEquip();
 
-            if (loadout != null && item != null)
+            if (Loadout != null && item != null)
             {
                 castableItems[idx] = item;
                 castables[idx] = Instantiate(item.prefab, transform);

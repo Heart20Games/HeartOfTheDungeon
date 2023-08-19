@@ -7,28 +7,55 @@ using static GameData;
 [CreateAssetMenu(fileName ="StatBlock", menuName = "Stats/StatBlock", order = 1)]
 public class StatBlock : PersistentScriptableObject
 {
+    public enum Stat { Strength, Dexterity, Constituion, Intelligence }
+    public enum ModType { Inc, Mul, Quad, Exp, Log }
+    
     public int strength;
     public int dexterity;
     public int constitution;
     public int intelligence;
+
     private StatBlockData statData;
 
-    // Persistent Scriptable Object
-    public override IPersistent GetInstance()
+    // Modifiers
+    public int Modify(int score, Stat stat, ModType modType, float rate = 1f)
     {
-        return this;
+        return modType switch
+        {
+            ModType.Inc => score + (int)(GetStat(stat) * rate),
+            ModType.Mul => score * (int)(GetStat(stat) * rate),
+            ModType.Quad => (int)Mathf.Pow(GetStat(stat) * rate, score),
+            ModType.Exp => (int)Mathf.Pow(score, GetStat(stat) * rate),
+            ModType.Log => (int)Mathf.Log(score, GetStat(stat) * rate),
+            _ => score
+        };
     }
 
+    public int GetStat(Stat stat)
+    {
+        return stat switch
+        {
+            Stat.Strength => strength,
+            Stat.Dexterity => dexterity,
+            Stat.Constituion => constitution,
+            Stat.Intelligence => intelligence,
+            _ => -1,
+        };
+    }
+
+    // Persistent Scriptable Object
+    public override IPersistent GetInstance() => this;
     public override void ClearData()
     {
         statData = null;
+        data.Clear();
     }
 
     // IPersistent
-    public override IData GetData()
+    public override List<IData> GetData()
     {
         if (statData == null) SaveToData();
-        return statData;
+        return data;
     }
 
     public override void LoadFromData()
@@ -49,42 +76,27 @@ public class StatBlock : PersistentScriptableObject
         statData.dexterity = dexterity;
         statData.constitution = constitution;
         statData.intelligence = intelligence;
+        data.Add(statData);
     }
 }
 
 [System.Serializable]
-public class StatBlockData : IData
+public class StatBlockData : PersistentData
 {
-    public string name;
-    public int strength;
-    public int dexterity;
-    public int constitution;
-    public int intelligence;
+    public int strength = 1;
+    public int dexterity = 1;
+    public int constitution = 1;
+    public int intelligence = 1;
 
-    public StatBlockData()
-    {
-        this.name = "Test";
-        this.strength = 1;
-        this.dexterity = 1;
-        this.constitution = 1;
-        this.intelligence = 1;
-    }
-    public StatBlockData(string name)
-    {
-        this.name = name;
-        this.strength = 1;
-        this.dexterity = 1;
-        this.constitution = 1;
-        this.intelligence = 1;
-    }
+    public StatBlockData(string name) : base(name) { }
 
-    public void RegisterOn(GameData gameData)
+    public override void RegisterOn(GameData gameData)
     {
         // Adds data to the appropriate list
         gameData.statBlocks.Add(this);
     }
 
-    public bool LoadData(GameData gameData)
+    public override bool LoadData(GameData gameData)
     {
         StatBlockData toLoad = gameData.statBlocks.Find((StatBlockData data) => { return data.name == name; });
         if (toLoad != null)
@@ -98,7 +110,7 @@ public class StatBlockData : IData
         return toLoad != null;
     }
 
-    public bool SaveData(GameData gameData)
+    public override bool SaveData(GameData gameData)
     {
         StatBlockData toLoad = gameData.statBlocks.Find((StatBlockData data) => { return data.name == name; });
         if (toLoad != null)
