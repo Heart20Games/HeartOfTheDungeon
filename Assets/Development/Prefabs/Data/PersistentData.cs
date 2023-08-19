@@ -3,10 +3,16 @@ using UnityEngine;
 
 public abstract class PersistentScriptableObject : BaseScriptableObject, IPersistent
 {
-    public List<IData> data = new();
+    public List<IData> data;
 
+    private void OnDisable()
+    {
+        data?.Clear();
+        data = null;
+    }
     public override void Init()
     {
+        data ??= new();
         initialized = true;
         ClearData();
         DataManager.Instance.RegisterPersistent(GetInstance());
