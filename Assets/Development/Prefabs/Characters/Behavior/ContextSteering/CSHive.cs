@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -10,10 +11,15 @@ namespace Body.Behavior.ContextSteering
     public class CSHive : BaseMonoBehaviour
     {
         [SerializeField] private CSController[] controllers;
+        private readonly List<Transform> transforms = new();
 
         private void Awake()
         {
             controllers = FindObjectsOfType<CSController>();
+            foreach (var controller in controllers)
+            {
+                transforms.Add(controller.transform);
+            }
         }
 
         private void FixedUpdate()
@@ -34,18 +40,18 @@ namespace Body.Behavior.ContextSteering
                         Assert.AreNotEqual(iCon, jCon);
 
                         if (jCon.Active)
-                            MapOntoPeer(iCon, jCon);
+                            MapOntoPeer(iCon, jCon, transforms[i], transforms[j]);
                         if (iCon.Active)
-                            MapOntoPeer(jCon, iCon);
+                            MapOntoPeer(jCon, iCon, transforms[j], transforms[i]);
                     }
                 }
             }
         }
 
-        public void MapOntoPeer(CSController aCon, CSController bCon)
+        public void MapOntoPeer(CSController aCon, CSController bCon, Transform aTransform = null, Transform bTransform = null)
         {
             Identity identity = RelativeIdentity(aCon.identity, bCon.identity);
-            Vector3 sourceVector = aCon.transform.position - bCon.transform.position;
+            Vector3 sourceVector = aTransform.position - bTransform.position; // aCon.transform.position - bCon.transform.position;
             Vector2 vector = sourceVector.XZVector();
             bCon.MapTo(vector, identity);
         }
