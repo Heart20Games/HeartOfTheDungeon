@@ -2,7 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.SocialPlatforms.Impl;
 using static GameData;
+using static StatBlock;
+
+public struct StatBonus
+{
+    public Stat stat;
+    public ModType modType;
+    public int amount;
+}
 
 [CreateAssetMenu(fileName ="StatBlock", menuName = "Stats/StatBlock", order = 1)]
 public class StatBlock : PersistentScriptableObject
@@ -18,16 +27,21 @@ public class StatBlock : PersistentScriptableObject
     private StatBlockData statData;
 
     // Modifiers
-    public int Modify(int score, Stat stat, ModType modType, float rate = 1f)
+    public int ModifyStat(int score, Stat stat, ModType modType, float rate = 1f)
+    {
+        return ModifyNumber(score, GetStat(stat), modType, rate);
+    }
+
+    public int ModifyNumber(int number, int modifier, ModType modType, float rate = 1f)
     {
         return modType switch
         {
-            ModType.Inc => score + (int)(GetStat(stat) * rate),
-            ModType.Mul => score * (int)(GetStat(stat) * rate),
-            ModType.Quad => (int)Mathf.Pow(GetStat(stat) * rate, score),
-            ModType.Exp => (int)Mathf.Pow(score, GetStat(stat) * rate),
-            ModType.Log => (int)Mathf.Log(score, GetStat(stat) * rate),
-            _ => score
+            ModType.Inc => number + (int)(modifier * rate),
+            ModType.Mul => number * (int)(modifier * rate),
+            ModType.Quad => (int)Mathf.Pow(modifier * rate, number),
+            ModType.Exp => (int)Mathf.Pow(number, modifier * rate),
+            ModType.Log => (int)Mathf.Log(number, modifier * rate),
+            _ => number
         };
     }
 

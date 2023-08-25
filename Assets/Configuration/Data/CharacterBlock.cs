@@ -15,7 +15,7 @@ public class CharacterBlock : StatBlock
     
     public int MaxHealth
     {
-        get => Modify(healthBase, Stat.Constituion, ModType.Quad);
+        get => ModifyStat(healthBase, Stat.Constituion, ModType.Quad);
     }
 
     // Persisent Data
