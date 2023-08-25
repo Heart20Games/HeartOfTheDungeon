@@ -47,12 +47,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  desireInteractors: 0
+  controlledCharactersOnly: 0
+  useTargetIdentity: 0
+  targetIdentity: 0
   desiredTags:
   - Character
   - Damageable
   selectableTypes: 
-  desireInteractors: 0
-  controlledCharactersOnly: 0
+  selectable: {fileID: 0}
+  debug: 0
+  oneShot: 0
+  hasCollided: 0
   onCollision:
     enter:
       m_PersistentCalls:
@@ -91,11 +97,29 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  oneShot: 0
-  hasCollided: 0
-  debug: 0
+  onImpact:
+    impact:
+      enter:
+        m_PersistentCalls:
+          m_Calls: []
+      exit:
+        m_PersistentCalls:
+          m_Calls: []
+    other:
+      enter:
+        m_PersistentCalls:
+          m_Calls: []
+      exit:
+        m_PersistentCalls:
+          m_Calls: []
+    selectable:
+      enter:
+        m_PersistentCalls:
+          m_Calls: []
+      exit:
+        m_PersistentCalls:
+          m_Calls: []
   other: {fileID: 0}
-  selectable: {fileID: 0}
 --- !u!114 &3815405840428037528
 MonoBehaviour:
   m_ObjectHideFlags: 0
