@@ -8,6 +8,7 @@ public class CastableGenerator : ScriptableObject
     public enum ExecutionMethod { ColliderBased, ProjectileBased, SelectionBased }
 
     [Header("Parameters")]
+    public string outputName = "New Castable";
     public GameObject rig;
     public CastableStats stats;
     public TargetingMethod targetingMethod;
@@ -15,9 +16,12 @@ public class CastableGenerator : ScriptableObject
 
     [Header("Results")]
     public string castablesDirectory = "Assets/Configuration/Castables/";
+    public bool createSubFolder = true;
+    public bool overwrite = true;
+    public bool replace = true;
+    [ReadOnly] public string fullDirectory = "";
     [ReadOnly] public GameObject prefab;
     [ReadOnly] public CastableItem item;
-    public bool overwrite = true;
     [ReadOnly] public float timeOfLastGeneration;
     
     public void GenerateCastable()
@@ -28,38 +32,62 @@ public class CastableGenerator : ScriptableObject
         }
         else
         {
+            string oldDirectory = fullDirectory;
             PrepareResultDirectory();
+            bool sameDirectory = oldDirectory.Equals(fullDirectory);
 
-            if (prefab == null || overwrite)
+            if (prefab == null || overwrite || !sameDirectory)
             {
-                // Set up the path
+                if (replace && !sameDirectory)
+                {
+                    if (prefab != null)
+                    {
+                        AssetDatabase.DeleteAsset($"{oldDirectory}/{prefab.name}.prefab");
+                        prefab = null;
+                    }
+                    if (item != null)
+                    {
+                        AssetDatabase.DeleteAsset($"{oldDirectory}/{item.name}.asset");
+                        item = null;
+                    }
+                }
 
+                // Trim the name so it doesn't look like a series of subdirectories
+                outputName = outputName.Trim('/');
 
                 // Set up the Game Object
-                GameObject gameObject = new(name);
+                GameObject gameObject = new(outputName);
+                gameObject.AddComponent<Castable>();
 
                 // Save to Prefab
-                prefab = PrefabUtility.SaveAsPrefabAsset(gameObject, $"{castablesDirectory}{name}/{name}.prefab");
+                prefab = PrefabUtility.SaveAsPrefabAsset(gameObject, $"{fullDirectory}/{outputName}.prefab");
                 DestroyImmediate(gameObject);
                 timeOfLastGeneration = Time.time;
 
                 item = (CastableItem)CreateInstance(typeof(CastableItem));
-                AssetDatabase.CreateAsset(item, $"{castablesDirectory}{name}/{name}.asset");
+                AssetDatabase.CreateAsset(item, $"{fullDirectory}/{outputName}.asset");
+                item.prefab = prefab.GetComponent<Castable>();
             }
         }
     }
 
     private void PrepareResultDirectory()
     {
-        // Fix the Directory components to make sure they're valid.
-        if (!castablesDirectory.EndsWith('/'))
+        fullDirectory = castablesDirectory;
+
+        // Adjust for adding a sub folder using the output name.
+        if (createSubFolder)
         {
-            castablesDirectory += "/";
+            // Fix the Directory components to make sure they're valid.
+            if (!fullDirectory.EndsWith('/'))
+            {
+                fullDirectory += "/";
+            }
+            fullDirectory += outputName;
         }
-        name = name.Trim('/');
 
         // Loop through directories, creating them as necessary.
-        string[] steps = (castablesDirectory + name).Split('/', System.StringSplitOptions.RemoveEmptyEntries);
+        string[] steps = (fullDirectory).Split('/', System.StringSplitOptions.RemoveEmptyEntries);
         string lastPath = steps[0];
         for (int i = 1; i < steps.Length; i++)
         {
