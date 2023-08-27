@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Body;
 using static Body.Behavior.ContextSteering.CSIdentity;
+using System.Runtime.CompilerServices;
 
 public class Castable : BaseMonoBehaviour, ICastable
 {
@@ -49,7 +50,6 @@ public class Castable : BaseMonoBehaviour, ICastable
 
 
     // Iniaitlization
-
     private void Awake()
     {
         damager = GetComponent<Damager>();
