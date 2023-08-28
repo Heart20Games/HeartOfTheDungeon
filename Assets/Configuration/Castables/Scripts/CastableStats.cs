@@ -7,7 +7,9 @@ using UnityEngine;
 [Serializable]
 public class CastableStats
 {
+    public enum CastableType { Melee, Ranged, Magic }
     public string usabilityTag = "None";
+    public CastableType type = CastableType.Melee;
 
     [Header("Damage")]
     public bool dealDamage = false;
