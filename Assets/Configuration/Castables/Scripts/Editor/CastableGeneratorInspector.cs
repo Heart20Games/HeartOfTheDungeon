@@ -1,15 +1,15 @@
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
+using static CastableGenerator;
 
 [CustomEditor(typeof(CastableGenerator))]
 public class CastableGeneratorInspector : Editor
 {
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();
-
         CastableGenerator generator = (CastableGenerator)target;
+        base.OnInspectorGUI();
 
         EditorGUILayout.Separator();
 
