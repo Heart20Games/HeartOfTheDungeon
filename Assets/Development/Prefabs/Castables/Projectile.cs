@@ -14,6 +14,8 @@ public class Projectile : BaseMonoBehaviour, ICollidable
     public List<GameObject> collidableObjects;
 
     public UnityEvent onStart;
+    public UnityEvent<Impact> leftDamageable;
+    public UnityEvent<Impact> hitDamageable;
 
     public void Destroy()
     {
@@ -59,12 +61,21 @@ public class Projectile : BaseMonoBehaviour, ICollidable
         }
     }
 
+    // Impact Events
+    public void HitDamageable(Impact impact)
+    {
+        hitDamageable.Invoke(impact);
+    }
+    public void LeftDamageable(Impact impact)
+    {
+        leftDamageable.Invoke(impact);
+    }
+
     // Collision Exceptions
     public void AddException(Collider exception)
     {
         ChangeException(Colliders, exception, true);
     }
-
     public void RemoveException(Collider exception)
     {
         ChangeException(Colliders, exception, false);

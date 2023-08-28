@@ -1,4 +1,7 @@
+using MyBox;
+using System.Drawing.Printing;
 using UnityEditor;
+using UnityEditor.Events;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewCastableGenerator", menuName = "Loadouts/CastableGenerator", order = 1)]
@@ -10,9 +13,17 @@ public class CastableGenerator : ScriptableObject
     [Header("Parameters")]
     public string outputName = "New Castable";
     public GameObject rig;
+    public bool followBody = true;
+    [Space]
     public CastableStats stats;
+
+    [Header("Targeting")]
     public TargetingMethod targetingMethod;
+
+    [Header("Execution")]
     public ExecutionMethod executionMethod;
+    [ConditionalField("executionMethod", false, ExecutionMethod.ProjectileBased)]
+    public Projectile projectilePrefab;
 
     [Header("Results")]
     public string castablesDirectory = "Assets/Configuration/Castables/";
@@ -57,7 +68,70 @@ public class CastableGenerator : ScriptableObject
 
                 // Set up the Game Object
                 GameObject gameObject = new(outputName);
-                gameObject.AddComponent<Castable>();
+                Castable castable = gameObject.AddComponent<Castable>();
+                castable.doCast = new();
+                castable.onCast = new();
+                castable.onSetIdentity = new();
+                castable.followBody = followBody;
+
+                GameObject pivotObject = new("Pivot");
+                Pivot pivot = pivotObject.AddComponent<Pivot>();
+                pivot.transform.SetParent(gameObject.transform, false);
+
+                // Stats
+                Damager damager = null;
+                if (stats.dealDamage)
+                {
+                    damager = gameObject.AddComponent<Damager>();
+                    damager.damage = stats.baseDamage; // TODO: Account for bonuses
+                    UnityEventTools.AddPersistentListener(castable.onSetIdentity, damager.SetIdentity);
+                }
+
+                Timer coolDownTimer = null;
+                if (stats.useCooldown)
+                {
+                    coolDownTimer = gameObject.AddComponent<Timer>();
+                    coolDownTimer.onComplete = new();
+                    coolDownTimer.length = stats.baseCooldown; // TODO: Account for bonuses
+                    UnityEventTools.AddPersistentListener(castable.onCast, coolDownTimer.Play);
+                    UnityEventTools.AddPersistentListener(coolDownTimer.onComplete, castable.UnCast);
+                }
+
+                castable.castStatuses = stats.castStatuses;
+                castable.hitStatuses = stats.hitStatuses;
+
+                // Targeting Methods
+                switch (targetingMethod)
+                {
+                    case TargetingMethod.TargetBased: break;
+                    case TargetingMethod.LocationBased: break;
+                    case TargetingMethod.DirectionBased: break;
+                }
+
+                // Execution Methods
+                switch (executionMethod)
+                {
+                    case ExecutionMethod.ColliderBased: break;
+                    case ExecutionMethod.ProjectileBased:
+                    {
+                            ProjectileSpawner spawner = gameObject.AddComponent<ProjectileSpawner>();
+                            UnityEventTools.AddPersistentListener(castable.doCast, spawner.Spawn);
+                            spawner.pivot = pivot.transform;
+                            
+                            if (projectilePrefab != null)
+                            {
+                                Projectile projectile = Instantiate(projectilePrefab, pivot.transform);
+                                spawner.projectile = projectile;
+                                pivot.body = projectile.transform;
+                                projectile.hitDamageable = new();
+                                projectile.leftDamageable = new();
+                                UnityEventTools.AddPersistentListener(projectile.hitDamageable, damager.HitDamagable);
+                                UnityEventTools.AddPersistentListener(projectile.leftDamageable, damager.LeftDamagable);
+                            }
+                            break;
+                    }
+                    case ExecutionMethod.SelectionBased: break;
+                }
 
                 // Save to Prefab
                 prefab = PrefabUtility.SaveAsPrefabAsset(gameObject, $"{fullDirectory}/{outputName}.prefab");
