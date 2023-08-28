@@ -39,7 +39,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1969719491241460694
 MonoBehaviour:
@@ -71,6 +71,12 @@ MonoBehaviour:
           m_StringArgument: Osseus_Bone_Throw
           m_BoolArgument: 0
         m_CallState: 2
+  leftDamageable:
+    m_PersistentCalls:
+      m_Calls: []
+  hitDamageable:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2566543505948310224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,112 +89,77 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  desireInteractors: 0
+  controlledCharactersOnly: 0
+  useTargetIdentity: 0
+  targetIdentity: 0
   desiredTags: []
   selectableTypes: 
-  desireInteractors: 0
+  selectable: {fileID: 0}
+  debug: 0
+  oneShot: 1
+  hasCollided: 0
   onCollision:
     enter:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 485424403346524287}
-          m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-          m_MethodName: 
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 1
-        - m_Target: {fileID: 4752624519185834967}
-          m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
-          m_MethodName: 
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
     exit:
       m_PersistentCalls:
         m_Calls: []
   onTrigger:
     enter:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 5029166449085567131}
-          m_TargetAssemblyTypeName: FModEventPlayer, Assembly-CSharp
-          m_MethodName: PlayEvent
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Magic-bolt-hit
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
-          m_MethodName: Stop
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Magic-bolt-hit
-            m_BoolArgument: 1
-          m_CallState: 2
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Magic-bolt-hit
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 2566543505948310224}
-          m_TargetAssemblyTypeName: Impact, Assembly-CSharp
-          m_MethodName: SetHasCollided
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Magic-bolt-hit
-            m_BoolArgument: 1
-          m_CallState: 2
-        - m_Target: {fileID: 2566543505948310224}
-          m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-          m_MethodName: set_enabled
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Magic-bolt-hit
-            m_BoolArgument: 1
-          m_CallState: 2
+        m_Calls: []
     exit:
       m_PersistentCalls:
         m_Calls: []
-  oneShot: 1
-  hasCollided: 0
-  debug: 0
+  onImpact:
+    impact:
+      enter:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 2133279280376860803}
+            m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+            m_MethodName: set_enabled
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 5029166449085567131}
+            m_TargetAssemblyTypeName: FModEventPlayer, Assembly-CSharp
+            m_MethodName: PlayEvent
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: Magic-bolt-hit
+              m_BoolArgument: 0
+            m_CallState: 2
+      exit:
+        m_PersistentCalls:
+          m_Calls: []
+    other:
+      enter:
+        m_PersistentCalls:
+          m_Calls: []
+      exit:
+        m_PersistentCalls:
+          m_Calls: []
+    selectable:
+      enter:
+        m_PersistentCalls:
+          m_Calls: []
+      exit:
+        m_PersistentCalls:
+          m_Calls: []
   other: {fileID: 0}
-  selectable: {fileID: 0}
 --- !u!114 &2133279280376860803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,11 +172,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  desireInteractors: 0
+  controlledCharactersOnly: 0
+  useTargetIdentity: 0
+  targetIdentity: 0
   desiredTags:
   - Character
   - Damageable
   selectableTypes: 
-  desireInteractors: 0
+  selectable: {fileID: 0}
+  debug: 0
+  oneShot: 1
+  hasCollided: 0
   onCollision:
     enter:
       m_PersistentCalls:
@@ -216,63 +194,69 @@ MonoBehaviour:
   onTrigger:
     enter:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 5029166449085567131}
-          m_TargetAssemblyTypeName: FModEventPlayer, Assembly-CSharp
-          m_MethodName: PlayEvent
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 2133279280376860803}
-            m_ObjectArgumentAssemblyTypeName: Impact, Assembly-CSharp
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Magic-bolt-hit
-            m_BoolArgument: 0
-          m_CallState: 1
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-          m_MethodName: set_enabled
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Magic-bolt-hit
-            m_BoolArgument: 0
-          m_CallState: 1
-        - m_Target: {fileID: 4752624519185834967}
-          m_TargetAssemblyTypeName: Damager, Assembly-CSharp
-          m_MethodName: HitDamagable
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 2133279280376860803}
-            m_ObjectArgumentAssemblyTypeName: Impact, Assembly-CSharp
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Magic-bolt-hit
-            m_BoolArgument: 0
-          m_CallState: 1
+        m_Calls: []
     exit:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Damager, Assembly-CSharp
-          m_MethodName: LeftDamagable
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 2133279280376860803}
-            m_ObjectArgumentAssemblyTypeName: Impact, Assembly-CSharp
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  oneShot: 1
-  hasCollided: 0
-  debug: 0
+        m_Calls: []
+  onImpact:
+    impact:
+      enter:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 5029166449085567131}
+            m_TargetAssemblyTypeName: FModEventPlayer, Assembly-CSharp
+            m_MethodName: PlayEvent
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: Magic-bolt-hit
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1969719491241460694}
+            m_TargetAssemblyTypeName: Projectile, Assembly-CSharp
+            m_MethodName: HitDamageable
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      exit:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 1969719491241460694}
+            m_TargetAssemblyTypeName: Projectile, Assembly-CSharp
+            m_MethodName: LeftDamageable
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    other:
+      enter:
+        m_PersistentCalls:
+          m_Calls: []
+      exit:
+        m_PersistentCalls:
+          m_Calls: []
+    selectable:
+      enter:
+        m_PersistentCalls:
+          m_Calls: []
+      exit:
+        m_PersistentCalls:
+          m_Calls: []
   other: {fileID: 0}
-  selectable: {fileID: 0}
 --- !u!54 &5547293998782812372
 Rigidbody:
   m_ObjectHideFlags: 0
