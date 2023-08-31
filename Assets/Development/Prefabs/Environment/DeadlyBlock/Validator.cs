@@ -1,4 +1,5 @@
 using Body;
+using MyBox;
 using System.Collections.Generic;
 using UnityEngine;
 using static Body.Behavior.ContextSteering.CSIdentity;
@@ -10,13 +11,15 @@ public class Validator : BaseMonoBehaviour
     public bool desireInteractors = false;
     public bool controlledCharactersOnly = false;
     public bool useTargetIdentity = false;
+    [ConditionalField("useTargetIdentity", false, true)]
     public Identity targetIdentity = Identity.Neutral;
+    [Space()]
 
-    [Header("Validation: Tags")]
+    // Validation: Tags
     public List<string> desiredTags;
 
-    [Header("Validation: Selectable")]
-    [SerializeField] private List<SelectType> selectableTypes;
+    // Validation: Tags
+    public List<SelectType> selectableTypes;
     public List<SelectType> SelectableTypes { get { return selectableTypes; } set { SetSelectableTypes(value); } }
     [HideInInspector] public ASelectable selectable;
 

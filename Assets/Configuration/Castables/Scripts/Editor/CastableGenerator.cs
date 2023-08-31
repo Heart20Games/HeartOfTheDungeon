@@ -23,6 +23,8 @@ public class CastableGenerator : ScriptableObject
     [Header("Execution")]
     public ExecutionMethod executionMethod;
     [ConditionalField("executionMethod", false, ExecutionMethod.ProjectileBased)]
+    public float projectileLifeSpan;
+    [ConditionalField("executionMethod", false, ExecutionMethod.ProjectileBased)]
     public Projectile projectilePrefab;
 
     [Header("Results")]
@@ -117,12 +119,15 @@ public class CastableGenerator : ScriptableObject
                             ProjectileSpawner spawner = gameObject.AddComponent<ProjectileSpawner>();
                             UnityEventTools.AddPersistentListener(castable.doCast, spawner.Spawn);
                             spawner.pivot = pivot.transform;
+                            spawner.lifeSpan = projectileLifeSpan;
+                            pivot.enabled = false;
                             
                             if (projectilePrefab != null)
                             {
                                 Projectile projectile = Instantiate(projectilePrefab, pivot.transform);
                                 spawner.projectile = projectile;
                                 pivot.body = projectile.transform;
+                                projectile.transform.position = new();
                                 projectile.hitDamageable = new();
                                 projectile.leftDamageable = new();
                                 UnityEventTools.AddPersistentListener(projectile.hitDamageable, damager.HitDamagable);
