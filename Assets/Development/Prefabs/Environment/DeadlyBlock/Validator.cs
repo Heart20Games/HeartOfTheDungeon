@@ -23,7 +23,7 @@ public class Validator : BaseMonoBehaviour
     public List<SelectType> SelectableTypes { get { return selectableTypes; } set { SetSelectableTypes(value); } }
     [HideInInspector] public ASelectable selectable;
 
-    [Header("Debugging")]
+    [Header("Miscelaneous")]
     public bool debug = false;
 
     // Setters

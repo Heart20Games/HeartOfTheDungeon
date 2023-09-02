@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Body.Behavior.ContextSteering.CSIdentity;
 
-public class Damager : BaseMonoBehaviour
+public class Damager : BaseMonoBehaviour, IDamager
 {
     private readonly List<IDamageable> others = new();
     private readonly List<IDamageable> ignored = new();
@@ -22,7 +22,7 @@ public class Damager : BaseMonoBehaviour
         }
     }
 
-    public void HitDamagable(Impact impactor)
+    public void HitDamageable(Impact impactor)
     {
         IDamageable other = impactor.other.GetComponent<IDamageable>();
         if (other != null && !ignored.Contains(other) && !others.Contains(other))
@@ -32,7 +32,7 @@ public class Damager : BaseMonoBehaviour
         }
     }
 
-    public void LeftDamagable(Impact impactor)
+    public void LeftDamageable(Impact impactor)
     {
         IDamageable other = impactor.other.GetComponent<IDamageable>();
         if (other != null && !ignored.Contains(other) && others.Contains(other))

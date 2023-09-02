@@ -4,7 +4,7 @@ using UnityEngine.Events;
 using static Colliders;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Projectile : BaseMonoBehaviour, ICollidable
+public class Projectile : CastableBody, ICollidable
 {
     public Vector3 direction = new();
     public float speed = 0;
@@ -12,10 +12,6 @@ public class Projectile : BaseMonoBehaviour, ICollidable
     private Collider[] colliders;
     private Collider[] Colliders { get { return colliders ?? InitializeColliders(); } }
     public List<GameObject> collidableObjects;
-
-    public UnityEvent onStart;
-    public UnityEvent<Impact> leftDamageable;
-    public UnityEvent<Impact> hitDamageable;
 
     public void Destroy()
     {
@@ -49,7 +45,6 @@ public class Projectile : BaseMonoBehaviour, ICollidable
     private void Start()
     {
         rigidbody.velocity = speed * Time.fixedDeltaTime * -transform.forward;
-        onStart.Invoke();
     }
 
     public void SetActive(bool active)
@@ -59,16 +54,6 @@ public class Projectile : BaseMonoBehaviour, ICollidable
         {
             Colliders[i].enabled = active;
         }
-    }
-
-    // Impact Events
-    public void HitDamageable(Impact impact)
-    {
-        hitDamageable.Invoke(impact);
-    }
-    public void LeftDamageable(Impact impact)
-    {
-        leftDamageable.Invoke(impact);
     }
 
     // Collision Exceptions
