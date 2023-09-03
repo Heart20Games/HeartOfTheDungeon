@@ -5345,23 +5345,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 516072af4a9de6647b3b949f82947569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: {x: 0, y: 0, z: 1}
-  speed: 1000
-  collidableObjects:
-  - {fileID: 2087686285163313932}
-  onStart:
+  standardEvents:
+    onStart:
+      m_PersistentCalls:
+        m_Calls: []
+    onEnable:
+      m_PersistentCalls:
+        m_Calls: []
+    onDisable:
+      m_PersistentCalls:
+        m_Calls: []
+  hitDamageable:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1988046082755096638}
-        m_TargetAssemblyTypeName: FModEventPlayer, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 1336718805493498709}
+        m_TargetAssemblyTypeName: Damager, Assembly-CSharp
+        m_MethodName: HitDamageable
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Osseus_Bone_Throw
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
   leftDamageable:
@@ -5369,7 +5375,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1336718805493498709}
         m_TargetAssemblyTypeName: Damager, Assembly-CSharp
-        m_MethodName: LeftDamagable
+        m_MethodName: LeftDamageable
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5379,21 +5385,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  hitDamageable:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1336718805493498709}
-        m_TargetAssemblyTypeName: Damager, Assembly-CSharp
-        m_MethodName: HitDamagable
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  direction: {x: 0, y: 0, z: 1}
+  speed: 1000
+  collidableObjects:
+  - {fileID: 2087686285163313932}
 --- !u!114 &2982564752818210947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5793,7 +5788,7 @@ Transform:
   m_Children:
   - {fileID: 8914319280961394222}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 46
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4232196801707152601
 MonoBehaviour:
