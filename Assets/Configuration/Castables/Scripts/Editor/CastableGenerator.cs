@@ -22,6 +22,12 @@ public class CastableGenerator : ScriptableObject
 
     [Header("Execution")]
     public ExecutionMethod executionMethod;
+
+    // Execution: Collider
+    [ConditionalField("executionMethod", false, ExecutionMethod.ColliderBased)]
+    public CastableBody bodyPrefab;
+
+    // Execution: Projectile
     [ConditionalField("executionMethod", false, ExecutionMethod.ProjectileBased)]
     public float projectileLifeSpan;
     [ConditionalField("executionMethod", false, ExecutionMethod.ProjectileBased)]
@@ -113,7 +119,21 @@ public class CastableGenerator : ScriptableObject
                 // Execution Methods
                 switch (executionMethod)
                 {
-                    case ExecutionMethod.ColliderBased: break;
+                    case ExecutionMethod.ColliderBased:
+                    {
+                            pivot.enabled = false;
+                            if (bodyPrefab != null)
+                            {
+                                CastableBody body = Instantiate(bodyPrefab, pivot.transform);
+                                pivot.body = body.transform;
+                                body.enabled = false;
+                                body.hitDamageable = new();
+                                body.leftDamageable = new();
+                                UnityEventTools.AddPersistentListener(body.hitDamageable, damager.HitDamageable);
+                                UnityEventTools.AddPersistentListener(body.leftDamageable, damager.LeftDamageable);
+                            }
+                            break;
+                    }
                     case ExecutionMethod.ProjectileBased:
                     {
                             ProjectileSpawner spawner = gameObject.AddComponent<ProjectileSpawner>();
@@ -130,8 +150,8 @@ public class CastableGenerator : ScriptableObject
                                 projectile.transform.position = new();
                                 projectile.hitDamageable = new();
                                 projectile.leftDamageable = new();
-                                UnityEventTools.AddPersistentListener(projectile.hitDamageable, damager.HitDamagable);
-                                UnityEventTools.AddPersistentListener(projectile.leftDamageable, damager.LeftDamagable);
+                                UnityEventTools.AddPersistentListener(projectile.hitDamageable, damager.HitDamageable);
+                                UnityEventTools.AddPersistentListener(projectile.leftDamageable, damager.LeftDamageable);
                             }
                             break;
                     }

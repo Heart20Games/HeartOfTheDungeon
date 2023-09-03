@@ -27,7 +27,7 @@ public class Impact : Validator
     }
 
     // Settings
-    [Header("Settings")]
+    //[Header("Settings")]
     public bool oneShot = false;
     public bool hasCollided = false;
 
