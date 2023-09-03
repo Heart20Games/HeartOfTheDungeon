@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6975279941231171404}
+  - component: {fileID: 4234350050998700139}
   - component: {fileID: 2804377999677393465}
   - component: {fileID: 3815405840428037528}
   - component: {fileID: 8140352782480837047}
@@ -35,6 +36,58 @@ Transform:
   m_Father: {fileID: 7511646803769045369}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4234350050998700139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4862828896519845906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a905749771dcded4e99dfa442ba24fe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  standardEvents:
+    onStart:
+      m_PersistentCalls:
+        m_Calls: []
+    onEnable:
+      m_PersistentCalls:
+        m_Calls: []
+    onDisable:
+      m_PersistentCalls:
+        m_Calls: []
+  leftDamageable:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3316546390508499046}
+        m_TargetAssemblyTypeName: Damager, Assembly-CSharp
+        m_MethodName: LeftDamageable
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  hitDamageable:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3316546390508499046}
+        m_TargetAssemblyTypeName: Damager, Assembly-CSharp
+        m_MethodName: HitDamageable
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2804377999677393465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,42 +122,42 @@ MonoBehaviour:
   onTrigger:
     enter:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3316546390508499046}
-          m_TargetAssemblyTypeName: Damager, Assembly-CSharp
-          m_MethodName: HitDamagable
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 2804377999677393465}
-            m_ObjectArgumentAssemblyTypeName: Impact, Assembly-CSharp
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
     exit:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3316546390508499046}
-          m_TargetAssemblyTypeName: Damager, Assembly-CSharp
-          m_MethodName: LeftDamagable
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 2804377999677393465}
-            m_ObjectArgumentAssemblyTypeName: Impact, Assembly-CSharp
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
   onImpact:
     impact:
       enter:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 4234350050998700139}
+            m_TargetAssemblyTypeName: CastableBody, Assembly-CSharp
+            m_MethodName: HitDamageable
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       exit:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 4234350050998700139}
+            m_TargetAssemblyTypeName: CastableBody, Assembly-CSharp
+            m_MethodName: LeftDamageable
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
     other:
       enter:
         m_PersistentCalls:
