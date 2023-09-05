@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Magic Bolt Gen
   m_EditorClassIdentifier: 
   outputName: Magic Bolt
-  rig: {fileID: 0}
   followBody: 1
   stats:
     usabilityTag: None
@@ -30,13 +29,20 @@ MonoBehaviour:
     hitStatuses: []
   targetingMethod: 0
   executionMethod: 1
+  bodyPrefab: {fileID: 0}
   projectileLifeSpan: 2
   projectilePrefab: {fileID: 1265971933285588912, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
   castablesDirectory: Assets/Configuration/Castables/
   createSubFolder: 1
   overwrite: 1
   replace: 1
+  outputs:
+  - alias: Magic Bolt
+    targets:
+    - slot: 1
+      loadout: {fileID: 11400000, guid: d48a3852097c5e447a1e86341c71ab53, type: 2}
   fullDirectory: Assets/Configuration/Castables/Magic Bolt
-  prefab: {fileID: 5666025680143254943, guid: 9f56080021ff67f409aafa288743ded1, type: 3}
-  item: {fileID: 11400000, guid: 8a990301d0189df42b40db894e65889b, type: 2}
-  timeOfLastGeneration: 466.65256
+  prefab: {fileID: 7935006535807930786, guid: 9f56080021ff67f409aafa288743ded1, type: 3}
+  items:
+  - {fileID: 11400000, guid: 8a990301d0189df42b40db894e65889b, type: 2}
+  timeOfLastGeneration: 2239.646

@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dece437a05694cb4588aa8c39f3542a8, type: 3}
   m_Name: Rotta Claws
   m_EditorClassIdentifier: 
-  outputName: Rotta Claws
-  rig: {fileID: 0}
+  outputName: Melee Weapon
   followBody: 1
   stats:
     usabilityTag: None
@@ -37,7 +36,14 @@ MonoBehaviour:
   createSubFolder: 1
   overwrite: 1
   replace: 1
-  fullDirectory: 
-  prefab: {fileID: 0}
-  item: {fileID: 0}
-  timeOfLastGeneration: 0
+  outputs:
+  - alias: Rotta Claws
+    targets:
+    - slot: 1
+      loadout: {fileID: 11400000, guid: 9a1a3901749e20c44a30215a9153ce85, type: 2}
+  fullDirectory: Assets/Configuration/Castables/Melee Weapon
+  prefab: {fileID: 8939472843714139375, guid: 4fee876c61098ca4fbbd450dc2d82ef1, type: 3}
+  items:
+  - {fileID: 11400000, guid: 2b188bd5b6afecc44bd115e2774fde90, type: 2}
+  - {fileID: 11400000, guid: 342aa5fb7258b5e4ba6075aaae47d7b8, type: 2}
+  timeOfLastGeneration: 1804.7113

@@ -1,8 +1,11 @@
 using MyBox;
-using System.Drawing.Printing;
+using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Events;
 using UnityEngine;
+using static Loadout;
+using static UnityEditor.Rendering.CameraUI;
 
 [CreateAssetMenu(fileName = "NewCastableGenerator", menuName = "Loadouts/CastableGenerator", order = 1)]
 public class CastableGenerator : ScriptableObject
@@ -12,7 +15,6 @@ public class CastableGenerator : ScriptableObject
 
     [Header("Parameters")]
     public string outputName = "New Castable";
-    public GameObject rig;
     public bool followBody = true;
     [Space]
     public CastableStats stats;
@@ -38,11 +40,25 @@ public class CastableGenerator : ScriptableObject
     public bool createSubFolder = true;
     public bool overwrite = true;
     public bool replace = true;
+    public List<Outputs> outputs;
     [ReadOnly] public string fullDirectory = "";
     [ReadOnly] public GameObject prefab;
-    [ReadOnly] public CastableItem item;
+    [ReadOnly] public List<CastableItem> items = new();
     [ReadOnly] public float timeOfLastGeneration;
-    
+
+    [Serializable]
+    public struct Outputs
+    {
+        public string alias;
+        public List<Target> targets;
+    }
+    [Serializable]
+    public struct Target
+    {
+        public Slot slot;
+        public Loadout loadout;
+    }
+
     public void GenerateCastable()
     {
         if (!Application.isEditor)
@@ -57,17 +73,20 @@ public class CastableGenerator : ScriptableObject
 
             if (prefab == null || overwrite || !sameDirectory)
             {
-                if (replace && !sameDirectory)
+                if (replace) // && !sameDirectory)
                 {
                     if (prefab != null)
                     {
                         AssetDatabase.DeleteAsset($"{oldDirectory}/{prefab.name}.prefab");
                         prefab = null;
                     }
-                    if (item != null)
+                    if (items.Count > 0)
                     {
-                        AssetDatabase.DeleteAsset($"{oldDirectory}/{item.name}.asset");
-                        item = null;
+                        foreach (var oldItem in items)
+                        {
+                            AssetDatabase.DeleteAsset($"{oldDirectory}/{oldItem.name}.asset");
+                        }
+                        items.Clear();
                     }
                 }
 
@@ -163,9 +182,26 @@ public class CastableGenerator : ScriptableObject
                 DestroyImmediate(gameObject);
                 timeOfLastGeneration = Time.time;
 
-                item = (CastableItem)CreateInstance(typeof(CastableItem));
+                CastableItem item = (CastableItem)CreateInstance(typeof(CastableItem));
                 AssetDatabase.CreateAsset(item, $"{fullDirectory}/{outputName}.asset");
                 item.prefab = prefab.GetComponent<Castable>();
+                items.Add(item);
+
+                foreach (var output in outputs)
+                {
+                    CastableItem copy = item;
+                    if (!output.alias.Equals(outputName))
+                    {
+                        copy = Instantiate(item);
+                        AssetDatabase.CreateAsset(copy, $"{fullDirectory}/{output.alias}.asset");
+                        items.Add(copy);
+                    }
+                    foreach (var target in output.targets)
+                    {
+                        if (target.slot != Slot.None)
+                            target.loadout.SetSlot(target.slot, copy);
+                    }
+                }
             }
         }
     }
