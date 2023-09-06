@@ -188,6 +188,7 @@ public class CastableGenerator : ScriptableObject
                 CastableItem item = (CastableItem)CreateInstance(typeof(CastableItem));
                 AssetDatabase.CreateAsset(item, $"{fullDirectory}/{outputName}.asset");
                 item.prefab = prefab.GetComponent<Castable>();
+                item.stats = stats;
                 item.context = context;
                 items.Add(item);
 

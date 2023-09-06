@@ -8,5 +8,6 @@ public class CastableItem : ScriptableObject
 {
     public Castable prefab;
     public int attackIdx = 0;
+    public CastableStats stats;
     public Context context = new();
 }
