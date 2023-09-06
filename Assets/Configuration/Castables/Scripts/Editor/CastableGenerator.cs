@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Events;
 using UnityEngine;
+using static Body.Behavior.ContextSteering.CSContext;
 using static Loadout;
-using static UnityEditor.Rendering.CameraUI;
+using Range = Body.Behavior.ContextSteering.CSContext.Range;
 
 [CreateAssetMenu(fileName = "NewCastableGenerator", menuName = "Loadouts/CastableGenerator", order = 1)]
 public class CastableGenerator : ScriptableObject
@@ -124,6 +125,8 @@ public class CastableGenerator : ScriptableObject
                     UnityEventTools.AddPersistentListener(coolDownTimer.onComplete, castable.UnCast);
                 }
 
+                Context context = new(stats.targetIdentity, Range.InAttackRange, new(), new(), new(0, stats.baseRange), 50);
+
                 castable.castStatuses = stats.castStatuses;
                 castable.hitStatuses = stats.hitStatuses;
 
@@ -185,6 +188,7 @@ public class CastableGenerator : ScriptableObject
                 CastableItem item = (CastableItem)CreateInstance(typeof(CastableItem));
                 AssetDatabase.CreateAsset(item, $"{fullDirectory}/{outputName}.asset");
                 item.prefab = prefab.GetComponent<Castable>();
+                item.context = context;
                 items.Add(item);
 
                 foreach (var output in outputs)
