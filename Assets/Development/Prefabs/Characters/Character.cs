@@ -314,12 +314,21 @@ namespace Body
         public void SetCastable(int idx, CastableItem item)
         {
             castables[idx]?.UnEquip();
+            castableItems[idx] = null;
+            castables[idx] = null;
 
             if (Loadout != null && item != null)
             {
-                castableItems[idx] = item;
-                castables[idx] = Instantiate(item.prefab, transform);
-                castables[idx].Initialize(this, item);
+                if (item == null)
+                    Debug.LogWarning($"Loadout {Loadout.name} has null item at index {idx}.");
+                else if (item.prefab == null)
+                    Debug.LogWarning($"Castable Item {item.name} has null prefab.");
+                else
+                {
+                    castableItems[idx] = item;
+                    castables[idx] = Instantiate(item.prefab, transform);
+                    castables[idx].Initialize(this, item);
+                }
             }
         }
 
