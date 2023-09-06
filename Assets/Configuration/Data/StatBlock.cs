@@ -1,16 +1,21 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.SocialPlatforms.Impl;
-using static GameData;
 using static StatBlock;
 
+[Serializable]
 public struct StatBonus
 {
     public Stat stat;
     public ModType modType;
     public int amount;
+}
+
+[Serializable]
+public struct StatMod
+{
+    public Stat stat;
+    public ModType modType;
 }
 
 [CreateAssetMenu(fileName ="StatBlock", menuName = "Stats/StatBlock", order = 1)]
@@ -24,9 +29,16 @@ public class StatBlock : PersistentScriptableObject
     public int constitution;
     public int intelligence;
 
+    public List<StatBonus> bonuses = new();
+
     private StatBlockData statData;
 
     // Modifiers
+    public int ModifyStat(int score, StatMod mod, float rate = 1f)
+    {
+        return ModifyStat(score, mod.stat, mod.modType, rate);
+    }
+
     public int ModifyStat(int score, Stat stat, ModType modType, float rate = 1f)
     {
         return ModifyNumber(score, GetStat(stat), modType, rate);
