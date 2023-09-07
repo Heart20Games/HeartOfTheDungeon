@@ -8,7 +8,7 @@ using static Body.Behavior.ContextSteering.CSContext;
 using static Loadout;
 using Range = Body.Behavior.ContextSteering.CSContext.Range;
 
-[CreateAssetMenu(fileName = "NewCastableGenerator", menuName = "Loadouts/CastableGenerator", order = 1)]
+[CreateAssetMenu(fileName = "NewCastableGenerator", menuName = "Loadouts/Castable Generator", order = 1)]
 public class CastableGenerator : ScriptableObject
 {
     public enum TargetingMethod { TargetBased, LocationBased, DirectionBased }
@@ -111,7 +111,7 @@ public class CastableGenerator : ScriptableObject
                 if (stats.dealDamage)
                 {
                     damager = gameObject.AddComponent<Damager>();
-                    damager.damage = stats.baseDamage; // TODO: Account for bonuses
+                    damager.damage = stats.Damage; // TODO: Account for bonuses
                     UnityEventTools.AddPersistentListener(castable.onSetIdentity, damager.SetIdentity);
                 }
 
@@ -120,12 +120,12 @@ public class CastableGenerator : ScriptableObject
                 {
                     coolDownTimer = gameObject.AddComponent<Timer>();
                     coolDownTimer.onComplete = new();
-                    coolDownTimer.length = stats.baseCooldown; // TODO: Account for bonuses
+                    coolDownTimer.length = stats.Cooldown; // TODO: Account for bonuses
                     UnityEventTools.AddPersistentListener(castable.onCast, coolDownTimer.Play);
                     UnityEventTools.AddPersistentListener(coolDownTimer.onComplete, castable.UnCast);
                 }
 
-                Context context = new(stats.targetIdentity, Range.InAttackRange, new(), new(), new(0, stats.baseRange), 50);
+                Context context = new(stats.targetIdentity, Range.InAttackRange, new(), new(), new(0, stats.Range), 50);
 
                 castable.castStatuses = stats.castStatuses;
                 castable.hitStatuses = stats.hitStatuses;

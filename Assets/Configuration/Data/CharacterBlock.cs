@@ -1,3 +1,4 @@
+using Attributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,15 +9,12 @@ public class CharacterBlock : StatBlock
     public CastableLibrary castableBank;
     public int portraitIndex = 0;
     public string characterName = "Nobody";
-    public int healthBase = 1;
+    public DependentAttribute healthMax = new(1);
     public Loadout loadout = null;
     
     private CharacterData charData = null;
     
-    public int MaxHealth
-    {
-        get => ModifyStat(healthBase, Stat.Constituion, ModType.Quad);
-    }
+    public int MaxHealth { get => (int)healthMax.FinalValue; }
 
     // Persisent Data
     public override IPersistent GetInstance() => this;

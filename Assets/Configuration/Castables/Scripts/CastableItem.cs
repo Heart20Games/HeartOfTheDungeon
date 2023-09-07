@@ -10,4 +10,9 @@ public class CastableItem : ScriptableObject
     public int attackIdx = 0;
     public CastableStats stats;
     public Context context = new();
+
+    public void Equip(StatBlock statBlock)
+    {
+        stats.Equip(statBlock);
+    }
 }
