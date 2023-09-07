@@ -1,51 +1,63 @@
-using System.Collections;
+using Attributes;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.SocialPlatforms.Impl;
-using static GameData;
 using static StatBlock;
+using Attribute = Attributes.Attribute;
 
+[Serializable]
 public struct StatBonus
 {
     public Stat stat;
-    public ModType modType;
-    public int amount;
+    public Bonus bonus;
+}
+
+public struct StatAttribute
+{
+    public Stat stat;
+    public float weight;
 }
 
 [CreateAssetMenu(fileName ="StatBlock", menuName = "Stats/StatBlock", order = 1)]
 public class StatBlock : PersistentScriptableObject
 {
     public enum Stat { Strength, Dexterity, Constituion, Intelligence }
-    public enum ModType { Inc, Mul, Quad, Exp, Log }
+    //public enum ModType { Inc, Mul, Quad, Exp, Log }
     
-    public int strength;
-    public int dexterity;
-    public int constitution;
-    public int intelligence;
+    public Attribute strength;
+    public Attribute dexterity;
+    public Attribute constitution;
+    public Attribute intelligence;
+
+    public List<StatBonus> bonuses = new();
 
     private StatBlockData statData;
 
     // Modifiers
-    public int ModifyStat(int score, Stat stat, ModType modType, float rate = 1f)
-    {
-        return ModifyNumber(score, GetStat(stat), modType, rate);
-    }
+    //public int ModifyStat(int score, StatMod mod, float rate = 1f)
+    //{
+    //    return ModifyStat(score, mod.stat, mod.modType, rate);
+    //}
 
-    public int ModifyNumber(int number, int modifier, ModType modType, float rate = 1f)
-    {
-        return modType switch
-        {
-            ModType.Inc => number + (int)(modifier * rate),
-            ModType.Mul => number * (int)(modifier * rate),
-            ModType.Quad => (int)Mathf.Pow(modifier * rate, number),
-            ModType.Exp => (int)Mathf.Pow(number, modifier * rate),
-            ModType.Log => (int)Mathf.Log(number, modifier * rate),
-            _ => number
-        };
-    }
+    //public int ModifyStat(int score, Stat stat, ModType modType, float rate = 1f)
+    //{
+    //    return ModifyNumber(score, GetStat(stat), modType, rate);
+    //}
 
-    public int GetStat(Stat stat)
+    //public int ModifyNumber(int number, int modifier, ModType modType, float rate = 1f)
+    //{
+    //    return modType switch
+    //    {
+    //        ModType.Inc => number + (int)(modifier * rate),
+    //        ModType.Mul => number * (int)(modifier * rate),
+    //        ModType.Quad => (int)Mathf.Pow(modifier * rate, number),
+    //        ModType.Exp => (int)Mathf.Pow(number, modifier * rate),
+    //        ModType.Log => (int)Mathf.Log(number, modifier * rate),
+    //        _ => number
+    //    };
+    //}
+
+    public Attribute GetStat(Stat stat)
     {
         return stat switch
         {
@@ -53,7 +65,7 @@ public class StatBlock : PersistentScriptableObject
             Stat.Dexterity => dexterity,
             Stat.Constituion => constitution,
             Stat.Intelligence => intelligence,
-            _ => -1,
+            _ => null,
         };
     }
 
@@ -76,20 +88,20 @@ public class StatBlock : PersistentScriptableObject
     {
         if (statData != null)
         {
-            strength = statData.strength;
-            dexterity = statData.dexterity;
-            constitution = statData.constitution;
-            intelligence = statData.intelligence;
+            strength.BaseValue = statData.strength;
+            dexterity.BaseValue = statData.dexterity;
+            constitution.BaseValue = statData.constitution;
+            intelligence.BaseValue = statData.intelligence;
         }
     }
 
     public override void SaveToData()
     {
         statData ??= new StatBlockData(name);
-        statData.strength = strength;
-        statData.dexterity = dexterity;
-        statData.constitution = constitution;
-        statData.intelligence = intelligence;
+        statData.strength = strength.BaseValue;
+        statData.dexterity = dexterity.BaseValue;
+        statData.constitution = constitution.BaseValue;
+        statData.intelligence = intelligence.BaseValue;
         data.Add(statData);
     }
 }

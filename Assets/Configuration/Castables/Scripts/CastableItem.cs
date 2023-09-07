@@ -2,12 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Body.Behavior.ContextSteering.CSContext;
-using static Body.Behavior.ContextSteering.CSIdentity;
 
 [CreateAssetMenu(fileName = "NewCastableItem", menuName = "Loadouts/CastableItem", order = 1)]
 public class CastableItem : ScriptableObject
 {
     public Castable prefab;
     public int attackIdx = 0;
+    public CastableStats stats;
     public Context context = new();
+
+    public void Equip(StatBlock statBlock)
+    {
+        stats.Equip(statBlock);
+    }
 }
