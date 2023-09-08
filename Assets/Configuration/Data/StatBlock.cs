@@ -12,6 +12,7 @@ public struct StatBonus
     public Bonus bonus;
 }
 
+[Serializable]
 public struct StatAttribute
 {
     public Stat stat;

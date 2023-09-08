@@ -5,24 +5,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Body.Behavior.ContextSteering.CSIdentity;
 
-[CreateAssetMenu(fileName = "NewCastableStatAttributes", menuName = "Loadouts/Castable Stat Attributes", order = 1)]
-public class CastableStatAttributes : ScriptableObject
-{
-    public StatAttribute[] damage;
-    public StatAttribute[] cooldown;
-    public StatAttribute[] knockback;
-    public StatAttribute[] range;
-    public StatAttribute[] castStatusPower;
-    public StatAttribute[] hitStatusPower;
-}
-
 [CreateAssetMenu(fileName = "NewCastableStats", menuName = "Loadouts/Castable Stats", order = 1)]
 public class CastableStats : ScriptableObject
 {
+    // Details
     public enum CastableType { Melee, Ranged, Magic }
     public string usabilityTag = "None";
     public CastableType type = CastableType.Melee;
     public Identity targetIdentity = Identity.Neutral;
+
+    // Attributes
     public CastableStatAttributes attributes;
 
     [Header("Damage")]
@@ -56,6 +48,16 @@ public class CastableStats : ScriptableObject
     [Header("Bonuses")]
     public List<StatBonus> bonuses;
 
+    // Equipping
+
+    public void AssignBonuses(DependentAttribute dependent, StatAttribute[] attributes, StatBlock statBlock)
+    {
+        foreach (var attribute in attributes)
+        {
+            dependent.AddAttribute(statBlock.GetStat(attribute.stat), attribute.weight);
+        }
+    }
+
     public void Equip(StatBlock statBlock)
     {
         AssignBonuses(damage, attributes.damage, statBlock);
@@ -66,11 +68,13 @@ public class CastableStats : ScriptableObject
         AssignBonuses(hitStatusPower, attributes.hitStatusPower, statBlock);
     }
 
-    public void AssignBonuses(DependentAttribute dependent, StatAttribute[] attributes, StatBlock statBlock)
+    public void UnEquip()
     {
-        foreach (var attribute in attributes)
-        {
-            dependent.AddAttribute(statBlock.GetStat(attribute.stat), attribute.weight);
-        }
+        damage.Clear();
+        cooldown.Clear();
+        knockback.Clear();
+        range.Clear();
+        castStatusPower.Clear();
+        hitStatusPower.Clear();
     }
 }

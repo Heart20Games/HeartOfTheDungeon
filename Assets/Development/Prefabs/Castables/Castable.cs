@@ -78,7 +78,7 @@ public class Castable : BaseMonoBehaviour, ICastable
     // Equipping
     public virtual void Disable() { }
     public virtual void Enable() { }
-    public virtual void UnEquip() { Destroy(gameObject); }
+    public virtual void UnEquip() { item.UnEquip(); Destroy(gameObject); }
     
 
     // Casting

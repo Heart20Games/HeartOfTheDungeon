@@ -42,6 +42,13 @@ namespace Attributes
             finalBonuses.Remove(new(bonus, weight));
         }
 
+        public virtual void Clear()
+        {
+            rawBonuses.Clear();
+            finalBonuses.Clear();
+        }
+
+
         protected void ApplyBonuses<T>(List<Weighted<T>> bonuses) where T : BaseAttribute
         {
             // Adding value from bonuses

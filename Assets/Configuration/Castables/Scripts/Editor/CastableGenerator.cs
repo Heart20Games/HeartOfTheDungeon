@@ -149,10 +149,13 @@ public class CastableGenerator : ScriptableObject
                                 CastableBody body = Instantiate(bodyPrefab, pivot.transform);
                                 pivot.body = body.transform;
                                 body.enabled = false;
-                                body.hitDamageable = new();
-                                body.leftDamageable = new();
-                                UnityEventTools.AddPersistentListener(body.hitDamageable, damager.HitDamageable);
-                                UnityEventTools.AddPersistentListener(body.leftDamageable, damager.LeftDamageable);
+                                if (damager != null)
+                                {
+                                    body.hitDamageable = new();
+                                    body.leftDamageable = new();
+                                    UnityEventTools.AddPersistentListener(body.hitDamageable, damager.HitDamageable);
+                                    UnityEventTools.AddPersistentListener(body.leftDamageable, damager.LeftDamageable);
+                                }
                             }
                             break;
                     }
@@ -170,10 +173,13 @@ public class CastableGenerator : ScriptableObject
                                 spawner.projectile = projectile;
                                 pivot.body = projectile.transform;
                                 projectile.transform.position = new();
-                                projectile.hitDamageable = new();
-                                projectile.leftDamageable = new();
-                                UnityEventTools.AddPersistentListener(projectile.hitDamageable, damager.HitDamageable);
-                                UnityEventTools.AddPersistentListener(projectile.leftDamageable, damager.LeftDamageable);
+                                if (damager != null)
+                                {
+                                    projectile.hitDamageable = new();
+                                    projectile.leftDamageable = new();
+                                    UnityEventTools.AddPersistentListener(projectile.hitDamageable, damager.HitDamageable);
+                                    UnityEventTools.AddPersistentListener(projectile.leftDamageable, damager.LeftDamageable);
+                                }
                             }
                             break;
                     }

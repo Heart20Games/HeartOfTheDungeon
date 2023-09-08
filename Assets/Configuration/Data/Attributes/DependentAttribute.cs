@@ -24,6 +24,12 @@ namespace Attributes
             otherAttributes.Remove(new(attribute, weight));
         }
 
+        public override void Clear()
+        {
+            otherAttributes.Clear();
+            base.Clear();
+        }
+
         public override float CalculateValue()
         {
             finalValue = BaseValue;

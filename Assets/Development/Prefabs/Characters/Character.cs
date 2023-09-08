@@ -313,7 +313,8 @@ namespace Body
 
         public void SetCastable(int idx, CastableItem item)
         {
-            castables[idx]?.UnEquip();
+            if (castableItems[idx] != null)
+                castables[idx]?.UnEquip();
             castableItems[idx] = null;
             castables[idx] = null;
 
@@ -328,6 +329,7 @@ namespace Body
                     castableItems[idx] = item;
                     castables[idx] = Instantiate(item.prefab, transform);
                     castables[idx].Initialize(this, item);
+                    item.Equip(statBlock);
                 }
             }
         }
