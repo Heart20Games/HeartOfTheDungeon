@@ -29,6 +29,12 @@ public class CastableStats : ScriptableObject
     public DependentAttribute cooldown = new(1);
     public float Cooldown { get => cooldown.FinalValue; }
 
+    [Header("Charge-Up")]
+    public bool useChargeUp = false;
+    [ConditionalField("useChargeUp", false, true)]
+    public DependentAttribute chargeUp = new(1);
+    public float ChargeUp { get => chargeUp.FinalValue; }
+
     [Header("Knockback")]
     public DependentAttribute knockback = new(1);
     public float Knockback { get => knockback.FinalValue; }
@@ -62,6 +68,7 @@ public class CastableStats : ScriptableObject
     {
         AssignBonuses(damage, attributes.damage, statBlock);
         AssignBonuses(cooldown, attributes.cooldown, statBlock);
+        AssignBonuses(chargeUp, attributes.chargeUp, statBlock);
         AssignBonuses(knockback, attributes.knockback, statBlock);
         AssignBonuses(range, attributes.range, statBlock);
         AssignBonuses(castStatusPower, attributes.castStatusPower, statBlock);
@@ -72,6 +79,7 @@ public class CastableStats : ScriptableObject
     {
         damage.Clear();
         cooldown.Clear();
+        chargeUp.Clear();
         knockback.Clear();
         range.Clear();
         castStatusPower.Clear();
