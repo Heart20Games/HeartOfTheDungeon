@@ -18,6 +18,7 @@ public class CastableItem : ScriptableObject
 
     public void Equip(StatBlock statBlock)
     {
-        stats.Equip(statBlock);
+        if (stats != null)
+            stats.Equip(statBlock);
     }
 }

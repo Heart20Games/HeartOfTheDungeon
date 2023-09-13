@@ -4,6 +4,7 @@ using UnityEngine.Events;
 using Body;
 using static Body.Behavior.ContextSteering.CSIdentity;
 using System.Runtime.CompilerServices;
+using UnityEngine.Serialization;
 
 public class Castable : BaseMonoBehaviour, ICastable
 {
@@ -18,8 +19,15 @@ public class Castable : BaseMonoBehaviour, ICastable
     public bool followBody = true;
     [HideInInspector] public Character source;
 
+    private Vector3 direction;
+    public virtual Vector3 Direction { get => direction; set => direction = value; }
+
+    [ReadOnly][SerializeField] private float powerLevel;
+    public void SetPowerLevel(float powerLevel) { this.powerLevel = powerLevel; }
+
     // Statuses
     [Header("Statuses")]
+    public List<Status> triggerStatuses;
     public List<Status> castStatuses;
     public List<Status> hitStatuses;
 
@@ -43,8 +51,12 @@ public class Castable : BaseMonoBehaviour, ICastable
     // Events
     [Header("Casting")]
     public bool casting = false;
-    public UnityEvent<Vector3> doCast;
-    public UnityEvent onCast;
+    public bool castOnTrigger = true;
+    public bool castOnRelease = false;
+    public bool unCastOnRelease = false;
+    public UnityEvent<Vector3> onCast;
+    public UnityEvent onTrigger;
+    public UnityEvent onRelease;
     public UnityEvent onUnCast;
     public UnityEvent onCasted;
 
@@ -81,21 +93,43 @@ public class Castable : BaseMonoBehaviour, ICastable
     public virtual void UnEquip() { item.UnEquip(); Destroy(gameObject); }
     
 
+    // Triggering
+
+    public virtual void Trigger()
+    {
+        foreach (Status status in triggerStatuses)
+        {
+            status.effect.Apply(source, status.strength);
+        }
+        onTrigger.Invoke();
+        if (castOnTrigger) Cast();
+    }
+
+    public virtual void Release()
+    {
+        foreach (Status status in triggerStatuses)
+        {
+            status.effect.Remove(source);
+        }
+        onRelease.Invoke();
+        if (castOnRelease) Cast();
+        if (unCastOnRelease) UnCast();
+    }
+
     // Casting
 
     public virtual bool CanCast() { return !casting; }
 
-    public virtual void Cast(Vector3 direction)
+    public virtual void Cast()
     {
-        doCast.Invoke(direction);
+        casting = true;
         if (pivot != null)
             pivot.SetRotationWithVector(direction.XZVector());
-        casting = true;
         foreach (Status status in castStatuses)
         {
             status.effect.Apply(source, status.strength);
         }
-        onCast.Invoke();
+        onCast.Invoke(direction);
     }
 
     public virtual void UnCast()
@@ -129,8 +163,8 @@ public class Castable : BaseMonoBehaviour, ICastable
     {
 
         Transform effectParent = followBody ? source.body : source.transform;
+        ReportOriginAmong(onTrigger, effectParent);
         ReportOriginAmong(onCast, effectParent);
-        ReportOriginAmong(doCast, effectParent);
     }
 
     private void ReportOriginAmong(UnityEventBase uEvent, Transform effectParent)
@@ -148,8 +182,8 @@ public class Castable : BaseMonoBehaviour, ICastable
 
     private void ReportExceptionsToCollidables(Collider[] exceptions)
     {
+        ReportExceptionsAmong(onTrigger, exceptions);
         ReportExceptionsAmong(onCast, exceptions);
-        ReportExceptionsAmong(doCast, exceptions);
     }
 
     private void ReportExceptionsAmong(UnityEventBase uEvent, Collider[] exceptions)

@@ -334,7 +334,7 @@ namespace Body
             }
         }
 
-        public void ActivateCastable(ICastable castable)
+        public void TriggerCastable(ICastable castable)
         {
             if (caster != null && caster.enabled)
             {
@@ -345,6 +345,15 @@ namespace Body
                 else
                     caster.Cast(castVector);
             }
+        }
+
+        public void ReleaseCastable(ICastable castable)
+        {
+            if (caster != null && caster.enabled && caster.Castable == castable)
+            {
+                caster.Release();
+            }
+            else castable?.Release();
         }
 
         public void SetAimModeActive(bool active)
@@ -360,7 +369,8 @@ namespace Body
         // Actions
         public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); caster.SetFallback(movement.moveVector); }
         public void Aim(Vector2 input, bool aim=false) { if (aimActive || aim) caster.SetVector(input); }
-        public void ActivateCastable(int idx) { ActivateCastable(castables[idx]); }
+        public void TriggerCastable(int idx) { TriggerCastable(castables[idx]); }
+        public void ReleaseCastable(int idx) { ReleaseCastable(castables[idx]); }
         public void Interact() { talker.Talk(); }
         public void AimMode(bool active) { SetAimModeActive(active); }
 

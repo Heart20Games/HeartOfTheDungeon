@@ -12,6 +12,8 @@ namespace Attributes
     {
         protected List<Weighted<Bonus>> rawBonuses = new();
         protected List<Weighted<Bonus>> finalBonuses = new();
+        protected List<Weighted<Bonus>> RawBonuses { get { return rawBonuses ??= new(); } }
+        protected List<Weighted<Bonus>> FinalBonuses { get { return finalBonuses ??= new(); } }
 
         protected float finalValue;
 
@@ -24,28 +26,28 @@ namespace Attributes
 
         public void AddRawBonus(RawBonus bonus, float weight = 1)
         {
-            rawBonuses.Add(new(bonus, weight));
+            RawBonuses.Add(new(bonus, weight));
         }
 
         public void AddFinalBonus(FinalBonus bonus, float weight = 1)
         {
-            finalBonuses.Add(new(bonus, weight));
+            FinalBonuses.Add(new(bonus, weight));
         }
 
         public void RemoveRawBonus(RawBonus bonus, float weight = 1)
         {
-            rawBonuses.Remove(new(bonus, weight));
+            RawBonuses.Remove(new(bonus, weight));
         }
 
         public void RemoveFinalBonus(FinalBonus bonus, float weight = 1)
         {
-            finalBonuses.Remove(new(bonus, weight));
+            FinalBonuses.Remove(new(bonus, weight));
         }
 
         public virtual void Clear()
         {
-            rawBonuses.Clear();
-            finalBonuses.Clear();
+            RawBonuses.Clear();
+            FinalBonuses.Clear();
         }
 
 
@@ -69,8 +71,8 @@ namespace Attributes
         {
             finalValue = BaseValue;
 
-            ApplyBonuses(rawBonuses);
-            ApplyBonuses(finalBonuses);
+            ApplyBonuses(RawBonuses);
+            ApplyBonuses(FinalBonuses);
 
             return finalValue;
         }

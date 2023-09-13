@@ -17,6 +17,10 @@ public class CastableGenerator : ScriptableObject
     [Header("Parameters")]
     public string outputName = "New Castable";
     public bool followBody = true;
+    public bool castOnTrigger;
+    public bool castOnRelease;
+    public bool unCastOnRelease;
+    public bool castOnChargeUp;
     [Space]
     public CastableStats stats;
 
@@ -97,10 +101,14 @@ public class CastableGenerator : ScriptableObject
                 // Set up the Game Object
                 GameObject gameObject = new(outputName);
                 Castable castable = gameObject.AddComponent<Castable>();
-                castable.doCast = new();
                 castable.onCast = new();
+                castable.onTrigger = new();
+                castable.onRelease = new();
                 castable.onSetIdentity = new();
                 castable.followBody = followBody;
+                castable.castOnTrigger = castOnTrigger;
+                castable.castOnRelease = castOnRelease;
+                castable.unCastOnRelease = unCastOnRelease;
 
                 GameObject pivotObject = new("Pivot");
                 Pivot pivot = pivotObject.AddComponent<Pivot>();
@@ -115,13 +123,29 @@ public class CastableGenerator : ScriptableObject
                     UnityEventTools.AddPersistentListener(castable.onSetIdentity, damager.SetIdentity);
                 }
 
+                Charger charger = null;
+                if (stats.useChargeUp)
+                {
+                    charger = gameObject.AddComponent<Charger>();
+                    charger.onBegin = new();
+                    charger.onCharge = new();
+                    charger.onCharged = new();
+                    charger.onInterrupt = new();
+                    charger.length = stats.ChargeUp;
+                    UnityEventTools.AddPersistentListener(castable.onTrigger, charger.Begin);
+                    UnityEventTools.AddPersistentListener(castable.onRelease, charger.Interrupt);
+                    UnityEventTools.AddPersistentListener(charger.onCharge, castable.SetPowerLevel);
+                    if (castOnChargeUp)
+                        UnityEventTools.AddPersistentListener(charger.onCharged, castable.Cast);
+                }
+
                 Timer coolDownTimer = null;
                 if (stats.useCooldown)
                 {
                     coolDownTimer = gameObject.AddComponent<Timer>();
                     coolDownTimer.onComplete = new();
                     coolDownTimer.length = stats.Cooldown; // TODO: Account for bonuses
-                    UnityEventTools.AddPersistentListener(castable.onCast, coolDownTimer.Play);
+                    UnityEventTools.AddVoidPersistentListener(castable.onCast, coolDownTimer.Play);
                     UnityEventTools.AddPersistentListener(coolDownTimer.onComplete, castable.UnCast);
                 }
 
@@ -162,7 +186,7 @@ public class CastableGenerator : ScriptableObject
                     case ExecutionMethod.ProjectileBased:
                     {
                             ProjectileSpawner spawner = gameObject.AddComponent<ProjectileSpawner>();
-                            UnityEventTools.AddPersistentListener(castable.doCast, spawner.Spawn);
+                            UnityEventTools.AddPersistentListener(castable.onCast, spawner.Spawn);
                             spawner.pivot = pivot.transform;
                             spawner.lifeSpan = projectileLifeSpan;
                             pivot.enabled = false;
@@ -191,6 +215,7 @@ public class CastableGenerator : ScriptableObject
                 DestroyImmediate(gameObject);
                 timeOfLastGeneration = Time.time;
 
+                // Set up Item
                 CastableItem item = (CastableItem)CreateInstance(typeof(CastableItem));
                 AssetDatabase.CreateAsset(item, $"{fullDirectory}/{outputName}.asset");
                 item.prefab = prefab.GetComponent<Castable>();
@@ -198,6 +223,7 @@ public class CastableGenerator : ScriptableObject
                 item.context = context;
                 items.Add(item);
 
+                // Set up Aliases
                 foreach (var output in outputs)
                 {
                     CastableItem copy = item;
