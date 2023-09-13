@@ -11,26 +11,33 @@ namespace Attributes
     public class DependentAttribute : Attribute
     {
         protected List<Weighted<Attribute>> otherAttributes = new();
+        protected List<Weighted<Attribute>> OtherAttributes { get { return otherAttributes ??= new(); } }
 
         public DependentAttribute(int startingValue) : base(startingValue) { }
 
         public void AddAttribute(Attribute attribute, float weight=1)
         {
-            otherAttributes.Add(new(attribute, weight));
+            OtherAttributes.Add(new(attribute, weight));
         }
 
         public void RemoveAttribute(Attribute attribute, float weight=1)
         {
-            otherAttributes.Remove(new(attribute, weight));
+            OtherAttributes.Remove(new(attribute, weight));
+        }
+
+        public override void Clear()
+        {
+            OtherAttributes.Clear();
+            base.Clear();
         }
 
         public override float CalculateValue()
         {
             finalValue = BaseValue;
 
-            ApplyBonuses(otherAttributes);
-            ApplyBonuses(rawBonuses);
-            ApplyBonuses(finalBonuses);
+            ApplyBonuses(OtherAttributes);
+            ApplyBonuses(RawBonuses);
+            ApplyBonuses(FinalBonuses);
 
             return finalValue;
         }

@@ -38,10 +38,9 @@ public class Weapon : Castable
         }
     }
 
-    public override void Cast(Vector3 direction)
+    public override void Cast()
     {
         Swing();
-        base.Cast(direction);
     }
 
     public override bool CanCast() { return !swinging; }
