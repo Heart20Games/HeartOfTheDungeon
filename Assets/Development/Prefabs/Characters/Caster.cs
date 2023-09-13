@@ -71,6 +71,12 @@ public class Caster : BaseMonoBehaviour
     // Cast using the given vector
     public void Cast(Vector2 castVector)
     {
+        SetCastVector(castVector);
+        Trigger();
+    }
+
+    public void SetCastVector(Vector2 castVector)
+    {
         if (Castable != null && Castable.CanCast())
         {
             float pMag = Mathf.Abs(pivot.localScale.x);
@@ -80,14 +86,30 @@ public class Caster : BaseMonoBehaviour
 
             if (Mathf.Abs(castVector.x) > 0.5f || Mathf.Abs(castVector.y) > 0.5f)
                 weapRotation = Vector3.right * -castVector.x + Vector3.forward * -castVector.y;
-            
+
             if (artRenderer != null)
                 artRenderer.Attack(Castable.GetItem() == null ? 0 : Castable.GetItem().attackIdx);
-            
+
             if (weapRotation != lastDirection)
                 lastDirection = weapRotation;
-            
-            Castable.Cast(weapRotation); // uses last rotation if not moving
+
+            Castable.Direction = weapRotation; // uses last rotation if not moving
+        }
+    }
+
+    public void Trigger()
+    {
+        if (Castable != null)
+        {
+            Castable.Trigger();
+        }
+    }
+
+    public void Release()
+    {
+        if (Castable != null)
+        {
+            Castable.Release();
         }
     }
 }

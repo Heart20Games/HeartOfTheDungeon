@@ -11,8 +11,14 @@ public class CastableItem : ScriptableObject
     public CastableStats stats;
     public Context context = new();
 
+    public void UnEquip()
+    {
+        stats.UnEquip();
+    }
+
     public void Equip(StatBlock statBlock)
     {
-        stats.Equip(statBlock);
+        if (stats != null)
+            stats.Equip(statBlock);
     }
 }

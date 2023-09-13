@@ -37,10 +37,12 @@ public class GameInput : BaseMonoBehaviour
 
     // Wrappers
     public delegate void Delegate();
-    public void IsPressed(InputValue inputValue, Delegate del)
+    public void IsPressed(InputValue inputValue, Delegate yesDel, Delegate noDel=null)
     {
         if (inputValue.isPressed)
-            del.Invoke();
+            yesDel?.Invoke();
+        else
+            noDel?.Invoke();
     }
 
 
@@ -95,7 +97,13 @@ public class GameInput : BaseMonoBehaviour
 
     // Castables
     public enum CastableIdx { Ability1, Ability2, Weapon1, Weapon2, Agility }
-    public void UseCastable(InputValue inputValue, CastableIdx idx) { IsPressed(inputValue, () => { CurCharacter.ActivateCastable((int)idx); }); }
+    public void UseCastable(InputValue inputValue, CastableIdx idx)
+    {
+        IsPressed(inputValue, 
+            () => { CurCharacter.TriggerCastable((int)idx); },
+            () => { CurCharacter.ReleaseCastable((int)idx); }
+        ); 
+    }
     public void OnUseAgility(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Agility); }
     public void OnUseWeapon1(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Weapon1); }
     public void OnUseWeapon2(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Weapon2); }

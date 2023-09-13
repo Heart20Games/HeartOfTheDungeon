@@ -11,8 +11,11 @@ public interface ICastable
      * 2. Supply art for character animations
      * 3. Cleanup after themselves
      */
-    public void Cast(Vector3 direction);
+    public Vector3 Direction { get; set; }
+    public void Cast();
     public void UnCast();
+    public void Trigger();
+    public void Release();
     public UnityEvent OnCasted();
     public void Initialize(Body.Character source);
     public void Disable();

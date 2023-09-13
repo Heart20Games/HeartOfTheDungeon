@@ -5,24 +5,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Body.Behavior.ContextSteering.CSIdentity;
 
-[CreateAssetMenu(fileName = "NewCastableStatAttributes", menuName = "Loadouts/Castable Stat Attributes", order = 1)]
-public class CastableStatAttributes : ScriptableObject
-{
-    public StatAttribute[] damage;
-    public StatAttribute[] cooldown;
-    public StatAttribute[] knockback;
-    public StatAttribute[] range;
-    public StatAttribute[] castStatusPower;
-    public StatAttribute[] hitStatusPower;
-}
-
 [CreateAssetMenu(fileName = "NewCastableStats", menuName = "Loadouts/Castable Stats", order = 1)]
 public class CastableStats : ScriptableObject
 {
+    // Details
     public enum CastableType { Melee, Ranged, Magic }
     public string usabilityTag = "None";
     public CastableType type = CastableType.Melee;
     public Identity targetIdentity = Identity.Neutral;
+
+    // Attributes
     public CastableStatAttributes attributes;
 
     [Header("Damage")]
@@ -36,6 +28,12 @@ public class CastableStats : ScriptableObject
     [ConditionalField("useCooldown", false, true)]
     public DependentAttribute cooldown = new(1);
     public float Cooldown { get => cooldown.FinalValue; }
+
+    [Header("Charge-Up")]
+    public bool useChargeUp = false;
+    [ConditionalField("useChargeUp", false, true)]
+    public DependentAttribute chargeUp = new(1);
+    public float ChargeUp { get => chargeUp.FinalValue; }
 
     [Header("Knockback")]
     public DependentAttribute knockback = new(1);
@@ -56,15 +54,7 @@ public class CastableStats : ScriptableObject
     [Header("Bonuses")]
     public List<StatBonus> bonuses;
 
-    public void Equip(StatBlock statBlock)
-    {
-        AssignBonuses(damage, attributes.damage, statBlock);
-        AssignBonuses(cooldown, attributes.cooldown, statBlock);
-        AssignBonuses(knockback, attributes.knockback, statBlock);
-        AssignBonuses(range, attributes.range, statBlock);
-        AssignBonuses(castStatusPower, attributes.castStatusPower, statBlock);
-        AssignBonuses(hitStatusPower, attributes.hitStatusPower, statBlock);
-    }
+    // Equipping
 
     public void AssignBonuses(DependentAttribute dependent, StatAttribute[] attributes, StatBlock statBlock)
     {
@@ -72,5 +62,27 @@ public class CastableStats : ScriptableObject
         {
             dependent.AddAttribute(statBlock.GetStat(attribute.stat), attribute.weight);
         }
+    }
+
+    public void Equip(StatBlock statBlock)
+    {
+        AssignBonuses(damage, attributes.damage, statBlock);
+        AssignBonuses(cooldown, attributes.cooldown, statBlock);
+        AssignBonuses(chargeUp, attributes.chargeUp, statBlock);
+        AssignBonuses(knockback, attributes.knockback, statBlock);
+        AssignBonuses(range, attributes.range, statBlock);
+        AssignBonuses(castStatusPower, attributes.castStatusPower, statBlock);
+        AssignBonuses(hitStatusPower, attributes.hitStatusPower, statBlock);
+    }
+
+    public void UnEquip()
+    {
+        damage.Clear();
+        cooldown.Clear();
+        chargeUp.Clear();
+        knockback.Clear();
+        range.Clear();
+        castStatusPower.Clear();
+        hitStatusPower.Clear();
     }
 }

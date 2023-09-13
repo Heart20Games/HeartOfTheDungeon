@@ -252,7 +252,7 @@ namespace Body.Behavior
                     }
                 }
                 if (closestIdx >= 0)
-                    character.ActivateCastable(closestIdx);
+                    character.TriggerCastable(closestIdx);
             }
 
             return BehaviorNode.Status.SUCCESS;
