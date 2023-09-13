@@ -9793,9 +9793,21 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 1.5
+      - m_Value: 5
         m_Name: Level 1 Charge Time
-        m_Overridden: 1
+        m_Overridden: 0
+      - m_Value: 4
+        m_Name: Level 2 Charge Time
+        m_Overridden: 0
+      - m_Value: 0
+        m_Name: Level 3 Charge Time
+        m_Overridden: 0
+      - m_Value: 0.35
+        m_Name: Level 2 Orb 1 Offset
+        m_Overridden: 0
+      - m_Value: -0.35
+        m_Name: Level 2 Orb 2 Offset
+        m_Overridden: 0
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -9809,13 +9821,81 @@ VisualEffect:
     m_Matrix4x4f:
       m_Array: []
     m_AnimationCurve:
-      m_Array: []
+      m_Array:
+      - m_Value:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.5
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.52416724
+            value: 0.532704
+            inSlope: -0.0060930033
+            outSlope: -0.0060930033
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.7454129
+            value: 0.5604197
+            inSlope: 0.097406365
+            outSlope: 0.097406365
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.84356236
+            value: 0.58786976
+            inSlope: 1.9909469
+            outSlope: 1.9909469
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.95304847
+            value: 0.7222452
+            inSlope: 7.585597
+            outSlope: 7.585597
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0.41126093
+            outSlope: 0.41126093
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        m_Name: Level 2 Movement Curve
+        m_Overridden: 0
     m_Gradient:
       m_Array: []
     m_NamedObject:
       m_Array: []
     m_Bool:
-      m_Array: []
+      m_Array:
+      - m_Value: 1
+        m_Name: Level 2
+        m_Overridden: 0
+      - m_Value: 1
+        m_Name: Level 3
+        m_Overridden: 0
 --- !u!4 &890943100
 Transform:
   m_ObjectHideFlags: 0
@@ -9824,7 +9904,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 890943097}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.482, y: 3.341, z: -12.976}
+  m_LocalPosition: {x: 13.44, y: 3.257, z: -12.333}
   m_LocalScale: {x: 0.477131, y: 0.477131, z: 0.477131}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -31209,6 +31289,26 @@ PrefabInstance:
     - target: {fileID: 194553175541119839, guid: c2d49873384aa584791b001a27d4a338, type: 3}
       propertyPath: m_LocalPosition.z
       value: -24.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 194553175541119839, guid: c2d49873384aa584791b001a27d4a338, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 194553175541119839, guid: c2d49873384aa584791b001a27d4a338, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 194553175541119839, guid: c2d49873384aa584791b001a27d4a338, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 194553175541119839, guid: c2d49873384aa584791b001a27d4a338, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 194553175541119839, guid: c2d49873384aa584791b001a27d4a338, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198662307541357731, guid: c2d49873384aa584791b001a27d4a338, type: 3}
       propertyPath: m_AnchorMax.y
