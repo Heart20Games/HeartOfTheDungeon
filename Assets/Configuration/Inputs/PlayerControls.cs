@@ -555,6 +555,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Character Screen"",
+                    ""type"": ""Button"",
+                    ""id"": ""acd888a2-35d2-4630-abef-0795efc1cdec"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause Screen"",
+                    ""type"": ""Button"",
+                    ""id"": ""5cefbba1-149c-403f-a81d-3edd151fe1a8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1184,6 +1202,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Toggle LockOn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e228ea0b-b08e-40b3-a4ff-718808aec33c"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Character Screen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3882c481-4b93-4b0b-a6e7-d559aba6bf20"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause Screen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1514,6 +1554,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Pause Screen"",
+                    ""type"": ""Button"",
+                    ""id"": ""53c8a1fa-dff8-404a-b546-77ce3ce86955"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Character Screen"",
+                    ""type"": ""Button"",
+                    ""id"": ""75c4f9bb-5ca6-4be0-ae76-5d6a2e6f8df9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Switch Targets Scroll"",
@@ -2236,6 +2294,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Zoom"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5f858e7a-f5e9-4094-bf2e-cce96da05d42"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Character Screen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bd9f1b73-e7c5-4998-9970-03e1c5ffc056"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause Screen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -2272,6 +2352,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_SwitchCharacterRight = m_Player.FindAction("Switch Character Right", throwIfNotFound: true);
         m_Player_RestartLevel1 = m_Player.FindAction("Restart Level1", throwIfNotFound: true);
         m_Player_ToggleControls = m_Player.FindAction("Toggle Controls", throwIfNotFound: true);
+        m_Player_CharacterScreen = m_Player.FindAction("Character Screen", throwIfNotFound: true);
+        m_Player_PauseScreen = m_Player.FindAction("Pause Screen", throwIfNotFound: true);
         // Dismiss
         m_Dismiss = asset.FindActionMap("Dismiss", throwIfNotFound: true);
         m_Dismiss_Dismiss = m_Dismiss.FindAction("Dismiss", throwIfNotFound: true);
@@ -2289,6 +2371,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_LockOn_Aim = m_LockOn.FindAction("Aim", throwIfNotFound: true);
         m_LockOn_SwitchTargets = m_LockOn.FindAction("Switch Targets", throwIfNotFound: true);
         m_LockOn_Zoom = m_LockOn.FindAction("Zoom", throwIfNotFound: true);
+        m_LockOn_PauseScreen = m_LockOn.FindAction("Pause Screen", throwIfNotFound: true);
+        m_LockOn_CharacterScreen = m_LockOn.FindAction("Character Screen", throwIfNotFound: true);
         m_LockOn_SwitchTargetsScroll = m_LockOn.FindAction("Switch Targets Scroll", throwIfNotFound: true);
         m_LockOn_ToggleLockOn = m_LockOn.FindAction("Toggle LockOn", throwIfNotFound: true);
         m_LockOn_ToggleSkillWheel = m_LockOn.FindAction("Toggle Skill Wheel", throwIfNotFound: true);
@@ -2513,6 +2597,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SwitchCharacterRight;
     private readonly InputAction m_Player_RestartLevel1;
     private readonly InputAction m_Player_ToggleControls;
+    private readonly InputAction m_Player_CharacterScreen;
+    private readonly InputAction m_Player_PauseScreen;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -2534,6 +2620,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @SwitchCharacterRight => m_Wrapper.m_Player_SwitchCharacterRight;
         public InputAction @RestartLevel1 => m_Wrapper.m_Player_RestartLevel1;
         public InputAction @ToggleControls => m_Wrapper.m_Player_ToggleControls;
+        public InputAction @CharacterScreen => m_Wrapper.m_Player_CharacterScreen;
+        public InputAction @PauseScreen => m_Wrapper.m_Player_PauseScreen;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2594,6 +2682,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ToggleControls.started += instance.OnToggleControls;
             @ToggleControls.performed += instance.OnToggleControls;
             @ToggleControls.canceled += instance.OnToggleControls;
+            @CharacterScreen.started += instance.OnCharacterScreen;
+            @CharacterScreen.performed += instance.OnCharacterScreen;
+            @CharacterScreen.canceled += instance.OnCharacterScreen;
+            @PauseScreen.started += instance.OnPauseScreen;
+            @PauseScreen.performed += instance.OnPauseScreen;
+            @PauseScreen.canceled += instance.OnPauseScreen;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -2649,6 +2743,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ToggleControls.started -= instance.OnToggleControls;
             @ToggleControls.performed -= instance.OnToggleControls;
             @ToggleControls.canceled -= instance.OnToggleControls;
+            @CharacterScreen.started -= instance.OnCharacterScreen;
+            @CharacterScreen.performed -= instance.OnCharacterScreen;
+            @CharacterScreen.canceled -= instance.OnCharacterScreen;
+            @PauseScreen.started -= instance.OnPauseScreen;
+            @PauseScreen.performed -= instance.OnPauseScreen;
+            @PauseScreen.canceled -= instance.OnPauseScreen;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -2799,6 +2899,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_LockOn_Aim;
     private readonly InputAction m_LockOn_SwitchTargets;
     private readonly InputAction m_LockOn_Zoom;
+    private readonly InputAction m_LockOn_PauseScreen;
+    private readonly InputAction m_LockOn_CharacterScreen;
     private readonly InputAction m_LockOn_SwitchTargetsScroll;
     private readonly InputAction m_LockOn_ToggleLockOn;
     private readonly InputAction m_LockOn_ToggleSkillWheel;
@@ -2822,6 +2924,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Aim => m_Wrapper.m_LockOn_Aim;
         public InputAction @SwitchTargets => m_Wrapper.m_LockOn_SwitchTargets;
         public InputAction @Zoom => m_Wrapper.m_LockOn_Zoom;
+        public InputAction @PauseScreen => m_Wrapper.m_LockOn_PauseScreen;
+        public InputAction @CharacterScreen => m_Wrapper.m_LockOn_CharacterScreen;
         public InputAction @SwitchTargetsScroll => m_Wrapper.m_LockOn_SwitchTargetsScroll;
         public InputAction @ToggleLockOn => m_Wrapper.m_LockOn_ToggleLockOn;
         public InputAction @ToggleSkillWheel => m_Wrapper.m_LockOn_ToggleSkillWheel;
@@ -2860,6 +2964,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Zoom.started += instance.OnZoom;
             @Zoom.performed += instance.OnZoom;
             @Zoom.canceled += instance.OnZoom;
+            @PauseScreen.started += instance.OnPauseScreen;
+            @PauseScreen.performed += instance.OnPauseScreen;
+            @PauseScreen.canceled += instance.OnPauseScreen;
+            @CharacterScreen.started += instance.OnCharacterScreen;
+            @CharacterScreen.performed += instance.OnCharacterScreen;
+            @CharacterScreen.canceled += instance.OnCharacterScreen;
             @SwitchTargetsScroll.started += instance.OnSwitchTargetsScroll;
             @SwitchTargetsScroll.performed += instance.OnSwitchTargetsScroll;
             @SwitchTargetsScroll.canceled += instance.OnSwitchTargetsScroll;
@@ -2921,6 +3031,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Zoom.started -= instance.OnZoom;
             @Zoom.performed -= instance.OnZoom;
             @Zoom.canceled -= instance.OnZoom;
+            @PauseScreen.started -= instance.OnPauseScreen;
+            @PauseScreen.performed -= instance.OnPauseScreen;
+            @PauseScreen.canceled -= instance.OnPauseScreen;
+            @CharacterScreen.started -= instance.OnCharacterScreen;
+            @CharacterScreen.performed -= instance.OnCharacterScreen;
+            @CharacterScreen.canceled -= instance.OnCharacterScreen;
             @SwitchTargetsScroll.started -= instance.OnSwitchTargetsScroll;
             @SwitchTargetsScroll.performed -= instance.OnSwitchTargetsScroll;
             @SwitchTargetsScroll.canceled -= instance.OnSwitchTargetsScroll;
@@ -3012,6 +3128,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSwitchCharacterRight(InputAction.CallbackContext context);
         void OnRestartLevel1(InputAction.CallbackContext context);
         void OnToggleControls(InputAction.CallbackContext context);
+        void OnCharacterScreen(InputAction.CallbackContext context);
+        void OnPauseScreen(InputAction.CallbackContext context);
     }
     public interface IDismissActions
     {
@@ -3032,6 +3150,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnAim(InputAction.CallbackContext context);
         void OnSwitchTargets(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
+        void OnPauseScreen(InputAction.CallbackContext context);
+        void OnCharacterScreen(InputAction.CallbackContext context);
         void OnSwitchTargetsScroll(InputAction.CallbackContext context);
         void OnToggleLockOn(InputAction.CallbackContext context);
         void OnToggleSkillWheel(InputAction.CallbackContext context);

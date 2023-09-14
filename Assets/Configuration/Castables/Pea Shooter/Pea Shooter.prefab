@@ -34,7 +34,7 @@ Transform:
   m_Children:
   - {fileID: 9054468614484276076}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2270045519327214763
 MonoBehaviour:
@@ -54,6 +54,8 @@ MonoBehaviour:
   rOffset: 0
   followBody: 1
   source: {fileID: 0}
+  powerLevel: 0
+  triggerStatuses: []
   castStatuses: []
   hitStatuses: []
   onSetIdentity:
@@ -73,9 +75,24 @@ MonoBehaviour:
         m_CallState: 2
   positionables: []
   casting: 0
-  doCast:
+  castOnTrigger: 0
+  castOnRelease: 0
+  unCastOnRelease: 0
+  onCast:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 4999695296494182303}
+        m_TargetAssemblyTypeName: Timer, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 4059220177151922735}
         m_TargetAssemblyTypeName: ProjectileSpawner, Assembly-CSharp
         m_MethodName: Spawn
@@ -88,21 +105,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onCast:
+  onTrigger:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4999695296494182303}
-        m_TargetAssemblyTypeName: Timer, Assembly-CSharp
-        m_MethodName: Play
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+  onRelease:
+    m_PersistentCalls:
+      m_Calls: []
   onUnCast:
     m_PersistentCalls:
       m_Calls: []
