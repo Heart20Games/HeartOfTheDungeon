@@ -23,6 +23,7 @@ public class CastableGenerator : ScriptableObject
     public bool castOnChargeUp;
     [Space]
     public CastableStats stats;
+    public CastableBody bodyPrefab;
 
     [Header("Targeting")]
     public TargetingMethod targetingMethod;
@@ -32,7 +33,7 @@ public class CastableGenerator : ScriptableObject
 
     // Execution: Collider
     [ConditionalField("executionMethod", false, ExecutionMethod.ColliderBased)]
-    public CastableBody bodyPrefab;
+    public CastedBody castedPrefab;
 
     // Execution: Projectile
     [ConditionalField("executionMethod", false, ExecutionMethod.ProjectileBased)]
@@ -168,9 +169,9 @@ public class CastableGenerator : ScriptableObject
                     case ExecutionMethod.ColliderBased:
                     {
                             pivot.enabled = false;
-                            if (bodyPrefab != null)
+                            if (castedPrefab != null)
                             {
-                                CastableBody body = Instantiate(bodyPrefab, pivot.transform);
+                                CastedBody body = Instantiate(castedPrefab, pivot.transform);
                                 pivot.body = body.transform;
                                 body.enabled = false;
                                 if (damager != null)
