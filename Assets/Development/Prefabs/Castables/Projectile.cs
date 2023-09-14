@@ -4,7 +4,7 @@ using UnityEngine.Events;
 using static Colliders;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Projectile : CastableBody, ICollidable
+public class Projectile : CastedBody, ICollidable
 {
     public Vector3 direction = new();
     public float speed = 0;
