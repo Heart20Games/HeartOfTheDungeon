@@ -121,7 +121,7 @@ public class CastableGenerator : ScriptableObject
                 if (bodyPrefab != null)
                 {
                     body = Instantiate(bodyPrefab, castable.transform);
-                    castable.body = body;
+                    body.castable = castable;
                 }
 
                 // Stats

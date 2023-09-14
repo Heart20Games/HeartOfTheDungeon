@@ -5,10 +5,8 @@ using UnityEngine.Events;
 
 public class CastableBody : BaseMonoBehaviour
 {
-    // Power Level
-    public UnityEvent<float> onSetPowerLevel;
-    public void SetPowerLevel(float powerLevel)
-    {
-        onSetPowerLevel.Invoke(powerLevel);
-    }
+    public Castable castable;
+
+    public float PowerLevel { get => castable.PowerLevel; }
+    public Transform WeaponPivot { get => castable.source.weaponOffset; }
 }
