@@ -17,13 +17,14 @@ public class Castable : BaseMonoBehaviour, ICastable
     public Transform pivot;
     public float rOffset = 0;
     public bool followBody = true;
+    public CastableBody body;
     [HideInInspector] public Character source;
 
     private Vector3 direction;
     public virtual Vector3 Direction { get => direction; set => direction = value; }
 
     [ReadOnly][SerializeField] private float powerLevel;
-    public void SetPowerLevel(float powerLevel) { this.powerLevel = powerLevel; }
+    public void SetPowerLevel(float powerLevel) { this.powerLevel = powerLevel; body.SetPowerLevel(powerLevel); }
 
     // Statuses
     [Header("Statuses")]
