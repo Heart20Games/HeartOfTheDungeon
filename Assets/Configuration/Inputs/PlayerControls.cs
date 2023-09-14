@@ -555,6 +555,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Character Screen"",
+                    ""type"": ""Button"",
+                    ""id"": ""acd888a2-35d2-4630-abef-0795efc1cdec"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause Screen"",
+                    ""type"": ""Button"",
+                    ""id"": ""5cefbba1-149c-403f-a81d-3edd151fe1a8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1182,6 +1200,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Toggle LockOn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e228ea0b-b08e-40b3-a4ff-718808aec33c"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Character Screen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3882c481-4b93-4b0b-a6e7-d559aba6bf20"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause Screen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2272,6 +2312,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_SwitchCharacterRight = m_Player.FindAction("Switch Character Right", throwIfNotFound: true);
         m_Player_RestartLevel1 = m_Player.FindAction("Restart Level1", throwIfNotFound: true);
         m_Player_ToggleControls = m_Player.FindAction("Toggle Controls", throwIfNotFound: true);
+        m_Player_CharacterScreen = m_Player.FindAction("Character Screen", throwIfNotFound: true);
+        m_Player_PauseScreen = m_Player.FindAction("Pause Screen", throwIfNotFound: true);
         // Dismiss
         m_Dismiss = asset.FindActionMap("Dismiss", throwIfNotFound: true);
         m_Dismiss_Dismiss = m_Dismiss.FindAction("Dismiss", throwIfNotFound: true);
@@ -2513,6 +2555,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SwitchCharacterRight;
     private readonly InputAction m_Player_RestartLevel1;
     private readonly InputAction m_Player_ToggleControls;
+    private readonly InputAction m_Player_CharacterScreen;
+    private readonly InputAction m_Player_PauseScreen;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -2534,6 +2578,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @SwitchCharacterRight => m_Wrapper.m_Player_SwitchCharacterRight;
         public InputAction @RestartLevel1 => m_Wrapper.m_Player_RestartLevel1;
         public InputAction @ToggleControls => m_Wrapper.m_Player_ToggleControls;
+        public InputAction @CharacterScreen => m_Wrapper.m_Player_CharacterScreen;
+        public InputAction @PauseScreen => m_Wrapper.m_Player_PauseScreen;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2594,6 +2640,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ToggleControls.started += instance.OnToggleControls;
             @ToggleControls.performed += instance.OnToggleControls;
             @ToggleControls.canceled += instance.OnToggleControls;
+            @CharacterScreen.started += instance.OnCharacterScreen;
+            @CharacterScreen.performed += instance.OnCharacterScreen;
+            @CharacterScreen.canceled += instance.OnCharacterScreen;
+            @PauseScreen.started += instance.OnPauseScreen;
+            @PauseScreen.performed += instance.OnPauseScreen;
+            @PauseScreen.canceled += instance.OnPauseScreen;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -2649,6 +2701,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ToggleControls.started -= instance.OnToggleControls;
             @ToggleControls.performed -= instance.OnToggleControls;
             @ToggleControls.canceled -= instance.OnToggleControls;
+            @CharacterScreen.started -= instance.OnCharacterScreen;
+            @CharacterScreen.performed -= instance.OnCharacterScreen;
+            @CharacterScreen.canceled -= instance.OnCharacterScreen;
+            @PauseScreen.started -= instance.OnPauseScreen;
+            @PauseScreen.performed -= instance.OnPauseScreen;
+            @PauseScreen.canceled -= instance.OnPauseScreen;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -3012,6 +3070,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSwitchCharacterRight(InputAction.CallbackContext context);
         void OnRestartLevel1(InputAction.CallbackContext context);
         void OnToggleControls(InputAction.CallbackContext context);
+        void OnCharacterScreen(InputAction.CallbackContext context);
+        void OnPauseScreen(InputAction.CallbackContext context);
     }
     public interface IDismissActions
     {
