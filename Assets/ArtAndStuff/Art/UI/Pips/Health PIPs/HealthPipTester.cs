@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HealthPipTester : BaseMonoBehaviour
 {
-    public HealthPips healthPips;
+    public OldHealthPips healthPips;
     public bool takeDamage;
     public int damageToTake;
     public bool healDamage;

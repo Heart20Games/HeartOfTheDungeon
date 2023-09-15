@@ -301,6 +301,8 @@ MonoBehaviour:
   rOffset: 0
   followBody: 1
   source: {fileID: 0}
+  powerLevel: 0
+  triggerStatuses: []
   castStatuses: []
   hitStatuses: []
   onSetIdentity:
@@ -320,16 +322,16 @@ MonoBehaviour:
         m_CallState: 2
   positionables: []
   casting: 0
-  doCast:
-    m_PersistentCalls:
-      m_Calls: []
+  castOnTrigger: 0
+  castOnRelease: 0
+  unCastOnRelease: 0
   onCast:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2704682877564100063}
         m_TargetAssemblyTypeName: Timer, Assembly-CSharp
         m_MethodName: Play
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: 
@@ -338,6 +340,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onRelease:
+    m_PersistentCalls:
+      m_Calls: []
   onUnCast:
     m_PersistentCalls:
       m_Calls: []

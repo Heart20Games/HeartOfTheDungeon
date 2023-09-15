@@ -4,7 +4,7 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using static Body.Behavior.ContextSteering.CSIdentity;
 
-public class HealthPips : Health
+public class OldHealthPips : Health
 {
     [SerializeField]
     private List<GameObject> healthPips = new();

@@ -23,7 +23,8 @@ public class Castable : BaseMonoBehaviour, ICastable
     public virtual Vector3 Direction { get => direction; set => direction = value; }
 
     [ReadOnly][SerializeField] private float powerLevel;
-    public void SetPowerLevel(float powerLevel) { this.powerLevel = powerLevel; }
+    public float PowerLevel { get => powerLevel; set => powerLevel = value; }
+    public void SetPowerLevel(float powerLevel) { PowerLevel = powerLevel; }
 
     // Statuses
     [Header("Statuses")]

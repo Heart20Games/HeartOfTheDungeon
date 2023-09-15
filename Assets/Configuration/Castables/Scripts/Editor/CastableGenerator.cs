@@ -23,6 +23,7 @@ public class CastableGenerator : ScriptableObject
     public bool castOnChargeUp;
     [Space]
     public CastableStats stats;
+    public CastableBody bodyPrefab;
 
     [Header("Targeting")]
     public TargetingMethod targetingMethod;
@@ -32,7 +33,7 @@ public class CastableGenerator : ScriptableObject
 
     // Execution: Collider
     [ConditionalField("executionMethod", false, ExecutionMethod.ColliderBased)]
-    public CastableBody bodyPrefab;
+    public CastedBody castedPrefab;
 
     // Execution: Projectile
     [ConditionalField("executionMethod", false, ExecutionMethod.ProjectileBased)]
@@ -110,9 +111,18 @@ public class CastableGenerator : ScriptableObject
                 castable.castOnRelease = castOnRelease;
                 castable.unCastOnRelease = unCastOnRelease;
 
+                // Pivot
                 GameObject pivotObject = new("Pivot");
                 Pivot pivot = pivotObject.AddComponent<Pivot>();
                 pivot.transform.SetParent(gameObject.transform, false);
+
+                // Body
+                CastableBody body = null;
+                if (bodyPrefab != null)
+                {
+                    body = Instantiate(bodyPrefab, castable.transform);
+                    body.castable = castable;
+                }
 
                 // Stats
                 Damager damager = null;
@@ -168,17 +178,17 @@ public class CastableGenerator : ScriptableObject
                     case ExecutionMethod.ColliderBased:
                     {
                             pivot.enabled = false;
-                            if (bodyPrefab != null)
+                            if (castedPrefab != null)
                             {
-                                CastableBody body = Instantiate(bodyPrefab, pivot.transform);
-                                pivot.body = body.transform;
-                                body.enabled = false;
+                                CastedBody collider = Instantiate(castedPrefab, pivot.transform);
+                                pivot.body = collider.transform;
+                                collider.enabled = false;
                                 if (damager != null)
                                 {
-                                    body.hitDamageable = new();
-                                    body.leftDamageable = new();
-                                    UnityEventTools.AddPersistentListener(body.hitDamageable, damager.HitDamageable);
-                                    UnityEventTools.AddPersistentListener(body.leftDamageable, damager.LeftDamageable);
+                                    collider.hitDamageable = new();
+                                    collider.leftDamageable = new();
+                                    UnityEventTools.AddPersistentListener(collider.hitDamageable, damager.HitDamageable);
+                                    UnityEventTools.AddPersistentListener(collider.leftDamageable, damager.LeftDamageable);
                                 }
                             }
                             break;
