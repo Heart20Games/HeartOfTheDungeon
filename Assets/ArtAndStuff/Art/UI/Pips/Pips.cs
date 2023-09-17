@@ -1,14 +1,35 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Canvas))]
 public class Pips : BaseMonoBehaviour
 {
-    [SerializeField] private List<GameObject> pips = new();
-    private readonly List<Animator> pipAnimator = new();
-    [SerializeField] private GameObject pipPrefab;
-    [SerializeField] private Transform pipCanvas;
-    [SerializeField] private string filledProperty = "IsFilled";
+    [SerializeField] private Pip pipPrefab;
+    private Canvas canvas;
+    [ReadOnly][SerializeField] private List<Pip> pips = new();
+
+    [Header("Pip Counts")]
+    [SerializeField] protected int totalPips;
+    [SerializeField] protected int filledPips;
+    [SerializeField] private bool updatePips = false;
+    private int oldPipCount;
+    private int oldFilledCount;
+
+    private void Awake()
+    {
+        canvas = GetComponent<Canvas>();
+        oldPipCount = totalPips;
+        oldFilledCount = filledPips;
+    }
+
+    private void Update()
+    {
+        if (updatePips)
+        {
+            if (totalPips != oldPipCount) SetPipCount(totalPips);
+            if (filledPips != oldFilledCount) SetFilled(filledPips);
+        }
+    }
 
     private void FixedUpdate()
     {
@@ -17,45 +38,40 @@ public class Pips : BaseMonoBehaviour
 
     public void SetFilled(int filled)
     {
-        for (int i = 0; i < filled; i++)
+        filledPips = filled;
+        for (int i = 0; i < pips.Count; i++)
         {
-            pipAnimator[i].SetBool("IsFilled", true);
-        }
-        for (int i = filled; i < pips.Count; i++)
-        {
-            pipAnimator[i].SetBool("IsFilled", false);
+            pips[i].Filled = i < filled;
         }
     }
 
     protected void ClearPips()
     {
-        foreach (GameObject pip in pips)
+        foreach (Pip pip in pips)
         {
-            Destroy(pip);
+            Destroy(pip.gameObject);
         }
         pips.Clear();
-        pipAnimator.Clear();
     }
 
     private void AddPips(int number)
     {
         for (int i = 0; i < number; i++)
         {
-            GameObject pip = Instantiate(pipPrefab, pipCanvas);
+            Pip pip = Instantiate(pipPrefab, canvas.transform);
             pips.Add(pip);
-            pipAnimator.Add(pip.GetComponent<Animator>());
         }
     }
 
     private void RemovePips(int number)
     {
         pips.RemoveRange(pips.Count - number, number);
-        pipAnimator.RemoveRange(pipAnimator.Count - number, number);
     }
 
     public void SetPipCount(int total)
     {
-        ClearPips();
+        totalPips = total;
+        filledPips = Mathf.Min(filledPips, totalPips);
         if (pips.Count > total)
             RemovePips(pips.Count - total);
         else if (pips.Count < total)

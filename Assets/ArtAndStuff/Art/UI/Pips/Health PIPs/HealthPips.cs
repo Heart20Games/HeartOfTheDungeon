@@ -7,16 +7,16 @@ using UnityEngine.Events;
 
 public class HealthPips : Pips, IHealth
 {
-    public int healthTotal = 0;
-    public int health = 0;
+    public int HealthTotal { get => totalPips; set => totalPips = value; }
+    public int Health { get => filledPips; set => filledPips = value; }
     public UnityEvent<int> onTakeDamage;
     public UnityEvent<int, Identity> onTakeDamageFrom;
     public UnityEvent onNoHealth;
-    
+
     // Pips
     private void RefreshPips()
     {
-        int damage = Mathf.Min(healthTotal - health, healthTotal);
+        int damage = Mathf.Min(HealthTotal - Health, HealthTotal);
         if (isActiveAndEnabled)
             SetFilled(damage);
     }
@@ -24,24 +24,24 @@ public class HealthPips : Pips, IHealth
     // IHealth
     public virtual void HealDamage(int amount)
     {
-        health += amount;
+        Health += amount;
         RefreshPips();
     }
     public virtual void SetHealth(int amount)
     {
-        health = amount;
+        Health = amount;
         RefreshPips();
     }
     public virtual void SetHealthBase(int amount, int total)
     {
-        health = amount;
+        Health = amount;
         SetHealthTotal(amount);
     }
     public virtual void SetHealthTotal(int amount)
     {
-        healthTotal = amount;
-        SetPipCount(healthTotal);
-        SetHealth(Mathf.Min(healthTotal, health));
+        HealthTotal = amount;
+        SetPipCount(HealthTotal);
+        SetHealth(Mathf.Min(HealthTotal, Health));
     }
 
     public void TakeDamage(int amount)
@@ -50,12 +50,12 @@ public class HealthPips : Pips, IHealth
     }
     public virtual void TakeDamage(int amount, Identity id = Identity.Neutral)
     {
-        health -= amount;
+        Health -= amount;
         onTakeDamage.Invoke(amount);
         onTakeDamageFrom.Invoke(amount, id);
-        if (health <= 0)
+        if (Health <= 0)
         {
-            health = Mathf.Max(health, 0);
+            Health = Mathf.Max(Health, 0);
             onNoHealth.Invoke();
         }
         RefreshPips();
