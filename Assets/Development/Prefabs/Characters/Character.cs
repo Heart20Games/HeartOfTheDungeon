@@ -52,7 +52,8 @@ namespace Body
 
         [Header("Casting")]
         [HideInInspector] public Caster caster;
-        public Transform weaponOffset;
+        public Transform weaponLocation;
+        public Transform firingLocation;
         public Loadout Loadout { get => statBlock.loadout; }
 
         // Identifiable
