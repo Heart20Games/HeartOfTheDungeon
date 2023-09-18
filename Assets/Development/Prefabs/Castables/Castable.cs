@@ -91,8 +91,10 @@ public class Castable : BaseMonoBehaviour, ICastable
             PositionCastable();
         }
         source.artRenderer.DisplayWeapon(weaponArt);
-        ParentTo(toFiringLocation, source.firingLocation);
-        ParentTo(toWeaponLocation, source.weaponLocation);
+        if (source.firingLocation != null)
+            ParentTo(toFiringLocation, source.firingLocation);
+        if (source.weaponLocation != null)
+            ParentTo(toWeaponLocation, source.weaponLocation);
     }
 
     private void ParentTo(List<Transform> transforms, Transform target)
@@ -195,7 +197,8 @@ public class Castable : BaseMonoBehaviour, ICastable
             if (target is IPositionable positionable)
             {
                 positionable.SetOrigin(effectParent, source.body);
-                positionable.SetOffset(source.weaponLocation.localPosition, rOffset);
+                if (source.weaponLocation != null)
+                    positionable.SetOffset(source.weaponLocation.localPosition, rOffset);
             }
         }
     } 
