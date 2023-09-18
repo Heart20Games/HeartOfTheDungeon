@@ -13,7 +13,7 @@ public class UserInterface : BaseMonoBehaviour
     public DialogueRunner dialogueRunner;
     public HUD hud;
     public GameObject controlScreen;
-    public CharacterMenu characterScreen;
+    public CharacterSheet characterScreen;
 
     private readonly List<GameObject> panels = new();
 
