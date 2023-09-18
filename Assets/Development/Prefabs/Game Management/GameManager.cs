@@ -143,8 +143,9 @@ public class Game : BaseMonoBehaviour
         if (debug) print($"Activate inputMode {mode}.");
         userInterface.SetHudActive(mode.hudActive);
         userInterface.SetDialogueActive(mode.dialogueActive);
-        userInterface.SetControlScreenActive(mode.controlScreenActive);
-        input.SwitchCurrentActionMap(mode.inputMap);
+        userInterface.SetControlScreenActive(mode.activeMenu == Menu.Controls);
+        userInterface.SetCharacterSheetActive(mode.activeMenu == Menu.StatSheet);
+        input.SwitchCurrentActionMap(mode.inputMode.ToString());
         TimeScale = mode.timeScale;
 
         // Swap Controllables

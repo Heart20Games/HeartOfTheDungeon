@@ -13,7 +13,7 @@ public class UserInterface : BaseMonoBehaviour
     public DialogueRunner dialogueRunner;
     public HUD hud;
     public GameObject controlScreen;
-    public CharacterSheet characterScreen;
+    public CharacterSheet characterSheet;
 
     private readonly List<GameObject> panels = new();
 
@@ -31,6 +31,7 @@ public class UserInterface : BaseMonoBehaviour
         SetDialogueActive(false);
         SetHudActive(true);
         SetControlScreenActive(false);
+        SetCharacterSheetActive(false);
     }
 
     // Setters
@@ -50,16 +51,21 @@ public class UserInterface : BaseMonoBehaviour
         controlScreen.SetActive(active);
     }
 
+    public void SetCharacterSheetActive(bool active)
+    {
+        characterSheet.gameObject.SetActive(active);
+    }
+
     // Set Character
 
     public void SetCharacter(Character character)
     {
         controlledCharacter = character;
+        characterSheet.SetCharacter(character.statBlock);
     }
 
     public void UpdateWeapon()
     {
-
     }
 
     // Continue
