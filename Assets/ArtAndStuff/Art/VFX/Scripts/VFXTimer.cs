@@ -2,7 +2,7 @@ using MyBox;
 using UnityEngine;
 using UnityEngine.Events;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class VFXTimer : BaseMonoBehaviour
 {
     [SerializeField] private string[] properties;
