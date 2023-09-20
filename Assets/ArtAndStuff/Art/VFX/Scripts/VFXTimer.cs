@@ -2,7 +2,8 @@ using MyBox;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class VFXTimer : MonoBehaviour
+[ExecuteInEditMode]
+public class VFXTimer : BaseMonoBehaviour
 {
     [SerializeField] private string[] properties;
     [SerializeField] private float range = 1;
@@ -21,21 +22,25 @@ public class VFXTimer : MonoBehaviour
 
     private void Update()
     {
-        if (wrap)
+        while (enabled)
         {
-            elapsedTime = Mathf.Repeat(elapsedTime + Time.deltaTime, range);
-        }
-        else if (clamp)
-        {
-            elapsedTime = Mathf.Clamp(elapsedTime + Time.deltaTime, 0, range);
-        }
-        else
-        {
-            elapsedTime += Time.deltaTime;
-        }
-        foreach (string property in properties)
-        {
-            sendToTargets.Invoke(property, elapsedTime);
+            Debug.Log("Update VFX Timer");
+            if (wrap)
+            {
+                elapsedTime = Mathf.Repeat(elapsedTime + Time.deltaTime, range);
+            }
+            else if (clamp)
+            {
+                elapsedTime = Mathf.Clamp(elapsedTime + Time.deltaTime, 0, range);
+            }
+            else
+            {
+                elapsedTime += Time.deltaTime;
+            }
+            foreach (string property in properties)
+            {
+                sendToTargets.Invoke(property, elapsedTime);
+            }
         }
     }
 }
