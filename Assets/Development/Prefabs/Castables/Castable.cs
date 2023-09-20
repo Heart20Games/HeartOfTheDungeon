@@ -26,6 +26,10 @@ public class Castable : BaseMonoBehaviour, ICastable
     public float PowerLevel { get => powerLevel; set => powerLevel = value; }
     public void SetPowerLevel(float powerLevel) { PowerLevel = powerLevel; }
 
+    [Header("Things to Position")]
+    public List<Transform> toWeaponLocation = new();
+    public List<Transform> toFiringLocation = new();
+
     // Statuses
     [Header("Statuses")]
     public List<Status> triggerStatuses;
@@ -78,6 +82,8 @@ public class Castable : BaseMonoBehaviour, ICastable
         this.source = source;
         Identity = source.Identity;
         if (damager != null) { damager.Ignore(source.body); }
+        
+        // Positioning
         ReportOriginToPositionables();
         if (source.body != null)
         {
@@ -85,8 +91,22 @@ public class Castable : BaseMonoBehaviour, ICastable
             PositionCastable();
         }
         source.artRenderer.DisplayWeapon(weaponArt);
+        if (source.firingLocation != null)
+            ParentTo(toFiringLocation, source.firingLocation);
+        if (source.weaponLocation != null)
+            ParentTo(toWeaponLocation, source.weaponLocation);
     }
 
+    private void ParentTo(List<Transform> transforms, Transform target)
+    {
+        foreach (var part in transforms)
+        {
+            //if (part.gameObject.scene.rootCount == 0)
+            //    Instantiate(part, target);
+            //else
+            part.SetParent(target, false);
+        }
+    }
 
     // Equipping
     public virtual void Disable() { }
@@ -162,10 +182,11 @@ public class Castable : BaseMonoBehaviour, ICastable
 
     private void ReportOriginToPositionables()
     {
-
         Transform effectParent = followBody ? source.body : source.transform;
         ReportOriginAmong(onTrigger, effectParent);
         ReportOriginAmong(onCast, effectParent);
+        ReportOriginAmong(onUnCast, effectParent);
+        ReportOriginAmong(onRelease, effectParent);
     }
 
     private void ReportOriginAmong(UnityEventBase uEvent, Transform effectParent)
@@ -176,7 +197,8 @@ public class Castable : BaseMonoBehaviour, ICastable
             if (target is IPositionable positionable)
             {
                 positionable.SetOrigin(effectParent, source.body);
-                positionable.SetOffset(source.weaponOffset.localPosition, rOffset);
+                if (source.weaponLocation != null)
+                    positionable.SetOffset(source.weaponLocation.localPosition, rOffset);
             }
         }
     } 

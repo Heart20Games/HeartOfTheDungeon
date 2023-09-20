@@ -23,7 +23,8 @@ public class CastableGenerator : ScriptableObject
     public bool castOnChargeUp;
     [Space]
     public CastableStats stats;
-    public CastableBody bodyPrefab;
+    public List<CastableBody> weaponBodies;
+    public List<CastableBody> firingBodies;
 
     [Header("Targeting")]
     public TargetingMethod targetingMethod;
@@ -116,12 +117,25 @@ public class CastableGenerator : ScriptableObject
                 Pivot pivot = pivotObject.AddComponent<Pivot>();
                 pivot.transform.SetParent(gameObject.transform, false);
 
-                // Body
-                CastableBody body = null;
-                if (bodyPrefab != null)
+                // Bodies
+                foreach (CastableBody prefab in weaponBodies)
                 {
-                    body = Instantiate(bodyPrefab, castable.transform);
-                    body.castable = castable;
+                    if (prefab != null)
+                    {
+                        CastableBody body = Instantiate(prefab, castable.transform);
+                        body.castable = castable;
+                        castable.toWeaponLocation.Add(body.transform);
+                    }
+                }
+
+                foreach (CastableBody prefab in firingBodies)
+                {
+                    if (prefab != null)
+                    {
+                        CastableBody body = Instantiate(prefab, castable.transform);
+                        body.castable = castable;
+                        castable.toFiringLocation.Add(body.transform);
+                    }
                 }
 
                 // Stats
