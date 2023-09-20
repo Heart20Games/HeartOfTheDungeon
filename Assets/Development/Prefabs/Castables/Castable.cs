@@ -23,8 +23,9 @@ public class Castable : BaseMonoBehaviour, ICastable
     public virtual Vector3 Direction { get => direction; set => direction = value; }
 
     [ReadOnly][SerializeField] private float powerLevel;
-    public float PowerLevel { get => powerLevel; set => powerLevel = value; }
-    public void SetPowerLevel(float powerLevel) { PowerLevel = powerLevel; }
+    public float PowerLevel { get => powerLevel; set => SetPowerLevel(value); }
+    public void SetPowerLevel(float powerLevel) { this.powerLevel = powerLevel; onSetPowerLevel.Invoke(this.powerLevel); }
+    public UnityEvent<float> onSetPowerLevel;
 
     [Header("Things to Position")]
     public List<Transform> toWeaponLocation = new();

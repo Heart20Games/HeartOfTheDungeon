@@ -124,7 +124,9 @@ public class CastableGenerator : ScriptableObject
                     {
                         CastableBody body = Instantiate(prefab, castable.transform);
                         body.castable = castable;
+                        body.onSetPowerLevel = new();
                         castable.toWeaponLocation.Add(body.transform);
+                        UnityEventTools.AddPersistentListener(castable.onSetPowerLevel, body.onSetPowerLevel.Invoke);
                     }
                 }
 

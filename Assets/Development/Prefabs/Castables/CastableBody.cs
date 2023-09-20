@@ -9,4 +9,7 @@ public class CastableBody : BaseMonoBehaviour
 
     public float PowerLevel { get => castable.PowerLevel; }
     public Transform WeaponPivot { get => castable.source.weaponLocation; }
+
+    public UnityEvent<float> onSetPowerLevel;
+    public UnityEvent<int> onSetPowerLimit;
 }
