@@ -12,6 +12,13 @@ namespace HotD.VFX
             public T value;
         }
 
+        public int numChargeLevels;
+
         public UnityEvent<string, bool> testEvent;
+
+        // Set Charge Times
+
+
+        // Set Charge Max
     }
 }
