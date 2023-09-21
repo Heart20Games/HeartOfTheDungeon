@@ -8,6 +8,7 @@ namespace Body
 {
     using Behavior;
     using Body.Behavior.ContextSteering;
+    using HotD.Castables;
     using Selection;
     using System.Collections;
     using static Body.Behavior.ContextSteering.CSIdentity;

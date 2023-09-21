@@ -297,6 +297,13 @@ MonoBehaviour:
     onDisable:
       m_PersistentCalls:
         m_Calls: []
+  castableEvents:
+    onSetPowerLevel:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetPowerLimit:
+      m_PersistentCalls:
+        m_Calls: []
   hitDamageable:
     m_PersistentCalls:
       m_Calls:
@@ -6285,9 +6292,14 @@ MonoBehaviour:
   weaponArt: {fileID: 0}
   pivot: {fileID: 0}
   rOffset: 0
-  followBody: 1
+  followBody: 0
   source: {fileID: 0}
   powerLevel: 0
+  onSetPowerLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  toWeaponLocation: []
+  toFiringLocation: []
   triggerStatuses: []
   castStatuses: []
   hitStatuses: []
@@ -6327,7 +6339,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 5839299068468029541}
-        m_TargetAssemblyTypeName: ProjectileSpawner, Assembly-CSharp
+        m_TargetAssemblyTypeName: HotD.Castables.ProjectileSpawner, Assembly-CSharp
         m_MethodName: Spawn
         m_Mode: 0
         m_Arguments:
@@ -6412,7 +6424,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3708791454619257301}
-        m_TargetAssemblyTypeName: Castable, Assembly-CSharp
+        m_TargetAssemblyTypeName: HotD.Castables.Castable, Assembly-CSharp
         m_MethodName: SetPowerLevel
         m_Mode: 0
         m_Arguments:
@@ -6425,19 +6437,7 @@ MonoBehaviour:
         m_CallState: 2
   onCharged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3708791454619257301}
-        m_TargetAssemblyTypeName: Castable, Assembly-CSharp
-        m_MethodName: Cast
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onInterrupt:
     m_PersistentCalls:
       m_Calls: []
@@ -6462,7 +6462,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3708791454619257301}
-        m_TargetAssemblyTypeName: Castable, Assembly-CSharp
+        m_TargetAssemblyTypeName: HotD.Castables.Castable, Assembly-CSharp
         m_MethodName: UnCast
         m_Mode: 0
         m_Arguments:
@@ -6489,7 +6489,7 @@ MonoBehaviour:
   target: {fileID: 0}
   offset: {x: 0, y: 0, z: 0}
   rOffset: 0
-  lifeSpan: 2
+  lifeSpan: 3
   pivot: {fileID: 7296956242916593122}
   projectile: {fileID: 5035156582348898493}
   followBody: 0

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Ability : Castable
+namespace HotD.Castables
 {
+    public class Ability : Castable
+    {
+    }
 }
