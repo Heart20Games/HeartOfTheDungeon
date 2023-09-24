@@ -301,53 +301,55 @@ namespace HotD.Castables
             [ConditionalField("method", false, ExecutionMethod.ProjectileBased)]
             public Projectile projectilePrefab;
 
-            public void PrepareExecutionMethod(Castable castable, Pivot pivot, GameObject gameObject, Damager damager = null)
+            public readonly void PrepareExecutionMethod(Castable castable, Pivot pivot, GameObject gameObject, Damager damager = null)
             {
                 switch (method)
                 {
-                    case ExecutionMethod.ColliderBased:
-                        {
-                            pivot.enabled = false;
-                            if (castedPrefab != null)
-                            {
-                                CastedCollider collider = Instantiate(castedPrefab, pivot.transform);
-                                //pivot.body = collider.transform;
-                                collider.enabled = false;
-                                if (damager != null)
-                                {
-                                    collider.hitDamageable = new();
-                                    collider.leftDamageable = new();
-                                    UnityEventTools.AddPersistentListener(collider.hitDamageable, damager.HitDamageable);
-                                    UnityEventTools.AddPersistentListener(collider.leftDamageable, damager.LeftDamageable);
-                                }
-                            }
-                            break;
-                        }
-                    case ExecutionMethod.ProjectileBased:
-                        {
-                            ProjectileSpawner spawner = gameObject.AddComponent<ProjectileSpawner>();
-                            UnityEventTools.AddPersistentListener(castable.onCast, spawner.Spawn);
-                            spawner.pivot = pivot.transform;
-                            spawner.lifeSpan = projectileLifeSpan;
-                            pivot.enabled = false;
-
-                            if (projectilePrefab != null)
-                            {
-                                Projectile projectile = Instantiate(projectilePrefab, pivot.transform);
-                                spawner.projectile = projectile;
-                                //pivot.body = projectile.transform;
-                                projectile.transform.position = new();
-                                if (damager != null)
-                                {
-                                    projectile.hitDamageable = new();
-                                    projectile.leftDamageable = new();
-                                    UnityEventTools.AddPersistentListener(projectile.hitDamageable, damager.HitDamageable);
-                                    UnityEventTools.AddPersistentListener(projectile.leftDamageable, damager.LeftDamageable);
-                                }
-                            }
-                            break;
-                        }
+                    case ExecutionMethod.ColliderBased: PrepareCollisionMethod(pivot, damager); break;
+                    case ExecutionMethod.ProjectileBased: PrepareProjectileMethod(castable, pivot, gameObject, damager); break;
                     case ExecutionMethod.SelectionBased: break;
+                }
+            }
+
+            public readonly void PrepareCollisionMethod(Pivot pivot, Damager damager = null)
+            {
+                pivot.enabled = false;
+                if (castedPrefab != null)
+                {
+                    CastedCollider collider = Instantiate(castedPrefab, pivot.transform);
+                    //pivot.body = collider.transform;
+                    collider.enabled = false;
+                    if (damager != null)
+                    {
+                        collider.hitDamageable = new();
+                        collider.leftDamageable = new();
+                        UnityEventTools.AddPersistentListener(collider.hitDamageable, damager.HitDamageable);
+                        UnityEventTools.AddPersistentListener(collider.leftDamageable, damager.LeftDamageable);
+                    }
+                }
+            }
+
+            public readonly void PrepareProjectileMethod(Castable castable, Pivot pivot, GameObject gameObject, Damager damager = null)
+            {
+                ProjectileSpawner spawner = gameObject.AddComponent<ProjectileSpawner>();
+                UnityEventTools.AddPersistentListener(castable.onCast, spawner.Spawn);
+                spawner.pivot = pivot.transform;
+                spawner.lifeSpan = projectileLifeSpan;
+                pivot.enabled = false;
+
+                if (projectilePrefab != null)
+                {
+                    Projectile projectile = Instantiate(projectilePrefab, pivot.transform);
+                    spawner.projectile = projectile;
+                    //pivot.body = projectile.transform;
+                    projectile.transform.position = new();
+                    if (damager != null)
+                    {
+                        projectile.hitDamageable = new();
+                        projectile.leftDamageable = new();
+                        UnityEventTools.AddPersistentListener(projectile.hitDamageable, damager.HitDamageable);
+                        UnityEventTools.AddPersistentListener(projectile.leftDamageable, damager.LeftDamageable);
+                    }
                 }
             }
         }
