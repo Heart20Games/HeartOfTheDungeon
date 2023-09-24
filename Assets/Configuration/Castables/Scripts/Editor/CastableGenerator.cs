@@ -96,8 +96,7 @@ namespace HotD.Castables
                     Pivot pivot = GeneratePivot(gameObject);
 
                     // Components
-                    Castable castable = gameObject.AddComponent<Castable>();
-                    settings.ApplyToCastable(castable);
+                    Castable castable = GenerateCastableBase(gameObject, pivot);
                     GenerateCastedBodies(weaponBodies, castable.toWeaponLocation, castable);
                     GenerateCastedBodies(firingBodies, castable.toFiringLocation, castable);
                     Damager damager = GenerateDamager(castable, gameObject);
@@ -275,8 +274,22 @@ namespace HotD.Castables
         [Serializable]
         public struct Execution
         {
-            [Header("Execution")]
+            public Execution(ExecutionMethod method=ExecutionMethod.ColliderBased, Vector2 chargeLevels=new(), Vector2 comboSteps=new())
+            {
+                this.name = method.ToString();
+                this.method = method;
+                this.chargeLevels = chargeLevels;
+                this.comboSteps = comboSteps;
+                castedPrefab = null;
+                projectileLifeSpan = 1;
+                projectilePrefab = null;
+            }
+
+            public string name;
             public ExecutionMethod method;
+
+            public Vector2 chargeLevels;
+            public Vector2 comboSteps;
 
             // Execution: Collider
             [ConditionalField("method", false, ExecutionMethod.ColliderBased)]
@@ -298,7 +311,7 @@ namespace HotD.Castables
                             if (castedPrefab != null)
                             {
                                 CastedCollider collider = Instantiate(castedPrefab, pivot.transform);
-                                pivot.body = collider.transform;
+                                //pivot.body = collider.transform;
                                 collider.enabled = false;
                                 if (damager != null)
                                 {
@@ -322,7 +335,7 @@ namespace HotD.Castables
                             {
                                 Projectile projectile = Instantiate(projectilePrefab, pivot.transform);
                                 spawner.projectile = projectile;
-                                pivot.body = projectile.transform;
+                                //pivot.body = projectile.transform;
                                 projectile.transform.position = new();
                                 if (damager != null)
                                 {
