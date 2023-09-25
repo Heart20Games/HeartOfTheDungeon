@@ -74,8 +74,8 @@ public class LoadRoom : BaseMonoBehaviour
     {
         if (asynchronous)
         {
-            loading = SceneManager.LoadSceneAsync(sceneName);
-            loading.allowSceneActivation = false;
+            if ((loading = SceneManager.LoadSceneAsync(sceneName)) != null)
+                loading.allowSceneActivation = false;
         }
         else
         {
