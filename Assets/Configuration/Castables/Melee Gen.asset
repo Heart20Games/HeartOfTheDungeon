@@ -13,18 +13,17 @@ MonoBehaviour:
   m_Name: Melee Gen
   m_EditorClassIdentifier: 
   outputName: Melee Weapon
-  followBody: 1
-  castOnTrigger: 0
-  castOnRelease: 0
-  unCastOnRelease: 0
-  castOnChargeUp: 0
+  settings:
+    followBody: 0
+    castOnTrigger: 0
+    castOnRelease: 0
+    unCastOnRelease: 0
+    castOnChargeUp: 0
   stats: {fileID: 11400000, guid: 7a518cd44e3cf7149897ec3258f7b2f5, type: 2}
-  bodyPrefab: {fileID: 0}
+  weaponBodies: []
+  firingBodies: []
   targetingMethod: 0
-  executionMethod: 0
-  castedPrefab: {fileID: 4511247513421251100, guid: 4072d33aae34dcb409ea0e4384214e4f, type: 3}
-  projectileLifeSpan: 0
-  projectilePrefab: {fileID: 0}
+  executions: []
   castablesDirectory: Assets/Configuration/Castables/
   createSubFolder: 1
   overwrite: 1
@@ -34,6 +33,10 @@ MonoBehaviour:
     targets:
     - slot: 1
       loadout: {fileID: 11400000, guid: 9a1a3901749e20c44a30215a9153ce85, type: 2}
+  - alias: Melee Weapon
+    targets:
+    - slot: 1
+      loadout: {fileID: 11400000, guid: bb50b19fd380b794eaf1dbb7bcb0607b, type: 2}
   fullDirectory: Assets/Configuration/Castables/Melee Weapon
   prefab: {fileID: 8939472843714139375, guid: 4fee876c61098ca4fbbd450dc2d82ef1, type: 3}
   items:
