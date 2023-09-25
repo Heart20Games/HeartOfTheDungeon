@@ -146,10 +146,10 @@ public class GameInput : BaseMonoBehaviour
         {
             switch (Mode)
             {
-                case InputMode.LockedOn:
+                case InputMode.LockOn:
                     Mode = InputMode.Character; break;
                 default:
-                    if (Targeter.HasTarget()) Mode = InputMode.LockedOn; break;
+                    if (Targeter.HasTarget()) Mode = InputMode.LockOn; break;
             };
         });
     }
@@ -256,7 +256,7 @@ public class GameInput : BaseMonoBehaviour
     }
 
     // Control Screen
-    public void OnToggleControls(InputValue inputValue) { IsPressed(inputValue, () => { Mode = InputMode.Dismiss; }); }
+    public void OnToggleControls(InputValue inputValue) { IsPressed(inputValue, () => { Mode = InputMode.Menu; }); }
     public void OnDismiss(InputValue inputValue) { IsPressed(inputValue, () => { Mode = InputMode.Character; }); }
 
     // Dialogue

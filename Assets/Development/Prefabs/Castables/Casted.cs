@@ -1,43 +1,41 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using UnityEngine.Events;
+using UnityEngine.Assertions;
 
 namespace HotD.Castables
 {
     public class Casted : BaseMonoBehaviour
     {
-        public StandardEvents standardEvents;
-        [Serializable] public struct StandardEvents
+        public UnityEvent onStart = new();
+        public UnityEvent onEnable = new();
+        public UnityEvent onDisable = new();
+
+        public UnityEvent<float> onSetPowerLevel = new();
+        public UnityEvent<int> onSetPowerLimit = new();
+
+        public void SetPowerLevel(float powerLevel)
         {
-            public UnityEvent onStart;
-            public UnityEvent onEnable;
-            public UnityEvent onDisable;
+            onSetPowerLevel.Invoke(powerLevel);
         }
 
-        public CastableEvents castableEvents;
-        [Serializable] public struct CastableEvents
+        public void SetPowerLimit(int powerLimit)
         {
-            public UnityEvent<float> onSetPowerLevel;
-            public UnityEvent<int> onSetPowerLimit;
-            public void Connect(Castable castable)
-            {
-
-            }
+            onSetPowerLimit.Invoke(powerLimit);
         }
 
         private void Start()
         {
-            standardEvents.onStart.Invoke();
+            onStart.Invoke();
         }
         private void OnEnable()
         {
-            standardEvents.onEnable.Invoke();
+            onEnable.Invoke();
         }
         private void OnDisable()
         {
-            standardEvents.onDisable.Invoke();
+            onDisable.Invoke();
         }
     }
 }

@@ -213,7 +213,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Selector"",
+            ""name"": ""Selection"",
             ""id"": ""e035308a-d628-4d92-87a0-6d9f43ca2995"",
             ""actions"": [
                 {
@@ -400,7 +400,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Player"",
+            ""name"": ""Character"",
             ""id"": ""68a5057e-ccca-4126-b93c-6ac885b0b0d8"",
             ""actions"": [
                 {
@@ -569,6 +569,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""Pause Screen"",
                     ""type"": ""Button"",
                     ""id"": ""5cefbba1-149c-403f-a81d-3edd151fe1a8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Character Sheet"",
+                    ""type"": ""Button"",
+                    ""id"": ""0dff1fe9-de01-4cac-b24c-005248165bb7"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press"",
@@ -1222,6 +1231,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Pause Screen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""558aae8c-8b2b-403e-b105-784f442fb3c0"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Character Sheet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a704ee3-a88e-49fb-b422-86c628505d7b"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Character Sheet"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2327,33 +2358,34 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Dialogue_Continue = m_Dialogue.FindAction("Continue", throwIfNotFound: true);
         m_Dialogue_ChangeSelection = m_Dialogue.FindAction("Change Selection", throwIfNotFound: true);
         m_Dialogue_Back = m_Dialogue.FindAction("Back", throwIfNotFound: true);
-        // Selector
-        m_Selector = asset.FindActionMap("Selector", throwIfNotFound: true);
-        m_Selector_Move = m_Selector.FindAction("Move", throwIfNotFound: true);
-        m_Selector_ToggleSkillWheel = m_Selector.FindAction("Toggle Skill Wheel", throwIfNotFound: true);
-        m_Selector_Select = m_Selector.FindAction("Select", throwIfNotFound: true);
-        m_Selector_DeSelect = m_Selector.FindAction("DeSelect", throwIfNotFound: true);
-        // Player
-        m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
-        m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
-        m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
-        m_Player_ToggleLockOn = m_Player.FindAction("Toggle LockOn", throwIfNotFound: true);
-        m_Player_ToggleSkillWheel = m_Player.FindAction("Toggle Skill Wheel", throwIfNotFound: true);
-        m_Player_RestartLevel = m_Player.FindAction("Restart Level", throwIfNotFound: true);
-        m_Player_ToggleAiming = m_Player.FindAction("ToggleAiming", throwIfNotFound: true);
-        m_Player_UseAgility = m_Player.FindAction("Use Agility", throwIfNotFound: true);
-        m_Player_UseWeapon1 = m_Player.FindAction("Use Weapon 1", throwIfNotFound: true);
-        m_Player_UseWeapon2 = m_Player.FindAction("Use Weapon 2", throwIfNotFound: true);
-        m_Player_UseAbility1 = m_Player.FindAction("Use Ability 1", throwIfNotFound: true);
-        m_Player_UseAbility2 = m_Player.FindAction("Use Ability 2", throwIfNotFound: true);
-        m_Player_SwitchCharacterLeft = m_Player.FindAction("Switch Character Left", throwIfNotFound: true);
-        m_Player_SwitchCharacterRight = m_Player.FindAction("Switch Character Right", throwIfNotFound: true);
-        m_Player_RestartLevel1 = m_Player.FindAction("Restart Level1", throwIfNotFound: true);
-        m_Player_ToggleControls = m_Player.FindAction("Toggle Controls", throwIfNotFound: true);
-        m_Player_CharacterScreen = m_Player.FindAction("Character Screen", throwIfNotFound: true);
-        m_Player_PauseScreen = m_Player.FindAction("Pause Screen", throwIfNotFound: true);
+        // Selection
+        m_Selection = asset.FindActionMap("Selection", throwIfNotFound: true);
+        m_Selection_Move = m_Selection.FindAction("Move", throwIfNotFound: true);
+        m_Selection_ToggleSkillWheel = m_Selection.FindAction("Toggle Skill Wheel", throwIfNotFound: true);
+        m_Selection_Select = m_Selection.FindAction("Select", throwIfNotFound: true);
+        m_Selection_DeSelect = m_Selection.FindAction("DeSelect", throwIfNotFound: true);
+        // Character
+        m_Character = asset.FindActionMap("Character", throwIfNotFound: true);
+        m_Character_Move = m_Character.FindAction("Move", throwIfNotFound: true);
+        m_Character_Interact = m_Character.FindAction("Interact", throwIfNotFound: true);
+        m_Character_Look = m_Character.FindAction("Look", throwIfNotFound: true);
+        m_Character_Aim = m_Character.FindAction("Aim", throwIfNotFound: true);
+        m_Character_ToggleLockOn = m_Character.FindAction("Toggle LockOn", throwIfNotFound: true);
+        m_Character_ToggleSkillWheel = m_Character.FindAction("Toggle Skill Wheel", throwIfNotFound: true);
+        m_Character_RestartLevel = m_Character.FindAction("Restart Level", throwIfNotFound: true);
+        m_Character_ToggleAiming = m_Character.FindAction("ToggleAiming", throwIfNotFound: true);
+        m_Character_UseAgility = m_Character.FindAction("Use Agility", throwIfNotFound: true);
+        m_Character_UseWeapon1 = m_Character.FindAction("Use Weapon 1", throwIfNotFound: true);
+        m_Character_UseWeapon2 = m_Character.FindAction("Use Weapon 2", throwIfNotFound: true);
+        m_Character_UseAbility1 = m_Character.FindAction("Use Ability 1", throwIfNotFound: true);
+        m_Character_UseAbility2 = m_Character.FindAction("Use Ability 2", throwIfNotFound: true);
+        m_Character_SwitchCharacterLeft = m_Character.FindAction("Switch Character Left", throwIfNotFound: true);
+        m_Character_SwitchCharacterRight = m_Character.FindAction("Switch Character Right", throwIfNotFound: true);
+        m_Character_RestartLevel1 = m_Character.FindAction("Restart Level1", throwIfNotFound: true);
+        m_Character_ToggleControls = m_Character.FindAction("Toggle Controls", throwIfNotFound: true);
+        m_Character_CharacterScreen = m_Character.FindAction("Character Screen", throwIfNotFound: true);
+        m_Character_PauseScreen = m_Character.FindAction("Pause Screen", throwIfNotFound: true);
+        m_Character_CharacterSheet = m_Character.FindAction("Character Sheet", throwIfNotFound: true);
         // Dismiss
         m_Dismiss = asset.FindActionMap("Dismiss", throwIfNotFound: true);
         m_Dismiss_Dismiss = m_Dismiss.FindAction("Dismiss", throwIfNotFound: true);
@@ -2507,30 +2539,30 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     }
     public DialogueActions @Dialogue => new DialogueActions(this);
 
-    // Selector
-    private readonly InputActionMap m_Selector;
-    private List<ISelectorActions> m_SelectorActionsCallbackInterfaces = new List<ISelectorActions>();
-    private readonly InputAction m_Selector_Move;
-    private readonly InputAction m_Selector_ToggleSkillWheel;
-    private readonly InputAction m_Selector_Select;
-    private readonly InputAction m_Selector_DeSelect;
-    public struct SelectorActions
+    // Selection
+    private readonly InputActionMap m_Selection;
+    private List<ISelectionActions> m_SelectionActionsCallbackInterfaces = new List<ISelectionActions>();
+    private readonly InputAction m_Selection_Move;
+    private readonly InputAction m_Selection_ToggleSkillWheel;
+    private readonly InputAction m_Selection_Select;
+    private readonly InputAction m_Selection_DeSelect;
+    public struct SelectionActions
     {
         private @PlayerControls m_Wrapper;
-        public SelectorActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Selector_Move;
-        public InputAction @ToggleSkillWheel => m_Wrapper.m_Selector_ToggleSkillWheel;
-        public InputAction @Select => m_Wrapper.m_Selector_Select;
-        public InputAction @DeSelect => m_Wrapper.m_Selector_DeSelect;
-        public InputActionMap Get() { return m_Wrapper.m_Selector; }
+        public SelectionActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Selection_Move;
+        public InputAction @ToggleSkillWheel => m_Wrapper.m_Selection_ToggleSkillWheel;
+        public InputAction @Select => m_Wrapper.m_Selection_Select;
+        public InputAction @DeSelect => m_Wrapper.m_Selection_DeSelect;
+        public InputActionMap Get() { return m_Wrapper.m_Selection; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(SelectorActions set) { return set.Get(); }
-        public void AddCallbacks(ISelectorActions instance)
+        public static implicit operator InputActionMap(SelectionActions set) { return set.Get(); }
+        public void AddCallbacks(ISelectionActions instance)
         {
-            if (instance == null || m_Wrapper.m_SelectorActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_SelectorActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_SelectionActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_SelectionActionsCallbackInterfaces.Add(instance);
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
@@ -2545,7 +2577,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DeSelect.canceled += instance.OnDeSelect;
         }
 
-        private void UnregisterCallbacks(ISelectorActions instance)
+        private void UnregisterCallbacks(ISelectionActions instance)
         {
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
@@ -2561,76 +2593,78 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DeSelect.canceled -= instance.OnDeSelect;
         }
 
-        public void RemoveCallbacks(ISelectorActions instance)
+        public void RemoveCallbacks(ISelectionActions instance)
         {
-            if (m_Wrapper.m_SelectorActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_SelectionActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(ISelectorActions instance)
+        public void SetCallbacks(ISelectionActions instance)
         {
-            foreach (var item in m_Wrapper.m_SelectorActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_SelectionActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_SelectorActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_SelectionActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public SelectorActions @Selector => new SelectorActions(this);
+    public SelectionActions @Selection => new SelectionActions(this);
 
-    // Player
-    private readonly InputActionMap m_Player;
-    private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
-    private readonly InputAction m_Player_Move;
-    private readonly InputAction m_Player_Interact;
-    private readonly InputAction m_Player_Look;
-    private readonly InputAction m_Player_Aim;
-    private readonly InputAction m_Player_ToggleLockOn;
-    private readonly InputAction m_Player_ToggleSkillWheel;
-    private readonly InputAction m_Player_RestartLevel;
-    private readonly InputAction m_Player_ToggleAiming;
-    private readonly InputAction m_Player_UseAgility;
-    private readonly InputAction m_Player_UseWeapon1;
-    private readonly InputAction m_Player_UseWeapon2;
-    private readonly InputAction m_Player_UseAbility1;
-    private readonly InputAction m_Player_UseAbility2;
-    private readonly InputAction m_Player_SwitchCharacterLeft;
-    private readonly InputAction m_Player_SwitchCharacterRight;
-    private readonly InputAction m_Player_RestartLevel1;
-    private readonly InputAction m_Player_ToggleControls;
-    private readonly InputAction m_Player_CharacterScreen;
-    private readonly InputAction m_Player_PauseScreen;
-    public struct PlayerActions
+    // Character
+    private readonly InputActionMap m_Character;
+    private List<ICharacterActions> m_CharacterActionsCallbackInterfaces = new List<ICharacterActions>();
+    private readonly InputAction m_Character_Move;
+    private readonly InputAction m_Character_Interact;
+    private readonly InputAction m_Character_Look;
+    private readonly InputAction m_Character_Aim;
+    private readonly InputAction m_Character_ToggleLockOn;
+    private readonly InputAction m_Character_ToggleSkillWheel;
+    private readonly InputAction m_Character_RestartLevel;
+    private readonly InputAction m_Character_ToggleAiming;
+    private readonly InputAction m_Character_UseAgility;
+    private readonly InputAction m_Character_UseWeapon1;
+    private readonly InputAction m_Character_UseWeapon2;
+    private readonly InputAction m_Character_UseAbility1;
+    private readonly InputAction m_Character_UseAbility2;
+    private readonly InputAction m_Character_SwitchCharacterLeft;
+    private readonly InputAction m_Character_SwitchCharacterRight;
+    private readonly InputAction m_Character_RestartLevel1;
+    private readonly InputAction m_Character_ToggleControls;
+    private readonly InputAction m_Character_CharacterScreen;
+    private readonly InputAction m_Character_PauseScreen;
+    private readonly InputAction m_Character_CharacterSheet;
+    public struct CharacterActions
     {
         private @PlayerControls m_Wrapper;
-        public PlayerActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Player_Move;
-        public InputAction @Interact => m_Wrapper.m_Player_Interact;
-        public InputAction @Look => m_Wrapper.m_Player_Look;
-        public InputAction @Aim => m_Wrapper.m_Player_Aim;
-        public InputAction @ToggleLockOn => m_Wrapper.m_Player_ToggleLockOn;
-        public InputAction @ToggleSkillWheel => m_Wrapper.m_Player_ToggleSkillWheel;
-        public InputAction @RestartLevel => m_Wrapper.m_Player_RestartLevel;
-        public InputAction @ToggleAiming => m_Wrapper.m_Player_ToggleAiming;
-        public InputAction @UseAgility => m_Wrapper.m_Player_UseAgility;
-        public InputAction @UseWeapon1 => m_Wrapper.m_Player_UseWeapon1;
-        public InputAction @UseWeapon2 => m_Wrapper.m_Player_UseWeapon2;
-        public InputAction @UseAbility1 => m_Wrapper.m_Player_UseAbility1;
-        public InputAction @UseAbility2 => m_Wrapper.m_Player_UseAbility2;
-        public InputAction @SwitchCharacterLeft => m_Wrapper.m_Player_SwitchCharacterLeft;
-        public InputAction @SwitchCharacterRight => m_Wrapper.m_Player_SwitchCharacterRight;
-        public InputAction @RestartLevel1 => m_Wrapper.m_Player_RestartLevel1;
-        public InputAction @ToggleControls => m_Wrapper.m_Player_ToggleControls;
-        public InputAction @CharacterScreen => m_Wrapper.m_Player_CharacterScreen;
-        public InputAction @PauseScreen => m_Wrapper.m_Player_PauseScreen;
-        public InputActionMap Get() { return m_Wrapper.m_Player; }
+        public CharacterActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Character_Move;
+        public InputAction @Interact => m_Wrapper.m_Character_Interact;
+        public InputAction @Look => m_Wrapper.m_Character_Look;
+        public InputAction @Aim => m_Wrapper.m_Character_Aim;
+        public InputAction @ToggleLockOn => m_Wrapper.m_Character_ToggleLockOn;
+        public InputAction @ToggleSkillWheel => m_Wrapper.m_Character_ToggleSkillWheel;
+        public InputAction @RestartLevel => m_Wrapper.m_Character_RestartLevel;
+        public InputAction @ToggleAiming => m_Wrapper.m_Character_ToggleAiming;
+        public InputAction @UseAgility => m_Wrapper.m_Character_UseAgility;
+        public InputAction @UseWeapon1 => m_Wrapper.m_Character_UseWeapon1;
+        public InputAction @UseWeapon2 => m_Wrapper.m_Character_UseWeapon2;
+        public InputAction @UseAbility1 => m_Wrapper.m_Character_UseAbility1;
+        public InputAction @UseAbility2 => m_Wrapper.m_Character_UseAbility2;
+        public InputAction @SwitchCharacterLeft => m_Wrapper.m_Character_SwitchCharacterLeft;
+        public InputAction @SwitchCharacterRight => m_Wrapper.m_Character_SwitchCharacterRight;
+        public InputAction @RestartLevel1 => m_Wrapper.m_Character_RestartLevel1;
+        public InputAction @ToggleControls => m_Wrapper.m_Character_ToggleControls;
+        public InputAction @CharacterScreen => m_Wrapper.m_Character_CharacterScreen;
+        public InputAction @PauseScreen => m_Wrapper.m_Character_PauseScreen;
+        public InputAction @CharacterSheet => m_Wrapper.m_Character_CharacterSheet;
+        public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
-        public void AddCallbacks(IPlayerActions instance)
+        public static implicit operator InputActionMap(CharacterActions set) { return set.Get(); }
+        public void AddCallbacks(ICharacterActions instance)
         {
-            if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_CharacterActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_CharacterActionsCallbackInterfaces.Add(instance);
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
@@ -2688,9 +2722,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @PauseScreen.started += instance.OnPauseScreen;
             @PauseScreen.performed += instance.OnPauseScreen;
             @PauseScreen.canceled += instance.OnPauseScreen;
+            @CharacterSheet.started += instance.OnCharacterSheet;
+            @CharacterSheet.performed += instance.OnCharacterSheet;
+            @CharacterSheet.canceled += instance.OnCharacterSheet;
         }
 
-        private void UnregisterCallbacks(IPlayerActions instance)
+        private void UnregisterCallbacks(ICharacterActions instance)
         {
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
@@ -2749,23 +2786,26 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @PauseScreen.started -= instance.OnPauseScreen;
             @PauseScreen.performed -= instance.OnPauseScreen;
             @PauseScreen.canceled -= instance.OnPauseScreen;
+            @CharacterSheet.started -= instance.OnCharacterSheet;
+            @CharacterSheet.performed -= instance.OnCharacterSheet;
+            @CharacterSheet.canceled -= instance.OnCharacterSheet;
         }
 
-        public void RemoveCallbacks(IPlayerActions instance)
+        public void RemoveCallbacks(ICharacterActions instance)
         {
-            if (m_Wrapper.m_PlayerActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_CharacterActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IPlayerActions instance)
+        public void SetCallbacks(ICharacterActions instance)
         {
-            foreach (var item in m_Wrapper.m_PlayerActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_CharacterActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_PlayerActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_CharacterActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public PlayerActions @Player => new PlayerActions(this);
+    public CharacterActions @Character => new CharacterActions(this);
 
     // Dismiss
     private readonly InputActionMap m_Dismiss;
@@ -3102,14 +3142,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnChangeSelection(InputAction.CallbackContext context);
         void OnBack(InputAction.CallbackContext context);
     }
-    public interface ISelectorActions
+    public interface ISelectionActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnToggleSkillWheel(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
         void OnDeSelect(InputAction.CallbackContext context);
     }
-    public interface IPlayerActions
+    public interface ICharacterActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
@@ -3130,6 +3170,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnToggleControls(InputAction.CallbackContext context);
         void OnCharacterScreen(InputAction.CallbackContext context);
         void OnPauseScreen(InputAction.CallbackContext context);
+        void OnCharacterSheet(InputAction.CallbackContext context);
     }
     public interface IDismissActions
     {

@@ -7,9 +7,10 @@ using static GameModes;
 
 public class GameModes
 {
-    public enum InputMode { None, Selection, Character, Dialogue, LockedOn, Dismiss };
+    public enum InputMode { None, Selection, Character, Dialogue, LockOn, Menu };
     public enum MoveMode { None, Selector, Character }
     public enum LookMode { None, Targeter }
+    public enum Menu { None, Controls, StatSheet }
     public static Dictionary<InputMode, GameMode> ModeBank { get { return game.settings.ModeBank; } }
 
     [Serializable]
@@ -19,11 +20,10 @@ public class GameModes
         public InputMode inputMode;
         public MoveMode moveMode;
         public LookMode lookMode;
+        public Menu activeMenu;
         public bool hudActive;
         public bool dialogueActive;
-        public bool controlScreenActive;
         public bool targetLock;
-        public string inputMap;
         public float timeScale;
         public readonly IControllable Controllable 
         { 

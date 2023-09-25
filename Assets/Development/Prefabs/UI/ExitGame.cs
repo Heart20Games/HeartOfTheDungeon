@@ -5,16 +5,16 @@ using UnityEngine.UI;
 
 public class ExitGame : MonoBehaviour
 {
-  Button myButton;
+  //Button myButton;
 
-  void Start()
-  {
-    myButton = GetComponent<Button>();
-    myButton.onClick.AddListener(ExitFunction);
-  }
+  //private void Start()
+  //{
+  //  //myButton = GetComponent<Button>();
+  //  //myButton.onClick.AddListener(ExitFunction);
+  //}
 
-  void ExitFunction()
+  public void ExitFunction()
   {
-    Application.Quit();
+     Application.Quit();
   }
 }
