@@ -8,6 +8,7 @@ namespace Body
 {
     using Behavior;
     using Body.Behavior.ContextSteering;
+    using HotD.Castables;
     using Selection;
     using System.Collections;
     using static Body.Behavior.ContextSteering.CSIdentity;
@@ -52,7 +53,8 @@ namespace Body
 
         [Header("Casting")]
         [HideInInspector] public Caster caster;
-        public Transform weaponOffset;
+        public Transform weaponLocation;
+        public Transform firingLocation;
         public Loadout Loadout { get => statBlock.loadout; }
 
         // Identifiable

@@ -9,6 +9,7 @@ namespace Body.Behavior
     using static ContextSteering.CSIdentity;
     using static ContextSteering.CSContext;
     using static Tree.LeafNode;
+    using HotD.Castables;
 
     public class Brain : BaseMonoBehaviour, ITimeScalable
     {
