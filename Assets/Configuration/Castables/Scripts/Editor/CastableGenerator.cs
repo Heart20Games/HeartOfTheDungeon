@@ -1,11 +1,10 @@
-using Cinemachine.Utility;
 using MyBox;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Events;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace HotD.Castables
 {
@@ -57,6 +56,19 @@ namespace HotD.Castables
             public Loadout loadout;
         }
 
+        // Generate All Castables
+        static public List<CastableGenerator> generators = new();
+        [MenuItem("Tools / Generate Castables")]
+        static public void GenerateAllCastables()
+        {
+            Debug.Log($"Generating {generators.Count} Castables");
+            foreach (var generator in generators)
+            {
+                generator.GenerateCastable();
+            }
+        }
+
+        // Generate Castable
         public void GenerateCastable()
         {
             if (!Application.isEditor)
@@ -65,6 +77,8 @@ namespace HotD.Castables
             }
             else
             {
+                if (!generators.Contains(this))
+                    generators.Add(this);
                 string oldDirectory = fullDirectory;
                 PrepareResultDirectory();
                 bool sameDirectory = oldDirectory.Equals(fullDirectory);
@@ -164,6 +178,13 @@ namespace HotD.Castables
         private Castable GenerateCastableBase(GameObject gameObject, Pivot pivot)
         {
             Castable castable = gameObject.AddComponent<Castable>();
+            castable.onSetPowerLevel ??= new();
+            castable.onSetIdentity ??= new();
+            castable.onCast ??= new();
+            castable.onTrigger ??= new();
+            castable.onRelease ??= new();
+            castable.onUnCast ??= new();
+            castable.onCasted ??= new();
             settings.ApplyToCastable(castable);
             castable.pivot = pivot.transform;
             return castable;
@@ -171,19 +192,26 @@ namespace HotD.Castables
 
         private void GenerateCastedBodies(List<Casted> prefabs, List<Transform> bodies, Castable castable)
         {
+            Assert.IsNotNull(castable);
             foreach (Casted prefab in prefabs)
             {
                 if (prefab != null)
                 {
                     Casted body = Instantiate(prefab, castable.transform);
+                    body.onStart = new();
+                    body.onEnable = new();
+                    body.onDisable = new();
+                    body.onSetPowerLevel = new();
+                    body.onSetPowerLimit = new();
                     bodies.Add(body.transform);
-                    UnityEventTools.AddPersistentListener(castable.onSetPowerLevel, body.castableEvents.onSetPowerLevel.Invoke);
+                    UnityEventTools.AddPersistentListener(castable.onSetPowerLevel, body.SetPowerLevel);
                 }
             }
         }
 
         private Charger GenerateCharger(Castable castable, GameObject gameObject)
         {
+            Assert.IsNotNull(castable);
             if (stats.useChargeUp)
             {
                 Charger charger = gameObject.AddComponent<Charger>();
@@ -204,6 +232,7 @@ namespace HotD.Castables
 
         private Timer GenerateCooldownTimer(Castable castable, GameObject gameObject)
         {
+            Assert.IsNotNull(castable);
             if (stats.useCooldown)
             {
                 Timer coolDownTimer = gameObject.AddComponent<Timer>();
@@ -218,6 +247,7 @@ namespace HotD.Castables
 
         private Damager GenerateDamager(Castable castable, GameObject gameObject)
         {
+            Assert.IsNotNull(castable);
             if (stats.dealDamage)
             {
                 Damager damager = gameObject.AddComponent<Damager>();
@@ -280,9 +310,9 @@ namespace HotD.Castables
                 this.method = method;
                 this.chargeLevels = chargeLevels;
                 this.comboSteps = comboSteps;
-                castedPrefab = null;
-                projectileLifeSpan = 1;
-                projectilePrefab = null;
+                this.colliderPrefab = null;
+                this.projectileLifeSpan = 1;
+                this.projectilePrefab = null;
             }
 
             public string name;
@@ -293,7 +323,7 @@ namespace HotD.Castables
 
             // Execution: Collider
             [ConditionalField("method", false, ExecutionMethod.ColliderBased)]
-            public CastedCollider castedPrefab;
+            public CastedCollider colliderPrefab;
 
             // Execution: Projectile
             [ConditionalField("method", false, ExecutionMethod.ProjectileBased)]
@@ -314,9 +344,9 @@ namespace HotD.Castables
             public readonly void PrepareCollisionMethod(Pivot pivot, Damager damager = null)
             {
                 pivot.enabled = false;
-                if (castedPrefab != null)
+                if (colliderPrefab != null)
                 {
-                    CastedCollider collider = Instantiate(castedPrefab, pivot.transform);
+                    CastedCollider collider = Instantiate(colliderPrefab, pivot.transform);
                     //pivot.body = collider.transform;
                     collider.enabled = false;
                     if (damager != null)
