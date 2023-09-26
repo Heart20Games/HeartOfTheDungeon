@@ -152,15 +152,20 @@ namespace HotD.Castables
                         {
                             copy = Instantiate(item);
                             AssetDatabase.CreateAsset(copy, $"{fullDirectory}/{output.alias}.asset");
+                            EditorUtility.SetDirty(copy);
                             items.Add(copy);
                         }
                         foreach (var target in output.targets)
                         {
                             if (target.slot != Slot.None)
+                            {
                                 target.loadout.SetSlot(target.slot, copy);
+                                EditorUtility.SetDirty(target.loadout);
+                            }
                         }
                     }
                 }
+                EditorUtility.SetDirty(this);
             }
         }
 
@@ -262,6 +267,7 @@ namespace HotD.Castables
         {
             CastableItem item = (CastableItem)CreateInstance(typeof(CastableItem));
             AssetDatabase.CreateAsset(item, $"{fullDirectory}/{outputName}.asset");
+            EditorUtility.SetDirty(item);
             item.prefab = prefab.GetComponent<Castable>();
             item.stats = stats;
             item.context = context;
