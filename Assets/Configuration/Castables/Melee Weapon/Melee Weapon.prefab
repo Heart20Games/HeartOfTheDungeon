@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &56493993019011655
+--- !u!1 &3672719424660691692
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,10 +8,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4867788600100489019}
-  - component: {fileID: 634736899380585423}
-  - component: {fileID: 8153323355148647337}
-  - component: {fileID: 8246930008715837593}
+  - component: {fileID: 4258041685082558444}
+  - component: {fileID: 1094988877264637121}
+  - component: {fileID: 97418022395361220}
+  - component: {fileID: 8939236095525615933}
   m_Layer: 0
   m_Name: Melee Weapon
   m_TagString: Untagged
@@ -19,29 +19,29 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4867788600100489019
+--- !u!4 &4258041685082558444
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 56493993019011655}
+  m_GameObject: {fileID: 3672719424660691692}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5356219123287026174}
+  - {fileID: 7699157034095057611}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &634736899380585423
+--- !u!114 &1094988877264637121
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 56493993019011655}
+  m_GameObject: {fileID: 3672719424660691692}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b80a7ea508bfd494c8639b88a320691c, type: 3}
@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 0}
   weaponArt: {fileID: 0}
-  pivot: {fileID: 5356219123287026174}
+  pivot: {fileID: 7699157034095057611}
   rOffset: 0
   followBody: 0
   source: {fileID: 0}
@@ -65,7 +65,7 @@ MonoBehaviour:
   onSetIdentity:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8153323355148647337}
+      - m_Target: {fileID: 97418022395361220}
         m_TargetAssemblyTypeName: Damager, Assembly-CSharp
         m_MethodName: SetIdentity
         m_Mode: 0
@@ -85,7 +85,7 @@ MonoBehaviour:
   onCast:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8246930008715837593}
+      - m_Target: {fileID: 8939236095525615933}
         m_TargetAssemblyTypeName: Timer, Assembly-CSharp
         m_MethodName: Play
         m_Mode: 1
@@ -109,13 +109,13 @@ MonoBehaviour:
   onCasted:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8153323355148647337
+--- !u!114 &97418022395361220
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 56493993019011655}
+  m_GameObject: {fileID: 3672719424660691692}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc6e98420917628498e843205b370fc3, type: 3}
@@ -123,13 +123,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   identity: 0
---- !u!114 &8246930008715837593
+--- !u!114 &8939236095525615933
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 56493993019011655}
+  m_GameObject: {fileID: 3672719424660691692}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d0c656f4854e7a4698ad4df13b973aa, type: 3}
@@ -143,7 +143,7 @@ MonoBehaviour:
   onComplete:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 634736899380585423}
+      - m_Target: {fileID: 1094988877264637121}
         m_TargetAssemblyTypeName: HotD.Castables.Castable, Assembly-CSharp
         m_MethodName: UnCast
         m_Mode: 0
@@ -155,7 +155,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!1 &2789905510837533941
+--- !u!1 &8291122399501682921
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -163,8 +163,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5356219123287026174}
-  - component: {fileID: 2456150089647707351}
+  - component: {fileID: 7699157034095057611}
+  - component: {fileID: 8173023781163100374}
   m_Layer: 0
   m_Name: Pivot
   m_TagString: Untagged
@@ -172,28 +172,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5356219123287026174
+--- !u!4 &7699157034095057611
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2789905510837533941}
+  m_GameObject: {fileID: 8291122399501682921}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4867788600100489019}
+  m_Father: {fileID: 4258041685082558444}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2456150089647707351
+--- !u!114 &8173023781163100374
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2789905510837533941}
+  m_GameObject: {fileID: 8291122399501682921}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43b97ecb1e3625c468a11ddcbd29b35f, type: 3}
