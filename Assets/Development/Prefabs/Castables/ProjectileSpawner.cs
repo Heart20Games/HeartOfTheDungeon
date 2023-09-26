@@ -57,14 +57,14 @@ namespace HotD.Castables
                     bInstance.SetActive(true);
                     projectiles.Add(bInstance);
                     AddExceptionsOn(exceptions, bInstance);
+                    LaunchInstance(direction, pInstance.transform, bInstance.transform);
+                    StartCoroutine(CleanupInstance(pInstance.transform, bInstance));
                 }
                 else
                 {
                     Debug.LogWarning("Pivot body should be a Projectile.");
                 }
             }
-            LaunchInstance(direction, pInstance.transform, bInstance.transform);
-            StartCoroutine(CleanupInstance(pInstance.transform, bInstance));
         }
 
         public void Activate(Vector3 direction)
