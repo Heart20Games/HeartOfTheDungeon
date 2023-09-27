@@ -5,52 +5,75 @@ namespace HotD.VFX
 {
     public class VFXAdjuster : BaseMonoBehaviour
     {
-        public enum Mode { Threshold, Inclusion }
-        public struct KeyFrame<T>
-        {
-            public Mode mode;
-            public string property;
-            public T value;
-        }
+        public int MaxLevel { get => maxLevel; set => maxLevel = value; }
+        [SerializeField] private int maxLevel;
+        [SerializeField] private string levelPrefix = "Level";
+        [SerializeField] private string levelProperty = "Charge Value";
+        [SerializeField] private float postRampSpeed = 1f;
 
-        public int MaxChargeLevel { get => maxChargeLevel; set => maxChargeLevel = value; }
-        [SerializeField] private int maxChargeLevel;
-        [SerializeField] private string chargeLimitProperty = "Charge Limit";
-        [SerializeField] private string chargeLevelProperty = "Charge Level";
-        [SerializeField] private string chargeAmountProperty = "Charge Amount";
-        [SerializeField] private string elapsedTimeProperty = "Elapsed Time";
+        [ReadOnly][SerializeField] private float baseValue = 0f;
+        [ReadOnly][SerializeField] private int currentLevel = 0;
+        [ReadOnly][SerializeField] private float currentAmount = 0f;
 
-        [SerializeField] private float elapsedTime = 0;
+        [SerializeField] private bool discharge;
 
         [Header("Connections")]
         public UnityEvent<string, float> toFloatProperty;
         public UnityEvent<string, int> toIntProperty;
         public UnityEvent<string, bool> toBoolProperty;
 
-        private void OnEnable()
-        {
-            elapsedTime = 0;
-        }
-
         private void Update()
         {
-            elapsedTime += Time.deltaTime;
-            toFloatProperty.Invoke(elapsedTimeProperty, elapsedTime);
+            if (discharge)
+            {
+                if (baseValue > 0f)
+                    SetCharge(baseValue -= Time.deltaTime);
+                else
+                    discharge = false;
+            }
         }
 
         // Set Charge Times
         public void SetCharge(float value)
         {
-            int level = Mathf.RoundToInt(maxChargeLevel / value);
-            float amount = value % (1/maxChargeLevel);
-            toIntProperty.Invoke(chargeLevelProperty, level);
-            toFloatProperty.Invoke(chargeAmountProperty, amount);
+            maxLevel = Mathf.Max(1, maxLevel);
+            baseValue = Mathf.Max(0, value);
+            currentLevel = Mathf.Max(1, Mathf.FloorToInt((baseValue * maxLevel)+1));
+            
+            // Current Ammount
+            float levelFilled = 1 / (float)maxLevel;
+            if (currentLevel <= maxLevel)
+            {
+                currentAmount = (baseValue % levelFilled) / levelFilled ;
+            }
+            else
+            {
+                currentAmount = ((baseValue / levelFilled) - maxLevel) * postRampSpeed;
+            }
+            
+            // Previous Levels
+            int lastLevel = Mathf.Min(currentLevel - 1, maxLevel);
+            for (int i = 1; i <= lastLevel; i++)
+            {
+                toFloatProperty.Invoke($"{levelPrefix} {i} {levelProperty}", ((lastLevel+1) - i) + (currentAmount));
+            }
+            
+            // Current Level
+            if (currentLevel <= maxLevel)
+            {
+                 toFloatProperty.Invoke($"{levelPrefix} {currentLevel} {levelProperty}", currentAmount);
+            }
+            
+            // Later Levels
+            for (int i = currentLevel+1; i <= maxLevel; i++)
+            {
+                toFloatProperty.Invoke($"{levelPrefix} {i} {levelProperty}", 0);
+            }
         }
 
-        // Set Charge Limit
-        public void SetChargeLimit(int value)
+        public void Discharge()
         {
-            toIntProperty.Invoke(chargeLimitProperty, value);
+            discharge = true;
         }
     }
 }

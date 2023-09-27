@@ -9,8 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2800773081770691007}
+  - component: {fileID: 6415436591602409553}
   - component: {fileID: 5640558220743154003}
   - component: {fileID: 202607290327246180}
+  - component: {fileID: 8450124607058288455}
   m_Layer: 0
   m_Name: Magic Bolt Casting Point Timer
   m_TagString: Untagged
@@ -26,13 +28,91 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4490809449938186106}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.6837397, y: 4.25, z: 10.659377}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 4.25, z: 0}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6415436591602409553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4490809449938186106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66fe3e9f41558c44c9efa949b803d37a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  onDisable:
+    m_PersistentCalls:
+      m_Calls: []
+  onTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  onCast:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8450124607058288455}
+        m_TargetAssemblyTypeName: HotD.VFX.VFXAdjuster, Assembly-CSharp
+        m_MethodName: Discharge
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onUnCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetPowerLevel:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8450124607058288455}
+        m_TargetAssemblyTypeName: HotD.VFX.VFXAdjuster, Assembly-CSharp
+        m_MethodName: SetCharge
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onSetPowerLimit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8450124607058288455}
+        m_TargetAssemblyTypeName: HotD.VFX.VFXAdjuster, Assembly-CSharp
+        m_MethodName: set_MaxLevel
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onSetExceptions:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!2083052967 &5640558220743154003
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -120,3 +200,43 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &8450124607058288455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4490809449938186106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f0d1531e8b0ecd48b90a1eba8d28ae4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxLevel: 3
+  levelPrefix: Level
+  levelProperty: Charge Value
+  baseValue: 0
+  currentLevel: 0
+  currentAmount: 0
+  discharge: 0
+  toFloatProperty:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5640558220743154003}
+        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+        m_MethodName: SetFloat
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  toIntProperty:
+    m_PersistentCalls:
+      m_Calls: []
+  toBoolProperty:
+    m_PersistentCalls:
+      m_Calls: []

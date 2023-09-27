@@ -21,10 +21,16 @@ namespace HotD.Castables
         private Vector3 direction;
         public virtual Vector3 Direction { get => direction; set => direction = value; }
 
+        [Header("Power Level")]
         [ReadOnly][SerializeField] private float powerLevel;
         public float PowerLevel { get => powerLevel; set => SetPowerLevel(value); }
         public void SetPowerLevel(float powerLevel) { this.powerLevel = powerLevel; onSetPowerLevel.Invoke(this.powerLevel); }
         public UnityEvent<float> onSetPowerLevel;
+
+        [ReadOnly][SerializeField] private int maxPowerLevel = 1;
+        public int MaxPowerLevel { get => maxPowerLevel; set => maxPowerLevel = value; }
+        public void SetMaxPowerLevel(int maxPowerLevel) { this.maxPowerLevel = maxPowerLevel; onSetMaxPowerLevel.Invoke(this.maxPowerLevel); }
+        public UnityEvent<int> onSetMaxPowerLevel;
 
         [Header("Things to Position")]
         public List<Transform> toWeaponLocation = new();
@@ -60,8 +66,8 @@ namespace HotD.Castables
         public bool castOnTrigger = true;
         public bool castOnRelease = false;
         public bool unCastOnRelease = false;
-        public UnityEvent<Vector3> onCast;
         public UnityEvent onTrigger;
+        public UnityEvent<Vector3> onCast;
         public UnityEvent onRelease;
         public UnityEvent onUnCast;
         public UnityEvent onCasted;
@@ -96,6 +102,7 @@ namespace HotD.Castables
                 ParentTo(toFiringLocation, source.firingLocation);
             if (source.weaponLocation != null)
                 ParentTo(toWeaponLocation, source.weaponLocation);
+            MaxPowerLevel = 3;
         }
 
         private void ParentTo(List<Transform> transforms, Transform target)

@@ -203,13 +203,24 @@ namespace HotD.Castables
                 if (prefab != null)
                 {
                     Casted body = Instantiate(prefab, castable.transform);
-                    body.onStart = new();
-                    body.onEnable = new();
-                    body.onDisable = new();
-                    body.onSetPowerLevel = new();
-                    body.onSetPowerLimit = new();
-                    bodies.Add(body.transform);
+                    body.onStart ??= new();
+                    body.onEnable ??= new();
+                    body.onDisable ??= new();
+
+                    body.onTrigger ??= new();
+                    body.onRelease ??= new();
+                    body.onCast ??= new();
+                    body.onUnCast ??= new();
+                    UnityEventTools.AddPersistentListener(castable.onTrigger, body.Trigger);
+                    UnityEventTools.AddPersistentListener(castable.onRelease, body.Release);
+                    UnityEventTools.AddPersistentListener(castable.onCast, body.Cast);
+                    UnityEventTools.AddPersistentListener(castable.onUnCast, body.UnCast);
+
+                    body.onSetPowerLevel ??= new();
+                    body.onSetPowerLimit ??= new();
                     UnityEventTools.AddPersistentListener(castable.onSetPowerLevel, body.SetPowerLevel);
+                    
+                    bodies.Add(body.transform);
                 }
             }
         }
