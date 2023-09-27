@@ -367,17 +367,24 @@ namespace HotD.Castables
 
             public readonly void PrepareProjectileMethod(Castable castable, Pivot pivot, GameObject gameObject, Damager damager = null)
             {
-                ProjectileSpawner spawner = gameObject.AddComponent<ProjectileSpawner>();
+                GameObject castedObject = new(name);
+                castedObject.transform.parent = pivot.transform;
+                
+                GameObject pivotObject = new("Pivot");
+                pivotObject.transform.parent = castedObject.transform;
+                Pivot castedPivot = pivotObject.AddComponent<Pivot>();
+                
+                ProjectileSpawner spawner = castedObject.AddComponent<ProjectileSpawner>();
                 UnityEventTools.AddPersistentListener(castable.onCast, spawner.Spawn);
-                spawner.pivot = pivot.transform;
+                spawner.pivot = castedPivot.transform;
                 spawner.lifeSpan = projectileLifeSpan;
-                pivot.enabled = false;
+                castedPivot.enabled = false;
 
                 if (projectilePrefab != null)
                 {
-                    Projectile projectile = Instantiate(projectilePrefab, pivot.transform);
+                    Projectile projectile = Instantiate(projectilePrefab, castedPivot.transform);
                     spawner.projectile = projectile;
-                    //pivot.body = projectile.transform;
+                    castedPivot.body = projectile.transform;
                     projectile.transform.position = new();
                     if (damager != null)
                     {
