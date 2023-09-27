@@ -10,6 +10,7 @@ public class Charger : BaseMonoBehaviour
     public bool beginOnStart = false;
 
     [Header("Status")]
+    [ReadOnly][SerializeField] private float time = 0f;
     [SerializeField] private bool interrupt = false;
 
     [Header("Events")]
@@ -37,23 +38,21 @@ public class Charger : BaseMonoBehaviour
 
     public IEnumerator ChargeTimer()
     {
-        float time = 0f;
-        while (time < length)
+        float rate = 0f;
+        time = 0f;
+        while (!interrupt)
         {
             onCharge.Invoke(time/length);
-            float rate = Mathf.Min(length - time, increment);
+            if (time < length)
+                rate = Mathf.Min(length - time, increment);
+            else
+                rate = increment;
             yield return new WaitForSeconds(rate);
             if (interrupt) break;
             time += rate;
+            if (time >= length && time < (length + increment))
+                onCharged.Invoke();
         }
-        if (!interrupt)
-        {
-            onCharge.Invoke(1);
-            onCharged.Invoke();
-        }
-        else
-        {
-            interrupt = false;
-        }
+        interrupt = false;
     }
 }
