@@ -341,20 +341,21 @@ namespace HotD.Castables
             {
                 switch (method)
                 {
-                    case ExecutionMethod.ColliderBased: PrepareCollisionMethod(pivot, damager); break;
+                    case ExecutionMethod.ColliderBased: PrepareCollisionMethod(castable, pivot, damager); break;
                     case ExecutionMethod.ProjectileBased: PrepareProjectileMethod(castable, pivot, gameObject, damager); break;
                     case ExecutionMethod.SelectionBased: break;
                 }
             }
 
-            public readonly void PrepareCollisionMethod(Pivot pivot, Damager damager = null)
+            public readonly void PrepareCollisionMethod(Castable castable, Pivot pivot, Damager damager = null)
             {
                 pivot.enabled = false;
                 if (colliderPrefab != null)
                 {
                     CastedCollider collider = Instantiate(colliderPrefab, pivot.transform);
-                    //pivot.body = collider.transform;
+                    castable.castingMethods.Add(collider.gameObject);
                     collider.enabled = false;
+                    
                     if (damager != null)
                     {
                         collider.hitDamageable = new();
@@ -367,17 +368,25 @@ namespace HotD.Castables
 
             public readonly void PrepareProjectileMethod(Castable castable, Pivot pivot, GameObject gameObject, Damager damager = null)
             {
-                ProjectileSpawner spawner = gameObject.AddComponent<ProjectileSpawner>();
+                GameObject castedObject = new(name);
+                castedObject.transform.parent = pivot.transform;
+                castable.castingMethods.Add(castedObject);
+                
+                GameObject pivotObject = new("Pivot");
+                pivotObject.transform.parent = castedObject.transform;
+                Pivot castedPivot = pivotObject.AddComponent<Pivot>();
+                
+                ProjectileSpawner spawner = castedObject.AddComponent<ProjectileSpawner>();
                 UnityEventTools.AddPersistentListener(castable.onCast, spawner.Spawn);
-                spawner.pivot = pivot.transform;
+                spawner.pivot = castedPivot.transform;
                 spawner.lifeSpan = projectileLifeSpan;
-                pivot.enabled = false;
+                castedPivot.enabled = false;
 
                 if (projectilePrefab != null)
                 {
-                    Projectile projectile = Instantiate(projectilePrefab, pivot.transform);
+                    Projectile projectile = Instantiate(projectilePrefab, castedPivot.transform);
                     spawner.projectile = projectile;
-                    //pivot.body = projectile.transform;
+                    castedPivot.body = projectile.transform;
                     projectile.transform.position = new();
                     if (damager != null)
                     {

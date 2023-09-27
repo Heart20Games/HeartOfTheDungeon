@@ -55,6 +55,7 @@ namespace HotD.Castables
 
         // Events
         [Header("Casting")]
+        public List<GameObject> castingMethods = new();
         public bool casting = false;
         public bool castOnTrigger = true;
         public bool castOnRelease = false;
@@ -66,7 +67,7 @@ namespace HotD.Castables
         public UnityEvent onCasted;
 
 
-        // Iniaitlization
+        // Initialization
         private void Awake()
         {
             damager = GetComponent<Damager>();
