@@ -46,30 +46,34 @@ namespace HotD.Castables
 
         public void Spawn(Vector3 direction = new Vector3())
         {
-            pivot.localPosition = offset;
-            Transform pInstance = Instantiate(pivot, source);
-            pInstance.gameObject.SetActive(true);
-            Projectile bInstance = projectile;
-            if (pInstance.TryGetComponent(out Pivot pivotType))
+            if (isActiveAndEnabled)
             {
-                if (pivotType.body.TryGetComponent(out bInstance))
+                pivot.localPosition = offset;
+                Transform pInstance = Instantiate(pivot, source);
+                pInstance.gameObject.SetActive(true);
+                Projectile bInstance = projectile;
+                if (pInstance.TryGetComponent(out Pivot pivotType))
                 {
-                    bInstance.SetActive(true);
-                    projectiles.Add(bInstance);
-                    AddExceptionsOn(exceptions, bInstance);
-                    LaunchInstance(direction, pInstance.transform, bInstance.transform);
-                    StartCoroutine(CleanupInstance(pInstance.transform, bInstance));
-                }
-                else
-                {
-                    Debug.LogWarning("Pivot body should be a Projectile.");
+                    if (pivotType.body.TryGetComponent(out bInstance))
+                    {
+                        bInstance.SetActive(true);
+                        projectiles.Add(bInstance);
+                        AddExceptionsOn(exceptions, bInstance);
+                        LaunchInstance(direction, pInstance.transform, bInstance.transform);
+                        StartCoroutine(CleanupInstance(pInstance.transform, bInstance));
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Pivot body should be a Projectile.");
+                    }
                 }
             }
         }
 
         public void Activate(Vector3 direction)
         {
-            LaunchInstance(direction, pivot.transform, projectile.transform);
+            if (isActiveAndEnabled)
+                LaunchInstance(direction, pivot.transform, projectile.transform);
         }
 
         public void LaunchInstance(Vector3 direction, Transform pInstance, Transform bInstance)

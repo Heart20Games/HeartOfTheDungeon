@@ -341,20 +341,21 @@ namespace HotD.Castables
             {
                 switch (method)
                 {
-                    case ExecutionMethod.ColliderBased: PrepareCollisionMethod(pivot, damager); break;
+                    case ExecutionMethod.ColliderBased: PrepareCollisionMethod(castable, pivot, damager); break;
                     case ExecutionMethod.ProjectileBased: PrepareProjectileMethod(castable, pivot, gameObject, damager); break;
                     case ExecutionMethod.SelectionBased: break;
                 }
             }
 
-            public readonly void PrepareCollisionMethod(Pivot pivot, Damager damager = null)
+            public readonly void PrepareCollisionMethod(Castable castable, Pivot pivot, Damager damager = null)
             {
                 pivot.enabled = false;
                 if (colliderPrefab != null)
                 {
                     CastedCollider collider = Instantiate(colliderPrefab, pivot.transform);
-                    //pivot.body = collider.transform;
+                    castable.castingMethods.Add(collider.gameObject);
                     collider.enabled = false;
+                    
                     if (damager != null)
                     {
                         collider.hitDamageable = new();
@@ -369,6 +370,7 @@ namespace HotD.Castables
             {
                 GameObject castedObject = new(name);
                 castedObject.transform.parent = pivot.transform;
+                castable.castingMethods.Add(castedObject);
                 
                 GameObject pivotObject = new("Pivot");
                 pivotObject.transform.parent = castedObject.transform;
