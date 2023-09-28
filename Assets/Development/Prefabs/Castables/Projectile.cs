@@ -7,6 +7,7 @@ namespace HotD.Castables
     [RequireComponent(typeof(Rigidbody))]
     public class Projectile : CastedCollider, ICollidable
     {
+        [ReadOnly][SerializeField] private Vector3 localPosition;
         public Vector3 direction = new();
         public float speed = 0;
         private new Rigidbody rigidbody;
@@ -45,6 +46,7 @@ namespace HotD.Castables
 
         private void Start()
         {
+            rigidbody.position = transform.position;
             rigidbody.velocity = speed * Time.fixedDeltaTime * -transform.forward;
         }
 

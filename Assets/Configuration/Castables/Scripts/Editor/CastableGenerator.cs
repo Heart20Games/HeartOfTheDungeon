@@ -383,7 +383,7 @@ namespace HotD.Castables
                 castedObject.transform.parent = pivot.transform;
                 castable.castingMethods.Add(castedObject);
                 
-                GameObject pivotObject = new("Pivot");
+                GameObject pivotObject = new($"{name} Pivot");
                 pivotObject.transform.parent = castedObject.transform;
                 Pivot castedPivot = pivotObject.AddComponent<Pivot>();
                 
@@ -398,7 +398,7 @@ namespace HotD.Castables
                     Projectile projectile = Instantiate(projectilePrefab, castedPivot.transform);
                     spawner.projectile = projectile;
                     castedPivot.body = projectile.transform;
-                    projectile.transform.position = new();
+                    projectile.transform.localPosition = new();
                     if (damager != null)
                     {
                         projectile.hitDamageable = new();

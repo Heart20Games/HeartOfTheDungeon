@@ -51,10 +51,9 @@ namespace HotD.Castables
                 pivot.localPosition = offset;
                 Transform pInstance = Instantiate(pivot, source);
                 pInstance.gameObject.SetActive(true);
-                Projectile bInstance = projectile;
                 if (pInstance.TryGetComponent(out Pivot pivotType))
                 {
-                    if (pivotType.body.TryGetComponent(out bInstance))
+                    if (pivotType.body.TryGetComponent(out Projectile bInstance))
                     {
                         bInstance.SetActive(true);
                         projectiles.Add(bInstance);
@@ -88,7 +87,7 @@ namespace HotD.Castables
             }
             pInstance.gameObject.SetActive(true);
             bInstance.gameObject.SetActive(true);
-            bInstance.localPosition = new Vector3();
+            bInstance.localPosition = new();
             Vector2 dir = new(direction.x, direction.z);
             Quaternion bRotation = bInstance.localRotation;
             pInstance.SetRotationWithVector(dir, rOffset);
