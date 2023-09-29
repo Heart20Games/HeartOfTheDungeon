@@ -15,6 +15,7 @@ namespace HotD.VFX
         [ReadOnly][SerializeField] private int currentLevel = 0;
         [ReadOnly][SerializeField] private float currentAmount = 0f;
 
+        [SerializeField] private float dischargeTime = 1f;
         [SerializeField] private bool discharge;
 
         [Header("Connections")]
@@ -22,14 +23,27 @@ namespace HotD.VFX
         public UnityEvent<string, int> toIntProperty;
         public UnityEvent<string, bool> toBoolProperty;
 
+        private float initialDischargeValue = 0f;
+        private bool dischargeInitialized = false;
+        private float timeOfDischarge = 0f;
         private void Update()
         {
             if (discharge)
             {
+                if (!dischargeInitialized)
+                {
+                    initialDischargeValue = baseValue;
+                    timeOfDischarge = Time.time;
+                    dischargeInitialized = true;
+                }
                 if (baseValue > 0f)
-                    SetCharge(baseValue -= Time.deltaTime);
+                {
+                    SetCharge(Mathf.Lerp(initialDischargeValue, 0, (Time.time - timeOfDischarge)/dischargeTime));
+                }
                 else
+                {
                     discharge = false;
+                }
             }
         }
 

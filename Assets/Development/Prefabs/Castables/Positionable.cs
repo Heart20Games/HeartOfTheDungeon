@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Positionable : BaseMonoBehaviour, IPositionable
 {
+    [Header("Positionable")]
+    public bool applyOnSet = true;
     public Transform source;
     public Transform target;
     public Vector3 offset=new();
@@ -11,14 +11,30 @@ public class Positionable : BaseMonoBehaviour, IPositionable
 
     public virtual void SetOrigin(Transform source, Transform target)
     {
+        print($"Set Origin on {name}");
         this.source = source;
         this.target = target;
+        if (applyOnSet) Apply();
     }
 
     public virtual void SetOffset(Vector3 offset=new(), float rOffset=0)
     {
         this.offset = offset;
         this.rOffset = rOffset;
+        if (applyOnSet) Apply();
+    }
+
+    public virtual void Apply()
+    {
+        ApplyTo(null);
+    }
+
+    public virtual void ApplyTo(Transform toMove)
+    {
+        toMove = toMove == null ? transform : toMove;
+        print($"Apply on {name} ({toMove.name} -> {source})");
+        toMove.SetParent(source);
+        toMove.position = target.position + offset;
     }
 
     public virtual void MoveToOrigin()
@@ -28,7 +44,7 @@ public class Positionable : BaseMonoBehaviour, IPositionable
 
     public virtual void MoveToOrigin(Transform toMove)
     {
-        toMove = toMove != null ? toMove : transform;
+        toMove = toMove == null ? transform : toMove;
         toMove.SetParent(source);
         toMove.position = target.position;
     }

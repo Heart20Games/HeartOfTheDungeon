@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace HotD.Castables
 {
-    public class Casted : BaseMonoBehaviour, ICollidables
+    public class Casted : Positionable, ICollidables
     {
         [Header("Base Events")]
         public UnityEvent onStart = new();
