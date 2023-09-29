@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using Body;
-using static Body.Behavior.ContextSteering.CSIdentity;
 
 namespace HotD.Castables
 {
+    using Body;
+    using static Body.Behavior.ContextSteering.CSIdentity;
+    using static HotD.Castables.CastableToLocation;
+
     public class Castable : BaseMonoBehaviour, ICastable
     {
         // Positioning
@@ -33,8 +35,7 @@ namespace HotD.Castables
         public UnityEvent<int> onSetMaxPowerLevel;
 
         [Header("Things to Position")]
-        public List<Transform> toWeaponLocation = new();
-        public List<Transform> toFiringLocation = new();
+        public List<ToLocation<Positionable>> toLocations = new();
 
         // Statuses
         [Header("Statuses")]
@@ -91,30 +92,22 @@ namespace HotD.Castables
             if (damager != null) { damager.Ignore(source.body); }
 
             // Positioning
-            ReportOriginToPositionables();
+            //ReportOriginToPositionables();
             if (source.body != null)
             {
                 ReportExceptionsToCollidables(source.body.GetComponents<Collider>());
                 PositionCastable();
             }
             source.artRenderer.DisplayWeapon(weaponArt);
-            if (source.firingLocation != null)
-                ParentTo(toFiringLocation, source.firingLocation);
-            if (source.weaponLocation != null)
-                ParentTo(toWeaponLocation, source.weaponLocation);
+            foreach (var toLocation in toLocations)
+            {
+                Transform toSource = toLocation.GetSourceTransform(source);
+                Transform toTarget = toLocation.GetTargetTransform(source);
+                toLocation.toMove.SetOrigin(toSource, toTarget);
+            }
             MaxPowerLevel = 3;
         }
 
-        private void ParentTo(List<Transform> transforms, Transform target)
-        {
-            foreach (var part in transforms)
-            {
-                //if (part.gameObject.scene.rootCount == 0)
-                //    Instantiate(part, target);
-                //else
-                part.SetParent(target, false);
-            }
-        }
 
         // Equipping
         public virtual void Disable() { }

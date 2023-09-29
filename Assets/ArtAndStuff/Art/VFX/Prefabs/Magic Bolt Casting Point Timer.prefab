@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 4490809449938186106}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 4.25, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -47,6 +47,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66fe3e9f41558c44c9efa949b803d37a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  applyOnSet: 1
+  source: {fileID: 0}
+  target: {fileID: 0}
+  offset: {x: 0, y: 0, z: 0}
+  rOffset: 0
   onStart:
     m_PersistentCalls:
       m_Calls: []
@@ -215,9 +220,11 @@ MonoBehaviour:
   maxLevel: 3
   levelPrefix: Level
   levelProperty: Charge Value
+  postRampSpeed: 1
   baseValue: 0
   currentLevel: 0
   currentAmount: 0
+  dischargeTime: 0.4
   discharge: 0
   toFloatProperty:
     m_PersistentCalls:
