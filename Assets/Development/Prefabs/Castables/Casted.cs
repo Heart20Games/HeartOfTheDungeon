@@ -1,20 +1,17 @@
-using System;
 using UnityEngine;
-using Object = UnityEngine.Object;
 using UnityEngine.Events;
-using UnityEngine.Assertions;
-using System.Collections.Generic;
+using Pixeye.Unity;
 
 namespace HotD.Castables
 {
     public class Casted : Positionable, ICollidables
     {
-        [Header("Base Events")]
+        [Foldout("Base Events", true)]
         public UnityEvent onStart = new();
         public UnityEvent onEnable = new();
         public UnityEvent onDisable = new();
 
-        [Header("Castable Events")]
+        [Foldout("Cast Events", true)]
         public UnityEvent onTrigger = new();
         public UnityEvent onRelease = new();
         public UnityEvent<Vector3> onCast = new();
@@ -24,8 +21,9 @@ namespace HotD.Castables
         public void Cast(Vector3 vector) { onCast.Invoke(vector); }
         public void UnCast() { onUnCast.Invoke(); }
 
-        [Header("Power Level")]
+        [Foldout("Power Level")]
         public UnityEvent<float> onSetPowerLevel = new();
+        [Foldout("Power Level")]
         public UnityEvent<int> onSetPowerLimit = new();
         public void SetPowerLevel(float powerLevel) { onSetPowerLevel.Invoke(powerLevel); }
         public void SetPowerLimit(int powerLimit) { onSetPowerLimit.Invoke(powerLimit); }
