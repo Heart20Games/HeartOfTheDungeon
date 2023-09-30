@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 202607290327246180}
   - component: {fileID: 8450124607058288455}
   m_Layer: 0
-  m_Name: Magic Bolt Casting Point Timer
+  m_Name: MB Cast Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82,9 +82,33 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8450124607058288455}
+        m_TargetAssemblyTypeName: HotD.VFX.VFXAdjuster, Assembly-CSharp
+        m_MethodName: Cast
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onUnCast:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8450124607058288455}
+        m_TargetAssemblyTypeName: HotD.VFX.VFXAdjuster, Assembly-CSharp
+        m_MethodName: UnCast
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onSetPowerLevel:
     m_PersistentCalls:
       m_Calls:
@@ -226,6 +250,9 @@ MonoBehaviour:
   currentAmount: 0
   dischargeTime: 0.4
   discharge: 0
+  castProperty: Cast
+  castTimeProperty: Cast Time
+  castTime: 0.3
   toFloatProperty:
     m_PersistentCalls:
       m_Calls:
@@ -246,4 +273,16 @@ MonoBehaviour:
       m_Calls: []
   toBoolProperty:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5640558220743154003}
+        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+        m_MethodName: SetBool
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

@@ -1,8 +1,10 @@
+using Pixeye.Unity;
 using UnityEngine;
 
 public class Positionable : BaseMonoBehaviour, IPositionable
 {
-    [Header("Positionable")]
+    //[Header("Positionable")]
+    [Foldout("Positionable", true)]
     public bool applyOnSet = true;
     public Transform source;
     public Transform target;
