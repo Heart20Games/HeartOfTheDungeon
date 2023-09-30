@@ -35,6 +35,12 @@ namespace HotD.VFX
         private float initialDischargeValue = 0f;
         private bool dischargeInitialized = false;
         private float timeOfDischarge = 0f;
+
+        private void Start()
+        {
+            toFloatProperty.Invoke("Level 3 Cast Length", dischargeTime);
+        }
+
         private void Update()
         {
             if (discharge)
