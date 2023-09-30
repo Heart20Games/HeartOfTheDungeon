@@ -25,7 +25,8 @@ public class GameInput : BaseMonoBehaviour
     public SimpleController CurController { get => Game.curController; }
     public Targeter Targeter { get => Game.targeter; }
     public ILooker CurLooker { get => Game.curLooker; }
-    public InputMode Mode { get => Game.InputMode; set => Game.InputMode = value; }
+    public InputMode Input { get => Game.InputMode; set => Game.InputMode = value; }
+    public Menu Menu { get => Game.ActiveMenu; set => Game.ActiveMenu = value; }
 
 
     // Initialization
@@ -144,12 +145,12 @@ public class GameInput : BaseMonoBehaviour
     {
         IsPressed(inputValue, () =>
         {
-            switch (Mode)
+            switch (Input)
             {
                 case InputMode.LockOn:
-                    Mode = InputMode.Character; break;
+                    Input = InputMode.Character; break;
                 default:
-                    if (Targeter.HasTarget()) Mode = InputMode.LockOn; break;
+                    if (Targeter.HasTarget()) Input = InputMode.LockOn; break;
             };
         });
     }
@@ -250,14 +251,10 @@ public class GameInput : BaseMonoBehaviour
     {
         if (Game.settings.useD20Menu && inputValue.isPressed)
         {
-            Mode = Mode == InputMode.Character ? InputMode.Selection : InputMode.Character;
+            Input = Input == InputMode.Character ? InputMode.Selection : InputMode.Character;
             Hud.abilityMenu.Toggle();
         }
     }
-
-    // Control Screen
-    public void OnToggleControls(InputValue inputValue) { IsPressed(inputValue, () => { Mode = InputMode.Menu; }); }
-    public void OnDismiss(InputValue inputValue) { IsPressed(inputValue, () => { Mode = InputMode.Character; }); }
 
     // Dialogue
     public void OnContinue(InputValue inputValue) { IsPressed(inputValue, UserInterface.Continue ); }
@@ -268,4 +265,10 @@ public class GameInput : BaseMonoBehaviour
         float testFloat = inputValue.Get<float>();
         print($"Test float: {testFloat}");
     }
+
+    // Menus
+    public void OnControlSheet(InputValue inputValue) { IsPressed(inputValue, () => { Menu = Menu.ControlSheet; }); }
+    public void OnCharacterSheet(InputValue inputValue) { IsPressed(inputValue, () => { Menu = Menu.CharacterSheet; }); }
+    public void OnPauseMenu(InputValue inputValue) { IsPressed(inputValue, () => { return; Input = InputMode.Menu; }); }
+    public void OnDismiss(InputValue inputValue) { IsPressed(inputValue, () => { Input = InputMode.Character; }); }
 }

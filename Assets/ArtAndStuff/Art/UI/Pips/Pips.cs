@@ -7,6 +7,7 @@ public class Pips : BaseMonoBehaviour
     [SerializeField] private Pip pipPrefab;
     private Canvas canvas;
     [ReadOnly][SerializeField] private List<Pip> pips = new();
+    [SerializeField] private bool lookAtCamera;
 
     [Header("Pip Counts")]
     [SerializeField] protected int totalPips;
@@ -22,6 +23,11 @@ public class Pips : BaseMonoBehaviour
         oldFilledCount = filledPips;
     }
 
+    private void Start()
+    {
+        SetPipCount(totalPips);
+    }
+
     private void Update()
     {
         if (updatePips)
@@ -33,7 +39,10 @@ public class Pips : BaseMonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.TrueLookAt(Camera.main.transform.position);
+        if (lookAtCamera)
+        {
+            transform.TrueLookAt(Camera.main.transform.position);
+        }
     }
 
     public void SetFilled(int filled)

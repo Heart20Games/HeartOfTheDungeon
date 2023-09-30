@@ -120,13 +120,23 @@ public class Game : BaseMonoBehaviour
     public InputMode InputMode { get => mode.inputMode; set => SetMode(value); }
     public MoveMode MoveMode { get => mode.moveMode; }
     public LookMode LookMode { get => mode.lookMode; }
+    public Menu ActiveMenu { get => mode.activeMenu; set => SetMode(value); }
     public bool swapModes = false;
     public bool reactivateMode = false;
     
+    public void SetMode(Menu menu)
+    {
+        if (debug) print($"Change InputMode to {menu} (in bank? {(MenuBank.ContainsKey(menu) ? "yes" : "no")})");
+        if (MenuBank.TryGetValue(menu, out GameMode mode))
+            SetMode(mode);
+        else
+            Debug.LogWarning($"Can't find game mode for \"{menu}\"");
+    }
+
     public void SetMode(InputMode inputMode)
     {
-        if (debug) print($"Change InputMode to {inputMode} (in bank? {(ModeBank.ContainsKey(inputMode) ? "yes" : "no")})");
-        if (ModeBank.TryGetValue(inputMode, out GameMode mode))
+        if (debug) print($"Change InputMode to {inputMode} (in bank? {(InputBank.ContainsKey(inputMode) ? "yes" : "no")})");
+        if (InputBank.TryGetValue(inputMode, out GameMode mode))
             SetMode(mode);
         else
             Debug.LogWarning($"Can't find game mode for \"{inputMode}\"");
@@ -143,8 +153,8 @@ public class Game : BaseMonoBehaviour
         if (debug) print($"Activate inputMode {mode}.");
         userInterface.SetHudActive(mode.hudActive);
         userInterface.SetDialogueActive(mode.dialogueActive);
-        userInterface.SetControlScreenActive(mode.activeMenu == Menu.Controls);
-        userInterface.SetCharacterSheetActive(mode.activeMenu == Menu.StatSheet);
+        userInterface.SetControlScreenActive(mode.activeMenu == Menu.ControlSheet);
+        userInterface.SetCharacterSheetActive(mode.activeMenu == Menu.CharacterSheet);
         input.SwitchCurrentActionMap(mode.inputMode.ToString());
         TimeScale = mode.timeScale;
 
