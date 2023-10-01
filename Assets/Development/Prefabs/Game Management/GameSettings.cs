@@ -10,8 +10,9 @@ public class GameModes
     public enum InputMode { None, Selection, Character, Dialogue, LockOn, Menu };
     public enum MoveMode { None, Selector, Character }
     public enum LookMode { None, Targeter }
-    public enum Menu { None, Controls, StatSheet }
-    public static Dictionary<InputMode, GameMode> ModeBank { get { return game.settings.ModeBank; } }
+    public enum Menu { None, ControlSheet, CharacterSheet }
+    public static Dictionary<InputMode, GameMode> InputBank { get { return game.settings.InputBank; } }
+    public static Dictionary<Menu, GameMode> MenuBank { get { return game.settings.MenuBank; } }
 
     [Serializable]
     public struct GameMode
@@ -58,14 +59,25 @@ public class GameSettings : ScriptableObject
 {
     public bool useD20Menu;
     public List<GameMode> modes;
-    public Dictionary<InputMode, GameMode> modeBank;
-    public Dictionary<InputMode, GameMode> ModeBank { get => modeBank ?? GetModes(); }
-    public Dictionary<InputMode, GameMode> GetModes()
+    
+    private Dictionary<InputMode, GameMode> inputBank;
+    public Dictionary<InputMode, GameMode> InputBank { get => inputBank ?? GetInputModes(); }
+    public Dictionary<InputMode, GameMode> GetInputModes()
     {
-        modeBank ??= new();
+        inputBank ??= new();
         for (int i = 0; i < modes.Count; i++)
-            modeBank[modes[i].inputMode] = modes[i];
-        return modeBank;
+            inputBank[modes[i].inputMode] = modes[i];
+        return inputBank;
     }
     
+    private Dictionary<Menu, GameMode> menuBank;
+    public Dictionary<Menu, GameMode> MenuBank { get => menuBank ?? GetMenuModes(); }
+    public Dictionary<Menu, GameMode> GetMenuModes()
+    {
+        menuBank ??= new();
+        for (int i = 0; i < modes.Count; i++)
+            menuBank[modes[i].activeMenu] = modes[i];
+        return menuBank;
+    }
+
 }

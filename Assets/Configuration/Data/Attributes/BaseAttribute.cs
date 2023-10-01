@@ -20,7 +20,8 @@ namespace Attributes
             public readonly T value;
             public readonly float weight;
         }
-
+        
+        public enum Part { BaseValue, BaseMultiplier }
         [SerializeField] private int baseValue;
         [SerializeField] private float baseMultiplier;
 

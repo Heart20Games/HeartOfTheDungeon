@@ -548,21 +548,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Toggle Controls"",
+                    ""name"": ""Control Sheet"",
                     ""type"": ""Button"",
                     ""id"": ""62e0296d-8e52-4702-b2b3-7bb1c9482ef4"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Character Screen"",
-                    ""type"": ""Button"",
-                    ""id"": ""acd888a2-35d2-4630-abef-0795efc1cdec"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -1170,28 +1161,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ef7340a8-1f35-4374-b041-832db0c58479"",
-                    ""path"": ""<Gamepad>/dpad/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Toggle Controls"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""636e8e47-f019-4ae1-b356-3a99a0b0929c"",
-                    ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Toggle Controls"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""9a87fc62-2b98-41ae-bcd2-3d6a73dd9426"",
                     ""path"": ""<Gamepad>/rightStickPress"",
                     ""interactions"": """",
@@ -1214,19 +1183,19 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""e228ea0b-b08e-40b3-a4ff-718808aec33c"",
-                    ""path"": ""<Gamepad>/select"",
+                    ""id"": ""3882c481-4b93-4b0b-a6e7-d559aba6bf20"",
+                    ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Character Screen"",
+                    ""action"": ""Pause Screen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3882c481-4b93-4b0b-a6e7-d559aba6bf20"",
-                    ""path"": ""<Gamepad>/start"",
+                    ""id"": ""d8b736b3-e3ed-497e-bf67-a0af5d24eda6"",
+                    ""path"": ""<Keyboard>/p"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1253,6 +1222,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Character Sheet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ef7340a8-1f35-4374-b041-832db0c58479"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Control Sheet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""636e8e47-f019-4ae1-b356-3a99a0b0929c"",
+                    ""path"": ""<Keyboard>/rightBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Control Sheet"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1355,6 +1346,42 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Control Sheet"",
+                    ""type"": ""Button"",
+                    ""id"": ""9d0340b5-c3c2-4f4c-8191-0cfe97e4bacc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause Screen"",
+                    ""type"": ""Button"",
+                    ""id"": ""0242917e-06e3-47f5-bb6d-5d58f77ca367"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Character Sheet"",
+                    ""type"": ""Button"",
+                    ""id"": ""c094e23b-db12-48fc-a230-82cddf5b3e6f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dismiss"",
+                    ""type"": ""Button"",
+                    ""id"": ""42b4f9fe-d136-4f97-a3d4-8d8a649f7bc5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -1532,6 +1559,94 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Mouse Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2e2b7a6d-4ee9-488e-b025-1aaf4b3114db"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Control Sheet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cd909c7d-f4a4-413d-a0be-f529df3841d7"",
+                    ""path"": ""<Keyboard>/rightBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Control Sheet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""04199948-3bc4-4da6-b434-156d1ca5915c"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause Screen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d08b2849-b919-442b-9542-b87108504159"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause Screen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""62c1311e-95d9-4719-bd18-6a0153107f3c"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Character Sheet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3455b44b-3a43-4f71-8e7f-96099576b1d7"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Character Sheet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f4112fc0-4825-42eb-92a7-c2b37d007291"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dismiss"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""10834cc4-ed0b-43fa-b43e-51e8f945b523"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dismiss"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2382,8 +2497,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Character_SwitchCharacterLeft = m_Character.FindAction("Switch Character Left", throwIfNotFound: true);
         m_Character_SwitchCharacterRight = m_Character.FindAction("Switch Character Right", throwIfNotFound: true);
         m_Character_RestartLevel1 = m_Character.FindAction("Restart Level1", throwIfNotFound: true);
-        m_Character_ToggleControls = m_Character.FindAction("Toggle Controls", throwIfNotFound: true);
-        m_Character_CharacterScreen = m_Character.FindAction("Character Screen", throwIfNotFound: true);
+        m_Character_ControlSheet = m_Character.FindAction("Control Sheet", throwIfNotFound: true);
         m_Character_PauseScreen = m_Character.FindAction("Pause Screen", throwIfNotFound: true);
         m_Character_CharacterSheet = m_Character.FindAction("Character Sheet", throwIfNotFound: true);
         // Dismiss
@@ -2396,6 +2510,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Menu_ChangeSelection = m_Menu.FindAction("Change Selection", throwIfNotFound: true);
         m_Menu_MousePosition = m_Menu.FindAction("MousePosition", throwIfNotFound: true);
         m_Menu_MouseClick = m_Menu.FindAction("Mouse Click", throwIfNotFound: true);
+        m_Menu_ControlSheet = m_Menu.FindAction("Control Sheet", throwIfNotFound: true);
+        m_Menu_PauseScreen = m_Menu.FindAction("Pause Screen", throwIfNotFound: true);
+        m_Menu_CharacterSheet = m_Menu.FindAction("Character Sheet", throwIfNotFound: true);
+        m_Menu_Dismiss = m_Menu.FindAction("Dismiss", throwIfNotFound: true);
         // LockOn
         m_LockOn = asset.FindActionMap("LockOn", throwIfNotFound: true);
         m_LockOn_Move = m_LockOn.FindAction("Move", throwIfNotFound: true);
@@ -2628,8 +2746,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_SwitchCharacterLeft;
     private readonly InputAction m_Character_SwitchCharacterRight;
     private readonly InputAction m_Character_RestartLevel1;
-    private readonly InputAction m_Character_ToggleControls;
-    private readonly InputAction m_Character_CharacterScreen;
+    private readonly InputAction m_Character_ControlSheet;
     private readonly InputAction m_Character_PauseScreen;
     private readonly InputAction m_Character_CharacterSheet;
     public struct CharacterActions
@@ -2652,8 +2769,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @SwitchCharacterLeft => m_Wrapper.m_Character_SwitchCharacterLeft;
         public InputAction @SwitchCharacterRight => m_Wrapper.m_Character_SwitchCharacterRight;
         public InputAction @RestartLevel1 => m_Wrapper.m_Character_RestartLevel1;
-        public InputAction @ToggleControls => m_Wrapper.m_Character_ToggleControls;
-        public InputAction @CharacterScreen => m_Wrapper.m_Character_CharacterScreen;
+        public InputAction @ControlSheet => m_Wrapper.m_Character_ControlSheet;
         public InputAction @PauseScreen => m_Wrapper.m_Character_PauseScreen;
         public InputAction @CharacterSheet => m_Wrapper.m_Character_CharacterSheet;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
@@ -2713,12 +2829,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RestartLevel1.started += instance.OnRestartLevel1;
             @RestartLevel1.performed += instance.OnRestartLevel1;
             @RestartLevel1.canceled += instance.OnRestartLevel1;
-            @ToggleControls.started += instance.OnToggleControls;
-            @ToggleControls.performed += instance.OnToggleControls;
-            @ToggleControls.canceled += instance.OnToggleControls;
-            @CharacterScreen.started += instance.OnCharacterScreen;
-            @CharacterScreen.performed += instance.OnCharacterScreen;
-            @CharacterScreen.canceled += instance.OnCharacterScreen;
+            @ControlSheet.started += instance.OnControlSheet;
+            @ControlSheet.performed += instance.OnControlSheet;
+            @ControlSheet.canceled += instance.OnControlSheet;
             @PauseScreen.started += instance.OnPauseScreen;
             @PauseScreen.performed += instance.OnPauseScreen;
             @PauseScreen.canceled += instance.OnPauseScreen;
@@ -2777,12 +2890,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RestartLevel1.started -= instance.OnRestartLevel1;
             @RestartLevel1.performed -= instance.OnRestartLevel1;
             @RestartLevel1.canceled -= instance.OnRestartLevel1;
-            @ToggleControls.started -= instance.OnToggleControls;
-            @ToggleControls.performed -= instance.OnToggleControls;
-            @ToggleControls.canceled -= instance.OnToggleControls;
-            @CharacterScreen.started -= instance.OnCharacterScreen;
-            @CharacterScreen.performed -= instance.OnCharacterScreen;
-            @CharacterScreen.canceled -= instance.OnCharacterScreen;
+            @ControlSheet.started -= instance.OnControlSheet;
+            @ControlSheet.performed -= instance.OnControlSheet;
+            @ControlSheet.canceled -= instance.OnControlSheet;
             @PauseScreen.started -= instance.OnPauseScreen;
             @PauseScreen.performed -= instance.OnPauseScreen;
             @PauseScreen.canceled -= instance.OnPauseScreen;
@@ -2861,6 +2971,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Menu_ChangeSelection;
     private readonly InputAction m_Menu_MousePosition;
     private readonly InputAction m_Menu_MouseClick;
+    private readonly InputAction m_Menu_ControlSheet;
+    private readonly InputAction m_Menu_PauseScreen;
+    private readonly InputAction m_Menu_CharacterSheet;
+    private readonly InputAction m_Menu_Dismiss;
     public struct MenuActions
     {
         private @PlayerControls m_Wrapper;
@@ -2870,6 +2984,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @ChangeSelection => m_Wrapper.m_Menu_ChangeSelection;
         public InputAction @MousePosition => m_Wrapper.m_Menu_MousePosition;
         public InputAction @MouseClick => m_Wrapper.m_Menu_MouseClick;
+        public InputAction @ControlSheet => m_Wrapper.m_Menu_ControlSheet;
+        public InputAction @PauseScreen => m_Wrapper.m_Menu_PauseScreen;
+        public InputAction @CharacterSheet => m_Wrapper.m_Menu_CharacterSheet;
+        public InputAction @Dismiss => m_Wrapper.m_Menu_Dismiss;
         public InputActionMap Get() { return m_Wrapper.m_Menu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2894,6 +3012,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MouseClick.started += instance.OnMouseClick;
             @MouseClick.performed += instance.OnMouseClick;
             @MouseClick.canceled += instance.OnMouseClick;
+            @ControlSheet.started += instance.OnControlSheet;
+            @ControlSheet.performed += instance.OnControlSheet;
+            @ControlSheet.canceled += instance.OnControlSheet;
+            @PauseScreen.started += instance.OnPauseScreen;
+            @PauseScreen.performed += instance.OnPauseScreen;
+            @PauseScreen.canceled += instance.OnPauseScreen;
+            @CharacterSheet.started += instance.OnCharacterSheet;
+            @CharacterSheet.performed += instance.OnCharacterSheet;
+            @CharacterSheet.canceled += instance.OnCharacterSheet;
+            @Dismiss.started += instance.OnDismiss;
+            @Dismiss.performed += instance.OnDismiss;
+            @Dismiss.canceled += instance.OnDismiss;
         }
 
         private void UnregisterCallbacks(IMenuActions instance)
@@ -2913,6 +3043,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MouseClick.started -= instance.OnMouseClick;
             @MouseClick.performed -= instance.OnMouseClick;
             @MouseClick.canceled -= instance.OnMouseClick;
+            @ControlSheet.started -= instance.OnControlSheet;
+            @ControlSheet.performed -= instance.OnControlSheet;
+            @ControlSheet.canceled -= instance.OnControlSheet;
+            @PauseScreen.started -= instance.OnPauseScreen;
+            @PauseScreen.performed -= instance.OnPauseScreen;
+            @PauseScreen.canceled -= instance.OnPauseScreen;
+            @CharacterSheet.started -= instance.OnCharacterSheet;
+            @CharacterSheet.performed -= instance.OnCharacterSheet;
+            @CharacterSheet.canceled -= instance.OnCharacterSheet;
+            @Dismiss.started -= instance.OnDismiss;
+            @Dismiss.performed -= instance.OnDismiss;
+            @Dismiss.canceled -= instance.OnDismiss;
         }
 
         public void RemoveCallbacks(IMenuActions instance)
@@ -3167,8 +3309,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSwitchCharacterLeft(InputAction.CallbackContext context);
         void OnSwitchCharacterRight(InputAction.CallbackContext context);
         void OnRestartLevel1(InputAction.CallbackContext context);
-        void OnToggleControls(InputAction.CallbackContext context);
-        void OnCharacterScreen(InputAction.CallbackContext context);
+        void OnControlSheet(InputAction.CallbackContext context);
         void OnPauseScreen(InputAction.CallbackContext context);
         void OnCharacterSheet(InputAction.CallbackContext context);
     }
@@ -3183,6 +3324,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnChangeSelection(InputAction.CallbackContext context);
         void OnMousePosition(InputAction.CallbackContext context);
         void OnMouseClick(InputAction.CallbackContext context);
+        void OnControlSheet(InputAction.CallbackContext context);
+        void OnPauseScreen(InputAction.CallbackContext context);
+        void OnCharacterSheet(InputAction.CallbackContext context);
+        void OnDismiss(InputAction.CallbackContext context);
     }
     public interface ILockOnActions
     {

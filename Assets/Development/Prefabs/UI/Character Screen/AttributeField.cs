@@ -1,35 +1,26 @@
 using Attributes;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class AttributeField : BaseMonoBehaviour
 {
-    [SerializeField] private TMP_Text bonusText;
-    [SerializeField] private TMP_Text nameText;
+    [SerializeField] private AttributeLabel label;
     [SerializeField] private Pips pips;
     [SerializeField] private int pipOffset = 0;
     [ReadOnly][SerializeField] private BaseAttribute attribute;
 
-    public string Name { get => name; set => SetName(value); }
-
-    public void SetName(string name)
-    {
-        this.name = name;
-        nameText.text = name;
-    }
+    public string Name { get => label.Name; set => label.Name = value; }
 
     public void SetAttribute(BaseAttribute attribute)
     {
         this.attribute = attribute;
+        label.SetAttribute(attribute);
         if (attribute != null)
             UpdateField();
     }
 
-    private void UpdateField()
+    public void UpdateField()
     {
-        bonusText.text = attribute.BaseValue.ToString();
+        label.UpdateField();
         pips.SetFilled(attribute.BaseValue + pipOffset);
     }
 
