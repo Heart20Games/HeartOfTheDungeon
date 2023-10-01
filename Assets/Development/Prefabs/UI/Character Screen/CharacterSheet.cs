@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions;
 using static StatBlock;
 
 public class CharacterSheet : BaseMonoBehaviour
@@ -24,6 +25,9 @@ public class CharacterSheet : BaseMonoBehaviour
 
     public void SetCharacter(CharacterBlock character)
     {
+        Assert.IsNotNull(character);
+        this.character = character;
+
         // Set Character Name
 
         // Set Character Portrait
@@ -38,14 +42,18 @@ public class CharacterSheet : BaseMonoBehaviour
         }
 
         // Set Character Loadout
+        Assert.IsNotNull(character.loadout);
         foreach (CastableItem item in character.loadout.All())
         {
-            CastableField field = Instantiate(castablePrefab, castableParent);
-            castables.Add(field);
-            field.CharacterName = character.characterName;
-            field.CastableName = item.name;
-            field.FinalName = "Damage";
-            field.SetAttribute(item.stats.damage);
+            if (item.stats != null && item.stats.dealDamage)
+            {
+                CastableField field = Instantiate(castablePrefab, castableParent);
+                castables.Add(field);
+                field.CharacterName = character.characterName;
+                field.CastableName = item.name;
+                field.FinalName = "Damage";
+                field.SetAttribute(item.stats.damage);
+            }
         }
     }
 

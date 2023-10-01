@@ -11,6 +11,7 @@ public class CastableField : MonoBehaviour
     [SerializeField] private AttributeLabel final;
 
     [SerializeField] private AttributeLabel bonusPrefab;
+    [SerializeField] private Transform bonusParent;
     [SerializeField] private List<AttributeLabel> bonuses;
     
     [ReadOnly][SerializeField] private DependentAttribute attribute;
@@ -34,7 +35,7 @@ public class CastableField : MonoBehaviour
         {
             foreach (var sub in attribute.OtherAttributes)
             {
-                AttributeLabel label = Instantiate(bonusPrefab, gameObject.transform);
+                AttributeLabel label = Instantiate(bonusPrefab, bonusParent);
                 bonuses.Add(label);
                 label.SetAttribute(sub.value);
             }

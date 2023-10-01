@@ -233,6 +233,7 @@ public class Game : BaseMonoBehaviour
     {
         if (character != null)
         {
+            userInterface.SetCharacter(playerCharacter);
             SetControllable(curCharacter, false);
             SetControllable(character, true);
             curCharacter = character;
