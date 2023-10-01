@@ -1,6 +1,7 @@
+using HotD.Castables;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static StatBlock;
 
@@ -15,7 +16,11 @@ public class CharacterSheet : BaseMonoBehaviour
 
     public CharacterBlock character;
 
+    [SerializeField] private TMP_Text nameText;
     [SerializeField] private StatField[] statFields;
+    [SerializeField] private CastableField castablePrefab;
+    [SerializeField] private Transform castableParent;
+    [SerializeField] private List<CastableField> castables;
 
     public void SetCharacter(CharacterBlock character)
     {
@@ -30,6 +35,25 @@ public class CharacterSheet : BaseMonoBehaviour
         {
             stat.field.Name = stat.stat.ToString();
             stat.field.SetAttribute(character.GetStat(stat.stat));
+        }
+
+        // Set Character Loadout
+        foreach (CastableItem item in character.loadout.All())
+        {
+            CastableField field = Instantiate(castablePrefab, castableParent);
+            castables.Add(field);
+            field.CharacterName = character.characterName;
+            field.CastableName = item.name;
+            field.FinalName = "Damage";
+            field.SetAttribute(item.stats.damage);
+        }
+    }
+
+    public void Clear()
+    {
+        foreach(CastableField field in castables)
+        {
+            Destroy(field);
         }
     }
 }

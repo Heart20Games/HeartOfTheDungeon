@@ -13,6 +13,8 @@ namespace HotD.Castables
 
         public CastableItem mobility;
 
+        private List<CastableItem> allItems;
+
         public void SetSlot(Slot slot, CastableItem item)
         {
             switch (slot)
@@ -32,6 +34,23 @@ namespace HotD.Castables
                 items.Add(null);
             }
             items[index] = item;
+        }
+
+        public List<CastableItem> All()
+        {
+            allItems ??= new();
+            allItems.Clear();
+            foreach(var item in abilities)
+            {
+                allItems.Add(item);
+            }
+            foreach(var item in weapons)
+            {
+                allItems.Add(item);
+            }
+            if (mobility != null)
+                allItems.Add(mobility);
+            return allItems;
         }
     }
 }
