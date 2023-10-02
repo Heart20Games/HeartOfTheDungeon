@@ -10,7 +10,7 @@ public class CastableStats : ScriptableObject
 {
     // Details
     public enum CastableType { Melee, Ranged, Magic }
-    public enum CastableStat { Damage, Cooldown, ChargeUp, Knockback, Range, CastStatusPower, HitStatusPower}
+    public enum CastableStat { Damage, Cooldown, ChargeRate, ChargeLimit, Knockback, Range, CastStatusPower, HitStatusPower}
     public string usabilityTag = "None";
     public CastableType type = CastableType.Melee;
     public Identity targetIdentity = Identity.Neutral;
@@ -33,8 +33,11 @@ public class CastableStats : ScriptableObject
     [Header("Charge-Up")]
     public bool useChargeUp = false;
     [ConditionalField("useChargeUp", false, true)]
-    public DependentAttribute chargeUp = new(1);
-    public float ChargeUp { get => chargeUp.FinalValue; }
+    public DependentAttribute chargeRate = new(1);
+    [ConditionalField("useChargeUp", false, true)]
+    public DependentAttribute chargeLimit = new(1);
+    public float ChargeRate { get => chargeRate.FinalValue; }
+    public float ChargeLimit { get => chargeLimit.FinalValue; }
 
     [Header("Knockback")]
     public DependentAttribute knockback = new(1);
@@ -64,7 +67,8 @@ public class CastableStats : ScriptableObject
             CastableStat.Damage => damage,
             CastableStat.Cooldown => cooldown,
             CastableStat.Range => range,
-            CastableStat.ChargeUp => chargeUp,
+            CastableStat.ChargeRate => chargeRate,
+            CastableStat.ChargeLimit => chargeLimit,
             CastableStat.Knockback => knockback,
             CastableStat.CastStatusPower => castStatusPower,
             CastableStat.HitStatusPower => hitStatusPower,
@@ -86,7 +90,8 @@ public class CastableStats : ScriptableObject
     {
         AssignBonuses(damage, attributes.damage, statBlock);
         AssignBonuses(cooldown, attributes.cooldown, statBlock);
-        AssignBonuses(chargeUp, attributes.chargeUp, statBlock);
+        AssignBonuses(chargeRate, attributes.chargeRate, statBlock);
+        AssignBonuses(chargeLimit, attributes.chargeLimit, statBlock);
         AssignBonuses(knockback, attributes.knockback, statBlock);
         AssignBonuses(range, attributes.range, statBlock);
         AssignBonuses(castStatusPower, attributes.castStatusPower, statBlock);
@@ -97,7 +102,7 @@ public class CastableStats : ScriptableObject
     {
         damage.Clear();
         cooldown.Clear();
-        chargeUp.Clear();
+        chargeRate.Clear();
         knockback.Clear();
         range.Clear();
         castStatusPower.Clear();

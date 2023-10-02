@@ -149,6 +149,7 @@ namespace HotD.Castables
 
         public virtual void Cast()
         {
+            print($"Cast {name}");
             casting = true;
             if (pivot != null)
                 pivot.SetRotationWithVector(direction.XZVector());

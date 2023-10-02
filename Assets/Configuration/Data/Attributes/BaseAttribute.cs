@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Yarn.Unity.Editor;
 
 // Based on Composite Design Pattern from Daniel Sidhion's article: https://code.tutsplus.com/using-the-composite-design-pattern-for-an-rpg-attributes-system--gamedev-243t
@@ -20,10 +21,18 @@ namespace Attributes
             public readonly T value;
             public readonly float weight;
         }
-        
+
         public enum Part { BaseValue, BaseMultiplier }
         [SerializeField] private int baseValue;
         [SerializeField] private float baseMultiplier;
+
+        [HideInInspector] public UnityEvent updated = new();
+        [HideInInspector] public UnityEvent<float> updatedFinal = new();
+        public void Updated()
+        {
+            updated.Invoke();
+            updatedFinal.Invoke(FinalValue);
+        }
 
         public BaseAttribute(int value, float multiplier = 0)
         {
@@ -31,7 +40,9 @@ namespace Attributes
             baseMultiplier = multiplier;
         }
 
-        public int BaseValue { get => baseValue; set => baseValue = value; }
-        public float BaseMultiplier { get => baseMultiplier; set => baseMultiplier = value; }
+        public abstract float FinalValue { get; }
+
+        public int BaseValue { get => baseValue; set { baseValue = value; Updated(); } }
+        public float BaseMultiplier { get => baseMultiplier; set { baseMultiplier = value; Updated(); } }
     }
 }

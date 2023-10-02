@@ -17,18 +17,29 @@ namespace Attributes
 
         public void AddAttribute(Attribute attribute, float weight=1)
         {
+            attribute.updated.AddListener(Updated);
             OtherAttributes.Add(new(attribute, weight));
         }
 
         public void RemoveAttribute(Attribute attribute, float weight=1)
         {
+            attribute.updated.RemoveListener(Updated);
             OtherAttributes.Remove(new(attribute, weight));
         }
 
         public override void Clear()
         {
-            OtherAttributes.Clear();
+            ClearAttributes(OtherAttributes);
             base.Clear();
+        }
+
+        public virtual void ClearAttributes(List<Weighted<Attribute>> attributeList)
+        {
+            foreach (Weighted<Attribute> attribute in attributeList)
+            {
+                attribute.value.updated.RemoveListener(Updated);
+            }
+            attributeList.Clear();
         }
 
         public override float CalculateValue()
