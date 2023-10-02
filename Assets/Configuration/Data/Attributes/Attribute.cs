@@ -22,32 +22,46 @@ namespace Attributes
             finalValue = BaseValue;
         }
 
-        public float FinalValue { get => CalculateValue(); }
+        public override float FinalValue { get => CalculateValue(); }
+
 
         public void AddRawBonus(RawBonus bonus, float weight = 1)
         {
+            bonus.updated.AddListener(Updated);
             RawBonuses.Add(new(bonus, weight));
         }
 
         public void AddFinalBonus(FinalBonus bonus, float weight = 1)
         {
+            bonus.updated.AddListener(Updated);
             FinalBonuses.Add(new(bonus, weight));
         }
 
         public void RemoveRawBonus(RawBonus bonus, float weight = 1)
         {
+            bonus.updated.RemoveListener(Updated);
             RawBonuses.Remove(new(bonus, weight));
         }
 
         public void RemoveFinalBonus(FinalBonus bonus, float weight = 1)
         {
+            bonus.updated.RemoveListener(Updated);
             FinalBonuses.Remove(new(bonus, weight));
         }
 
         public virtual void Clear()
         {
-            RawBonuses.Clear();
-            FinalBonuses.Clear();
+            ClearBonuses(RawBonuses);
+            ClearBonuses(FinalBonuses);
+        }
+
+        public virtual void ClearBonuses(List<Weighted<Bonus>> bonusList)
+        {
+            foreach (Weighted<Bonus> bonus in bonusList)
+            {
+                bonus.value.updated.RemoveListener(Updated);
+            }
+            bonusList.Clear();
         }
 
 

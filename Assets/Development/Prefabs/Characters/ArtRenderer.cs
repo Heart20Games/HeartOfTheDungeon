@@ -18,7 +18,10 @@ public class ArtRenderer : MonoBehaviour
     //private readonly Dictionary<string, bool> parameterExists = new();
     //public List<string> existingParameters = new();
     public bool Running { get => GetAnimBool("run"); set => SetAnimBool("run", value); }
-    public void Attack(int idx) { AnimTrigger($"attack{idx}"); }
+    public void Trigger(int idx) { AnimTrigger($"trigger{idx}"); }
+    public void Release(int idx) { AnimTrigger($"release{idx}"); }
+    public void Cast(int idx) { AnimTrigger($"cast{idx}"); }
+    public void UnCast(int idx) { AnimTrigger($"unCast{idx}"); }
     public void Hit() { AnimTrigger("hit"); }
     public bool Dead { get => GetAnimBool("dead"); set => SetAnimBoolTrigger("dead", value, "die"); }
 

@@ -5,7 +5,8 @@ public class CastableStatAttributes : ScriptableObject
 {
     public StatAttribute[] damage;
     public StatAttribute[] cooldown;
-    public StatAttribute[] chargeUp;
+    public StatAttribute[] chargeRate;
+    public StatAttribute[] chargeLimit;
     public StatAttribute[] knockback;
     public StatAttribute[] range;
     public StatAttribute[] castStatusPower;

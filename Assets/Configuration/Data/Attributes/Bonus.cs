@@ -8,8 +8,9 @@ using UnityEngine;
 namespace Attributes
 {
     [Serializable]
-    public class Bonus : BaseAttribute
+    public abstract class Bonus : BaseAttribute
     {
         public Bonus(int value, float multiplier=0) : base(value, multiplier) { }
+        public override abstract float FinalValue { get; }
     }
 }

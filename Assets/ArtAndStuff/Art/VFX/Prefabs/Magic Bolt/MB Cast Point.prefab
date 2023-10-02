@@ -52,6 +52,7 @@ MonoBehaviour:
   target: {fileID: 0}
   offset: {x: 0, y: 0, z: 0}
   rOffset: 0
+  stats: {fileID: 0}
   onStart:
     m_PersistentCalls:
       m_Calls: []
@@ -66,9 +67,6 @@ MonoBehaviour:
       m_Calls: []
   onRelease:
     m_PersistentCalls:
-      m_Calls: []
-  onCast:
-    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8450124607058288455}
         m_TargetAssemblyTypeName: HotD.VFX.VFXAdjuster, Assembly-CSharp
@@ -82,6 +80,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onCast:
+    m_PersistentCalls:
+      m_Calls:
       - m_Target: {fileID: 8450124607058288455}
         m_TargetAssemblyTypeName: HotD.VFX.VFXAdjuster, Assembly-CSharp
         m_MethodName: Cast
@@ -109,6 +110,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  canUpdatePowerLevel: 0
+  powerRange: {x: 0, y: 0}
   onSetPowerLevel:
     m_PersistentCalls:
       m_Calls:
@@ -139,9 +142,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  powerLevel: 0
+  powerLimit: 0
+  clampedPower: 0
+  comboRange: {x: 0, y: 0}
+  onSetComboStep:
+    m_PersistentCalls:
+      m_Calls: []
+  comboStep: 0
+  clampedCombo: 0
   onSetExceptions:
     m_PersistentCalls:
       m_Calls: []
+  castStatEvents: []
 --- !u!2083052967 &5640558220743154003
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -251,7 +264,7 @@ MonoBehaviour:
   dischargeTime: 0.4
   discharge: 0
   castProperty: Cast
-  castTimeProperty: Cast Time
+  castTimeProperty: CastTime
   castTime: 0.3
   toFloatProperty:
     m_PersistentCalls:

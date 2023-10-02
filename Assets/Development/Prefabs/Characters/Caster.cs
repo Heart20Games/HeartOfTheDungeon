@@ -90,7 +90,7 @@ namespace HotD.Castables
                     weapRotation = Vector3.right * -castVector.x + Vector3.forward * -castVector.y;
 
                 if (artRenderer != null)
-                    artRenderer.Attack(Castable.GetItem() == null ? 0 : Castable.GetItem().attackIdx);
+                    artRenderer.Cast(Castable.GetItem() == null ? 0 : Castable.GetItem().attackIdx);
 
                 if (weapRotation != lastDirection)
                     lastDirection = weapRotation;
