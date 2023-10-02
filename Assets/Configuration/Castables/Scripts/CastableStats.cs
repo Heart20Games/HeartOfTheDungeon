@@ -10,6 +10,7 @@ public class CastableStats : ScriptableObject
 {
     // Details
     public enum CastableType { Melee, Ranged, Magic }
+    public enum CastableStat { Damage, Cooldown, ChargeUp, Knockback, Range, CastStatusPower, HitStatusPower}
     public string usabilityTag = "None";
     public CastableType type = CastableType.Melee;
     public Identity targetIdentity = Identity.Neutral;
@@ -53,6 +54,23 @@ public class CastableStats : ScriptableObject
 
     [Header("Bonuses")]
     public List<StatBonus> bonuses;
+
+    // Accessors
+    
+    public DependentAttribute GetAttribute(CastableStat stat)
+    {
+        return stat switch
+        {
+            CastableStat.Damage => damage,
+            CastableStat.Cooldown => cooldown,
+            CastableStat.Range => range,
+            CastableStat.ChargeUp => chargeUp,
+            CastableStat.Knockback => knockback,
+            CastableStat.CastStatusPower => castStatusPower,
+            CastableStat.HitStatusPower => hitStatusPower,
+            _ => null
+        };
+    }
 
     // Equipping
 

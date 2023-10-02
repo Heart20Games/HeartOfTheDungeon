@@ -5,6 +5,7 @@ using UnityEngine.Events;
 namespace HotD.Castables
 {
     using Body;
+    using System;
     using static Body.Behavior.ContextSteering.CSIdentity;
     using static HotD.Castables.CastableToLocation;
 
@@ -97,6 +98,10 @@ namespace HotD.Castables
             {
                 ReportExceptionsToCollidables(source.body.GetComponents<Collider>());
                 PositionCastable();
+            }
+            foreach (GameObject method in castingMethods)
+            {
+                method.SetActive(false);
             }
             source.artRenderer.DisplayWeapon(weaponArt);
             foreach (var toLocation in toLocations)

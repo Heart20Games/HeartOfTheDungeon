@@ -22,7 +22,7 @@ namespace Attributes
             finalValue = BaseValue;
         }
 
-        public float FinalValue { get => CalculateValue(); }
+        public virtual float FinalValue { get => CalculateValue(); }
 
         public void AddRawBonus(RawBonus bonus, float weight = 1)
         {

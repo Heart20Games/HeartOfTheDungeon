@@ -8,7 +8,7 @@ using Yarn.Unity.Editor;
 
 namespace Attributes
 {
-    public class BaseAttribute
+    public abstract class BaseAttribute
     {
         public readonly struct Weighted<T>
         {

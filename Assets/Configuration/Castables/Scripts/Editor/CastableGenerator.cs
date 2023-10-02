@@ -1,5 +1,6 @@
 using MyBox;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Events;
@@ -286,6 +287,29 @@ namespace HotD.Castables
             return item;
         }
 
+        private static Casted AddCastedComponent(GameObject castedObject, Castable castable)
+        {
+            Casted casted = castedObject.AddComponent<Casted>();
+            ConnectCastedComponent(casted, castable);
+            return casted;
+        }
+
+        private static void ConnectCastedComponent(Casted casted, Castable castable)
+        {
+            casted.onTrigger ??= new();
+            casted.onRelease ??= new();
+            casted.onCast ??= new();
+            casted.onUnCast ??= new();
+            casted.onSetPowerLevel ??= new();
+            casted.onSetPowerLimit ??= new();
+            UnityEventTools.AddPersistentListener(castable.onTrigger, casted.OnTrigger);
+            UnityEventTools.AddPersistentListener(castable.onRelease, casted.OnRelease);
+            UnityEventTools.AddPersistentListener(castable.onCast, casted.OnCast);
+            UnityEventTools.AddPersistentListener(castable.onUnCast, casted.OnUnCast);
+            UnityEventTools.AddPersistentListener(castable.onSetPowerLevel, casted.SetPowerLevel);
+            UnityEventTools.AddPersistentListener(castable.onSetMaxPowerLevel, casted.SetPowerLimit);
+        }
+
 
         // Structs
 
@@ -307,10 +331,16 @@ namespace HotD.Castables
             public bool castOnChargeUp;
             public readonly void ApplyToCastable(Castable castable)
             {
-                castable.onCast = new();
-                castable.onTrigger = new();
-                castable.onRelease = new();
-                castable.onSetIdentity = new();
+                castable.onTrigger ??= new();
+                castable.onRelease ??= new();
+                castable.onCast ??= new();
+                castable.onUnCast ??= new();
+
+                castable.onSetPowerLevel ??= new();
+                castable.onSetMaxPowerLevel ??= new();
+
+                castable.onSetIdentity ??= new();
+
                 castable.followBody = followBody;
                 castable.castOnTrigger = castOnTrigger;
                 castable.castOnRelease = castOnRelease;
@@ -369,6 +399,7 @@ namespace HotD.Castables
                 if (colliderPrefab != null)
                 {
                     CastedCollider collider = Instantiate(colliderPrefab, pivot.transform);
+                    ConnectCastedComponent(collider, castable);
                     castable.castingMethods.Add(collider.gameObject);
                     castable.toLocations.Add(new(collider, source, target));
                     collider.enabled = false;
@@ -392,9 +423,11 @@ namespace HotD.Castables
                 GameObject pivotObject = new($"{name} Pivot");
                 pivotObject.transform.parent = castedObject.transform;
                 Pivot castedPivot = pivotObject.AddComponent<Pivot>();
-                
+
+                Casted casted = AddCastedComponent(castedObject, castable);
+
                 ProjectileSpawner spawner = castedObject.AddComponent<ProjectileSpawner>();
-                UnityEventTools.AddPersistentListener(castable.onCast, spawner.Spawn);
+                UnityEventTools.AddPersistentListener(casted.onCast, spawner.Spawn);
                 spawner.pivot = castedPivot.transform;
                 spawner.lifeSpan = projectileLifeSpan;
                 spawner.applyOnSet = false;

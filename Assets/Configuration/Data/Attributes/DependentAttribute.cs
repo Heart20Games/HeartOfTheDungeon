@@ -13,6 +13,8 @@ namespace Attributes
 
         public DependentAttribute(int startingValue) : base(startingValue) { }
 
+        public override float FinalValue { get => CalculateValue(); }
+
         public void AddAttribute(Attribute attribute, float weight=1)
         {
             OtherAttributes.Add(new(attribute, weight));
