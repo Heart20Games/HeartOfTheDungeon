@@ -109,6 +109,7 @@ namespace Selection
         {
             this.targetLock = targetLock;
             Finder.enabled = !targetLock;
+            Finder.SetLockOn(targetLock);
             virtualCamera.gameObject.SetActive(targetLock);
             if (targetLock)
             {

@@ -52,9 +52,9 @@ namespace CustomUnityEvents
     {
         public UnityEvent trigger;
         public UnityEvent<T> value;
-        public void Invoke(T value)
+        public readonly void Invoke(T value)
         {
-            trigger.Invoke();
+            this.trigger.Invoke();
             this.value.Invoke(value);
         }
     }
