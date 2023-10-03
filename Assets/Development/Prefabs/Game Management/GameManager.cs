@@ -246,7 +246,7 @@ public class Game : BaseMonoBehaviour
     private GameMode prevMode;
     public void StartDialogue(string nodeName)
     {
-        StartDialogue(nodeName);
+        StartDialogue(nodeName, null, null);
     }
     public void StartDialogue(string nodeName, UnityAction<string> startListener=null, UnityAction completeListener=null)
     {
