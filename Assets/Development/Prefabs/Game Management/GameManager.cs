@@ -244,13 +244,15 @@ public class Game : BaseMonoBehaviour
     // Start Dialogue
 
     private GameMode prevMode;
-    public void StartDialogue(string nodeName, UnityAction<string> startListener, UnityAction completeListener)
+    public void StartDialogue(string nodeName, UnityAction<string> startListener=null, UnityAction completeListener=null)
     {
         prevMode = game.Mode;
         game.InputMode = InputMode.Dialogue;
         userInterface.dialogueRunner.Stop();
-        userInterface.dialogueRunner.onNodeStart.AddListener(startListener);
-        userInterface.dialogueRunner.onDialogueComplete.AddListener(completeListener);
+        if (startListener != null)
+            userInterface.dialogueRunner.onNodeStart.AddListener(startListener);
+        if (completeListener != null)
+            userInterface.dialogueRunner.onDialogueComplete.AddListener(completeListener);
         userInterface.dialogueRunner.StartDialogue(nodeName);
     }
 
