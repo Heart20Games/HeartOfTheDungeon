@@ -25,6 +25,7 @@ public class SceneTimeline : BaseMonoBehaviour
         UpdateCutsceneBank();
     }
 
+    [ButtonMethod]
     public void UpdateCutsceneBank()
     {
         cutsceneBank.Clear();
