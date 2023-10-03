@@ -11,6 +11,7 @@ public class GameModes
     public enum MoveMode { None, Selector, Character }
     public enum LookMode { None, Targeter }
     public enum Menu { None, ControlSheet, CharacterSheet }
+    public static Dictionary<string, GameMode> ModeBank { get { return game.settings.ModeBank; } }
     public static Dictionary<InputMode, GameMode> InputBank { get { return game.settings.InputBank; } }
     public static Dictionary<Menu, GameMode> MenuBank { get { return game.settings.MenuBank; } }
 
@@ -59,7 +60,17 @@ public class GameSettings : ScriptableObject
 {
     public bool useD20Menu;
     public List<GameMode> modes;
-    
+
+    private Dictionary<string, GameMode> modeBank;
+    public Dictionary<string, GameMode> ModeBank { get => modeBank ?? GetGameModes(); }
+    public Dictionary<string, GameMode> GetGameModes()
+    {
+        modeBank ??= new();
+        for (int i = 0; i < modes.Count; i++)
+            modeBank[modes[i].name] = modes[i];
+        return modeBank;
+    }
+
     private Dictionary<InputMode, GameMode> inputBank;
     public Dictionary<InputMode, GameMode> InputBank { get => inputBank ?? GetInputModes(); }
     public Dictionary<InputMode, GameMode> GetInputModes()

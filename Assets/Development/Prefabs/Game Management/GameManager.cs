@@ -132,6 +132,7 @@ public class Game : BaseMonoBehaviour
     // Game InputMode
     [SerializeField] private GameMode mode = new();
     public GameMode Mode { get => mode; set => SetMode(value); }
+    public string ModeName { get => mode.name; set => SetMode(value); }
     public InputMode InputMode { get => mode.inputMode; set => SetMode(value); }
     public MoveMode MoveMode { get => mode.moveMode; }
     public LookMode LookMode { get => mode.lookMode; }
@@ -139,6 +140,15 @@ public class Game : BaseMonoBehaviour
     public bool swapModes = false;
     public bool reactivateMode = false;
     
+    public void SetMode(string name)
+    {
+        if (debug) print($"Change InputMode to {name} (in bank? {(ModeBank.ContainsKey(name) ? "yes" : "no")})");
+        if (ModeBank.TryGetValue(name, out GameMode mode))
+            SetMode(mode);
+        else
+            Debug.LogWarning($"Can't find game mode for \"{name}\"");
+    }
+
     public void SetMode(Menu menu)
     {
         if (debug) print($"Change InputMode to {menu} (in bank? {(MenuBank.ContainsKey(menu) ? "yes" : "no")})");
