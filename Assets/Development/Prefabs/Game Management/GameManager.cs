@@ -5,6 +5,7 @@ using Body;
 using UnityEngine.Events;
 using static GameModes;
 using Selection;
+using Yarn.Unity;
 
 public class Game : BaseMonoBehaviour
 {
@@ -238,6 +239,25 @@ public class Game : BaseMonoBehaviour
             }
         }
         selectedTarget = selectable;
+    }
+
+    // Start Dialogue
+
+    private GameMode prevMode;
+    public void StartDialogue(string nodeName, UnityAction<string> startListener, UnityAction completeListener)
+    {
+        prevMode = game.Mode;
+        game.InputMode = InputMode.Dialogue;
+        userInterface.dialogueRunner.Stop();
+        userInterface.dialogueRunner.onNodeStart.AddListener(startListener);
+        userInterface.dialogueRunner.onDialogueComplete.AddListener(completeListener);
+        userInterface.dialogueRunner.StartDialogue(nodeName);
+    }
+
+    public void EndDialogue()
+    {
+        game.Mode = prevMode;
+        userInterface.dialogueRunner.Stop();
     }
 
     // Set Characters

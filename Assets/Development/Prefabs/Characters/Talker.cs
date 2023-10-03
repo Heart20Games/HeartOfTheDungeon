@@ -57,12 +57,7 @@ public class Talker : BaseMonoBehaviour
             {
                 if (virtualCamera != null)
                     virtualCamera.SetActive(true);
-                prevMode = game.InputMode;
-                game.InputMode = InputMode.Dialogue;
-                dialogueRunner.Stop();
-                dialogueRunner.onNodeStart.AddListener(OnNodeStarted);
-                dialogueRunner.onDialogueComplete.AddListener(CompleteTalking);
-                dialogueRunner.StartDialogue(targetNode);
+                game.StartDialogue(targetNode, OnNodeStarted, CompleteTalking);
                 onStartTalking.Invoke();
             }
         }
