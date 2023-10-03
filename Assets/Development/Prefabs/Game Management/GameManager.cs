@@ -24,6 +24,10 @@ public class Game : BaseMonoBehaviour
     [HideInInspector] public List<Interactable> interactables;
     private PlayerInput input;
 
+    // Initialization
+    [SerializeField] private InputMode initialInputMode = InputMode.None;
+    [SerializeField] private Menu initialMenu = Menu.None;
+
     // Current Character
     [Header("Current Character")]
     [ReadOnly][SerializeField] private Character curCharacter;
@@ -60,7 +64,18 @@ public class Game : BaseMonoBehaviour
     private void Start()
     {
         InitializePlayableCharacters();
-        InputMode = InputMode;
+        if (initialMenu != Menu.None)
+        {
+            SetMode(initialMenu);
+        }
+        else if (initialInputMode != InputMode.None)
+        {
+            InputMode = InputMode.None;
+        }
+        else
+        {
+            InputMode = InputMode;
+        }
     }
 
     public void InitializePlayableCharacters()
