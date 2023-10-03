@@ -244,6 +244,10 @@ public class Game : BaseMonoBehaviour
     // Start Dialogue
 
     private GameMode prevMode;
+    public void StartDialogue(string nodeName)
+    {
+        StartDialogue(nodeName);
+    }
     public void StartDialogue(string nodeName, UnityAction<string> startListener=null, UnityAction completeListener=null)
     {
         prevMode = game.Mode;
