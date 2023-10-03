@@ -9,13 +9,13 @@ using Yarn.Unity;
 public class SceneTimeline : BaseMonoBehaviour
 {
     private PlayableDirector director;
-    public struct Cutscene
+    [Serializable] public struct Cutscene
     {
         public string name;
         public PlayableAsset asset;
     }
     public List<Cutscene> cutscenes = new();
-    public Dictionary<string, PlayableAsset> cutsceneBank;
+    public Dictionary<string, PlayableAsset> cutsceneBank = new();
 
     [ReadOnly][SerializeField] private int paused = 0;
 
@@ -28,6 +28,7 @@ public class SceneTimeline : BaseMonoBehaviour
     [ButtonMethod]
     public void UpdateCutsceneBank()
     {
+        cutsceneBank ??= new();
         cutsceneBank.Clear();
         foreach (var cutscene in cutscenes)
         {
