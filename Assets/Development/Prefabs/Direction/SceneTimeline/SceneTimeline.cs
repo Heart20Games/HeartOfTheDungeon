@@ -35,7 +35,7 @@ public class SceneTimeline : BaseMonoBehaviour
         }
     }
 
-    [YarnCommand("cutscene")]
+    [YarnCommand("cutsceneIdx")]
     public void Trigger(int index)
     {
         if (index >= 0 && index < cutscenes.Count)
