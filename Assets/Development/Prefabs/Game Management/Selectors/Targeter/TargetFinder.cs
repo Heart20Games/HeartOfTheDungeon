@@ -28,6 +28,7 @@ namespace Selection
         public int TargetIdx { get => targetIdx; set => SetTargetIdx(value); }
         [ReadOnly][SerializeField] private ASelectable lastTarget;
         public UnityEvents<Transform> onSetTarget;
+        public UnityEvent<bool> onSetLockOn;
 
         private void Awake()
         {
@@ -46,6 +47,11 @@ namespace Selection
                 SortSelectables();
                 TargetIdx = selectables.IndexOf(Main.selected);
             }
+        }
+
+        public void SetLockOn(bool lockOn)
+        {
+            onSetLockOn.Invoke(lockOn);
         }
 
         private void SetTargetIdx(int newIdx)

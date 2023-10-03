@@ -17,8 +17,13 @@ namespace HotD.Castables
         [Header("Vector")]
         public Vector2 fallback = new();
         public Vector2 fbOverride = new();
+        public Vector2 aimVector = new();
         public Vector2 castVector = new();
+        public Vector3 rotationOffset = new();
         public UnityEvent<Vector2> OnSetCastVector;
+        public bool useTargetOnly = false;
+        public bool UseTargetOnly { get => useTargetOnly; set => useTargetOnly = value; }
+        [ReadOnly][SerializeField] private Transform target;
 
         private void Awake()
         {
@@ -27,14 +32,22 @@ namespace HotD.Castables
             pivot = character.pivot;
         }
 
+        private void FixedUpdate()
+        {
+            SetTarget(target);
+        }
+
         // Cast Vector
         public void SetTarget(Transform target)
         {
+            this.target = target;
             if (target != null)
             {
                 if (debug) print($"Set target: {target} (on {character.Name})");
-                Vector3 castPoint = (character.body.position + (Vector3.up * character.baseOffset)).XZVector();
-                SetFallback(target.position - castPoint, true);
+                Vector3 castPoint = character.firingLocation.position;
+                Vector3 direction = (target.position + (Vector3.up * 0.5f)) - castPoint;
+                direction = Quaternion.Euler(rotationOffset) * direction;
+                SetFallback(direction.XZVector(), true);
             }
             else SetFallback(new(), true);
         }
@@ -43,18 +56,35 @@ namespace HotD.Castables
             if (debug) print($"Set fallback{(setOverride ? " override" : "")}: {fallback} (on {character.Name})");
             if (setOverride) fbOverride = fallback;
             else this.fallback = fallback;
-            SetVector(castVector);
+            SetVector(aimVector);
         }
         public void SetVector(Vector2 aimVector)
         {
+            this.aimVector = aimVector;
             if (fallback.magnitude > 0 || aimVector.magnitude > 0)
             {
                 if (debug) print($"Set vector: {aimVector} (on {character.Name}");
                 Vector2 fallback = fbOverride.magnitude > 0 ? fbOverride : this.fallback;
-                castVector = aimVector.magnitude > 0 ? aimVector : fallback;
+                if (aimVector.magnitude > 0 && !useTargetOnly)
+                {
+                    castVector = OrientToCamera(character.body, aimVector);
+                }
+                else
+                {
+                    castVector = fallback;
+                }
                 if (castVector.magnitude > 0)
                     OnSetCastVector.Invoke(castVector);
             }
+        }
+
+        public Vector3 OrientToCamera(Transform body, Vector2 castVector)
+        {
+            Debug.DrawRay(body.position, castVector.FullY() * 2f, Color.blue, 0.5f);
+            Vector3 cameraDirection = body.position - Camera.main.transform.position;
+            castVector = castVector.Orient(cameraDirection.XZVector().normalized).normalized;
+            Debug.DrawRay(body.position, castVector.FullY() * 2f, Color.yellow, 0.5f);
+            return castVector;
         }
 
 
@@ -64,12 +94,9 @@ namespace HotD.Castables
         // Cast based on the given Transform's position relative to the Camera.
         public void Cast(Transform body, Vector2 castVector)
         {
-            Debug.DrawRay(body.position, castVector.FullY() * 2f, Color.blue, 0.5f);
-            Vector3 cameraDirection = body.position - Camera.main.transform.position;
-            castVector = castVector.Orient(cameraDirection.XZVector().normalized).normalized;
-            Debug.DrawRay(body.position, castVector.FullY() * 2f, Color.yellow, 0.5f);
             Cast(castVector);
         }
+
         // Cast using the given vector
         public void Cast(Vector2 castVector)
         {
@@ -101,18 +128,12 @@ namespace HotD.Castables
 
         public void Trigger()
         {
-            if (Castable != null)
-            {
-                Castable.Trigger();
-            }
+            Castable?.Trigger();
         }
 
         public void Release()
         {
-            if (Castable != null)
-            {
-                Castable.Release();
-            }
+            Castable?.Release();
         }
     }
 }

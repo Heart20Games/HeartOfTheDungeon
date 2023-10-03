@@ -131,7 +131,8 @@ MonoBehaviour:
   talker: {fileID: 0}
   brain: {fileID: 0}
   caster: {fileID: 0}
-  weaponOffset: {fileID: 844723266406932610}
+  weaponLocation: {fileID: 0}
+  firingLocation: {fileID: 0}
   statuses: []
   healthBar: {fileID: 6548638977744553781}
   alwaysHideHealth: 0
@@ -181,7 +182,9 @@ MonoBehaviour:
   debug: 0
   fallback: {x: 0, y: 0}
   fbOverride: {x: 0, y: 0}
+  aimVector: {x: 0, y: 0}
   castVector: {x: 0, y: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
   OnSetCastVector:
     m_PersistentCalls:
       m_Calls:
@@ -197,6 +200,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  useTargetOnly: 0
+  target: {fileID: 0}
 --- !u!114 &7638968927939714640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,6 +473,21 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onSetLockOn:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1211649189196671348}
+        m_TargetAssemblyTypeName: HotD.Castables.Caster, Assembly-CSharp
+        m_MethodName: set_UseTargetOnly
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1891658906475348255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1092,7 +1112,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3360533161439192725, guid: 2e3d1be4c474a8a42abff5cc31d5710e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 180
+      value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 4679056185990394081, guid: 2e3d1be4c474a8a42abff5cc31d5710e, type: 3}
       propertyPath: m_Layer
