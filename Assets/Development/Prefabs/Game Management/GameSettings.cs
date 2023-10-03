@@ -7,7 +7,7 @@ using static GameModes;
 
 public class GameModes
 {
-    public enum InputMode { None, Selection, Character, Dialogue, LockOn, Menu };
+    public enum InputMode { None, Selection, Character, Dialogue, LockOn, Menu, Cutscene };
     public enum MoveMode { None, Selector, Character }
     public enum LookMode { None, Targeter }
     public enum Menu { None, ControlSheet, CharacterSheet }
