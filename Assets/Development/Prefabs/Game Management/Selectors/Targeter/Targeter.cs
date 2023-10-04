@@ -115,14 +115,14 @@ namespace Selection
             {
                 Select();
                 onTargetSet.enter.Invoke(selected);
+                targetGroup.m_Targets[0].target = finder == null ? null : finder.transform;
+                targetGroup.m_Targets[1].target = selected == null ? null : selected.transform;
             }
             else
             {
                 onTargetSet.exit.Invoke(selected);
                 DeSelect();
             } 
-            targetGroup.m_Targets[0].target = finder == null ? null : finder.transform;
-            targetGroup.m_Targets[1].target = selected == null ? null : selected.transform;
         }
 
         public void SwitchTargets(bool left)
