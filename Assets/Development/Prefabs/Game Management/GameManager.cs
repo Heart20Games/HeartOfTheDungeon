@@ -147,7 +147,10 @@ public class Game : BaseMonoBehaviour
         if (ModeBank.TryGetValue(name, out GameMode mode))
             SetMode(mode);
         else
+        {
             Debug.LogWarning($"Can't find game mode for \"{name}\"");
+            SetMode(InputMode.Character);
+        }
     }
 
     public void SetMode(Menu menu)
@@ -156,7 +159,10 @@ public class Game : BaseMonoBehaviour
         if (MenuBank.TryGetValue(menu, out GameMode mode))
             SetMode(mode);
         else
+        {
             Debug.LogWarning($"Can't find game mode for \"{menu}\"");
+            SetMode(InputMode.Character);
+        }
     }
 
     public void SetMode(InputMode inputMode)
@@ -165,7 +171,10 @@ public class Game : BaseMonoBehaviour
         if (InputBank.TryGetValue(inputMode, out GameMode mode))
             SetMode(mode);
         else
+        {
             Debug.LogWarning($"Can't find game mode for \"{inputMode}\"");
+            SetMode(InputMode.Character);
+        }
     }
 
     public void SetMode(GameMode mode)
