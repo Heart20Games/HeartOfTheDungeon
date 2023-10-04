@@ -12,10 +12,10 @@ public class SceneTimeline : BaseMonoBehaviour
     [Serializable] public struct Cutscene
     {
         public string name;
-        public PlayableAsset asset;
+        public PlayableDirector director;
     }
     public List<Cutscene> cutscenes = new();
-    public Dictionary<string, PlayableAsset> cutsceneBank = new();
+    public Dictionary<string, PlayableDirector> cutsceneBank = new();
 
     [ReadOnly][SerializeField] private int paused = 0;
 
@@ -32,7 +32,7 @@ public class SceneTimeline : BaseMonoBehaviour
         cutsceneBank.Clear();
         foreach (var cutscene in cutscenes)
         {
-            cutsceneBank[cutscene.name] = cutscene.asset;
+            cutsceneBank[cutscene.name] = cutscene.director;
         }
     }
 
@@ -41,7 +41,7 @@ public class SceneTimeline : BaseMonoBehaviour
     {
         if (index >= 0 && index < cutscenes.Count)
         {
-            Trigger(cutscenes[index].asset);
+            Trigger(cutscenes[index].director);
         }
         else
         {
@@ -52,9 +52,9 @@ public class SceneTimeline : BaseMonoBehaviour
     [YarnCommand("cutscene")]
     public void Trigger(string name)
     {
-        if (cutsceneBank.TryGetValue(name, out var asset))
+        if (cutsceneBank.TryGetValue(name, out var director))
         {
-            Trigger(asset);
+            Trigger(director);
         }
         else
         {
@@ -62,28 +62,48 @@ public class SceneTimeline : BaseMonoBehaviour
         }
     }
 
-    public void Trigger(PlayableAsset asset)
+    public void Trigger(PlayableDirector director)
     {
-        director.Stop();
-        director.playableAsset = asset;
-        director.Play();
+        if (this.director != null)
+            this.director.Stop();
+        this.director = director;
+        this.director.Play();
+    }
+
+    [YarnCommand("end-cutscene")]
+    public void End()
+    {
+        if (this.director != null)
+            this.director.Stop();
+        else
+            Debug.LogWarning("Tried stopping a cutscene that does not exist.");
     }
 
     [YarnCommand("pause")]
     public void Pause()
     {
-        paused -= 1;
-        if (paused <= 0)
-            director.playableGraph.GetRootPlayable(0).SetSpeed(0);
+        if (this.director != null)
+        {
+            paused -= 1;
+            if (paused <= 0)
+                director.playableGraph.GetRootPlayable(0).SetSpeed(0);
             //director.Pause();
+        }
+        else
+            Debug.LogWarning("Tried pausing a cutscene that does not exist.");
     }
 
     [YarnCommand("unpause")]
     public void UnPause()
     {
-        paused += 1;
-        if (paused >= 0)
-            director.playableGraph.GetRootPlayable(0).SetSpeed(1);
+        if (this.director != null)
+        {
+            paused += 1;
+            if (paused >= 0)
+                director.playableGraph.GetRootPlayable(0).SetSpeed(1);
             //director.Play();
+        }
+        else
+            Debug.LogWarning("Tried unpausing a cutscene that does not exist.");
     }
 }
