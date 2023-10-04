@@ -7,6 +7,8 @@ public class Interactable : BaseMonoBehaviour
     public UnityEvent onInteract;
     public UnityEvent<Interactor> onInteractSendInteractor;
 
+    public bool oneOff = false;
+    [ReadOnly][SerializeField] private bool hasInteracted = false;
     public bool releasable = false;
     private bool canRelease = false;
 
@@ -14,18 +16,22 @@ public class Interactable : BaseMonoBehaviour
 
     public void Interact()
     {
-        if (releasable && canRelease)
+        if (!oneOff || !hasInteracted)
         {
-            onInteract.Invoke();
-            onInteractSendInteractor.Invoke(null);
-        }
-        for (int i = 0; i < interactors.Count; i++)
-        {
-            Interactor interactor = interactors[i];
-            if (interactor.canInteract)
+            if (releasable && canRelease)
             {
                 onInteract.Invoke();
-                onInteractSendInteractor.Invoke(interactor);
+                onInteractSendInteractor.Invoke(null);
+            }
+            for (int i = 0; i < interactors.Count; i++)
+            {
+                Interactor interactor = interactors[i];
+                if (interactor.canInteract)
+                {
+                    onInteract.Invoke();
+                    onInteractSendInteractor.Invoke(interactor);
+                    hasInteracted = true;
+                }
             }
         }
     }
