@@ -74,7 +74,8 @@ public class SceneTimeline : BaseMonoBehaviour
     {
         paused -= 1;
         if (paused <= 0)
-            director.Pause();
+            director.playableGraph.GetRootPlayable(0).SetSpeed(0);
+            //director.Pause();
     }
 
     [YarnCommand("unpause")]
@@ -82,6 +83,7 @@ public class SceneTimeline : BaseMonoBehaviour
     {
         paused += 1;
         if (paused >= 0)
-            director.Play();
+            director.playableGraph.GetRootPlayable(0).SetSpeed(1);
+            //director.Play();
     }
 }
