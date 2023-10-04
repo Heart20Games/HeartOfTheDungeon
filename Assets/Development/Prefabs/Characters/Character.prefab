@@ -180,10 +180,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canAttack: 1
   debug: 0
-  fallback: {x: 0, y: 0}
-  fbOverride: {x: 0, y: 0}
-  aimVector: {x: 0, y: 0}
-  castVector: {x: 0, y: 0}
+  aimDeadzone: 0.01
+  fallback: {x: 0, y: 0, z: 0}
+  targetOverride: {x: 0, y: 0, z: 0}
+  targetOffset: {x: 0, y: 0.75, z: 0}
+  aimVector: {x: 0, y: 0, z: 0}
+  castVector: {x: 0, y: 0, z: 0}
+  appliedVector: {x: 0, y: 0, z: 0}
+  castDirection: {x: 0, y: 0, z: 0}
+  finalDirection: {x: 0, y: 0, z: 0}
   rotationOffset: {x: 0, y: 0, z: 0}
   OnSetCastVector:
     m_PersistentCalls:
@@ -200,7 +205,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  useTargetOnly: 0
   target: {fileID: 0}
 --- !u!114 &7638968927939714640
 MonoBehaviour:

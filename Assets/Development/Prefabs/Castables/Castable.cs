@@ -17,10 +17,12 @@ namespace HotD.Castables
         public CastableItem GetItem() { return item; }
         public Transform weaponArt;
         public Transform pivot;
+        [ReadOnly][SerializeField] Vector3 pivotDirection;
         public float rOffset = 0;
         public bool followBody = true;
         [HideInInspector] public Character source;
 
+        [SerializeField] private bool debug;
         private Vector3 direction;
         public virtual Vector3 Direction { get => direction; set => direction = value; }
 
@@ -149,14 +151,18 @@ namespace HotD.Castables
 
         public virtual void Cast()
         {
-            print($"Cast {name}");
             casting = true;
             if (pivot != null)
-                pivot.SetRotationWithVector(direction.XZVector());
+            {
+                //pivot.SetRotationWithVector(Direction); //.XZVector());
+                pivot.forward = Direction;
+                pivotDirection = pivot.forward;
+            }
             foreach (Status status in castStatuses)
             {
                 status.effect.Apply(source, status.strength);
             }
+            if (debug) { Debug.Log($"{name} casting in {direction} direction."); }
             onCast.Invoke(direction);
         }
 
