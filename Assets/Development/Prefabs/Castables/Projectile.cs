@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections.Generic;
 using UnityEngine;
 using static Colliders;
@@ -7,13 +8,16 @@ namespace HotD.Castables
     [RequireComponent(typeof(Rigidbody))]
     public class Projectile : CastedCollider, ICollidable
     {
+        [Foldout("Projectile", true)]
         [ReadOnly][SerializeField] private Vector3 localPosition;
         public Vector3 direction = new();
         public float speed = 0;
+
+        [Foldout("Collision", true)]
         private new Rigidbody rigidbody;
         private Collider[] colliders;
         private Collider[] Colliders { get { return colliders ?? InitializeColliders(); } }
-        public List<GameObject> collidableObjects;
+        [Foldout("Collision")] public List<GameObject> collidableObjects;
 
         public void Destroy()
         {
@@ -47,7 +51,12 @@ namespace HotD.Castables
         private void Start()
         {
             rigidbody.position = transform.position;
-            rigidbody.velocity = speed * Time.fixedDeltaTime * -transform.forward;
+            rigidbody.velocity = speed * Time.fixedDeltaTime * direction;
+        }
+
+        private void FixedUpdate()
+        {
+            rigidbody.velocity = speed * Time.fixedDeltaTime * direction;
         }
 
         public void SetActive(bool active)

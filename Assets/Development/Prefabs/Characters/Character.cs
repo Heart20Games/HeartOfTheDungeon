@@ -341,11 +341,7 @@ namespace Body
             if (caster != null && caster.enabled)
             {
                 caster.Castable = castable;
-                Vector2 castVector = caster.castVector;
-                if (controllable)
-                    caster.Cast(body, castVector);
-                else
-                    caster.Cast(castVector);
+                caster.Trigger();
             }
         }
 
@@ -369,8 +365,8 @@ namespace Body
 
 
         // Actions
-        public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); caster.SetFallback(movement.moveVector); }
-        public void Aim(Vector2 input, bool aim=false) { if (aimActive || aim) caster.SetVector(input); }
+        public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); caster.SetFallback(movement.moveVector.FullY(), true); }
+        public void Aim(Vector2 input, bool aim=false) { if (aimActive || aim) caster.SetVector(input.FullY()); }
         public void TriggerCastable(int idx) { TriggerCastable(castables[idx]); }
         public void ReleaseCastable(int idx) { ReleaseCastable(castables[idx]); }
         public void Interact() { talker.Talk(); }
