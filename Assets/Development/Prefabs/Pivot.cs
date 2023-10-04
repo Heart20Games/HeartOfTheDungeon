@@ -14,8 +14,8 @@ public class Pivot : BaseMonoBehaviour
         }
     }
 
-    public void OrientBody(Vector2 vector)
+    public void OrientBody(Vector3 vector)
     {
-        body.SetLocalRotationWithVector(vector);
+        body.SetLocalRotationWithVector(vector.XZVector());
     }
 }

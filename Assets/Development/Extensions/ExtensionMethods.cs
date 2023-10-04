@@ -72,17 +72,17 @@ public static class ExtensionMethods
     }
 
     // Set Rotation With Vector
-    public static void SetRotationWithVector(this Transform _transform, Vector2 vector, float rotationOffset=0, float threshold=0.5f)
+    public static void SetRotationWithVector(this Transform _transform, Vector3 vector, float rotationOffset=0, float threshold=0.5f)
     {
         SetRotationWithVector(_transform, vector, Vector3.up, Vector3.right, Vector3.forward, rotationOffset, threshold);
     }
-    public static void SetRotationWithVector(this Transform _transform, Vector2 vector, Vector3 up, float rotationOffset=0, float threshold=0.5f)
+    public static void SetRotationWithVector(this Transform _transform, Vector3 vector, Vector3 up, float rotationOffset=0, float threshold=0.5f)
     {
         SetRotationWithVector(_transform, vector, up, Vector3.right, Vector3.forward, rotationOffset, threshold);
     }
-    public static void SetRotationWithVector(this Transform _transform, Vector2 vector, Vector3 up, Vector3 right, Vector3 forward, float rotationOffset=0, float threshold=0.5f)
+    public static void SetRotationWithVector(this Transform _transform, Vector3 vector, Vector3 up, Vector3 right, Vector3 forward, float rotationOffset=0, float threshold=0.5f)
     {
-        Vector3 direction = right * vector.x + forward * vector.y;
+        Vector3 direction = right * vector.x + forward * vector.z; //vector; // right * vector.x + forward * vector.y;
         if (direction.sqrMagnitude > 0.0f)
         {
             Quaternion newRotation = Quaternion.LookRotation(direction, up);

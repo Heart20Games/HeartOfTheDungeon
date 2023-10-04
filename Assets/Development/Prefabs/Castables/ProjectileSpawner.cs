@@ -46,8 +46,10 @@ namespace HotD.Castables
 
         public void Spawn(Vector3 direction = new Vector3())
         {
+
             if (isActiveAndEnabled)
             {
+                if (debug) { Debug.Log($"{name} spawning projectile in {direction} direction."); }
                 pivot.localPosition = offset;
                 Transform pInstance = Instantiate(pivot, source);
                 pInstance.gameObject.SetActive(true);
@@ -58,7 +60,7 @@ namespace HotD.Castables
                         bInstance.SetActive(true);
                         projectiles.Add(bInstance);
                         AddExceptionsOn(exceptions, bInstance);
-                        LaunchInstance(direction, pInstance.transform, bInstance.transform);
+                        LaunchInstance(direction, pInstance.transform, bInstance);
                         StartCoroutine(CleanupInstance(pInstance.transform, bInstance));
                     }
                     else
@@ -72,10 +74,10 @@ namespace HotD.Castables
         public void Activate(Vector3 direction)
         {
             if (isActiveAndEnabled)
-                LaunchInstance(direction, pivot.transform, projectile.transform);
+                LaunchInstance(direction, pivot.transform, projectile);
         }
 
-        public void LaunchInstance(Vector3 direction, Transform pInstance, Transform bInstance)
+        public void LaunchInstance(Vector3 direction, Transform pInstance, Projectile projectile)
         {
             if (!followBody)
             {
@@ -86,12 +88,13 @@ namespace HotD.Castables
                 pInstance.localPosition = offset;
             }
             pInstance.gameObject.SetActive(true);
-            bInstance.gameObject.SetActive(true);
-            bInstance.localPosition = new();
+            projectile.gameObject.SetActive(true);
+            projectile.direction = direction;
+            projectile.transform.localPosition = new();
             Vector2 dir = new(direction.x, direction.z);
-            Quaternion bRotation = bInstance.localRotation;
+            Quaternion bRotation = projectile.transform.localRotation;
             pInstance.SetRotationWithVector(dir, rOffset);
-            bInstance.localRotation = bRotation;
+            projectile.transform.localRotation = bRotation;
         }
 
         public IEnumerator CleanupInstance(Transform pInstance, Projectile bInstance)

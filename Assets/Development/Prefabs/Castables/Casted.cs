@@ -10,6 +10,7 @@ namespace HotD.Castables
     public class Casted : Positionable, ICollidables
     {
         public CastableStats stats;
+        [SerializeField] private bool debug;
 
         [Foldout("Base Events", true)]
         public UnityEvent onStart = new();
@@ -38,13 +39,11 @@ namespace HotD.Castables
 
         [Foldout("Combo Step", true)]
         public Vector2 comboRange;
-        public UnityEvent<int> onSetComboStep = new();
+        [Foldout("Combo Step")] public UnityEvent<int> onSetComboStep = new();
         [ReadOnly][SerializeField] private int comboStep = 0;
-        [Foldout("Combo Step")]
         [ReadOnly][SerializeField] private float clampedCombo = 0f;
 
-
-        public UnityEvent<Collider[]> onSetExceptions = new();
+        [Foldout("Collision", true)] public UnityEvent<Collider[]> onSetExceptions = new();
 
         [Serializable] public struct CastStatEvent
         {
@@ -105,12 +104,10 @@ namespace HotD.Castables
         }
         public void SetPowerLimit(float powerLimit)
         {
-            print($"Power Limit Set on {gameObject.name}: {powerLimit}");
             SetPowerLimit(Mathf.RoundToInt(powerLimit));
         }
         public void SetPowerLimit(int powerLimit)
         {
-            print($"Power Limit Set on {gameObject.name}: {powerLimit}");
             this.powerLimit = powerLimit;
             onSetPowerLimit.Invoke(powerLimit);
             UpdateEnabled();
@@ -137,32 +134,29 @@ namespace HotD.Castables
         }
 
         // Cast Events
-        public void OnTrigger()
+        public virtual void OnTrigger()
         {
             canUpdatePowerLevel = true;
             onTrigger.Invoke();
         }
-        public void OnRelease()
+        public virtual void OnRelease()
         {
             canUpdatePowerLevel = false;
             onRelease.Invoke();
         }
-        public void OnCast(Vector3 vector)
+        public virtual void OnCast(Vector3 vector)
         {
-            print($"Try Cast {name}");
             if (isActiveAndEnabled)
             {
-                print($"Cast {name}");
+                if (debug) { Debug.Log($"{name} casting using {vector} vector."); }
                 onCast.Invoke(vector);
             }
                 
         }
-        public void OnUnCast()
+        public virtual void OnUnCast()
         {
-            print($"Try UnCast {name}");
             if (isActiveAndEnabled)
             {
-                print($"UnCast {name}");
                 onUnCast.Invoke();
             }
         }
