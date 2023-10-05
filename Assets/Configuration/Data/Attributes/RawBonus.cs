@@ -6,8 +6,9 @@ using UnityEngine;
 
 namespace Attributes
 {
-    public class RawBonus : Bonus
+    public abstract class RawBonus : Bonus
     {
         public RawBonus(int value, float multiplier) : base(value, multiplier) { }
+        public override abstract float FinalValue { get; }
     }
 }

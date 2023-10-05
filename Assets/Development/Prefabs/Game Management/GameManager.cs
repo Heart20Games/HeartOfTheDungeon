@@ -5,6 +5,7 @@ using Body;
 using UnityEngine.Events;
 using static GameModes;
 using Selection;
+using Yarn.Unity;
 
 public class Game : BaseMonoBehaviour
 {
@@ -23,6 +24,10 @@ public class Game : BaseMonoBehaviour
     [HideInInspector] public List<ITimeScalable> timeScalables;
     [HideInInspector] public List<Interactable> interactables;
     private PlayerInput input;
+
+    // Initialization
+    [SerializeField] private InputMode initialInputMode = InputMode.None;
+    [SerializeField] private Menu initialMenu = Menu.None;
 
     // Current Character
     [Header("Current Character")]
@@ -60,7 +65,18 @@ public class Game : BaseMonoBehaviour
     private void Start()
     {
         InitializePlayableCharacters();
-        InputMode = InputMode;
+        if (initialMenu != Menu.None)
+        {
+            SetMode(initialMenu);
+        }
+        else if (initialInputMode != InputMode.None)
+        {
+            InputMode = InputMode.None;
+        }
+        else
+        {
+            InputMode = InputMode;
+        }
     }
 
     public void InitializePlayableCharacters()
@@ -117,6 +133,7 @@ public class Game : BaseMonoBehaviour
     // Game InputMode
     [SerializeField] private GameMode mode = new();
     public GameMode Mode { get => mode; set => SetMode(value); }
+    public string ModeName { get => mode.name; set => SetMode(value); }
     public InputMode InputMode { get => mode.inputMode; set => SetMode(value); }
     public MoveMode MoveMode { get => mode.moveMode; }
     public LookMode LookMode { get => mode.lookMode; }
@@ -124,13 +141,28 @@ public class Game : BaseMonoBehaviour
     public bool swapModes = false;
     public bool reactivateMode = false;
     
+    public void SetMode(string name)
+    {
+        if (debug) print($"Change InputMode to {name} (in bank? {(ModeBank.ContainsKey(name) ? "yes" : "no")})");
+        if (ModeBank.TryGetValue(name, out GameMode mode))
+            SetMode(mode);
+        else
+        {
+            Debug.LogWarning($"Can't find game mode for \"{name}\"");
+            SetMode(InputMode.Character);
+        }
+    }
+
     public void SetMode(Menu menu)
     {
         if (debug) print($"Change InputMode to {menu} (in bank? {(MenuBank.ContainsKey(menu) ? "yes" : "no")})");
         if (MenuBank.TryGetValue(menu, out GameMode mode))
             SetMode(mode);
         else
+        {
             Debug.LogWarning($"Can't find game mode for \"{menu}\"");
+            SetMode(InputMode.Character);
+        }
     }
 
     public void SetMode(InputMode inputMode)
@@ -139,7 +171,10 @@ public class Game : BaseMonoBehaviour
         if (InputBank.TryGetValue(inputMode, out GameMode mode))
             SetMode(mode);
         else
+        {
             Debug.LogWarning($"Can't find game mode for \"{inputMode}\"");
+            SetMode(InputMode.Character);
+        }
     }
 
     public void SetMode(GameMode mode)
@@ -213,6 +248,31 @@ public class Game : BaseMonoBehaviour
             }
         }
         selectedTarget = selectable;
+    }
+
+    // Start Dialogue
+
+    private GameMode prevMode;
+    public void StartDialogue(string nodeName)
+    {
+        StartDialogue(nodeName, null, null);
+    }
+    public void StartDialogue(string nodeName, UnityAction<string> startListener=null, UnityAction completeListener=null)
+    {
+        prevMode = game.Mode;
+        game.InputMode = InputMode.Dialogue;
+        userInterface.dialogueRunner.Stop();
+        if (startListener != null)
+            userInterface.dialogueRunner.onNodeStart.AddListener(startListener);
+        if (completeListener != null)
+            userInterface.dialogueRunner.onDialogueComplete.AddListener(completeListener);
+        userInterface.dialogueRunner.StartDialogue(nodeName);
+    }
+
+    public void EndDialogue()
+    {
+        game.Mode = prevMode;
+        userInterface.dialogueRunner.Stop();
     }
 
     // Set Characters

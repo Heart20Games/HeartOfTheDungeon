@@ -35,6 +35,11 @@ public class GameInput : BaseMonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
+    private void OnEnable()
+    {
+        
+    }
+
 
     // Wrappers
     public delegate void Delegate();
@@ -257,7 +262,16 @@ public class GameInput : BaseMonoBehaviour
     }
 
     // Dialogue
-    public void OnContinue(InputValue inputValue) { IsPressed(inputValue, UserInterface.Continue ); }
+    public void OnContinue(InputValue inputValue) 
+    {
+        IsPressed(inputValue, () =>
+        {
+            if (Input != InputMode.Cutscene)
+                UserInterface.Continue();
+            else
+                return;
+        });
+    }
 
     // Tests
     public void OnTest(InputValue inputValue)
@@ -269,6 +283,6 @@ public class GameInput : BaseMonoBehaviour
     // Menus
     public void OnControlSheet(InputValue inputValue) { IsPressed(inputValue, () => { Menu = Menu.ControlSheet; }); }
     public void OnCharacterSheet(InputValue inputValue) { IsPressed(inputValue, () => { Menu = Menu.CharacterSheet; }); }
-    public void OnPauseMenu(InputValue inputValue) { IsPressed(inputValue, () => { return; Input = InputMode.Menu; }); }
+    public void OnPauseMenu(InputValue inputValue) { IsPressed(inputValue, () => { return; }); }
     public void OnDismiss(InputValue inputValue) { IsPressed(inputValue, () => { Input = InputMode.Character; }); }
 }

@@ -15,10 +15,18 @@ namespace HotD.Castables
         [SerializeField] private bool debug;
 
         [Header("Vector")]
-        public Vector2 fallback = new();
-        public Vector2 fbOverride = new();
-        public Vector2 castVector = new();
-        public UnityEvent<Vector2> OnSetCastVector;
+        public float aimDeadzone = 0.01f;
+        public Vector3 fallback = new();
+        public Vector3 targetOverride = new();
+        public Vector3 targetOffset = new();
+        public Vector3 aimVector = new();
+        public Vector3 castVector = new();
+        [ReadOnly] public Vector3 appliedVector = new();
+        [ReadOnly] public Vector3 castDirection = new();
+        [ReadOnly] public Vector3 finalDirection = new();
+        public Vector3 rotationOffset = new();
+        public UnityEvent<Vector3> OnSetCastVector;
+        [ReadOnly][SerializeField] private Transform target;
 
         private void Awake()
         {
@@ -27,58 +35,83 @@ namespace HotD.Castables
             pivot = character.pivot;
         }
 
-        // Cast Vector
+        private void FixedUpdate()
+        {
+            SetTarget(target);
+        }
+
+        // Target
         public void SetTarget(Transform target)
         {
+            this.target = target;
             if (target != null)
             {
                 if (debug) print($"Set target: {target} (on {character.Name})");
-                Vector3 castPoint = (character.body.position + (Vector3.up * character.baseOffset)).XZVector();
-                SetFallback(target.position - castPoint, true);
+                Vector3 castPoint = character.firingLocation.position;
+                Vector3 direction = (target.position + targetOffset) - castPoint;
+                //direction = Quaternion.Euler(rotationOffset) * direction;
+                SetFallback(direction, false, true);
             }
-            else SetFallback(new(), true);
+            else SetFallback(new(), false, true);
         }
-        public void SetFallback(Vector2 fallback, bool setOverride = false)
+
+        // Fallback
+        public void SetFallback(Vector3 fallback, bool isAimVector=false, bool setOverride = false)
         {
+            if (isAimVector) fallback = OrientAimVector(fallback);
             if (debug) print($"Set fallback{(setOverride ? " override" : "")}: {fallback} (on {character.Name})");
-            if (setOverride) fbOverride = fallback;
+            if (setOverride) targetOverride = fallback;
             else this.fallback = fallback;
-            SetVector(castVector);
+            SetVector(aimVector);
         }
-        public void SetVector(Vector2 aimVector)
+
+        // Cast Vector
+        public Vector3 SetVector(Vector3 aimVector)
         {
-            if (fallback.magnitude > 0 || aimVector.magnitude > 0)
+            this.aimVector = aimVector;
+            return UpdateVector();
+        }
+        public Vector3 UpdateVector()
+        {
+            if (targetOverride.magnitude > 0 || fallback.magnitude > 0 || aimVector.magnitude > 0)
             {
                 if (debug) print($"Set vector: {aimVector} (on {character.Name}");
-                Vector2 fallback = fbOverride.magnitude > 0 ? fbOverride : this.fallback;
-                castVector = aimVector.magnitude > 0 ? aimVector : fallback;
+                
+                // Prefer aiming, then target override, then fallback (movement).
+                if (aimVector.magnitude > aimDeadzone) castVector = OrientAimVector(aimVector);
+                else if (targetOverride.magnitude > 0) castVector = targetOverride;
+                else castVector = fallback;
+
                 if (castVector.magnitude > 0)
                     OnSetCastVector.Invoke(castVector);
             }
+            return castVector;
+        }
+
+        // Camera Orientation
+        public Vector3 OrientAimVector(Vector3 vector)
+        {
+            if (character.controllable) return OrientToCamera(character.body, vector);
+            else return vector;
+        }
+
+        public Vector3 OrientToCamera(Transform body, Vector3 vector)
+        {
+            vector = new(vector.x, vector.y, -vector.z);
+            Debug.DrawRay(body.position, vector * 2f, Color.blue, 0.5f);
+            Vector3 cameraDirection = Camera.main.transform.position - body.position;
+            vector = vector.Orient(cameraDirection.XZVector().FullY().normalized);
+            Debug.DrawRay(body.position, vector * 2f, Color.yellow, 0.5f);
+            return vector;
         }
 
 
-        // Cast
+        // Apply Cast Vector
         private Vector3 lastDirection;
-
-        // Cast based on the given Transform's position relative to the Camera.
-        public void Cast(Transform body, Vector2 castVector)
+        public void ApplyCastVector()
         {
-            Debug.DrawRay(body.position, castVector.FullY() * 2f, Color.blue, 0.5f);
-            Vector3 cameraDirection = body.position - Camera.main.transform.position;
-            castVector = castVector.Orient(cameraDirection.XZVector().normalized).normalized;
-            Debug.DrawRay(body.position, castVector.FullY() * 2f, Color.yellow, 0.5f);
-            Cast(castVector);
-        }
-        // Cast using the given vector
-        public void Cast(Vector2 castVector)
-        {
-            SetCastVector(castVector);
-            Trigger();
-        }
-
-        public void SetCastVector(Vector2 castVector)
-        {
+            appliedVector = castVector;
+            castDirection = castVector.normalized;
             if (Castable != null && Castable.CanCast())
             {
                 float pMag = Mathf.Abs(pivot.localScale.x);
@@ -86,33 +119,37 @@ namespace HotD.Castables
                 sign *= character.movement.Flip ? 1 : -1;
                 pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
 
-                if (Mathf.Abs(castVector.x) > 0.5f || Mathf.Abs(castVector.y) > 0.5f)
-                    weapRotation = Vector3.right * -castVector.x + Vector3.forward * -castVector.y;
+                //if (Mathf.Abs(castVector.x) > 0.5f || Mathf.Abs(castVector.y) > 0.5f || Mathf.Abs(castVector.z) > 0.5f)
+                weapRotation = castDirection; // Vector3.right * -castVector.x + Vector3.up * -castVector.y + Vector3.forward * -castVector.z;
 
                 if (artRenderer != null)
-                    artRenderer.Attack(Castable.GetItem() == null ? 0 : Castable.GetItem().attackIdx);
+                    artRenderer.Cast(Castable.GetItem() == null ? 0 : Castable.GetItem().attackIdx);
 
                 if (weapRotation != lastDirection)
                     lastDirection = weapRotation;
 
-                Castable.Direction = weapRotation; // uses last rotation if not moving
+                finalDirection = weapRotation;
+                Castable.Direction = weapRotation; // uses last rotation if not moving.
             }
         }
 
+        // Trigger
         public void Trigger()
         {
-            if (Castable != null)
-            {
-                Castable.Trigger();
-            }
+            ApplyCastVector();
+            Castable?.Trigger();
+        }
+        public void Trigger(Vector2 aimVector)
+        {
+            SetVector(aimVector);
+            Trigger();
         }
 
+        // Release
         public void Release()
         {
-            if (Castable != null)
-            {
-                Castable.Release();
-            }
+            ApplyCastVector();
+            Castable?.Release();
         }
     }
 }

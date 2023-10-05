@@ -109,19 +109,20 @@ namespace Selection
         {
             this.targetLock = targetLock;
             Finder.enabled = !targetLock;
+            Finder.SetLockOn(targetLock);
             virtualCamera.gameObject.SetActive(targetLock);
             if (targetLock)
             {
                 Select();
                 onTargetSet.enter.Invoke(selected);
+                targetGroup.m_Targets[0].target = finder == null ? null : finder.transform;
+                targetGroup.m_Targets[1].target = selected == null ? null : selected.transform;
             }
             else
             {
                 onTargetSet.exit.Invoke(selected);
                 DeSelect();
             } 
-            targetGroup.m_Targets[0].target = finder == null ? null : finder.transform;
-            targetGroup.m_Targets[1].target = selected == null ? null : selected.transform;
         }
 
         public void SwitchTargets(bool left)

@@ -1,4 +1,4 @@
-using Pixeye.Unity;
+using MyBox;
 using UnityEngine;
 
 public class Positionable : BaseMonoBehaviour, IPositionable
@@ -9,11 +9,11 @@ public class Positionable : BaseMonoBehaviour, IPositionable
     public Transform source;
     public Transform target;
     public Vector3 offset=new();
+    [Foldout("Positionable")]
     public float rOffset=0;
 
     public virtual void SetOrigin(Transform source, Transform target)
     {
-        print($"Set Origin on {name}");
         this.source = source;
         this.target = target;
         if (applyOnSet) Apply();
@@ -34,7 +34,6 @@ public class Positionable : BaseMonoBehaviour, IPositionable
     public virtual void ApplyTo(Transform toMove)
     {
         toMove = toMove == null ? transform : toMove;
-        print($"Apply on {name} ({toMove.name} -> {source})");
         toMove.SetParent(source);
         toMove.position = target.position + offset;
     }
