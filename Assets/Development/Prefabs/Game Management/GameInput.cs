@@ -29,18 +29,6 @@ public class GameInput : BaseMonoBehaviour
     public Menu Menu { get => Game.ActiveMenu; set => Game.ActiveMenu = value; }
 
 
-    // Initialization
-    private void Awake()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-    }
-
-    private void OnEnable()
-    {
-        
-    }
-
-
     // Wrappers
     public delegate void Delegate();
     public void IsPressed(InputValue inputValue, Delegate yesDel, Delegate noDel=null)
@@ -278,6 +266,46 @@ public class GameInput : BaseMonoBehaviour
     {
         float testFloat = inputValue.Get<float>();
         print($"Test float: {testFloat}");
+    }
+
+    // Mouse
+    public float hideMouseDelay = 10f;
+    [ReadOnly][SerializeField] private bool mouseShown;
+    public void ShowMouse(bool showMouse)
+    {
+        mouseShown = showMouse;
+        Cursor.visible = mouseShown;
+        StopCoroutine(HideMouseDelay());
+        if (mouseShown)
+        {
+            StartCoroutine(HideMouseDelay());
+        }
+    }
+    private IEnumerator HideMouseDelay()
+    {
+        yield return new WaitForSeconds(hideMouseDelay);
+        ShowMouse(false);
+    }
+    public void OnMouseDelta(InputValue inputValue)
+    {
+        if (Game.Mode.showMouse)
+        {
+            Vector2 output = inputValue.Get<Vector2>();
+            if (output != Vector2.zero)
+            {
+                if (!mouseShown) ShowMouse(true);
+            }
+        }
+    }
+    public void OnMouseClick(InputValue inputValue)
+    {
+        if (Game.Mode.showMouse)
+        {
+            IsPressed(inputValue, () =>
+            {
+                if (!mouseShown) ShowMouse(true);
+            });
+        }
     }
 
     // Menus

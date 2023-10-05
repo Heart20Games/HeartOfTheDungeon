@@ -23,6 +23,7 @@ public class GameModes
         public MoveMode moveMode;
         public LookMode lookMode;
         public Menu activeMenu;
+        public bool showMouse;
         public bool hudActive;
         public bool dialogueActive;
         public bool targetLock;
