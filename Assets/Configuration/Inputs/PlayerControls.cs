@@ -1401,7 +1401,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Mouse Click"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""132b1ec7-ab2b-4690-a30f-abf432641b3c"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",

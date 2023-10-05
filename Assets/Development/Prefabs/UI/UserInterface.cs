@@ -81,4 +81,9 @@ public class UserInterface : BaseMonoBehaviour
     {
         onContinue.Invoke();
     }
+
+    public void Select()
+    {
+
+    }
 }

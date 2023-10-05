@@ -6,6 +6,7 @@ using static GameModes;
 using Selection;
 using System.Collections;
 using System.Diagnostics.Tracing;
+using MyBox;
 
 [RequireComponent(typeof(Game))]
 [RequireComponent(typeof(PlayerInput))]
@@ -126,8 +127,14 @@ public class GameInput : BaseMonoBehaviour
     {
         if (inputValue.isPressed)
         {
-            Delegate del = deSelect ? CurSelector.DeSelect : CurSelector.Select;
-            del.Invoke();
+            switch (Input)
+            {
+                case InputMode.Selection:
+                    Delegate del = deSelect ? CurSelector.DeSelect : CurSelector.Select;
+                    del.Invoke(); break;
+                case InputMode.Menu:
+                    UserInterface.Select(); break;
+            }
         }
     }
     public void OnSelect(InputValue inputValue) { SelectValue(inputValue, true); }
@@ -159,11 +166,13 @@ public class GameInput : BaseMonoBehaviour
             scroller = StartCoroutine(ScrollPoll());
     }
 
+    [Foldout("Target Switching", true)]
     [Header("Target Switching")]
     [SerializeField] private float holdTime = 0.8f;
     [ReadOnly][SerializeField] private bool reachedZero = true;
     [ReadOnly][SerializeField] int triggerCount = 0;
     [ReadOnly][SerializeField] private float switchTargetValue = 0f;
+    [Foldout("Target Switching")]
     [SerializeField] private bool debugTS;
     public void SwitchTargets(float value)
     {
@@ -188,6 +197,7 @@ public class GameInput : BaseMonoBehaviour
             reachedZero = true;
     }
 
+    [Foldout("Target Scroll Polling", true)]
     [Header("Target Scroll Polling")]
     [SerializeField] private float scrollPollPerHold = 10;
     [SerializeField] private bool polling = true;
@@ -197,6 +207,7 @@ public class GameInput : BaseMonoBehaviour
     [ReadOnly][SerializeField] private bool scrollerStarted = false;
     [ReadOnly][SerializeField] private float scroll = 0f;
     [ReadOnly][SerializeField] private float scrollHold = 0f;
+    [Foldout("Target Scroll Polling")]
     [SerializeField] private bool debugSP = false;
     private IEnumerator ScrollPoll()
     {
@@ -311,6 +322,6 @@ public class GameInput : BaseMonoBehaviour
     // Menus
     public void OnControlSheet(InputValue inputValue) { IsPressed(inputValue, () => { Menu = Menu.ControlSheet; }); }
     public void OnCharacterSheet(InputValue inputValue) { IsPressed(inputValue, () => { Menu = Menu.CharacterSheet; }); }
-    public void OnPauseMenu(InputValue inputValue) { IsPressed(inputValue, () => { return; Input = InputMode.Menu; }); }
+    public void OnPauseMenu(InputValue inputValue) { IsPressed(inputValue, () => { return; }); }
     public void OnDismiss(InputValue inputValue) { IsPressed(inputValue, () => { Input = InputMode.Character; }); }
 }

@@ -99,10 +99,14 @@ namespace HotD.Castables
             if (canUpdatePowerLevel)
             {
                 this.powerLevel = powerLevel;
-                onHasCharge.Invoke(powerLevel > 0);
+                HasCharge(powerLevel > 0);
                 onSetPowerLevel.Invoke(powerLevel);
                 UpdateEnabled();
             }
+        }
+        public void HasCharge(bool hasCharge)
+        {
+            onHasCharge.Invoke(hasCharge);
         }
         public void SetPowerLimit(float powerLimit)
         {
@@ -139,13 +143,12 @@ namespace HotD.Castables
         public virtual void OnTrigger()
         {
             canUpdatePowerLevel = true;
-            SetPowerLevel(0);
             onTrigger.Invoke();
         }
         public virtual void OnRelease()
         {
-            SetPowerLevel(0);
             canUpdatePowerLevel = false;
+            HasCharge(false);
             onRelease.Invoke();
         }
         public virtual void OnCast(Vector3 vector)
