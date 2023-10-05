@@ -30,6 +30,7 @@ namespace HotD.Castables
         [Foldout("Power Level", true)]
         public bool canUpdatePowerLevel = false;
         public Vector2 powerRange;
+        public UnityEvent<bool> onHasCharge = new();
         public UnityEvent<float> onSetPowerLevel = new();
         public UnityEvent<int> onSetPowerLimit = new();
         [ReadOnly][SerializeField] private float powerLevel = 0f;
@@ -98,6 +99,7 @@ namespace HotD.Castables
             if (canUpdatePowerLevel)
             {
                 this.powerLevel = powerLevel;
+                onHasCharge.Invoke(powerLevel > 0);
                 onSetPowerLevel.Invoke(powerLevel);
                 UpdateEnabled();
             }
@@ -137,10 +139,12 @@ namespace HotD.Castables
         public virtual void OnTrigger()
         {
             canUpdatePowerLevel = true;
+            SetPowerLevel(0);
             onTrigger.Invoke();
         }
         public virtual void OnRelease()
         {
+            SetPowerLevel(0);
             canUpdatePowerLevel = false;
             onRelease.Invoke();
         }
