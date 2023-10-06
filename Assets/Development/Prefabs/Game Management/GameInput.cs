@@ -47,8 +47,7 @@ public class GameInput : BaseMonoBehaviour
     public void OnRestartLevel(InputValue inputValue)
     {
         if (inputValue.isPressed)
-            if (Game.restartable)
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            Game.RestartScene();
     }
 
     [Header("Debugs")]
