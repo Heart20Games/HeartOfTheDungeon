@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using static GameModes;
 using Selection;
 using Yarn.Unity;
+using UnityEngine.SceneManagement;
 
 public class Game : BaseMonoBehaviour
 {
@@ -52,6 +53,8 @@ public class Game : BaseMonoBehaviour
     // Events
     [Header("Events")]
     public UnityEvent onPlayerDied;
+    public UnityEvent onRestartScene;
+    public UnityEvent onRestartGame;
 
 
     // Initialization
@@ -95,6 +98,20 @@ public class Game : BaseMonoBehaviour
 
         foreach (var character in playableCharacters)
             character.onDeath.AddListener(OnCharacterDied);
+    }
+
+    // Restart
+
+    public void RestartScene()
+    {
+        if (restartable)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void RestartGame()
+    {
+        if (restartable)
+            onRestartGame.Invoke();
     }
 
 
