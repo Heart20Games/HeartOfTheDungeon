@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using Yarn.Unity;
 using Body;
+using UnityEngine.EventSystems;
 
 public class UserInterface : BaseMonoBehaviour
 {
@@ -14,6 +15,7 @@ public class UserInterface : BaseMonoBehaviour
     public HUD hud;
     public GameObject controlScreen;
     public CharacterSheet characterSheet;
+    public EventSystem menuInputSystem;
 
     private readonly List<GameObject> panels = new();
 
@@ -56,6 +58,11 @@ public class UserInterface : BaseMonoBehaviour
         characterSheet.gameObject.SetActive(active);
     }
 
+    public void SetMenuInputsActive(bool active)
+    {
+        menuInputSystem.gameObject.SetActive(active);
+    }
+
     // Set Character
 
     public void SetCharacter(Character character)
@@ -73,5 +80,10 @@ public class UserInterface : BaseMonoBehaviour
     public void Continue()
     {
         onContinue.Invoke();
+    }
+
+    public void Select()
+    {
+
     }
 }
