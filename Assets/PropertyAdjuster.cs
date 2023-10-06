@@ -1,28 +1,41 @@
+using MyBox;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class PropertyAdjuster : MonoBehaviour
 {
+    // Looping
     public int LoopMin { get => loopMin; set => loopMin = value; }
     public int LoopMax { get => loopMax; set => loopMax = value; }
     public int LoopLimit { get => loopLimit; set => loopLimit = value; }
-    public int loopMin = 0;
-    public int loopLimit = 3;
-    public int loopMax = 3;
+    [Foldout("Looping")] public int loopMin = 0;
+    [Foldout("Looping")] public int loopLimit = 3;
+    [Foldout("Looping")] public int loopMax = 3;
+    [Foldout("Looping")] public string formatString = "|";
 
+    // Initials
     [Serializable]
-    public struct ConditionGate
+    public struct Initial<T>
+    {
+        public string property;
+        public T value;
+    }
+    [Foldout("Initials")] public Initial<bool>[] initialBools = new Initial<bool>[0];
+    [Foldout("Initials")] public Initial<float>[] initialFloats = new Initial<float>[0];
+    [Foldout("Initials")] public Initial<int>[] initialInts = new Initial<int>[0];
+
+    // Conditions
+    [Serializable] public struct ConditionGate
     {
         public string property;
         public int conditionValue;
     }
     public ConditionGate[] conditionGates = new ConditionGate[0];
-    
-    public string formatString = "|";
-
-    public UnityEvent<string, bool> onBool;
-    public UnityEvent<string> onTrigger;
+    [Foldout("Connections")] public UnityEvent<string, bool> onBool;
+    [Foldout("Connections")] public UnityEvent<string> onTrigger;
+    [Foldout("Connections")] public UnityEvent<string, float> onFloat;
+    [Foldout("Connections")] public UnityEvent<string, int> onInt;
 
     // Bool Toggle
     public void ToggleOn(string property) { Toggle(property, true); }
@@ -30,6 +43,25 @@ public class PropertyAdjuster : MonoBehaviour
     public void Toggle(string property, bool value)
     {
         onBool.Invoke(property, value);
+    }
+
+    // Initialize
+    public void Initialize()
+    {
+        Initialize(initialBools, onBool);
+        Initialize(initialFloats, onFloat);
+        Initialize(initialInts, onInt);
+    }
+
+    public void Initialize<T>(Initial<T>[] initials, UnityEvent<string, T> onEvent)
+    {
+        foreach (var initial in initials)
+        {
+            if (initial.property.Contains(formatString))
+                Loop(initial.property, initial.value, onEvent);
+            else
+                onEvent.Invoke(initial.property, initial.value);
+        }
     }
 
     // Condition Gates
@@ -58,28 +90,25 @@ public class PropertyAdjuster : MonoBehaviour
         onTrigger.Invoke(property);
     }
 
+    public void FloatLoop(string property, float value)
+    {
+
+    }
+
     // Bool Loop
-    public void ToggleOnLoop(string property)
-    {
-        ToggleLoop(property, true);
-    }
-
-    public void ToggleOffLoop(string property)
-    {
-        ToggleLoop(property, false);
-    }
-
-
-
+    public void ToggleOnLoop(string property) { ToggleLoop(property, true); }
+    public void ToggleOffLoop(string property) { ToggleLoop(property, false); }
     public void ToggleLoop(string property, bool value)
     {
-        for (int i = loopMin; i <= Mathf.Clamp(0, loopLimit, loopMax); i++)
+        Loop(property, value, onBool);
+        Loop(property, !value, onBool, true);
+    }
+
+    public void Loop<T>(string property, T value, UnityEvent<string, T> onEvent, bool inverse=false)
+    {
+        for (int i = (inverse ? loopLimit+1 : loopMin); i <= (inverse ? loopMax : Mathf.Clamp(0, loopLimit, loopMax)); i++)
         {
-            Toggle(property.Replace(formatString, i.ToString()), value);
-        }
-        for (int i = loopLimit + 1; i <= loopMax; i++)
-        {
-            Toggle(property.Replace(formatString, i.ToString()), !value);
+            onEvent.Invoke(property.Replace(formatString, i.ToString()), value);
         }
     }
 }

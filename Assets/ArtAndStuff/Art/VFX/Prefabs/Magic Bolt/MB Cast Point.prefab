@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6415436591602409553}
   - component: {fileID: 4427510588209212319}
   - component: {fileID: 334410026118029802}
+  - component: {fileID: 2919666436968835648}
   - component: {fileID: 5640558220743154003}
   - component: {fileID: 202607290327246180}
   - component: {fileID: 8450124607058288455}
@@ -68,6 +69,18 @@ MonoBehaviour:
   onTrigger:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 2919666436968835648}
+        m_TargetAssemblyTypeName: PropertyAdjuster, Assembly-CSharp
+        m_MethodName: Initialize
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 334410026118029802}
         m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
         m_MethodName: StartPlayback
@@ -141,7 +154,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 0
+        m_CallState: 2
   onSetPowerLevel:
     m_PersistentCalls:
       m_Calls:
@@ -213,10 +226,13 @@ MonoBehaviour:
   loopMin: 2
   loopLimit: 3
   loopMax: 3
+  formatString: '|'
+  initialBools: []
+  initialFloats: []
+  initialInts: []
   conditionGates:
   - property: Level 3 Cast
     conditionValue: 3
-  formatString: '|'
   onBool:
     m_PersistentCalls:
       m_Calls:
@@ -247,6 +263,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onFloat:
+    m_PersistentCalls:
+      m_Calls: []
+  onInt:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!95 &334410026118029802
 Animator:
   serializedVersion: 5
@@ -267,6 +289,86 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &2919666436968835648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4490809449938186106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b03abf6c04b2b745b48e40dd67530e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loopMin: 1
+  loopLimit: 3
+  loopMax: 3
+  formatString: '|'
+  initialBools:
+  - property: Cast
+    value: 0
+  initialFloats:
+  - property: Level | Charge Value
+    value: 0
+  - property: Level 3 Cast Length
+    value: 0
+  - property: Level 2 Continued Charge
+    value: 0
+  - property: Level 2 Continued Charge 2
+    value: 0
+  - property: CastTime
+    value: 0
+  initialInts: []
+  conditionGates: []
+  onBool:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5640558220743154003}
+        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+        m_MethodName: SetBool
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onFloat:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5640558220743154003}
+        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+        m_MethodName: SetFloat
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onInt:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5640558220743154003}
+        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+        m_MethodName: SetInt
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!2083052967 &5640558220743154003
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -285,13 +387,13 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 1
+      - m_Value: 0
         m_Name: Level 1 Charge Value
         m_Overridden: 1
-      - m_Value: 2
+      - m_Value: 0
         m_Name: Level 2 Charge Value
         m_Overridden: 1
-      - m_Value: 1
+      - m_Value: 0
         m_Name: Level 3 Charge Value
         m_Overridden: 1
       - m_Value: 0
@@ -326,7 +428,7 @@ VisualEffect:
       m_Array: []
     m_Bool:
       m_Array:
-      - m_Value: 1
+      - m_Value: 0
         m_Name: Cast
         m_Overridden: 1
 --- !u!73398921 &202607290327246180
