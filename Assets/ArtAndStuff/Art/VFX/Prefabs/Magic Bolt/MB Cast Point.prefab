@@ -10,10 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2800773081770691007}
   - component: {fileID: 6415436591602409553}
+  - component: {fileID: 4427510588209212319}
+  - component: {fileID: 334410026118029802}
   - component: {fileID: 5640558220743154003}
   - component: {fileID: 202607290327246180}
   - component: {fileID: 8450124607058288455}
-  - component: {fileID: 334410026118029802}
   m_Layer: 0
   m_Name: MB Cast Point
   m_TagString: Untagged
@@ -66,7 +67,19 @@ MonoBehaviour:
       m_Calls: []
   onTrigger:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 334410026118029802}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: StartPlayback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onRelease:
     m_PersistentCalls:
       m_Calls:
@@ -85,16 +98,16 @@ MonoBehaviour:
   onCast:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8450124607058288455}
-        m_TargetAssemblyTypeName: HotD.VFX.VFXAdjuster, Assembly-CSharp
-        m_MethodName: Cast
-        m_Mode: 1
+      - m_Target: {fileID: 334410026118029802}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Cast
           m_BoolArgument: 0
         m_CallState: 2
   onUnCast:
@@ -128,13 +141,13 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 0
   onSetPowerLevel:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8450124607058288455}
-        m_TargetAssemblyTypeName: HotD.VFX.VFXAdjuster, Assembly-CSharp
-        m_MethodName: SetCharge
+      - m_Target: {fileID: 4427510588209212319}
+        m_TargetAssemblyTypeName: PropertyAdjuster, Assembly-CSharp
+        m_MethodName: ConditionOn
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -147,9 +160,9 @@ MonoBehaviour:
   onSetPowerLimit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8450124607058288455}
-        m_TargetAssemblyTypeName: HotD.VFX.VFXAdjuster, Assembly-CSharp
-        m_MethodName: set_MaxLevel
+      - m_Target: {fileID: 4427510588209212319}
+        m_TargetAssemblyTypeName: PropertyAdjuster, Assembly-CSharp
+        m_MethodName: set_LoopLimit
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -157,6 +170,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4427510588209212319}
+        m_TargetAssemblyTypeName: PropertyAdjuster, Assembly-CSharp
+        m_MethodName: ToggleOffLoop
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Level | Available
           m_BoolArgument: 0
         m_CallState: 2
   powerLevel: 0
@@ -173,6 +198,75 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   castStatEvents: []
+--- !u!114 &4427510588209212319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4490809449938186106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b03abf6c04b2b745b48e40dd67530e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loopMin: 2
+  loopLimit: 3
+  loopMax: 3
+  conditionGates:
+  - property: Level 3 Cast
+    conditionValue: 3
+  formatString: '|'
+  onBool:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 334410026118029802}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetBool
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onTrigger:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 334410026118029802}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!95 &334410026118029802
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4490809449938186106}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c01af2fee09b1544790758bc263e138b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!2083052967 &5640558220743154003
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -282,7 +376,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4490809449938186106}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9f0d1531e8b0ecd48b90a1eba8d28ae4, type: 3}
   m_Name: 
@@ -301,27 +395,15 @@ MonoBehaviour:
   castTime: 0.3
   toFloatProperty:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5640558220743154003}
-        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
-        m_MethodName: SetFloat
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   toIntProperty:
     m_PersistentCalls:
       m_Calls: []
   toBoolProperty:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5640558220743154003}
-        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+      - m_Target: {fileID: 334410026118029802}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
         m_MethodName: SetBool
         m_Mode: 0
         m_Arguments:
@@ -331,24 +413,4 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
---- !u!95 &334410026118029802
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4490809449938186106}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c01af2fee09b1544790758bc263e138b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
+        m_CallState: 0

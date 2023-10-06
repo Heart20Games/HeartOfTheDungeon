@@ -38,11 +38,20 @@ namespace HotD.VFX
 
         private void Start()
         {
+            if (!enabled) return;
+
+            toFloatProperty.Invoke("Level 3 Cast Length", dischargeTime);
+        }
+
+        private void OnEnable()
+        {
             toFloatProperty.Invoke("Level 3 Cast Length", dischargeTime);
         }
 
         private void Update()
         {
+            if (!enabled) return;
+
             if (discharge)
             {
                 if (!dischargeInitialized)
@@ -65,6 +74,8 @@ namespace HotD.VFX
         // Set Charge Times
         public void SetCharge(float value)
         {
+            if (!enabled) return;
+
             maxLevel = Mathf.Max(1, maxLevel);
             baseValue = Mathf.Max(0, value);
             currentLevel = Mathf.Max(1, Mathf.FloorToInt((baseValue * maxLevel)+1));
@@ -102,17 +113,23 @@ namespace HotD.VFX
 
         public void Discharge()
         {
+            if (!enabled) return;
+
             discharge = true;
         }
 
         public void Cast()
         {
+            if (!enabled) return;
+
             toBoolProperty.Invoke(castProperty, true);
             toFloatProperty.Invoke(castTimeProperty, castTime);
         }
 
         public void UnCast()
         {
+            if (!enabled) return;
+
             toBoolProperty.Invoke(castProperty, false);
         }
     }

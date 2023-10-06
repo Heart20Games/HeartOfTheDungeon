@@ -354,7 +354,8 @@ namespace HotD.Castables
             {
                 if (casted != null)
                 {
-                    Casted body = Instantiate(casted, castable.transform);
+                    Casted body = (PrefabUtility.InstantiatePrefab(casted.gameObject) as GameObject).GetComponent<Casted>(); // castable.transform);
+                    body.transform.SetParent(castable.transform);
                     ConnectCastedComponent(body, castable, stats);
 
                     body.powerRange = chargeLevels;
@@ -417,7 +418,8 @@ namespace HotD.Castables
                 pivot.enabled = false;
                 if (colliderPrefab != null)
                 {
-                    CastedCollider collider = Instantiate(colliderPrefab, pivot.transform);
+                    CastedCollider collider = (PrefabUtility.InstantiatePrefab(colliderPrefab.gameObject) as GameObject).GetComponent<CastedCollider>(); // , pivot.transform);
+                    collider.transform.SetParent(pivot.transform);
                     ConnectCastedComponent(collider, castable, stats);
                     collider.powerRange = chargeLevels;
                     collider.comboRange = comboSteps;
@@ -459,7 +461,8 @@ namespace HotD.Castables
 
                 if (projectilePrefab != null)
                 {
-                    Projectile projectile = Instantiate(projectilePrefab, castedPivot.transform);
+                    Projectile projectile = (PrefabUtility.InstantiatePrefab(projectilePrefab.gameObject) as GameObject).GetComponent<Projectile>(); //, castedPivot.transform);
+                    projectile.transform.SetParent(castedPivot.transform);
                     spawner.projectile = projectile;
                     castedPivot.body = projectile.transform;
                     projectile.transform.localPosition = new();
