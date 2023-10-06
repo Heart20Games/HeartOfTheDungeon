@@ -17,7 +17,7 @@ public class SceneTimeline : BaseMonoBehaviour
     public List<Cutscene> cutscenes = new();
     public Dictionary<string, PlayableDirector> cutsceneBank = new();
 
-    [ReadOnly][SerializeField] private int paused = 0;
+    [SerializeField] private int paused = 0;
 
     public void Start()
     {
