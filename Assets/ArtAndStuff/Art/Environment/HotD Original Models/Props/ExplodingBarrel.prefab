@@ -243,6 +243,7 @@ GameObject:
   - component: {fileID: 6011467235466650910}
   - component: {fileID: 6893100958757639248}
   - component: {fileID: 3768621718914703536}
+  - component: {fileID: 6102927142165400107}
   - component: {fileID: 8350877443523919289}
   - component: {fileID: 6148482581922819521}
   - component: {fileID: 1214725975187450451}
@@ -271,8 +272,9 @@ Transform:
   - {fileID: 4645447825470829021}
   - {fileID: 6674315633517961933}
   - {fileID: 4575556412140750231}
+  - {fileID: 4975229402847224804}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1558954319164951560
 MonoBehaviour:
@@ -378,6 +380,106 @@ MonoBehaviour:
   onNoHealth:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 6102927142165400107}
+        m_TargetAssemblyTypeName: Timer, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2814879255601721869}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 8987662896381181481}
+        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3768621718914703536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4326658211653343975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0c656f4854e7a4698ad4df13b973aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  length: 5
+  playOnStart: 0
+  onPlay:
+    m_PersistentCalls:
+      m_Calls: []
+  onComplete:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8350877443523919289}
+        m_TargetAssemblyTypeName: Respawn, Assembly-CSharp
+        m_MethodName: RespawnTrigger
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7209211314057976780}
+        m_TargetAssemblyTypeName: UnityEngine.Rigidbody, UnityEngine
+        m_MethodName: set_useGravity
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+--- !u!114 &6102927142165400107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4326658211653343975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0c656f4854e7a4698ad4df13b973aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  length: 2
+  playOnStart: 0
+  onPlay:
+    m_PersistentCalls:
+      m_Calls: []
+  onComplete:
+    m_PersistentCalls:
+      m_Calls:
       - m_Target: {fileID: 5828609398805429908}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -389,6 +491,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6674315633517961932}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 2589316197344417666}
         m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
@@ -402,6 +516,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 7209211314057976780}
+        m_TargetAssemblyTypeName: UnityEngine.Rigidbody, UnityEngine
+        m_MethodName: set_useGravity
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 6148482581922819521}
         m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
         m_MethodName: set_enabled
@@ -414,7 +540,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 3768621718914703536}
+      - m_Target: {fileID: 6102927142165400107}
         m_TargetAssemblyTypeName: Timer, Assembly-CSharp
         m_MethodName: Play
         m_Mode: 1
@@ -453,38 +579,6 @@ MonoBehaviour:
       - m_Target: {fileID: 7532699260776525699}
         m_TargetAssemblyTypeName: Cinemachine.CinemachineImpulseSource, Cinemachine
         m_MethodName: GenerateImpulse
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &3768621718914703536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4326658211653343975}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d0c656f4854e7a4698ad4df13b973aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  length: 5
-  playOnStart: 0
-  onPlay:
-    m_PersistentCalls:
-      m_Calls: []
-  onComplete:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8350877443523919289}
-        m_TargetAssemblyTypeName: Respawn, Assembly-CSharp
-        m_MethodName: RespawnTrigger
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1085,6 +1179,90 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5c01721e3b739b84c8d0c242350fc196, type: 3}
   m_PrefabInstance: {fileID: 3477796334293842104}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3626993389232383906
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3935100993953963276}
+    m_Modifications:
+    - target: {fileID: 1532875896843883951, guid: 13ba307427cea47418be8424b8164517, type: 3}
+      propertyPath: m_Name
+      value: ExplodingBarrel-PreExplosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 1532875896843883951, guid: 13ba307427cea47418be8424b8164517, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2691639457365058295, guid: 13ba307427cea47418be8424b8164517, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601377816831542342, guid: 13ba307427cea47418be8424b8164517, type: 3}
+      propertyPath: m_RootOrder
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601377816831542342, guid: 13ba307427cea47418be8424b8164517, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601377816831542342, guid: 13ba307427cea47418be8424b8164517, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.208
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601377816831542342, guid: 13ba307427cea47418be8424b8164517, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601377816831542342, guid: 13ba307427cea47418be8424b8164517, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601377816831542342, guid: 13ba307427cea47418be8424b8164517, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601377816831542342, guid: 13ba307427cea47418be8424b8164517, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601377816831542342, guid: 13ba307427cea47418be8424b8164517, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601377816831542342, guid: 13ba307427cea47418be8424b8164517, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601377816831542342, guid: 13ba307427cea47418be8424b8164517, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601377816831542342, guid: 13ba307427cea47418be8424b8164517, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 13ba307427cea47418be8424b8164517, type: 3}
+--- !u!1 &2814879255601721869 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1532875896843883951, guid: 13ba307427cea47418be8424b8164517, type: 3}
+  m_PrefabInstance: {fileID: 3626993389232383906}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4975229402847224804 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8601377816831542342, guid: 13ba307427cea47418be8424b8164517, type: 3}
+  m_PrefabInstance: {fileID: 3626993389232383906}
+  m_PrefabAsset: {fileID: 0}
+--- !u!2083052967 &8987662896381181481 stripped
+VisualEffect:
+  m_CorrespondingSourceObject: {fileID: 5687831427662535051, guid: 13ba307427cea47418be8424b8164517, type: 3}
+  m_PrefabInstance: {fileID: 3626993389232383906}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3829929442959721993
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1263,7 +1441,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7618201873694074053, guid: 78fbd008506afe64a82c892f5d0a739e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7618201874150758306, guid: 78fbd008506afe64a82c892f5d0a739e, type: 3}
       propertyPath: m_Layer
@@ -1290,6 +1468,11 @@ PrefabInstance:
 --- !u!198 &2589316197344417666 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 1642052263886033291, guid: 78fbd008506afe64a82c892f5d0a739e, type: 3}
+  m_PrefabInstance: {fileID: 3829929442959721993}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6674315633517961932 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7618201873694074053, guid: 78fbd008506afe64a82c892f5d0a739e, type: 3}
   m_PrefabInstance: {fileID: 3829929442959721993}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6674315633517961933 stripped

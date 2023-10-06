@@ -311,6 +311,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart Level"",
+                    ""type"": ""Button"",
+                    ""id"": ""2b70b030-132a-46ca-a3e5-550ea74ec274"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -456,6 +465,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""DeSelect"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d77f2312-f0b3-490a-a061-2d78283d6ca1"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Level"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4704db18-0d14-42e9-9146-beca578682f1"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Level"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -523,7 +554,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""480fe164-1fd1-4253-a9de-38cb4d7078d1"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": ""Hold(duration=0.8)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -596,15 +627,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Restart Level1"",
-                    ""type"": ""Button"",
-                    ""id"": ""597c9b68-87bb-43d9-bf2e-aae16e08459c"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
@@ -1210,17 +1232,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""cd455edf-bfb9-4f8d-91b9-e536e97897fb"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Restart Level1"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""9a87fc62-2b98-41ae-bcd2-3d6a73dd9426"",
                     ""path"": ""<Gamepad>/rightStickPress"",
                     ""interactions"": """",
@@ -1729,6 +1740,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""MouseDelta"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8888c26-6ea5-47f4-a9d5-a95197809138"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Level"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1827,15 +1849,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Restart Level"",
-                    ""type"": ""Button"",
-                    ""id"": ""2354dd0c-1214-46f0-8d1e-147d4bfb9887"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Hold"",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""ToggleAiming"",
                     ""type"": ""Button"",
                     ""id"": ""aa2f5627-f099-4deb-b708-c6526acb5c44"",
@@ -1908,21 +1921,21 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Restart Level1"",
-                    ""type"": ""Button"",
-                    ""id"": ""dfc436dc-a07d-4545-a479-0ed3b7f51e32"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Toggle Controls"",
                     ""type"": ""Button"",
                     ""id"": ""ad96c465-f2cd-427a-ac03-125a3910aac2"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart Level"",
+                    ""type"": ""Button"",
+                    ""id"": ""b57b27a3-7a20-460b-a5b7-8481d348f75b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.8)"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -2193,28 +2206,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""10040f8e-10e3-4e3b-ad52-6c897cd5620c"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Restart Level"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""218d7b06-13b4-43d0-93e7-7a95517327c6"",
-                    ""path"": ""<Gamepad>/select"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Restart Level"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""f9e3cdda-574b-491a-ba4b-8ec6e194ceb1"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
@@ -2391,17 +2382,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""64e9cdd2-dd26-4d00-ba18-31ee0852f9a4"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Restart Level1"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""2000f9e1-452e-40bb-a3f7-7c36cd3b06df"",
                     ""path"": ""<Gamepad>/dpad/down"",
                     ""interactions"": """",
@@ -2542,6 +2522,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Pause Screen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""de4452c4-def6-46ef-ac99-8b2ee26a4eef"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Level"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ea4d8c21-20c0-4c62-bc61-99a568d2f15d"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Level"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -2556,6 +2558,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart Level"",
+                    ""type"": ""Button"",
+                    ""id"": ""59dfe582-438f-4b89-84f4-e8c8917d265a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.8)"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -2581,6 +2592,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Continue"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""156e5d7d-0985-4c46-8f8a-4f284d30056b"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Level"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b295c06b-d686-4ce8-a3ba-3201b3070d33"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Level"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -2601,6 +2634,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Selection_ToggleSkillWheel = m_Selection.FindAction("Toggle Skill Wheel", throwIfNotFound: true);
         m_Selection_Select = m_Selection.FindAction("Select", throwIfNotFound: true);
         m_Selection_DeSelect = m_Selection.FindAction("DeSelect", throwIfNotFound: true);
+        m_Selection_RestartLevel = m_Selection.FindAction("Restart Level", throwIfNotFound: true);
         // Character
         m_Character = asset.FindActionMap("Character", throwIfNotFound: true);
         m_Character_Move = m_Character.FindAction("Move", throwIfNotFound: true);
@@ -2618,7 +2652,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Character_UseAbility2 = m_Character.FindAction("Use Ability 2", throwIfNotFound: true);
         m_Character_SwitchCharacterLeft = m_Character.FindAction("Switch Character Left", throwIfNotFound: true);
         m_Character_SwitchCharacterRight = m_Character.FindAction("Switch Character Right", throwIfNotFound: true);
-        m_Character_RestartLevel1 = m_Character.FindAction("Restart Level1", throwIfNotFound: true);
         m_Character_ControlSheet = m_Character.FindAction("Control Sheet", throwIfNotFound: true);
         m_Character_PauseScreen = m_Character.FindAction("Pause Screen", throwIfNotFound: true);
         m_Character_CharacterSheet = m_Character.FindAction("Character Sheet", throwIfNotFound: true);
@@ -2649,7 +2682,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_LockOn_SwitchTargetsScroll = m_LockOn.FindAction("Switch Targets Scroll", throwIfNotFound: true);
         m_LockOn_ToggleLockOn = m_LockOn.FindAction("Toggle LockOn", throwIfNotFound: true);
         m_LockOn_ToggleSkillWheel = m_LockOn.FindAction("Toggle Skill Wheel", throwIfNotFound: true);
-        m_LockOn_RestartLevel = m_LockOn.FindAction("Restart Level", throwIfNotFound: true);
         m_LockOn_ToggleAiming = m_LockOn.FindAction("ToggleAiming", throwIfNotFound: true);
         m_LockOn_UseAgility = m_LockOn.FindAction("Use Agility", throwIfNotFound: true);
         m_LockOn_UseWeapon1 = m_LockOn.FindAction("Use Weapon 1", throwIfNotFound: true);
@@ -2658,11 +2690,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_LockOn_UseAbility2 = m_LockOn.FindAction("Use Ability 2", throwIfNotFound: true);
         m_LockOn_SwitchCharacterLeft = m_LockOn.FindAction("Switch Character Left", throwIfNotFound: true);
         m_LockOn_SwitchCharacterRight = m_LockOn.FindAction("Switch Character Right", throwIfNotFound: true);
-        m_LockOn_RestartLevel1 = m_LockOn.FindAction("Restart Level1", throwIfNotFound: true);
         m_LockOn_ToggleControls = m_LockOn.FindAction("Toggle Controls", throwIfNotFound: true);
+        m_LockOn_RestartLevel = m_LockOn.FindAction("Restart Level", throwIfNotFound: true);
         // Cutscene
         m_Cutscene = asset.FindActionMap("Cutscene", throwIfNotFound: true);
         m_Cutscene_Continue = m_Cutscene.FindAction("Continue", throwIfNotFound: true);
+        m_Cutscene_RestartLevel = m_Cutscene.FindAction("Restart Level", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -2814,6 +2847,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Selection_ToggleSkillWheel;
     private readonly InputAction m_Selection_Select;
     private readonly InputAction m_Selection_DeSelect;
+    private readonly InputAction m_Selection_RestartLevel;
     public struct SelectionActions
     {
         private @PlayerControls m_Wrapper;
@@ -2822,6 +2856,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @ToggleSkillWheel => m_Wrapper.m_Selection_ToggleSkillWheel;
         public InputAction @Select => m_Wrapper.m_Selection_Select;
         public InputAction @DeSelect => m_Wrapper.m_Selection_DeSelect;
+        public InputAction @RestartLevel => m_Wrapper.m_Selection_RestartLevel;
         public InputActionMap Get() { return m_Wrapper.m_Selection; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2843,6 +2878,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DeSelect.started += instance.OnDeSelect;
             @DeSelect.performed += instance.OnDeSelect;
             @DeSelect.canceled += instance.OnDeSelect;
+            @RestartLevel.started += instance.OnRestartLevel;
+            @RestartLevel.performed += instance.OnRestartLevel;
+            @RestartLevel.canceled += instance.OnRestartLevel;
         }
 
         private void UnregisterCallbacks(ISelectionActions instance)
@@ -2859,6 +2897,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DeSelect.started -= instance.OnDeSelect;
             @DeSelect.performed -= instance.OnDeSelect;
             @DeSelect.canceled -= instance.OnDeSelect;
+            @RestartLevel.started -= instance.OnRestartLevel;
+            @RestartLevel.performed -= instance.OnRestartLevel;
+            @RestartLevel.canceled -= instance.OnRestartLevel;
         }
 
         public void RemoveCallbacks(ISelectionActions instance)
@@ -2895,7 +2936,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_UseAbility2;
     private readonly InputAction m_Character_SwitchCharacterLeft;
     private readonly InputAction m_Character_SwitchCharacterRight;
-    private readonly InputAction m_Character_RestartLevel1;
     private readonly InputAction m_Character_ControlSheet;
     private readonly InputAction m_Character_PauseScreen;
     private readonly InputAction m_Character_CharacterSheet;
@@ -2918,7 +2958,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @UseAbility2 => m_Wrapper.m_Character_UseAbility2;
         public InputAction @SwitchCharacterLeft => m_Wrapper.m_Character_SwitchCharacterLeft;
         public InputAction @SwitchCharacterRight => m_Wrapper.m_Character_SwitchCharacterRight;
-        public InputAction @RestartLevel1 => m_Wrapper.m_Character_RestartLevel1;
         public InputAction @ControlSheet => m_Wrapper.m_Character_ControlSheet;
         public InputAction @PauseScreen => m_Wrapper.m_Character_PauseScreen;
         public InputAction @CharacterSheet => m_Wrapper.m_Character_CharacterSheet;
@@ -2976,9 +3015,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwitchCharacterRight.started += instance.OnSwitchCharacterRight;
             @SwitchCharacterRight.performed += instance.OnSwitchCharacterRight;
             @SwitchCharacterRight.canceled += instance.OnSwitchCharacterRight;
-            @RestartLevel1.started += instance.OnRestartLevel1;
-            @RestartLevel1.performed += instance.OnRestartLevel1;
-            @RestartLevel1.canceled += instance.OnRestartLevel1;
             @ControlSheet.started += instance.OnControlSheet;
             @ControlSheet.performed += instance.OnControlSheet;
             @ControlSheet.canceled += instance.OnControlSheet;
@@ -3037,9 +3073,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwitchCharacterRight.started -= instance.OnSwitchCharacterRight;
             @SwitchCharacterRight.performed -= instance.OnSwitchCharacterRight;
             @SwitchCharacterRight.canceled -= instance.OnSwitchCharacterRight;
-            @RestartLevel1.started -= instance.OnRestartLevel1;
-            @RestartLevel1.performed -= instance.OnRestartLevel1;
-            @RestartLevel1.canceled -= instance.OnRestartLevel1;
             @ControlSheet.started -= instance.OnControlSheet;
             @ControlSheet.performed -= instance.OnControlSheet;
             @ControlSheet.canceled -= instance.OnControlSheet;
@@ -3244,7 +3277,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_LockOn_SwitchTargetsScroll;
     private readonly InputAction m_LockOn_ToggleLockOn;
     private readonly InputAction m_LockOn_ToggleSkillWheel;
-    private readonly InputAction m_LockOn_RestartLevel;
     private readonly InputAction m_LockOn_ToggleAiming;
     private readonly InputAction m_LockOn_UseAgility;
     private readonly InputAction m_LockOn_UseWeapon1;
@@ -3253,8 +3285,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_LockOn_UseAbility2;
     private readonly InputAction m_LockOn_SwitchCharacterLeft;
     private readonly InputAction m_LockOn_SwitchCharacterRight;
-    private readonly InputAction m_LockOn_RestartLevel1;
     private readonly InputAction m_LockOn_ToggleControls;
+    private readonly InputAction m_LockOn_RestartLevel;
     public struct LockOnActions
     {
         private @PlayerControls m_Wrapper;
@@ -3269,7 +3301,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @SwitchTargetsScroll => m_Wrapper.m_LockOn_SwitchTargetsScroll;
         public InputAction @ToggleLockOn => m_Wrapper.m_LockOn_ToggleLockOn;
         public InputAction @ToggleSkillWheel => m_Wrapper.m_LockOn_ToggleSkillWheel;
-        public InputAction @RestartLevel => m_Wrapper.m_LockOn_RestartLevel;
         public InputAction @ToggleAiming => m_Wrapper.m_LockOn_ToggleAiming;
         public InputAction @UseAgility => m_Wrapper.m_LockOn_UseAgility;
         public InputAction @UseWeapon1 => m_Wrapper.m_LockOn_UseWeapon1;
@@ -3278,8 +3309,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @UseAbility2 => m_Wrapper.m_LockOn_UseAbility2;
         public InputAction @SwitchCharacterLeft => m_Wrapper.m_LockOn_SwitchCharacterLeft;
         public InputAction @SwitchCharacterRight => m_Wrapper.m_LockOn_SwitchCharacterRight;
-        public InputAction @RestartLevel1 => m_Wrapper.m_LockOn_RestartLevel1;
         public InputAction @ToggleControls => m_Wrapper.m_LockOn_ToggleControls;
+        public InputAction @RestartLevel => m_Wrapper.m_LockOn_RestartLevel;
         public InputActionMap Get() { return m_Wrapper.m_LockOn; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3319,9 +3350,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ToggleSkillWheel.started += instance.OnToggleSkillWheel;
             @ToggleSkillWheel.performed += instance.OnToggleSkillWheel;
             @ToggleSkillWheel.canceled += instance.OnToggleSkillWheel;
-            @RestartLevel.started += instance.OnRestartLevel;
-            @RestartLevel.performed += instance.OnRestartLevel;
-            @RestartLevel.canceled += instance.OnRestartLevel;
             @ToggleAiming.started += instance.OnToggleAiming;
             @ToggleAiming.performed += instance.OnToggleAiming;
             @ToggleAiming.canceled += instance.OnToggleAiming;
@@ -3346,12 +3374,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwitchCharacterRight.started += instance.OnSwitchCharacterRight;
             @SwitchCharacterRight.performed += instance.OnSwitchCharacterRight;
             @SwitchCharacterRight.canceled += instance.OnSwitchCharacterRight;
-            @RestartLevel1.started += instance.OnRestartLevel1;
-            @RestartLevel1.performed += instance.OnRestartLevel1;
-            @RestartLevel1.canceled += instance.OnRestartLevel1;
             @ToggleControls.started += instance.OnToggleControls;
             @ToggleControls.performed += instance.OnToggleControls;
             @ToggleControls.canceled += instance.OnToggleControls;
+            @RestartLevel.started += instance.OnRestartLevel;
+            @RestartLevel.performed += instance.OnRestartLevel;
+            @RestartLevel.canceled += instance.OnRestartLevel;
         }
 
         private void UnregisterCallbacks(ILockOnActions instance)
@@ -3386,9 +3414,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ToggleSkillWheel.started -= instance.OnToggleSkillWheel;
             @ToggleSkillWheel.performed -= instance.OnToggleSkillWheel;
             @ToggleSkillWheel.canceled -= instance.OnToggleSkillWheel;
-            @RestartLevel.started -= instance.OnRestartLevel;
-            @RestartLevel.performed -= instance.OnRestartLevel;
-            @RestartLevel.canceled -= instance.OnRestartLevel;
             @ToggleAiming.started -= instance.OnToggleAiming;
             @ToggleAiming.performed -= instance.OnToggleAiming;
             @ToggleAiming.canceled -= instance.OnToggleAiming;
@@ -3413,12 +3438,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwitchCharacterRight.started -= instance.OnSwitchCharacterRight;
             @SwitchCharacterRight.performed -= instance.OnSwitchCharacterRight;
             @SwitchCharacterRight.canceled -= instance.OnSwitchCharacterRight;
-            @RestartLevel1.started -= instance.OnRestartLevel1;
-            @RestartLevel1.performed -= instance.OnRestartLevel1;
-            @RestartLevel1.canceled -= instance.OnRestartLevel1;
             @ToggleControls.started -= instance.OnToggleControls;
             @ToggleControls.performed -= instance.OnToggleControls;
             @ToggleControls.canceled -= instance.OnToggleControls;
+            @RestartLevel.started -= instance.OnRestartLevel;
+            @RestartLevel.performed -= instance.OnRestartLevel;
+            @RestartLevel.canceled -= instance.OnRestartLevel;
         }
 
         public void RemoveCallbacks(ILockOnActions instance)
@@ -3441,11 +3466,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Cutscene;
     private List<ICutsceneActions> m_CutsceneActionsCallbackInterfaces = new List<ICutsceneActions>();
     private readonly InputAction m_Cutscene_Continue;
+    private readonly InputAction m_Cutscene_RestartLevel;
     public struct CutsceneActions
     {
         private @PlayerControls m_Wrapper;
         public CutsceneActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Continue => m_Wrapper.m_Cutscene_Continue;
+        public InputAction @RestartLevel => m_Wrapper.m_Cutscene_RestartLevel;
         public InputActionMap Get() { return m_Wrapper.m_Cutscene; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3458,6 +3485,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Continue.started += instance.OnContinue;
             @Continue.performed += instance.OnContinue;
             @Continue.canceled += instance.OnContinue;
+            @RestartLevel.started += instance.OnRestartLevel;
+            @RestartLevel.performed += instance.OnRestartLevel;
+            @RestartLevel.canceled += instance.OnRestartLevel;
         }
 
         private void UnregisterCallbacks(ICutsceneActions instance)
@@ -3465,6 +3495,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Continue.started -= instance.OnContinue;
             @Continue.performed -= instance.OnContinue;
             @Continue.canceled -= instance.OnContinue;
+            @RestartLevel.started -= instance.OnRestartLevel;
+            @RestartLevel.performed -= instance.OnRestartLevel;
+            @RestartLevel.canceled -= instance.OnRestartLevel;
         }
 
         public void RemoveCallbacks(ICutsceneActions instance)
@@ -3497,6 +3530,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnToggleSkillWheel(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
         void OnDeSelect(InputAction.CallbackContext context);
+        void OnRestartLevel(InputAction.CallbackContext context);
     }
     public interface ICharacterActions
     {
@@ -3515,7 +3549,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnUseAbility2(InputAction.CallbackContext context);
         void OnSwitchCharacterLeft(InputAction.CallbackContext context);
         void OnSwitchCharacterRight(InputAction.CallbackContext context);
-        void OnRestartLevel1(InputAction.CallbackContext context);
         void OnControlSheet(InputAction.CallbackContext context);
         void OnPauseScreen(InputAction.CallbackContext context);
         void OnCharacterSheet(InputAction.CallbackContext context);
@@ -3549,7 +3582,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSwitchTargetsScroll(InputAction.CallbackContext context);
         void OnToggleLockOn(InputAction.CallbackContext context);
         void OnToggleSkillWheel(InputAction.CallbackContext context);
-        void OnRestartLevel(InputAction.CallbackContext context);
         void OnToggleAiming(InputAction.CallbackContext context);
         void OnUseAgility(InputAction.CallbackContext context);
         void OnUseWeapon1(InputAction.CallbackContext context);
@@ -3558,11 +3590,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnUseAbility2(InputAction.CallbackContext context);
         void OnSwitchCharacterLeft(InputAction.CallbackContext context);
         void OnSwitchCharacterRight(InputAction.CallbackContext context);
-        void OnRestartLevel1(InputAction.CallbackContext context);
         void OnToggleControls(InputAction.CallbackContext context);
+        void OnRestartLevel(InputAction.CallbackContext context);
     }
     public interface ICutsceneActions
     {
         void OnContinue(InputAction.CallbackContext context);
+        void OnRestartLevel(InputAction.CallbackContext context);
     }
 }
