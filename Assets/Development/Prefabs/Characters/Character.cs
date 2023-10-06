@@ -55,7 +55,7 @@ namespace Body
         [HideInInspector] public Caster caster;
         public Transform weaponLocation;
         public Transform firingLocation;
-        public Loadout Loadout { get => statBlock.loadout; }
+        public Loadout Loadout { get => statBlock == null ? null : statBlock.loadout; }
 
         // Identifiable
         public override Identity Identity
