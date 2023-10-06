@@ -6,6 +6,7 @@ using static GameModes;
 using Selection;
 using System.Collections;
 using System.Diagnostics.Tracing;
+using MyBox;
 
 [RequireComponent(typeof(Game))]
 [RequireComponent(typeof(PlayerInput))]
@@ -27,18 +28,6 @@ public class GameInput : BaseMonoBehaviour
     public ILooker CurLooker { get => Game.curLooker; }
     public InputMode Input { get => Game.InputMode; set => Game.InputMode = value; }
     public Menu Menu { get => Game.ActiveMenu; set => Game.ActiveMenu = value; }
-
-
-    // Initialization
-    private void Awake()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-    }
-
-    private void OnEnable()
-    {
-        
-    }
 
 
     // Wrappers
@@ -138,8 +127,14 @@ public class GameInput : BaseMonoBehaviour
     {
         if (inputValue.isPressed)
         {
-            Delegate del = deSelect ? CurSelector.DeSelect : CurSelector.Select;
-            del.Invoke();
+            switch (Input)
+            {
+                case InputMode.Selection:
+                    Delegate del = deSelect ? CurSelector.DeSelect : CurSelector.Select;
+                    del.Invoke(); break;
+                case InputMode.Menu:
+                    UserInterface.Select(); break;
+            }
         }
     }
     public void OnSelect(InputValue inputValue) { SelectValue(inputValue, true); }
@@ -171,11 +166,13 @@ public class GameInput : BaseMonoBehaviour
             scroller = StartCoroutine(ScrollPoll());
     }
 
+    [Foldout("Target Switching", true)]
     [Header("Target Switching")]
     [SerializeField] private float holdTime = 0.8f;
     [ReadOnly][SerializeField] private bool reachedZero = true;
     [ReadOnly][SerializeField] int triggerCount = 0;
     [ReadOnly][SerializeField] private float switchTargetValue = 0f;
+    [Foldout("Target Switching")]
     [SerializeField] private bool debugTS;
     public void SwitchTargets(float value)
     {
@@ -200,6 +197,7 @@ public class GameInput : BaseMonoBehaviour
             reachedZero = true;
     }
 
+    [Foldout("Target Scroll Polling", true)]
     [Header("Target Scroll Polling")]
     [SerializeField] private float scrollPollPerHold = 10;
     [SerializeField] private bool polling = true;
@@ -209,6 +207,7 @@ public class GameInput : BaseMonoBehaviour
     [ReadOnly][SerializeField] private bool scrollerStarted = false;
     [ReadOnly][SerializeField] private float scroll = 0f;
     [ReadOnly][SerializeField] private float scrollHold = 0f;
+    [Foldout("Target Scroll Polling")]
     [SerializeField] private bool debugSP = false;
     private IEnumerator ScrollPoll()
     {
@@ -278,6 +277,46 @@ public class GameInput : BaseMonoBehaviour
     {
         float testFloat = inputValue.Get<float>();
         print($"Test float: {testFloat}");
+    }
+
+    // Mouse
+    public float hideMouseDelay = 10f;
+    [ReadOnly][SerializeField] private bool mouseShown;
+    public void ShowMouse(bool showMouse)
+    {
+        mouseShown = showMouse;
+        Cursor.visible = mouseShown;
+        StopCoroutine(HideMouseDelay());
+        if (mouseShown)
+        {
+            StartCoroutine(HideMouseDelay());
+        }
+    }
+    private IEnumerator HideMouseDelay()
+    {
+        yield return new WaitForSeconds(hideMouseDelay);
+        ShowMouse(false);
+    }
+    public void OnMouseDelta(InputValue inputValue)
+    {
+        if (Game.Mode.showMouse)
+        {
+            Vector2 output = inputValue.Get<Vector2>();
+            if (output != Vector2.zero)
+            {
+                if (!mouseShown) ShowMouse(true);
+            }
+        }
+    }
+    public void OnMouseClick(InputValue inputValue)
+    {
+        if (Game.Mode.showMouse)
+        {
+            IsPressed(inputValue, () =>
+            {
+                if (!mouseShown) ShowMouse(true);
+            });
+        }
     }
 
     // Menus

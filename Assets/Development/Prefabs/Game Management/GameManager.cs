@@ -190,8 +190,12 @@ public class Game : BaseMonoBehaviour
         userInterface.SetDialogueActive(mode.dialogueActive);
         userInterface.SetControlScreenActive(mode.activeMenu == Menu.ControlSheet);
         userInterface.SetCharacterSheetActive(mode.activeMenu == Menu.CharacterSheet);
+        userInterface.SetMenuInputsActive(mode.activeMenu != Menu.None);
         input.SwitchCurrentActionMap(mode.inputMode.ToString());
         TimeScale = mode.timeScale;
+
+        // Set Mouse Lock State
+        Cursor.lockState = mode.showMouse ? CursorLockMode.Confined : CursorLockMode.Locked;
 
         // Swap Controllables
         IControllable newControllable = mode.Controllable;

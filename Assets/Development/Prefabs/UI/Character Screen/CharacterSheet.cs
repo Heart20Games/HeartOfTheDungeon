@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.InputSystem;
 using static StatBlock;
 
 public class CharacterSheet : BaseMonoBehaviour
@@ -22,6 +23,18 @@ public class CharacterSheet : BaseMonoBehaviour
     [SerializeField] private CastableField castablePrefab;
     [SerializeField] private Transform castableParent;
     [SerializeField] private List<CastableField> castables;
+
+    [SerializeField] private int selectedIndex;
+
+    public void Start()
+    {
+        for (int i = 0; i < statFields.Length; i++)
+        {
+            statFields[i].field.statIndex = i;
+            statFields[i].field.onSelect.AddListener(OnStatSelected);
+        }
+        OnStatSelected(0);
+    }
 
     public void SetCharacter(CharacterBlock character)
     {
@@ -53,6 +66,30 @@ public class CharacterSheet : BaseMonoBehaviour
                 field.CastableName = item.name;
                 field.FinalName = "Damage";
                 field.SetAttribute(item.stats.damage);
+            }
+        }
+    }
+
+    public void OnStatSelected(int index)
+    {
+        selectedIndex = (int)Mathf.Repeat(index, statFields.Length);
+        for (int i = 0; i < statFields.Length; i++)
+        {
+            if (i != selectedIndex)
+                statFields[i].field.SetSelected(false);
+            else if (!statFields[i].field.selected)
+                statFields[i].field.SetSelected(true);
+        }
+    }
+
+    public void OnChangeSelection(InputValue inputValue)
+    {
+        Vector2 vector = inputValue.Get<Vector2>();
+        if (vector != Vector2.zero)
+        {
+            if (vector.y != 0)
+            {
+                OnStatSelected(selectedIndex - (int)Mathf.Sign(vector.y));
             }
         }
     }
