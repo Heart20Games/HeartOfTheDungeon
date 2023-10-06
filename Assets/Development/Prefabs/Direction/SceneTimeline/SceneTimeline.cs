@@ -17,7 +17,7 @@ public class SceneTimeline : BaseMonoBehaviour
     public List<Cutscene> cutscenes = new();
     public Dictionary<string, PlayableDirector> cutsceneBank = new();
 
-    [ReadOnly][SerializeField] private int paused = 0;
+    [SerializeField] private int paused = 0;
 
     public void Start()
     {
@@ -82,7 +82,7 @@ public class SceneTimeline : BaseMonoBehaviour
     [YarnCommand("pause")]
     public void Pause()
     {
-        if (this.director != null)
+        if (this.director != null && this.director.playableGraph.IsValid() && this.director.playableGraph.GetPlayableCount() > 0)
         {
             paused -= 1;
             if (paused <= 0)
@@ -96,7 +96,7 @@ public class SceneTimeline : BaseMonoBehaviour
     [YarnCommand("unpause")]
     public void UnPause()
     {
-        if (this.director != null)
+        if (this.director != null && this.director.playableGraph.IsValid() && this.director.playableGraph.GetPlayableCount() > 0)
         {
             paused += 1;
             if (paused >= 0)
