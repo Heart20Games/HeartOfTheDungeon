@@ -24,6 +24,8 @@ namespace Attributes
         public enum Part { BaseValue, BaseMultiplier }
         [SerializeField] private int baseValue;
         [SerializeField] private float baseMultiplier;
+        [SerializeField] private Vector2 baseValueRange = new(0, 5);
+        [SerializeField] private Vector2 baseMultiplierRange = new(0, 5);
 
         [HideInInspector] public UnityEvent updated = new();
         [HideInInspector] public UnityEvent<float> updatedFinal = new();
@@ -41,7 +43,7 @@ namespace Attributes
 
         public abstract float FinalValue { get; }
 
-        public int BaseValue { get => baseValue; set { baseValue = value; Updated(); } }
-        public float BaseMultiplier { get => baseMultiplier; set { baseMultiplier = value; Updated(); } }
+        public int BaseValue { get => baseValue; set { baseValue = (int)Mathf.Clamp(value, baseValueRange.x, baseValueRange.y); Updated(); } }
+        public float BaseMultiplier { get => baseMultiplier; set { baseMultiplier = (int)Mathf.Clamp(value, baseMultiplierRange.x, baseMultiplierRange.y); Updated(); } }
     }
 }
