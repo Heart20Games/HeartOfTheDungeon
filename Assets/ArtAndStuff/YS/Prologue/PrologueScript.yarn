@@ -1,4 +1,4 @@
-﻿title: PrologueScript
+﻿title: GobkinDialogue1Part1
 tags:
 ---
 
@@ -9,36 +9,25 @@ Rotta: Clomping, CLOMPING!? #line:G4
 Osseus: It's a wonder the entire cavern hasn't come down around us... #line:G5
 Rotta: I'm about to clomp your big mouth you failed halloween decoration! #line:G6
 Baelor: Hush now… look! #line:G7
+<<unpause SceneTimeline>>
+
+===
+
+title: GobkinDialogue1Part2
+---
+
 Gobkin: (Concerned purring) #line:G8
 
 -> Baelor: And who might you be? #line:G8a
     Gobkin: Who is you...? #line:G8ai
         -> Baelor: My name is Baelor and… I am the master of this dungeon. #line:G8ai1
-            Gobkin: Dunwon...? #line:G8ai1a
-            Baelor: (Unsure) Uhm... yes, where you are now. This is a dungeon. #line:G8ai1b
-            Gobkin: Master...? #line:G8ai1c
-            Baelor: Baelor, that’s right, now what’s your -  #line:G8ai1d
-            Osseus: As much as I'm enjoying teaching this... thing, vocabulary, perhaps we could move onto the matter at hand? #line:G8ai1e
-            Rotta: Yeah, we gots slimes to fight! #line:G8ai1f
-            Baelor: How quickly you two have forgotten what it's like to be lost and alone... #line:G8ai1g
+            <<jump WhoIs1>>
         -> Baelor: I’m Baelor, and this is Rotta and Osseus. #line:G8ai2
-            Gobkin: Dey look scary... #line:G8ai2a
-                -> Baelor: Yes, I suppose they are. #line:G8ai2ai
-                    Rotta: Yeah, I’m REALLY scary, fearsome! Rawr! #line:G8ai2ai1
-                    Osseus: The only thing scary about you is your manners… and the smell… #line:G8ai2ai2
-                    Baelor: Was that really necessary Rotta? #line:G8ai2ai3
-                    Rotta: Yes. Yes it was. Hmphf. (end) #line:G8ai2ai4
-                -> Baelor: Those two? They might look scary but they won't harm you. #line:G8ai2aii
-                    Osseus: I beg your pardon, are you saying I look scary? Why?! Because I have my bones showing? I think it’s far scarier to be a walking pile of gooey organs wrapped in greasy skin! #line:G8ai2aii1
-                    Rotta: Now look what you did, you scared off the little... whatever it was. #line:G8ai2aii2
-                    Osseus: Maybe we'll see it again. They said sarcastically, to themselves.  (end) #line:G8ai2aii3
-                -> Baelor:  Ju-just Ignore them, what is your name? #line:G8ai2aiii
-                    Osseus: I'm sorry, did you just tell it to IGNORE me… I mean us!? #line:G8ai2aiii1
-                    Rotta: Yeah, after you dragged us up here!? We're not the ones it should be ignoring! #line:G8ai2aiii2
-                    Baelor: N-Now I didn't mean to offend, I simply thought the creature might see you as threatening. (end) #line:G8ai2aiii3
+            <<jump WhoIs2>>
         -> Baelor: Now, now, I asked you first! #line:G8ai3
 
-End: (With a cry of alarm, the creature darts back into the shadows) #line:G8ai3a
+           <<jump EndGobkin1>>
+            
 
 -> Baelor: C-come out and show yourself! #line:G8b
     End: Maybe you can catch up to it... #line:
@@ -54,15 +43,64 @@ End: (With a cry of alarm, the creature darts back into the shadows) #line:G8ai3
             Baelor: It-it’s alright. Why don't you come with us? #line:G8ci1f
             Osseus: Is this really the time to be collecting strays?! We have more important business to attend to! #line:G8ci1g
             Rotta: Yeah, like you know, defending the dungeon from rebellious slimes! #line:G8ci1h
-            Baelor: How quickly you two have forgotten what it’s like to be lost and alone... (End) #line:G8ai1gz
+            Baelor: How quickly you two have forgotten what it’s like to be lost and alone... #line:G8ai1gz
+            <<jump EndGobkin1>>
         -> Baelor: My name is Baelor and I’m the master of this dungeon. #line:G8ai1z
-(Already recorded Above) 
+            <<jump WhoIs1>>
         -> Baelor: I’m Baelor, and this is Rotta and Osseus. #line:G8ai2z
-(Already recorded Above)
+            <<jump WhoIs2>>
+===
+
+title: EndGobkin1
+---
+
+Narrator: With a cry of alarm, the creature darts back into the shadows #line:G8ai3a
+<<unpause SceneTimeline>>
+
+===
+
+title: WhoIs1
+
+---
+Gobkin: Dunwon...? #line:G8ai1a
+Baelor: Uhm... yes, where you are now. This is a dungeon. #line:G8ai1b
+Gobkin: Master...? #line:G8ai1c
+Baelor: Baelor, that’s right, now what’s your -  #line:G8ai1d
+Osseus: As much as I'm enjoying teaching this... thing, vocabulary, perhaps we could move onto the matter at hand? #line:G8ai1e
+Rotta: Yeah, we gots slimes to fight! #line:G8ai1f
+Baelor: How quickly you two have forgotten what it's like to be lost and alone... #line:G8ai1g
+<<jump EndGobkin1>>
+===
+
+title: WhoIs2
+
+---
+Gobkin: Dey look scary... #line:G8ai2a
+-> Baelor: Yes, I suppose they are. #line:G8ai2ai
+    Rotta: Yeah, I’m REALLY scary, fearsome! Rawr! #line:G8ai2ai1
+    Osseus: The only thing scary about you is your manners… and the smell… #line:G8ai2ai2
+    Baelor: Was that really necessary Rotta? #line:G8ai2ai3
+    Rotta: Yes. Yes it was. Hmphf.  #line:G8ai2ai4
+    <<jump EndGobkin1>>
+-> Baelor: Those two? They might look scary but they won't harm you. #line:G8ai2aii
+    Osseus: I beg your pardon, are you saying I look scary? Why?! Because I have my bones showing? I think it’s far scarier to be a walking pile of gooey organs wrapped in greasy skin! #line:G8ai2aii1
+    Rotta: Now look what you did, you scared off the little... whatever it was. #line:G8ai2aii2
+    Osseus: Maybe we'll see it again. They said sarcastically, to themselves. #line:G8ai2aii3
+    <<jump EndGobkin1>>
+-> Baelor:  Ju-just Ignore them, what is your name? #line:G8ai2aiii
+    Osseus: I'm sorry, did you just tell it to IGNORE me… I mean us!? #line:G8ai2aiii1
+    Rotta: Yeah, after you dragged us up here!? We're not the ones it should be ignoring! #line:G8ai2aiii2
+    Baelor: N-Now I didn't mean to offend, I simply thought the creature might see you as threatening. (end) #line:G8ai2aiii3
+    <<jump EndGobkin1>>
+===
+
+title: SecondGobkinEncounter
+
+---
 
 Gobkin: H-hewwo...is... it safe? #line:G9
 -> Baelor: I'm... I'm not sure. #line:G9a
-    End: (The creature, picking up on your nervousness, vanishes back into the darkness) #line:G9ai
+    <<jump EndGobkin2>>
 -> Baelor: Hello again my little friend,and  yes it’s safe. #line:G9b
     Gobkin: Good, the fights are scawy. Why must there be fights?  #line:G9bi
     Rotta: Because fighting is the awesome! You get to use your claws and fangs, and sometimes even a big slicey or bashy thing!  #line:G9bii
@@ -70,14 +108,16 @@ Gobkin: H-hewwo...is... it safe? #line:G9
     Rotta:OKAY! So my favorite weapon is a mace that you dual wield with an even bigger mace tha spikey things are made of daggers.  #line:G9biv
     Osseus: Do you rodents not have sarcasm in your culture? #line:G9bv
         -> Baelor: Fights can be exciting, as Rotta says. Goodness knows I've never felt more alive. #line:G9bv1
-            Rotta: Yeah! To get the blood pumping, the teeth chomping, the claws slicing... there's nothing better! (End) #line:G9bv1a
+            Rotta: Yeah! To get the blood pumping, the teeth chomping, the claws slicing... there's nothing better! #line:G9bv1a
+            <<jump EndGobkin2>>
         -> Baelor: Fighting should be avoided, if possible, but sometimes it can't be. #line:G9bv2
             Baelor: I've tried to avoid fights in my life, but life doesn't give you a choice. #line:G9bv2a
             Gobkin: You have choice... you can gos homes! #line:G9bv2b
             Baelor: This is my home... a part of my home I have not visited in a long time, but still... it is my home. I have to protect it. If I don't, it might be destroyed, along with everyone who lives here.  #line:G9bv2c
             Gobkin: (Murmuring sadly) Home... #line:G9bv2d
             Osseus: The real threat is Claviculus, not these slimes, if you really wanted to protect your home you'd start there... #line:G9bv2e
-            Baelor: Please, Osseus, we will deal with Claviculus, I promise. Now, little friend, if you want - Oh... he's gone again. (End) #line:G9bv2f
+            Baelor: Please, Osseus, we will deal with Claviculus, I promise. Now, little friend, if you want - Oh... he's gone again. #line:G9bv2f
+            <<jump EndGobkin2>>
         -> Baelor: Fighting allows you to prove yourself. #line:G9bv3
             Gobkin:...proves what?  #line:G9bv3a
             Baelor: Well, that, you have the courage to stand up and defend yourself and your home. #line:G9bv3b
@@ -85,6 +125,7 @@ Gobkin: H-hewwo...is... it safe? #line:G9
             Rotta: And that you're FIERCE and STRONG, and look at these TEEETH! Rawr!  #line:G9bv3d
             Osseus: Rotta, Your eloquence truly knows no bounds. #line:G9bv3e
             Baelor: ... where did he go?  #line:G9bv3v
+            <<jump EndGobkin2>>
 -> Baelor: I'm not sure, Osseus, Rotta, why don't you check the perimeter? #line:G9c
     Osseus: You can see perfectly well there's no one here!  #line:G9ci
     Rotta: Well he IS like a million years old or something, maybe his eyesight is going?  #line:G9cii
@@ -109,29 +150,47 @@ Gobkin: H-hewwo...is... it safe? #line:G9
                     Rotta: Oh, so you're not our friend huh, is that it? Why, you think you’re too good for us?  #line:G9cvi2ei1
                     Osseus: Yeah, we're not your underlings to be ordered around!  #line:G9cvi2ei2
                     Baelor: Now, that's not what I meant, I just… drat. #line:G9cvi2ei3
-                    Osseus and Rotta: Continue haranguing Baelor (End) #line:G9cvi2ei4a
+                    Osseus and Rotta: Continue haranguing Baelor #line:G9cvi2ei4a
+                    <<jump EndGobkin2>>
                 -> Baelor: Yes...they are my friends. #line:G9cvi2eii
                     Gobkin: Fwends!  #line:G9cvi2eii1
                     Osseus: I'm sorry, but who said you were our friend? I don't recall saying that, what about you Rotta?  #line:G9cvi2eii2
                     Rotta: Nope, I don't remember saying that either. #line:G9cvi2eii3
-                    Baelor: (Tiredly) Well, at least they finally agree about something... (end) #line:G9cvi2eii4
+                    Baelor: (Tiredly) Well, at least they finally agree about something... #line:G9cvi2eii4
+                    <<jump EndGobkin2>>
         -> Baelor: But enough about them, don't you think it's about time you told me who you are? #line:G9cvi3
             Gobkin: Who am I?  #line:G9cvi3a
             Baelor: Yes, who are you?  #line:G9cvi3b
             Gobkin: No, I asking you... #line:G9cvi3c
             Baelor: I already told you who I am. #line:G9cvi3d
-            Gobkin: Who am I...? (End) #line:G9cvi3e
-(Third Gobkin Encounter) You turn to see the creature, now out in the open, looking at you expectantly. #line:G10
+            Gobkin: Who am I...? #line:G9cvi3e
+            <<jump EndGobkin2>>
+
+===
+
+title: EndGobkin2
+---
+
+Narrator: The creature, picking up on your nervousness, vanishes back into the darkness #line:G9ai
+
+===
+
+title: ThirdGobkinEncounter
+
+---
+
+ You turn to see the creature, now out in the open, looking at you expectantly. #line:G10
     -> Baelor: Why are you following us? #line:G10a
         Gobkin: I-I don't know... #line:G10ai
         Osseus: Maybe it's hungry? What do you suppose it eats? I suppose it'd be too much to hope it eats rats, eh Rotta? #line:G10aii
         Rotta: More likely it'll suck the marrow from your brittle old bones!  #line:G10aiii
         Osseus: (Incensed) Marrow!? I'll have you know the marrow in these bones turned to eons ago, I don't have any disgusting gooey parts in this body! #line:G10aiv
-            -> Baelor: Osseus, Rotta, enough! (Recorded below) #line:G10bvi1
-
+            -> Baelor: Osseus, Rotta, enough! #line:G10bvi1
+            <<jump ThatsEnough>>
             -> Baelor: Please you two, enough fighting. (Recorded below) #line:G10bvi2
 
-            -> Baelor: Come here my small friend, how about you and I teach them how friends should act. (Recorded below) #line:G10bvi3
+            -> Baelor: Come here my small friend, how about you and I teach them how friends should act. #line:G10bvi3
+            <<jump EndGobkin3>>
         
     -> Baelor: There you are, I was getting worried about you. #line:G10b
         Gobkin: You was?  #line:G10bi
@@ -141,26 +200,43 @@ Gobkin: H-hewwo...is... it safe? #line:G9
         Osseus: I'd be quite happy if you were alone out here too...  #line:G10bv
         Rotta: Watch it Rattle-stilts-no-skin or I'll be using your bones for grinding my teeth down. #line:G10bvi
             -> Baelor: Osseus, Rotta, that’s enough! #line:G10bvi1z
-                Gobkin: (Frightened squeak) Narrator: (You see the creature take a step back, his ears flattening and eyes growing wide) #line:G10bvi1a
-                    -> Baelor: I apologize, I shouldn't have shouted. #line:G10bvi1ai
-                    -> Baelor: Don't be frightened, I'm simply keeping these two in line. #line:G10bvi1aii
-                        Rotta: Oh, do you hear that Osseus, the big bad "Dungeon Master" is going to keep US in line! #line:G10bvi1aii1
-                        Osseus: Had I ears, I would not believe them, but since I don't... I still don't believe it. #line:G10bvi1aii2
-                        Rotta: Look here old man, we could just as easily go home! #line:G10bvi1aii3
-                    ->Baelor: Don't be so dramatic! #line:G10bvi1aiii
-                        End: The creature scurries off into the darkness, and you are left with a sinking feeling that you will never see him again... and a deep ache in your temples that suggest he was important somehow.Baelor: Please you two, enough with the fighting. #line:G10bvi1aiii1
+                <<jump ThatsEnough>>
             -> Baelor: Please you two, enough with the fighting. #line:G10bvi2z
                 Rotta: Tell them that!  #line:G10bvi2a
                 Osseus: Oh, go chew your tail! #line:G10bvi2b
                 Rotta: (Gasps in horror) How DARE you!? #line:G10bvi2c
-                Already recorded responses #line:ARR
 
             -> Baelor: Come here my small friend, how about you and I teach them how friends should act? #line:G10bvi3z
-
+                <<jump EndGobkin3>>
     -> Baelor: I was hoping you'd come back. You should come with us. #line:G10c
         Gobkin: Weally?! #line:G10ci
             ->Baelor: Weally, you don't have to be alone here anymore. You can be our friend, and help make this dungeon a home... for all of us. #line:G10ci1
-                Gobkin: F-Fwend?  #line:G10ci1a
+                <<jump EndGobkin3>>
+
+
+===
+
+title: ThatsEnough
+---
+
+    Gobkin: (Frightened squeak) 
+    Narrator: You see the creature take a step back, his ears flattening and eyes growing wide #line:G10bvi1a
+    -> Baelor: I apologize, I shouldn't have shouted. #line:G10bvi1ai
+    <<jump EndGobkin3>>
+
+    -> Baelor: Don't be frightened, I'm simply keeping these two in line. #line:G10bvi1aii
+                        Rotta: Oh, do you hear that Osseus, the big bad "Dungeon Master" is going to keep US in line! #line:G10bvi1aii1
+                        Osseus: Had I ears, I would not believe them, but since I don't... I still don't believe it. #line:G10bvi1aii2
+                        Rotta: Look here old man, we could just as easily go home! #line:G10bvi1aii3
+    ->Baelor: Don't be so dramatic! #line:G10bvi1aiii
+    <<jump EndGobkin3>>
+
+===
+
+title: EndGobkin3
+---
+
+Gobkin: F-Fwend?  #line:G10ci1a
                 Baelor: That's right, friends. #line:G10ci1b
                 Osseus: Ugh, how cloyingly saccharine... but fine. I suppose we can't leave the little Gobthing down here.  #line:G10ci1c
                 Gobkin: (Thoughtfully) Gob-thing... #line:G10ci1d
@@ -177,5 +253,13 @@ Gobkin: H-hewwo...is... it safe? #line:G9
                 Rotta: You know, I kind of like it. It suits him.  #line:G10ci1o
                 Baelor: Right, come along Gobkin, let's defeat these slimes and then I can show you around your… our new home... #line:G10ci1p
 
+===
+
+
+
+title: NoGobPoints
+---
+
+Narrator: The creature scurries off into the darkness, and you are left with a sinking feeling that you will never see him again... and a deep ache in your temples that suggest he was important somehow.Baelor: Please you two, enough with the fighting. #line:G10bvi1aiii1
 
 ===
