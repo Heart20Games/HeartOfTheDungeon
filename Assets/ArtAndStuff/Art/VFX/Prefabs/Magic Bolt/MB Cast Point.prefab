@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5640558220743154003}
   - component: {fileID: 202607290327246180}
   - component: {fileID: 8450124607058288455}
+  - component: {fileID: 334410026118029802}
   m_Layer: 0
   m_Name: MB Cast Point
   m_TagString: Untagged
@@ -53,6 +54,7 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: 0}
   rOffset: 0
   stats: {fileID: 0}
+  debug: 0
   onStart:
     m_PersistentCalls:
       m_Calls: []
@@ -144,6 +146,7 @@ MonoBehaviour:
         m_CallState: 2
   powerLevel: 0
   powerLimit: 0
+  actualLevel: 0
   clampedPower: 0
   comboRange: {x: 0, y: 0}
   onSetComboStep:
@@ -182,6 +185,18 @@ VisualEffect:
       - m_Value: 0
         m_Name: Level 3 Charge Value
         m_Overridden: 1
+      - m_Value: 0
+        m_Name: Level 2 Continued Charge
+        m_Overridden: 1
+      - m_Value: 0
+        m_Name: Level 2 Continued Charge 2
+        m_Overridden: 1
+      - m_Value: 0
+        m_Name: Level 3 Cast Length
+        m_Overridden: 1
+      - m_Value: 0
+        m_Name: CastTime
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -201,7 +216,10 @@ VisualEffect:
     m_NamedObject:
       m_Array: []
     m_Bool:
-      m_Array: []
+      m_Array:
+      - m_Value: 1
+        m_Name: Cast
+        m_Overridden: 1
 --- !u!73398921 &202607290327246180
 VFXRenderer:
   serializedVersion: 1
@@ -299,3 +317,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!95 &334410026118029802
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4490809449938186106}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c01af2fee09b1544790758bc263e138b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
