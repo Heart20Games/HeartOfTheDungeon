@@ -1,3 +1,4 @@
+using Attributes;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewCastableStatAttributes", menuName = "Loadouts/Castable Stat Attributes", order = 1)]

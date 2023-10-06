@@ -25,6 +25,7 @@ namespace HotD.Castables
         public CastableSettings settings = new();
         [Space]
         public CastableStats stats;
+        public float[] chargeTimes = new float[3];
         public List<Effect> effects;
 
         [Header("Targeting")]
@@ -210,7 +211,8 @@ namespace HotD.Castables
                 charger.onCharge = new();
                 charger.onCharged = new();
                 charger.onInterrupt = new();
-                charger.length = stats.ChargeRate;
+                charger.chargeTimes = chargeTimes;
+                charger.chargeLimit = stats.chargeLimit;
                 UnityEventTools.AddPersistentListener(castable.onTrigger, charger.Begin);
                 UnityEventTools.AddPersistentListener(castable.onRelease, charger.Interrupt);
                 UnityEventTools.AddPersistentListener(charger.onCharge, castable.SetPowerLevel);
@@ -274,10 +276,11 @@ namespace HotD.Castables
             //casted.enabled = false;
 
             casted.stats = stats;
+            casted.powerLimit = stats.chargeLimit;
 
             casted.onSetPowerLimit ??= new();
-            //UnityEventTools.AddPersistentListener(stats.chargeLimit.updatedFinal, casted.SetPowerLimit);
-            
+            //UnityEventTools.AddPersistentListener(stats.chargeLimit.updatedFinal, casted.OnSetPowerLimit);
+
             casted.onTrigger ??= new();
             casted.onRelease ??= new();
             casted.onCast ??= new();

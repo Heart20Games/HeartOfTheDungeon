@@ -8,20 +8,24 @@ using UnityEngine.Events;
 
 namespace Attributes
 {
+    [Serializable]
     public abstract class BaseAttribute
     {
-        public readonly struct Weighted<T>
+        [Serializable] public struct Weighted<T>
         {
             public Weighted(T value, float weight)
             {
                 this.value = value;
                 this.weight = weight;
             }
-            public readonly T value;
-            public readonly float weight;
+            public T value;
+            public float weight;
         }
 
         public enum Part { BaseValue, BaseMultiplier }
+
+        [ReadOnly][SerializeField] private float finalPreview;
+
         [SerializeField] private int baseValue;
         [SerializeField] private float baseMultiplier;
         [SerializeField] private Vector2 baseValueRange = new(0, 5);

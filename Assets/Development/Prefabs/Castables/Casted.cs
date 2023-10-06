@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using static CastableStats;
 using System;
 using MyBox;
+using Attributes;
+using UnityEditor.Events;
 
 namespace HotD.Castables
 {
@@ -33,8 +35,9 @@ namespace HotD.Castables
         public UnityEvent<bool> onHasCharge = new();
         public UnityEvent<float> onSetPowerLevel = new();
         public UnityEvent<int> onSetPowerLimit = new();
+        public DependentAttribute powerLimit;
+        [ReadOnly][SerializeField] private float finalPowerLimit = 0f;
         [ReadOnly][SerializeField] private float powerLevel = 0f;
-        [ReadOnly][SerializeField] private int powerLimit = 0;
         [ReadOnly][SerializeField] private float actualLevel = 0f;
         [ReadOnly][SerializeField] private float clampedPower = 0f;
 
@@ -60,8 +63,10 @@ namespace HotD.Castables
         {
             if (stats != null)
             {
-                stats.chargeLimit.updatedFinal.AddListener(SetPowerLimit);
-                SetPowerLimit(stats.ChargeLimit);
+                OnSetPowerLimit(powerLimit.FinalValue);
+                stats.chargeLimit.updatedFinal.AddListener(OnSetPowerLimit);
+                //stats.chargeLimit.updatedFinal.AddListener(OnSetPowerLimit);
+                //OnSetPowerLimit(stats.ChargeLimit);
             }
         }
 
@@ -96,25 +101,20 @@ namespace HotD.Castables
         // Power Level
         public void SetPowerLevel(float powerLevel)
         {
-            if (canUpdatePowerLevel)
-            {
-                this.powerLevel = powerLevel;
-                HasCharge(powerLevel > 0);
-                onSetPowerLevel.Invoke(powerLevel);
-                UpdateEnabled();
-            }
+            if (debug) print($"Set Power Level {powerLevel}");
+            this.powerLevel = powerLevel;
+            HasCharge(powerLevel > 0);
+            onSetPowerLevel.Invoke(powerLevel);
+            UpdateEnabled();
         }
         public void HasCharge(bool hasCharge)
         {
             onHasCharge.Invoke(hasCharge);
         }
-        public void SetPowerLimit(float powerLimit)
+        public void OnSetPowerLimit(float powerLimit) { OnSetPowerLimit((int) powerLimit); }
+        public void OnSetPowerLimit(int powerLimit)
         {
-            SetPowerLimit(Mathf.RoundToInt(powerLimit));
-        }
-        public void SetPowerLimit(int powerLimit)
-        {
-            this.powerLimit = powerLimit;
+            finalPowerLimit = powerLimit;
             onSetPowerLimit.Invoke(powerLimit);
             UpdateEnabled();
         }
@@ -132,7 +132,7 @@ namespace HotD.Castables
         {
             clampedCombo = Mathf.Clamp(comboStep, comboRange.x, comboRange.y);
             bool correctCombo = comboRange.y <= 0 || comboStep == clampedCombo;
-            actualLevel = powerLimit * Mathf.Clamp01(powerLevel);
+            actualLevel = powerLevel;
             clampedPower = Mathf.Clamp(actualLevel, powerRange.x, powerRange.y);
             bool correctPower = powerRange.y <= 0 || actualLevel == clampedPower;
             gameObject.SetActive(correctCombo && correctPower);

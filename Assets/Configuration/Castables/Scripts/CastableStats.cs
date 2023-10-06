@@ -88,6 +88,7 @@ public class CastableStats : ScriptableObject
 
     public void Equip(StatBlock statBlock)
     {
+        UnEquip();
         AssignBonuses(damage, attributes.damage, statBlock);
         AssignBonuses(cooldown, attributes.cooldown, statBlock);
         AssignBonuses(chargeRate, attributes.chargeRate, statBlock);
@@ -103,6 +104,7 @@ public class CastableStats : ScriptableObject
         damage.Clear();
         cooldown.Clear();
         chargeRate.Clear();
+        chargeLimit.Clear();
         knockback.Clear();
         range.Clear();
         castStatusPower.Clear();

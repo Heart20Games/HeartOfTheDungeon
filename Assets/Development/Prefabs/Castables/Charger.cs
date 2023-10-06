@@ -1,28 +1,25 @@
+using Attributes;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Charger : BaseMonoBehaviour
 {
-    public float rate = 1f;
-    public float increment = 0.01f;
-    public float length = 1f;
-    public bool beginOnStart = false;
+    public bool debug = false;
 
     [Header("Status")]
-    [ReadOnly][SerializeField] private float time = 0f;
     [SerializeField] private bool interrupt = false;
+    [ReadOnly][SerializeField] private int level;
+    [ReadOnly][SerializeField] private int maxLevel;
+    public float[] chargeTimes = new float[0];
+    public DependentAttribute chargeLimit;
 
     [Header("Events")]
     public UnityEvent onBegin;
     public UnityEvent<float> onCharge;
     public UnityEvent onCharged;
     public UnityEvent onInterrupt;
-
-    private void Start()
-    {
-        if (beginOnStart) Begin();
-    }
 
     public void Begin()
     {
@@ -38,20 +35,21 @@ public class Charger : BaseMonoBehaviour
 
     public IEnumerator ChargeTimer()
     {
-        float rate = 0f;
-        time = 0f;
+        level = 0;
         while (!interrupt)
         {
-            onCharge.Invoke(time/length);
-            if (time < length)
-                rate = Mathf.Min(length - time, increment);
-            else
-                rate = increment;
-            yield return new WaitForSeconds(rate);
+            if (debug) print($"Charged to level {level}");
+            onCharge.Invoke(level);
+            float waitTime = level >= chargeTimes.Length ? 1 : chargeTimes[level];
+            yield return new WaitForSeconds(waitTime);
             if (interrupt) break;
-            time += rate;
-            if (time >= length && time < (length + increment))
-                onCharged.Invoke();
+            maxLevel = (int)chargeLimit.FinalValue;
+            if (level >= chargeLimit.FinalValue)
+            {
+                if (debug) print($"Fully Charged at {level} / {chargeLimit.FinalValue}");
+                onCharged.Invoke(); break;
+            }
+            level++;
         }
         interrupt = false;
     }
