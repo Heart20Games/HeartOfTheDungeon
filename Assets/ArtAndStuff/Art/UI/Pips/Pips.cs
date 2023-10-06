@@ -47,6 +47,10 @@ public class Pips : BaseMonoBehaviour
 
     public void SetFilled(int filled)
     {
+        if (filled > totalPips)
+        {
+            SetPipCount(filled);
+        }
         filledPips = filled;
         for (int i = 0; i < pips.Count; i++)
         {

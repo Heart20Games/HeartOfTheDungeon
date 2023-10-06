@@ -55,12 +55,30 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Restart Level"",
+                    ""name"": ""MousePosition"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""3771b287-8fb3-49fd-ab61-213844c3d700"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Mouse Click"",
                     ""type"": ""Button"",
-                    ""id"": ""2f99fa13-5165-4c65-8ac1-8ad9a9c8439e"",
+                    ""id"": ""baca19d7-b8c4-448d-aaae-c59ba932976e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseDelta"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""96384743-c073-47dd-9ed7-ba0fef4c0f39"",
+                    ""expectedControlType"": ""Delta"",
+                    ""processors"": """",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 }
             ],
@@ -221,23 +239,34 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""7ba84da7-ff7c-4ac2-95c9-b0427ee589b3"",
-                    ""path"": ""<Keyboard>/r"",
+                    ""id"": ""3f7764b9-2087-45a7-9190-549203971b63"",
+                    ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Restart Level"",
+                    ""action"": ""MousePosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3474d083-b106-4550-a500-d7943b27d6ae"",
-                    ""path"": ""<Gamepad>/select"",
+                    ""id"": ""d589fc9d-9f45-4d21-a130-92259cc7a0f5"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Restart Level"",
+                    ""action"": ""Mouse Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ddfe129e-5cec-44a9-8fd9-eae0f28592fe"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseDelta"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1383,7 +1412,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Mouse Click"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""132b1ec7-ab2b-4690-a30f-abf432641b3c"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -1427,12 +1456,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Restart Level"",
-                    ""type"": ""Button"",
-                    ""id"": ""ed17a94c-b2df-46cc-9f1c-c8335a4ba6b4"",
-                    ""expectedControlType"": ""Button"",
+                    ""name"": ""MouseDelta"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""4898fbc4-0aa0-478d-bede-7050e3c9bd3a"",
+                    ""expectedControlType"": ""Delta"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 }
             ],
@@ -1703,12 +1732,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""0cfa4327-5626-4c70-8f53-fea2b17cf615"",
-                    ""path"": ""<Keyboard>/r"",
+                    ""id"": ""49baadfd-eb1e-41fb-b624-04d595853272"",
+                    ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Restart Level"",
+                    ""action"": ""MouseDelta"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -2596,7 +2625,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Dialogue_Continue = m_Dialogue.FindAction("Continue", throwIfNotFound: true);
         m_Dialogue_ChangeSelection = m_Dialogue.FindAction("Change Selection", throwIfNotFound: true);
         m_Dialogue_Back = m_Dialogue.FindAction("Back", throwIfNotFound: true);
-        m_Dialogue_RestartLevel = m_Dialogue.FindAction("Restart Level", throwIfNotFound: true);
+        m_Dialogue_MousePosition = m_Dialogue.FindAction("MousePosition", throwIfNotFound: true);
+        m_Dialogue_MouseClick = m_Dialogue.FindAction("Mouse Click", throwIfNotFound: true);
+        m_Dialogue_MouseDelta = m_Dialogue.FindAction("MouseDelta", throwIfNotFound: true);
         // Selection
         m_Selection = asset.FindActionMap("Selection", throwIfNotFound: true);
         m_Selection_Move = m_Selection.FindAction("Move", throwIfNotFound: true);
@@ -2638,7 +2669,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Menu_PauseScreen = m_Menu.FindAction("Pause Screen", throwIfNotFound: true);
         m_Menu_CharacterSheet = m_Menu.FindAction("Character Sheet", throwIfNotFound: true);
         m_Menu_Dismiss = m_Menu.FindAction("Dismiss", throwIfNotFound: true);
-        m_Menu_RestartLevel = m_Menu.FindAction("Restart Level", throwIfNotFound: true);
+        m_Menu_MouseDelta = m_Menu.FindAction("MouseDelta", throwIfNotFound: true);
         // LockOn
         m_LockOn = asset.FindActionMap("LockOn", throwIfNotFound: true);
         m_LockOn_Move = m_LockOn.FindAction("Move", throwIfNotFound: true);
@@ -2729,7 +2760,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Dialogue_Continue;
     private readonly InputAction m_Dialogue_ChangeSelection;
     private readonly InputAction m_Dialogue_Back;
-    private readonly InputAction m_Dialogue_RestartLevel;
+    private readonly InputAction m_Dialogue_MousePosition;
+    private readonly InputAction m_Dialogue_MouseClick;
+    private readonly InputAction m_Dialogue_MouseDelta;
     public struct DialogueActions
     {
         private @PlayerControls m_Wrapper;
@@ -2737,7 +2770,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Continue => m_Wrapper.m_Dialogue_Continue;
         public InputAction @ChangeSelection => m_Wrapper.m_Dialogue_ChangeSelection;
         public InputAction @Back => m_Wrapper.m_Dialogue_Back;
-        public InputAction @RestartLevel => m_Wrapper.m_Dialogue_RestartLevel;
+        public InputAction @MousePosition => m_Wrapper.m_Dialogue_MousePosition;
+        public InputAction @MouseClick => m_Wrapper.m_Dialogue_MouseClick;
+        public InputAction @MouseDelta => m_Wrapper.m_Dialogue_MouseDelta;
         public InputActionMap Get() { return m_Wrapper.m_Dialogue; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2756,9 +2791,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Back.started += instance.OnBack;
             @Back.performed += instance.OnBack;
             @Back.canceled += instance.OnBack;
-            @RestartLevel.started += instance.OnRestartLevel;
-            @RestartLevel.performed += instance.OnRestartLevel;
-            @RestartLevel.canceled += instance.OnRestartLevel;
+            @MousePosition.started += instance.OnMousePosition;
+            @MousePosition.performed += instance.OnMousePosition;
+            @MousePosition.canceled += instance.OnMousePosition;
+            @MouseClick.started += instance.OnMouseClick;
+            @MouseClick.performed += instance.OnMouseClick;
+            @MouseClick.canceled += instance.OnMouseClick;
+            @MouseDelta.started += instance.OnMouseDelta;
+            @MouseDelta.performed += instance.OnMouseDelta;
+            @MouseDelta.canceled += instance.OnMouseDelta;
         }
 
         private void UnregisterCallbacks(IDialogueActions instance)
@@ -2772,9 +2813,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Back.started -= instance.OnBack;
             @Back.performed -= instance.OnBack;
             @Back.canceled -= instance.OnBack;
-            @RestartLevel.started -= instance.OnRestartLevel;
-            @RestartLevel.performed -= instance.OnRestartLevel;
-            @RestartLevel.canceled -= instance.OnRestartLevel;
+            @MousePosition.started -= instance.OnMousePosition;
+            @MousePosition.performed -= instance.OnMousePosition;
+            @MousePosition.canceled -= instance.OnMousePosition;
+            @MouseClick.started -= instance.OnMouseClick;
+            @MouseClick.performed -= instance.OnMouseClick;
+            @MouseClick.canceled -= instance.OnMouseClick;
+            @MouseDelta.started -= instance.OnMouseDelta;
+            @MouseDelta.performed -= instance.OnMouseDelta;
+            @MouseDelta.canceled -= instance.OnMouseDelta;
         }
 
         public void RemoveCallbacks(IDialogueActions instance)
@@ -3111,7 +3158,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Menu_PauseScreen;
     private readonly InputAction m_Menu_CharacterSheet;
     private readonly InputAction m_Menu_Dismiss;
-    private readonly InputAction m_Menu_RestartLevel;
+    private readonly InputAction m_Menu_MouseDelta;
     public struct MenuActions
     {
         private @PlayerControls m_Wrapper;
@@ -3125,7 +3172,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @PauseScreen => m_Wrapper.m_Menu_PauseScreen;
         public InputAction @CharacterSheet => m_Wrapper.m_Menu_CharacterSheet;
         public InputAction @Dismiss => m_Wrapper.m_Menu_Dismiss;
-        public InputAction @RestartLevel => m_Wrapper.m_Menu_RestartLevel;
+        public InputAction @MouseDelta => m_Wrapper.m_Menu_MouseDelta;
         public InputActionMap Get() { return m_Wrapper.m_Menu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3162,9 +3209,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Dismiss.started += instance.OnDismiss;
             @Dismiss.performed += instance.OnDismiss;
             @Dismiss.canceled += instance.OnDismiss;
-            @RestartLevel.started += instance.OnRestartLevel;
-            @RestartLevel.performed += instance.OnRestartLevel;
-            @RestartLevel.canceled += instance.OnRestartLevel;
+            @MouseDelta.started += instance.OnMouseDelta;
+            @MouseDelta.performed += instance.OnMouseDelta;
+            @MouseDelta.canceled += instance.OnMouseDelta;
         }
 
         private void UnregisterCallbacks(IMenuActions instance)
@@ -3196,9 +3243,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Dismiss.started -= instance.OnDismiss;
             @Dismiss.performed -= instance.OnDismiss;
             @Dismiss.canceled -= instance.OnDismiss;
-            @RestartLevel.started -= instance.OnRestartLevel;
-            @RestartLevel.performed -= instance.OnRestartLevel;
-            @RestartLevel.canceled -= instance.OnRestartLevel;
+            @MouseDelta.started -= instance.OnMouseDelta;
+            @MouseDelta.performed -= instance.OnMouseDelta;
+            @MouseDelta.canceled -= instance.OnMouseDelta;
         }
 
         public void RemoveCallbacks(IMenuActions instance)
@@ -3473,7 +3520,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnContinue(InputAction.CallbackContext context);
         void OnChangeSelection(InputAction.CallbackContext context);
         void OnBack(InputAction.CallbackContext context);
-        void OnRestartLevel(InputAction.CallbackContext context);
+        void OnMousePosition(InputAction.CallbackContext context);
+        void OnMouseClick(InputAction.CallbackContext context);
+        void OnMouseDelta(InputAction.CallbackContext context);
     }
     public interface ISelectionActions
     {
@@ -3519,7 +3568,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnPauseScreen(InputAction.CallbackContext context);
         void OnCharacterSheet(InputAction.CallbackContext context);
         void OnDismiss(InputAction.CallbackContext context);
-        void OnRestartLevel(InputAction.CallbackContext context);
+        void OnMouseDelta(InputAction.CallbackContext context);
     }
     public interface ILockOnActions
     {
