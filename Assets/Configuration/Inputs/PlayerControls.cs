@@ -87,7 +87,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""132fbbe4-e279-4456-8616-c3447ff4dddb"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""interactions"": ""Hold(duration=1)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart Game"",
+                    ""type"": ""Button"",
+                    ""id"": ""98c11b5c-4494-4275-89bb-4bccdc1fb05b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=1.5)"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -293,11 +302,33 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""495e8f38-8cc1-41bc-990a-d33b41b285ae"",
-                    ""path"": ""<Gamepad>/select"",
+                    ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Restart Level"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a97ab699-aeb9-4e8b-adfc-ccc38fbb5836"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""97b19efe-0a4d-45e4-a2e7-f084fed4c97a"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Game"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -349,7 +380,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""2b70b030-132a-46ca-a3e5-550ea74ec274"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""interactions"": ""Hold(duration=1)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart Game"",
+                    ""type"": ""Button"",
+                    ""id"": ""57929354-445d-4b9d-b859-7aa86a13bdd4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=1.5)"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -518,6 +558,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Restart Level"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3a3b5d4-e88d-4971-a256-8f21d559639d"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""78da7d56-936e-42e3-ab57-62fc7f1e8493"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -585,7 +647,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""480fe164-1fd1-4253-a9de-38cb4d7078d1"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""interactions"": ""Hold(duration=1)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -685,6 +747,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart Game"",
+                    ""type"": ""Button"",
+                    ""id"": ""d9f661f2-6551-4f0a-8484-2f01f5a1d666"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=1.5)"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -1348,6 +1419,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Control Sheet"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bc0494ae-aeee-4d98-bb7f-38db6099e1d2"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""53678006-8c4b-4a65-b907-84f806f868cd"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1370,7 +1463,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""1f78c669-0065-477c-a1e1-ece6044d85c4"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""interactions"": ""Hold(duration=1)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart Game"",
+                    ""type"": ""Button"",
+                    ""id"": ""76321aa5-70b4-498a-9e2d-9f426f0f599e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=1.5)"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -1427,6 +1529,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Restart Level"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2d0ec1da-26b2-4a86-8361-3c794125d7c7"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bdf1f89a-9f45-46f4-ba7a-45cc1a03356c"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Game"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1532,7 +1656,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""3f73661a-7fca-499b-99fd-a1ef3f031a1a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""interactions"": ""Hold(duration=1)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart Game"",
+                    ""type"": ""Button"",
+                    ""id"": ""386b3cf6-cb42-44f5-b27b-cc6e79168122"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=1.5)"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -1844,6 +1977,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Restart Level"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6e816b64-38fc-41b9-a9e4-c4a249390078"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0710c131-cc1b-48f1-9f1e-b8e6ec55ce94"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -2028,7 +2183,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""b57b27a3-7a20-460b-a5b7-8481d348f75b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""interactions"": ""Hold(duration=1)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart Game"",
+                    ""type"": ""Button"",
+                    ""id"": ""c93dc4db-e289-4aef-a7b5-764a6fbe7587"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=1.5)"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -2637,6 +2801,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Restart Level"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""acb7884b-b40d-4d54-a5d7-1613f917dbfe"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""47e0b7b4-1545-4023-a1c7-b3783e526ae6"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -2659,7 +2845,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""59dfe582-438f-4b89-84f4-e8c8917d265a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""interactions"": ""Hold(duration=1)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart Game"",
+                    ""type"": ""Button"",
+                    ""id"": ""fb57be4c-a74e-4661-be48-09586d41fe07"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=1.5)"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -2707,6 +2902,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Restart Level"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bc9ad5ed-e068-40ae-a880-44526f1acc65"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d988a32f-7cdb-4451-b53f-e422826f0032"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -2722,6 +2939,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Dialogue_MouseClick = m_Dialogue.FindAction("Mouse Click", throwIfNotFound: true);
         m_Dialogue_MouseDelta = m_Dialogue.FindAction("MouseDelta", throwIfNotFound: true);
         m_Dialogue_RestartLevel = m_Dialogue.FindAction("Restart Level", throwIfNotFound: true);
+        m_Dialogue_RestartGame = m_Dialogue.FindAction("Restart Game", throwIfNotFound: true);
         // Selection
         m_Selection = asset.FindActionMap("Selection", throwIfNotFound: true);
         m_Selection_Move = m_Selection.FindAction("Move", throwIfNotFound: true);
@@ -2729,6 +2947,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Selection_Select = m_Selection.FindAction("Select", throwIfNotFound: true);
         m_Selection_DeSelect = m_Selection.FindAction("DeSelect", throwIfNotFound: true);
         m_Selection_RestartLevel = m_Selection.FindAction("Restart Level", throwIfNotFound: true);
+        m_Selection_RestartGame = m_Selection.FindAction("Restart Game", throwIfNotFound: true);
         // Character
         m_Character = asset.FindActionMap("Character", throwIfNotFound: true);
         m_Character_Move = m_Character.FindAction("Move", throwIfNotFound: true);
@@ -2749,10 +2968,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Character_ControlSheet = m_Character.FindAction("Control Sheet", throwIfNotFound: true);
         m_Character_PauseScreen = m_Character.FindAction("Pause Screen", throwIfNotFound: true);
         m_Character_CharacterSheet = m_Character.FindAction("Character Sheet", throwIfNotFound: true);
+        m_Character_RestartGame = m_Character.FindAction("Restart Game", throwIfNotFound: true);
         // Dismiss
         m_Dismiss = asset.FindActionMap("Dismiss", throwIfNotFound: true);
         m_Dismiss_Dismiss = m_Dismiss.FindAction("Dismiss", throwIfNotFound: true);
         m_Dismiss_RestartLevel = m_Dismiss.FindAction("Restart Level", throwIfNotFound: true);
+        m_Dismiss_RestartGame = m_Dismiss.FindAction("Restart Game", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_Select = m_Menu.FindAction("Select", throwIfNotFound: true);
@@ -2766,6 +2987,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Menu_Dismiss = m_Menu.FindAction("Dismiss", throwIfNotFound: true);
         m_Menu_MouseDelta = m_Menu.FindAction("MouseDelta", throwIfNotFound: true);
         m_Menu_RestartLevel = m_Menu.FindAction("Restart Level", throwIfNotFound: true);
+        m_Menu_RestartGame = m_Menu.FindAction("Restart Game", throwIfNotFound: true);
         // LockOn
         m_LockOn = asset.FindActionMap("LockOn", throwIfNotFound: true);
         m_LockOn_Move = m_LockOn.FindAction("Move", throwIfNotFound: true);
@@ -2788,10 +3010,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_LockOn_SwitchCharacterRight = m_LockOn.FindAction("Switch Character Right", throwIfNotFound: true);
         m_LockOn_ToggleControls = m_LockOn.FindAction("Toggle Controls", throwIfNotFound: true);
         m_LockOn_RestartLevel = m_LockOn.FindAction("Restart Level", throwIfNotFound: true);
+        m_LockOn_RestartGame = m_LockOn.FindAction("Restart Game", throwIfNotFound: true);
         // Cutscene
         m_Cutscene = asset.FindActionMap("Cutscene", throwIfNotFound: true);
         m_Cutscene_Continue = m_Cutscene.FindAction("Continue", throwIfNotFound: true);
         m_Cutscene_RestartLevel = m_Cutscene.FindAction("Restart Level", throwIfNotFound: true);
+        m_Cutscene_RestartGame = m_Cutscene.FindAction("Restart Game", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -2860,6 +3084,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Dialogue_MouseClick;
     private readonly InputAction m_Dialogue_MouseDelta;
     private readonly InputAction m_Dialogue_RestartLevel;
+    private readonly InputAction m_Dialogue_RestartGame;
     public struct DialogueActions
     {
         private @PlayerControls m_Wrapper;
@@ -2871,6 +3096,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @MouseClick => m_Wrapper.m_Dialogue_MouseClick;
         public InputAction @MouseDelta => m_Wrapper.m_Dialogue_MouseDelta;
         public InputAction @RestartLevel => m_Wrapper.m_Dialogue_RestartLevel;
+        public InputAction @RestartGame => m_Wrapper.m_Dialogue_RestartGame;
         public InputActionMap Get() { return m_Wrapper.m_Dialogue; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2901,6 +3127,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RestartLevel.started += instance.OnRestartLevel;
             @RestartLevel.performed += instance.OnRestartLevel;
             @RestartLevel.canceled += instance.OnRestartLevel;
+            @RestartGame.started += instance.OnRestartGame;
+            @RestartGame.performed += instance.OnRestartGame;
+            @RestartGame.canceled += instance.OnRestartGame;
         }
 
         private void UnregisterCallbacks(IDialogueActions instance)
@@ -2926,6 +3155,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RestartLevel.started -= instance.OnRestartLevel;
             @RestartLevel.performed -= instance.OnRestartLevel;
             @RestartLevel.canceled -= instance.OnRestartLevel;
+            @RestartGame.started -= instance.OnRestartGame;
+            @RestartGame.performed -= instance.OnRestartGame;
+            @RestartGame.canceled -= instance.OnRestartGame;
         }
 
         public void RemoveCallbacks(IDialogueActions instance)
@@ -2952,6 +3184,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Selection_Select;
     private readonly InputAction m_Selection_DeSelect;
     private readonly InputAction m_Selection_RestartLevel;
+    private readonly InputAction m_Selection_RestartGame;
     public struct SelectionActions
     {
         private @PlayerControls m_Wrapper;
@@ -2961,6 +3194,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Select => m_Wrapper.m_Selection_Select;
         public InputAction @DeSelect => m_Wrapper.m_Selection_DeSelect;
         public InputAction @RestartLevel => m_Wrapper.m_Selection_RestartLevel;
+        public InputAction @RestartGame => m_Wrapper.m_Selection_RestartGame;
         public InputActionMap Get() { return m_Wrapper.m_Selection; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2985,6 +3219,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RestartLevel.started += instance.OnRestartLevel;
             @RestartLevel.performed += instance.OnRestartLevel;
             @RestartLevel.canceled += instance.OnRestartLevel;
+            @RestartGame.started += instance.OnRestartGame;
+            @RestartGame.performed += instance.OnRestartGame;
+            @RestartGame.canceled += instance.OnRestartGame;
         }
 
         private void UnregisterCallbacks(ISelectionActions instance)
@@ -3004,6 +3241,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RestartLevel.started -= instance.OnRestartLevel;
             @RestartLevel.performed -= instance.OnRestartLevel;
             @RestartLevel.canceled -= instance.OnRestartLevel;
+            @RestartGame.started -= instance.OnRestartGame;
+            @RestartGame.performed -= instance.OnRestartGame;
+            @RestartGame.canceled -= instance.OnRestartGame;
         }
 
         public void RemoveCallbacks(ISelectionActions instance)
@@ -3043,6 +3283,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_ControlSheet;
     private readonly InputAction m_Character_PauseScreen;
     private readonly InputAction m_Character_CharacterSheet;
+    private readonly InputAction m_Character_RestartGame;
     public struct CharacterActions
     {
         private @PlayerControls m_Wrapper;
@@ -3065,6 +3306,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @ControlSheet => m_Wrapper.m_Character_ControlSheet;
         public InputAction @PauseScreen => m_Wrapper.m_Character_PauseScreen;
         public InputAction @CharacterSheet => m_Wrapper.m_Character_CharacterSheet;
+        public InputAction @RestartGame => m_Wrapper.m_Character_RestartGame;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3128,6 +3370,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @CharacterSheet.started += instance.OnCharacterSheet;
             @CharacterSheet.performed += instance.OnCharacterSheet;
             @CharacterSheet.canceled += instance.OnCharacterSheet;
+            @RestartGame.started += instance.OnRestartGame;
+            @RestartGame.performed += instance.OnRestartGame;
+            @RestartGame.canceled += instance.OnRestartGame;
         }
 
         private void UnregisterCallbacks(ICharacterActions instance)
@@ -3186,6 +3431,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @CharacterSheet.started -= instance.OnCharacterSheet;
             @CharacterSheet.performed -= instance.OnCharacterSheet;
             @CharacterSheet.canceled -= instance.OnCharacterSheet;
+            @RestartGame.started -= instance.OnRestartGame;
+            @RestartGame.performed -= instance.OnRestartGame;
+            @RestartGame.canceled -= instance.OnRestartGame;
         }
 
         public void RemoveCallbacks(ICharacterActions instance)
@@ -3209,12 +3457,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<IDismissActions> m_DismissActionsCallbackInterfaces = new List<IDismissActions>();
     private readonly InputAction m_Dismiss_Dismiss;
     private readonly InputAction m_Dismiss_RestartLevel;
+    private readonly InputAction m_Dismiss_RestartGame;
     public struct DismissActions
     {
         private @PlayerControls m_Wrapper;
         public DismissActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Dismiss => m_Wrapper.m_Dismiss_Dismiss;
         public InputAction @RestartLevel => m_Wrapper.m_Dismiss_RestartLevel;
+        public InputAction @RestartGame => m_Wrapper.m_Dismiss_RestartGame;
         public InputActionMap Get() { return m_Wrapper.m_Dismiss; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3230,6 +3480,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RestartLevel.started += instance.OnRestartLevel;
             @RestartLevel.performed += instance.OnRestartLevel;
             @RestartLevel.canceled += instance.OnRestartLevel;
+            @RestartGame.started += instance.OnRestartGame;
+            @RestartGame.performed += instance.OnRestartGame;
+            @RestartGame.canceled += instance.OnRestartGame;
         }
 
         private void UnregisterCallbacks(IDismissActions instance)
@@ -3240,6 +3493,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RestartLevel.started -= instance.OnRestartLevel;
             @RestartLevel.performed -= instance.OnRestartLevel;
             @RestartLevel.canceled -= instance.OnRestartLevel;
+            @RestartGame.started -= instance.OnRestartGame;
+            @RestartGame.performed -= instance.OnRestartGame;
+            @RestartGame.canceled -= instance.OnRestartGame;
         }
 
         public void RemoveCallbacks(IDismissActions instance)
@@ -3272,6 +3528,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Menu_Dismiss;
     private readonly InputAction m_Menu_MouseDelta;
     private readonly InputAction m_Menu_RestartLevel;
+    private readonly InputAction m_Menu_RestartGame;
     public struct MenuActions
     {
         private @PlayerControls m_Wrapper;
@@ -3287,6 +3544,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Dismiss => m_Wrapper.m_Menu_Dismiss;
         public InputAction @MouseDelta => m_Wrapper.m_Menu_MouseDelta;
         public InputAction @RestartLevel => m_Wrapper.m_Menu_RestartLevel;
+        public InputAction @RestartGame => m_Wrapper.m_Menu_RestartGame;
         public InputActionMap Get() { return m_Wrapper.m_Menu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3329,6 +3587,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RestartLevel.started += instance.OnRestartLevel;
             @RestartLevel.performed += instance.OnRestartLevel;
             @RestartLevel.canceled += instance.OnRestartLevel;
+            @RestartGame.started += instance.OnRestartGame;
+            @RestartGame.performed += instance.OnRestartGame;
+            @RestartGame.canceled += instance.OnRestartGame;
         }
 
         private void UnregisterCallbacks(IMenuActions instance)
@@ -3366,6 +3627,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RestartLevel.started -= instance.OnRestartLevel;
             @RestartLevel.performed -= instance.OnRestartLevel;
             @RestartLevel.canceled -= instance.OnRestartLevel;
+            @RestartGame.started -= instance.OnRestartGame;
+            @RestartGame.performed -= instance.OnRestartGame;
+            @RestartGame.canceled -= instance.OnRestartGame;
         }
 
         public void RemoveCallbacks(IMenuActions instance)
@@ -3407,6 +3671,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_LockOn_SwitchCharacterRight;
     private readonly InputAction m_LockOn_ToggleControls;
     private readonly InputAction m_LockOn_RestartLevel;
+    private readonly InputAction m_LockOn_RestartGame;
     public struct LockOnActions
     {
         private @PlayerControls m_Wrapper;
@@ -3431,6 +3696,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @SwitchCharacterRight => m_Wrapper.m_LockOn_SwitchCharacterRight;
         public InputAction @ToggleControls => m_Wrapper.m_LockOn_ToggleControls;
         public InputAction @RestartLevel => m_Wrapper.m_LockOn_RestartLevel;
+        public InputAction @RestartGame => m_Wrapper.m_LockOn_RestartGame;
         public InputActionMap Get() { return m_Wrapper.m_LockOn; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3500,6 +3766,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RestartLevel.started += instance.OnRestartLevel;
             @RestartLevel.performed += instance.OnRestartLevel;
             @RestartLevel.canceled += instance.OnRestartLevel;
+            @RestartGame.started += instance.OnRestartGame;
+            @RestartGame.performed += instance.OnRestartGame;
+            @RestartGame.canceled += instance.OnRestartGame;
         }
 
         private void UnregisterCallbacks(ILockOnActions instance)
@@ -3564,6 +3833,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RestartLevel.started -= instance.OnRestartLevel;
             @RestartLevel.performed -= instance.OnRestartLevel;
             @RestartLevel.canceled -= instance.OnRestartLevel;
+            @RestartGame.started -= instance.OnRestartGame;
+            @RestartGame.performed -= instance.OnRestartGame;
+            @RestartGame.canceled -= instance.OnRestartGame;
         }
 
         public void RemoveCallbacks(ILockOnActions instance)
@@ -3587,12 +3859,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<ICutsceneActions> m_CutsceneActionsCallbackInterfaces = new List<ICutsceneActions>();
     private readonly InputAction m_Cutscene_Continue;
     private readonly InputAction m_Cutscene_RestartLevel;
+    private readonly InputAction m_Cutscene_RestartGame;
     public struct CutsceneActions
     {
         private @PlayerControls m_Wrapper;
         public CutsceneActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Continue => m_Wrapper.m_Cutscene_Continue;
         public InputAction @RestartLevel => m_Wrapper.m_Cutscene_RestartLevel;
+        public InputAction @RestartGame => m_Wrapper.m_Cutscene_RestartGame;
         public InputActionMap Get() { return m_Wrapper.m_Cutscene; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3608,6 +3882,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RestartLevel.started += instance.OnRestartLevel;
             @RestartLevel.performed += instance.OnRestartLevel;
             @RestartLevel.canceled += instance.OnRestartLevel;
+            @RestartGame.started += instance.OnRestartGame;
+            @RestartGame.performed += instance.OnRestartGame;
+            @RestartGame.canceled += instance.OnRestartGame;
         }
 
         private void UnregisterCallbacks(ICutsceneActions instance)
@@ -3618,6 +3895,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RestartLevel.started -= instance.OnRestartLevel;
             @RestartLevel.performed -= instance.OnRestartLevel;
             @RestartLevel.canceled -= instance.OnRestartLevel;
+            @RestartGame.started -= instance.OnRestartGame;
+            @RestartGame.performed -= instance.OnRestartGame;
+            @RestartGame.canceled -= instance.OnRestartGame;
         }
 
         public void RemoveCallbacks(ICutsceneActions instance)
@@ -3644,6 +3924,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnMouseClick(InputAction.CallbackContext context);
         void OnMouseDelta(InputAction.CallbackContext context);
         void OnRestartLevel(InputAction.CallbackContext context);
+        void OnRestartGame(InputAction.CallbackContext context);
     }
     public interface ISelectionActions
     {
@@ -3652,6 +3933,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSelect(InputAction.CallbackContext context);
         void OnDeSelect(InputAction.CallbackContext context);
         void OnRestartLevel(InputAction.CallbackContext context);
+        void OnRestartGame(InputAction.CallbackContext context);
     }
     public interface ICharacterActions
     {
@@ -3673,11 +3955,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnControlSheet(InputAction.CallbackContext context);
         void OnPauseScreen(InputAction.CallbackContext context);
         void OnCharacterSheet(InputAction.CallbackContext context);
+        void OnRestartGame(InputAction.CallbackContext context);
     }
     public interface IDismissActions
     {
         void OnDismiss(InputAction.CallbackContext context);
         void OnRestartLevel(InputAction.CallbackContext context);
+        void OnRestartGame(InputAction.CallbackContext context);
     }
     public interface IMenuActions
     {
@@ -3692,6 +3976,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnDismiss(InputAction.CallbackContext context);
         void OnMouseDelta(InputAction.CallbackContext context);
         void OnRestartLevel(InputAction.CallbackContext context);
+        void OnRestartGame(InputAction.CallbackContext context);
     }
     public interface ILockOnActions
     {
@@ -3715,10 +4000,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSwitchCharacterRight(InputAction.CallbackContext context);
         void OnToggleControls(InputAction.CallbackContext context);
         void OnRestartLevel(InputAction.CallbackContext context);
+        void OnRestartGame(InputAction.CallbackContext context);
     }
     public interface ICutsceneActions
     {
         void OnContinue(InputAction.CallbackContext context);
         void OnRestartLevel(InputAction.CallbackContext context);
+        void OnRestartGame(InputAction.CallbackContext context);
     }
 }
