@@ -5,7 +5,6 @@ using static CastableStats;
 using System;
 using MyBox;
 using Attributes;
-using UnityEditor.Events;
 
 namespace HotD.Castables
 {
