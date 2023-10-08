@@ -80,6 +80,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart Level"",
+                    ""type"": ""Button"",
+                    ""id"": ""132fbbe4-e279-4456-8616-c3447ff4dddb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -267,6 +276,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""MouseDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e0aba79-c05b-4e4f-accb-303855d18358"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Level"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""495e8f38-8cc1-41bc-990a-d33b41b285ae"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Level"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1332,6 +1363,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart Level"",
+                    ""type"": ""Button"",
+                    ""id"": ""1f78c669-0065-477c-a1e1-ece6044d85c4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1365,6 +1405,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Dismiss"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4e866e44-4341-4269-a71f-6a88be4786ea"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Level"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""394146a4-62af-46a5-90a9-4fd5b543f73c"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Level"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1462,6 +1524,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Delta"",
                     ""processors"": """",
                     ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart Level"",
+                    ""type"": ""Button"",
+                    ""id"": ""3f73661a-7fca-499b-99fd-a1ef3f031a1a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.8)"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -1744,6 +1815,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""e8888c26-6ea5-47f4-a9d5-a95197809138"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Level"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4862d59c-ed57-4b86-9445-72347e7378d7"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart Level"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""75f302a3-1136-4571-97be-34704b67f2c5"",
                     ""path"": ""<Gamepad>/select"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -2628,6 +2721,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Dialogue_MousePosition = m_Dialogue.FindAction("MousePosition", throwIfNotFound: true);
         m_Dialogue_MouseClick = m_Dialogue.FindAction("Mouse Click", throwIfNotFound: true);
         m_Dialogue_MouseDelta = m_Dialogue.FindAction("MouseDelta", throwIfNotFound: true);
+        m_Dialogue_RestartLevel = m_Dialogue.FindAction("Restart Level", throwIfNotFound: true);
         // Selection
         m_Selection = asset.FindActionMap("Selection", throwIfNotFound: true);
         m_Selection_Move = m_Selection.FindAction("Move", throwIfNotFound: true);
@@ -2658,6 +2752,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // Dismiss
         m_Dismiss = asset.FindActionMap("Dismiss", throwIfNotFound: true);
         m_Dismiss_Dismiss = m_Dismiss.FindAction("Dismiss", throwIfNotFound: true);
+        m_Dismiss_RestartLevel = m_Dismiss.FindAction("Restart Level", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_Select = m_Menu.FindAction("Select", throwIfNotFound: true);
@@ -2670,6 +2765,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Menu_CharacterSheet = m_Menu.FindAction("Character Sheet", throwIfNotFound: true);
         m_Menu_Dismiss = m_Menu.FindAction("Dismiss", throwIfNotFound: true);
         m_Menu_MouseDelta = m_Menu.FindAction("MouseDelta", throwIfNotFound: true);
+        m_Menu_RestartLevel = m_Menu.FindAction("Restart Level", throwIfNotFound: true);
         // LockOn
         m_LockOn = asset.FindActionMap("LockOn", throwIfNotFound: true);
         m_LockOn_Move = m_LockOn.FindAction("Move", throwIfNotFound: true);
@@ -2763,6 +2859,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Dialogue_MousePosition;
     private readonly InputAction m_Dialogue_MouseClick;
     private readonly InputAction m_Dialogue_MouseDelta;
+    private readonly InputAction m_Dialogue_RestartLevel;
     public struct DialogueActions
     {
         private @PlayerControls m_Wrapper;
@@ -2773,6 +2870,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @MousePosition => m_Wrapper.m_Dialogue_MousePosition;
         public InputAction @MouseClick => m_Wrapper.m_Dialogue_MouseClick;
         public InputAction @MouseDelta => m_Wrapper.m_Dialogue_MouseDelta;
+        public InputAction @RestartLevel => m_Wrapper.m_Dialogue_RestartLevel;
         public InputActionMap Get() { return m_Wrapper.m_Dialogue; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2800,6 +2898,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MouseDelta.started += instance.OnMouseDelta;
             @MouseDelta.performed += instance.OnMouseDelta;
             @MouseDelta.canceled += instance.OnMouseDelta;
+            @RestartLevel.started += instance.OnRestartLevel;
+            @RestartLevel.performed += instance.OnRestartLevel;
+            @RestartLevel.canceled += instance.OnRestartLevel;
         }
 
         private void UnregisterCallbacks(IDialogueActions instance)
@@ -2822,6 +2923,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MouseDelta.started -= instance.OnMouseDelta;
             @MouseDelta.performed -= instance.OnMouseDelta;
             @MouseDelta.canceled -= instance.OnMouseDelta;
+            @RestartLevel.started -= instance.OnRestartLevel;
+            @RestartLevel.performed -= instance.OnRestartLevel;
+            @RestartLevel.canceled -= instance.OnRestartLevel;
         }
 
         public void RemoveCallbacks(IDialogueActions instance)
@@ -3104,11 +3208,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Dismiss;
     private List<IDismissActions> m_DismissActionsCallbackInterfaces = new List<IDismissActions>();
     private readonly InputAction m_Dismiss_Dismiss;
+    private readonly InputAction m_Dismiss_RestartLevel;
     public struct DismissActions
     {
         private @PlayerControls m_Wrapper;
         public DismissActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Dismiss => m_Wrapper.m_Dismiss_Dismiss;
+        public InputAction @RestartLevel => m_Wrapper.m_Dismiss_RestartLevel;
         public InputActionMap Get() { return m_Wrapper.m_Dismiss; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3121,6 +3227,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Dismiss.started += instance.OnDismiss;
             @Dismiss.performed += instance.OnDismiss;
             @Dismiss.canceled += instance.OnDismiss;
+            @RestartLevel.started += instance.OnRestartLevel;
+            @RestartLevel.performed += instance.OnRestartLevel;
+            @RestartLevel.canceled += instance.OnRestartLevel;
         }
 
         private void UnregisterCallbacks(IDismissActions instance)
@@ -3128,6 +3237,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Dismiss.started -= instance.OnDismiss;
             @Dismiss.performed -= instance.OnDismiss;
             @Dismiss.canceled -= instance.OnDismiss;
+            @RestartLevel.started -= instance.OnRestartLevel;
+            @RestartLevel.performed -= instance.OnRestartLevel;
+            @RestartLevel.canceled -= instance.OnRestartLevel;
         }
 
         public void RemoveCallbacks(IDismissActions instance)
@@ -3159,6 +3271,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Menu_CharacterSheet;
     private readonly InputAction m_Menu_Dismiss;
     private readonly InputAction m_Menu_MouseDelta;
+    private readonly InputAction m_Menu_RestartLevel;
     public struct MenuActions
     {
         private @PlayerControls m_Wrapper;
@@ -3173,6 +3286,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @CharacterSheet => m_Wrapper.m_Menu_CharacterSheet;
         public InputAction @Dismiss => m_Wrapper.m_Menu_Dismiss;
         public InputAction @MouseDelta => m_Wrapper.m_Menu_MouseDelta;
+        public InputAction @RestartLevel => m_Wrapper.m_Menu_RestartLevel;
         public InputActionMap Get() { return m_Wrapper.m_Menu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3212,6 +3326,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MouseDelta.started += instance.OnMouseDelta;
             @MouseDelta.performed += instance.OnMouseDelta;
             @MouseDelta.canceled += instance.OnMouseDelta;
+            @RestartLevel.started += instance.OnRestartLevel;
+            @RestartLevel.performed += instance.OnRestartLevel;
+            @RestartLevel.canceled += instance.OnRestartLevel;
         }
 
         private void UnregisterCallbacks(IMenuActions instance)
@@ -3246,6 +3363,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MouseDelta.started -= instance.OnMouseDelta;
             @MouseDelta.performed -= instance.OnMouseDelta;
             @MouseDelta.canceled -= instance.OnMouseDelta;
+            @RestartLevel.started -= instance.OnRestartLevel;
+            @RestartLevel.performed -= instance.OnRestartLevel;
+            @RestartLevel.canceled -= instance.OnRestartLevel;
         }
 
         public void RemoveCallbacks(IMenuActions instance)
@@ -3523,6 +3643,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnMousePosition(InputAction.CallbackContext context);
         void OnMouseClick(InputAction.CallbackContext context);
         void OnMouseDelta(InputAction.CallbackContext context);
+        void OnRestartLevel(InputAction.CallbackContext context);
     }
     public interface ISelectionActions
     {
@@ -3556,6 +3677,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     public interface IDismissActions
     {
         void OnDismiss(InputAction.CallbackContext context);
+        void OnRestartLevel(InputAction.CallbackContext context);
     }
     public interface IMenuActions
     {
@@ -3569,6 +3691,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnCharacterSheet(InputAction.CallbackContext context);
         void OnDismiss(InputAction.CallbackContext context);
         void OnMouseDelta(InputAction.CallbackContext context);
+        void OnRestartLevel(InputAction.CallbackContext context);
     }
     public interface ILockOnActions
     {
