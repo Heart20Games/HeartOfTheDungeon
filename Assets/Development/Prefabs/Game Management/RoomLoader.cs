@@ -3,7 +3,7 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Yarn.Unity;
 
-public class LoadRoom : BaseMonoBehaviour
+public class RoomLoader : BaseMonoBehaviour
 {
     public InMemoryVariableStorage storage;
     public string targetRoom = "$Hub";
@@ -45,20 +45,17 @@ public class LoadRoom : BaseMonoBehaviour
         this.canActivate = canActivate;
     }
 
-    public void StartGameplay()
+    public void Load()
+    {
+        Load(targetRoom);
+    }
+
+    public void Load(string targetRoom)
     {
         if (debug) print("Game starts here!");
         if (targetRoom.StartsWith("$") && storage != null)
         {
-            if (storage.TryGetValue(targetRoom, out string targetScene))
-            {
-                LoadScene(targetScene);
-            }
-            else
-            {
-                Debug.LogWarning("Can't find room " + targetRoom + ", using as Scene name instead.");
-                LoadScene(targetRoom);
-            }
+            LoadRoom(targetRoom);
         }
         else
         {
@@ -70,16 +67,29 @@ public class LoadRoom : BaseMonoBehaviour
         }
     }
 
-    public void LoadScene(string sceneName)
+    public void LoadRoom(string targetRoom)
+    {
+        if (storage.TryGetValue(targetRoom, out string targetScene))
+        {
+            LoadScene(targetScene);
+        }
+        else
+        {
+            Debug.LogWarning("Can't find room " + targetRoom + ", using as Scene name instead.");
+            LoadScene(targetRoom);
+        }
+    }
+
+    public void LoadScene(string targetScene)
     {
         if (asynchronous)
         {
-            if ((loading = SceneManager.LoadSceneAsync(sceneName)) != null)
+            if ((loading = SceneManager.LoadSceneAsync(targetScene)) != null)
                 loading.allowSceneActivation = false;
         }
         else
         {
-            SceneManager.LoadScene(sceneName);
+            SceneManager.LoadScene(targetScene);
         }
     }
 }

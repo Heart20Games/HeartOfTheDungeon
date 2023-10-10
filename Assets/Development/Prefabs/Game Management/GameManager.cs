@@ -213,6 +213,7 @@ public class Game : BaseMonoBehaviour
 
         // Set Mouse Lock State
         Cursor.lockState = mode.showMouse ? CursorLockMode.Confined : CursorLockMode.Locked;
+        Cursor.visible = false;
 
         // Swap Controllables
         IControllable newControllable = mode.Controllable;

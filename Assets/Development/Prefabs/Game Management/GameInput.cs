@@ -43,19 +43,6 @@ public class GameInput : BaseMonoBehaviour
 
     // Actions
 
-    // Cheats / Shortcuts
-    public void OnRestartLevel(InputValue inputValue)
-    {
-        if (inputValue.isPressed)
-            Game.RestartScene();
-    }
-
-    public void OnRestartGame(InputValue inputValue)
-    {
-        if (inputValue.isPressed)
-            Game.RestartGame();
-    }
-
     [Header("Debugs")]
     [SerializeField] private bool debugMove;
     [SerializeField] private bool debugLook;
