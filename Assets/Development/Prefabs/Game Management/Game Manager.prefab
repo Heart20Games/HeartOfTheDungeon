@@ -452,6 +452,83 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!1 &7277494412740853536
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4166915076445421943}
+  - component: {fileID: 2657520925940987477}
+  - component: {fileID: 8733465152856679522}
+  m_Layer: 0
+  m_Name: Shortcuts
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4166915076445421943
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7277494412740853536}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8636156924694284207}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2657520925940987477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7277494412740853536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 559666f9cb806294b9c09d81c8337630, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  restartLevel: 0
+  restartGame: 0
+--- !u!114 &8733465152856679522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7277494412740853536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 24023da9ead2b60458a74c066d5fd066, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: cbe98f9c-2988-489e-95d0-7dc378ac86ee
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &8636156924694284204
 GameObject:
   m_ObjectHideFlags: 0
@@ -490,8 +567,9 @@ Transform:
   - {fileID: 590363335748827361}
   - {fileID: 8292553340632565787}
   - {fileID: 2378889545911184215}
+  - {fileID: 4166915076445421943}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8636156924694284206
 MonoBehaviour:
@@ -528,15 +606,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2746437236491300203}
-        m_TargetAssemblyTypeName: LoadRoom, Assembly-CSharp
-        m_MethodName: StartGameplay
-        m_Mode: 1
+        m_TargetAssemblyTypeName: RoomLoader, Assembly-CSharp
+        m_MethodName: Load
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: $GameOver
           m_BoolArgument: 0
         m_CallState: 2
   onRestartScene:
@@ -546,8 +624,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2746437236491300203}
-        m_TargetAssemblyTypeName: LoadRoom, Assembly-CSharp
-        m_MethodName: LoadScene
+        m_TargetAssemblyTypeName: RoomLoader, Assembly-CSharp
+        m_MethodName: Load
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

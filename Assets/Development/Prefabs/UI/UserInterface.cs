@@ -15,6 +15,7 @@ public class UserInterface : BaseMonoBehaviour
     public HUD hud;
     public GameObject controlScreen;
     public CharacterSheet characterSheet;
+    public GameObject simpleDialogue;
     public EventSystem menuInputSystem;
 
     private readonly List<GameObject> panels = new();
@@ -56,6 +57,11 @@ public class UserInterface : BaseMonoBehaviour
     public void SetCharacterSheetActive(bool active)
     {
         characterSheet.gameObject.SetActive(active);
+    }
+
+    public void SetSimpleDialogueActive(bool active)
+    {
+        simpleDialogue.SetActive(active);
     }
 
     public void SetMenuInputsActive(bool active)

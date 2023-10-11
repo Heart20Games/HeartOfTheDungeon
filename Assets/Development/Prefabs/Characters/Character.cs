@@ -67,7 +67,7 @@ namespace Body
                 brain.Identity = value;
             }
         }
-        public override string Name { get => statBlock.characterName; set => statBlock.characterName = value; }
+        public override string Name { get => statBlock == null ? null : statBlock.characterName; set => statBlock.characterName = value; }
 
         [Header("Status Effects")]
         public List<Status> statuses;
