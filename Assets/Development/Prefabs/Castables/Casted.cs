@@ -64,8 +64,6 @@ namespace HotD.Castables
             {
                 OnSetPowerLimit(powerLimit.FinalValue);
                 stats.chargeLimit.updatedFinal.AddListener(OnSetPowerLimit);
-                //stats.chargeLimit.updatedFinal.AddListener(OnSetPowerLimit);
-                //OnSetPowerLimit(stats.ChargeLimit);
             }
         }
 
@@ -157,7 +155,6 @@ namespace HotD.Castables
                 if (debug) { Debug.Log($"{name} casting using {vector} vector."); }
                 onCast.Invoke(vector);
             }
-                
         }
         public virtual void OnUnCast()
         {
