@@ -62,6 +62,7 @@ namespace HotD.Castables
         private Damager damager;
 
         public List<Transform> positionables;
+        public List<CastedVFX> effects = new();
 
         // Events
         [Header("Casting")]
@@ -111,6 +112,11 @@ namespace HotD.Castables
                 Transform toSource = toLocation.GetSourceTransform(source);
                 Transform toTarget = toLocation.GetTargetTransform(source);
                 toLocation.toMove.SetOrigin(toSource, toTarget);
+                if (toLocation.toMove.TryGetComponent<CastedVFX>(out var vfx))
+                {
+                    effects.Add(vfx);
+                    source.vfxController.AddVFX(vfx);
+                }
             }
             MaxPowerLevel = 3;
         }
@@ -119,7 +125,21 @@ namespace HotD.Castables
         // Equipping
         public virtual void Disable() { }
         public virtual void Enable() { }
-        public virtual void UnEquip() { item.UnEquip(); Destroy(gameObject); }
+        public virtual void Equip()
+        {
+            foreach (var effect in effects)
+            {
+                effect.equipped = true;
+            }
+        }
+        public virtual void UnEquip()
+        {
+            foreach (var effect in effects)
+            {
+                effect.equipped = false;
+            }
+            item.UnEquip(); Destroy(gameObject);
+        }
 
 
         // Triggering

@@ -46,7 +46,9 @@ namespace HotD.Castables
         [ReadOnly][SerializeField] private int comboStep = 0;
         [ReadOnly][SerializeField] private float clampedCombo = 0f;
 
-        [Foldout("Collision", true)] public UnityEvent<Collider[]> onSetExceptions = new();
+        [Foldout("Collision")] public UnityEvent<Collider[]> onSetExceptions = new();
+
+        public bool equipped = false;
 
         [Serializable] public struct CastStatEvent
         {
