@@ -93,7 +93,7 @@ public class VFXEventController : MonoBehaviour
 
     public void VFXFirePoint1()
     {
-        SetVFXParent(firePoint1.transform, new Vector3());
+        SetVFXParent(firePoint1.transform, new Vector3(0f,0f,0f));
     }
 
     // Beam
