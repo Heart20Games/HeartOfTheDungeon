@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Body;
 using HotD.Castables;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -15,7 +16,9 @@ public class VFXEventController : MonoBehaviour
     private VisualEffect vfxProperty;
     [SerializeField] private int minCastLevel = 2;
     [SerializeField] private int maxCastLevel = 3;
-
+    [SerializeField] private Movement movement;
+    [SerializeField] private Rigidbody character;
+    
 
    
    private void Awake()
@@ -24,9 +27,11 @@ public class VFXEventController : MonoBehaviour
         vfxAnimator = vfx.GetComponent<Animator>();
         animator = this.GetComponent<Animator>();
         vfxProperty = GetComponentInChildren<VisualEffect>(true);
+        movement = GetComponentInParent<Movement>();
+        character = GetComponentInParent<Rigidbody>();
 
         
-        //vfx.gameObject.SetActive(false);
+        vfx.gameObject.SetActive(false);
         vfxAnimator.enabled = false;
         vfxProperty.enabled = false;
         vfx.onSetPowerLimit.AddListener(SetCastLevel);
@@ -44,54 +49,23 @@ public class VFXEventController : MonoBehaviour
     }
 
     public void TriggerAnimations()
-    {
-        animator.SetTrigger("MagicBolt");
+    {            
         vfx.gameObject.SetActive(true);
-        vfxAnimator.enabled = true;
         vfxProperty.enabled = true;
-    }
-
-    public void MagicBoltLevel1()
-    {
-        animator.SetBool("Level2", false);
-        animator.SetBool("Level3", false);
-        vfxAnimator.SetBool("Level 2 Available", false);
-        vfxAnimator.SetBool("Level 3 Available", false);
-        animator.SetTrigger("MagicBolt");
-        vfx.gameObject.SetActive(true);
         vfxAnimator.enabled = true;
-        vfxProperty.enabled = true;
-    }
-
-    public void MagicBoltLevel2()
-    {
-        animator.SetBool("Level2", true);
-        animator.SetBool("Level3", false);
-        vfxAnimator.SetBool("Level 2 Available", true);
-        vfxAnimator.SetBool("Level 3 Available", false);
-        animator.SetTrigger("MagicBolt");
-        vfx.gameObject.SetActive(true);
-        vfxAnimator.enabled = true;
-        vfxProperty.enabled = true;
-    }
-
-    public void MagicBoltLevel3()
-    {
-        animator.SetBool("Level2", true);
-        animator.SetBool("Level3", true);
-        vfxAnimator.SetBool("Level 2 Available", true);
-        vfxAnimator.SetBool("Level 3 Available", true);
-        animator.SetTrigger("MagicBolt");
-        vfx.gameObject.SetActive(true);
-        vfxAnimator.enabled = true;
-        vfxProperty.enabled = true;
+        animator.SetTrigger("MagicBolt");   
+        // vfxAnimator.Rebind();
+        // vfxAnimator.Update(0f);
+        // vfxAnimator.StartPlayback();
     }
 
     public void BeginCharge()
     {
+        
         vfx.gameObject.SetActive(true);
-        vfxAnimator.enabled = true;
         vfxProperty.enabled = true;
+        vfxAnimator.enabled = true;
+        
     }
 
     public void vfxCast()
@@ -110,6 +84,17 @@ public class VFXEventController : MonoBehaviour
         vfx.gameObject.SetActive(false);
         vfxAnimator.enabled = false;
         vfxProperty.enabled = false;
+        StartMovement();
     }
 
+    public void StopMovement()
+    {
+        movement.enabled = false;
+        character.velocity = new Vector3(0,0,0);
+    }
+
+    public void StartMovement()
+    {
+        movement.enabled = true;
+    }
 }
