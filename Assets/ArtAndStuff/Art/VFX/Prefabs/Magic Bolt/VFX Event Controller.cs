@@ -18,14 +18,18 @@ public class VFXEventController : MonoBehaviour
     [SerializeField] private int maxCastLevel = 3;
     [SerializeField] private Movement movement;
     [SerializeField] private Rigidbody character;
+    [SerializeField] private GameObject firePoint1;
+    [SerializeField] private GameObject firePoint2;
+    [SerializeField] private GameObject level3Beam;
+    [SerializeField] private Level3BoltScaling level3BeamController;
     
 
    
-   private void Awake()
-    {
-        vfx = GetComponentInChildren<Casted>(true);
+   private void Start()
+    {        
+        animator = GetComponent<Animator>();
+        vfx = firePoint1.GetComponentInChildren<Casted>(true);
         vfxAnimator = vfx.GetComponent<Animator>();
-        animator = this.GetComponent<Animator>();
         vfxProperty = GetComponentInChildren<VisualEffect>(true);
         movement = GetComponentInParent<Movement>();
         character = GetComponentInParent<Rigidbody>();
@@ -54,9 +58,6 @@ public class VFXEventController : MonoBehaviour
         vfxProperty.enabled = true;
         vfxAnimator.enabled = true;
         animator.SetTrigger("MagicBolt");   
-        // vfxAnimator.Rebind();
-        // vfxAnimator.Update(0f);
-        // vfxAnimator.StartPlayback();
     }
 
     public void BeginCharge()
@@ -83,7 +84,7 @@ public class VFXEventController : MonoBehaviour
     {
         vfx.gameObject.SetActive(false);
         vfxAnimator.enabled = false;
-        vfxProperty.enabled = false;
+        vfxProperty.enabled = false;   
         StartMovement();
     }
 
@@ -97,4 +98,29 @@ public class VFXEventController : MonoBehaviour
     {
         movement.enabled = true;
     }
+
+    public void VFXFirePoint2()
+    {
+        vfx.transform.parent = firePoint2.transform;
+        vfx.transform.position = firePoint2.transform.position;
+        //vfx.transform.Rotate(firePoint1.transform.rotation.x, firePoint1.transform.rotation.y, firePoint1.transform.rotation.z + 90);
+    }
+
+    public void VFXFirePoint1()
+    {
+        vfx.transform.parent = firePoint1.transform;
+        
+        vfx.transform.position = new Vector3(0,0,0);        
+    }
+
+    public void FireLevel3Beam()
+    {
+        level3Beam.SetActive(true);
+        level3BeamController.cast = true;
+    }
+
+    public void EndBeam()
+    {
+        level3Beam.SetActive(false);
+    } 
 }
