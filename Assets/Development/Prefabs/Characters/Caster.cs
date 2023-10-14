@@ -137,6 +137,7 @@ namespace HotD.Castables
         public void Trigger()
         {
             ApplyCastVector();
+            Castable?.Equip();
             Castable?.Trigger();
         }
         public void Trigger(Vector2 aimVector)

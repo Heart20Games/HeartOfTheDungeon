@@ -10,10 +10,7 @@ using UnityEngine.VFX.Utility;
 public class VFXEventController : MonoBehaviour
 {
 
-    [SerializeField] private Animator vfxAnimator;
     [SerializeField] private Animator animator;
-    [SerializeField] private Casted vfx;
-    private VisualEffect vfxProperty;
     [SerializeField] private int minCastLevel = 2;
     [SerializeField] private int maxCastLevel = 3;
     [SerializeField] private Movement movement;
@@ -22,72 +19,58 @@ public class VFXEventController : MonoBehaviour
     [SerializeField] private GameObject firePoint2;
     [SerializeField] private GameObject level3Beam;
     [SerializeField] private Level3BoltScaling level3BeamController;
-    
 
+    public List<CastedVFX> effects = new();
    
-   private void Start()
+    private void Start()
     {        
         animator = GetComponent<Animator>();
-        vfx = firePoint1.GetComponentInChildren<Casted>(true);
-        vfxAnimator = vfx.GetComponent<Animator>();
-        vfxProperty = GetComponentInChildren<VisualEffect>(true);
         movement = GetComponentInParent<Movement>();
         character = GetComponentInParent<Rigidbody>();
-
-        
-        vfx.gameObject.SetActive(false);
-        vfxAnimator.enabled = false;
-        vfxProperty.enabled = false;
-        vfx.onSetPowerLimit.AddListener(SetCastLevel);
-        vfx.onTrigger.AddListener(TriggerAnimations);
-        vfx.onCast.AddListener((Vector3 v)=>{Cast();});
     }
 
+    // Cast Level
     public void SetCastLevel(int level)
     {   
         for(int i = minCastLevel; i <= maxCastLevel; i++)
         {
             animator.SetBool($"Level{i}", i <= level);       
-            vfxAnimator.SetBool($"Level {i} Available", i <= level);
+            SetVFXBool($"Level {i} Available", i <= level);
         }        
     }
 
+    // Animations
     public void TriggerAnimations()
-    {            
-        vfx.gameObject.SetActive(true);
-        vfxProperty.enabled = true;
-        vfxAnimator.enabled = true;
+    {
+        SetVFXEnabled(true);
         animator.SetTrigger("MagicBolt");   
     }
 
+    // Charge
     public void BeginCharge()
     {
-        
-        vfx.gameObject.SetActive(true);
-        vfxProperty.enabled = true;
-        vfxAnimator.enabled = true;
-        
+        SetVFXEnabled(true);
     }
 
+    // Casting
     public void vfxCast()
     {
-        vfxAnimator.SetTrigger("Cast");
+        SetVFXTrigger("Cast");
     }
 
     public void Cast()
     {
         animator.SetTrigger("CastRelease");
-        vfxAnimator.SetTrigger("Cast");
+        SetVFXTrigger("Cast");
     }
 
     public void EndCast()
     {
-        vfx.gameObject.SetActive(false);
-        vfxAnimator.enabled = false;
-        vfxProperty.enabled = false;   
+        SetVFXEnabled(false);
         StartMovement();
     }
 
+    // Movement
     public void StopMovement()
     {
         movement.enabled = false;
@@ -99,20 +82,19 @@ public class VFXEventController : MonoBehaviour
         movement.enabled = true;
     }
 
+    // Fire Point
     public void VFXFirePoint2()
     {
-        vfx.transform.parent = firePoint2.transform;
-        vfx.transform.position = firePoint2.transform.position;
+        SetVFXParent(firePoint2.transform, firePoint2.transform.position);
         //vfx.transform.Rotate(firePoint1.transform.rotation.x, firePoint1.transform.rotation.y, firePoint1.transform.rotation.z + 90);
     }
 
     public void VFXFirePoint1()
     {
-        vfx.transform.parent = firePoint1.transform;
-        
-        vfx.transform.position = new Vector3(0,0,0);        
+        SetVFXParent(firePoint1.transform, new Vector3());
     }
 
+    // Beam
     public void FireLevel3Beam()
     {
         level3Beam.SetActive(true);
@@ -122,5 +104,58 @@ public class VFXEventController : MonoBehaviour
     public void EndBeam()
     {
         level3Beam.SetActive(false);
-    } 
+    }
+
+
+    // VFX Helpers
+    public void AddVFX(CastedVFX vfx)
+    {
+        if (vfx != null)
+        {
+            effects.Add(vfx);
+            vfx.gameObject.SetActive(false);
+            vfx.animator.enabled = false;
+            vfx.VisualsEnabled = false;
+            vfx.onSetPowerLimit.AddListener(SetCastLevel);
+            vfx.onTrigger.AddListener(TriggerAnimations);
+            vfx.onCast.AddListener((Vector3 v) => { Cast(); });
+        }
+    }
+
+    public void SetVFXBool(string property, bool value)
+    {
+        foreach (var effect in effects)
+        {
+            if (effect.equipped)
+                effect.animator.SetBool(property, value);
+        }
+    }
+
+    public void SetVFXTrigger(string property)
+    {
+        foreach (var effect in effects)
+        {
+            if (effect.equipped)
+                effect.animator.SetTrigger(property);
+        }
+    }
+
+    public void SetVFXEnabled(bool enabled)
+    {
+        foreach (var effect in effects)
+        {
+            effect.gameObject.SetActive(enabled && effect.equipped);
+            effect.animator.enabled = enabled && effect.equipped;
+            effect.VisualsEnabled = enabled && effect.equipped;
+        }
+    }
+
+    public void SetVFXParent(Transform parent, Vector3 position = new())
+    {
+        foreach (var effect in effects)
+        {
+            effect.transform.parent = parent;
+            effect.transform.position = position;
+        }
+    }
 }

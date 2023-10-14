@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2800773081770691007}
   - component: {fileID: 5640558220743154003}
-  - component: {fileID: 6415436591602409553}
+  - component: {fileID: 4832110597611120834}
   - component: {fileID: 334410026118029802}
   - component: {fileID: 1852809689126143736}
   - component: {fileID: 202607290327246180}
@@ -98,7 +98,7 @@ VisualEffect:
       - m_Value: 0
         m_Name: Cast
         m_Overridden: 1
---- !u!114 &6415436591602409553
+--- !u!114 &4832110597611120834
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4490809449938186106}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66fe3e9f41558c44c9efa949b803d37a, type: 3}
+  m_Script: {fileID: 11500000, guid: f83c99b26049f40479de280376f43aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   applyOnSet: 1
@@ -137,19 +137,7 @@ MonoBehaviour:
       m_Calls: []
   onUnCast:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HotD.VFX.VFXAdjuster, Assembly-CSharp
-        m_MethodName: UnCast
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 0
+      m_Calls: []
   canUpdatePowerLevel: 0
   powerRange: {x: 0, y: 0}
   onHasCharge:
@@ -187,7 +175,10 @@ MonoBehaviour:
   onSetExceptions:
     m_PersistentCalls:
       m_Calls: []
+  equipped: 0
   castStatEvents: []
+  animator: {fileID: 0}
+  visuals: []
 --- !u!95 &334410026118029802
 Animator:
   serializedVersion: 5
@@ -220,6 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aad4e6e4d966ebb409cc336bbeb22644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vfxEvent: {fileID: 0}
 --- !u!73398921 &202607290327246180
 VFXRenderer:
   serializedVersion: 1

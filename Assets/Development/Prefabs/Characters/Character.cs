@@ -35,6 +35,7 @@ namespace Body
 
         [Header("Appearance")]
         public ArtRenderer artRenderer;
+        public VFXEventController vfxController;
         public CinemachineVirtualCamera virtualCamera;
         public CharacterBlock statBlock;
 

@@ -346,7 +346,7 @@ namespace HotD.Castables
             }
 
             public string name;
-            public Casted casted;
+            public CastedVFX casted;
             public Location source;
             public Location target;
 
