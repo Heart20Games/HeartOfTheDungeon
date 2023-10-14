@@ -49,6 +49,7 @@ namespace HotD.Castables
         [Foldout("Collision")] public UnityEvent<Collider[]> onSetExceptions = new();
 
         public bool equipped = false;
+        public bool forceUpdate = false;
 
         [Serializable] public struct CastStatEvent
         {
@@ -74,11 +75,22 @@ namespace HotD.Castables
             ReportStats();
             onStart.Invoke();
         }
+
+        private void Update()
+        {
+            if (forceUpdate)
+            {
+                forceUpdate = false;
+                OnSetPowerLimit(powerLimit.FinalValue);
+            }
+        }
+
         private void OnEnable()
         {
             ReportStats();
             onEnable.Invoke();
         }
+
         private void OnDisable()
         {
             onDisable.Invoke();

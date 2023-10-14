@@ -13,6 +13,7 @@ public class VFXEventController : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private int minCastLevel = 2;
     [SerializeField] private int maxCastLevel = 3;
+    [ReadOnly][SerializeField] private int latestCastLevel = 0;
     [SerializeField] private Movement movement;
     [SerializeField] private Rigidbody character;
     [SerializeField] private GameObject firePoint1;
@@ -32,6 +33,7 @@ public class VFXEventController : MonoBehaviour
     // Cast Level
     public void SetCastLevel(int level)
     {   
+        latestCastLevel = level;
         for(int i = minCastLevel; i <= maxCastLevel; i++)
         {
             animator.SetBool($"Level{i}", i <= level);       
@@ -53,7 +55,7 @@ public class VFXEventController : MonoBehaviour
     }
 
     // Casting
-    public void vfxCast()
+    public void VFXCast()
     {
         SetVFXTrigger("Cast");
     }
