@@ -10,7 +10,7 @@ public class Level3BoltScaling : MonoBehaviour
     public float scaleSpeed;
     public float castDuration;
     [SerializeField] private float currentScale;
-    [SerializeField] private bool cast = false;
+    [SerializeField] public bool cast = false;
 
     // Start is called before the first frame update
     void Start()
