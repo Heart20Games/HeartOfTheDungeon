@@ -79,17 +79,20 @@ public class GameInput : BaseMonoBehaviour
     }
 
     // Aiming
-    public void OnAim(InputValue inputValue) { CurCharacter.Aim(inputValue.Get<Vector2>()); }
-    public void OnToggleAiming(InputValue inputValue) { CurCharacter.SetAimModeActive(inputValue.isPressed); }
+    public void OnAim(InputValue inputValue) { if (CurCharacter != null) CurCharacter.Aim(inputValue.Get<Vector2>()); }
+    public void OnToggleAiming(InputValue inputValue) { if (CurCharacter != null) CurCharacter.SetAimModeActive(inputValue.isPressed); }
 
     // Castables
     public enum CastableIdx { Ability1, Ability2, Weapon1, Weapon2, Agility }
     public void UseCastable(InputValue inputValue, CastableIdx idx)
     {
-        IsPressed(inputValue, 
-            () => { CurCharacter.TriggerCastable((int)idx); },
-            () => { CurCharacter.ReleaseCastable((int)idx); }
-        ); 
+        if (CurCharacter != null)
+        {
+            IsPressed(inputValue, 
+                () => { CurCharacter.TriggerCastable((int)idx); },
+                () => { CurCharacter.ReleaseCastable((int)idx); }
+            ); 
+        }
     }
     public void OnUseAgility(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Agility); }
     public void OnUseWeapon1(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Weapon1); }

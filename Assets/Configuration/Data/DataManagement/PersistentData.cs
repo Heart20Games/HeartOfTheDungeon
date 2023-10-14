@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace DataManagement
 {
@@ -16,7 +17,11 @@ namespace DataManagement
             data ??= new();
             initialized = true;
             ClearData();
-            DataManager.Instance.RegisterPersistent(GetInstance());
+            if (DataManager.Instance != null)
+                DataManager.Instance.RegisterPersistent(GetInstance());
+            else
+                Debug.LogWarning($"No DataManager present to register {name} to.");
+
         }
         public abstract IPersistent GetInstance();
         public abstract void ClearData();
