@@ -18,8 +18,7 @@ public class VFXEventController : MonoBehaviour
     [SerializeField] private Rigidbody character;
     [SerializeField] private GameObject firePoint1;
     [SerializeField] private GameObject firePoint2;
-    [SerializeField] private GameObject level3Beam;
-    [SerializeField] private Level3BoltScaling level3BeamController;
+    [SerializeField] private Level3BoltScaling level3Beam;
 
     public List<CastedVFX> effects = new();
    
@@ -99,13 +98,21 @@ public class VFXEventController : MonoBehaviour
     // Beam
     public void FireLevel3Beam()
     {
-        level3Beam.SetActive(true);
-        level3BeamController.cast = true;
+        if (level3Beam != null)
+        {
+            level3Beam.gameObject.SetActive(true);
+            level3Beam.cast = true;
+        }
+        else Debug.LogWarning("No Level 3 Beam to Fire.");
     }
 
     public void EndBeam()
     {
-        level3Beam.SetActive(false);
+        if (level3Beam != null)
+        {
+            level3Beam.gameObject.SetActive(false);
+        }
+        else Debug.LogWarning("No Level 3 Beam to End.");
     }
 
 
