@@ -47,6 +47,15 @@ public static class ExtensionMethods
 
     // Transform
 
+    // Smooth Look At
+    public static void LookToward(this Transform _transform, Transform target, float damping)
+    {
+        var rotation = Quaternion.LookRotation(target.position - _transform.position);
+        // rotation.x = 0; This is for limiting the rotation to the y axis. I needed this for my project so just
+        // rotation.z = 0;                 delete or add the lines you need to have it behave the way you want.
+        _transform.rotation = Quaternion.Slerp(_transform.rotation, rotation, Time.deltaTime * damping);
+    }
+
     // Recursively Apply Layer
     public static void ApplyLayerRecursive(this Transform _root, string layerName)
     {

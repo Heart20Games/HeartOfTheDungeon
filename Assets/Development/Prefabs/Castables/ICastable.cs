@@ -20,6 +20,7 @@ namespace HotD.Castables
         public void Disable();
         public void Enable();
         public bool CanCast();
+        public void Equip();
         public void UnEquip();
         public CastableItem GetItem();
     }

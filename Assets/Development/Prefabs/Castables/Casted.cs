@@ -46,7 +46,10 @@ namespace HotD.Castables
         [ReadOnly][SerializeField] private int comboStep = 0;
         [ReadOnly][SerializeField] private float clampedCombo = 0f;
 
-        [Foldout("Collision", true)] public UnityEvent<Collider[]> onSetExceptions = new();
+        [Foldout("Collision")] public UnityEvent<Collider[]> onSetExceptions = new();
+
+        public bool equipped = false;
+        public bool forceUpdate = false;
 
         [Serializable] public struct CastStatEvent
         {
@@ -64,8 +67,6 @@ namespace HotD.Castables
             {
                 OnSetPowerLimit(powerLimit.FinalValue);
                 stats.chargeLimit.updatedFinal.AddListener(OnSetPowerLimit);
-                //stats.chargeLimit.updatedFinal.AddListener(OnSetPowerLimit);
-                //OnSetPowerLimit(stats.ChargeLimit);
             }
         }
 
@@ -74,11 +75,22 @@ namespace HotD.Castables
             ReportStats();
             onStart.Invoke();
         }
+
+        private void Update()
+        {
+            if (forceUpdate)
+            {
+                forceUpdate = false;
+                OnSetPowerLimit(powerLimit.FinalValue);
+            }
+        }
+
         private void OnEnable()
         {
             ReportStats();
             onEnable.Invoke();
         }
+
         private void OnDisable()
         {
             onDisable.Invoke();
@@ -157,7 +169,6 @@ namespace HotD.Castables
                 if (debug) { Debug.Log($"{name} casting using {vector} vector."); }
                 onCast.Invoke(vector);
             }
-                
         }
         public virtual void OnUnCast()
         {

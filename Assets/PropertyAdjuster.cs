@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class PropertyAdjuster : MonoBehaviour
 {
+    private void OnEnable() {}
+
     // Looping
     public int LoopMin { get => loopMin; set => loopMin = value; }
     public int LoopMax { get => loopMax; set => loopMax = value; }
@@ -42,7 +44,8 @@ public class PropertyAdjuster : MonoBehaviour
     public void ToggleOff(string property) { Toggle(property, false); }
     public void Toggle(string property, bool value)
     {
-        onBool.Invoke(property, value);
+        if (isActiveAndEnabled)
+            onBool.Invoke(property, value);
     }
 
     // Initialize
@@ -55,12 +58,15 @@ public class PropertyAdjuster : MonoBehaviour
 
     public void Initialize<T>(Initial<T>[] initials, UnityEvent<string, T> onEvent)
     {
-        foreach (var initial in initials)
+        if (isActiveAndEnabled)
         {
-            if (initial.property.Contains(formatString))
-                Loop(initial.property, initial.value, onEvent);
-            else
-                onEvent.Invoke(initial.property, initial.value);
+            foreach (var initial in initials)
+            {
+                if (initial.property.Contains(formatString))
+                    Loop(initial.property, initial.value, onEvent);
+                else
+                    onEvent.Invoke(initial.property, initial.value);
+            }
         }
     }
 
@@ -71,15 +77,18 @@ public class PropertyAdjuster : MonoBehaviour
     public void ConditionOff(int value) { Condition(value, false); }
     public void Condition(int value, bool on)
     {
-        foreach (ConditionGate gate in conditionGates)
+        if (isActiveAndEnabled)
         {
-            if (gate.conditionValue == value)
+            foreach (ConditionGate gate in conditionGates)
             {
-                onBool.Invoke(gate.property, on);
-            }
-            else
-            {
-                onBool.Invoke(gate.property, !on);
+                if (gate.conditionValue == value)
+                {
+                    onBool.Invoke(gate.property, on);
+                }
+                else
+                {
+                    onBool.Invoke(gate.property, !on);
+                }
             }
         }
     }
@@ -87,7 +96,8 @@ public class PropertyAdjuster : MonoBehaviour
     // Trigger
     public void Trigger(string property)
     {
-        onTrigger.Invoke(property);
+        if (isActiveAndEnabled)
+            onTrigger.Invoke(property);
     }
 
     public void FloatLoop(string property, float value)
@@ -106,9 +116,12 @@ public class PropertyAdjuster : MonoBehaviour
 
     public void Loop<T>(string property, T value, UnityEvent<string, T> onEvent, bool inverse=false)
     {
-        for (int i = (inverse ? loopLimit+1 : loopMin); i <= (inverse ? loopMax : Mathf.Clamp(0, loopLimit, loopMax)); i++)
+        if (isActiveAndEnabled)
         {
-            onEvent.Invoke(property.Replace(formatString, i.ToString()), value);
+            for (int i = (inverse ? loopLimit+1 : loopMin); i <= (inverse ? loopMax : Mathf.Clamp(0, loopLimit, loopMax)); i++)
+            {
+                onEvent.Invoke(property.Replace(formatString, i.ToString()), value);
+            }
         }
     }
 }

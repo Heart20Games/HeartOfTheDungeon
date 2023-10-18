@@ -346,7 +346,7 @@ namespace HotD.Castables
             }
 
             public string name;
-            public Casted casted;
+            public CastedVFX casted;
             public Location source;
             public Location target;
 
@@ -357,7 +357,7 @@ namespace HotD.Castables
             {
                 if (casted != null)
                 {
-                    Casted body = (PrefabUtility.InstantiatePrefab(casted.gameObject) as GameObject).GetComponent<Casted>(); // castable.transform);
+                    CastedVFX body = (PrefabUtility.InstantiatePrefab(casted.gameObject) as GameObject).GetComponent<CastedVFX>(); // castable.transform);
                     body.transform.SetParent(castable.transform);
                     ConnectCastedComponent(body, castable, stats);
 

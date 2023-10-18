@@ -19,6 +19,17 @@ namespace HotD.Castables
         private Collider[] Colliders { get { return colliders ?? InitializeColliders(); } }
         [Foldout("Collision")] public List<GameObject> collidableObjects;
 
+        [Foldout("Tracking", true)]
+        public Transform trackingTarget;
+        public Transform TrackingTarget { get => trackingTarget; set => trackingTarget = value; }
+        [Foldout("Tracking")] public float damping;
+
+        private void LateUpdate()
+        {
+            if (trackingTarget != null)
+                transform.LookToward(target, damping);
+        }
+
         public void Destroy()
         {
             Destroy(gameObject);

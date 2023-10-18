@@ -203,17 +203,28 @@ public class Game : BaseMonoBehaviour
     public void ActivateMode(GameMode mode, GameMode lastMode)
     {
         if (debug) print($"Activate inputMode {mode}.");
-        userInterface.SetHudActive(mode.hudActive);
-        userInterface.SetDialogueActive(mode.dialogueActive);
-        userInterface.SetControlScreenActive(mode.activeMenu == Menu.ControlSheet);
-        userInterface.SetCharacterSheetActive(mode.activeMenu == Menu.CharacterSheet);
-        userInterface.SetMenuInputsActive(mode.activeMenu != Menu.None);
-        input.SwitchCurrentActionMap(mode.inputMode.ToString());
-        TimeScale = mode.timeScale;
+        
+        // Configure User Interface
+        if (userInterface != null)
+        {
+            userInterface.SetHudActive(mode.hudActive);
+            userInterface.SetDialogueActive(mode.dialogueActive);
+            userInterface.SetControlScreenActive(mode.activeMenu == Menu.ControlSheet);
+            userInterface.SetCharacterSheetActive(mode.activeMenu == Menu.CharacterSheet);
+            userInterface.SetMenuInputsActive(mode.activeMenu != Menu.None);
+        }
+        else
+        {
+            Debug.LogWarning($"UserInterface not found when changing Game Modes ({lastMode} -> {mode})");
+        }
 
-        // Set Mouse Lock State
+        // Set Inputs
+        input.SwitchCurrentActionMap(mode.inputMode.ToString());
         Cursor.lockState = mode.showMouse ? CursorLockMode.Confined : CursorLockMode.Locked;
         Cursor.visible = false;
+
+        // Set Time Scale
+        TimeScale = mode.timeScale;
 
         // Swap Controllables
         IControllable newControllable = mode.Controllable;
@@ -223,15 +234,23 @@ public class Game : BaseMonoBehaviour
         if (oldControllable != null && oldControllable != newControllable)
             SetControllable(oldControllable, false);
 
-        // Swap Finders
-        TargetFinder newFinder = mode.Finder;
-        TargetFinder oldFinder = lastMode.Finder;
-        if (mode.Finder != null)
-            targeter.Finder = mode.Finder;
-        if (oldFinder != null && oldFinder != newFinder)
-            targeter.Finder = null;
-        targeter.SetTargetLock(mode.targetLock);
+        // Swap Target Finders
+        if (targeter != null)
+        {
+            TargetFinder newFinder = mode.Finder;
+            TargetFinder oldFinder = lastMode.Finder;
+            if (mode.Finder != null)
+                targeter.Finder = mode.Finder;
+            if (oldFinder != null && oldFinder != newFinder)
+                targeter.Finder = null;
+            targeter.SetTargetLock(mode.targetLock);
+        }
+        else
+        {
+            Debug.LogWarning($"Target not found when changing Game Modes ({lastMode} -> {mode})");
+        }
 
+        // Position Selector
         if (mode.inputMode == InputMode.Selection)
         {
             if (curController != null && curCharacter != null)
