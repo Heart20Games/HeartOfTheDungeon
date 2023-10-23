@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 64649062126361806}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.3389696, y: 0.9802983, z: -0.88538575}
+  m_LocalPosition: {x: 0, y: 0.237, z: 0.087}
   m_LocalScale: {x: 1.4285713, y: 1.4285713, z: 1.4285713}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -45,8 +45,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.42483565, g: 0, b: 0.754717, a: 1}
-  m_Intensity: 12
-  m_Range: 15
+  m_Intensity: 5
+  m_Range: 40
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -127,6 +127,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4430551226069652450}
+  - component: {fileID: 2689182487623508370}
+  - component: {fileID: 8868224766202097062}
   m_Layer: 0
   m_Name: Purple_Torch_Flame
   m_TagString: Untagged
@@ -152,6 +154,39 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &2689182487623508370
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3010099292582892557}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 58c2495de91df7142bb5f136db6daebd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &8868224766202097062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3010099292582892557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a1e2249777cb2841b4036b88af1a469, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationName: Fire Flicker
 --- !u!1 &8556237941422368727
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,6 +273,9 @@ VisualEffect:
       - m_Value: {x: 0.1, y: -0.5}
         m_Name: Distortion_Speed
         m_Overridden: 1
+      - m_Value: {x: 1, y: 1}
+        m_Name: FlameScaleModifier
+        m_Overridden: 1
     m_Vector3f:
       m_Array:
       - m_Value: {x: 0.6, y: 1.5, z: 1}
@@ -306,7 +344,7 @@ VFXRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8556237941422368727}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -367,15 +405,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.00053950713
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.3085713
+      value: -2.386
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.00094379694
+      value: -0.027
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 6ed1f903c4e46bb40ab965f0bd01041c, type: 3}
       propertyPath: m_LocalRotation.w
