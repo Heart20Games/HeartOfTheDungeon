@@ -1,5 +1,6 @@
-﻿title: GobkinDialogue1Part1
+title: GobkinDialogue1Part1
 tags:
+position: -88,-281
 ---
 
 Baelor: Do you hear something? #line:G1 #emotion:confused
@@ -14,6 +15,7 @@ Baelor: Hush now… look! #line:G7 #emotion:angry
 ===
 
 title: GobkinDialogue1Part2
+position: 829,-560
 ---
 
 Gobkin: (Concerned purring) #line:G8 #emotion:sad
@@ -45,8 +47,8 @@ Gobkin: (Concerned purring) #line:G8 #emotion:sad
             Baelor: It-it’s alright. Why don't you come with us? #line:G8ci1f
             Osseus: Is this really the time to be collecting strays?! We have more important business to attend to! #line:G8ci1g
             Rotta: Yeah, like you know, defending the dungeon from rebellious slimes! #line:G8ci1h
-            Baelor: How quickly you two have forgotten what it’s like to be lost and alone... #line:G8ai1gz
-                <<jump EndGobkin1>>
+            <<set $dialogueWhoIs1 to true>>
+            <<unpause SceneTimeline>>
         -> My name is Baelor and I’m the master of this dungeon.
                 Baelor: My name is Baelor and I’m the master of this dungeon. #line:G8ai1z
                 <<jump WhoIs1>>
@@ -56,15 +58,29 @@ Gobkin: (Concerned purring) #line:G8 #emotion:sad
 ===
 
 title: EndGobkin1
+position: 1233,-104
 ---
 
 Narrator: With a cry of alarm, the creature darts back into the shadows #line:G8ai3a
+<<if $dialogueWhoIs1 == true>>
+    Baelor: How quickly you two have forgotten what it's like to be lost and alone... #line:G8ai1g
+<<elseif $dialogueISupposeTheyare == true>>
+    Baelor: Was that really necessary Rotta? #line:G8ai2ai3
+    Rotta: Yes. Yes it was. Hmphf.  #line:G8ai2ai4
+<<elseif $dialogueTheyMightLookScary == true>>
+    Rotta: Now look what you did, you scared off the little... whatever it was. #line:G8ai2aii2
+    Osseus: Maybe we'll see it again. They said sarcastically, to themselves. #line:G8ai2aii3 #emotion:confused
+<<elseif $dialogueIgnorethem == true>>
+    Baelor: N-Now I didn't mean to offend, I simply thought the creature might see you as threatening. #line:G8ai2aiii3 #emotion:sad
+<<endif>>
 <<unpause SceneTimeline>>
 
 ===
 
+
 title: WhoIs1
 
+position: 735,-257
 ---
 Gobkin: Dunwon...? #line:G8ai1a #emotion:confused
 Baelor: Uhm... yes, where you are now. This is a dungeon. #line:G8ai1b
@@ -72,37 +88,39 @@ Gobkin: Master...? #line:G8ai1c #emotion:confused
 Baelor: Baelor, that’s right, now what’s your -  #line:G8ai1d
 Osseus: As much as I'm enjoying teaching this... thing, vocabulary, perhaps we could move onto the matter at hand? #line:G8ai1e #emotion:confused
 Rotta: Yeah, we gots slimes to fight! #line:G8ai1f
-Baelor: How quickly you two have forgotten what it's like to be lost and alone... #line:G8ai1g
-<<jump EndGobkin1>>
+<<set $dialogueWhoIs1 to true>>
+<<unpause SceneTimeline>>
 ===
 
 title: WhoIs2
 
+position: 1178,-339
 ---
 Gobkin: Dey look scary... #line:G8ai2a
 -> Yes, I suppose they are. 
     Baelor: Yes, I suppose they are. #line:G8ai2ai
     Rotta: Yeah, I’m REALLY scary, fearsome! Rawr! #line:G8ai2ai1 #emotion:happy
     Osseus: The only thing scary about you is your manners… and the smell… #line:G8ai2ai2 #emotion:confused
-    Baelor: Was that really necessary Rotta? #line:G8ai2ai3
-    Rotta: Yes. Yes it was. Hmphf.  #line:G8ai2ai4
-    <<jump EndGobkin1>>
+    <<set $dialogueISupposeTheyare to true>>
+    <<unpause SceneTimeline>>
+    
 -> Those two? They might look scary but they won't harm you. 
     Baelor: Those two? They might look scary but they won't harm you. #line:G8ai2aii
     Osseus: I beg your pardon, are you saying I look scary? Why?! Because I have my bones showing? I think it’s far scarier to be a walking pile of gooey organs wrapped in greasy skin! #line:G8ai2aii1 #emotion:angry
-    Rotta: Now look what you did, you scared off the little... whatever it was. #line:G8ai2aii2
-    Osseus: Maybe we'll see it again. They said sarcastically, to themselves. #line:G8ai2aii3 #emotion:confused
-    <<jump EndGobkin1>>
+    <<set $dialogueTheyMightLookScary to true>>
+    <<unpause SceneTimeline>>
+    
 ->  Ju-just Ignore them, what is your name? 
     Baelor: Ju-just Ignore them, what is your name? #line:G8ai2aiii
     Osseus: I'm sorry, did you just tell it to IGNORE me… I mean us!? #line:G8ai2aiii1 #emotion:angry
     Rotta: Yeah, after you dragged us up here!? We're not the ones it should be ignoring! #line:G8ai2aiii2 #emotion:angry
-    Baelor: N-Now I didn't mean to offend, I simply thought the creature might see you as threatening. (end) #line:G8ai2aiii3 #emotion:sad
-    <<jump EndGobkin1>>
+    <<set $dialogueIgnorethem to true>>    
+    <<unpause SceneTimeline>>
 ===
 
 title: SecondGobkinEncounter
 
+position: 277,-619
 ---
 
 Gobkin: H-hewwo...is... it safe? #line:G9 #emotion:sad
@@ -186,6 +204,7 @@ Gobkin: H-hewwo...is... it safe? #line:G9 #emotion:sad
 ===
 
 title: EndGobkin2
+position: 533,-455
 ---
 
 Narrator: The creature, picking up on your nervousness, vanishes back into the darkness #line:G9ai
@@ -195,6 +214,7 @@ Narrator: The creature, picking up on your nervousness, vanishes back into the d
 
 title: ThirdGobkinEncounter
 
+position: 131,107
 ---
 
  Narrator: You turn to see the creature, now out in the open, looking at you expectantly. #line:G10
@@ -244,6 +264,7 @@ title: ThirdGobkinEncounter
 ===
 
 title: ThatsEnough
+position: 225,348
 ---
 
     Gobkin: (Frightened squeak) #line:G10bvi1a #emotion:sad
@@ -265,6 +286,7 @@ title: ThatsEnough
 ===
 
 title: EndGobkin3
+position: 540,261
 ---
 
 Gobkin: F-Fwend?  #line:G10ci1a
@@ -290,6 +312,7 @@ Gobkin: F-Fwend?  #line:G10ci1a
 
 
 title: NoGobPoints
+position: 795,368
 ---
 
 Narrator: The creature scurries off into the darkness, and you are left with a sinking feeling that you will never see him again... and a deep ache in your temples that suggest he was important somehow.Baelor: Please you two, enough with the fighting. #line:G10bvi1aiii1
