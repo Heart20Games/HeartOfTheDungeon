@@ -28,6 +28,8 @@ public class GameModes
         public bool dialogueActive;
         public bool targetLock;
         public float timeScale;
+        public bool shouldBrain;
+        public bool cardboardMode;
         public readonly IControllable Controllable 
         { 
             get
