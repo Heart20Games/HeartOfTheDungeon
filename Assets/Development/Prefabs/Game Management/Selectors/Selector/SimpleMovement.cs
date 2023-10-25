@@ -25,9 +25,8 @@ public class SimpleMovement : BaseMonoBehaviour, ITimeScalable
 
     private void Awake()
     {
-        if (settings == null) settings = new();
-        if (myRigidbody == null)
-            myRigidbody = GetComponent<Rigidbody>();
+        if (settings == null) settings = ScriptableObject.CreateInstance<MovementSettings>();
+        if (myRigidbody == null) myRigidbody = GetComponent<Rigidbody>();
     }
 
     // Movement

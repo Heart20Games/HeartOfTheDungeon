@@ -24,7 +24,10 @@ public class Initializer : BaseMonoBehaviour
 
     private void Awake()
     {
+        game = GetComponent<Game>();
         characters = FindObjectsOfType<Character>();
+        game.allCharacters = new List<Character>(characters);
+        game.cardboardCutouts = new List<Cutouts>(FindObjectsOfType<Cutouts>());
 
         scriptableObjects = (BaseScriptableObject[])Resources.FindObjectsOfTypeAll(typeof(BaseScriptableObject));
         foreach (var scriptableObject in scriptableObjects)
@@ -32,7 +35,6 @@ public class Initializer : BaseMonoBehaviour
             scriptableObject.Init();
         }
 
-        game = GetComponent<Game>();
         player = FindObjectOfType<Character>();
         if (game.playerCharacter == null)
         {

@@ -82,14 +82,17 @@ public class RoomLoader : BaseMonoBehaviour
 
     public void LoadScene(string targetScene)
     {
-        if (asynchronous)
+        if (isActiveAndEnabled)
         {
-            if ((loading = SceneManager.LoadSceneAsync(targetScene)) != null)
-                loading.allowSceneActivation = false;
-        }
-        else
-        {
-            SceneManager.LoadScene(targetScene);
+            if (asynchronous)
+            {
+                if ((loading = SceneManager.LoadSceneAsync(targetScene)) != null)
+                    loading.allowSceneActivation = false;
+            }
+            else
+            {
+                SceneManager.LoadScene(targetScene);
+            }
         }
     }
 }

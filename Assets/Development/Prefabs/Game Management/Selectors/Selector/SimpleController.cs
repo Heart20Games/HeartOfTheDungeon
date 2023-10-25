@@ -24,6 +24,11 @@ public class SimpleController : MonoBehaviour, IControllable
         Controllable = false;
     }
 
+    public void SetDisplayable(bool displayable = true)
+    {
+        // No Implemented
+    }
+
     public void SetControllable(bool controllable = true)
     {
         if (virtualCamera != null)
