@@ -17,7 +17,7 @@ namespace Body
     [RequireComponent(typeof(Movement))]
     [RequireComponent(typeof(Talker))]
     [RequireComponent(typeof(Caster))]
-    public class Character : AIdentifiable, IDamageable, IControllable
+    public class Character : AIdentifiable, IDamageable, IBrainable
     {
         [Header("Movement and Positioning")]
         public Transform body;
@@ -195,11 +195,22 @@ namespace Body
 
         // State
 
+        public void SetDisplayable(bool _displayable)
+        {
+            artRenderer.enabled = _displayable;
+        }
+
         public void SetControllable(bool _controllable)
         {
             brain.Enabled = !_controllable;
             controllable = _controllable;
             onControl.Invoke(_controllable);
+        }
+
+        public void SetBrainable(bool brainable)
+        {
+            brain.Enabled = brainable;
+            movement.enabled = brainable;
         }
 
         public void ConnectControl()

@@ -20,10 +20,12 @@ public class Game : BaseMonoBehaviour
     public SimpleController selectorController;
     public Targeter targeter;
     public GameSettings settings;
+    [HideInInspector] public List<Cutouts> cardboardCutouts = new();
     [HideInInspector] public UserInterface userInterface;
     [HideInInspector] public HUD hud;
     [HideInInspector] public List<ITimeScalable> timeScalables;
     [HideInInspector] public List<Interactable> interactables;
+    [HideInInspector] public List<Character> allCharacters;
     private PlayerInput input;
 
     // Initialization
@@ -99,6 +101,7 @@ public class Game : BaseMonoBehaviour
         foreach (var character in playableCharacters)
             character.onDeath.AddListener(OnCharacterDied);
     }
+
 
     // Restart
 
@@ -218,6 +221,20 @@ public class Game : BaseMonoBehaviour
             Debug.LogWarning($"UserInterface not found when changing Game Modes ({lastMode} -> {mode})");
         }
 
+        foreach (Cutouts cutout in cardboardCutouts)
+        {
+            cutout.enabled = mode.cardboardMode;
+        }
+
+        foreach (Character character in allCharacters)
+        {
+            if (character != null)
+            {
+                SetDisplayable(character, mode.cardboardMode);
+                SetBrainable(character, mode.shouldBrain);
+            }
+        }
+
         // Set Inputs
         input.SwitchCurrentActionMap(mode.inputMode.ToString());
         Cursor.lockState = mode.showMouse ? CursorLockMode.Confined : CursorLockMode.Locked;
@@ -263,6 +280,16 @@ public class Game : BaseMonoBehaviour
     public void SetControllable(IControllable controllable, bool shouldControl)
     {
         controllable?.SetControllable(shouldControl);
+    }
+
+    public void SetBrainable(IBrainable brainable, bool shouldBrain)
+    {
+        brainable?.SetBrainable(shouldBrain);
+    }
+
+    public void SetDisplayable(IDisplayable displayable, bool shouldDisplay)
+    {
+        displayable?.SetDisplayable(shouldDisplay);
     }
 
     // Selectables
