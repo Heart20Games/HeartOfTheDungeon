@@ -31,6 +31,9 @@ namespace Cinemachine
         /// <summary>Obstacles closer to the target than this will be ignored</summary>
         [Tooltip("Obstacles closer to the target than this will be ignored")]
         public float m_ActualMinimumDistanceFromTarget = 0.01f;
+
+        [ReadOnly][SerializeField] private float initialDistance = 0f;
+        [ReadOnly][SerializeField] private float correctedDistance = 0f;
         
         void OnValidate()
         {
@@ -43,11 +46,20 @@ namespace Cinemachine
             {
                 if (state.HasLookAt)
                 {
-                    Vector3 relativePosition = state.CorrectedPosition - vcam.LookAt.position;
+#if !UNITY_EDITOR
+                    print("MinDist: Reached Body Stage + HasLookAt");
+#endif
+                    Vector3 relativePosition = state.CorrectedPosition - state.ReferenceLookAt;
+                    initialDistance = relativePosition.magnitude;
+                    correctedDistance = relativePosition.magnitude;
                     if (relativePosition.magnitude < m_ActualMinimumDistanceFromTarget)
                     {
-                        relativePosition -= (relativePosition.normalized * m_ActualMinimumDistanceFromTarget);
-                        state.PositionCorrection += relativePosition;
+#if !UNITY_EDITOR
+                        print("MinDist: Position corrected; Restricting Minimum Distance");
+#endif
+                        Vector3 newRelativePosition = (relativePosition.normalized * m_ActualMinimumDistanceFromTarget);
+                        correctedDistance = newRelativePosition.magnitude;
+                        state.PositionCorrection += relativePosition - newRelativePosition;
                     }
                 }
             }
