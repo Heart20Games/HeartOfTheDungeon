@@ -28,12 +28,28 @@ namespace Cinemachine
 
     public class CinemachineMinimumDistance : CinemachineExtension
     {
+        [Header("Settings")]
         /// <summary>Obstacles closer to the target than this will be ignored</summary>
         [Tooltip("Obstacles closer to the target than this will be ignored")]
         public float m_ActualMinimumDistanceFromTarget = 0.01f;
 
-        [ReadOnly][SerializeField] private float initialDistance = 0f;
+        [Header("Positions")]
+        [ReadOnly][SerializeField] private Vector3 lookAtPosition = new();
+        [ReadOnly][SerializeField] private Vector3 rawPosition = new();
+        [ReadOnly][SerializeField] private Vector3 correctedPosition = new();
+        [ReadOnly][SerializeField] private Vector3 finalPosition = new();
+
+        [Header("Distances")]
+        [ReadOnly][SerializeField] private float rawDistance = 0f;
         [ReadOnly][SerializeField] private float correctedDistance = 0f;
+        [ReadOnly][SerializeField] private float finalDistance = 0f;
+
+        [Header("Results")]
+        [ReadOnly][SerializeField] private Vector3 initialRelative = new();
+        [ReadOnly][SerializeField] private Vector3 resultRelative = new();
+        [ReadOnly][SerializeField] private float initialDistance = 0f;
+        [ReadOnly][SerializeField] private float resultDistance = 0f;
+        [ReadOnly][SerializeField] private Vector3 resultCorrection = new();
         
         void OnValidate()
         {
@@ -46,20 +62,33 @@ namespace Cinemachine
             {
                 if (state.HasLookAt)
                 {
+                    // Debug Numbers
+                    lookAtPosition = state.ReferenceLookAt;
+                    rawPosition = state.RawPosition;
+                    correctedPosition = state.CorrectedPosition;
+                    finalPosition = state.FinalPosition;
+
+                    rawDistance = (rawPosition - lookAtPosition).magnitude;
+                    correctedDistance = (correctedPosition - lookAtPosition).magnitude;
+                    finalDistance = (finalPosition - lookAtPosition).magnitude;
+
+                    // Actual Execution
+                    initialRelative = correctedPosition - lookAtPosition;
+                    resultRelative = initialRelative;
+                    initialDistance = initialRelative.magnitude;
+                    resultDistance = initialDistance;
 #if !UNITY_EDITOR
                     print("MinDist: Reached Body Stage + HasLookAt");
 #endif
-                    Vector3 relativePosition = state.CorrectedPosition - state.ReferenceLookAt;
-                    initialDistance = relativePosition.magnitude;
-                    correctedDistance = relativePosition.magnitude;
-                    if (relativePosition.magnitude < m_ActualMinimumDistanceFromTarget)
+                    if (initialDistance < m_ActualMinimumDistanceFromTarget)
                     {
 #if !UNITY_EDITOR
                         print("MinDist: Position corrected; Restricting Minimum Distance");
 #endif
-                        Vector3 newRelativePosition = (relativePosition.normalized * m_ActualMinimumDistanceFromTarget);
-                        correctedDistance = newRelativePosition.magnitude;
-                        state.PositionCorrection += relativePosition - newRelativePosition;
+                        resultRelative = (initialRelative.normalized * m_ActualMinimumDistanceFromTarget);
+                        resultDistance = resultRelative.magnitude;
+                        resultCorrection = resultRelative - initialRelative;
+                        state.PositionCorrection += resultCorrection;
                     }
                 }
             }
