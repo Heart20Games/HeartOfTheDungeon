@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 
-[RequireComponent(typeof(Canvas))]
+[ExecuteAlways]
 public class Pips : BaseMonoBehaviour
 {
     [SerializeField] private Pip pipPrefab;
-    private Canvas canvas;
     [ReadOnly][SerializeField] private List<Pip> pips = new();
     [SerializeField] private bool lookAtCamera;
 
@@ -18,7 +18,6 @@ public class Pips : BaseMonoBehaviour
 
     private void Awake()
     {
-        canvas = GetComponent<Canvas>();
         oldPipCount = totalPips;
         oldFilledCount = filledPips;
     }
@@ -56,6 +55,7 @@ public class Pips : BaseMonoBehaviour
         {
             pips[i].Filled = i < filled;
         }
+        oldFilledCount = filledPips;
     }
 
     protected void ClearPips()
@@ -71,13 +71,20 @@ public class Pips : BaseMonoBehaviour
     {
         for (int i = 0; i < number; i++)
         {
-            Pip pip = Instantiate(pipPrefab, canvas.transform);
+            Pip pip = Instantiate(pipPrefab, transform);
             pips.Add(pip);
         }
     }
 
     private void RemovePips(int number)
     {
+        for(int i = pips.Count - number; i < pips.Count; i++)
+        {
+            if (Application.isEditor)
+                DestroyImmediate(pips[i].gameObject);
+            else
+                Destroy(pips[i].gameObject);
+        }
         pips.RemoveRange(pips.Count - number, number);
     }
 
@@ -89,6 +96,7 @@ public class Pips : BaseMonoBehaviour
             RemovePips(pips.Count - total);
         else if (pips.Count < total)
             AddPips(total - pips.Count);
+        oldPipCount = totalPips;
     }
 
 

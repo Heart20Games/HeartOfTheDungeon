@@ -69,12 +69,14 @@ namespace Body
             }
         }
         public override string Name { get => statBlock == null ? null : statBlock.characterName; set => statBlock.characterName = value; }
+        public override Modified<int> MaxHealthModder { get => maxHealth; }
+        public override Modified<int> HealthModder { get => currentHealth; }
 
         [Header("Status Effects")]
         public List<Status> statuses;
 
         [Header("Health and Damage")]
-        public Health healthBar;
+        public HealthPips healthBar;
         public bool alwaysHideHealth = false;
         public float hideHealthWaitTime = 15f;
         public Modified<int> maxHealth = new(20);
@@ -132,6 +134,8 @@ namespace Body
             {
                 healthBar.enabled = false;
                 healthBar.SetHealthBase(CurrentHealth, MaxHealth);
+                maxHealth.Subscribe(healthBar.SetHealthTotal);
+                currentHealth.Subscribe(healthBar.SetHealth);
             }
             Identity = Identity;
             SetAlive(true);
