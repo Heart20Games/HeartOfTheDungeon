@@ -9,6 +9,7 @@ namespace Body
     using Behavior;
     using Body.Behavior.ContextSteering;
     using HotD.Castables;
+    using Modifiers;
     using Selection;
     using System.Collections;
     using static Body.Behavior.ContextSteering.CSIdentity;
@@ -69,8 +70,7 @@ namespace Body
             }
         }
         public override string Name { get => statBlock == null ? null : statBlock.characterName; set => statBlock.characterName = value; }
-        public override Modified<int> MaxHealthModder { get => maxHealth; }
-        public override Modified<int> HealthModder { get => currentHealth; }
+        public override ModField<int> Health { get => health; }
 
         [Header("Status Effects")]
         public List<Status> statuses;
@@ -79,19 +79,18 @@ namespace Body
         public HealthPips healthBar;
         public bool alwaysHideHealth = false;
         public float hideHealthWaitTime = 15f;
-        public Modified<int> maxHealth = new(20);
-        public Modified<int> currentHealth = new(20);
+        public ModField<int> health = new("Health", 5, 5);
         [Space]
         public UnityEvent onDmg;
-        public int MaxHealth
-        {
-            get { return maxHealth.Value; }
-            set { SetMaxHealth(value); }
-        }
         public int CurrentHealth
         {
-            get { return currentHealth.Value; }
+            get { return health.current.Value; }
             set { SetCurrentHealth(value); }
+        }
+        public int MaxHealth
+        {
+            get { return health.max.Value; }
+            set { SetMaxHealth(value); }
         }
 
         [Header("Death and Respawning")]
@@ -134,8 +133,7 @@ namespace Body
             {
                 healthBar.enabled = false;
                 healthBar.SetHealthBase(CurrentHealth, MaxHealth);
-                maxHealth.Subscribe(healthBar.SetHealthTotal);
-                currentHealth.Subscribe(healthBar.SetHealth);
+                Health.Subscribe(healthBar.SetHealth, healthBar.SetHealthTotal);
             }
             Identity = Identity;
             SetAlive(true);
@@ -251,7 +249,7 @@ namespace Body
 
         public void SetMaxHealth(int amount)
         {
-            maxHealth.value = amount;
+            Health.max.value = amount;
             if (healthBar != null)
             {
                 healthBar.SetHealthTotal(MaxHealth);
@@ -260,14 +258,14 @@ namespace Body
 
         public void SetCurrentHealth(int amount)
         {
-            int prevHealth = currentHealth.Value;
-            currentHealth.Value = Mathf.Min(amount, maxHealth.Value);
-            if (prevHealth != currentHealth.Value && healthBar != null)
+            int prevHealth = Health.current.Value;
+            Health.current.Value = Mathf.Min(amount, Health.max.Value);
+            if (prevHealth != Health.current.Value && healthBar != null)
             {
                 healthBar.enabled = !alwaysHideHealth;
                 healthBar.SetHealth(CurrentHealth);
             }
-            if (prevHealth > currentHealth.Value)
+            if (prevHealth > Health.current.Value)
             {
                 artRenderer.Hit();
                 onDmg.Invoke();

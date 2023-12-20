@@ -1,3 +1,4 @@
+using Modifiers;
 using System;
 using UnityEngine;
 using static Body.Behavior.ContextSteering.CSIdentity;
@@ -10,8 +11,7 @@ public interface IIdentifiable
     public string Emotion { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
-    public Modified<int> MaxHealthModder { get; }
-    public Modified<int> HealthModder { get; }
+    public ModField<int> Health { get; }
 }
 
 public abstract class AIdentifiable : BaseMonoBehaviour, IIdentifiable
@@ -34,8 +34,7 @@ public abstract class AIdentifiable : BaseMonoBehaviour, IIdentifiable
     public virtual string Emotion { get => emotion; set => emotion = value; }
     public virtual string Name { get; set; }
     public virtual string Description { get => ""; set => NULL(); }
-    public abstract Modified<int> MaxHealthModder { get; }
-    public abstract Modified<int> HealthModder { get; }
+    public abstract ModField<int> Health { get; }
 
     protected void NULL() { /* Do Nothing */ }
 }
@@ -44,6 +43,5 @@ public class Identifiable : AIdentifiable
 {
     public override Identity Identity { get => identity; set => identity = value; }
     public override string Name { get => name; set => name = value; }
-    public override Modified<int> MaxHealthModder { get => null; }
-    public override Modified<int> HealthModder { get => null; }
+    public override ModField<int> Health { get => null; }
 }
