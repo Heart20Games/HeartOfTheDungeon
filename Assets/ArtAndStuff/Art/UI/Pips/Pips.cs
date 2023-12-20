@@ -1,10 +1,14 @@
+using MyBox;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.ProBuilder.MeshOperations;
 
 [ExecuteAlways]
 public class Pips : BaseMonoBehaviour
 {
+    [SerializeField] private Transform pipTarget;
     [SerializeField] private Pip pipPrefab;
     [ReadOnly][SerializeField] private List<Pip> pips = new();
     [SerializeField] private bool lookAtCamera;
@@ -15,6 +19,10 @@ public class Pips : BaseMonoBehaviour
     [SerializeField] private bool updatePips = false;
     private int oldPipCount;
     private int oldFilledCount;
+
+    [Foldout("Events")] public UnityEvent<int> onSetTotal;
+    [Foldout("Events")] public UnityEvent<int> onSetFilled;
+    [Foldout("Events")] public UnityEvent<int> onChanged;
 
     private void Awake()
     {
@@ -55,6 +63,8 @@ public class Pips : BaseMonoBehaviour
         {
             pips[i].Filled = i < filled;
         }
+        onChanged.Invoke(filledPips - oldFilledCount);
+        onSetFilled.Invoke(filledPips);
         oldFilledCount = filledPips;
     }
 
@@ -71,7 +81,7 @@ public class Pips : BaseMonoBehaviour
     {
         for (int i = 0; i < number; i++)
         {
-            Pip pip = Instantiate(pipPrefab, transform);
+            Pip pip = Instantiate(pipPrefab, pipTarget == null ? transform : pipTarget);
             pips.Add(pip);
         }
     }
@@ -97,6 +107,7 @@ public class Pips : BaseMonoBehaviour
         else if (pips.Count < total)
             AddPips(total - pips.Count);
         oldPipCount = totalPips;
+        onSetTotal.Invoke(totalPips);
     }
 
 

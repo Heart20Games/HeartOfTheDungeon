@@ -8,6 +8,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3175902291408917660, guid: 6b73737465b625640b9d23eb56476e68, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3175902291408917660, guid: 6b73737465b625640b9d23eb56476e68, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3175902291408917660, guid: 6b73737465b625640b9d23eb56476e68, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3175902291408917660, guid: 6b73737465b625640b9d23eb56476e68, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3175902291408917660, guid: 6b73737465b625640b9d23eb56476e68, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3175902291408917660, guid: 6b73737465b625640b9d23eb56476e68, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4089558371239574881, guid: 6b73737465b625640b9d23eb56476e68, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 0
@@ -108,6 +132,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6178483482303869474, guid: 6b73737465b625640b9d23eb56476e68, type: 3}
       insertIndex: 1
       addedObject: {fileID: 8112225771601935244}
+    - targetCorrespondingSourceObject: {fileID: 6178483482303869474, guid: 6b73737465b625640b9d23eb56476e68, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 3137032592976706711}
   m_SourcePrefab: {fileID: 100100000, guid: 6b73737465b625640b9d23eb56476e68, type: 3}
 --- !u!1 &1523025420899126355 stripped
 GameObject:
@@ -126,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff61dc48762d3334b98a463b27516b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pipTarget: {fileID: 7822660461144648429}
   pipPrefab: {fileID: 6396915779910910143, guid: 78307c5554ec5a049a97bcfa3c54e7e7, type: 3}
   pips:
   - {fileID: 0}
@@ -137,6 +165,27 @@ MonoBehaviour:
   totalPips: 0
   filledPips: 0
   updatePips: 0
+  onSetTotal:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetFilled:
+    m_PersistentCalls:
+      m_Calls: []
+  onChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3137032592976706711}
+        m_TargetAssemblyTypeName: PopupText, Assembly-CSharp
+        m_MethodName: ShowText
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onTakeDamage:
     m_PersistentCalls:
       m_Calls: []
@@ -146,3 +195,23 @@ MonoBehaviour:
   onNoHealth:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3137032592976706711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523025420899126355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e0f1665a5a55a41b95e5214eb8e0d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textPrefab: {fileID: 7122506993702967536, guid: 839e4fe876e59d54fa1099927019858f, type: 3}
+  decreaseColor: {r: 1, g: 0, b: 0, a: 1}
+  increaseColor: {r: 0, g: 1, b: 0, a: 1}
+--- !u!224 &7822660461144648429 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3175902291408917660, guid: 6b73737465b625640b9d23eb56476e68, type: 3}
+  m_PrefabInstance: {fileID: 4655805507095903857}
+  m_PrefabAsset: {fileID: 0}
