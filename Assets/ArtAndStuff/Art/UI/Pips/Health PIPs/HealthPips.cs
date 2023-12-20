@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Body.Behavior.ContextSteering.CSIdentity;
 using UnityEngine.Events;
+using MyBox;
 
+[ExecuteAlways]
 public class HealthPips : Pips, IHealth
 {
     public int HealthTotal { get => totalPips; set => totalPips = value; }
@@ -14,6 +16,7 @@ public class HealthPips : Pips, IHealth
     public UnityEvent onNoHealth;
 
     // Pips
+    [ButtonMethod]
     private void RefreshPips()
     {
         int damage = Mathf.Min(HealthTotal - Health, HealthTotal);

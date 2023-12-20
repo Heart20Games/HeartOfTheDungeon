@@ -84,19 +84,22 @@ public class PlayerHealthUI : BaseMonoBehaviour
         }
     }
 
+    public void InitializeHealth()
+    {
+        if (initialized)
+            UpdateHealth();
+        else
+            waitingForInitialization = true;
+    }
+
     public void ConnectMaxHealth(Modified<int> health, bool ensureConnection=false)
     {
         maxHealthConnected = !ensureConnection;
         if (health != null)
         {
-            maxHealth?.UnSubscribe(ModifyMaxHealth);
-            maxHealth = health;
-            maxHealth.Subscribe(ModifyMaxHealth);
+            health.Subscribe(ModifyMaxHealth);
+            InitializeHealth();
             maxHealthConnected = true;
-            if (initialized)
-                UpdateHealth();
-            else
-                waitingForInitialization = true;
         }
     }
 
@@ -105,36 +108,34 @@ public class PlayerHealthUI : BaseMonoBehaviour
         currentHealthConnected = !ensureConnection;
         if (health != null)
         {
-            currentHealth?.UnSubscribe(ModifyCurrentHealth);
-            currentHealth = health;
-            currentHealth.Subscribe(ModifyCurrentHealth);
+            health.Subscribe(ModifyCurrentHealth);
+            InitializeHealth();
             currentHealthConnected = true;
-            if (initialized)
-                UpdateHealth();
-            else
-                waitingForInitialization = true;
         }
     }
 
     // Modifiers
-    public int ModifyMaxHealth(int oldHealth, int newHealth)
+    public void ModifyMaxHealth(int finalHealth)
     {
-        UpdateHealth(currentHealth.Value, newHealth);
-        return newHealth;
+        UpdateHealth(currentHealth != null ? currentHealth.Value : previousHealth, finalHealth);
     }
 
-    public int ModifyCurrentHealth(int oldHealth, int newHealth)
+    public void ModifyCurrentHealth(int finalHealth)
     {
-        UpdateHealth(newHealth, maxHealth.Value);
-        return newHealth;
+        UpdateHealth(finalHealth);
     }
   
     // Update Health
     public void UpdateHealth()
     {
-        float total = maxHealth != null ? maxHealth.Value : startingHealth;
         float current = currentHealth != null ? currentHealth.Value : previousHealth;
-        UpdateHealth(current, total);
+        UpdateHealth(current);
+    }
+
+    public void UpdateHealth(float currentHealth)
+    {
+        float total = maxHealth != null ? maxHealth.Value : startingHealth;
+        UpdateHealth(currentHealth, total);
     }
 
     public void UpdateHealth(float currentHealth, float totalHealth)
