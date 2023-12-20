@@ -8,13 +8,18 @@ using UnityEngine.UI;
 [ExecuteAlways]
 public class Pip : BaseMonoBehaviour
 {
+    // Fields
     private Animator animator;
     [SerializeField] private string filledProperty = "IsFilled";
     [SerializeField] private Sprite sprite;
-    [SerializeField] private Sprite Sprite { get => sprite; set => SetSprite(value); }
     [SerializeField] private bool invertFilled;
     [ReadOnly][SerializeField] private bool filled;
+
+    // Events
     public UnityEvent<Sprite> onSprite;
+
+    // Properties
+    private Sprite Sprite { get => sprite; set => SetSprite(value); }
     public bool Filled { get => filled; set => SetFilled(value); }
 
     public void Awake()
