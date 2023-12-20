@@ -8,8 +8,12 @@ public class PlayerHealthUI : BaseMonoBehaviour
     public float startingHealth = 20f;
     public float previousHealth = 20f;
     [SerializeField] private GameObject healthFill;
+    [SerializeField] private GameObject healthPipTextParent;
     [SerializeField] private TextMeshPro healthNumber;
     [SerializeField] private Animator healthAnimator;
+    [SerializeField] private TextMeshPro healthTextPip;
+    [SerializeField] private Transform heathPipTextTransform;
+    private Animator healthPipTextAnimator;
     private Modified<int> maxHealth;
     private Modified<int> currentHealth;
     private Character character;
@@ -25,6 +29,8 @@ public class PlayerHealthUI : BaseMonoBehaviour
         healthNumber = this.transform.GetComponentInChildren<TMPro.TextMeshPro>();
         healthAnimator = GetComponent<Animator>();
         initialized = true;
+
+        SetUpHealhPipText();
     }
 
     private void Update()
@@ -38,6 +44,33 @@ public class PlayerHealthUI : BaseMonoBehaviour
             waitingForInitialization = false;
             UpdateHealth();
         }
+    }
+
+    private void SetUpHealhPipText()
+    {
+        healthTextPip.gameObject.SetActive(false);
+
+        healthPipTextAnimator = healthTextPip.GetComponent<Animator>();
+    }
+
+    private void ShowHealthPipText(bool isDamage, float value, Color color)
+    {
+        if (healthTextPip == null) return;
+
+        healthTextPip.gameObject.SetActive(true);
+
+        healthPipTextAnimator.Play("FadeIn", -1, 0);
+
+        if (isDamage)
+        {
+            healthTextPip.text = "-" + value;
+        }
+        else
+        {
+            healthTextPip.text = "+" + value;
+        }
+
+        healthTextPip.color = color;
     }
 
     // Connections
@@ -110,13 +143,18 @@ public class PlayerHealthUI : BaseMonoBehaviour
         Assert.IsNotNull(healthFill);
         Assert.IsNotNull(healthNumber);
 
+        float healthDifference = Mathf.Abs(currentHealth - previousHealth);
+
         if(currentHealth < previousHealth)
         {
             healthAnimator.SetTrigger("Health Down");
+            if(currentHealth != totalHealth)
+               ShowHealthPipText(true, healthDifference, Color.red);
         }
         else if(currentHealth > previousHealth)
         {
             healthAnimator.SetTrigger("Health Up");
+            ShowHealthPipText(false, healthDifference, Color.green);
         }
         else if(totalHealth > startingHealth)
         {
