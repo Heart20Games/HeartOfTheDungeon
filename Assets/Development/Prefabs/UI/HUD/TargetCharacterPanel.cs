@@ -1,4 +1,5 @@
 using Body;
+using Modifiers;
 using TMPro;
 using UnityEngine;
 
@@ -11,17 +12,13 @@ public class TargetCharacterPanel : BaseMonoBehaviour
     public TMP_Text text;
     public Pips pips;
 
-    private Modified<int> healthMax;
-    private Modified<int> health;
-
     [SerializeField] private bool debug;
 
     public void SetTarget(IIdentifiable target)
     {
         if (this.target != null)
         {
-            this.target.MaxHealthModder?.UnSubscribe(SetMaxHealth);
-            this.target.HealthModder?.UnSubscribe(SetHealth);
+            this.target.Health?.UnSubscribe(SetHealth, SetMaxHealth);
             SetMaxHealth(0);
             SetHealth(0);
         }
@@ -34,10 +31,9 @@ public class TargetCharacterPanel : BaseMonoBehaviour
             portrait.sprite = target.Image;
             text.text = target.Name;
 
-            SetMaxHealth(target.MaxHealthModder.Value);
-            SetHealth(target.HealthModder.Value);
-            target.HealthModder?.Subscribe(SetHealth);
-            target.MaxHealthModder?.Subscribe(SetMaxHealth);
+            SetMaxHealth(target.Health.max.Value);
+            SetHealth(target.Health.current.Value);
+            target.Health?.Subscribe(SetHealth, SetMaxHealth);
         }
         else
         {

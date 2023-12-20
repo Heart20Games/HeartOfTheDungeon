@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using Body;
 using UnityEngine.Assertions;
+using Modifiers;
 
 public class PlayerHealthUI : BaseMonoBehaviour
 {
@@ -14,11 +15,9 @@ public class PlayerHealthUI : BaseMonoBehaviour
     [SerializeField] private TextMeshPro healthTextPip;
     [SerializeField] private Transform heathPipTextTransform;
     private Animator healthPipTextAnimator;
-    private Modified<int> maxHealth;
-    private Modified<int> currentHealth;
     private Character character;
-    private bool maxHealthConnected = true;
-    private bool currentHealthConnected = true;
+    private ModField<int> Health => character != null ? character.Health : null;
+    private bool healthConnected = false;
     private bool initialized = false;
     private bool waitingForInitialization = false;
 
@@ -35,10 +34,7 @@ public class PlayerHealthUI : BaseMonoBehaviour
 
     private void Update()
     {
-        if (!maxHealthConnected && character != null)
-            ConnectMaxHealth(character.maxHealth);
-        if (!currentHealthConnected && character != null)
-            ConnectCurrentHealth(character.currentHealth);
+        if (!healthConnected && Health != null) ConnectHealth();
         if (initialized && waitingForInitialization)
         {
             waitingForInitialization = false;
@@ -79,8 +75,16 @@ public class PlayerHealthUI : BaseMonoBehaviour
         if (character !=  null)
         {
             this.character = character;
-            ConnectMaxHealth(character.maxHealth, true);
-            ConnectCurrentHealth(character.currentHealth, true);
+        }
+    }
+
+    public void ConnectHealth()
+    {
+        if (Health != null)
+        {
+            Health.Subscribe(ModifyCurrentHealth, ModifyMaxHealth);
+            healthConnected = true;
+            InitializeHealth();
         }
     }
 
@@ -92,32 +96,10 @@ public class PlayerHealthUI : BaseMonoBehaviour
             waitingForInitialization = true;
     }
 
-    public void ConnectMaxHealth(Modified<int> health, bool ensureConnection=false)
-    {
-        maxHealthConnected = !ensureConnection;
-        if (health != null)
-        {
-            health.Subscribe(ModifyMaxHealth);
-            InitializeHealth();
-            maxHealthConnected = true;
-        }
-    }
-
-    public void ConnectCurrentHealth(Modified<int> health, bool ensureConnection=false)
-    {
-        currentHealthConnected = !ensureConnection;
-        if (health != null)
-        {
-            health.Subscribe(ModifyCurrentHealth);
-            InitializeHealth();
-            currentHealthConnected = true;
-        }
-    }
-
     // Modifiers
     public void ModifyMaxHealth(int finalHealth)
     {
-        UpdateHealth(currentHealth != null ? currentHealth.Value : previousHealth, finalHealth);
+        UpdateHealth(Health != null ? Health.current.Value : previousHealth, finalHealth);
     }
 
     public void ModifyCurrentHealth(int finalHealth)
@@ -128,13 +110,13 @@ public class PlayerHealthUI : BaseMonoBehaviour
     // Update Health
     public void UpdateHealth()
     {
-        float current = currentHealth != null ? currentHealth.Value : previousHealth;
+        float current = Health != null ? Health.current.Value : previousHealth;
         UpdateHealth(current);
     }
 
     public void UpdateHealth(float currentHealth)
     {
-        float total = maxHealth != null ? maxHealth.Value : startingHealth;
+        float total = Health != null ? Health.max.Value : startingHealth;
         UpdateHealth(currentHealth, total);
     }
 
