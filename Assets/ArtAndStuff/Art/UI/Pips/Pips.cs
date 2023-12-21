@@ -89,10 +89,13 @@ public class Pips : BaseMonoBehaviour
     {
         for(int i = pips.Count - number; i < pips.Count; i++)
         {
-            if (Application.isEditor)
-                DestroyImmediate(pips[i].gameObject);
-            else
-                Destroy(pips[i].gameObject);
+            if (pips[i] != null)
+            {
+                if (Application.isEditor)
+                    DestroyImmediate(pips[i].gameObject);
+                else
+                    Destroy(pips[i].gameObject);
+            }
         }
         pips.RemoveRange(pips.Count - number, number);
     }
