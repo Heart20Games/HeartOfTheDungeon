@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Sorting
 {
-    public class ObjectDistanceSort<T> : Object where T : IBaseMonoBehaviour
+    public class ObjectDistanceSort<T> : Object where T : IBaseMonoBehavior
     {
         // Fields
         private Transform transform;
@@ -55,12 +55,12 @@ namespace Sorting
 
         private int Partition(int left, int right)
         {
-            float pivotDistance = Vector3.Distance(transform.position + offset, list[right].Transform.position);
+            float pivotDistance = Vector3.Distance(transform.position + offset, list[right].GetTransform().position);
             int i = left - 1;
 
             for (int j = left; j < right; j++)
             {
-                float currentDistance = Vector3.Distance(transform.position + offset, list[j].Transform.position);
+                float currentDistance = Vector3.Distance(transform.position + offset, list[j].GetTransform().position);
 
                 if (currentDistance <= pivotDistance)
                 {

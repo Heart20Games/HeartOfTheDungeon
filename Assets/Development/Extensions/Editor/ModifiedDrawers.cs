@@ -1,18 +1,15 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Modifiers
+[CustomPropertyDrawer(typeof(Modified<double>))]
+[CustomPropertyDrawer(typeof(Modified<string>))]
+[CustomPropertyDrawer(typeof(Modified<int>))]
+[CustomPropertyDrawer(typeof(Modified<float>))]
+public class SimpleModifiedDrawer : PropertyDrawer
 {
-    [CustomPropertyDrawer(typeof(Modded<double>))]
-    [CustomPropertyDrawer(typeof(Modded<string>))]
-    [CustomPropertyDrawer(typeof(Modded<int>))]
-    [CustomPropertyDrawer(typeof(Modded<float>))]
-    public class SimpleModifiedDrawer : PropertyDrawer
+    public override void OnGUI (Rect position, SerializedProperty property, GUIContent label)
     {
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            SerializedProperty valueProperty = property.FindPropertyRelative("value");
-            EditorGUI.PropertyField(position, valueProperty, new GUIContent("[M]  " + property.displayName));
-        }
+        SerializedProperty valueProperty = property.FindPropertyRelative("value");
+        EditorGUI.PropertyField(position, valueProperty, new GUIContent("[M]  " + property.displayName));
     }
 }

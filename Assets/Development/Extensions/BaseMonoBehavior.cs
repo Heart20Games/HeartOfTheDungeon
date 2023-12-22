@@ -3,14 +3,14 @@ using System.Collections;
 using System.Reflection;
 using UnityEngine;
 
-public interface IBaseMonoBehaviour
+public interface IBaseMonoBehavior
 {
-    public Transform Transform { get; }
+    public Transform GetTransform();
 }
 
-public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
+public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehavior
 {
-    public Transform Transform => transform;
+    public Transform GetTransform() { return transform; }
 
     void OnDestroy()
     {

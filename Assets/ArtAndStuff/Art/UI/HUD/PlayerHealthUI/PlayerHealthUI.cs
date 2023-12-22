@@ -2,22 +2,19 @@ using UnityEngine;
 using TMPro;
 using Body;
 using UnityEngine.Assertions;
-using Modifiers;
 
 public class PlayerHealthUI : BaseMonoBehaviour
 {
     public float startingHealth = 20f;
     public float previousHealth = 20f;
     [SerializeField] private GameObject healthFill;
-    [SerializeField] private GameObject healthPipTextParent;
     [SerializeField] private TextMeshPro healthNumber;
     [SerializeField] private Animator healthAnimator;
-    [SerializeField] private TextMeshPro healthTextPip;
-    [SerializeField] private Transform heathPipTextTransform;
-    private Animator healthPipTextAnimator;
+    private Modified<int> maxHealth;
+    private Modified<int> currentHealth;
     private Character character;
-    private ModField<int> Health => character != null ? character.Health : null;
-    private bool healthConnected = false;
+    private bool maxHealthConnected = true;
+    private bool currentHealthConnected = true;
     private bool initialized = false;
     private bool waitingForInitialization = false;
 
@@ -28,45 +25,19 @@ public class PlayerHealthUI : BaseMonoBehaviour
         healthNumber = this.transform.GetComponentInChildren<TMPro.TextMeshPro>();
         healthAnimator = GetComponent<Animator>();
         initialized = true;
-
-        SetUpHealhPipText();
     }
 
     private void Update()
     {
-        if (!healthConnected && Health != null) ConnectHealth();
+        if (!maxHealthConnected && character != null)
+            ConnectMaxHealth(character.maxHealth);
+        if (!currentHealthConnected && character != null)
+            ConnectCurrentHealth(character.currentHealth);
         if (initialized && waitingForInitialization)
         {
             waitingForInitialization = false;
             UpdateHealth();
         }
-    }
-
-    private void SetUpHealhPipText()
-    {
-        healthTextPip.gameObject.SetActive(false);
-
-        healthPipTextAnimator = healthTextPip.GetComponent<Animator>();
-    }
-
-    private void ShowHealthPipText(bool isDamage, float value, Color color)
-    {
-        if (healthTextPip == null) return;
-
-        healthTextPip.gameObject.SetActive(true);
-
-        healthPipTextAnimator.Play("FadeIn", -1, 0);
-
-        if (isDamage)
-        {
-            healthTextPip.text = "-" + value;
-        }
-        else
-        {
-            healthTextPip.text = "+" + value;
-        }
-
-        healthTextPip.color = color;
     }
 
     // Connections
@@ -75,49 +46,62 @@ public class PlayerHealthUI : BaseMonoBehaviour
         if (character !=  null)
         {
             this.character = character;
+            ConnectMaxHealth(character.maxHealth, true);
+            ConnectCurrentHealth(character.currentHealth, true);
         }
     }
 
-    public void ConnectHealth()
+    public void ConnectMaxHealth(Modified<int> health, bool ensureConnection=false)
     {
-        if (Health != null)
+        maxHealthConnected = !ensureConnection;
+        if (health != null)
         {
-            Health.Subscribe(ModifyCurrentHealth, ModifyMaxHealth);
-            healthConnected = true;
-            InitializeHealth();
+            maxHealth?.UnSubscribe(ModifyMaxHealth);
+            maxHealth = health;
+            maxHealth.Subscribe(ModifyMaxHealth);
+            maxHealthConnected = true;
+            if (initialized)
+                UpdateHealth();
+            else
+                waitingForInitialization = true;
         }
     }
 
-    public void InitializeHealth()
+    public void ConnectCurrentHealth(Modified<int> health, bool ensureConnection=false)
     {
-        if (initialized)
-            UpdateHealth();
-        else
-            waitingForInitialization = true;
+        currentHealthConnected = !ensureConnection;
+        if (health != null)
+        {
+            currentHealth?.UnSubscribe(ModifyCurrentHealth);
+            currentHealth = health;
+            currentHealth.Subscribe(ModifyCurrentHealth);
+            currentHealthConnected = true;
+            if (initialized)
+                UpdateHealth();
+            else
+                waitingForInitialization = true;
+        }
     }
 
     // Modifiers
-    public void ModifyMaxHealth(int finalHealth)
+    public int ModifyMaxHealth(int oldHealth, int newHealth)
     {
-        UpdateHealth(Health != null ? Health.current.Value : previousHealth, finalHealth);
+        UpdateHealth(currentHealth.Value, newHealth);
+        return newHealth;
     }
 
-    public void ModifyCurrentHealth(int finalHealth)
+    public int ModifyCurrentHealth(int oldHealth, int newHealth)
     {
-        UpdateHealth(finalHealth);
+        UpdateHealth(newHealth, maxHealth.Value);
+        return newHealth;
     }
   
     // Update Health
     public void UpdateHealth()
     {
-        float current = Health != null ? Health.current.Value : previousHealth;
-        UpdateHealth(current);
-    }
-
-    public void UpdateHealth(float currentHealth)
-    {
-        float total = Health != null ? Health.max.Value : startingHealth;
-        UpdateHealth(currentHealth, total);
+        float total = maxHealth != null ? maxHealth.Value : startingHealth;
+        float current = currentHealth != null ? currentHealth.Value : previousHealth;
+        UpdateHealth(current, total);
     }
 
     public void UpdateHealth(float currentHealth, float totalHealth)
@@ -126,18 +110,13 @@ public class PlayerHealthUI : BaseMonoBehaviour
         Assert.IsNotNull(healthFill);
         Assert.IsNotNull(healthNumber);
 
-        float healthDifference = Mathf.Abs(currentHealth - previousHealth);
-
         if(currentHealth < previousHealth)
         {
             healthAnimator.SetTrigger("Health Down");
-            if(currentHealth != totalHealth)
-               ShowHealthPipText(true, healthDifference, Color.red);
         }
         else if(currentHealth > previousHealth)
         {
             healthAnimator.SetTrigger("Health Up");
-            ShowHealthPipText(false, healthDifference, Color.green);
         }
         else if(totalHealth > startingHealth)
         {

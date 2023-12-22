@@ -11,13 +11,13 @@ public class ShieldStatus : StatusEffect
     {
         base.Apply(character, strength);
         this.strength = strength;
-        character.Health.Subscribe(Shield);
+        character.currentHealth.Subscribe(Shield);
     }
 
-    public override void Remove(Character character)
+    public override void Remove(Body.Character character)
     {
         base.Remove(character);
-        character.Health.UnSubscribe(Shield);
+        character.currentHealth.UnSubscribe(Shield);
     }
 
     public int Shield(int oldHealth, int newHealth)

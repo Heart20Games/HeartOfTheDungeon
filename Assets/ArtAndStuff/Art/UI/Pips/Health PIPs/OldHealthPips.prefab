@@ -9,14 +9,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4099199581749838624}
-  - component: {fileID: 8215185759831701676}
+  - component: {fileID: 250899217180294028}
   - component: {fileID: 1416764056664014404}
   - component: {fileID: 4089558371239574881}
   - component: {fileID: 7696118450858855668}
   - component: {fileID: 2131380057116891160}
   - component: {fileID: 3835047347027485554}
-  m_Layer: 5
-  m_Name: Pips
+  m_Layer: 14
+  m_Name: OldHealthPips
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ RectTransform:
   m_GameObject: {fileID: 6178483482303869474}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.003, y: 0.003, z: 0.003}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -42,7 +42,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 3.8234863}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8215185759831701676
+--- !u!114 &250899217180294028
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -51,15 +51,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 6178483482303869474}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a9618883a8ee7f40b3ba0fb4f33c4fa, type: 3}
+  m_Script: {fileID: 11500000, guid: 2e45d0602c6fb3a4cbfd7cd7f0a2a161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pipPrefab: {fileID: 9116720737132212002, guid: add3e4eac06ee074cae6d4c6f826f4de, type: 3}
-  pips: []
-  lookAtCamera: 0
-  totalPips: 5
-  filledPips: 2
-  updatePips: 0
+  healthTotal: 0
+  health: 0
+  onTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  onTakeDamageFrom:
+    m_PersistentCalls:
+      m_Calls: []
+  onNoHealth:
+    m_PersistentCalls:
+      m_Calls: []
+  healthPips: []
+  healthPipPrefab: {fileID: 2793535128678553821, guid: d87b5d8a720abbf48882f96c0f838179, type: 3}
+  healthPipCanvas: {fileID: 4099199581749838624}
+  lastDamaged: -1
 --- !u!223 &1416764056664014404
 Canvas:
   m_ObjectHideFlags: 0
@@ -79,7 +88,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: -379280521
+  m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &4089558371239574881
