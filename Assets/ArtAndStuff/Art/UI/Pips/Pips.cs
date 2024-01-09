@@ -1,11 +1,14 @@
+using MyBox;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
-[RequireComponent(typeof(Canvas))]
+[ExecuteAlways]
 public class Pips : BaseMonoBehaviour
 {
+    [SerializeField] private Transform pipTarget;
     [SerializeField] private Pip pipPrefab;
-    private Canvas canvas;
     [ReadOnly][SerializeField] private List<Pip> pips = new();
     [SerializeField] private bool lookAtCamera;
 
@@ -16,9 +19,12 @@ public class Pips : BaseMonoBehaviour
     private int oldPipCount;
     private int oldFilledCount;
 
+    [Foldout("Events")] public UnityEvent<int> onSetTotal;
+    [Foldout("Events")] public UnityEvent<int> onSetFilled;
+    [Foldout("Events")] public UnityEvent<int> onChanged;
+
     private void Awake()
     {
-        canvas = GetComponent<Canvas>();
         oldPipCount = totalPips;
         oldFilledCount = filledPips;
     }
@@ -56,6 +62,9 @@ public class Pips : BaseMonoBehaviour
         {
             pips[i].Filled = i < filled;
         }
+        onChanged.Invoke(filledPips - oldFilledCount);
+        onSetFilled.Invoke(filledPips);
+        oldFilledCount = filledPips;
     }
 
     protected void ClearPips()
@@ -71,13 +80,23 @@ public class Pips : BaseMonoBehaviour
     {
         for (int i = 0; i < number; i++)
         {
-            Pip pip = Instantiate(pipPrefab, canvas.transform);
+            Pip pip = Instantiate(pipPrefab, pipTarget == null ? transform : pipTarget);
             pips.Add(pip);
         }
     }
 
     private void RemovePips(int number)
     {
+        for(int i = pips.Count - number; i < pips.Count; i++)
+        {
+            if (pips[i] != null)
+            {
+                if (Application.isEditor)
+                    DestroyImmediate(pips[i].gameObject);
+                else
+                    Destroy(pips[i].gameObject);
+            }
+        }
         pips.RemoveRange(pips.Count - number, number);
     }
 
@@ -89,6 +108,8 @@ public class Pips : BaseMonoBehaviour
             RemovePips(pips.Count - total);
         else if (pips.Count < total)
             AddPips(total - pips.Count);
+        oldPipCount = totalPips;
+        onSetTotal.Invoke(totalPips);
     }
 
 
