@@ -20,6 +20,7 @@ public class Health : BaseMonoBehaviour, IHealth
     {
         health = amount;
     }
+    public virtual void SetHealthBase(int total) { SetHealthBase(total, total); }
     public virtual void SetHealthBase(int amount, int total)
     {
         health = amount;

@@ -10,16 +10,22 @@ using MyBox;
 public class HealthPips : Pips, IHealth
 {
     public int HealthTotal { get => totalPips; set => totalPips = value; }
-    public int Health { get => filledPips; set => filledPips = value; }
+    public int Health 
+    {
+        get { return useFilledPipsForDamage ? totalPips - filledPips : filledPips; }
+        set { filledPips = useFilledPipsForDamage ? totalPips - value : value; }
+    }
     [Foldout("Events")] public UnityEvent<int> onTakeDamage;
     [Foldout("Events")] public UnityEvent<int, Identity> onTakeDamageFrom;
     [Foldout("Events")] public UnityEvent onNoHealth;
+
+    public bool useFilledPipsForDamage = false;
 
     // Pips
     [ButtonMethod]
     private void RefreshPips()
     {
-        int damage = Mathf.Min(HealthTotal - Health, HealthTotal);
+        int damage = Mathf.Min(HealthTotal - (HealthTotal-Health), HealthTotal);
         if (isActiveAndEnabled)
             SetFilled(damage);
     }
@@ -35,7 +41,9 @@ public class HealthPips : Pips, IHealth
         Health = amount;
         RefreshPips();
     }
-    public virtual void SetHealthBase(int amount, int total)
+
+    public virtual void SetHealthBase(int total) { SetHealthBase(total, total); }
+    public virtual void SetHealthBase(int total, int amount)
     {
         Health = amount;
         SetHealthTotal(amount);
