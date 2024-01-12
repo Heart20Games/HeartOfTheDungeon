@@ -155,7 +155,6 @@ public class GameInput : BaseMonoBehaviour
     }
     public void OnSwitchTargetsScroll(InputValue inputValue)
     {
-        print("Target Scroll");
         scroll += inputValue.Get<float>();
         if (!scrollerStarted)
             scroller = StartCoroutine(ScrollPoll());
