@@ -264,10 +264,6 @@ namespace Body
         public void SetMaxHealth(int amount)
         {
             Health.max.Value = amount;
-            //if (healthBar != null)
-            //{
-            //    healthBar.SetHealthTotal(MaxHealth);
-            //}
         }
 
         public void SetCurrentHealth(int amount)
@@ -277,25 +273,18 @@ namespace Body
             if (prevHealth != Health.current.Value && healthBar != null)
             {
                 healthBar.enabled = !alwaysHideHealth;
-                //healthBar.SetHealth(CurrentHealth);
             }
             if (prevHealth > Health.current.Value)
             {
                 artRenderer.Hit();
                 onDmg.Invoke();
                 if (CurrentHealth <= 0f && alive) SetAlive(false);
-                //if (coroutine == null && healthBar != null)
-                //    coroutine = StartCoroutine(DeactivateHealthbar(hideHealthWaitTime));
-                //else
-                //    currentHideHealthTime = hideHealthWaitTime;
             }
         }
 
 
         // Damagable
 
-        //private Coroutine coroutine;
-        //private float currentHideHealthTime;
         public void TakeDamage(int damageAmount, Identity id=Identity.Neutral)
         {
             if (RelativeIdentity(id, Identity) != Identity.Friend)
@@ -303,21 +292,6 @@ namespace Body
                 CurrentHealth -= damageAmount;
             }
         }
-
-        //public IEnumerator DeactivateHealthbar(float waitTime)
-        //{
-        //    Assert.IsNotNull(healthBar);
-        //    currentHideHealthTime = waitTime;
-        //    while (currentHideHealthTime > 0)
-        //    {
-        //        float timeToWait = Mathf.Min(currentHideHealthTime, 1f);
-        //        yield return new WaitForSeconds(timeToWait);
-        //        currentHideHealthTime -= timeToWait;
-        //    }
-        //    healthBar.enabled = false;
-        //    coroutine = null;
-        //}
-
 
         // Castables
 
