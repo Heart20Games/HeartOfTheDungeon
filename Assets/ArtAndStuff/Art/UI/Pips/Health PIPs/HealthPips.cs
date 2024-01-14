@@ -16,19 +16,18 @@ public class HealthPips : Pips, IHealth
         get { return FilledToHealth(); }
         set { SetHealth(value); }
     }
-    [Foldout("Events")] public UnityEvent<int> onTakeDamage;
-    [Foldout("Events")] public UnityEvent<int, Identity> onTakeDamageFrom;
+    [Foldout("Events", true)] public UnityEvent<int> onTakeDamage;
+    public UnityEvent<int, Identity> onTakeDamageFrom;
     [Foldout("Events")] public UnityEvent onNoHealth;
 
+    [Header("Health Pip Settings")]
     public bool useFilledPipsForDamage = false;
 
     // Pips
     [ButtonMethod]
     private void RefreshPips()
     {
-        int damage = Mathf.Min(HealthTotal - (HealthTotal-Health), HealthTotal);
-        if (isActiveAndEnabled)
-            SetFilled(damage);
+        Health = Health;
     }
 
     // Filled vs Health Conversions

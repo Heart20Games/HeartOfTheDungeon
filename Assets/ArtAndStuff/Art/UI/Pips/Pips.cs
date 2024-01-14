@@ -1,4 +1,5 @@
 using MyBox;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine.Events;
 [ExecuteAlways]
 public class Pips : BaseMonoBehaviour
 {
+    [Header("Configuration")]
     [SerializeField] private Transform pipTarget;
     [SerializeField] private Pip pipPrefab;
     [ReadOnly][SerializeField] private List<Pip> pips = new();
@@ -24,6 +26,11 @@ public class Pips : BaseMonoBehaviour
     [Foldout("Events")] public UnityEvent<int> onSetTotal;
     [Foldout("Events")] public UnityEvent<int> onSetFilled;
     [Foldout("Events")] public UnityEvent<int> onChanged;
+
+    [Header("Pip Features")]
+    public bool negativeFillReports = false;
+    
+    // Monobehaviour
 
     private void Awake()
     {
@@ -56,6 +63,8 @@ public class Pips : BaseMonoBehaviour
         }
     }
 
+    // Setters and Fillers
+
     public void SetFilled(int filled) { SetFilled(filled, Mool.Maybe); }
     public void SetFilled(int filled, Mool alwaysReport)
     {
@@ -66,18 +75,20 @@ public class Pips : BaseMonoBehaviour
         }
         print($"Change: {filledPips}/{lastFilledCount} -> {filled}");
         filledPips = filled;
+        if (filledPips != lastFilledCount || alwaysReport.IsYes && !alwaysReport.IsNo) ReportFill();
+        lastFilledCount = filledPips;
         for (int i = 0; i < pips.Count; i++)
         {
             pips[i].Filled = i < filled;
         }
-        if (filledPips != lastFilledCount || alwaysReport.IsYes && !alwaysReport.IsNo) ReportFill();
-        lastFilledCount = filledPips;
     }
 
     public void ReportFill()
     {
+        UnHide();
         print($"Report: {lastFilledCount} -> {filledPips} (dif: {filledPips - lastFilledCount})");
-        onChanged.Invoke(filledPips - lastFilledCount);
+        int sign = negativeFillReports ? -1 : 1;
+        onChanged.Invoke(sign * (filledPips - lastFilledCount));
         onSetFilled.Invoke(filledPips);
     }
 
@@ -126,5 +137,47 @@ public class Pips : BaseMonoBehaviour
         onSetTotal.Invoke(totalPips);
     }
 
+    // Hiding
 
+    [SerializeField] public bool autoHide;
+    [SerializeField] private float hideWaitTime;
+    private Coroutine coroutine;
+    [ReadOnly][SerializeField] private float currentHideTime;
+
+    public void Hide()
+    {
+        foreach (var pip in pips)
+        {
+            pip.gameObject.SetActive(false);
+        }
+    }
+
+    public void UnHide()
+    {
+        foreach (var pip in pips)
+        {
+            pip.gameObject.SetActive(true);
+        }
+
+        if (autoHide && gameObject.activeInHierarchy)
+        {
+            if (coroutine == null)
+                coroutine = StartCoroutine(Deactivate(hideWaitTime));
+            else
+                currentHideTime = hideWaitTime;
+        }
+    }
+
+    public IEnumerator Deactivate(float waitTime)
+    {
+        currentHideTime = waitTime;
+        while (currentHideTime > 0)
+        {
+            float timeToWait = Mathf.Min(currentHideTime, 1f);
+            yield return new WaitForSeconds(timeToWait);
+            currentHideTime -= timeToWait;
+        }
+        Hide();
+        coroutine = null;
+    }
 }
