@@ -13,11 +13,13 @@ public class Pips : BaseMonoBehaviour
     [SerializeField] private bool lookAtCamera;
 
     [Header("Pip Counts")]
-    [SerializeField] protected int totalPips;
-    [SerializeField] protected int filledPips;
+    [SerializeField] private int totalPips = 5;
+    [SerializeField] private int filledPips = 5;
     [SerializeField] private bool updatePips = false;
-    private int oldPipCount;
-    private int oldFilledCount;
+    private int lastPipCount;
+    private int lastFilledCount;
+    public int TotalPips { get => totalPips; set => SetPipCount(value); }
+    public int FilledPips { get => filledPips; set => SetFilled(value); }
 
     [Foldout("Events")] public UnityEvent<int> onSetTotal;
     [Foldout("Events")] public UnityEvent<int> onSetFilled;
@@ -25,21 +27,24 @@ public class Pips : BaseMonoBehaviour
 
     private void Awake()
     {
-        oldPipCount = totalPips;
-        oldFilledCount = filledPips;
+        lastPipCount = totalPips;
+        lastFilledCount = filledPips;
     }
 
     private void Start()
     {
-        SetPipCount(totalPips);
+        if (updatePips)
+        {
+            SetPipCount(totalPips);
+        }
     }
 
     private void Update()
     {
         if (updatePips)
         {
-            if (totalPips != oldPipCount) SetPipCount(totalPips);
-            if (filledPips != oldFilledCount) SetFilled(filledPips);
+            if (totalPips != lastPipCount) SetPipCount(totalPips);
+            if (filledPips != lastFilledCount) SetFilled(filledPips);
         }
     }
 
@@ -51,20 +56,29 @@ public class Pips : BaseMonoBehaviour
         }
     }
 
-    public void SetFilled(int filled)
+    public void SetFilled(int filled) { SetFilled(filled, Mool.Maybe); }
+    public void SetFilled(int filled, Mool alwaysReport)
     {
+        lastFilledCount = filledPips;
         if (filled > totalPips)
         {
             SetPipCount(filled);
         }
+        print($"Change: {filledPips}/{lastFilledCount} -> {filled}");
         filledPips = filled;
         for (int i = 0; i < pips.Count; i++)
         {
             pips[i].Filled = i < filled;
         }
-        onChanged.Invoke(filledPips - oldFilledCount);
+        if (filledPips != lastFilledCount || alwaysReport.IsYes && !alwaysReport.IsNo) ReportFill();
+        lastFilledCount = filledPips;
+    }
+
+    public void ReportFill()
+    {
+        print($"Report: {lastFilledCount} -> {filledPips} (dif: {filledPips - lastFilledCount})");
+        onChanged.Invoke(filledPips - lastFilledCount);
         onSetFilled.Invoke(filledPips);
-        oldFilledCount = filledPips;
     }
 
     protected void ClearPips()
@@ -108,7 +122,7 @@ public class Pips : BaseMonoBehaviour
             RemovePips(pips.Count - total);
         else if (pips.Count < total)
             AddPips(total - pips.Count);
-        oldPipCount = totalPips;
+        lastPipCount = totalPips;
         onSetTotal.Invoke(totalPips);
     }
 

@@ -10,6 +10,7 @@ namespace Body
     using Body.Behavior.ContextSteering;
     using HotD.Castables;
     using Modifiers;
+    using MyBox;
     using Selection;
     using System.Collections;
     using static Body.Behavior.ContextSteering.CSIdentity;
@@ -20,6 +21,7 @@ namespace Body
     [RequireComponent(typeof(Caster))]
     public class Character : AIdentifiable, IDamageable, IBrainable
     {
+        [Foldout("Movement and Positioning", true)]
         [Header("Movement and Positioning")]
         public Transform body;
         public Transform pivot;
@@ -27,6 +29,7 @@ namespace Body
         [HideInInspector] public Movement movement;
         [HideInInspector] public float baseOffset;
 
+        [Foldout("State", true)]
         [Header("State")]
         public bool controllable = true;
         public bool aimActive = false;
@@ -34,25 +37,30 @@ namespace Body
         [Space]
         public UnityEvent<bool> onControl;
 
+        [Foldout("Appearance", true)]
         [Header("Appearance")]
         public ArtRenderer artRenderer;
         public VFXEventController vfxController;
         public CinemachineVirtualCamera virtualCamera;
         public CharacterBlock statBlock;
 
+        [Foldout("Collision", true)]
         [Header("Collision")]
         public Collider aliveCollider;
         public Collider deadCollider;
 
+        [Foldout("Interaction, Selection, and Targeting", true)]
         [Header("Interaction, Selection, and Targeting")]
         public Interactor interactor;
         public TargetFinder targetFinder;
         [HideInInspector] public Talker talker;
 
+        [Foldout("Behaviour", true)]
         [Header("Behaviour")]
         [HideInInspector] public Brain brain;
         public CSController Controller { get => brain.controller; }
 
+        [Foldout("Casting", true)]
         [Header("Casting")]
         [HideInInspector] public Caster caster;
         public Transform weaponLocation;
@@ -72,9 +80,11 @@ namespace Body
         public override string Name { get => statBlock == null ? null : statBlock.characterName; set => statBlock.characterName = value; }
         public override ModField<int> Health { get => health; }
 
+        [Foldout("Status Effects", true)]
         [Header("Status Effects")]
         public List<Status> statuses;
 
+        [Foldout("Health and Damage", true)]
         [Header("Health and Damage")]
         public HealthPips healthBar;
         public bool alwaysHideHealth = false;
@@ -93,12 +103,13 @@ namespace Body
             set { SetMaxHealth(value); }
         }
 
+        [Foldout("Death and Respawning", true)]
         [Header("Death and Respawning")]
         public Transform spawn;
         [Space]
         public UnityEvent<Character> onDeath;
         public UnityEvent onRespawn;
-        public UnityEvent<bool> onAlive;
+        [Foldout("Death and Respawning")] public UnityEvent<bool> onAlive;
 
 
         // Initialization
@@ -121,22 +132,25 @@ namespace Body
 
             // Initialization
             InitializeCastables();
-            MaxHealth = MaxHealth;
-            CurrentHealth = CurrentHealth;
             InitializeSpawn();
             SetControllable(false);
         }
 
         private void Start()
         {
+            // Healthbar Initialization
             if (healthBar != null)
             {
                 healthBar.enabled = false;
-                healthBar.SetHealthBase(CurrentHealth, MaxHealth);
+                //healthBar.SetHealthBase(CurrentHealth, MaxHealth);
                 Health.Subscribe(healthBar.SetHealth, healthBar.SetHealthTotal);
             }
+
+            // Value Initialization
             Identity = Identity;
             SetAlive(true);
+            MaxHealth = statBlock.MaxHealth;
+            CurrentHealth = statBlock.MaxHealth;
         }
 
         private void InitBody()
@@ -249,11 +263,11 @@ namespace Body
 
         public void SetMaxHealth(int amount)
         {
-            Health.max.value = amount;
-            if (healthBar != null)
-            {
-                healthBar.SetHealthTotal(MaxHealth);
-            }
+            Health.max.Value = amount;
+            //if (healthBar != null)
+            //{
+            //    healthBar.SetHealthTotal(MaxHealth);
+            //}
         }
 
         public void SetCurrentHealth(int amount)
@@ -263,7 +277,7 @@ namespace Body
             if (prevHealth != Health.current.Value && healthBar != null)
             {
                 healthBar.enabled = !alwaysHideHealth;
-                healthBar.SetHealth(CurrentHealth);
+                //healthBar.SetHealth(CurrentHealth);
             }
             if (prevHealth > Health.current.Value)
             {

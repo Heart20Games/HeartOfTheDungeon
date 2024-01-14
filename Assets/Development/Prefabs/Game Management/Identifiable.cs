@@ -1,4 +1,5 @@
 using Modifiers;
+using MyBox;
 using System;
 using UnityEngine;
 using static Body.Behavior.ContextSteering.CSIdentity;
@@ -16,10 +17,12 @@ public interface IIdentifiable
 
 public abstract class AIdentifiable : BaseMonoBehaviour, IIdentifiable
 {
+    [Foldout("Identity", true)]
     [Header("Identity")]
     public Portraits portraits = null;
     public Identity identity = Identity.Neutral;
-    public string emotion = "neutral";
+    [Foldout("Identity")] public string emotion = "neutral";
+    
     public abstract Identity Identity { get; set; }
     public virtual PortraitImage Portrait
     {

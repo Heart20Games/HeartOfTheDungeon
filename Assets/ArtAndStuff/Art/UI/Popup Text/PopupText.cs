@@ -7,8 +7,9 @@ public class PopupText : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI textPrefab;
     private TextMeshProUGUI textObject;
-    private Animator healthPipTextAnimator;
+    private Animator textAnimator;
     [SerializeField] private Color decreaseColor = Color.red;
+    [SerializeField] private Color zeroColor = Color.white;
     [SerializeField] private Color increaseColor = Color.green;
 
     private void Start()
@@ -24,7 +25,7 @@ public class PopupText : MonoBehaviour
         pipText.gameObject.SetActive(false);
 
         textObject = pipText;
-        healthPipTextAnimator = pipText.GetComponent<Animator>();
+        textAnimator = pipText.GetComponent<Animator>();
     }
 
     public void ShowText(int value)
@@ -41,7 +42,7 @@ public class PopupText : MonoBehaviour
 
         textObject.gameObject.SetActive(true);
 
-        healthPipTextAnimator.Play("FadeIn");
+        textAnimator.Play("FadeIn");
 
         textObject.text = text;
         textObject.color = color;

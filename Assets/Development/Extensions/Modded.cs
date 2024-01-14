@@ -47,8 +47,8 @@ namespace Modifiers
     [Serializable]
     public class Modded<T>
     {
-        public T baseValue;
-        public T value;
+        protected T baseValue;
+        protected T value;
         public T Value
         {
             get { return value; }
