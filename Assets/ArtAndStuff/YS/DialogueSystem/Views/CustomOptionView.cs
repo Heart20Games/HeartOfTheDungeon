@@ -75,7 +75,6 @@ namespace Yarn.Unity
         public override void OnSelect(BaseEventData eventData)
         {
             base.Select();
-            print("Option View Was Hovered");
             OnOptionHovered.Invoke();
         }
 

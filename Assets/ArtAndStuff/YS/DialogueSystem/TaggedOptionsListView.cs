@@ -167,7 +167,6 @@ namespace Yarn
             /// </summary>
             void OptionViewWasSelected(DialogueOption option)
             {
-                print("Option View Was Selected!");
                 onOptionIsSelected.Invoke();
 
                 StartCoroutine(OptionViewWasSelectedInternal(option));

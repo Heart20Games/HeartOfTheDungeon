@@ -5,41 +5,51 @@ using UnityEngine;
 using static Body.Behavior.ContextSteering.CSIdentity;
 using UnityEngine.Events;
 using MyBox;
+using static UnityEngine.Rendering.DebugUI;
 
 [ExecuteAlways]
 public class HealthPips : Pips, IHealth
 {
-    public int HealthTotal { get => totalPips; set => totalPips = value; }
+    public int HealthTotal { get => TotalPips; set => TotalPips = value; }
     public int Health 
     {
-        get { return useFilledPipsForDamage ? totalPips - filledPips : filledPips; }
-        set { filledPips = useFilledPipsForDamage ? totalPips - value : value; }
+        get { return FilledToHealth(); }
+        set { SetHealth(value); }
     }
-    [Foldout("Events")] public UnityEvent<int> onTakeDamage;
-    [Foldout("Events")] public UnityEvent<int, Identity> onTakeDamageFrom;
+    [Foldout("Events", true)] public UnityEvent<int> onTakeDamage;
+    public UnityEvent<int, Identity> onTakeDamageFrom;
     [Foldout("Events")] public UnityEvent onNoHealth;
 
+    [Header("Health Pip Settings")]
     public bool useFilledPipsForDamage = false;
 
     // Pips
     [ButtonMethod]
     private void RefreshPips()
     {
-        int damage = Mathf.Min(HealthTotal - (HealthTotal-Health), HealthTotal);
-        if (isActiveAndEnabled)
-            SetFilled(damage);
+        Health = Health;
+    }
+
+    // Filled vs Health Conversions
+    public int FilledToHealth()
+    {
+        return useFilledPipsForDamage? TotalPips - FilledPips : FilledPips;
+    }
+    public int HealthToFilled(int value)
+    {
+        return useFilledPipsForDamage ? TotalPips - value : value;
     }
 
     // IHealth
     public virtual void HealDamage(int amount)
     {
         Health += amount;
-        RefreshPips();
     }
-    public virtual void SetHealth(int amount)
+
+    public virtual void SetHealth(int amount) { SetHealth(amount, Mool.Maybe); }
+    public virtual void SetHealth(int amount, Mool alwaysReport)
     {
-        Health = amount;
-        RefreshPips();
+        SetFilled(HealthToFilled(amount), alwaysReport);
     }
 
     public virtual void SetHealthBase(int total) { SetHealthBase(total, total); }
@@ -51,7 +61,7 @@ public class HealthPips : Pips, IHealth
     public virtual void SetHealthTotal(int amount)
     {
         HealthTotal = amount;
-        SetPipCount(HealthTotal);
+        //SetPipCount(HealthTotal);
         SetHealth(Mathf.Min(HealthTotal, Health));
     }
 
@@ -69,6 +79,5 @@ public class HealthPips : Pips, IHealth
             Health = Mathf.Max(Health, 0);
             onNoHealth.Invoke();
         }
-        RefreshPips();
     }
 }
