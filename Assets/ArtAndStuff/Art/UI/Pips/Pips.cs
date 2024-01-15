@@ -28,7 +28,8 @@ public class Pips : BaseMonoBehaviour
     [Foldout("Events")] public UnityEvent<int> onChanged;
 
     [Header("Pip Features")]
-    public bool negativeFillReports = false;
+    public bool negateFillReports = false;
+    public bool debug = false;
     
     // Monobehaviour
 
@@ -73,7 +74,7 @@ public class Pips : BaseMonoBehaviour
         {
             SetPipCount(filled);
         }
-        print($"Change: {filledPips}/{lastFilledCount} -> {filled}");
+        Print($"Change: {filledPips}/{lastFilledCount} -> {filled}", debug);
         filledPips = filled;
         if (filledPips != lastFilledCount || alwaysReport.IsYes && !alwaysReport.IsNo) ReportFill();
         lastFilledCount = filledPips;
@@ -86,8 +87,8 @@ public class Pips : BaseMonoBehaviour
     public void ReportFill()
     {
         UnHide();
-        print($"Report: {lastFilledCount} -> {filledPips} (dif: {filledPips - lastFilledCount})");
-        int sign = negativeFillReports ? -1 : 1;
+        Print($"Report: {lastFilledCount} -> {filledPips} (dif: {filledPips - lastFilledCount})", debug);
+        int sign = negateFillReports ? -1 : 1;
         onChanged.Invoke(sign * (filledPips - lastFilledCount));
         onSetFilled.Invoke(filledPips);
     }
