@@ -29,6 +29,7 @@ public class Pips : BaseMonoBehaviour
 
     [Header("Pip Features")]
     public bool negateFillReports = false;
+    public bool expandTotalOnFill = false;
     public bool debug = false;
     
     // Monobehaviour
@@ -70,10 +71,15 @@ public class Pips : BaseMonoBehaviour
     public void SetFilled(int filled, Mool alwaysReport)
     {
         lastFilledCount = filledPips;
+
         if (filled > totalPips)
         {
-            SetPipCount(filled);
+            if (expandTotalOnFill)
+                SetPipCount(filled);
+            else
+                filled = totalPips;
         }
+
         Print($"Change: {filledPips}/{lastFilledCount} -> {filled}", debug);
         filledPips = filled;
         if (filledPips != lastFilledCount || alwaysReport.IsYes && !alwaysReport.IsNo) ReportFill();
