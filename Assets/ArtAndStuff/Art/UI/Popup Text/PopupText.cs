@@ -1,3 +1,5 @@
+using MyBox;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -5,12 +7,15 @@ using UnityEngine;
 
 public class PopupText : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI textPrefab;
-    private TextMeshProUGUI textObject;
+    [SerializeField] private TMP_Text textPrefab;
+    private TMP_Text textObject;
     private Animator textAnimator;
     [SerializeField] private Color decreaseColor = Color.red;
     [SerializeField] private Color zeroColor = Color.white;
     [SerializeField] private Color increaseColor = Color.green;
+
+    [Header("Testing")]
+    [SerializeField] int testNumber = 0;
 
     private void Start()
     {
@@ -28,11 +33,13 @@ public class PopupText : MonoBehaviour
         textAnimator = pipText.GetComponent<Animator>();
     }
 
-    public void ShowText(int value)
+    public void ShowText(int value) { ShowText<int>(value); }
+    public void ShowText(float value) { ShowText<float>(value); }
+    public void ShowText<T>(T value) where T : IComparable
     {
-        bool decreasing = value < 0;
-        string text = (decreasing ? "-" : "+") + value;
-        Color color = decreasing ? decreaseColor : increaseColor;
+        float sign = value.CompareTo(default(T));
+        string text = (sign == 0 ? " " : sign < 0 ? "" : "+") + value;
+        Color color = sign == 0 ? zeroColor : sign < 0 ? decreaseColor : increaseColor;
         ShowText(text, color);
     }
 
@@ -46,5 +53,12 @@ public class PopupText : MonoBehaviour
 
         textObject.text = text;
         textObject.color = color;
+    }
+
+    // Testing
+    [ButtonMethod]
+    public void TestShowText()
+    {
+        ShowText(testNumber);
     }
 }
