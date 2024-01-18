@@ -28,6 +28,16 @@ namespace Attributes
             OtherAttributes.Remove(new(attribute, weight));
         }
 
+        public bool HasAttribute(Attribute attribute)
+        {
+            foreach (var otherAttribute in OtherAttributes)
+            {
+                if (otherAttribute.value == attribute)
+                    return true;
+            }
+            return false;
+        }
+
         public override void Clear()
         {
             ClearAttributes(OtherAttributes);

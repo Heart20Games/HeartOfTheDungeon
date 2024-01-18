@@ -12,9 +12,16 @@ public class CharacterBlock : StatBlock
     public string characterName = "Nobody";
     public DependentAttribute healthMax = new(1);
     public Loadout loadout = null;
+
+    public List<Stat> healthAttributes = new();
     
     private CharacterData charData = null;
     
+    public void Initialize()
+    {
+        ApplyStats(healthAttributes, healthMax);
+    }
+
     public int MaxHealth { get => (int)healthMax.FinalValue; }
 
     // Persisent Data

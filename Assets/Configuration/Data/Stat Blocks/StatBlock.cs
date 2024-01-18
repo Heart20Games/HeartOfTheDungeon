@@ -59,7 +59,17 @@ public class StatBlock : PersistentScriptableObject
     //    };
     //}
 
-    public Attribute GetStat(Stat stat)
+    public void ApplyStats(List<Stat> stats, DependentAttribute dependent)
+    {
+        foreach (Stat stat in stats)
+        {
+            Attribute attribute = GetAttribute(stat);
+            if (!dependent.HasAttribute(attribute))
+                dependent.AddAttribute(attribute);
+        }
+    }
+
+    public Attribute GetAttribute(Stat stat)
     {
         return stat switch
         {

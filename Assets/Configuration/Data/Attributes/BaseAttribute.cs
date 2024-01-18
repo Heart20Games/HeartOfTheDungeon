@@ -32,11 +32,15 @@ namespace Attributes
         [SerializeField] private Vector2 baseMultiplierRange = new(0, 5);
 
         [HideInInspector] public UnityEvent updated = new();
-        [HideInInspector] public UnityEvent<float> updatedFinal = new();
+        [HideInInspector] public UnityEvent<float> updatedFinalFloat = new();
+        [HideInInspector] public UnityEvent<int> updatedFinalInt = new();
         public void Updated()
         {
+            Debug.Log("Updated");
             updated.Invoke();
-            updatedFinal.Invoke(FinalValue);
+            float finalValue = FinalValue;
+            updatedFinalFloat.Invoke(finalValue);
+            updatedFinalInt.Invoke((int)finalValue);
         }
 
         public BaseAttribute(int value, float multiplier = 0)

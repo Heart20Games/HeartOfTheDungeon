@@ -138,10 +138,10 @@ namespace Body
 
         private void Start()
         {
-            // Healthbar Initialization
+            // Healthbar subscription
             if (healthBar != null)
             {
-                healthBar.enabled = false;
+                //healthBar.enabled = false;
                 //healthBar.SetHealthBase(CurrentHealth, MaxHealth);
                 Health.Subscribe(healthBar.SetHealth, healthBar.SetHealthTotal);
             }
@@ -151,6 +151,9 @@ namespace Body
             SetAlive(true);
             MaxHealth = statBlock.MaxHealth;
             CurrentHealth = statBlock.MaxHealth;
+
+            // Attribute subscriptions
+            statBlock.healthMax.updatedFinalInt.AddListener(health.max.SetValue); // max health dependent attribute
         }
 
         private void InitBody()

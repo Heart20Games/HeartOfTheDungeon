@@ -114,7 +114,7 @@ namespace Modifiers
         }
 
         // Setter
-        private void SetValue(T value)
+        public void SetValue(T value)
         {
             foreach (Modify modifier in modifiers)
             {
