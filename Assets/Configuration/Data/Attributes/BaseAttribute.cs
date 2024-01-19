@@ -13,16 +13,20 @@ namespace Attributes
     {
         [Serializable] public struct Weighted<T>
         {
-            public Weighted(T value, float weight)
+            public Weighted(T value, float weight, string name = "[Weighted]")
             {
+                this.name = name;
                 this.value = value;
                 this.weight = weight;
             }
+            [HideInInspector] public string name;
             public T value;
             public float weight;
         }
 
         public enum Part { BaseValue, BaseMultiplier }
+
+        public string name;
 
         [ReadOnly][SerializeField] private float finalPreview;
 
@@ -31,17 +35,24 @@ namespace Attributes
         [SerializeField] private Vector2 baseValueRange = new(0, 5);
         [SerializeField] private Vector2 baseMultiplierRange = new(0, 5);
 
+        [SerializeField] protected bool debug = false;
+
         [HideInInspector] public UnityEvent updated = new();
-        [HideInInspector] public UnityEvent<float> updatedFinal = new();
+        [HideInInspector] public UnityEvent<float> updatedFinalFloat = new();
+        [HideInInspector] public UnityEvent<int> updatedFinalInt = new();
         public void Updated()
         {
+            if (debug) Debug.Log($"Updated {name}");
             updated.Invoke();
-            updatedFinal.Invoke(FinalValue);
+            float finalValue = FinalValue;
+            updatedFinalFloat.Invoke(finalValue);
+            updatedFinalInt.Invoke((int)finalValue);
         }
 
-        public BaseAttribute(int value, float multiplier = 0)
+        public BaseAttribute(int value, string name = "[New Base Attribute]", float multiplier = 0)
         {
             baseValue = value;
+            this.name = name;
             baseMultiplier = multiplier;
         }
 

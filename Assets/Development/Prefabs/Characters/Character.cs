@@ -134,17 +134,17 @@ namespace Body
             InitializeCastables();
             InitializeSpawn();
             SetControllable(false);
+
+            // Statblock connections
+            statBlock.Initialize();
+            statBlock.healthMax.updatedFinalInt.AddListener(health.max.SetValue); // max health dependent attribute
         }
 
         private void Start()
         {
-            // Healthbar Initialization
+            // Healthbar subscription
             if (healthBar != null)
-            {
-                healthBar.enabled = false;
-                //healthBar.SetHealthBase(CurrentHealth, MaxHealth);
                 Health.Subscribe(healthBar.SetHealth, healthBar.SetHealthTotal);
-            }
 
             // Value Initialization
             Identity = Identity;

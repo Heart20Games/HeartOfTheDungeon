@@ -177,10 +177,12 @@ public class Game : BaseMonoBehaviour
     {
         if (debug) print($"Change InputMode to {menu} (in bank? {(MenuBank.ContainsKey(menu) ? "yes" : "no")})");
         if (MenuBank.TryGetValue(menu, out GameMode mode))
+        {
             SetMode(mode);
+        }
         else
         {
-            Debug.LogWarning($"Can't find game mode for \"{menu}\"");
+            if (debug) Debug.LogWarning($"Can't find game mode for \"{menu}\"");
             SetMode(InputMode.Character);
         }
     }

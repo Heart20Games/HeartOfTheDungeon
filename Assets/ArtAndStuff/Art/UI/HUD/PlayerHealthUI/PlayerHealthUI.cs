@@ -53,7 +53,7 @@ public class PlayerHealthUI : BaseMonoBehaviour
     {
         if (Health != null)
         {
-            Health.Subscribe(ModifyCurrentHealth, ModifyMaxHealth);
+            Health.Subscribe(SetCurrentHealth, SetMaxHealth);
             healthConnected = true;
             InitializeHealth();
         }
@@ -68,12 +68,12 @@ public class PlayerHealthUI : BaseMonoBehaviour
     }
 
     // Modifiers
-    public void ModifyMaxHealth(int finalHealth)
+    public void SetMaxHealth(int finalHealth)
     {
         UpdateHealth(Health != null ? Health.current.Value : previousHealth, finalHealth);
     }
 
-    public void ModifyCurrentHealth(int finalHealth)
+    public void SetCurrentHealth(int finalHealth)
     {
         UpdateHealth(finalHealth);
     }
@@ -123,12 +123,12 @@ public class PlayerHealthUI : BaseMonoBehaviour
     [ButtonMethod]
     public void TestHealthDrop()
     {
-        ModifyCurrentHealth(Health.current.Value - 1);
+        SetCurrentHealth(Health.current.Value - 1);
     }
 
     [ButtonMethod]
     public void TestHealthUp()
     {
-        ModifyCurrentHealth(Health.current.Value + 1);
+        SetCurrentHealth(Health.current.Value + 1);
     }
 }

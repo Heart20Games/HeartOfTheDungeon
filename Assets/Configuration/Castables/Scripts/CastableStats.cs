@@ -82,7 +82,7 @@ public class CastableStats : ScriptableObject
     {
         foreach (var attribute in attributes)
         {
-            dependent.AddAttribute(statBlock.GetStat(attribute.stat), attribute.weight);
+            dependent.AddAttribute(statBlock.GetAttribute(attribute.stat), attribute.weight);
         }
     }
 
