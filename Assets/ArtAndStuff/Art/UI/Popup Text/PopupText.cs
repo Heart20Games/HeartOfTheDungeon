@@ -49,7 +49,7 @@ public class PopupText : MonoBehaviour
 
         textObject.gameObject.SetActive(true);
 
-        textAnimator.Play("FadeIn");
+        textAnimator.SetTrigger("FadeIn"); // textAnimator.Play("FadeIn");
 
         textObject.text = text;
         textObject.color = color;

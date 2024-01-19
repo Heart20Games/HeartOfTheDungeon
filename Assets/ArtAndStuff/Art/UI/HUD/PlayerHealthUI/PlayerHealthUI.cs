@@ -70,6 +70,7 @@ public class PlayerHealthUI : BaseMonoBehaviour
     // Modifiers
     public void SetMaxHealth(int finalHealth)
     {
+        print($"Set Max Player Health: {startingHealth} -> {finalHealth}");
         UpdateHealth(Health != null ? Health.current.Value : previousHealth, finalHealth);
     }
 
@@ -97,10 +98,12 @@ public class PlayerHealthUI : BaseMonoBehaviour
         Assert.IsNotNull(healthFill);
         Assert.IsNotNull(healthNumber);
 
-        float healthDifference = Mathf.Abs(currentHealth - previousHealth);
+        currentHealth = Mathf.Min(currentHealth, totalHealth);
+
+        float healthDifference = previousHealth - currentHealth;
         
         if (currentHealth != previousHealth)
-            onHealthChanged.Invoke(currentHealth);
+            onHealthChanged.Invoke((int)healthDifference);
 
         if(currentHealth < previousHealth)
             healthAnimator.SetTrigger("Health Down");
@@ -108,12 +111,14 @@ public class PlayerHealthUI : BaseMonoBehaviour
             healthAnimator.SetTrigger("Health Up");
         else if(totalHealth > startingHealth)
             healthAnimator.SetTrigger("Health Max Up");
-        else return;
+        else if (totalHealth == startingHealth)
+            return;
 
         previousHealth = currentHealth;
         startingHealth = totalHealth;
 
         float fillPosition = (currentHealth / startingHealth);
+        print($"Fill position: {fillPosition} ({currentHealth}/{startingHealth})");
         healthFill.transform.localPosition = new Vector3 (0, Mathf.Lerp(-220f, 0f, fillPosition), 0);
         healthNumber.text = currentHealth.ToString();
     }
@@ -123,12 +128,12 @@ public class PlayerHealthUI : BaseMonoBehaviour
     [ButtonMethod]
     public void TestHealthDrop()
     {
-        SetCurrentHealth(Health.current.Value - 1);
+        SetCurrentHealth((int)previousHealth - 1);
     }
 
     [ButtonMethod]
     public void TestHealthUp()
     {
-        SetCurrentHealth(Health.current.Value + 1);
+        SetCurrentHealth((int)previousHealth + 1);
     }
 }
