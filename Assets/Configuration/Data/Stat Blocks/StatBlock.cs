@@ -23,17 +23,19 @@ public struct StatAttribute
 [CreateAssetMenu(fileName ="StatBlock", menuName = "Stats/StatBlock", order = 1)]
 public class StatBlock : PersistentScriptableObject
 {
-    public enum Stat { Strength, Dexterity, Constituion, Intelligence }
+    public enum Stat { Strength, Dexterity, Constitution, Intelligence }
     //public enum ModType { Inc, Mul, Quad, Exp, Log }
     
-    public Attribute strength;
-    public Attribute dexterity;
-    public Attribute constitution;
-    public Attribute intelligence;
+    public Attribute strength = new(0, "Strength");
+    public Attribute dexterity = new(0, "Dexterity");
+    public Attribute constitution = new(0, "Constitution");
+    public Attribute intelligence = new(0, "Intelligence");
 
     public List<StatBonus> bonuses = new();
 
     private StatBlockData statData;
+
+    public virtual void Initialize() { }
 
     // Modifiers
     //public int ModifyStat(int score, StatMod mod, float rate = 1f)
@@ -75,7 +77,7 @@ public class StatBlock : PersistentScriptableObject
         {
             Stat.Strength => strength,
             Stat.Dexterity => dexterity,
-            Stat.Constituion => constitution,
+            Stat.Constitution => constitution,
             Stat.Intelligence => intelligence,
             _ => null,
         };

@@ -10,15 +10,22 @@ public class CharacterBlock : StatBlock
     public CastableLibrary castableBank;
     public int portraitIndex = 0;
     public string characterName = "Nobody";
-    public DependentAttribute healthMax = new(1);
+    public DependentAttribute healthMax = new(1, "Health Max");
     public Loadout loadout = null;
 
     public List<Stat> healthAttributes = new();
     
     private CharacterData charData = null;
     
-    public void Initialize()
+    public override void Initialize()
     {
+        base.Initialize();
+        strength.name = $"{characterName}'s Strength";
+        dexterity.name = $"{characterName}'s Dexterity";
+        constitution.name = $"{characterName}'s Constitution";
+        intelligence.name = $"{characterName}'s Intelligence";
+        healthMax.name = $"{characterName}'s Health Max";
+        healthMax.Clear();
         ApplyStats(healthAttributes, healthMax);
     }
 

@@ -12,7 +12,20 @@ namespace Modifiers
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             SerializedProperty valueProperty = property.FindPropertyRelative("value");
-            EditorGUI.PropertyField(position, valueProperty, new GUIContent("[M]  " + property.displayName));
+            SerializedProperty debugProperty = property.FindPropertyRelative("debug");
+
+            Rect pos = EditorGUI.PrefixLabel(position, new($"[M]  {property.displayName}"));
+
+            pos.width *= 0.25f;
+            pos.x *= 0.75f;
+            Rect p1 = pos, p2 = pos;
+            p2.x += pos.width;
+
+            EditorGUI.PropertyField(p1, valueProperty, GUIContent.none);
+
+            Rect pos2 = EditorGUI.PrefixLabel(p2, new GUIContent("(Debug?)"));
+            pos2.x = p2.x + ((pos2.x - p2.x) * 0.5f);
+            EditorGUI.PropertyField(pos2, debugProperty, GUIContent.none);
         }
     }
 }

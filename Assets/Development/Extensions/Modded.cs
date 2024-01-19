@@ -10,15 +10,15 @@ namespace Modifiers
         public ModField(string name, T startValue, T maxValue, Modded<T>.Constraint constraint=null)
         {
             this.name = name;
-            current = new(startValue);
-            max = new(maxValue);
+            current = new(startValue, $"{name} Current");
+            max = new(maxValue, $"{name} Max");
 
             current.constraint = constraint ?? ApplyMax;
         }
 
-        public string name;
-        [HideInInspector] public Modded<T> current;
-        [HideInInspector] public Modded<T> max;
+        [HideInInspector] public string name;
+        public Modded<T> current;
+        public Modded<T> max;
 
         // Constraint
         public T ApplyMax(T finalValue)
@@ -56,8 +56,11 @@ namespace Modifiers
     [Serializable]
     public class Modded<T>
     {
-        protected T baseValue;
-        protected T value;
+        [SerializeField] protected bool debug = false;
+
+        [HideInInspector] public string name;
+        [SerializeField] protected T baseValue;
+        [SerializeField] protected T value;
         public T Value
         {
             get { return value; }
@@ -78,9 +81,10 @@ namespace Modifiers
         [HideInInspector] public Constraint constraint;
 
         // Constructor
-        public Modded(T value)
+        public Modded(T value, string name = "[Modded]")
         {
             this.value = value;
+            this.name = name;
         }
 
         // Modifiers
@@ -128,6 +132,7 @@ namespace Modifiers
             {
                 listener.Invoke(value);
             }
+            if (debug) Debug.Log($"{name} value set to {value} from {this.value}.");
             this.value = value;
         }
     }
