@@ -66,7 +66,7 @@ namespace HotD.Castables
             if (stats != null)
             {
                 OnSetPowerLimit(powerLimit.FinalValue);
-                stats.chargeLimit.updatedFinal.AddListener(OnSetPowerLimit);
+                stats.chargeLimit.updatedFinalFloat.AddListener(OnSetPowerLimit);
             }
         }
 

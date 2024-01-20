@@ -10,7 +10,7 @@ namespace Attributes
     [Serializable]
     public abstract class Bonus : BaseAttribute
     {
-        public Bonus(int value, float multiplier=0) : base(value, multiplier) { }
+        public Bonus(int value, float multiplier=0, string name = "[New Bonus]") : base(value, name, multiplier) { }
         public override abstract float FinalValue { get; }
     }
 }

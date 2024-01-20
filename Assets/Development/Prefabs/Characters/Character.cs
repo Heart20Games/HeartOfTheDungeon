@@ -134,17 +134,23 @@ namespace Body
             InitializeCastables();
             InitializeSpawn();
             SetControllable(false);
+
+            // Statblock connections
+            statBlock.Initialize();
+            statBlock.healthMax.updatedFinalInt.AddListener(health.max.SetValue); // max health dependent attribute;
+            health.current.Subscribe((int oldValue, int newValue) => 
+            {
+                int change = newValue - oldValue;
+                change = (int)Mathf.Max(change + statBlock.armorClass.FinalValue, 0);
+                return oldValue + change;
+            });
         }
 
         private void Start()
         {
-            // Healthbar Initialization
+            // Healthbar subscription
             if (healthBar != null)
-            {
-                healthBar.enabled = false;
-                //healthBar.SetHealthBase(CurrentHealth, MaxHealth);
                 Health.Subscribe(healthBar.SetHealth, healthBar.SetHealthTotal);
-            }
 
             // Value Initialization
             Identity = Identity;

@@ -51,7 +51,7 @@ public class CharacterSheet : BaseMonoBehaviour
         foreach (StatField stat in statFields)
         {
             stat.field.Name = stat.stat.ToString();
-            stat.field.SetAttribute(character.GetStat(stat.stat));
+            stat.field.SetAttribute(character.GetAttribute(stat.stat));
         }
 
         // Set Character Loadout

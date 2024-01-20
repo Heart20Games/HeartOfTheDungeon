@@ -80,7 +80,10 @@ public class GameSettings : ScriptableObject
     {
         inputBank ??= new();
         for (int i = 0; i < modes.Count; i++)
-            inputBank[modes[i].inputMode] = modes[i];
+        {
+            if (modes[i].inputMode != InputMode.None)
+                inputBank[modes[i].inputMode] = modes[i];
+        }
         return inputBank;
     }
     
@@ -90,7 +93,10 @@ public class GameSettings : ScriptableObject
     {
         menuBank ??= new();
         for (int i = 0; i < modes.Count; i++)
-            menuBank[modes[i].activeMenu] = modes[i];
+        {
+            if (modes[i].activeMenu != Menu.None)
+                menuBank[modes[i].activeMenu] = modes[i];
+        }
         return menuBank;
     }
 
