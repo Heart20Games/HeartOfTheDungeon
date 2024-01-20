@@ -10,10 +10,13 @@ public class CharacterBlock : StatBlock
     public CastableLibrary castableBank;
     public int portraitIndex = 0;
     public string characterName = "Nobody";
-    public DependentAttribute healthMax = new(1, "Health Max");
     public Loadout loadout = null;
 
-    public List<Stat> healthAttributes = new();
+    public DependentAttribute healthMax = new(1, "Health Max");
+    public List<StatAttribute> healthAttributes = new();
+
+    public DependentAttribute armorClass = new(0, "Armor Class");
+    public List<StatAttribute> armorAttributes = new();
     
     private CharacterData charData = null;
     
@@ -27,6 +30,8 @@ public class CharacterBlock : StatBlock
         healthMax.name = $"{characterName}'s Health Max";
         healthMax.Clear();
         ApplyStats(healthAttributes, healthMax);
+        armorClass.Clear();
+        ApplyStats(armorAttributes, armorClass);
     }
 
     public int MaxHealth { get => (int)healthMax.FinalValue; }
