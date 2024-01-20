@@ -55,7 +55,6 @@ namespace Body
         public TargetFinder targetFinder;
         [HideInInspector] public Talker talker;
 
-        [Foldout("Behaviour", true)]
         [Header("Behaviour")]
         [HideInInspector] public Brain brain;
         public CSController Controller { get => brain.controller; }
@@ -141,7 +140,7 @@ namespace Body
             health.current.Subscribe((int oldValue, int newValue) => 
             {
                 int change = newValue - oldValue;
-                change = (int)Mathf.Max(change + statBlock.armorClass.FinalValue, 0);
+                change = (int)Mathf.Min(change + statBlock.armorClass.FinalValue, 0);
                 return oldValue + change;
             });
         }
