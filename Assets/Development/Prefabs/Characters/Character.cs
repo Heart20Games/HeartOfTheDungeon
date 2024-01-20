@@ -55,7 +55,6 @@ namespace Body
         public TargetFinder targetFinder;
         [HideInInspector] public Talker talker;
 
-        [Foldout("Behaviour", true)]
         [Header("Behaviour")]
         [HideInInspector] public Brain brain;
         public CSController Controller { get => brain.controller; }
