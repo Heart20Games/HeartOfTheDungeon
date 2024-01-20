@@ -140,7 +140,7 @@ namespace Body
             health.current.Subscribe((int oldValue, int newValue) => 
             {
                 int change = newValue - oldValue;
-                change = (int)Mathf.Max(change + statBlock.armorClass.FinalValue, 0);
+                change = (int)Mathf.Min(change + statBlock.armorClass.FinalValue, 0);
                 return oldValue + change;
             });
         }
