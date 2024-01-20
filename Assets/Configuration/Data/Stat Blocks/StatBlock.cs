@@ -16,6 +16,12 @@ public struct StatBonus
 [Serializable]
 public struct StatAttribute
 {
+    public StatAttribute(Stat stat, float weight=1)
+    {
+        this.stat = stat;
+        this.weight = weight;
+    }
+
     public Stat stat;
     public float weight;
 }
@@ -68,6 +74,16 @@ public class StatBlock : PersistentScriptableObject
             Attribute attribute = GetAttribute(stat);
             if (!dependent.HasAttribute(attribute))
                 dependent.AddAttribute(attribute);
+        }
+    }
+
+    public void ApplyStats(List<StatAttribute> stats, DependentAttribute dependent)
+    {
+        foreach (StatAttribute stat in stats)
+        {
+            Attribute attribute = GetAttribute(stat.stat);
+            if (!dependent.HasAttribute(attribute, stat.weight))
+                dependent.AddAttribute(attribute, stat.weight);
         }
     }
 
