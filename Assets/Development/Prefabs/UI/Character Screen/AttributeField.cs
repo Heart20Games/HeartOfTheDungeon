@@ -2,6 +2,7 @@ using Attributes;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UIPips;
 
 public class AttributeField : BaseMonoBehaviour
 {

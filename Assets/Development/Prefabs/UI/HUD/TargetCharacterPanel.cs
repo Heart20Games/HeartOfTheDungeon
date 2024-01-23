@@ -2,6 +2,7 @@ using Body;
 using Modifiers;
 using TMPro;
 using UnityEngine;
+using UIPips;
 
 public class TargetCharacterPanel : BaseMonoBehaviour
 {

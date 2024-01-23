@@ -6,6 +6,7 @@ using static Body.Behavior.ContextSteering.CSIdentity;
 using UnityEngine.Events;
 using MyBox;
 using static UnityEngine.Rendering.DebugUI;
+using UIPips;
 
 [ExecuteAlways]
 public class HealthPips : Pips, IHealth
