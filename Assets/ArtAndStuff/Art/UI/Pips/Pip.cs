@@ -1,34 +1,31 @@
 
+using MyBox;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace UIPips
 {
-    [RequireComponent(typeof(Animator))]
-    //[RequireComponent (typeof(Image))]
     [ExecuteAlways]
     public class Pip : BaseMonoBehaviour
     {
         // Fields
-        private Animator animator;
-        [SerializeField] private string filledProperty = "IsFilled";
         [SerializeField] private Sprite sprite;
         [SerializeField] private bool invertFilled;
         [SerializeField] internal int amount;
         [ReadOnly][SerializeField] private bool filled;
 
         // Events
-        public UnityEvent<Sprite> onSprite;
+        [Foldout("Events", true)] public UnityEvent<Sprite> onSprite;
+        public UnityEvent<string> onLabel;
+        public UnityEvent<bool> onFilled;
+        [SerializeField] private string filledProperty;
+        [Foldout("Events")] public UnityEvent<string, bool> onFilledProp;
 
         // Properties
         private Sprite Sprite { get => sprite; set => SetSprite(value); }
         public bool Filled { get => filled; set => SetFilled(value); }
-
-        public void Awake()
-        {
-            animator = GetComponent<Animator>();
-        }
+        public int Amount { get => amount; set => SetAmount(value); }
 
         public void SetSprite(Sprite sprite)
         {
@@ -39,8 +36,14 @@ namespace UIPips
         public void SetFilled(bool filled)
         {
             this.filled = filled;
-            if (animator != null)
-                animator.SetBool(filledProperty, filled != invertFilled);
+            onFilled.Invoke(filled != invertFilled);
+            onFilledProp.Invoke(filledProperty, filled != invertFilled);
+        }
+
+        public void SetAmount(int amount)
+        {
+            this.amount = amount;
+            onLabel.Invoke(amount >= 0 ? $"{amount}" : "");
         }
     }
 }

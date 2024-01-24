@@ -169,8 +169,8 @@ namespace UIPips
             if (useGrouping)
             {
                 // Filled
-                int fullGroups = number / groupCapacity;
-                int remainder = number % groupCapacity;
+                int fullGroups = Mathf.Max(0, (number - groupThreshold)) / groupCapacity;
+                int remainder = Mathf.Min(number, (number % groupCapacity) + groupThreshold);
                 for (int i = 0; i < fullGroups; i++)
                 {
                     AddPip(groupPrefab, groupCapacity);
@@ -194,7 +194,7 @@ namespace UIPips
             Pip pip = Instantiate(prefab, pipTarget == null ? transform : pipTarget);
             pip.transform.SetSiblingIndex(PipsEndPoint + 1);
             pips.Add(pip);
-            pip.amount = amount;
+            pip.Amount = amount;
         }
 
         private void RemovePips(int number)
