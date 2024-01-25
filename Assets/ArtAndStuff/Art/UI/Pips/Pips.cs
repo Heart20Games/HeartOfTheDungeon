@@ -21,8 +21,6 @@ namespace UIPips
         [SerializeField] private int totalPips = 5;
         [SerializeField] private int filledPips = 5;
         [SerializeField] private bool updatePips = false;
-        private int lastPipCount;
-        private int lastFilledCount;
         public int TotalPips { get => totalPips; set => SetPipCount(value); }
         public int FilledPips { get => filledPips; set => SetFilled(value); }
 
@@ -65,6 +63,11 @@ namespace UIPips
             }
         }
 
+        // Old Values
+        private int lastPipCount;
+        private int lastFilledCount;
+        private int lastGroupCapacity;
+        private int lastGroupThreshold;
 
         // Monobehaviour
 
@@ -72,6 +75,8 @@ namespace UIPips
         {
             lastPipCount = totalPips;
             lastFilledCount = filledPips;
+            lastGroupCapacity = groupCapacity;
+            lastGroupThreshold = groupThreshold;
             if (groupPrefab == null) groupPrefab = pipPrefab;
         }
 
@@ -87,8 +92,18 @@ namespace UIPips
         {
             if (updatePips)
             {
+                if (groupCapacity != lastGroupCapacity || groupThreshold != lastGroupThreshold)
+                {
+                    SetPipCount(totalPips);
+                    lastGroupCapacity = groupCapacity;
+                    lastGroupThreshold = groupThreshold;
+                }
                 if (totalPips != lastPipCount) SetPipCount(totalPips);
-                if (filledPips != lastFilledCount) SetFilled(filledPips);
+                if (filledPips != lastFilledCount)
+                {
+                    SetFilled(filledPips);
+                    SetPipCount(totalPips);
+                }
             }
         }
 

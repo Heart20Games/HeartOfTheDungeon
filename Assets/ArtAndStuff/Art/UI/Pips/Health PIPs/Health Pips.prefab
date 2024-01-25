@@ -131,9 +131,12 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6178483482303869474, guid: 6b73737465b625640b9d23eb56476e68, type: 3}
       insertIndex: 1
-      addedObject: {fileID: 8112225771601935244}
+      addedObject: {fileID: 7229019440827395628}
     - targetCorrespondingSourceObject: {fileID: 6178483482303869474, guid: 6b73737465b625640b9d23eb56476e68, type: 3}
       insertIndex: 2
+      addedObject: {fileID: 8112225771601935244}
+    - targetCorrespondingSourceObject: {fileID: 6178483482303869474, guid: 6b73737465b625640b9d23eb56476e68, type: 3}
+      insertIndex: 3
       addedObject: {fileID: 3137032592976706711}
   m_SourcePrefab: {fileID: 100100000, guid: 6b73737465b625640b9d23eb56476e68, type: 3}
 --- !u!1 &1523025420899126355 stripped
@@ -141,6 +144,44 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6178483482303869474, guid: 6b73737465b625640b9d23eb56476e68, type: 3}
   m_PrefabInstance: {fileID: 4655805507095903857}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7229019440827395628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523025420899126355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9618883a8ee7f40b3ba0fb4f33c4fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pipTarget: {fileID: 7822660461144648429}
+  pipPrefab: {fileID: 5600084731530724616, guid: 57a6b22f9a7e3ab498f8956214c41cb7, type: 3}
+  pips: []
+  lookAtCamera: 0
+  totalPips: 5
+  filledPips: 5
+  updatePips: 0
+  onSetTotal:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetFilled:
+    m_PersistentCalls:
+      m_Calls: []
+  onChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  negateFillReports: 0
+  expandTotalOnFill: 0
+  debug: 0
+  useGrouping: 1
+  groupThreshold: 0
+  groupCapacity: 5
+  groupPrefab: {fileID: 5600084731530724616, guid: 57a6b22f9a7e3ab498f8956214c41cb7, type: 3}
+  autoHide: 0
+  hideWaitTime: 0
+  currentHideTime: 0
 --- !u!114 &8112225771601935244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,6 +222,13 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  negateFillReports: 0
+  expandTotalOnFill: 0
+  debug: 0
+  useGrouping: 0
+  groupThreshold: 2
+  groupCapacity: 5
+  groupPrefab: {fileID: 6396915779910910143, guid: 78307c5554ec5a049a97bcfa3c54e7e7, type: 3}
   autoHide: 0
   hideWaitTime: 1
   currentHideTime: 0
@@ -210,6 +258,7 @@ MonoBehaviour:
   decreaseColor: {r: 1, g: 0, b: 0, a: 1}
   zeroColor: {r: 1, g: 1, b: 1, a: 1}
   increaseColor: {r: 0, g: 1, b: 0, a: 1}
+  testNumber: 0
 --- !u!224 &7822660461144648429 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3175902291408917660, guid: 6b73737465b625640b9d23eb56476e68, type: 3}

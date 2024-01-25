@@ -3,7 +3,7 @@ using UnityEngine;
 public class ImageAdaptor : Adaptor
 {
     public EventAdaptor<Sprite> sprite;
-    public EventAdaptor<Color> color;
+    public EventAdaptor<Color> color = new(Color.white);
 
     public Sprite Sprite { set { sprite.Value = value; } }
     public Color Color { set { color.Value = value; } }
