@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DigitLibrary", menuName = "DigitLibrary", order = 1)]
-public class Digits : BaseScriptableObject
+public class DigitLibrary : BaseScriptableObject
 {
     public Sprite[] numbers;
     public Sprite plus;
