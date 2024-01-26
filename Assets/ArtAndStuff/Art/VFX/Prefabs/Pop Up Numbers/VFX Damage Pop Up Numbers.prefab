@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4044326650105295652}
   - component: {fileID: 534214013897971964}
   - component: {fileID: 1034454372054040313}
+  - component: {fileID: 3075272013442960363}
   m_Layer: 0
   m_Name: VFX Damage Pop Up Numbers
   m_TagString: Untagged
@@ -126,3 +127,81 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &3075272013442960363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073858855693643415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e249d926f57f0141906bce6119dd58f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  library: {fileID: 11400000, guid: e5a95bf2d09ae984e854815f47eda9cc, type: 2}
+  digit1Property: OnesNumberTexture
+  onDigit1:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 534214013897971964}
+        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+        m_MethodName: SetTexture
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  digit2Property: TensNumberTexture
+  onDigit2:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 534214013897971964}
+        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+        m_MethodName: SetTexture
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  digit3Property: HundredsNumberTexture
+  onDigit3:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 534214013897971964}
+        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+        m_MethodName: SetTexture
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  evenProperty: TwoDigits
+  onEven:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 534214013897971964}
+        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+        m_MethodName: SetBool
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  serveWithSign: 0
