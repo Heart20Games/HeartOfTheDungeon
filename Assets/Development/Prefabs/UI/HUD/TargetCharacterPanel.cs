@@ -11,7 +11,7 @@ public class TargetCharacterPanel : BaseMonoBehaviour
     public Portraits portraits;
     public SpriteRenderer portrait;
     public TMP_Text text;
-    public Pips pips;
+    public PipGenerator pips;
 
     [SerializeField] private bool debug;
 
@@ -45,11 +45,11 @@ public class TargetCharacterPanel : BaseMonoBehaviour
 
     public void SetMaxHealth(int final)
     {
-        pips.SetPipCount(final);
+        pips.SetTotal(final, PipType.Health);
     }
 
     public void SetHealth(int final)
     {
-        pips.SetFilled(final);
+        pips.SetFilled(final, PipType.Health);
     }
 }

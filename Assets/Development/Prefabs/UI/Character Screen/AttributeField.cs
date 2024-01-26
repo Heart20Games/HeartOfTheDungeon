@@ -7,7 +7,7 @@ using UIPips;
 public class AttributeField : BaseMonoBehaviour
 {
     [SerializeField] private AttributeLabel label;
-    [SerializeField] private Pips pips;
+    [SerializeField] private PipGenerator pips;
     [SerializeField] private int pipOffset = 0;
     [SerializeField] private GameObject[] selectedIndicators = new GameObject[0];
     [ReadOnly][SerializeField] private BaseAttribute attribute;

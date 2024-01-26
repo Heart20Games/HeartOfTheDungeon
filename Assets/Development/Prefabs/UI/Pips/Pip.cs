@@ -2,11 +2,10 @@
 using MyBox;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 namespace UIPips
 {
-    [ExecuteAlways]
+    //[ExecuteAlways]
     public class Pip : BaseMonoBehaviour
     {
         enum LabelPolicy { Never, OnlyMultiples, OnlyPositives, Always }

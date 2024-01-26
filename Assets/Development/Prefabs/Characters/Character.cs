@@ -13,6 +13,7 @@ namespace Body
     using MyBox;
     using Selection;
     using System.Collections;
+    using UIPips;
     using static Body.Behavior.ContextSteering.CSIdentity;
 
     [RequireComponent(typeof(Brain))]
@@ -85,7 +86,7 @@ namespace Body
 
         [Foldout("Health and Damage", true)]
         [Header("Health and Damage")]
-        public HealthPips healthBar;
+        public PipGenerator pips;
         public bool alwaysHideHealth = false;
         public float hideHealthWaitTime = 15f;
         public ModField<int> health = new("Health", 5, 5);
@@ -148,8 +149,11 @@ namespace Body
         private void Start()
         {
             // Healthbar subscription
-            if (healthBar != null)
-                Health.Subscribe(healthBar.SetHealth, healthBar.SetHealthTotal);
+            if (pips != null)
+                Health.Subscribe(
+                    (int filled) => { pips.SetFilled(filled, PipType.Health); }, 
+                    (int total) => { pips.SetTotal(total, PipType.Health); }
+                );
 
             // Value Initialization
             Identity = Identity;
@@ -275,9 +279,9 @@ namespace Body
         {
             int prevHealth = Health.current.Value;
             Health.current.Value = Mathf.Min(amount, Health.max.Value);
-            if (prevHealth != Health.current.Value && healthBar != null)
+            if (prevHealth != Health.current.Value && pips != null)
             {
-                healthBar.enabled = !alwaysHideHealth;
+                pips.enabled = !alwaysHideHealth;
             }
             if (prevHealth > Health.current.Value)
             {
