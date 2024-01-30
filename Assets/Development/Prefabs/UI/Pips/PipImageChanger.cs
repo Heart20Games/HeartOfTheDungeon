@@ -8,15 +8,20 @@ public class PipImageChanger : BaseMonoBehaviour
     public bool isFilled;
     [ReadOnly][SerializeField] private bool prevIsFilled;
 
+    public float Transition { get => transition; set => SetTransition(value); }
+    public float transition = 1;
+
     [SerializeField] private float cycleRate = 0.2f;
     [ReadOnly][SerializeField] private int index;
 
     public Sprite[] filled;
     public Sprite[] unfilled;
+    public Color color = Color.white;
 
     [ReadOnly][SerializeField] private Sprite[] current;
     
     public UnityEvent<Sprite> onSpriteChange;
+    public UnityEvent<Color> onColorChange;
 
     Coroutine coroutine;
 
@@ -47,5 +52,11 @@ public class PipImageChanger : BaseMonoBehaviour
         this.isFilled = isFilled;
         current = isFilled ? filled : unfilled;
         onSpriteChange.Invoke(current[index]);
+    }
+
+    public void SetTransition(float transition)
+    {
+        this.transition = transition;
+        onColorChange.Invoke(new(color.r, color.g, color.b, transition));
     }
 }

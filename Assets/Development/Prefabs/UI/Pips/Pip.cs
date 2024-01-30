@@ -12,7 +12,7 @@ namespace UIPips
 
         // Fields
         [SerializeField] private Sprite sprite;
-        [SerializeField] private bool invertFilled;
+        [SerializeField] protected bool invertFilled;
         [SerializeField] internal int amount;
         [SerializeField] private LabelPolicy labelPolicy;
         [ReadOnly][SerializeField] private bool filled;
@@ -35,6 +35,11 @@ namespace UIPips
             onFilled.Invoke(filled != invertFilled);
             onFilledProp.Invoke(filledProperty, filled != invertFilled);
             onLabel.Invoke(LabelFromAmount(amount));
+        }
+
+        public void Initialize()
+        {
+
         }
 
         public void SetSprite(Sprite sprite)

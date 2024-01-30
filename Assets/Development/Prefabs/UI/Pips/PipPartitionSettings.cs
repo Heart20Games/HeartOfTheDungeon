@@ -7,6 +7,7 @@ namespace UIPips
 {
     public enum PipType { None, Health, Armor, Skill, Mana }
 
+    [CreateAssetMenu(fileName = "PipPartition", menuName = "PipPartition", order = 1)]
     public class PipPartitionSettings : BaseScriptableObject
     {
         public PipType type = PipType.None;
@@ -30,7 +31,5 @@ namespace UIPips
         public bool useGrouping = false;
         [ConditionalField("useGrouping")] public int groupThreshold = 2;
         [ConditionalField("useGrouping")] public int groupCapacity = 5;
-
-
     }
 }

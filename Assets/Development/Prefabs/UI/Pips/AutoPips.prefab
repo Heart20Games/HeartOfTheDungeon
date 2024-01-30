@@ -84,14 +84,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4099199581749838624}
-  - component: {fileID: 8215185759831701676}
+  - component: {fileID: 4669363500866228837}
   - component: {fileID: 1416764056664014404}
   - component: {fileID: 4089558371239574881}
   - component: {fileID: 7696118450858855668}
   - component: {fileID: 2131380057116891160}
   - component: {fileID: 4777270658322485824}
   m_Layer: 5
-  m_Name: Pips
+  m_Name: AutoPips
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,7 +117,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 3.8234863}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8215185759831701676
+--- !u!114 &4669363500866228837
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -126,35 +126,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 6178483482303869474}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a9618883a8ee7f40b3ba0fb4f33c4fa, type: 3}
+  m_Script: {fileID: 11500000, guid: e3906100f2cbb724eac1b767f580dce4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pipTarget: {fileID: 3175902291408917660}
-  pipPrefab: {fileID: 9116720737132212002, guid: add3e4eac06ee074cae6d4c6f826f4de, type: 3}
-  pips: []
+  basePrefab: {fileID: 6407481343780548936, guid: add3e4eac06ee074cae6d4c6f826f4de, type: 3}
+  usedInWorldSpace: 0
   lookAtCamera: 0
-  totalPips: 0
-  filledPips: 0
-  updatePips: 0
-  onSetTotal:
-    m_PersistentCalls:
-      m_Calls: []
-  onSetFilled:
-    m_PersistentCalls:
-      m_Calls: []
-  onChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  negateFillReports: 0
-  expandTotalOnFill: 0
   debug: 0
-  useGrouping: 0
-  groupThreshold: 2
-  groupCapacity: 5
-  groupPrefab: {fileID: 9116720737132212002, guid: add3e4eac06ee074cae6d4c6f826f4de, type: 3}
-  autoHide: 0
-  hideWaitTime: 0
-  currentHideTime: 0
+  partitionSettings: []
+  partitions: []
+  updatePips: 0
 --- !u!223 &1416764056664014404
 Canvas:
   m_ObjectHideFlags: 0

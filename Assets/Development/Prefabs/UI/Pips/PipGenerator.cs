@@ -13,22 +13,17 @@ namespace UIPips
     public class PipGenerator : BaseMonoBehaviour
     {
         [Header("Configuration")]
-        [SerializeField] public Transform pipTarget;
-        [SerializeField] public Pip basePrefab;
-        //[ReadOnly][SerializeField] private List<Pip> pips = new();
-
-        [Header("Partitions")]
-        public List<PipPartition> partitions;
-        //[SerializeField] private int totalPips = 5;
-        //[SerializeField] private int filledPips = 5;
-        [SerializeField] private bool updatePips = false;
-        //public int TotalPips { get => totalPips; set => SetPipCount(value); }
-        //public int FilledPips { get => filledPips; set => SetFilled(value); }
-
-        [Header("Features")]
+        public Transform pipTarget;
+        public AutoPip basePrefab;
+        public bool usedInWorldSpace;
         [SerializeField] private bool lookAtCamera;
         public bool debug = false;
-        
+
+        [Header("Partitions")]
+        public List<PipPartitionSettings> partitionSettings;
+        public List<PipPartition> partitions;
+        [SerializeField] private bool updatePips = false;
+
         public void SetFilled(int filled, PipType type = PipType.None)
         {
             foreach (var partition in partitions)
@@ -78,6 +73,10 @@ namespace UIPips
 
         private void Awake()
         {
+            foreach (var settings in partitionSettings)
+            {
+                partitions.Add(new(settings, this));
+            }
             //lastPipCount = totalPips;
             //lastFilledCount = filledPips;
             //lastGroupCapacity = groupCapacity;
@@ -171,19 +170,22 @@ namespace UIPips
 
         public void ClearPips(List<Pip> pips)
         {
-            foreach (Pip pip in pips)
+            if (pips != null)
             {
-                if (pip != null)
+                foreach (Pip pip in pips)
                 {
-                    Assert.IsNotNull(pip);
-                    if (Application.isEditor)
-                        DestroyImmediate(pip.gameObject);
-                    else
-                        Destroy(pip.gameObject);
+                    if (pip != null)
+                    {
+                        Assert.IsNotNull(pip);
+                        if (Application.isPlaying)
+                            Destroy(pip.gameObject);
+                        else
+                            DestroyImmediate(pip.gameObject);
+                    }
+                    else Debug.LogWarning("Had null Pip in pips list.");
                 }
-                else Debug.LogWarning("Had null Pip in pips list.");
+                pips.Clear();
             }
-            pips.Clear();
         }
     }
 }

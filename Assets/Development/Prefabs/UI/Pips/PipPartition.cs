@@ -13,11 +13,11 @@ namespace UIPips
         // Parts
         PipPartitionSettings settings;
         public PipGenerator generator;
-        public List<Pip> pips;
+        public List<Pip> pips = new();
 
         // Pips
         [Space]
-        [SerializeField] private Pip prefab;
+        [SerializeField] private AutoPip prefab;
         [SerializeField] private int total = 5;
         [SerializeField] private int filled = 5;
 
@@ -26,9 +26,9 @@ namespace UIPips
         [ReadOnly][SerializeField] private float timeTillHide;
         private Coroutine coroutine;
 
-        [Foldout("Events")] public UnityEvent<int> onSetTotal;
-        [Foldout("Events")] public UnityEvent<int> onSetFilled;
-        [Foldout("Events")] public UnityEvent<int> onChanged;
+        [Foldout("Events")] public UnityEvent<int> onSetTotal = new();
+        [Foldout("Events")] public UnityEvent<int> onSetFilled = new();
+        [Foldout("Events")] public UnityEvent<int> onChanged = new();
 
         // Old Values
         private int lastPipCount;
@@ -47,14 +47,18 @@ namespace UIPips
         public int GroupCapacity { get => settings.groupCapacity; }
 
         // Initialization
-        public void Initialize()
+        public PipPartition(PipPartitionSettings settings, PipGenerator generator)
         {
+            this.settings = settings;
+            this.generator = generator;
             prefab = GeneratePip();
         }
 
-        public Pip GeneratePip()
+        public AutoPip GeneratePip()
         {
-            return null;
+            AutoPip pip = GameObject.Instantiate(generator.basePrefab, null);
+            pip.Initialize(settings, generator.usedInWorldSpace);
+            return pip;
         }
 
         // Generation
@@ -81,11 +85,11 @@ namespace UIPips
         }
 
         // Add Pips
-        private void AddPip(Pip prefab, int amount = 1)
+        private void AddPip(AutoPip prefab, int amount = 1)
         {
-            Pip pip = GameObject.Instantiate(prefab, generator.pipTarget == null ? Transform : generator.pipTarget);
-            pips.Add(pip);
+            AutoPip pip = GameObject.Instantiate(prefab, generator.pipTarget == null ? Transform : generator.pipTarget);
             pip.Amount = amount;
+            pips.Add(pip);
         }
 
         private void AddPips(int number)
