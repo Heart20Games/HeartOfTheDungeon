@@ -1,6 +1,7 @@
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Events;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,30 +16,50 @@ namespace UIPips
         public PipPartitionSettings settings;
         public bool useInWorldSpace = false;
 
+        private Sprite[] filledSprites;
+        private Sprite[] unfilledSprites;
+
         public void Initialize(PipPartitionSettings settings, bool usedInWorldSpace, bool invertFilled = false)
         {
             this.invertFilled = invertFilled;
+
+            filledSprites = (Sprite[])settings.filledSprites.Clone();
+            unfilledSprites = (Sprite[])settings.unfilledSprites.Clone();
 
             SetWithChild("PipLabel", ref pipLabel);
             SetWithChild("PipImage", ref pipImage);
 
             if (pipImage != null)
             {
-                pipImage.gameObject.AddComponent(usedInWorldSpace ? typeof(Image) : typeof(SpriteRenderer));
                 if (pipImage.TryGetComponent<PipImageChanger>(out var changer))
                 {
-                    changer.filled = settings.filledSprites;
-                    changer.unfilled = settings.unfilledSprites;
+                    changer.filled = filledSprites;
+                    changer.unfilled = unfilledSprites;
 
-                    if (usedInWorldSpace && TryGetComponent<Image>(out var image))
+                    pipImage.gameObject.TryGetComponent<Image>(out changer.image);
+                    pipImage.gameObject.TryGetComponent<SpriteRenderer>(out changer.renderer);
+
+                    if (useInWorldSpace)
                     {
-                        changer.onSpriteChange.AddListener((Sprite sprite) => { image.sprite = sprite; });
-                        changer.onColorChange.AddListener((Color color) => { image.color = color; });
+                        if (changer.renderer != null)
+                            Destroy(changer.renderer);
+
+                        if (changer.image == null)
+                            changer.image = (Image)pipImage.gameObject.AddComponent(typeof(Image));
+
+                        UnityEventTools.AddPersistentListener(changer.onSpriteChange, changer.SetImageSprite);
+                        UnityEventTools.AddPersistentListener(changer.onColorChange, changer.SetImageColor);
                     }
-                    else if (!usedInWorldSpace && TryGetComponent<SpriteRenderer>(out var renderer))
+                    else
                     {
-                        changer.onSpriteChange.AddListener((Sprite sprite) => { renderer.sprite = sprite; });
-                        changer.onColorChange.AddListener((Color color) => { renderer.color = color; });
+                        if (changer.image != null)
+                            Destroy(changer.image);
+
+                        if (changer.renderer == null)
+                            changer.renderer = (SpriteRenderer)pipImage.gameObject.AddComponent(typeof(SpriteRenderer));
+
+                        UnityEventTools.AddPersistentListener(changer.onSpriteChange, changer.SetRendererSprite);
+                        UnityEventTools.AddPersistentListener(changer.onColorChange, changer.SetRendererColor);
                     }
                 }
             }

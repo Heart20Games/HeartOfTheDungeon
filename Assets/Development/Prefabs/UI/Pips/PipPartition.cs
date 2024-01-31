@@ -10,8 +10,10 @@ namespace UIPips
     [Serializable]
     public class PipPartition
     {
+        public string name;
+
         // Parts
-        PipPartitionSettings settings;
+        [ReadOnly] [SerializeField] private PipPartitionSettings settings;
         public PipGenerator generator;
         public List<Pip> pips = new();
 
@@ -31,10 +33,12 @@ namespace UIPips
         [Foldout("Events")] public UnityEvent<int> onChanged = new();
 
         // Old Values
-        private int lastPipCount;
-        private int lastFilledCount;
-        private int lastGroupCapacity;
-        private int lastGroupThreshold;
+        [Header("Old Values")]
+        [ReadOnly] [SerializeField] private int lastTotal;
+        [ReadOnly] [SerializeField] private int lastFilled;
+        [ReadOnly][SerializeField] private bool lastGrouping;
+        [ReadOnly][SerializeField] private int lastGroupCapacity;
+        [ReadOnly][SerializeField] private int lastGroupThreshold;
 
         // Properties
         public GameObject GeneratorObject { get => generator.gameObject; }
@@ -49,6 +53,7 @@ namespace UIPips
         // Initialization
         public PipPartition(PipPartitionSettings settings, PipGenerator generator)
         {
+            this.name = settings.name;
             this.settings = settings;
             this.generator = generator;
             prefab = GeneratePip();
@@ -56,9 +61,19 @@ namespace UIPips
 
         public AutoPip GeneratePip()
         {
-            AutoPip pip = GameObject.Instantiate(generator.basePrefab, null);
+            AutoPip pip = GameObject.Instantiate(generator.basePrefab, generator.transform);
             pip.Initialize(settings, generator.usedInWorldSpace);
+            pip.gameObject.SetActive(false);
             return pip;
+        }
+
+        // MonoBehaviour
+        public void Update()
+        {
+            if (lastTotal != total || lastFilled != filled || lastGrouping != UseGrouping)
+            {
+                SetFilled(filled);
+            }
         }
 
         // Generation
@@ -66,6 +81,8 @@ namespace UIPips
         {
             this.filled = filled;
             SetTotal(total);
+            onSetFilled.Invoke(this.filled);
+            this.lastFilled = this.filled;
         }
 
         public void SetTotal(int total)
@@ -80,7 +97,7 @@ namespace UIPips
             AddPips(total - filled);
 
             // Report
-            lastPipCount = total;
+            lastTotal = total;
             onSetTotal.Invoke(total);
         }
 
@@ -88,6 +105,7 @@ namespace UIPips
         private void AddPip(AutoPip prefab, int amount = 1)
         {
             AutoPip pip = GameObject.Instantiate(prefab, generator.pipTarget == null ? Transform : generator.pipTarget);
+            pip.gameObject.SetActive(true);
             pip.Amount = amount;
             pips.Add(pip);
         }

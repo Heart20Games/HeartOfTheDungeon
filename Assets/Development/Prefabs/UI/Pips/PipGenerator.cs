@@ -15,13 +15,15 @@ namespace UIPips
         public Transform pipTarget;
         public AutoPip basePrefab;
         public bool usedInWorldSpace;
-        [SerializeField] private bool lookAtCamera;
+        [ConditionalField("usedInWorldSpace")] [SerializeField] private Vector3 worldSpaceOffset = new();
+        [ConditionalField("usedInWorldSpace")][SerializeField] private Vector3 worldSpaceScale = new();
+        [ConditionalField("usedInWorldSpace")] [SerializeField] private bool lookAtCamera;
         public bool debug = false;
+        [SerializeField] private bool updatePips = false;
 
         [Header("Partitions")]
         public List<PipPartitionSettings> partitionSettings;
         public List<PipPartition> partitions;
-        [SerializeField] private bool updatePips = false;
 
         public void SetFilled(int filled, PipType type = PipType.None)
         {
@@ -49,9 +51,31 @@ namespace UIPips
 
         private void Awake()
         {
+            if (TryGetComponent<Canvas>(out var canvas))
+            {
+                canvas.renderMode = usedInWorldSpace ? RenderMode.WorldSpace : RenderMode.ScreenSpaceOverlay;
+                canvas.worldCamera = Camera.current;
+                if (usedInWorldSpace)
+                {
+                    transform.localPosition = worldSpaceOffset;
+                    transform.localScale = worldSpaceScale;
+                }
+            }
             foreach (var settings in partitionSettings)
             {
+                
                 partitions.Add(new(settings, this));
+            }
+        }
+
+        private void Update()
+        {
+            if (updatePips)
+            {
+                foreach (var partition in partitions)
+                {
+                    partition.Update();
+                }
             }
         }
 

@@ -1,6 +1,8 @@
+using MyBox;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class PipImageChanger : BaseMonoBehaviour
 {
@@ -19,11 +21,20 @@ public class PipImageChanger : BaseMonoBehaviour
     public Color color = Color.white;
 
     [ReadOnly][SerializeField] private Sprite[] current;
-    
-    public UnityEvent<Sprite> onSpriteChange;
-    public UnityEvent<Color> onColorChange;
 
-    Coroutine coroutine;
+    [Foldout("Events", true)]
+    [ReadOnly] public Image image;
+    [ReadOnly] public SpriteRenderer renderer;
+    public UnityEvent<Sprite> onSpriteChange;
+    [Foldout("Events")] public UnityEvent<Color> onColorChange;
+
+    private Coroutine coroutine;
+    private bool coroutineStarting = false;
+
+    private void Start()
+    {
+        IsFilled = IsFilled;
+    }
 
     private void Update()
     {
@@ -33,19 +44,27 @@ public class PipImageChanger : BaseMonoBehaviour
         }
         if (coroutine == null)
         {
+            coroutineStarting = true;
             coroutine = StartCoroutine(Increment());
         }
     }
 
     public IEnumerator Increment()
     {
-        while (coroutine != null)
+        while (coroutine != null || coroutineStarting)
         {
+            coroutineStarting = false;
+
             yield return new WaitForSeconds(cycleRate);
-            index = (int)Mathf.Repeat(index, current.Length - 1);
+            index = (int)Mathf.Repeat(index+1, current.Length - 1);
             onSpriteChange.Invoke(current[index]);
         }
     }
+
+    public void SetImageSprite(Sprite sprite) { image.sprite = sprite; }
+    public void SetImageColor(Color color) { image.color = color; }
+    public void SetRendererSprite(Sprite sprite) { renderer.sprite = sprite; }
+    public void SetRendererColor(Color color) { renderer.color = color; }
 
     public void SetIsFilled(bool isFilled)
     {
