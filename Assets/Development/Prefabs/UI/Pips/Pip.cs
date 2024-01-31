@@ -5,7 +5,6 @@ using UnityEngine.Events;
 
 namespace UIPips
 {
-    //[ExecuteAlways]
     public class Pip : BaseMonoBehaviour
     {
         enum LabelPolicy { Never, OnlyMultiples, OnlyPositives, Always }
