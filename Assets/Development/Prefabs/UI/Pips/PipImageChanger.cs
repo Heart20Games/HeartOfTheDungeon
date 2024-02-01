@@ -1,6 +1,7 @@
 using MyBox;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -56,7 +57,8 @@ public class PipImageChanger : BaseMonoBehaviour
             coroutineStarting = false;
 
             yield return new WaitForSeconds(cycleRate);
-            index = (int)Mathf.Repeat(index+1, current.Length - 1);
+            index = (int)Mathf.Repeat(index+1, current.Length);
+            if (index < 0) Debug.LogWarning("Index is somehow less than zero?");
             onSpriteChange.Invoke(current[index]);
         }
     }

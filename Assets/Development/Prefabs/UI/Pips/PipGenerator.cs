@@ -38,12 +38,14 @@ namespace UIPips
 
         public void SetTotal(int total, PipType type = PipType.None)
         {
+            int childOffset = 0;
             foreach (var partition in partitions)
             {
                 if (partition.Type == type)
                 {
-                    partition.SetTotal(total);
+                    partition.SetTotal(total, childOffset);
                 }
+                childOffset += partition.pips.Count;
             }
         }
 
@@ -72,9 +74,11 @@ namespace UIPips
         {
             if (updatePips)
             {
+                int childOffset = 0;
                 foreach (var partition in partitions)
                 {
-                    partition.Update();
+                    partition.Update(childOffset);
+                    childOffset += partition.pips.Count;
                 }
             }
         }

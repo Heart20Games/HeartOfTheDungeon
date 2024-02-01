@@ -40,9 +40,12 @@ namespace UIPips
         [ReadOnly][SerializeField] private int lastGroupCapacity;
         [ReadOnly][SerializeField] private int lastGroupThreshold;
 
+        private int childOffset;
+
         // Properties
         public GameObject GeneratorObject { get => generator.gameObject; }
         public Transform Transform { get => generator.transform; }
+        public int Count { get => pips.Count; }
         public PipType Type { get => settings.type; }
         public bool AutoHide { get => settings.autoHide; }
         public float HideDelay { get => settings.hideWaitTime; }
@@ -68,9 +71,14 @@ namespace UIPips
         }
 
         // MonoBehaviour
-        public void Update()
+        public void Update(int childOffset = 0)
         {
-            if (lastTotal != total || lastFilled != filled || lastGrouping != UseGrouping)
+            if (lastTotal != total || lastGrouping != UseGrouping)
+            {
+                SetTotal(total, childOffset);
+                lastGrouping = UseGrouping;
+            }
+            if (lastFilled != filled)
             {
                 SetFilled(filled);
             }
@@ -79,25 +87,35 @@ namespace UIPips
         // Generation
         public void SetFilled(int filled)
         {
-            this.filled = filled;
-            SetTotal(total);
+            this.filled = Mathf.Min(total, filled);
+            ChangePips(this.filled);
             onSetFilled.Invoke(this.filled);
             this.lastFilled = this.filled;
         }
 
-        public void SetTotal(int total)
+        public void SetTotal(int total, int childOffset = 0)
         {
+            this.childOffset = childOffset;
+
             // Constrain
             this.total = total;
             this.filled = Mathf.Min(this.filled, this.total);
 
             // Clear then Add
             generator.ClearPips(pips);
-            AddPips(filled);
-            AddPips(total - filled);
+            if (UseGrouping)
+            {
+                AddPipsGrouped(filled, GroupThreshold, GroupCapacity);
+                AddPipsGrouped(total-filled, GroupThreshold, GroupCapacity, true);
+            }
+            else
+            {
+                AddPips(filled);
+                AddPips(total - filled);
+            }
 
             // Report
-            lastTotal = total;
+            this.lastTotal = total;
             onSetTotal.Invoke(total);
         }
 
@@ -107,6 +125,7 @@ namespace UIPips
             AutoPip pip = GameObject.Instantiate(prefab, generator.pipTarget == null ? Transform : generator.pipTarget);
             pip.gameObject.SetActive(true);
             pip.Amount = amount;
+            pip.transform.SetSiblingIndex(childOffset + pips.Count);
             pips.Add(pip);
         }
 
@@ -144,6 +163,28 @@ namespace UIPips
                     AddPip(prefab, remainder - threshold);
                 AddPips(Mathf.Min(remainder, threshold));
             }
+        }
+
+        // Change Pips
+
+        private void ChangePip(Pip pip, bool filled, int amount = 1)
+        {
+            pip.Filled = filled;
+            pip.Amount = amount;
+        }
+
+        private void ChangePips(int first, int last, bool filled)
+        {
+            for (int i = first; i < Mathf.Min(last, pips.Count); i++)
+            {
+                ChangePip(pips[i], filled, pips[i].Amount);
+            }
+        }
+
+        private void ChangePips(int filled)
+        {
+            ChangePips(0, filled, true);
+            ChangePips(filled, pips.Count, false);
         }
 
         // Hiding
