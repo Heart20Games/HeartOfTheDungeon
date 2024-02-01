@@ -71,6 +71,7 @@ public class PipImageChanger : BaseMonoBehaviour
         this.isFilled = isFilled;
         current = isFilled ? filled : unfilled;
         onSpriteChange.Invoke(current[index]);
+        prevIsFilled = this.isFilled;
     }
 
     public void SetTransition(float transition)

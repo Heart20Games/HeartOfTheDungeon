@@ -20,7 +20,7 @@ namespace UIPips
         [Foldout("Events", true)] public UnityEvent<Sprite> onSprite;
         public UnityEvent<string> onLabel;
         public UnityEvent<bool> onFilled;
-        [SerializeField] private string filledProperty;
+        public string filledProperty;
         [Foldout("Events")] public UnityEvent<string, bool> onFilledProp;
 
         // Properties
