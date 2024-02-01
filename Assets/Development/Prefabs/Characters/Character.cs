@@ -85,11 +85,13 @@ namespace Body
         public List<Status> statuses;
 
         [Foldout("Health and Damage", true)]
-        [Header("Health and Damage")]
         public PipGenerator pips;
+        [Header("Health")]
         public bool alwaysHideHealth = false;
         public float hideHealthWaitTime = 15f;
         public ModField<int> health = new("Health", 5, 5);
+        [Header("Armor")]
+        public ModField<int> armor = new("Armor", 1, 1);
         [Space]
         public UnityEvent onDmg;
         public int CurrentHealth
@@ -138,6 +140,7 @@ namespace Body
             // Statblock connections
             statBlock.Initialize();
             statBlock.healthMax.updatedFinalInt.AddListener(health.max.SetValue); // max health dependent attribute;
+            statBlock.armorClass.updatedFinalInt.AddListener(armor.max.SetValue); // armor class dependent attribute;
             health.current.Subscribe((int oldValue, int newValue) => 
             {
                 int change = newValue - oldValue;
@@ -150,16 +153,27 @@ namespace Body
         {
             // Healthbar subscription
             if (pips != null)
+            {
                 Health.Subscribe(
-                    (int filled) => { pips.SetFilled(filled, PipType.Health); }, 
-                    (int total) => { pips.SetTotal(total, PipType.Health); }
+                    (int filled) => pips.SetFilled(filled, PipType.Health),
+                    (int total) => pips.SetTotal(total, PipType.Health)
                 );
+                armor.Subscribe(
+                    (int filled) => pips.SetFilled(filled, PipType.Armor),
+                    (int total) => pips.SetTotal(total, PipType.Armor)
+                );
+
+            }
 
             // Value Initialization
             Identity = Identity;
             SetAlive(true);
+
             MaxHealth = statBlock.MaxHealth;
             CurrentHealth = statBlock.MaxHealth;
+
+            armor.max.Value = statBlock.ArmorClass;
+            armor.current.Value = statBlock.ArmorClass;
         }
 
         private void InitBody()
