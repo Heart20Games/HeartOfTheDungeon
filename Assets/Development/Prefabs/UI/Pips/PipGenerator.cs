@@ -27,6 +27,7 @@ namespace UIPips
 
         public void SetFilled(int filled, PipType type = PipType.None)
         {
+            Print($"Filling {filled} pips on partition {type}.", debug);
             foreach (var partition in partitions)
             {
                 if (partition.Type == type)
@@ -38,6 +39,7 @@ namespace UIPips
 
         public void SetTotal(int total, PipType type = PipType.None)
         {
+            Print($"Totaling {total} pips on partition {type}.", debug);
             int childOffset = 0;
             foreach (var partition in partitions)
             {
@@ -65,7 +67,6 @@ namespace UIPips
             }
             foreach (var settings in partitionSettings)
             {
-                
                 partitions.Add(new(settings, this));
             }
         }

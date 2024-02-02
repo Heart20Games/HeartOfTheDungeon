@@ -19,6 +19,8 @@ public class PlayerHealthUI : BaseMonoBehaviour
     private bool initialized = false;
     private bool waitingForInitialization = false;
 
+    [SerializeField] private bool debug = false;
+
     public UnityEvent<float> onHealthChanged;
 
     // Start is called before the first frame update
@@ -70,7 +72,7 @@ public class PlayerHealthUI : BaseMonoBehaviour
     // Modifiers
     public void SetMaxHealth(int finalHealth)
     {
-        print($"Set Max Player Health: {startingHealth} -> {finalHealth}");
+        Print($"Set Max Player Health: {startingHealth} -> {finalHealth}", debug);
         UpdateHealth(Health != null ? Health.current.Value : previousHealth, finalHealth);
     }
 
@@ -118,7 +120,7 @@ public class PlayerHealthUI : BaseMonoBehaviour
         startingHealth = totalHealth;
 
         float fillPosition = (currentHealth / startingHealth);
-        print($"Fill position: {fillPosition} ({currentHealth}/{startingHealth})");
+        Print($"Fill position: {fillPosition} ({currentHealth}/{startingHealth})", debug);
         healthFill.transform.localPosition = new Vector3 (0, Mathf.Lerp(-220f, 0f, fillPosition), 0);
         healthNumber.text = currentHealth.ToString();
     }
