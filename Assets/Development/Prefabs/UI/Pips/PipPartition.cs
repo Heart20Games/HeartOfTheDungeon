@@ -87,7 +87,7 @@ namespace UIPips
         // Generation
         public void SetFilled(int filled)
         {
-            this.filled = Mathf.Min(total, filled);
+            this.filled = Mathf.Clamp(filled, 0, total);
             ChangePips(this.filled);
             onSetFilled.Invoke(this.filled);
             this.lastFilled = this.filled;

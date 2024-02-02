@@ -144,7 +144,8 @@ namespace Body
             health.current.Subscribe((int oldValue, int newValue) => 
             {
                 int change = newValue - oldValue;
-                change = (int)Mathf.Min(change + statBlock.armorClass.FinalValue, 0);
+                if (change < 0)
+                    change = (int)Mathf.Min(change + statBlock.armorClass.FinalValue, 0);
                 return oldValue + change;
             });
         }
@@ -314,6 +315,30 @@ namespace Body
             {
                 CurrentHealth -= damageAmount;
             }
+        }
+
+        public void HealDamage(int damageAmount, Identity id = Identity.Neutral)
+        {
+            if (RelativeIdentity(id, Identity) != Identity.Foe)
+            {
+                CurrentHealth += damageAmount;
+            }
+        }
+
+        [Foldout("Health and Damage", true)] [SerializeField] private Identity testDamageIdentity = Identity.Neutral;
+        [Foldout("Health and Damage")] [SerializeField] private int testDamageAmount = 1;
+
+        [ButtonMethod]
+        public void TestTakeDamage()
+        {
+            print("Dealing Damage");
+            TakeDamage(testDamageAmount, testDamageIdentity);
+        }
+        [ButtonMethod]
+        public void TestHealDamage()
+        {
+            print("Healing Damage");
+            HealDamage(testDamageAmount, testDamageIdentity);
         }
 
         // Castables
