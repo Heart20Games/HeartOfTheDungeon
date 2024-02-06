@@ -8,13 +8,14 @@ public class HUD : BaseMonoBehaviour
     [Header("Components")]
     public AbilityMenu abilityMenu;
     public CharacterSelectPanel characterPanel;
-    public TargetCharacterPanel targetCharacterPanel;
+    public TargetStatusDisplay targetCharacterPanel;
     private GameObject mainCamera;
     private Canvas hudCanvas;
 
     [Space]
     [Header("Main Character")]
-    [SerializeField] private PlayerHealthUI healthUI;
+    [SerializeField] private PlayerStatusDisplay mainStatusPanel;
+    [SerializeField] private AllyStatusPanel allyStatusPanel;
     [SerializeField] private SpellSlots spellSlots;
     [SerializeField] private bool useSpellSlots = false;
     [ReadOnly][SerializeField] private Character mainCharacter;
@@ -61,11 +62,16 @@ public class HUD : BaseMonoBehaviour
         }
     }
 
-    public void SetTarget(IIdentifiable identifiable)
+    public void SetTarget(IIdentifiable target)
     {
-        target = identifiable;
-        hasTarget = identifiable != null;
-        targetCharacterPanel.Target = identifiable;
+        this.target = target;
+        hasTarget = target != null;
+        targetCharacterPanel.Target = target;
+    }
+
+    public void AddAlly(IIdentifiable ally)
+    {
+        allyStatusPanel.AddTarget(ally);
     }
 
     public void MainCharacterSelect(Character character)
@@ -73,8 +79,8 @@ public class HUD : BaseMonoBehaviour
         if (character != null)
         {
             mainCharacter = character;
-            if (healthUI != null)
-                healthUI.ConnectCharacter(character);
+            if (mainStatusPanel != null)
+                mainStatusPanel.ConnectCharacter(character);
         }
     }
 }

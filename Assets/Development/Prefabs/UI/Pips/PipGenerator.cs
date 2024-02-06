@@ -51,6 +51,12 @@ namespace UIPips
             }
         }
 
+        // Typed Setters
+        public void SetHealth(int filled) { SetFilled(filled, PipType.Health); }
+        public void SetHealthTotal(int total) { SetTotal(total, PipType.Health); }
+        public void SetArmor(int filled) { SetFilled(filled, PipType.Armor); }
+        public void SetArmorTotal(int total) { SetTotal(total, PipType.Armor); }
+
         // Monobehaviour
 
         private void Awake()

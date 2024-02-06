@@ -82,6 +82,7 @@ namespace Body
         }
         public override string Name { get => statBlock == null ? null : statBlock.characterName; set => statBlock.characterName = value; }
         public override ModField<int> Health { get => health; }
+        public override ModField<int> Armor { get => armor; }
 
         // Status Effects
         [Foldout("Status Effects", true)]
@@ -91,11 +92,7 @@ namespace Body
         // Health and Damage
         [Foldout("Health and Damage", true)]
         public PipGenerator pips;
-        [Header("Health")]
-        public bool alwaysHideHealth = false;
-        public float hideHealthWaitTime = 15f;
         public ModField<int> health = new("Health", 5, 5);
-        [Header("Armor")]
         public ModField<int> armor = new("Armor", 1, 1);
         [Space]
         public UnityEvent onDmg;
@@ -145,7 +142,7 @@ namespace Body
         private void Start()
         {
             // Healthbar subscription
-            ConnectPips();
+            ConnectPips(pips); // Can't run on awake; requires other bits to be initialized.
 
             // Value Initialization
             Identity = Identity;
@@ -212,24 +209,6 @@ namespace Body
                 status.effect.Tick(status.strength, this);
             }
         }
-
-        // Pips
-        private void ConnectPips()
-        {
-            // Requires that pips not be null (i.e. run on Start).
-            if (pips != null)
-            {
-                Health.Subscribe(
-                    (int filled) => pips.SetFilled(filled, PipType.Health),
-                    (int total) => pips.SetTotal(total, PipType.Health)
-                );
-                armor.Subscribe(
-                    (int filled) => pips.SetFilled(filled, PipType.Armor),
-                    (int total) => pips.SetTotal(total, PipType.Armor)
-                );
-            }
-        }
-
 
         // State
         public void ConnectControl()

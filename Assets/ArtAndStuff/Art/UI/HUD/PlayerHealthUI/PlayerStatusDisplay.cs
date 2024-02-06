@@ -6,7 +6,7 @@ using Modifiers;
 using UnityEngine.Events;
 using MyBox;
 
-public class PlayerHealthUI : BaseMonoBehaviour
+public class PlayerStatusDisplay : BaseMonoBehaviour
 {
     public float startingHealth = 20f;
     public float previousHealth = 20f;

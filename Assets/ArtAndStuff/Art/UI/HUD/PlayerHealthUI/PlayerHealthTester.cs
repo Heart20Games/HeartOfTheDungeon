@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerHealthTester : BaseMonoBehaviour
 {
     [SerializeField]
-    private PlayerHealthUI playerHealthUI;
+    private PlayerStatusDisplay playerHealthUI;
     public float startingHealth = 20;
     public float currentHealth = 20;
     public bool callUpdateHealth = false;
@@ -13,7 +13,7 @@ public class PlayerHealthTester : BaseMonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerHealthUI = GetComponent<PlayerHealthUI>();
+        playerHealthUI = GetComponent<PlayerStatusDisplay>();
     }
 
     private void Update() 
