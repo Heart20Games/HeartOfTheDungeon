@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8967228135619643637}
+  - component: {fileID: 2070980359801856466}
+  - component: {fileID: 2240407804154461359}
   - component: {fileID: 7332198532335375606}
   - component: {fileID: 1903610478924257969}
   - component: {fileID: 5994397884238197981}
-  - component: {fileID: 1029975957878899212}
-  - component: {fileID: 2240407804154461359}
   m_Layer: 5
   m_Name: PlayerHealth
   m_TagString: Untagged
@@ -45,6 +45,55 @@ RectTransform:
   m_AnchoredPosition: {x: 75, y: -75}
   m_SizeDelta: {x: -255.30957, y: -224.45728}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2070980359801856466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396768821087563175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17d4d4f9f7dcbc84d9c18655a1cebeea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingHealth: 20
+  previousHealth: 20
+  healthFill: {fileID: 6428200525176068590}
+  healthNumber: {fileID: 0}
+  healthAnimator: {fileID: 5994397884238197981}
+  debug: 0
+  onHealthChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2065624401536477563}
+        m_TargetAssemblyTypeName: PopupText, Assembly-CSharp
+        m_MethodName: ShowText
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2240407804154461359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396768821087563175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f324b5c489259bf4e90d55d1080922ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHealthUI: {fileID: 0}
+  startingHealth: 20
+  currentHealth: 20
+  callUpdateHealth: 0
 --- !u!223 &7332198532335375606
 Canvas:
   m_ObjectHideFlags: 0
@@ -106,57 +155,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1029975957878899212
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 396768821087563175}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6314f0c21fabda438c54f49b05542b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startingHealth: 20
-  previousHealth: 20
-  healthFill: {fileID: 0}
-  healthPipTextParent: {fileID: 396768821087563175}
-  healthNumber: {fileID: 0}
-  healthAnimator: {fileID: 0}
-  healthTextPip: {fileID: 0}
-  heathPipTextTransform: {fileID: 2964126221358769335}
-  onHealthChanged:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2065624401536477563}
-        m_TargetAssemblyTypeName: PopupText, Assembly-CSharp
-        m_MethodName: ShowText
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &2240407804154461359
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 396768821087563175}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f324b5c489259bf4e90d55d1080922ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerHealthUI: {fileID: 0}
-  startingHealth: 20
-  currentHealth: 20
-  callUpdateHealth: 0
 --- !u!1 &648811868382602875
 GameObject:
   m_ObjectHideFlags: 0

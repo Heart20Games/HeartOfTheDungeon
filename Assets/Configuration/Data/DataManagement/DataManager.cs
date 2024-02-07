@@ -61,6 +61,13 @@ namespace DataManagement
 
         public void SaveGame()
         {
+            // Stop trying to save if it's not possible anyway.
+            if (dataHandler == null)
+            {
+                Debug.LogWarning("No data handler found, aborting Save Game.");
+                return;
+            }
+
             // TODO - pass the data to other scripts so they can update it
             SavePersistents(persistents);
 
