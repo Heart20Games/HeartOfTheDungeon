@@ -14,13 +14,16 @@ namespace UIPips
         [SerializeField] private Transform pipImage;
 
         public PipPartitionSettings settings;
-        public bool useInWorldSpace = false;
+        public bool usedInWorldSpace = false;
 
         private Sprite[] filledSprites;
         private Sprite[] unfilledSprites;
 
+        public bool initialized;
+
         public void Initialize(PipPartitionSettings settings, bool usedInWorldSpace, bool invertFilled = false)
         {
+            this.usedInWorldSpace = usedInWorldSpace;
             this.invertFilled = invertFilled;
 
             filledSprites = (Sprite[])settings.filledSprites.Clone();
@@ -36,32 +39,44 @@ namespace UIPips
                     changer.filled = filledSprites;
                     changer.unfilled = unfilledSprites;
 
+                    if (!initialized)
+                    {
+                        changer.onColorChange.RemoveAllListeners();
+                        changer.onSpriteChange.RemoveAllListeners();
+                        UnityEventTools.AddPersistentListener(changer.onSpriteChange, changer.SetSprite);
+                        UnityEventTools.AddPersistentListener(changer.onColorChange, changer.SetColor);
+                        initialized = true;
+                    }
+
                     pipImage.gameObject.TryGetComponent<Image>(out changer.image);
                     pipImage.gameObject.TryGetComponent<SpriteRenderer>(out changer.renderer);
 
-                    if (useInWorldSpace)
+                    if (usedInWorldSpace)
                     {
-                        if (changer.renderer != null)
-                            Destroy(changer.renderer);
-
-                        if (changer.image == null)
-                            changer.image = (Image)pipImage.gameObject.AddComponent(typeof(Image));
-
-                        UnityEventTools.AddPersistentListener(changer.onSpriteChange, changer.SetImageSprite);
-                        UnityEventTools.AddPersistentListener(changer.onColorChange, changer.SetImageColor);
+                        SwitchTo(changer, ref changer.renderer, ref changer.image, ref initialized);
+                        changer.image.enabled = true;
                     }
                     else
                     {
-                        if (changer.image != null)
-                            Destroy(changer.image);
-
-                        if (changer.renderer == null)
-                            changer.renderer = (SpriteRenderer)pipImage.gameObject.AddComponent(typeof(SpriteRenderer));
-
-                        UnityEventTools.AddPersistentListener(changer.onSpriteChange, changer.SetRendererSprite);
-                        UnityEventTools.AddPersistentListener(changer.onColorChange, changer.SetRendererColor);
+                        SwitchTo(changer, ref changer.image, ref changer.renderer, ref initialized);
+                        changer.renderer.enabled = true;
                     }
                 }
+            }
+        }
+
+        private void SwitchTo<Old, New>(PipImageChanger changer, ref Old oldRef, ref New newRef, ref bool initialized) where Old : Component where New : Component
+        {
+            print("Initialize Image");
+
+            if (oldRef != null)
+            {
+                Destroy(oldRef);
+            }
+
+            if (newRef == null)
+            {
+                newRef = (New)pipImage.gameObject.AddComponent(typeof(New));
             }
         }
 

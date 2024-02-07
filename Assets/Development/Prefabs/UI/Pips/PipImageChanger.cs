@@ -63,10 +63,16 @@ public class PipImageChanger : BaseMonoBehaviour
         }
     }
 
-    public void SetImageSprite(Sprite sprite) { image.sprite = sprite; }
-    public void SetImageColor(Color color) { image.color = color; }
-    public void SetRendererSprite(Sprite sprite) { renderer.sprite = sprite; }
-    public void SetRendererColor(Color color) { renderer.color = color; }
+    public void SetSprite(Sprite sprite)
+    {
+        if (image != null) image.sprite = sprite;
+        if (renderer != null) renderer.sprite = sprite;
+    }
+    public void SetColor(Color color)
+    {
+        if (image != null) image.color = color;
+        if (renderer != null) renderer.color = color;
+    }
 
     public void SetIsFilled(bool isFilled)
     {

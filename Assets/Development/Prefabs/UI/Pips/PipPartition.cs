@@ -123,6 +123,7 @@ namespace UIPips
         private void AddPip(AutoPip prefab, int amount = 1)
         {
             AutoPip pip = GameObject.Instantiate(prefab, generator.pipTarget == null ? Transform : generator.pipTarget);
+            Debug.Log($"Pip is initialized: {pip.initialized}");
             pip.gameObject.SetActive(true);
             pip.Amount = amount;
             pip.transform.SetSiblingIndex(childOffset + pips.Count);
