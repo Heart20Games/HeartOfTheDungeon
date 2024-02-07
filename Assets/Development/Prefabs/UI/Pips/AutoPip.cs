@@ -34,6 +34,8 @@ namespace UIPips
 
             if (pipImage != null)
             {
+                pipImage.localScale *= settings.relativeScale;
+
                 if (pipImage.TryGetComponent<PipImageChanger>(out var changer))
                 {
                     changer.filled = filledSprites;
