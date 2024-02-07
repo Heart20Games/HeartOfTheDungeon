@@ -67,8 +67,6 @@ namespace UIPips
 
         private void SwitchTo<Old, New>(PipImageChanger changer, ref Old oldRef, ref New newRef, ref bool initialized) where Old : Component where New : Component
         {
-            print("Initialize Image");
-
             if (oldRef != null)
             {
                 Destroy(oldRef);
