@@ -15,6 +15,7 @@ namespace Body
     using System.Collections;
     using UIPips;
     using static Body.Behavior.ContextSteering.CSIdentity;
+    using static UIPips.PipGenerator;
 
     [RequireComponent(typeof(Brain))]
     [RequireComponent(typeof(Movement))]
@@ -216,6 +217,7 @@ namespace Body
             if (moveReticle != null) onControl.AddListener(moveReticle.gameObject.SetActive);
             if (virtualCamera != null) onControl.AddListener(virtualCamera.gameObject.SetActive);
             if (interactor != null) onControl.AddListener(DoEnable(interactor));
+            if (pips != null) onControl.AddListener((bool controllable) => { pips.SetHideMode(controllable ? HideMode.Always : HideMode.Sometimes); });
         }
         private UnityAction<bool> DoEnable(Behaviour behaviour, bool disable = false) { return (bool enable) => { behaviour.enabled = enable && !disable; }; }
 

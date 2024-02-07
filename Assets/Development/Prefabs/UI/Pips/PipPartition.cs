@@ -7,6 +7,8 @@ using UnityEngine.Events;
 
 namespace UIPips
 {
+    using static PipGenerator;
+
     [Serializable]
     public class PipPartition
     {
@@ -91,6 +93,7 @@ namespace UIPips
             ChangePips(this.filled);
             onSetFilled.Invoke(this.filled);
             this.lastFilled = this.filled;
+            UnHide();
         }
 
         public void SetTotal(int total, int childOffset = 0)
@@ -117,6 +120,7 @@ namespace UIPips
             // Report
             this.lastTotal = total;
             onSetTotal.Invoke(total);
+            UnHide();
         }
 
         // Add Pips
@@ -191,25 +195,45 @@ namespace UIPips
 
         public void Hide()
         {
+            // Hide all the Pips
             foreach (var pip in pips)
-            {
                 pip.gameObject.SetActive(false);
-            }
         }
 
         public void UnHide()
         {
-            foreach (var pip in pips)
+            if (generator.hideMode != HideMode.Always)
             {
-                pip.gameObject.SetActive(true);
+                // UnHide all the Pips
+                foreach (var pip in pips)
+                    pip.gameObject.SetActive(true);
+                
+                // Handle the Hide Delay
+                if (generator.hideMode != HideMode.Never)
+                    StartHideDelay();
+                else 
+                    StopHideDelay();
             }
+            else Hide();
+        }
 
+        public void StartHideDelay()
+        {
             if (settings.autoHide && GeneratorObject.activeInHierarchy)
             {
                 if (coroutine == null)
                     coroutine = generator.StartCoroutine(Deactivate(HideDelay));
                 else
                     timeTillHide = HideDelay;
+            }
+        }
+
+        public void StopHideDelay()
+        {
+            if (coroutine != null)
+            {
+                generator.StopCoroutine(coroutine);
+                coroutine = null;
             }
         }
 

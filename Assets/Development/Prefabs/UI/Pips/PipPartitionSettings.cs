@@ -13,6 +13,9 @@ namespace UIPips
         public PipType type = PipType.None;
 
         [Space]
+        public float relativeScale = 1;
+
+        [Space]
         public Sprite[] filledSprites;
         public Sprite[] unfilledSprites;
 

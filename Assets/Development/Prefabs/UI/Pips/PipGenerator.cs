@@ -11,9 +11,12 @@ namespace UIPips
 {
     public class PipGenerator : BaseMonoBehaviour
     {
+        public enum HideMode { Sometimes, Always, Never }
+
         [Header("Configuration")]
         public Transform pipTarget;
         public AutoPip basePrefab;
+        public HideMode hideMode = HideMode.Sometimes;
         public bool usedInWorldSpace;
         [ConditionalField("usedInWorldSpace")] [SerializeField] private Vector3 worldSpaceOffset = new();
         [ConditionalField("usedInWorldSpace")][SerializeField] private Vector3 worldSpaceScale = new();
@@ -51,6 +54,23 @@ namespace UIPips
             }
         }
 
+        public void SetHideMode(HideMode hideMode)
+        {
+            this.hideMode = hideMode;
+            switch (hideMode)
+            {
+                case HideMode.Always:
+                    foreach (var partition in partitions)
+                        partition.Hide();
+                    break;
+                case HideMode.Never:
+                    foreach (var partition in partitions)
+                        partition.UnHide();
+                    break;
+                case HideMode.Sometimes: break;
+            }
+        }
+
         // Typed Setters
         public void SetHealth(int filled) { SetFilled(filled, PipType.Health); }
         public void SetHealthTotal(int total) { SetTotal(total, PipType.Health); }
@@ -77,6 +97,7 @@ namespace UIPips
             }
         }
 
+        private HideMode oldHideMode;
         private void Update()
         {
             if (updatePips)
@@ -86,6 +107,12 @@ namespace UIPips
                 {
                     partition.Update(childOffset);
                     childOffset += partition.pips.Count;
+                }
+
+                if (hideMode != oldHideMode)
+                {
+                    SetHideMode(hideMode);
+                    oldHideMode = hideMode;
                 }
             }
         }
