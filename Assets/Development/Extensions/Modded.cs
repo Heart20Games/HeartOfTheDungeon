@@ -7,13 +7,14 @@ namespace Modifiers
     [Serializable]
     public class ModField<T> where T : IComparable
     {
-        public ModField(string name, T startValue, T maxValue, Modded<T>.Constraint constraint=null)
+        public ModField(string name, T startValue, T maxValue, Modded<T>.Constraint constraint=null, Modded<T>.Constraint constrainer=null)
         {
             this.name = name;
             current = new(startValue, $"{name} Current");
             max = new(maxValue, $"{name} Max");
 
-            current.constraint = constraint ?? ApplyMax;
+            current.constraint = constraint ?? BeConstrained;
+            max.constraint = constrainer ?? Constrain;
         }
 
         [HideInInspector] public string name;
@@ -21,9 +22,15 @@ namespace Modifiers
         public Modded<T> max;
 
         // Constraint
-        public T ApplyMax(T finalValue)
+        public T BeConstrained(T finalValue)
         {
             return finalValue.CompareTo(max.Value) < 0 ? finalValue : max.Value;
+        }
+
+        public T Constrain(T finalValue)
+        {
+            current.Value = finalValue.CompareTo(current.Value) < 0 ? max.Value : current.Value;
+            return finalValue;
         }
 
         // Subscribe
@@ -120,14 +127,17 @@ namespace Modifiers
         // Setter
         public void SetValue(T value)
         {
+            if (debug) Debug.Log($"Trying to set {name} value to {value} from {this.value}.");
             foreach (Modify modifier in modifiers)
             {
                 value = modifier.Invoke(this.value, value);
             }
+            if (debug) Debug.Log($"Modifiers applied. New {name} value now {value}.");
             if (constraint != null)
             {
                 value = constraint.Invoke(value);
             }
+            if (debug) Debug.Log($"Constraint applied. New {name} value now {value}.");
             foreach (Listen listener in listeners)
             {
                 listener.Invoke(value);

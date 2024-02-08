@@ -35,6 +35,7 @@ public class CharacterBlock : StatBlock
     }
 
     public int MaxHealth { get => (int)healthMax.FinalValue; }
+    public int ArmorClass { get => (int)armorClass.FinalValue; }
 
     // Persisent Data
     public override IPersistent GetInstance() => this;

@@ -90,6 +90,11 @@ public class Game : BaseMonoBehaviour
         if (playerCharacter != null)
         {
             hud.MainCharacterSelect(playerCharacter);
+            foreach (var character in playableCharacters)
+            {
+                if (character != playerCharacter)
+                    hud.AddAlly(character);
+            }
             if (!hasPlayer)
                 playableCharacters.Insert(0, playerCharacter);
         }
