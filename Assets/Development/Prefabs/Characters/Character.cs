@@ -93,6 +93,7 @@ namespace Body
         // Health and Damage
         [Foldout("Health and Damage", true)]
         public PipGenerator pips;
+        public NumberPopup healthPopup;
         public ModField<int> health = new("Health", 5, 5);
         public ModField<int> armor = new("Armor", 1, 1);
         [Space]
@@ -144,6 +145,8 @@ namespace Body
         {
             // Healthbar subscription
             ConnectPips(pips); // Can't run on awake; requires other bits to be initialized.
+            if (healthPopup != null)
+                health.current.Subscribe(healthPopup.PopupChange);
 
             // Value Initialization
             Identity = Identity;

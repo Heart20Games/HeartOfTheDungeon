@@ -23,12 +23,19 @@ public class DigitServer : BaseMonoBehaviour
 
     public void ServeNumber(int number)
     {
-        int hundreds = number / 100;
-        int remainder = number % 100;
-        if (hundreds > 0)
-            onDigit3.Invoke(digit3Property, library.GetNumber(hundreds).texture);
+        if (serveWithSign)
+        {
+            ServeNumberWithSign(number);
+        }
+        else
+        {
+            int hundreds = number / 100;
+            int remainder = number % 100;
+            if (hundreds > 0)
+                onDigit3.Invoke(digit3Property, library.GetNumber(hundreds).texture);
 
-        ServeTensAndOnes(Mathf.Abs(remainder), hundreds > 0);
+            ServeTensAndOnes(Mathf.Abs(remainder), hundreds > 0);
+        }
     }
 
     public void ServeNumberWithSign(int number)
@@ -39,7 +46,13 @@ public class DigitServer : BaseMonoBehaviour
         }
         else
         {
-            onDigit3.Invoke(digit3Property, library.GetSign(number).texture);
+            Sprite sprite = library.GetSign(number);
+            if (sprite != null)
+            {
+                Texture2D texture = sprite.texture;
+                onDigit3.Invoke(digit3Property, texture);
+            }
+
             ServeTensAndOnes(Mathf.Abs(number), false, true);
         }
     }
