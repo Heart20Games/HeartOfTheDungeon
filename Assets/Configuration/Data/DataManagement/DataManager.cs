@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /*
  * As per Trevor Mock's video "How to make a Save & Load System in Unity | 2022"
@@ -18,15 +19,23 @@ namespace DataManagement
 
         public List<IPersistent> persistents = new();
         public bool initialLoadComplete = false;
+
+        public UnityEvent onLoaded = new();
+
         public static DataManager Instance { get; private set; }
 
         private void Awake()
         {
             if (Instance != null)
             {
-                Debug.LogError("Expected only on Data Persistence Manager in the scene, but found multiple.");
+                Debug.LogError("Expected only one Data Persistence Manager in the scene, but found multiple.");
             }
             Instance = this;
+        }
+
+        private void OnDestroy()
+        {
+            Instance = null;
         }
 
         private void Start()
