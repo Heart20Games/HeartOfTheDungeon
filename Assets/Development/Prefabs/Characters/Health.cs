@@ -47,4 +47,6 @@ public class Health : BaseMonoBehaviour, IHealth
             onNoHealth.Invoke();
         }
     }
+
+    public virtual void SetDamagePosition(Vector3 location) { }
 }

@@ -31,11 +31,11 @@ public class StatBlock : PersistentScriptableObject
 {
     public enum Stat { Strength, Dexterity, Constitution, Intelligence }
     //public enum ModType { Inc, Mul, Quad, Exp, Log }
-    
-    public Attribute strength = new(0, "Strength");
-    public Attribute dexterity = new(0, "Dexterity");
-    public Attribute constitution = new(0, "Constitution");
-    public Attribute intelligence = new(0, "Intelligence");
+
+    public Attribute strength; // = new(0, "Strength");
+    public Attribute dexterity; // = new(0, "Dexterity");
+    public Attribute constitution; // = new(0, "Constitution");
+    public Attribute intelligence; // = new(0, "Intelligence");
 
     public List<StatBonus> bonuses = new();
 

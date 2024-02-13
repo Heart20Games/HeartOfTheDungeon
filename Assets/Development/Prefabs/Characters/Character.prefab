@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1489717458976820350
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3849603692290357226}
+  m_Layer: 0
+  m_Name: Damage Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3849603692290357226
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1489717458976820350}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 850644614561672070}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2417944070120284875
 GameObject:
   m_ObjectHideFlags: 0
@@ -70,6 +101,7 @@ Transform:
   - {fileID: 5676186294004812607}
   - {fileID: 8573595303347455047}
   - {fileID: 3190216237390131692}
+  - {fileID: 3849603692290357226}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4666652024189201520
@@ -137,6 +169,7 @@ MonoBehaviour:
   statuses: []
   pips: {fileID: 7863735429699678444}
   healthPopup: {fileID: 3729132909217436972}
+  damagePosition: {fileID: 3849603692290357226}
   health:
     name: Health
     current:
@@ -712,6 +745,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
   other: {fileID: 0}
+  impactLocation: {x: 0, y: 0, z: 0}
 --- !u!114 &1823199978716685285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -795,6 +829,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
   other: {fileID: 0}
+  impactLocation: {x: 0, y: 0, z: 0}
 --- !u!195 &608404790986451179
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1348,6 +1383,10 @@ PrefabInstance:
       propertyPath: serverParent
       value: 
       objectReference: {fileID: 850644614561672070}
+    - target: {fileID: 1720054470530498063, guid: ece1f627e08419748a91b333c1d883ae, type: 3}
+      propertyPath: serverTarget
+      value: 
+      objectReference: {fileID: 3849603692290357226}
     - target: {fileID: 3206831491631613990, guid: ece1f627e08419748a91b333c1d883ae, type: 3}
       propertyPath: m_Name
       value: DamagePopups

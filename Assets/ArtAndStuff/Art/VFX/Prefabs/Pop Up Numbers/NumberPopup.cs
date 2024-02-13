@@ -6,6 +6,7 @@ using UnityEngine;
 public class NumberPopup : MonoBehaviour
 {
     public Transform serverParent;
+    public Transform serverTarget;
     [Space]
     public DigitServer negativePrefab;
     public DigitServer neutralPrefab;
@@ -50,7 +51,7 @@ public class NumberPopup : MonoBehaviour
 
         DigitServer server = Instantiate(serverPrefab, serverParent, true);
         server.gameObject.SetActive(false);
-        server.transform.position = transform.position;
+        server.transform.position = serverTarget.position;
         server.ServeNumber(number);
         server.gameObject.SetActive(true);
         StartCoroutine(DestroyOldPopup(server));

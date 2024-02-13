@@ -15,4 +15,6 @@ public class DamageReceiver : BaseMonoBehaviour, IDamageable
         onTakeDamage.Invoke(amount);
         onTakeDamageFrom.Invoke(amount, id);
     }
+
+    public virtual void SetDamagePosition(Vector3 location) { }
 }
