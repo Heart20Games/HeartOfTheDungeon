@@ -50,6 +50,7 @@ public class DigitServer : BaseMonoBehaviour
             if (sprite != null)
             {
                 Texture2D texture = sprite.texture;
+                onDigit2.Invoke(digit2Property, texture);
                 onDigit3.Invoke(digit3Property, texture);
             }
 
@@ -62,10 +63,12 @@ public class DigitServer : BaseMonoBehaviour
         int tens = number / 10;
         if (tens > 0 || hasThirdDigit)
             onDigit2.Invoke(digit2Property, library.GetNumber(tens).texture);
+        else if (!hasSign)
+            onDigit2.Invoke(digit2Property, null);
 
         int ones = number % 10;
         onDigit1.Invoke(digit1Property, library.GetNumber(ones).texture);
 
-        onEven.Invoke(evenProperty, !hasThirdDigit && ((tens == 0 && hasSign) || (tens > 0 && !hasSign)));
+        onEven.Invoke(evenProperty, !hasThirdDigit && tens > 0); //((tens == 0 && hasSign) || (tens > 0 && !hasSign)));
     }
 }
