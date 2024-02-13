@@ -14,6 +14,9 @@ public class NumberPopup : MonoBehaviour
     [Space]
     [SerializeField] private int testNumber;
 
+    public enum SignRule { AsGiven, AsPositive, AsNegative, ZeroPositive, ZeroNegative }
+    public SignRule signRule = SignRule.AsGiven;
+
     private void Awake()
     {
         if (serverParent == null)
@@ -30,7 +33,20 @@ public class NumberPopup : MonoBehaviour
 
     public void PopupNumber(int number)
     {
-        DigitServer serverPrefab = number < 0 ? negativePrefab : number == 0 ? neutralPrefab : positivePrefab;
+        DigitServer serverPrefab;
+        switch (signRule)
+        {
+            case SignRule.AsPositive:
+                serverPrefab = positivePrefab; break;
+            case SignRule.AsNegative:
+                serverPrefab = negativePrefab; break;
+            case SignRule.ZeroPositive:
+                serverPrefab = number < 0 ? negativePrefab : positivePrefab; break;
+            case SignRule.ZeroNegative:
+                serverPrefab = number > 0 ? positivePrefab : negativePrefab; break;
+            default: // AsGiven
+                serverPrefab = number == 0 ? neutralPrefab : number < 0 ? negativePrefab : positivePrefab; break;
+        }
 
         DigitServer server = Instantiate(serverPrefab, serverParent, true);
         server.gameObject.SetActive(false);
