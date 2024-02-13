@@ -37,6 +37,7 @@ public class Explosion: MonoBehaviour
             if (hit.collider.TryGetComponent(out IDamageable damageable))
             {
                 print($"Damage them! {hit.collider.gameObject.name}");
+                damageable.SetDamagePosition(hit.point);
                 damageable.TakeDamage(damage, identity);
             }
         }

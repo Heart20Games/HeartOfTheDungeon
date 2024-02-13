@@ -79,6 +79,7 @@ namespace HotD.Castables
             if (other != null && !ignored.Contains(other) && !others.Contains(other))
             {
                 others.Add(other);
+                other.SetDamagePosition(impactor.impactLocation);
                 other.TakeDamage(damage, Identity);
             }
         }

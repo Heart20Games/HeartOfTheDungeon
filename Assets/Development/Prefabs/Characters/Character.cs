@@ -94,6 +94,7 @@ namespace Body
         [Foldout("Health and Damage", true)]
         public PipGenerator pips;
         public NumberPopup healthPopup;
+        public Transform damagePosition;
         public ModField<int> health = new("Health", 5, 5);
         public ModField<int> armor = new("Armor", 1, 1);
         [Space]
@@ -288,6 +289,11 @@ namespace Body
                 onDmg.Invoke();
             }
             if (amount <= 0f && alive) SetAlive(false);
+        }
+
+        public void SetDamagePosition(Vector3 damagePosition)
+        {
+            this.damagePosition.position = damagePosition;
         }
 
         public void TakeDamage(int damageAmount, Identity id=Identity.Neutral)
