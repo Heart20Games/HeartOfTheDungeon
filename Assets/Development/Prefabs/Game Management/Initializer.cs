@@ -15,6 +15,7 @@ public class Initializer : BaseMonoBehaviour
     private FModEventPlayer[] fmodPlayers;
     private DialogueRunner dialogueRunner;
     private UserInterface userInterface;
+    private GlobalVolumeManager volumeManager;
     private List<ITimeScalable> timeScalables;
     private List<Interactable> interactables;
     private GameController[] gameControls;
@@ -69,6 +70,9 @@ public class Initializer : BaseMonoBehaviour
         
         userInterface = FindObjectOfType<UserInterface>();
         game.userInterface = userInterface;
+
+        volumeManager = FindObjectOfType<GlobalVolumeManager>();
+        game.volumeManager = volumeManager;
 
         timeScalables = new List<ITimeScalable>(FindObjectsOfType<BaseMonoBehaviour>().OfType<ITimeScalable>());
         game.timeScalables = timeScalables;

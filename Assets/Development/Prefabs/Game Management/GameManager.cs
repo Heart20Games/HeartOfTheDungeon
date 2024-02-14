@@ -5,7 +5,6 @@ using Body;
 using UnityEngine.Events;
 using static GameModes;
 using Selection;
-using Yarn.Unity;
 using UnityEngine.SceneManagement;
 
 public class Game : BaseMonoBehaviour
@@ -22,6 +21,7 @@ public class Game : BaseMonoBehaviour
     public GameSettings settings;
     [HideInInspector] public List<Cutouts> cardboardCutouts = new();
     [HideInInspector] public UserInterface userInterface;
+    [HideInInspector] public GlobalVolumeManager volumeManager;
     [HideInInspector] public HUD hud;
     [HideInInspector] public List<ITimeScalable> timeScalables;
     [HideInInspector] public List<Interactable> interactables;
@@ -226,6 +226,15 @@ public class Game : BaseMonoBehaviour
         else
         {
             Debug.LogWarning($"UserInterface not found when changing Game Modes ({lastMode} -> {mode})");
+        }
+
+        if (volumeManager != null)
+        {
+            volumeManager.ToggleDeath(mode.activeShader == GameModes.Shader.Death);
+        }
+        else
+        {
+            Debug.LogWarning($"VolumeManager not found when changing Game Modes ({lastMode} -> {mode})");
         }
 
         foreach (Cutouts cutout in cardboardCutouts)

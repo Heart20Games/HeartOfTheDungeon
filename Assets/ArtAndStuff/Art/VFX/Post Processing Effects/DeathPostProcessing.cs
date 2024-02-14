@@ -53,12 +53,12 @@ public class DeathPostProcessing : MonoBehaviour
         }
     }
 
-    void Death()
+    public void Death()
     {
         StartCoroutine (DeathActivate());
     }
 
-    void Alive()
+    public void Alive()
     {
         StartCoroutine (DeathDeactivate());
     }
