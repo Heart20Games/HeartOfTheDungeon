@@ -101,25 +101,29 @@ namespace Selection
                 ASelectable selectable = Main.selectableBank[i];
                 if (selectable != attachedSelectable && Main.Validate(selectable))
                 {
-                    numValid += 1;
-                    Vector3 origin = transform.position + offset;
-                    Vector3 vector = (selectable.transform.position + selectable.offset) - origin;
-                    // Ignore things that aren't in range.
-                    if (vector.magnitude <= range)
+                    // Ignore things that aren't enabled.
+                    if (selectable.isActiveAndEnabled)
                     {
-                        numInRange += 1;
-                        if (requireClearPath)
+                        numValid += 1;
+                        Vector3 origin = transform.position + offset;
+                        Vector3 vector = (selectable.transform.position + selectable.offset) - origin;
+                        // Ignore things that aren't in range.
+                        if (vector.magnitude <= range)
                         {
-                            // Ignore things that are blocked.
-                            if (Physics.Raycast(origin, vector, out var hit, obstacleMask))
-                                if (hit.collider.gameObject == selectable.gameObject)
-                                    AddSelectable(selectable);
-                            Debug.DrawRay(origin, vector.normalized * hit.distance, Color.green);
-                            Debug.DrawRay(origin + (vector.normalized * hit.distance), vector.normalized * (vector.magnitude - hit.distance), Color.red);
-                        }
-                        else
-                        {
-                            AddSelectable(selectable);
+                            numInRange += 1;
+                            if (requireClearPath)
+                            {
+                                // Ignore things that are blocked.
+                                if (Physics.Raycast(origin, vector, out var hit, obstacleMask))
+                                    if (hit.collider.gameObject == selectable.gameObject)
+                                        AddSelectable(selectable);
+                                Debug.DrawRay(origin, vector.normalized * hit.distance, Color.green);
+                                Debug.DrawRay(origin + (vector.normalized * hit.distance), vector.normalized * (vector.magnitude - hit.distance), Color.red);
+                            }
+                            else
+                            {
+                                AddSelectable(selectable);
+                            }
                         }
                     }
                 }
