@@ -10,7 +10,7 @@ public class GameModes
     public enum InputMode { None, Selection, Character, Dialogue, LockOn, Menu, Cutscene };
     public enum MoveMode { None, Selector, Character }
     public enum LookMode { None, Targeter }
-    public enum Menu { None, ControlSheet, CharacterSheet, Dialogue }
+    public enum Menu { None, ControlSheet, CharacterSheet, Dialogue, Death }
     public static Dictionary<string, GameMode> ModeBank { get { return game.settings.ModeBank; } }
     public static Dictionary<InputMode, GameMode> InputBank { get { return game.settings.InputBank; } }
     public static Dictionary<Menu, GameMode> MenuBank { get { return game.settings.MenuBank; } }

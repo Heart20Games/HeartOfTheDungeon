@@ -40,6 +40,7 @@ namespace Body
         public bool alive = false;
         [Space]
         public UnityEvent<bool> onControl;
+        public UnityEvent<bool> onSpectate;
 
         // Appearance
         [Foldout("Appearance", true)]
@@ -134,6 +135,8 @@ namespace Body
             // Initialization
             InitializeCastables();
             InitializeSpawn();
+            SetDisplayable(true);
+            SetSpectatable(false);
             SetControllable(false);
 
             // Statblock connections
@@ -219,7 +222,7 @@ namespace Body
         public void ConnectControl()
         {
             if (moveReticle != null) onControl.AddListener(moveReticle.gameObject.SetActive);
-            if (virtualCamera != null) onControl.AddListener(virtualCamera.gameObject.SetActive);
+            if (virtualCamera != null) onSpectate.AddListener(virtualCamera.gameObject.SetActive);
             if (interactor != null) onControl.AddListener(DoEnable(interactor));
             if (pips != null) onControl.AddListener((bool controllable) => { pips.SetHideMode(controllable ? HideMode.Always : HideMode.Sometimes); });
         }
@@ -228,6 +231,11 @@ namespace Body
         public void SetDisplayable(bool _displayable)
         {
             artRenderer.enabled = _displayable;
+        }
+
+        public void SetSpectatable(bool _spectatable)
+        {
+            onSpectate.Invoke(_spectatable);
         }
 
         public void SetControllable(bool _controllable)

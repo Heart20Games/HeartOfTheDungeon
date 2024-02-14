@@ -243,7 +243,8 @@ public class Game : BaseMonoBehaviour
         }
 
         // Set Inputs
-        input.SwitchCurrentActionMap(mode.inputMode.ToString());
+        if (mode.inputMode != InputMode.None)
+            input.SwitchCurrentActionMap(mode.inputMode.ToString());
         Cursor.lockState = mode.showMouse ? CursorLockMode.Confined : CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -254,9 +255,9 @@ public class Game : BaseMonoBehaviour
         IControllable newControllable = mode.Controllable;
         IControllable oldControllable = lastMode.Controllable;
         if (newControllable != null)
-            SetControllable(newControllable, true);
+            SetControllable(newControllable, true, true);
         if (oldControllable != null && oldControllable != newControllable)
-            SetControllable(oldControllable, false);
+            SetControllable(oldControllable, false, newControllable == null);
 
         // Swap Target Finders
         if (targeter != null)
@@ -284,9 +285,10 @@ public class Game : BaseMonoBehaviour
 
     // Controllables
 
-    public void SetControllable(IControllable controllable, bool shouldControl)
+    public void SetControllable(IControllable controllable, bool shouldControl, bool shouldSpectate)
     {
         controllable?.SetControllable(shouldControl);
+        controllable?.SetSpectatable(shouldSpectate);
     }
 
     public void SetBrainable(IBrainable brainable, bool shouldBrain)
@@ -369,8 +371,8 @@ public class Game : BaseMonoBehaviour
         if (character != null)
         {
             userInterface.SetCharacter(playerCharacter);
-            SetControllable(curCharacter, false);
-            SetControllable(character, true);
+            SetControllable(curCharacter, false, false);
+            SetControllable(character, true, true);
             curCharacter = character;
             SetMode(InputMode.Character);
         }
@@ -391,6 +393,7 @@ public class Game : BaseMonoBehaviour
     {
         if (character == playerCharacter)
         {
+            SetMode(Menu.Death);
             onPlayerDied.Invoke();
         }
         else if (character == curCharacter)
