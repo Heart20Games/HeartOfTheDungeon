@@ -13,6 +13,11 @@ public class GlobalVolumeManager : MonoBehaviour
     }
 
     [ButtonMethod]
+    public void ToggleDeath()
+    {
+        ToggleDeath(!dead);
+    }
+
     public void ToggleDeath(bool die)
     {
         if (dead != die)
@@ -23,5 +28,6 @@ public class GlobalVolumeManager : MonoBehaviour
                 case false: death.Alive(); break;
             }
         }
+        dead = die;
     }
 }

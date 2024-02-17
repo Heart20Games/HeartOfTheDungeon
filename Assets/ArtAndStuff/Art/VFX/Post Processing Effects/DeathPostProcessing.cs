@@ -11,14 +11,14 @@ public class DeathPostProcessing : MonoBehaviour
     private VolumeProfile volumeProfile;
     private Vignette vignette;
     private ColorAdjustments colorAdjustments;
-    public float startingSaturation;
+    public float startingSaturation; // 100 is fully saturated, -100 is full black and white.
     [SerializeField] private float targetSaturation;
-    [SerializeField] private float targetVignetteIntensity;
+    [SerializeField] private float targetVignetteIntensity; // 0 is no vignette, 1 max vignette.
     private float currentSaturation;
     private float currentVignetteIntensity;
-    [SerializeField] private float saturationRate;
-    [SerializeField] private float vignetteIntensityRate;
-    [SerializeField] private float refreshRate;
+    [SerializeField] private float saturationRate; // How quickly it transitions from starting to target (amount per refresh rate).
+    [SerializeField] private float vignetteIntensityRate; // How quickly it transitions from 0 to target.
+    [SerializeField] private float refreshRate; // Time in seconds till refreshing.
     [SerializeField] private bool testDeath;
     [SerializeField] private bool testDeathDeactivate;
     
