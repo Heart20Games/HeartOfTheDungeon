@@ -13,6 +13,7 @@ namespace Body
     using MyBox;
     using Selection;
     using System.Collections;
+    using HotD;
     using UIPips;
     using static Body.Behavior.ContextSteering.CSIdentity;
     using static UIPips.PipGenerator;
