@@ -1,33 +1,36 @@
 using MyBox;
 using UnityEngine;
 
-public class GlobalVolumeManager : MonoBehaviour
+namespace HotD.PostProcessing
 {
-    public DeathPostProcessing death;
-    public bool dead;
-
-    public void Awake()
+    public class GlobalVolumeManager : MonoBehaviour
     {
-        if (death == null)
-            death = GetComponent<DeathPostProcessing>();
-    }
+        public DeathProcessor death;
+        public bool dead;
 
-    [ButtonMethod]
-    public void ToggleDeath()
-    {
-        ToggleDeath(!dead);
-    }
-
-    public void ToggleDeath(bool die)
-    {
-        if (dead != die)
+        public void Awake()
         {
-            switch (die)
-            {
-                case true: death.Death(); break;
-                case false: death.Alive(); break;
-            }
+            if (death == null)
+                death = GetComponent<DeathProcessor>();
         }
-        dead = die;
+
+        [ButtonMethod]
+        public void ToggleDeath()
+        {
+            ToggleDeath(!dead);
+        }
+
+        public void ToggleDeath(bool die)
+        {
+            if (dead != die)
+            {
+                switch (die)
+                {
+                    case true: death.Activate(); break;
+                    case false: death.Deactivate(); break;
+                }
+            }
+            dead = die;
+        }
     }
 }

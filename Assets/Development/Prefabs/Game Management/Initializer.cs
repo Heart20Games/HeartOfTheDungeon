@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using Yarn.Unity;
 using Body;
+using HotD.PostProcessing;
 
 public class Initializer : BaseMonoBehaviour
 {
