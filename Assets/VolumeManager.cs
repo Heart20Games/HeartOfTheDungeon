@@ -3,7 +3,11 @@ using UnityEngine;
 
 namespace HotD.PostProcessing
 {
-    public class GlobalVolumeManager : MonoBehaviour
+    using static PostProcessor;
+
+    public enum ProcessorType { None, Death }
+
+    public class VolumeManager : BaseMonoBehaviour
     {
         public DeathProcessor death;
         public bool dead;
@@ -12,6 +16,15 @@ namespace HotD.PostProcessing
         {
             if (death == null)
                 death = GetComponent<DeathProcessor>();
+        }
+
+        public bool IsActive(ProcessorType type)
+        {
+            return type switch
+            {
+                ProcessorType.Death => death.status == Status.Active,
+                _ => false,
+            };
         }
 
         [ButtonMethod]

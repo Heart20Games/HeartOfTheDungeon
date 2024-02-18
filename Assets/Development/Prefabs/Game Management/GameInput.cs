@@ -4,6 +4,7 @@ using Body;
 using Selection;
 using System.Collections;
 using MyBox;
+using HotD.PostProcessing;
 
 namespace HotD
 {
@@ -18,6 +19,7 @@ namespace HotD
 
         // Systems
         public UserInterface UserInterface { get => Game.userInterface; }
+        public VolumeManager VolumeManager { get => Game.volumeManager; }
         public HUD Hud { get => Game.hud; }
 
         // Fields
@@ -128,7 +130,12 @@ namespace HotD
                         Delegate del = deSelect ? CurSelector.DeSelect : CurSelector.Select;
                         del.Invoke(); break;
                     case InputMode.Menu:
-                        UserInterface.Select(); break;
+                        if (Menu == Menu.Death)
+                            if (VolumeManager.IsActive(ProcessorType.Death))
+                                Game.RestartLife();
+                            else
+                                UserInterface.Select(); 
+                        break;
                 }
             }
         }

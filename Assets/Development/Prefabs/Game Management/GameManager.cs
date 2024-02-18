@@ -25,7 +25,7 @@ namespace HotD
         public GameSettings settings;
         [HideInInspector] public List<Cutouts> cardboardCutouts = new();
         [HideInInspector] public UserInterface userInterface;
-        [HideInInspector] public GlobalVolumeManager volumeManager;
+        [HideInInspector] public VolumeManager volumeManager;
         [HideInInspector] public HUD hud;
         [HideInInspector] public List<ITimeScalable> timeScalables;
         [HideInInspector] public List<Interactable> interactables;
@@ -45,6 +45,7 @@ namespace HotD
         [HideInInspector] public Character CurCharacter { get => curCharacter; set => SetCharacter(value); }
         private int curCharIdx = 0;
         public int CurCharIdx { get => curCharIdx; }
+        [SerializeField] private Party playerParty;
 
         // TimeScale
         [Header("TimeScale")]
@@ -119,13 +120,24 @@ namespace HotD
             if (restartable)
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-
         public void RestartGame()
         {
             if (restartable)
                 onRestartGame.Invoke();
         }
-
+        public void RestartLife()
+        {
+            if (playerParty != null)
+            {
+                playerParty.Respawn();
+                SetCharacter(playerParty.Leader);
+            }
+            else if (curCharacter != null)
+            {
+                curCharacter.Respawn();
+            }
+            SetMode(InputMode.Character);
+        }
 
         // Updates
 
@@ -234,7 +246,7 @@ namespace HotD
 
             if (volumeManager != null)
             {
-                volumeManager.ToggleDeath(mode.activeShader == GameModes.Shader.Death);
+                volumeManager.ToggleDeath(mode.activeShader == Shader.Death);
             }
             else
             {

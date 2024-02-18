@@ -18,7 +18,7 @@ namespace HotD
         private FModEventPlayer[] fmodPlayers;
         private DialogueRunner dialogueRunner;
         private UserInterface userInterface;
-        private GlobalVolumeManager volumeManager;
+        private VolumeManager volumeManager;
         private List<ITimeScalable> timeScalables;
         private List<Interactable> interactables;
         private GameController[] gameControls;
@@ -74,7 +74,7 @@ namespace HotD
             userInterface = FindObjectOfType<UserInterface>();
             game.userInterface = userInterface;
 
-            volumeManager = FindObjectOfType<GlobalVolumeManager>();
+            volumeManager = FindObjectOfType<VolumeManager>();
             game.volumeManager = volumeManager;
 
             timeScalables = new List<ITimeScalable>(FindObjectsOfType<BaseMonoBehaviour>().OfType<ITimeScalable>());
