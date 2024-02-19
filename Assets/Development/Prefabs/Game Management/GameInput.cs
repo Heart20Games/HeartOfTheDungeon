@@ -131,10 +131,14 @@ namespace HotD
                         del.Invoke(); break;
                     case InputMode.Menu:
                         if (Menu == Menu.Death)
-                            if (VolumeManager.IsActive(ProcessorType.Death))
+                        {
+                            if (VolumeManager.IsTransitioning(PType.Death, true, true))
+                                VolumeManager.SpeedUp(PType.Death);
+                            else    
                                 Game.RestartLife();
-                            else
-                                UserInterface.Select(); 
+                        }
+                        else
+                            UserInterface.Select(); 
                         break;
                 }
             }

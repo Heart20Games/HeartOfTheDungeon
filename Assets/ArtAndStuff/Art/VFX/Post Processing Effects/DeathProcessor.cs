@@ -1,3 +1,4 @@
+using MyBox;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -30,6 +31,8 @@ namespace HotD.PostProcessing
         [Tooltip("The number of seconds till the color filter reaches target from intitial.")]
         [SerializeField] private float colorRate = 0.5f;
         [SerializeField] private float colorDelay = 1f;
+        [ReadOnly][SerializeField] private float actualColorDelay;
+
 
         // Parameters
         private ClampedFloatParameter Saturation { get => colorAdjustments.saturation; }
@@ -49,23 +52,43 @@ namespace HotD.PostProcessing
             Filter.Override(initialColor);
         }
 
+        public void SpeedUp()
+        {
+            if (status == PStatus.Transitioning)
+            {
+                if (targetStatus == PStatus.Active)
+                {
+                    actualColorDelay = Time.time - startTime;
+                    endTime = HighestRate(true);
+                }
+            }
+        }
+
+        public override void SetActive(bool active)
+        {
+            actualColorDelay = colorDelay;
+            base.SetActive(active);
+        }
+
         public override float HighestRate(bool activate = true)
         {
-            return Mathf.Max(saturationRate, vignetteIntensityRate, activate ? colorDelay + colorRate : colorRate);
+            return Mathf.Max(saturationRate, vignetteIntensityRate, activate ? actualColorDelay + colorRate : colorRate);
         }
 
         public override void TransitionStep(float time, bool activate = true)
         {
-            float startSat = activate ? startingSaturation : targetSaturation, endSat = activate ? targetSaturation : startingSaturation;
-            float startInt = activate ? 0 : targetVignetteIntensity, endInt = activate ? targetVignetteIntensity : 0;
+            // Color Filter
             Color startColor = activate ? initialColor : targetColor, endColor = activate ? targetColor : initialColor;
-
-            Saturation.Override(Mathf.Lerp(startSat, endSat, time / saturationRate));
-            Intensity.Override(Mathf.Lerp(startInt, endInt, time / vignetteIntensityRate));
-            if (activate && time >= colorDelay)
-                Filter.Override(Color.Lerp(startColor, endColor, (time - colorDelay) / colorRate));
+            if (activate && time >= actualColorDelay)
+                Filter.Override(Color.Lerp(startColor, endColor, (time - actualColorDelay) / colorRate));
             else if (!activate)
                 Filter.Override(Color.Lerp(startColor, endColor, time / colorRate));
+
+            // Saturation and Intensity
+            float startSat = activate ? startingSaturation : targetSaturation, endSat = activate ? targetSaturation : startingSaturation;
+            float startInt = activate ? 0 : targetVignetteIntensity, endInt = activate ? targetVignetteIntensity : 0;
+            Saturation.Override(Mathf.Lerp(startSat, endSat, time / saturationRate));
+            Intensity.Override(Mathf.Lerp(startInt, endInt, time / vignetteIntensityRate));
         }
     }
 }

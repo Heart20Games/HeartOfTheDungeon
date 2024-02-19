@@ -246,7 +246,7 @@ namespace HotD
 
             if (volumeManager != null)
             {
-                volumeManager.ToggleDeath(mode.activeShader == Shader.Death);
+                volumeManager.SetDeath(mode.activeShader == Shader.Death);
             }
             else
             {

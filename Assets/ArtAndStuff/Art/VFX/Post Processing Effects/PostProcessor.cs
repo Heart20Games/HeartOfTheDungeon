@@ -7,15 +7,18 @@ namespace HotD.PostProcessing
 {
     public abstract class PostProcessor : BaseMonoBehaviour
     {
-        public enum Status { Inactive, Transitioning, Active };
+        public enum PStatus { Inactive, Transitioning, Active, None };
 
         [SerializeField] protected VolumeProfile volumeProfile;
 
         [Tooltip("The number of refreshes per second. (think of it like the \"framerate\")")]
         [Range(0.01f, 200f)][SerializeField] private float refreshRate = 50f; // Refreshes per second.
 
-        [ReadOnly] public Status status = Status.Inactive;
-        private Coroutine coroutine;
+        [ReadOnly] public PStatus status = PStatus.Inactive;
+        [ReadOnly] public PStatus targetStatus = PStatus.Inactive;
+        protected Coroutine coroutine;
+        protected float startTime;
+        protected float endTime;
 
         void Awake()
         {
@@ -26,20 +29,30 @@ namespace HotD.PostProcessing
 
         [ButtonMethod] public void Activate() { SetActive(true); }
         [ButtonMethod] public void Deactivate() { SetActive(false); }
-        public void SetActive(bool active)
+        public virtual void SetActive(bool active)
         {
-            coroutine ??= StartCoroutine(Transition(active));
+            PStatus nextStatus = active ? PStatus.Active : PStatus.Inactive;
+            if (nextStatus != targetStatus)
+            {
+                if (coroutine != null)
+                {
+                    StopCoroutine(coroutine);
+                    coroutine = null;
+                }
+                targetStatus = nextStatus;
+                coroutine ??= StartCoroutine(Transition(active));
+            }
         }
 
         public abstract float HighestRate(bool activate = true);
         public abstract void TransitionStep(float time, bool activate = true);
         IEnumerator Transition(bool activate)
         {
-            status = Status.Transitioning;
+            status = PStatus.Transitioning;
 
-            float startTime = Time.time;
+            startTime = Time.time;
             float time = Time.time - startTime;
-            float endTime = HighestRate(activate);
+            endTime = HighestRate(activate);
 
             while (time < endTime)
             {
@@ -50,7 +63,7 @@ namespace HotD.PostProcessing
 
             TransitionStep(endTime, activate);
 
-            status = activate ? Status.Active : Status.Inactive;
+            status = activate ? PStatus.Active : PStatus.Inactive;
             coroutine = null;
         }
     }
