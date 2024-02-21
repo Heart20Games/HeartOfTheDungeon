@@ -1,6 +1,7 @@
 using Body;
 using Body.Behavior;
 using Body.Behavior.ContextSteering;
+using MyBox;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -41,6 +42,11 @@ public class Party : BaseMonoBehaviour
     public float tightnessAggro = 2f;
     public float Tightness { get => tightness; set => SetTightness(value); }
 
+    [Space()]
+    [Header("Config")]
+    public bool autoRespawnAll;
+    [ConditionalField("autoRespawnAll")] public float autoRespawnDelay;
+
     public bool debug = false;
 
 
@@ -76,6 +82,11 @@ public class Party : BaseMonoBehaviour
             {
                 character.Controller.noise = noise;
                 character.Controller.destinationScale = tightnessIdle;
+            }
+            if (autoRespawnAll)
+            {
+                character.autoRespawn = true;
+                character.autoRespawnDelay = autoRespawnDelay;
             }
             character.Controller.onFoeContextActive.AddListener(CharacterAggroed);
             character.onDmg.AddListener(CharacterDamaged);

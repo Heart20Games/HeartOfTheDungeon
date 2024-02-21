@@ -12,11 +12,11 @@ namespace Body
     using Modifiers;
     using MyBox;
     using Selection;
-    using System.Collections;
     using HotD;
     using UIPips;
     using static Body.Behavior.ContextSteering.CSIdentity;
     using static UIPips.PipGenerator;
+    using System.Collections;
 
     [RequireComponent(typeof(Brain))]
     [RequireComponent(typeof(Movement))]
@@ -108,6 +108,8 @@ namespace Body
         [Foldout("Death and Respawning", true)]
         [Header("Death and Respawning")]
         public Transform spawn;
+        public bool autoRespawn;
+        [ConditionalField("autoRespawn")] public float autoRespawnDelay;
         [Space]
         public UnityEvent<Character> onDeath;
         public UnityEvent onRespawn;
@@ -273,7 +275,19 @@ namespace Body
             this.alive = alive;
             onAlive.Invoke(alive);
             if (died)
+            {
+                if (autoRespawn)
+                    autoRespawnCoroutine ??= StartCoroutine(AutoRespawn(autoRespawnDelay));
                 onDeath.Invoke(this);
+            }
+        }
+
+        private Coroutine autoRespawnCoroutine;
+        public IEnumerator AutoRespawn(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            Respawn();
+            autoRespawnCoroutine = null;
         }
 
         // Health and Damage
