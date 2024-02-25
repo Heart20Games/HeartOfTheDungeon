@@ -104,6 +104,7 @@ namespace HotD
                     playableCharacters.Insert(0, playerCharacter);
             }
 
+            hud.SetParty(playerParty);
             SetCharacterIdx(0);
             if (curCharacter == null)
                 SetMode(InputMode.Selection);
@@ -340,10 +341,6 @@ namespace HotD
             else
             {
                 if (debug) print($"Target selected: {selectable}");
-                //if (selectable.source.TryGetComponent<Character>(out var character))
-                //{
-                //    hud.SetTarget(character);
-                //}
                 if (selectable.source.TryGetComponent<AIdentifiable>(out var identifiable))
                 {
                     hud.SetTarget(identifiable);

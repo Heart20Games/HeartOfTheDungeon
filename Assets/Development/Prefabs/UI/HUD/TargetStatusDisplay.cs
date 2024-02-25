@@ -18,7 +18,13 @@ public class TargetStatusDisplay : BaseMonoBehaviour
     public void SetTarget(IIdentifiable target)
     {
         // Disconnect the old target.
-        this.target?.DisconnectPips(pips);
+        if (target != null)
+        {
+            if (portrait != null)
+                target.DisconnectImage(UpdatePortraitImage);
+            if (pips != null)
+                this.target?.DisconnectPips(pips);
+        }
 
         // Decide what replaces it
         this.target = target;
@@ -28,10 +34,12 @@ public class TargetStatusDisplay : BaseMonoBehaviour
             if (debug) print($"Has Target: {target}");
             gameObject.SetActive(true);
             gameObject.name = $"{target.Name} Status Display";
-            if (portrait != null) portrait.sprite = target.Image;
-            if (text != null) text.text = target.Name;
-
-            target.ConnectPips(pips, true);
+            if (portrait != null)
+                target.ConnectImage(UpdatePortraitImage);
+            if (text != null)
+                text.text = target.Name;
+            if (pips != null)
+                target.ConnectPips(pips, true);
         }
         else
         {
@@ -40,5 +48,10 @@ public class TargetStatusDisplay : BaseMonoBehaviour
             gameObject.SetActive(false);
             gameObject.name = "Empty Status Display";
         }
+    }
+
+    public void UpdatePortraitImage(Sprite image)
+    {
+        portrait.sprite = image;
     }
 }

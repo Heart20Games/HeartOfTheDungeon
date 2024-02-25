@@ -84,8 +84,8 @@ namespace Body
             set { identity = value; brain.Identity = value; }
         }
         public override string Name { get => statBlock == null ? null : statBlock.characterName; set => statBlock.characterName = value; }
-        public override ModField<int> Health { get => health; }
-        public override ModField<int> Armor { get => armor; }
+        public override MaxModField<int> Health { get => health; }
+        public override MaxModField<int> Armor { get => armor; }
 
         // Status Effects
         [Foldout("Status Effects", true)]
@@ -97,8 +97,8 @@ namespace Body
         public PipGenerator pips;
         public NumberPopup healthPopup;
         public Transform damagePosition;
-        public ModField<int> health = new("Health", 5, 5);
-        public ModField<int> armor = new("Armor", 1, 1);
+        public MaxModField<int> health = new("Health", 5, 5);
+        public MaxModField<int> armor = new("Armor", 1, 1);
         [Space]
         public UnityEvent onDmg;
         public int CurrentHealth { get => health.current.Value; set => health.current.Value = value; }
@@ -121,6 +121,7 @@ namespace Body
         {
             // Body Initialization
             transform.rotation = new(0, 0, 0, 0);
+            if (!firingLocation) firingLocation = transform;
             Awarn.IsNotNull(body, "Character has no Character");
             InitBody();
 

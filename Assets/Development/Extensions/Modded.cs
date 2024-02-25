@@ -7,18 +7,36 @@ namespace Modifiers
     [Serializable]
     public class ModField<T> where T : IComparable
     {
-        public ModField(string name, T startValue, T maxValue, Modded<T>.Constraint constraint=null, Modded<T>.Constraint constrainer=null)
+        public ModField(string name, T startValue)
         {
             this.name = name;
             current = new(startValue, $"{name} Current");
+        }
+
+        [HideInInspector] public string name;
+        public Modded<T> current;
+
+        // Subscribe
+        public void Subscribe(Modded<T>.Modify currentModifier = null) { current.Subscribe(currentModifier); }
+        public void Subscribe(Modded<T>.Listen currentListener = null) { current.Subscribe(currentListener); }
+
+        // Unsubscribe
+        public void UnSubscribe(Modded<T>.Modify currentModifier = null) { current.UnSubscribe(currentModifier); }
+        public void UnSubscribe(Modded<T>.Listen currentListener = null) { current.UnSubscribe(currentListener); }
+    }
+
+
+    [Serializable]
+    public class MaxModField<T> : ModField<T> where T : IComparable
+    {
+        public MaxModField(string name, T startValue, T maxValue, Modded<T>.Constraint constraint = null, Modded<T>.Constraint constrainer = null) : base(name, startValue)
+        {
             max = new(maxValue, $"{name} Max");
 
             current.constraint = constraint ?? BeConstrained;
             max.constraint = constrainer ?? Constrain;
         }
 
-        [HideInInspector] public string name;
-        public Modded<T> current;
         public Modded<T> max;
 
         // Constraint
@@ -36,26 +54,26 @@ namespace Modifiers
         // Subscribe
         public void Subscribe(Modded<T>.Modify currentModifier = null, Modded<T>.Modify maxModifier = null)
         {
-            current.Subscribe(currentModifier);
+            base.Subscribe(currentModifier);
             max.Subscribe(maxModifier);
         }
 
         public void Subscribe(Modded<T>.Listen currentListener = null, Modded<T>.Listen maxListener = null)
         {
-            current.Subscribe(currentListener);
+            base.Subscribe(currentListener);
             max.Subscribe(maxListener);
         }
 
         // Unsubscribe
         public void UnSubscribe(Modded<T>.Modify currentModifier = null, Modded<T>.Modify maxModifier = null)
         {
-            current.UnSubscribe(currentModifier);
+            base.UnSubscribe(currentModifier);
             max.UnSubscribe(maxModifier);
         }
 
         public void UnSubscribe(Modded<T>.Listen currentListener = null, Modded<T>.Listen maxListener = null)
         {
-            current.UnSubscribe(currentListener);
+            base.UnSubscribe(currentListener);
             max.UnSubscribe(maxListener);
         }
     }
