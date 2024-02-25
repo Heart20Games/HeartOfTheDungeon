@@ -117,8 +117,10 @@ namespace Body
 
 
         // Initialization
-        private void Awake()
+        public override void Awake()
         {
+            base.Awake();
+
             // Body Initialization
             transform.rotation = new(0, 0, 0, 0);
             if (!firingLocation) firingLocation = transform;

@@ -39,7 +39,7 @@ public class TargetStatusDisplay : BaseMonoBehaviour
             gameObject.SetActive(true);
             gameObject.name = $"{target.Name} Status Display";
             if (portrait != null)
-                target.ConnectImage(UpdatePortraitImage);
+                target.ConnectImage(UpdatePortraitImage, true);
             if (text != null)
                 text.text = target.Name;
             if (pips != null)
@@ -58,6 +58,7 @@ public class TargetStatusDisplay : BaseMonoBehaviour
 
     public void UpdatePortraitImage(Sprite image)
     {
+        if (debug) print("Updating portrait image.");
         portrait.sprite = image;
     }
 

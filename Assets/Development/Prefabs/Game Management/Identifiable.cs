@@ -61,7 +61,7 @@ public abstract class AIdentifiable : BaseMonoBehaviour, IIdentifiable
     protected void NULL() { /* Do Nothing */ }
 
     // Initialization
-    private void Awake()
+    public virtual void Awake()
     {
         emotion.Subscribe(UpdatePortraits);
     }

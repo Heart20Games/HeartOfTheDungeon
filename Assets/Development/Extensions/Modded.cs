@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Modifiers
 {
@@ -132,14 +133,20 @@ namespace Modifiers
         {
             if (listen != null)
                 if (!listeners.Contains(listen))
+                {
+                    if (debug) Debug.Log($"Added Listener to {name}");
                     listeners.Add(listen);
+                }
         }
 
         public void UnSubscribe(Listen listen)
         {
             if (listen != null)
                 if (listeners.Contains(listen))
+                {
+                    if (debug) Debug.Log($"Removed Listener from {name}");
                     listeners.Remove(listen);
+                }
         }
 
         // Setter
@@ -150,18 +157,18 @@ namespace Modifiers
             {
                 value = modifier.Invoke(this.value, value);
             }
-            if (debug) Debug.Log($"Modifiers applied. New {name} value now {value}.");
+            if (debug) Debug.Log($"Modifiers applied. New {name} value now {value}. ({modifiers.Count} modifiers)");
             if (constraint != null)
             {
                 value = constraint.Invoke(value);
             }
-            if (debug) Debug.Log($"Constraint applied. New {name} value now {value}.");
+            if (debug) Debug.Log($"Constraint applied. New {name} value now {value}. ({(constraint != null ? 1 : 0)} constraint)");
+            if (debug) Debug.Log($"{name} value set to {value} from {this.value}. ({listeners.Count} listeners)");
+            this.value = value;
             foreach (Listen listener in listeners)
             {
                 listener.Invoke(value);
             }
-            if (debug) Debug.Log($"{name} value set to {value} from {this.value}.");
-            this.value = value;
         }
     }
 }
