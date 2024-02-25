@@ -3,6 +3,7 @@ using Modifiers;
 using TMPro;
 using UnityEngine;
 using UIPips;
+using MyBox;
 
 public class TargetStatusDisplay : BaseMonoBehaviour
 {
@@ -13,7 +14,10 @@ public class TargetStatusDisplay : BaseMonoBehaviour
     public TMP_Text text;
     public PipGenerator pips;
 
+    [Space][Header("Testing")]
     [SerializeField] private bool debug;
+    [ReadOnly][SerializeField] private bool hasTarget = false;
+    [SerializeField] private string testEmotion = "neutral";
 
     public void SetTarget(IIdentifiable target)
     {
@@ -48,10 +52,20 @@ public class TargetStatusDisplay : BaseMonoBehaviour
             gameObject.SetActive(false);
             gameObject.name = "Empty Status Display";
         }
+
+        hasTarget = target != null;
     }
 
     public void UpdatePortraitImage(Sprite image)
     {
         portrait.sprite = image;
+    }
+
+    // Testing
+    [ButtonMethod]
+    public void TestEmotion()
+    {
+        string name = target.Name;
+        UpdatePortraitImage(portraits.GetImage(name, testEmotion));
     }
 }

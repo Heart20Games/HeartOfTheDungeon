@@ -279,7 +279,12 @@ namespace Body
             {
                 if (autoRespawn)
                     autoRespawnCoroutine ??= StartCoroutine(AutoRespawn(autoRespawnDelay));
+                Emotion = "dead";
                 onDeath.Invoke(this);
+            }
+            else
+            {
+                Emotion = "neutral";
             }
         }
 

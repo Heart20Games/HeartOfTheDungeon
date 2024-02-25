@@ -55,8 +55,11 @@ public class HUD : BaseMonoBehaviour
         foreach (Character member in party.members)
         {
             if (member != party.Leader)
+            {
                 partySelectPanel.SetTarget(idx, member);
-            if (idx > 2) break;
+                idx++;
+                if (idx > 2) break;
+            }
         }
     }
 
