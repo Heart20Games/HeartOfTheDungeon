@@ -35,8 +35,10 @@ public abstract class AIdentifiable : BaseMonoBehaviour, IIdentifiable
     [Foldout("Identity")] public ModField<string> emotion = new("Emotion", "neutral");
 
     // Events
+    [Foldout("Appearance", true)]
+    [Header("Portrait Events")]
     public UnityEvent<PortraitImage> onPortrait;
-    public UnityEvent<Sprite> onImage;
+    [Foldout("Appearance")] public UnityEvent<Sprite> onImage;
 
     // Properties
     public abstract Identity Identity { get; set; }

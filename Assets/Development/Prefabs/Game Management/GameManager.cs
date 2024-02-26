@@ -263,7 +263,7 @@ namespace HotD
             {
                 if (character != null)
                 {
-                    SetDisplayable(character, mode.cardboardMode);
+                    SetDisplayable(character, !mode.cardboardMode);
                     SetBrainable(character, mode.shouldBrain);
                 }
             }

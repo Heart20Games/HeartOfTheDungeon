@@ -44,9 +44,14 @@ public class Party : BaseMonoBehaviour
 
     [Space()]
     [Header("Config")]
+    [Space()]
     public bool autoRespawnAll;
     [ConditionalField("autoRespawnAll")] public float autoRespawnDelay;
+    [Space()]
+    public bool autoDespawnAll;
+    [ConditionalField("autoDespawnAll")] public float autoDespawnDelay;
 
+    [Space()]
     public bool debug = false;
 
 
@@ -87,6 +92,11 @@ public class Party : BaseMonoBehaviour
             {
                 character.autoRespawn = true;
                 character.autoRespawnDelay = autoRespawnDelay;
+            }
+            if (autoDespawnAll)
+            {
+                character.autoDespawn = true;
+                character.autoDespawnDelay = autoDespawnDelay;
             }
             character.Controller.onFoeContextActive.AddListener(CharacterAggroed);
             character.onDmg.AddListener(CharacterDamaged);

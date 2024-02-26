@@ -108,9 +108,14 @@ namespace Body
         [Foldout("Death and Respawning", true)]
         [Header("Death and Respawning")]
         public Transform spawn;
+        [Space]
+        // Respawn / Despawn
         public bool autoRespawn;
         [ConditionalField("autoRespawn")] public float autoRespawnDelay;
+        public bool autoDespawn;
+        [ConditionalField("autoDespawn")] public float autoDespawnDelay;
         [Space]
+        // Events
         public UnityEvent<Character> onDeath;
         public UnityEvent onRespawn;
         [Foldout("Death and Respawning")] public UnityEvent<bool> onAlive;
@@ -190,7 +195,7 @@ namespace Body
         }
 
 
-        // Respawning and Refreshing
+        // Respawning, Despawning and Refreshing
 
         public void Refresh()
         {
@@ -198,11 +203,25 @@ namespace Body
             SetAlive(true);
         }
 
-        public void Respawn()
+        public void Respawn(bool finishCoroutine = false)
         {
+            Print($"Respawn {Name}", true);
+            if (finishCoroutine)
+                autoRespawnCoroutine = null;
             body.SetPositionAndRotation(spawn.position, spawn.rotation);
             body.localScale = spawn.localScale;
+            SetDisplayable(true);
             Refresh();
+        }
+
+        public void Despawn(bool finishCoroutine = false)
+        {
+            Print($"Despawn {Name}", true);
+            if (finishCoroutine)
+                autoDespawnCoroutine = null;
+            SetDisplayable(false);
+            if (autoRespawn)
+                autoRespawnCoroutine ??= CallAfterDelay(Respawn, autoRespawnDelay);
         }
 
         // Updates
@@ -236,7 +255,7 @@ namespace Body
 
         public void SetDisplayable(bool _displayable)
         {
-            artRenderer.enabled = _displayable;
+            artRenderer.gameObject.SetActive(_displayable);
         }
 
         public void SetSpectatable(bool _spectatable)
@@ -271,6 +290,8 @@ namespace Body
             if (deadCollider != null) onAlive.AddListener((bool alive) => { deadCollider.enabled = alive; });
         }
 
+        private Coroutine autoRespawnCoroutine;
+        private Coroutine autoDespawnCoroutine;
         public void SetAlive(bool alive)
         {
             movement.SetMoveVector(new());
@@ -279,8 +300,13 @@ namespace Body
             onAlive.Invoke(alive);
             if (died)
             {
-                if (autoRespawn)
-                    autoRespawnCoroutine ??= StartCoroutine(AutoRespawn(autoRespawnDelay));
+                // Timers
+                if (autoDespawn)
+                    autoDespawnCoroutine ??= CallAfterDelay(Despawn, autoDespawnDelay);
+                else if (autoRespawn)
+                    autoRespawnCoroutine ??= CallAfterDelay(Respawn, autoRespawnDelay);
+                
+                // Events
                 Emotion = "dead";
                 onDeath.Invoke(this);
             }
@@ -290,12 +316,14 @@ namespace Body
             }
         }
 
-        private Coroutine autoRespawnCoroutine;
-        public IEnumerator AutoRespawn(float delay)
+        public Coroutine CallAfterDelay(UnityAction<bool> action, float delay)
+        {
+            return StartCoroutine(CallAfterDelayCoroutine(action, delay));
+        }
+        public IEnumerator CallAfterDelayCoroutine(UnityAction<bool> action, float delay)
         {
             yield return new WaitForSeconds(delay);
-            Respawn();
-            autoRespawnCoroutine = null;
+            action.Invoke(true);
         }
 
         // Health and Damage
