@@ -14,7 +14,7 @@ public class PlayerStatusDisplay : BaseMonoBehaviour
     [SerializeField] private TextMeshPro healthNumber;
     [SerializeField] private Animator healthAnimator;
     private Character character;
-    private ModField<int> Health => character != null ? character.Health : null;
+    private MaxModField<int> Health => character != null ? character.Health : null;
     private bool healthConnected = false;
     private bool initialized = false;
     private bool waitingForInitialization = false;

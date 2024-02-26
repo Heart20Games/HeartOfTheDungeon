@@ -12,10 +12,11 @@ namespace Body
     using Modifiers;
     using MyBox;
     using Selection;
-    using System.Collections;
+    using HotD;
     using UIPips;
     using static Body.Behavior.ContextSteering.CSIdentity;
     using static UIPips.PipGenerator;
+    using System.Collections;
 
     [RequireComponent(typeof(Brain))]
     [RequireComponent(typeof(Movement))]
@@ -40,6 +41,7 @@ namespace Body
         public bool alive = false;
         [Space]
         public UnityEvent<bool> onControl;
+        public UnityEvent<bool> onSpectate;
 
         // Appearance
         [Foldout("Appearance", true)]
@@ -82,8 +84,8 @@ namespace Body
             set { identity = value; brain.Identity = value; }
         }
         public override string Name { get => statBlock == null ? null : statBlock.characterName; set => statBlock.characterName = value; }
-        public override ModField<int> Health { get => health; }
-        public override ModField<int> Armor { get => armor; }
+        public override MaxModField<int> Health { get => health; }
+        public override MaxModField<int> Armor { get => armor; }
 
         // Status Effects
         [Foldout("Status Effects", true)]
@@ -95,8 +97,8 @@ namespace Body
         public PipGenerator pips;
         public NumberPopup healthPopup;
         public Transform damagePosition;
-        public ModField<int> health = new("Health", 5, 5);
-        public ModField<int> armor = new("Armor", 1, 1);
+        public MaxModField<int> health = new("Health", 5, 5);
+        public MaxModField<int> armor = new("Armor", 1, 1);
         [Space]
         public UnityEvent onDmg;
         public int CurrentHealth { get => health.current.Value; set => health.current.Value = value; }
@@ -107,16 +109,26 @@ namespace Body
         [Header("Death and Respawning")]
         public Transform spawn;
         [Space]
+        // Respawn / Despawn
+        public bool autoRespawn;
+        [ConditionalField("autoRespawn")] public float autoRespawnDelay;
+        public bool autoDespawn;
+        [ConditionalField("autoDespawn")] public float autoDespawnDelay;
+        [Space]
+        // Events
         public UnityEvent<Character> onDeath;
         public UnityEvent onRespawn;
         [Foldout("Death and Respawning")] public UnityEvent<bool> onAlive;
 
 
         // Initialization
-        private void Awake()
+        public override void Awake()
         {
+            base.Awake();
+
             // Body Initialization
             transform.rotation = new(0, 0, 0, 0);
+            if (!firingLocation) firingLocation = transform;
             Awarn.IsNotNull(body, "Character has no Character");
             InitBody();
 
@@ -134,6 +146,8 @@ namespace Body
             // Initialization
             InitializeCastables();
             InitializeSpawn();
+            SetDisplayable(true);
+            SetSpectatable(false);
             SetControllable(false);
 
             // Statblock connections
@@ -181,7 +195,7 @@ namespace Body
         }
 
 
-        // Respawning and Refreshing
+        // Respawning, Despawning and Refreshing
 
         public void Refresh()
         {
@@ -189,11 +203,25 @@ namespace Body
             SetAlive(true);
         }
 
-        public void Respawn()
+        public void Respawn(bool finishCoroutine = false)
         {
+            Print($"Respawn {Name}", true);
+            if (finishCoroutine)
+                autoRespawnCoroutine = null;
             body.SetPositionAndRotation(spawn.position, spawn.rotation);
             body.localScale = spawn.localScale;
+            SetDisplayable(true);
             Refresh();
+        }
+
+        public void Despawn(bool finishCoroutine = false)
+        {
+            Print($"Despawn {Name}", true);
+            if (finishCoroutine)
+                autoDespawnCoroutine = null;
+            SetDisplayable(false);
+            if (autoRespawn)
+                autoRespawnCoroutine ??= CallAfterDelay(Respawn, autoRespawnDelay);
         }
 
         // Updates
@@ -219,7 +247,7 @@ namespace Body
         public void ConnectControl()
         {
             if (moveReticle != null) onControl.AddListener(moveReticle.gameObject.SetActive);
-            if (virtualCamera != null) onControl.AddListener(virtualCamera.gameObject.SetActive);
+            if (virtualCamera != null) onSpectate.AddListener(virtualCamera.gameObject.SetActive);
             if (interactor != null) onControl.AddListener(DoEnable(interactor));
             if (pips != null) onControl.AddListener((bool controllable) => { pips.SetHideMode(controllable ? HideMode.Always : HideMode.Sometimes); });
         }
@@ -227,7 +255,12 @@ namespace Body
 
         public void SetDisplayable(bool _displayable)
         {
-            artRenderer.enabled = _displayable;
+            artRenderer.gameObject.SetActive(_displayable);
+        }
+
+        public void SetSpectatable(bool _spectatable)
+        {
+            onSpectate.Invoke(_spectatable);
         }
 
         public void SetControllable(bool _controllable)
@@ -257,6 +290,8 @@ namespace Body
             if (deadCollider != null) onAlive.AddListener((bool alive) => { deadCollider.enabled = alive; });
         }
 
+        private Coroutine autoRespawnCoroutine;
+        private Coroutine autoDespawnCoroutine;
         public void SetAlive(bool alive)
         {
             movement.SetMoveVector(new());
@@ -264,7 +299,31 @@ namespace Body
             this.alive = alive;
             onAlive.Invoke(alive);
             if (died)
+            {
+                // Timers
+                if (autoDespawn)
+                    autoDespawnCoroutine ??= CallAfterDelay(Despawn, autoDespawnDelay);
+                else if (autoRespawn)
+                    autoRespawnCoroutine ??= CallAfterDelay(Respawn, autoRespawnDelay);
+                
+                // Events
+                Emotion = "dead";
                 onDeath.Invoke(this);
+            }
+            else
+            {
+                Emotion = "neutral";
+            }
+        }
+
+        public Coroutine CallAfterDelay(UnityAction<bool> action, float delay)
+        {
+            return StartCoroutine(CallAfterDelayCoroutine(action, delay));
+        }
+        public IEnumerator CallAfterDelayCoroutine(UnityAction<bool> action, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            action.Invoke(true);
         }
 
         // Health and Damage

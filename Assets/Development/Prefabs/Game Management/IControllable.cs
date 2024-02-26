@@ -4,7 +4,12 @@ public interface IDisplayable
     public void SetDisplayable(bool displayable);
 }
 
-public interface IControllable: IDisplayable
+public interface ISpectatable: IDisplayable
+{
+    public void SetSpectatable(bool spectable);
+}
+
+public interface IControllable: ISpectatable
 {
     public void SetControllable(bool controllable);
 }

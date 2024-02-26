@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterSelectPanel : MonoBehaviour
+public class PartySelectPanel : MonoBehaviour
 {
     [Header("Materials")]
     [SerializeField] private Material defaultSpriteMat;
@@ -10,7 +10,7 @@ public class CharacterSelectPanel : MonoBehaviour
     private bool isShimmering = false;
 
     [Header("Portrait Images")]
-    [SerializeField] private List<GameObject> characterImages;
+    [SerializeField] private List<TargetStatusDisplay> displays;
     [SerializeField] private Animator portraitAnimator;
     [SerializeField] private int initialIndex;
     private int latestIndex;
@@ -30,7 +30,7 @@ public class CharacterSelectPanel : MonoBehaviour
 
     public void Initialize(int idx)
     {
-        for (int i = 0; i < characterImages.Count; i++)
+        for (int i = 0; i < displays.Count; i++)
         {
             if (i == idx)
                 SelectImage(i);
@@ -39,22 +39,27 @@ public class CharacterSelectPanel : MonoBehaviour
         }
     }
 
+    public void SetTarget(int idx, IIdentifiable identifiable=null)
+    {
+        displays[idx].SetTarget(identifiable);
+    }
+
 
     // Selection
 
     public void Select(int idx)
     {
         // Swap Images
-        idx %= characterImages.Count;
+        idx %= displays.Count;
         DeSelectImage(latestIndex);
         SelectImage(idx);
     }
 
     public void SelectImage(int idx)
     {
-        GameObject image = characterImages[idx];
-        image.GetComponent<SpriteRenderer>().sortingOrder = 3;
-        image.GetComponent<SpriteRenderer>().material = shimmerMat;
+        TargetStatusDisplay image = displays[idx];
+        image.portrait.sortingOrder = 3;
+        image.portrait.material = shimmerMat;
         portraitAnimator.SetTrigger($"SelectCharacter{idx}");
         latestIndex = idx;
 
@@ -65,9 +70,9 @@ public class CharacterSelectPanel : MonoBehaviour
 
     public void DeSelectImage(int idx)
     {
-        GameObject image = characterImages[idx];
-        image.GetComponent<SpriteRenderer>().sortingOrder = 1;
-        image.GetComponent<SpriteRenderer>().material = defaultSpriteMat;
+        TargetStatusDisplay image = displays[idx];
+        image.portrait.sortingOrder = 1;
+        image.portrait.material = defaultSpriteMat;
     }
 
 

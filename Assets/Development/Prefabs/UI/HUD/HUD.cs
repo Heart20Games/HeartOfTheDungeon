@@ -7,7 +7,7 @@ public class HUD : BaseMonoBehaviour
 {
     [Header("Components")]
     public AbilityMenu abilityMenu;
-    public CharacterSelectPanel characterPanel;
+    public PartySelectPanel partySelectPanel;
     public TargetStatusDisplay targetCharacterPanel;
     private GameObject mainCamera;
     private Canvas hudCanvas;
@@ -48,6 +48,20 @@ public class HUD : BaseMonoBehaviour
             spellSlots.gameObject.SetActive(useSpellSlots);
     }
 
+    public void SetParty(Party party)
+    {
+        partySelectPanel.SetTarget(0, party.Leader);
+        int idx = 1;
+        foreach (Character member in party.members)
+        {
+            if (member != party.Leader)
+            {
+                partySelectPanel.SetTarget(idx, member);
+                idx++;
+                if (idx > 2) break;
+            }
+        }
+    }
 
     //Selection
 
@@ -57,7 +71,7 @@ public class HUD : BaseMonoBehaviour
         {
             controlledCharacter = character;
             int idx = character.statBlock != null ? character.statBlock.portraitIndex : 0;
-            characterPanel.Select(idx);
+            partySelectPanel.Select(idx);
             abilityMenu.Select(false);
         }
     }
