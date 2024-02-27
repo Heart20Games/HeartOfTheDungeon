@@ -153,6 +153,9 @@ MonoBehaviour:
   onControl:
     m_PersistentCalls:
       m_Calls: []
+  onSpectate:
+    m_PersistentCalls:
+      m_Calls: []
   artRenderer: {fileID: 4122626737896113915}
   vfxController: {fileID: 0}
   virtualCamera: {fileID: 3832840258595731421}
@@ -197,7 +200,7 @@ MonoBehaviour:
   onDmg:
     m_PersistentCalls:
       m_Calls: []
-  spawn: {fileID: 0}
+  spawn: {fileID: 3190216237390131692}
   onDeath:
     m_PersistentCalls:
       m_Calls:
@@ -218,7 +221,19 @@ MonoBehaviour:
       m_Calls: []
   onAlive:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1891658906475348255}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   testDamageIdentity: 0
   testDamageAmount: 1
 --- !u!114 &1211649189196671348

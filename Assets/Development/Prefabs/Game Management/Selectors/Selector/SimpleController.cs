@@ -26,13 +26,17 @@ public class SimpleController : MonoBehaviour, IControllable
 
     public void SetDisplayable(bool displayable = true)
     {
-        // No Implemented
+        // Not Implemented
+    }
+
+    public void SetSpectatable(bool spectatable)
+    {
+        if (virtualCamera != null)
+            virtualCamera.gameObject.SetActive(spectatable);
     }
 
     public void SetControllable(bool controllable = true)
     {
-        if (virtualCamera != null)
-            virtualCamera.gameObject.SetActive(controllable);
         this.controllable = controllable;
         gameObject.SetActive(controllable);
         onControl.Invoke(controllable);

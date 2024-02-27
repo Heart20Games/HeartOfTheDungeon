@@ -6,7 +6,7 @@ public interface ISelectable
      * 2. Handle what happens when deselected.
      * 3. Handle what happens when confirmed.
      */
-    public enum SelectType { Default, Triggerable, Character, Interactable, Disabled, Invalid }
+    public enum SelectType { Default, Triggerable, Character, Dead, Interactable, Disabled, Invalid }
     public void Select();
     public void DeSelect();
     public void Hover();
