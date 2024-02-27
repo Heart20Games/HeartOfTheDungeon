@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /*
  * As per Trevor Mock's video "How to make a Save & Load System in Unity | 2022"
@@ -17,7 +18,8 @@ namespace DataManagement
         private FileDataHandler dataHandler;
 
         public List<IPersistent> persistents = new();
-        public bool initialLoadComplete = false;
+        [ReadOnly] public bool initialLoadComplete = false;
+        public UnityEvent onInitialLoadComplete;
         public static DataManager Instance { get; private set; }
 
         private void Awake()
@@ -57,6 +59,7 @@ namespace DataManagement
             LoadPersistents(persistents);
 
             initialLoadComplete = true;
+            onInitialLoadComplete.Invoke();
         }
 
         public void SaveGame()
