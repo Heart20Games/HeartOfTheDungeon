@@ -41,6 +41,9 @@ public class CharacterSheet : BaseMonoBehaviour
         Assert.IsNotNull(character);
         this.character = character;
 
+        // Clear the old bits
+        Clear();
+
         // Set Character Name
 
         // Set Character Portrait
@@ -98,7 +101,8 @@ public class CharacterSheet : BaseMonoBehaviour
     {
         foreach(CastableField field in castables)
         {
-            Destroy(field);
+            Destroy(field.gameObject);
         }
+        castables.Clear();
     }
 }
