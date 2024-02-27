@@ -102,7 +102,7 @@ public class PlayerStatusDisplay : BaseMonoBehaviour
 
         currentHealth = Mathf.Min(currentHealth, totalHealth);
 
-        float healthDifference = previousHealth - currentHealth;
+        float healthDifference = currentHealth - previousHealth;
         
         if (currentHealth != previousHealth)
             onHealthChanged.Invoke((int)healthDifference);

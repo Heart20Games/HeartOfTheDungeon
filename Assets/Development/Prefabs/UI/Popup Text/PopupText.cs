@@ -22,6 +22,12 @@ public class PopupText : MonoBehaviour
         CreateText();
     }
 
+    private void OnEnable()
+    {
+        if (textObject)
+            textObject.gameObject.SetActive(false);
+    }
+
     private void CreateText()
     {
         var pipText = Instantiate(textPrefab, transform);
