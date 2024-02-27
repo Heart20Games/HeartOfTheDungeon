@@ -9,47 +9,50 @@ using UnityEngine.Events;
 
 public class Party : BaseMonoBehaviour
 {
+    [Foldout("Party Members", true)]
     [Header("Party Members")]
     public Character leader;
     public Character Leader { get => leader; set => SetLeader(value); }
     public List<Character> members = new();
-    public List<Character> pets = new();
+    [Foldout("Party Members")] public List<Character> pets = new();
 
     static List<Party> parties = new();
     static Party mainParty;
     public bool isMainParty = false;
 
-    [Space()]
+    [Foldout("Status Events", true)]
     [Header("Status Events")]
     [ReadOnly] public bool aggroed = false;
     public UnityEvent onAggro = new();
     [ReadOnly] public bool allDead = false;
     public UnityEvent onAllDead = new();
-    private bool aggroedThisFrame = false;
+    [Foldout("Status Events")] private bool aggroedThisFrame = false;
 
+    [Foldout("Follow Target", true)]
     [Header("Follow Target")]
     public Transform followTargeter;
     public bool useLeaderAsFollowTargeter;
     public Transform defaultFollowTarget;
-    [ReadOnly][SerializeField] private Party targetParty;
+    [Foldout("Follow Target")][ReadOnly][SerializeField]
+    private Party targetParty;
     public Party TargetParty { get => targetParty; set => SetTargetParty(value); }
 
-    [Space()]
+    [Foldout("Noise and Scaling", true)]
     [Header("Noise and Scaling")]
     public MovementNoise noise;
     public float tightness = 1f;
     public float tightnessIdle = 1f;
-    public float tightnessAggro = 2f;
+    [Foldout("Noise and Scaling")] public float tightnessAggro = 2f;
     public float Tightness { get => tightness; set => SetTightness(value); }
 
-    [Space()]
+    [Foldout("Config", true)]
     [Header("Config")]
     [Space()]
     public bool autoRespawnAll;
     [ConditionalField("autoRespawnAll")] public float autoRespawnDelay;
     [Space()]
     public bool autoDespawnAll;
-    [ConditionalField("autoDespawnAll")] public float autoDespawnDelay;
+    [Foldout("Config")][ConditionalField("autoDespawnAll")] public float autoDespawnDelay;
 
     [Space()]
     public bool debug = false;
@@ -109,12 +112,14 @@ public class Party : BaseMonoBehaviour
 
     // Actions
 
+    [ButtonMethod]
     public void Refresh()
     {
         foreach (var character in members)
             character.Refresh();
     }
 
+    [ButtonMethod]
     public void Respawn()
     {
         foreach (var character in members)
