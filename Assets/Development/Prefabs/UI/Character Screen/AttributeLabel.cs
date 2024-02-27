@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using static Attributes.BaseAttribute;
 
-public class AttributeLabel : MonoBehaviour
+public class AttributeLabel : BaseMonoBehaviour
 {
     [SerializeField] private TMP_Text bonusText;
     [SerializeField] private TMP_Text nameText;

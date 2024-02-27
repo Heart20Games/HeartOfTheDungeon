@@ -790,6 +790,7 @@ MonoBehaviour:
   settings: {fileID: 11400000, guid: 1eeb75a2b83131147acb2c779806a8af, type: 2}
   cardboardCutouts: []
   userInterface: {fileID: 0}
+  volumeManager: {fileID: 0}
   hud: {fileID: 0}
   interactables: []
   allCharacters: []
@@ -798,6 +799,7 @@ MonoBehaviour:
   curCharacter: {fileID: 0}
   curController: {fileID: 0}
   curSelector: {fileID: 0}
+  playerParty: {fileID: 0}
   timeScale: 1
   restartable: 1
   debug: 0
@@ -828,6 +830,7 @@ MonoBehaviour:
     moveMode: 0
     lookMode: 0
     activeMenu: 0
+    activeShader: 0
     showMouse: 0
     hudActive: 0
     dialogueActive: 0
@@ -1111,6 +1114,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileName: GameData.txt
   initialLoadComplete: 0
+  onInitialLoadComplete:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2037490854999543379}
+        m_TargetAssemblyTypeName: HotD.Initializer, Assembly-CSharp
+        m_MethodName: OnGameDataInitialized
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &2759224181694214667
 PrefabInstance:
   m_ObjectHideFlags: 0

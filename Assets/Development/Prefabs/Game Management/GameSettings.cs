@@ -10,7 +10,7 @@ namespace HotD
     
     public class GameModes
     {
-        public enum InputMode { None, Selection, Character, Dialogue, LockOn, Menu, Cutscene };
+        public enum InputMode { None, Selection, Character, Dialogue, LockOn, Menu, Cutscene, Spectate };
         public enum MoveMode { None, Selector, Character }
         public enum LookMode { None, Targeter }
         public enum Menu { None, ControlSheet, CharacterSheet, Dialogue, Death }

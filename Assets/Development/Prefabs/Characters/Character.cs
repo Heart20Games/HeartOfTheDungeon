@@ -120,8 +120,6 @@ namespace Body
         public UnityEvent onRespawn;
         [Foldout("Death and Respawning")] public UnityEvent<bool> onAlive;
 
-
-        // Initialization
         public override void Awake()
         {
             base.Awake();

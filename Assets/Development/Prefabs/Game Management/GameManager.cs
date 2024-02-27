@@ -385,6 +385,8 @@ namespace HotD
                 Character character = playableCharacters[curCharIdx];
                 SetCharacter(character);
                 hud.CharacterSelect(character);
+                if (!character.alive)
+                    SetMode(InputMode.Spectate);
             }
         }
 
