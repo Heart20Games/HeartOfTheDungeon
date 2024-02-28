@@ -133,8 +133,11 @@ public abstract class AIdentifiable : BaseMonoBehaviour, IIdentifiable
 
 public class Identifiable : AIdentifiable
 {
+    public MaxModField<int> health = new("Health", 1, 1);
+    public MaxModField<int> armor = new("Armor", 0, 0);
+
     public override Identity Identity { get => identity; set => identity = value; }
     public override string Name { get => name; set => name = value; }
-    public override MaxModField<int> Health { get => null; }
-    public override MaxModField<int> Armor { get => null; }
+    public override MaxModField<int> Health { get => health; }
+    public override MaxModField<int> Armor { get => armor; }
 }
