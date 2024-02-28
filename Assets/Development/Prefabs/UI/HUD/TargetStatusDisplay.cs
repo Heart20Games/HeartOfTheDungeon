@@ -14,6 +14,8 @@ public class TargetStatusDisplay : BaseMonoBehaviour
     public TMP_Text text;
     public PipGenerator pips;
 
+    [SerializeField] private bool helpfulHierarchyName = true;
+
     [Space][Header("Testing")]
     [SerializeField] private bool debug;
     [ReadOnly][SerializeField] private bool hasTarget = false;
@@ -37,7 +39,8 @@ public class TargetStatusDisplay : BaseMonoBehaviour
             // Connect the new target.
             if (debug) print($"Has Target: {target}");
             gameObject.SetActive(true);
-            gameObject.name = $"{target.Name} Status Display";
+            if (helpfulHierarchyName)
+                gameObject.name = $"{target.Name} Status Display";
             if (portrait != null)
                 target.ConnectImage(UpdatePortraitImage, true);
             if (text != null)
@@ -50,7 +53,8 @@ public class TargetStatusDisplay : BaseMonoBehaviour
             // There's nothing to see here, hide it.
             if (debug) print($"No Target");
             gameObject.SetActive(false);
-            gameObject.name = "Empty Status Display";
+            if (helpfulHierarchyName)
+                gameObject.name = "Empty Status Display";
         }
 
         hasTarget = target != null;
