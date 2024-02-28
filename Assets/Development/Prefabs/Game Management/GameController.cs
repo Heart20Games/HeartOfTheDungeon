@@ -15,6 +15,7 @@ namespace HotD
         public List<SelectType> selectableTypes;
         [HideInInspector] public Game game;
         public UnityEvent onSelectorConfirmed;
+        public UnityEvent onDataInitialized;
 
         public Selector Selector { get => game.curSelector; }
 
@@ -35,6 +36,11 @@ namespace HotD
             print("Selector Confirmed (" + (Selector.selected != null) + ")");
             Selector.onConfirm.trigger.enter.RemoveListener(OnSelectorConfirmed);
             onSelectorConfirmed.Invoke();
+        }
+
+        public void OnDataInitialized()
+        {
+            onDataInitialized.Invoke();
         }
 
         public void UseSelector()

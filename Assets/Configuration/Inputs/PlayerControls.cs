@@ -1259,6 +1259,319 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ]
         },
         {
+            ""name"": ""Spectate"",
+            ""id"": ""99939233-ba95-4899-81e9-fa6c3333f0a1"",
+            ""actions"": [
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""2efaa414-e9a1-4955-8e58-02cdb505fb84"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": ""ScaleVector2(x=0.0625,y=0.0625),NormalizeVector2"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Toggle Skill Wheel"",
+                    ""type"": ""Button"",
+                    ""id"": ""39296cae-7b65-46e5-867c-e4f6ef293bc0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Switch Character Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""2f4dce78-a6c6-4d7e-9e0e-83923b4bab05"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Switch Character Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""9194c88f-dfbb-4785-bf4c-b914fab93cee"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Control Sheet"",
+                    ""type"": ""Button"",
+                    ""id"": ""9efcd9a5-2ecf-4646-9fc6-e3489c9dd144"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause Screen"",
+                    ""type"": ""Button"",
+                    ""id"": ""bc6cdedd-74e4-40f7-89ba-ee9ac370e1b7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Character Sheet"",
+                    ""type"": ""Button"",
+                    ""id"": ""d23c33d7-4526-4f53-a55c-6b04569a7dc6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Gamepad"",
+                    ""id"": ""d76776b2-c29b-4084-b44d-96632878b6fd"",
+                    ""path"": ""2DVector(mode=2)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""2a2e5b80-8c28-4621-bc5c-e56d5a02e243"",
+                    ""path"": ""<Gamepad>/rightStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""7bdc88d9-fa82-4c3c-9743-ed409396f155"",
+                    ""path"": ""<Gamepad>/rightStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""0ae9b40e-5011-48d2-8c07-ab50bb4c9b98"",
+                    ""path"": ""<Gamepad>/rightStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""acba44f1-3c5a-4844-abec-d57ab89f13f5"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Mouse"",
+                    ""id"": ""fe7c283d-7d6c-49f4-8207-19da8f51856c"",
+                    ""path"": ""2DVector(mode=2)"",
+                    ""interactions"": """",
+                    ""processors"": ""NormalizeVector2,StickDeadzone"",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""7038ea7e-0e8a-4c9e-98a8-1da09c1d0168"",
+                    ""path"": ""<Mouse>/delta/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""3ba442cf-756e-4574-b765-c11bdbcbe56a"",
+                    ""path"": ""<Mouse>/delta/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""e55e6bda-66de-4ad1-8c8d-d143014ca06e"",
+                    ""path"": ""<Mouse>/delta/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""4bd94a51-ce65-4839-a1eb-a5fb61ab5fe6"",
+                    ""path"": ""<Mouse>/delta/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""530be27d-875f-45a9-ac6b-52a91afc244c"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Skill Wheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""37c2a120-5246-4a66-821d-d18cecaec987"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Skill Wheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f71a3cfe-043c-4ef8-9930-7cc007284642"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch Character Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b496b358-c746-4610-8fcb-99e02a046758"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch Character Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ba9d1a94-df3c-4a7c-89d0-ac3356bc9238"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch Character Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""57217f59-1bc9-4b03-9bd0-786888d9481a"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch Character Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f74f683e-7e1e-435c-8406-28b3a9947990"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause Screen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3617e746-aa50-494e-a5e0-fae935032fe6"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause Screen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d8f10dde-fa27-489a-a9b8-9f59e8f2a7d9"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Character Sheet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""65397c37-d7c7-4dd7-9a88-9517a27b5fe6"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Character Sheet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""72987e3d-275f-4d9b-b6d2-84e13dd56f87"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Control Sheet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dc6aafca-23e7-40fc-9066-8255e9a2e60e"",
+                    ""path"": ""<Keyboard>/rightBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Control Sheet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""Dismiss"",
             ""id"": ""3a63b7db-9d1e-4cdd-ba64-15d88c346430"",
             ""actions"": [
@@ -2619,6 +2932,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Character_ControlSheet = m_Character.FindAction("Control Sheet", throwIfNotFound: true);
         m_Character_PauseScreen = m_Character.FindAction("Pause Screen", throwIfNotFound: true);
         m_Character_CharacterSheet = m_Character.FindAction("Character Sheet", throwIfNotFound: true);
+        // Spectate
+        m_Spectate = asset.FindActionMap("Spectate", throwIfNotFound: true);
+        m_Spectate_Look = m_Spectate.FindAction("Look", throwIfNotFound: true);
+        m_Spectate_ToggleSkillWheel = m_Spectate.FindAction("Toggle Skill Wheel", throwIfNotFound: true);
+        m_Spectate_SwitchCharacterLeft = m_Spectate.FindAction("Switch Character Left", throwIfNotFound: true);
+        m_Spectate_SwitchCharacterRight = m_Spectate.FindAction("Switch Character Right", throwIfNotFound: true);
+        m_Spectate_ControlSheet = m_Spectate.FindAction("Control Sheet", throwIfNotFound: true);
+        m_Spectate_PauseScreen = m_Spectate.FindAction("Pause Screen", throwIfNotFound: true);
+        m_Spectate_CharacterSheet = m_Spectate.FindAction("Character Sheet", throwIfNotFound: true);
         // Dismiss
         m_Dismiss = asset.FindActionMap("Dismiss", throwIfNotFound: true);
         m_Dismiss_Dismiss = m_Dismiss.FindAction("Dismiss", throwIfNotFound: true);
@@ -3050,6 +3372,100 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public CharacterActions @Character => new CharacterActions(this);
+
+    // Spectate
+    private readonly InputActionMap m_Spectate;
+    private List<ISpectateActions> m_SpectateActionsCallbackInterfaces = new List<ISpectateActions>();
+    private readonly InputAction m_Spectate_Look;
+    private readonly InputAction m_Spectate_ToggleSkillWheel;
+    private readonly InputAction m_Spectate_SwitchCharacterLeft;
+    private readonly InputAction m_Spectate_SwitchCharacterRight;
+    private readonly InputAction m_Spectate_ControlSheet;
+    private readonly InputAction m_Spectate_PauseScreen;
+    private readonly InputAction m_Spectate_CharacterSheet;
+    public struct SpectateActions
+    {
+        private @PlayerControls m_Wrapper;
+        public SpectateActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Look => m_Wrapper.m_Spectate_Look;
+        public InputAction @ToggleSkillWheel => m_Wrapper.m_Spectate_ToggleSkillWheel;
+        public InputAction @SwitchCharacterLeft => m_Wrapper.m_Spectate_SwitchCharacterLeft;
+        public InputAction @SwitchCharacterRight => m_Wrapper.m_Spectate_SwitchCharacterRight;
+        public InputAction @ControlSheet => m_Wrapper.m_Spectate_ControlSheet;
+        public InputAction @PauseScreen => m_Wrapper.m_Spectate_PauseScreen;
+        public InputAction @CharacterSheet => m_Wrapper.m_Spectate_CharacterSheet;
+        public InputActionMap Get() { return m_Wrapper.m_Spectate; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SpectateActions set) { return set.Get(); }
+        public void AddCallbacks(ISpectateActions instance)
+        {
+            if (instance == null || m_Wrapper.m_SpectateActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_SpectateActionsCallbackInterfaces.Add(instance);
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
+            @ToggleSkillWheel.started += instance.OnToggleSkillWheel;
+            @ToggleSkillWheel.performed += instance.OnToggleSkillWheel;
+            @ToggleSkillWheel.canceled += instance.OnToggleSkillWheel;
+            @SwitchCharacterLeft.started += instance.OnSwitchCharacterLeft;
+            @SwitchCharacterLeft.performed += instance.OnSwitchCharacterLeft;
+            @SwitchCharacterLeft.canceled += instance.OnSwitchCharacterLeft;
+            @SwitchCharacterRight.started += instance.OnSwitchCharacterRight;
+            @SwitchCharacterRight.performed += instance.OnSwitchCharacterRight;
+            @SwitchCharacterRight.canceled += instance.OnSwitchCharacterRight;
+            @ControlSheet.started += instance.OnControlSheet;
+            @ControlSheet.performed += instance.OnControlSheet;
+            @ControlSheet.canceled += instance.OnControlSheet;
+            @PauseScreen.started += instance.OnPauseScreen;
+            @PauseScreen.performed += instance.OnPauseScreen;
+            @PauseScreen.canceled += instance.OnPauseScreen;
+            @CharacterSheet.started += instance.OnCharacterSheet;
+            @CharacterSheet.performed += instance.OnCharacterSheet;
+            @CharacterSheet.canceled += instance.OnCharacterSheet;
+        }
+
+        private void UnregisterCallbacks(ISpectateActions instance)
+        {
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
+            @ToggleSkillWheel.started -= instance.OnToggleSkillWheel;
+            @ToggleSkillWheel.performed -= instance.OnToggleSkillWheel;
+            @ToggleSkillWheel.canceled -= instance.OnToggleSkillWheel;
+            @SwitchCharacterLeft.started -= instance.OnSwitchCharacterLeft;
+            @SwitchCharacterLeft.performed -= instance.OnSwitchCharacterLeft;
+            @SwitchCharacterLeft.canceled -= instance.OnSwitchCharacterLeft;
+            @SwitchCharacterRight.started -= instance.OnSwitchCharacterRight;
+            @SwitchCharacterRight.performed -= instance.OnSwitchCharacterRight;
+            @SwitchCharacterRight.canceled -= instance.OnSwitchCharacterRight;
+            @ControlSheet.started -= instance.OnControlSheet;
+            @ControlSheet.performed -= instance.OnControlSheet;
+            @ControlSheet.canceled -= instance.OnControlSheet;
+            @PauseScreen.started -= instance.OnPauseScreen;
+            @PauseScreen.performed -= instance.OnPauseScreen;
+            @PauseScreen.canceled -= instance.OnPauseScreen;
+            @CharacterSheet.started -= instance.OnCharacterSheet;
+            @CharacterSheet.performed -= instance.OnCharacterSheet;
+            @CharacterSheet.canceled -= instance.OnCharacterSheet;
+        }
+
+        public void RemoveCallbacks(ISpectateActions instance)
+        {
+            if (m_Wrapper.m_SpectateActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ISpectateActions instance)
+        {
+            foreach (var item in m_Wrapper.m_SpectateActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_SpectateActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public SpectateActions @Spectate => new SpectateActions(this);
 
     // Dismiss
     private readonly InputActionMap m_Dismiss;
@@ -3542,6 +3958,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnUseWeapon2(InputAction.CallbackContext context);
         void OnUseAbility1(InputAction.CallbackContext context);
         void OnUseAbility2(InputAction.CallbackContext context);
+        void OnSwitchCharacterLeft(InputAction.CallbackContext context);
+        void OnSwitchCharacterRight(InputAction.CallbackContext context);
+        void OnControlSheet(InputAction.CallbackContext context);
+        void OnPauseScreen(InputAction.CallbackContext context);
+        void OnCharacterSheet(InputAction.CallbackContext context);
+    }
+    public interface ISpectateActions
+    {
+        void OnLook(InputAction.CallbackContext context);
+        void OnToggleSkillWheel(InputAction.CallbackContext context);
         void OnSwitchCharacterLeft(InputAction.CallbackContext context);
         void OnSwitchCharacterRight(InputAction.CallbackContext context);
         void OnControlSheet(InputAction.CallbackContext context);

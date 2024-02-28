@@ -141,7 +141,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   portraits: {fileID: 11400000, guid: 8c8d32841b7b3e54f8a84f28d86d411b, type: 2}
   identity: 0
-  emotion: neutral
+  emotion:
+    name: Emotion
+    current:
+      debug: 0
+      name: Emotion Current
+      baseValue: 
+      value: neutral
+  onPortrait:
+    m_PersistentCalls:
+      m_Calls: []
+  onImage:
+    m_PersistentCalls:
+      m_Calls: []
   body: {fileID: 5106106832475441759}
   pivot: {fileID: 4813447189290614994}
   moveReticle: {fileID: 8706531923607348711}
@@ -201,6 +213,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   spawn: {fileID: 3190216237390131692}
+  autoRespawn: 0
+  autoRespawnDelay: 0
+  autoDespawn: 0
+  autoDespawnDelay: 0
   onDeath:
     m_PersistentCalls:
       m_Calls:
@@ -353,6 +369,21 @@ MonoBehaviour:
   onSelectorConfirmed:
     m_PersistentCalls:
       m_Calls: []
+  onDataInitialized:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 621112686987977477}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!1 &3499112199940193429
 GameObject:
   m_ObjectHideFlags: 0
@@ -1406,6 +1437,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DamagePopups
       objectReference: {fileID: 0}
+    - target: {fileID: 3206831491631613990, guid: ece1f627e08419748a91b333c1d883ae, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3966435387184660562, guid: ece1f627e08419748a91b333c1d883ae, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1451,6 +1486,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ece1f627e08419748a91b333c1d883ae, type: 3}
+--- !u!1 &621112686987977477 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3206831491631613990, guid: ece1f627e08419748a91b333c1d883ae, type: 3}
+  m_PrefabInstance: {fileID: 2602613236215130915}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1375230707520727921 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3966435387184660562, guid: ece1f627e08419748a91b333c1d883ae, type: 3}
@@ -1461,7 +1501,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1720054470530498063, guid: ece1f627e08419748a91b333c1d883ae, type: 3}
   m_PrefabInstance: {fileID: 2602613236215130915}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 621112686987977477}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9676ffaa99eaf1a429ccf1a80b7ab135, type: 3}

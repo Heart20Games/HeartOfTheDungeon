@@ -32,6 +32,7 @@ namespace HotD
             characters = FindObjectsOfType<Character>();
             game.allCharacters = new List<Character>(characters);
             game.cardboardCutouts = new List<Cutouts>(FindObjectsOfType<Cutouts>());
+            gameControls = FindObjectsOfType<GameController>();
 
             scriptableObjects = (BaseScriptableObject[])Resources.FindObjectsOfTypeAll(typeof(BaseScriptableObject));
             foreach (var scriptableObject in scriptableObjects)
@@ -98,6 +99,14 @@ namespace HotD
             if (BaseMonoBehaviour == null)
             {
                 Debug.LogWarning("Can't find any " + typeName + " " + context + ".");
+            }
+        }
+
+        public void OnGameDataInitialized()
+        {
+            foreach (GameController controller in gameControls)
+            {
+                controller.OnDataInitialized();
             }
         }
     }
