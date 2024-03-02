@@ -7,31 +7,42 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ice Material
-  m_Shader: {fileID: -6465566751694194690, guid: 557716e9dbc9c5e4d9433915a069ed23, type: 3}
+  m_Name: Ice Block Cracks Material
+  m_Shader: {fileID: -6465566751694194690, guid: 8f8e919d3d62c1f43bd4312d45b43f4a, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _ALPHAPREMULTIPLY_ON
+  - _ALPHATEST_ON
+  - _RECEIVE_SHADOWS_OFF
+  - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
+  disabledShaderPasses:
+  - SHADOWCASTER
+  - DepthOnly
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _NormalFromTexture_1eb91aebc338447f979a6fc098bbb821_Texture_0_Texture2D:
+    - _NormalFromTexture_9e014a0704034a15b2210c3b6d654b92_Texture_0_Texture2D:
+        m_Texture: {fileID: 2800000, guid: f18245795437dfb40a24447a4645093c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxOcclusionMapping_16c2528a56224d7598a96bdad4b4185a_Heightmap_2_Texture2D:
         m_Texture: {fileID: 2800000, guid: a2b67a0c49b8f794db5b21bd09abd5ab, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_5be90ef8aeb9447a96950618c27c09f2_Texture_1_Texture2D:
+    - _SampleTexture2D_3e6b89662646450c9fa6dac9a34eb8e5_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: a2b67a0c49b8f794db5b21bd09abd5ab, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_eb9297ef9e6f492bb48e7b8d7dcdb3d3_Texture_1_Texture2D:
+    - _Triplanar_d1958db748f342748f9c348b3dfd705d_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: a2b67a0c49b8f794db5b21bd09abd5ab, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -49,12 +60,30 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AlphaClip: 1
+    - _AlphaToMask: 0
+    - _Alpha_Power: 3
+    - _Base_Color_Power: 0.2
+    - _Blend: 0
+    - _BlendModePreserveSpecular: 1
+    - _CastShadows: 0
+    - _Cull: 2
+    - _DstBlend: 10
+    - _Normal_Power: -20
+    - _PO_Amplitude: 6
+    - _PO_Steps: 3
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Smoothness: 0.3
+    - _ReceiveShadows: 0
+    - _SrcBlend: 1
+    - _Surface: 1
+    - _WorkflowMode: 1
+    - _ZTest: 4
+    - _ZWrite: 0
+    - _ZWriteControl: 0
     m_Colors: []
   m_BuildTextureStacks: []
---- !u!114 &8810142959654185344
+--- !u!114 &2649216811466310031
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
