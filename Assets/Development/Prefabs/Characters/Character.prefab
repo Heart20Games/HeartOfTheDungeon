@@ -235,6 +235,21 @@ MonoBehaviour:
   onRespawn:
     m_PersistentCalls:
       m_Calls: []
+  onDespawn:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1900313634077399111}
+        m_TargetAssemblyTypeName: EffectSpawner, Assembly-CSharp
+        m_MethodName: Spawn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onAlive:
     m_PersistentCalls:
       m_Calls:
@@ -1151,6 +1166,58 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5106106832475441759}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7467411340263927445
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7888926781940784952}
+  - component: {fileID: 1900313634077399111}
+  m_Layer: 7
+  m_Name: Despawn VFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7888926781940784952
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7467411340263927445}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4813447189290614994}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1900313634077399111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7467411340263927445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be8b9a3aee8911f4b801e3e9ec2f834b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  applyOnSet: 1
+  source: {fileID: 850644614561672070}
+  target: {fileID: 4813447189290614994}
+  offset: {x: 0, y: 0, z: 0}
+  rOffset: 0
+  effects:
+  - lifeTime: 5
+    prefab: {fileID: 364385636823216239, guid: cd86f526df3cb474a811f86cb27bf003, type: 3}
 --- !u!1 &9138035305037282160
 GameObject:
   m_ObjectHideFlags: 0
@@ -1185,6 +1252,7 @@ Transform:
   - {fileID: 961364758086329560}
   - {fileID: 1572360479918770738}
   - {fileID: 3702175746035484640}
+  - {fileID: 7888926781940784952}
   m_Father: {fileID: 5106106832475441759}
   m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
 --- !u!210 &6865433604864545996

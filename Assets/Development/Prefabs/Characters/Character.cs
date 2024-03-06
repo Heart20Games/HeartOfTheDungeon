@@ -118,6 +118,7 @@ namespace Body
         // Events
         public UnityEvent<Character> onDeath;
         public UnityEvent onRespawn;
+        public UnityEvent onDespawn;
         [Foldout("Death and Respawning")] public UnityEvent<bool> onAlive;
 
         public override void Awake()
@@ -210,6 +211,7 @@ namespace Body
             body.localScale = spawn.localScale;
             SetDisplayable(true);
             Refresh();
+            onRespawn.Invoke();
         }
 
         public void Despawn(bool finishCoroutine = false)
@@ -220,6 +222,7 @@ namespace Body
             SetDisplayable(false);
             if (autoRespawn)
                 autoRespawnCoroutine ??= CallAfterDelay(Respawn, autoRespawnDelay);
+            onDespawn.Invoke();
         }
 
         // Updates
