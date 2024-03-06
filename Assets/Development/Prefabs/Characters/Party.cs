@@ -1,6 +1,7 @@
 using Body;
 using Body.Behavior;
 using Body.Behavior.ContextSteering;
+using MyBox;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -8,39 +9,52 @@ using UnityEngine.Events;
 
 public class Party : BaseMonoBehaviour
 {
+    [Foldout("Party Members", true)]
     [Header("Party Members")]
     public Character leader;
     public Character Leader { get => leader; set => SetLeader(value); }
-    public List<Character> characters = new();
-    public List<Character> pets = new();
+    public List<Character> members = new();
+    [Foldout("Party Members")] public List<Character> pets = new();
 
     static List<Party> parties = new();
     static Party mainParty;
     public bool isMainParty = false;
 
-    [Space()]
+    [Foldout("Status Events", true)]
     [Header("Status Events")]
     [ReadOnly] public bool aggroed = false;
     public UnityEvent onAggro = new();
     [ReadOnly] public bool allDead = false;
     public UnityEvent onAllDead = new();
-    private bool aggroedThisFrame = false;
+    [Foldout("Status Events")] private bool aggroedThisFrame = false;
 
+    [Foldout("Follow Target", true)]
     [Header("Follow Target")]
     public Transform followTargeter;
     public bool useLeaderAsFollowTargeter;
     public Transform defaultFollowTarget;
-    [ReadOnly][SerializeField] private Party targetParty;
+    [Foldout("Follow Target")][ReadOnly][SerializeField]
+    private Party targetParty;
     public Party TargetParty { get => targetParty; set => SetTargetParty(value); }
 
-    [Space()]
+    [Foldout("Noise and Scaling", true)]
     [Header("Noise and Scaling")]
     public MovementNoise noise;
     public float tightness = 1f;
     public float tightnessIdle = 1f;
-    public float tightnessAggro = 2f;
+    [Foldout("Noise and Scaling")] public float tightnessAggro = 2f;
     public float Tightness { get => tightness; set => SetTightness(value); }
 
+    [Foldout("Config", true)]
+    [Header("Config")]
+    [Space()]
+    public bool autoRespawnAll;
+    [ConditionalField("autoRespawnAll")] public float autoRespawnDelay;
+    [Space()]
+    public bool autoDespawnAll;
+    [Foldout("Config")][ConditionalField("autoDespawnAll")] public float autoDespawnDelay;
+
+    [Space()]
     public bool debug = false;
 
 
@@ -68,7 +82,7 @@ public class Party : BaseMonoBehaviour
             defaultFollowTarget = leader.body.transform;
             SetFollowTarget(defaultFollowTarget);
         }
-        foreach (var character in characters)
+        foreach (var character in members)
         {
             if (followTargeter)
                 character.brain.Target = followTargeter;
@@ -76,6 +90,16 @@ public class Party : BaseMonoBehaviour
             {
                 character.Controller.noise = noise;
                 character.Controller.destinationScale = tightnessIdle;
+            }
+            if (autoRespawnAll)
+            {
+                character.autoRespawn = true;
+                character.autoRespawnDelay = autoRespawnDelay;
+            }
+            if (autoDespawnAll)
+            {
+                character.autoDespawn = true;
+                character.autoDespawnDelay = autoDespawnDelay;
             }
             character.Controller.onFoeContextActive.AddListener(CharacterAggroed);
             character.onDmg.AddListener(CharacterDamaged);
@@ -88,15 +112,17 @@ public class Party : BaseMonoBehaviour
 
     // Actions
 
+    [ButtonMethod]
     public void Refresh()
     {
-        foreach (var character in characters)
+        foreach (var character in members)
             character.Refresh();
     }
 
+    [ButtonMethod]
     public void Respawn()
     {
-        foreach (var character in characters)
+        foreach (var character in members)
             character.Respawn();
     }
 
@@ -135,7 +161,7 @@ public class Party : BaseMonoBehaviour
             if (debug) print($"{name} Aggroed!");
             Tightness = tightnessAggro;
             aggroedThisFrame = true;
-            foreach (var character in characters)
+            foreach (var character in members)
             {
                 character.Controller.destinationScale = 1f;
                 character.Controller.useNoise = false;
@@ -159,7 +185,7 @@ public class Party : BaseMonoBehaviour
 
     public void SetTightness(float tightness)
     {
-        foreach (var character in characters)
+        foreach (var character in members)
         {
             if (noise != null)
             {
@@ -190,7 +216,7 @@ public class Party : BaseMonoBehaviour
             }
             else
             {
-                foreach (var character in characters)
+                foreach (var character in members)
                 {
                     if (!character.controllable)
                         Leader = character;
@@ -215,7 +241,7 @@ public class Party : BaseMonoBehaviour
     {
         Assert.IsTrue(character.alive == false);
         if (debug) print($"Character {character.body.name} Died.");
-        foreach (var other in characters)
+        foreach (var other in members)
         {
             if (other.alive)
             {

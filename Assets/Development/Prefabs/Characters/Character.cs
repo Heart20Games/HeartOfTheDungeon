@@ -10,9 +10,13 @@ namespace Body
     using Body.Behavior.ContextSteering;
     using HotD.Castables;
     using Modifiers;
+    using MyBox;
     using Selection;
-    using System.Collections;
+    using HotD;
+    using UIPips;
     using static Body.Behavior.ContextSteering.CSIdentity;
+    using static UIPips.PipGenerator;
+    using System.Collections;
 
     [RequireComponent(typeof(Brain))]
     [RequireComponent(typeof(Movement))]
@@ -20,6 +24,8 @@ namespace Body
     [RequireComponent(typeof(Caster))]
     public class Character : AIdentifiable, IDamageable, IBrainable
     {
+        // Movement and Positioning
+        [Foldout("Movement and Positioning", true)]
         [Header("Movement and Positioning")]
         public Transform body;
         public Transform pivot;
@@ -27,32 +33,44 @@ namespace Body
         [HideInInspector] public Movement movement;
         [HideInInspector] public float baseOffset;
 
+        // State
+        [Foldout("State", true)]
         [Header("State")]
         public bool controllable = true;
         public bool aimActive = false;
         public bool alive = false;
         [Space]
         public UnityEvent<bool> onControl;
+        public UnityEvent<bool> onSpectate;
 
+        // Appearance
+        [Foldout("Appearance", true)]
         [Header("Appearance")]
         public ArtRenderer artRenderer;
         public VFXEventController vfxController;
         public CinemachineVirtualCamera virtualCamera;
         public CharacterBlock statBlock;
 
+        // Collision
+        [Foldout("Collision", true)]
         [Header("Collision")]
         public Collider aliveCollider;
         public Collider deadCollider;
 
+        // Interaction, Selection, and Targeting
+        [Foldout("Interaction, Selection, and Targeting", true)]
         [Header("Interaction, Selection, and Targeting")]
         public Interactor interactor;
         public TargetFinder targetFinder;
         [HideInInspector] public Talker talker;
 
+        // Behaviour
         [Header("Behaviour")]
         [HideInInspector] public Brain brain;
         public CSController Controller { get => brain.controller; }
 
+        // Casting
+        [Foldout("Casting", true)]
         [Header("Casting")]
         [HideInInspector] public Caster caster;
         public Transform weaponLocation;
@@ -63,49 +81,53 @@ namespace Body
         public override Identity Identity
         {
             get => identity;
-            set
-            {
-                identity = value;
-                brain.Identity = value;
-            }
+            set { identity = value; brain.Identity = value; }
         }
         public override string Name { get => statBlock == null ? null : statBlock.characterName; set => statBlock.characterName = value; }
-        public override ModField<int> Health { get => health; }
+        public override MaxModField<int> Health { get => health; }
+        public override MaxModField<int> Armor { get => armor; }
 
+        // Status Effects
+        [Foldout("Status Effects", true)]
         [Header("Status Effects")]
         public List<Status> statuses;
 
-        [Header("Health and Damage")]
-        public HealthPips healthBar;
-        public bool alwaysHideHealth = false;
-        public float hideHealthWaitTime = 15f;
-        public ModField<int> health = new("Health", 5, 5);
+        // Health and Damage
+        [Foldout("Health and Damage", true)]
+        public PipGenerator pips;
+        public NumberPopup healthPopup;
+        public Transform damagePosition;
+        public MaxModField<int> health = new("Health", 5, 5);
+        public MaxModField<int> armor = new("Armor", 1, 1);
         [Space]
         public UnityEvent onDmg;
-        public int CurrentHealth
-        {
-            get { return health.current.Value; }
-            set { SetCurrentHealth(value); }
-        }
-        public int MaxHealth
-        {
-            get { return health.max.Value; }
-            set { SetMaxHealth(value); }
-        }
+        public int CurrentHealth { get => health.current.Value; set => health.current.Value = value; }
+        public int MaxHealth { get => health.max.Value; set => Health.max.Value = value; }
 
+        // Death and Respawning
+        [Foldout("Death and Respawning", true)]
         [Header("Death and Respawning")]
         public Transform spawn;
         [Space]
+        // Respawn / Despawn
+        public bool autoRespawn;
+        [ConditionalField("autoRespawn")] public float autoRespawnDelay;
+        public bool autoDespawn;
+        [ConditionalField("autoDespawn")] public float autoDespawnDelay;
+        [Space]
+        // Events
         public UnityEvent<Character> onDeath;
         public UnityEvent onRespawn;
-        public UnityEvent<bool> onAlive;
+        public UnityEvent onDespawn;
+        [Foldout("Death and Respawning")] public UnityEvent<bool> onAlive;
 
-
-        // Initialization
-        private void Awake()
+        public override void Awake()
         {
+            base.Awake();
+
             // Body Initialization
             transform.rotation = new(0, 0, 0, 0);
+            if (!firingLocation) firingLocation = transform;
             Awarn.IsNotNull(body, "Character has no Character");
             InitBody();
 
@@ -117,26 +139,38 @@ namespace Body
 
             // Connections
             ConnectAlive();
+            ConnectHealth();
             ConnectControl();
 
             // Initialization
             InitializeCastables();
-            MaxHealth = MaxHealth;
-            CurrentHealth = CurrentHealth;
             InitializeSpawn();
+            SetDisplayable(true);
+            SetSpectatable(false);
             SetControllable(false);
+
+            // Statblock connections
+            statBlock.Initialize();
+            statBlock.healthMax.updatedFinalInt.AddListener(health.max.SetValue); // max health dependent attribute;
+            statBlock.armorClass.updatedFinalInt.AddListener(armor.max.SetValue); // armor class dependent attribute;
         }
 
         private void Start()
         {
-            if (healthBar != null)
-            {
-                healthBar.enabled = false;
-                healthBar.SetHealthBase(CurrentHealth, MaxHealth);
-                Health.Subscribe(healthBar.SetHealth, healthBar.SetHealthTotal);
-            }
+            // Healthbar subscription
+            ConnectPips(pips); // Can't run on awake; requires other bits to be initialized.
+            if (healthPopup != null)
+                health.current.Subscribe(healthPopup.PopupChange);
+
+            // Value Initialization
             Identity = Identity;
             SetAlive(true);
+
+            MaxHealth = statBlock.MaxHealth;
+            CurrentHealth = statBlock.MaxHealth;
+
+            armor.max.Value = statBlock.ArmorClass;
+            armor.current.Value = statBlock.ArmorClass;
         }
 
         private void InitBody()
@@ -160,7 +194,7 @@ namespace Body
         }
 
 
-        // Respawning and Refreshing
+        // Respawning, Despawning and Refreshing
 
         public void Refresh()
         {
@@ -168,11 +202,27 @@ namespace Body
             SetAlive(true);
         }
 
-        public void Respawn()
+        public void Respawn(bool finishCoroutine = false)
         {
+            Print($"Respawn {Name}", true);
+            if (finishCoroutine)
+                autoRespawnCoroutine = null;
             body.SetPositionAndRotation(spawn.position, spawn.rotation);
             body.localScale = spawn.localScale;
+            SetDisplayable(true);
             Refresh();
+            onRespawn.Invoke();
+        }
+
+        public void Despawn(bool finishCoroutine = false)
+        {
+            Print($"Despawn {Name}", true);
+            if (finishCoroutine)
+                autoDespawnCoroutine = null;
+            SetDisplayable(false);
+            if (autoRespawn)
+                autoRespawnCoroutine ??= CallAfterDelay(Respawn, autoRespawnDelay);
+            onDespawn.Invoke();
         }
 
         // Updates
@@ -194,12 +244,24 @@ namespace Body
             }
         }
 
-
         // State
+        public void ConnectControl()
+        {
+            if (moveReticle != null) onControl.AddListener(moveReticle.gameObject.SetActive);
+            if (virtualCamera != null) onSpectate.AddListener(virtualCamera.gameObject.SetActive);
+            if (interactor != null) onControl.AddListener(DoEnable(interactor));
+            if (pips != null) onControl.AddListener((bool controllable) => { pips.SetHideMode(controllable ? HideMode.Always : HideMode.Sometimes); });
+        }
+        private UnityAction<bool> DoEnable(Behaviour behaviour, bool disable = false) { return (bool enable) => { behaviour.enabled = enable && !disable; }; }
 
         public void SetDisplayable(bool _displayable)
         {
-            artRenderer.enabled = _displayable;
+            artRenderer.gameObject.SetActive(_displayable);
+        }
+
+        public void SetSpectatable(bool _spectatable)
+        {
+            onSpectate.Invoke(_spectatable);
         }
 
         public void SetControllable(bool _controllable)
@@ -215,16 +277,8 @@ namespace Body
             movement.enabled = brainable;
         }
 
-        public void ConnectControl()
-        {
-            if (moveReticle != null) onControl.AddListener(moveReticle.gameObject.SetActive);
-            if (virtualCamera != null) onControl.AddListener(virtualCamera.gameObject.SetActive);
-            if (interactor != null) onControl.AddListener(DoEnable(interactor));
-        }
-        private UnityAction<bool> DoEnable(Behaviour behaviour, bool disable=false) { return (bool enable) => { behaviour.enabled = enable && !disable; }; }
 
-
-        // Health
+        // Life and Death
 
         private void ConnectAlive()
         {
@@ -237,6 +291,8 @@ namespace Body
             if (deadCollider != null) onAlive.AddListener((bool alive) => { deadCollider.enabled = alive; });
         }
 
+        private Coroutine autoRespawnCoroutine;
+        private Coroutine autoDespawnCoroutine;
         public void SetAlive(bool alive)
         {
             movement.SetMoveVector(new());
@@ -244,44 +300,62 @@ namespace Body
             this.alive = alive;
             onAlive.Invoke(alive);
             if (died)
+            {
+                // Timers
+                if (autoDespawn)
+                    autoDespawnCoroutine ??= CallAfterDelay(Despawn, autoDespawnDelay);
+                else if (autoRespawn)
+                    autoRespawnCoroutine ??= CallAfterDelay(Respawn, autoRespawnDelay);
+                
+                // Events
+                Emotion = "dead";
                 onDeath.Invoke(this);
-        }
-
-        public void SetMaxHealth(int amount)
-        {
-            Health.max.value = amount;
-            if (healthBar != null)
+            }
+            else
             {
-                healthBar.SetHealthTotal(MaxHealth);
+                Emotion = "neutral";
             }
         }
 
-        public void SetCurrentHealth(int amount)
+        public Coroutine CallAfterDelay(UnityAction<bool> action, float delay)
         {
-            int prevHealth = Health.current.Value;
-            Health.current.Value = Mathf.Min(amount, Health.max.Value);
-            if (prevHealth != Health.current.Value && healthBar != null)
+            return StartCoroutine(CallAfterDelayCoroutine(action, delay));
+        }
+        public IEnumerator CallAfterDelayCoroutine(UnityAction<bool> action, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            action.Invoke(true);
+        }
+
+        // Health and Damage
+
+        private void ConnectHealth()
+        {
+            health.current.Subscribe(HealthChanged);
+            health.current.Subscribe((int oldValue, int newValue) =>
             {
-                healthBar.enabled = !alwaysHideHealth;
-                healthBar.SetHealth(CurrentHealth);
-            }
-            if (prevHealth > Health.current.Value)
+                int change = newValue - oldValue;
+                if (change < 0)
+                    change = (int)Mathf.Min(change + armor.current.Value, 0);
+                return oldValue + change;
+            });
+        }
+
+        public void HealthChanged(int amount)
+        {
+            if (amount < CurrentHealth)
             {
                 artRenderer.Hit();
                 onDmg.Invoke();
-                if (CurrentHealth <= 0f && alive) SetAlive(false);
-                if (coroutine == null && healthBar != null)
-                    coroutine = StartCoroutine(DeactivateHealthbar(hideHealthWaitTime));
-                else
-                    currentHideHealthTime = hideHealthWaitTime;
             }
+            if (amount <= 0f && alive) SetAlive(false);
         }
 
+        public void SetDamagePosition(Vector3 damagePosition)
+        {
+            this.damagePosition.position = damagePosition;
+        }
 
-        // Damagable
-
-        private Coroutine coroutine;
-        private float currentHideHealthTime;
         public void TakeDamage(int damageAmount, Identity id=Identity.Neutral)
         {
             if (RelativeIdentity(id, Identity) != Identity.Friend)
@@ -290,20 +364,30 @@ namespace Body
             }
         }
 
-        public IEnumerator DeactivateHealthbar(float waitTime)
+        public void HealDamage(int damageAmount, Identity id = Identity.Neutral)
         {
-            Assert.IsNotNull(healthBar);
-            currentHideHealthTime = waitTime;
-            while (currentHideHealthTime > 0)
+            if (RelativeIdentity(id, Identity) != Identity.Foe)
             {
-                float timeToWait = Mathf.Min(currentHideHealthTime, 1f);
-                yield return new WaitForSeconds(timeToWait);
-                currentHideHealthTime -= timeToWait;
+                CurrentHealth += damageAmount;
             }
-            healthBar.enabled = false;
-            coroutine = null;
         }
 
+        // Damage Testing
+        [Foldout("Health and Damage", true)] [SerializeField] private Identity testDamageIdentity = Identity.Neutral;
+        [Foldout("Health and Damage")] [SerializeField] private int testDamageAmount = 1;
+
+        [ButtonMethod]
+        public void TestTakeDamage()
+        {
+            print($"Dealing {testDamageAmount} Damage from {testDamageIdentity} Identity.");
+            TakeDamage(testDamageAmount, testDamageIdentity);
+        }
+        [ButtonMethod]
+        public void TestHealDamage()
+        {
+            print($"Healing {testDamageAmount} Damage from {testDamageIdentity} Identity.");
+            HealDamage(testDamageAmount, testDamageIdentity);
+        }
 
         // Castables
 

@@ -10,12 +10,32 @@ public class CharacterBlock : StatBlock
     public CastableLibrary castableBank;
     public int portraitIndex = 0;
     public string characterName = "Nobody";
-    public DependentAttribute healthMax = new(1);
     public Loadout loadout = null;
+
+    public DependentAttribute healthMax = new(1, "Health Max");
+    public List<StatAttribute> healthAttributes = new();
+
+    public DependentAttribute armorClass = new(0, "Armor Class");
+    public List<StatAttribute> armorAttributes = new();
     
     private CharacterData charData = null;
     
+    public override void Initialize()
+    {
+        base.Initialize();
+        strength.name = $"{characterName}'s Strength";
+        dexterity.name = $"{characterName}'s Dexterity";
+        constitution.name = $"{characterName}'s Constitution";
+        intelligence.name = $"{characterName}'s Intelligence";
+        healthMax.name = $"{characterName}'s Health Max";
+        healthMax.Clear();
+        ApplyStats(healthAttributes, healthMax);
+        armorClass.Clear();
+        ApplyStats(armorAttributes, armorClass);
+    }
+
     public int MaxHealth { get => (int)healthMax.FinalValue; }
+    public int ArmorClass { get => (int)armorClass.FinalValue; }
 
     // Persisent Data
     public override IPersistent GetInstance() => this;

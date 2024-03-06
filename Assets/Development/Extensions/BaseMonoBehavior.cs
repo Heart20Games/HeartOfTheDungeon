@@ -12,6 +12,11 @@ public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
 {
     public Transform Transform => transform;
 
+    protected void Print(object message, bool debug = false)
+    {
+        if (debug) print(message);
+    }
+
     void OnDestroy()
     {
         foreach (FieldInfo field in GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))

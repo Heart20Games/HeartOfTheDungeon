@@ -1,45 +1,80 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Modifiers
 {
     [Serializable]
-    public class ModField<T>
+    public class ModField<T> where T : IComparable
     {
-        public ModField(string name, T startValue, T maxValue)
+        public ModField(string name, T startValue)
         {
             this.name = name;
-            current = new(startValue);
-            max = new(maxValue);
+            current = new(startValue, $"{name} Current");
         }
 
-        public string name;
+        [HideInInspector] public string name;
         public Modded<T> current;
+
+        // Subscribe
+        public void Subscribe(Modded<T>.Modify currentModifier = null) { current.Subscribe(currentModifier); }
+        public void Subscribe(Modded<T>.Listen currentListener = null) { current.Subscribe(currentListener); }
+
+        // Unsubscribe
+        public void UnSubscribe(Modded<T>.Modify currentModifier = null) { current.UnSubscribe(currentModifier); }
+        public void UnSubscribe(Modded<T>.Listen currentListener = null) { current.UnSubscribe(currentListener); }
+    }
+
+
+    [Serializable]
+    public class MaxModField<T> : ModField<T> where T : IComparable
+    {
+        public MaxModField(string name, T startValue, T maxValue, Modded<T>.Constraint constraint = null, Modded<T>.Constraint constrainer = null) : base(name, startValue)
+        {
+            max = new(maxValue, $"{name} Max");
+
+            current.constraint = constraint ?? BeConstrained;
+            max.constraint = constrainer ?? Constrain;
+        }
+
         public Modded<T> max;
+
+        // Constraint
+        public T BeConstrained(T finalValue)
+        {
+            return finalValue.CompareTo(max.Value) < 0 ? finalValue : max.Value;
+        }
+
+        public T Constrain(T finalValue)
+        {
+            current.Value = finalValue.CompareTo(current.Value) < 0 ? max.Value : current.Value;
+            return finalValue;
+        }
 
         // Subscribe
         public void Subscribe(Modded<T>.Modify currentModifier = null, Modded<T>.Modify maxModifier = null)
         {
-            current.Subscribe(currentModifier);
+            base.Subscribe(currentModifier);
             max.Subscribe(maxModifier);
         }
 
         public void Subscribe(Modded<T>.Listen currentListener = null, Modded<T>.Listen maxListener = null)
         {
-            current.Subscribe(currentListener);
+            base.Subscribe(currentListener);
             max.Subscribe(maxListener);
         }
 
         // Unsubscribe
         public void UnSubscribe(Modded<T>.Modify currentModifier = null, Modded<T>.Modify maxModifier = null)
         {
-            current.UnSubscribe(currentModifier);
+            base.UnSubscribe(currentModifier);
             max.UnSubscribe(maxModifier);
         }
 
         public void UnSubscribe(Modded<T>.Listen currentListener = null, Modded<T>.Listen maxListener = null)
         {
-            current.UnSubscribe(currentListener);
+            base.UnSubscribe(currentListener);
             max.UnSubscribe(maxListener);
         }
     }
@@ -47,8 +82,11 @@ namespace Modifiers
     [Serializable]
     public class Modded<T>
     {
-        public T baseValue;
-        public T value;
+        [SerializeField] protected bool debug = false;
+
+        [HideInInspector] public string name;
+        [SerializeField] protected T baseValue;
+        [SerializeField] protected T value;
         public T Value
         {
             get { return value; }
@@ -60,15 +98,19 @@ namespace Modifiers
         }
 
         public delegate T Modify(T oldValue, T newValue);
-        public List<Modify> modifiers = new();
+        [HideInInspector] public List<Modify> modifiers = new();
 
         public delegate void Listen(T finalValue);
-        public List<Listen> listeners = new();
+        [HideInInspector] public List<Listen> listeners = new();
+
+        public delegate T Constraint(T finalValue);
+        [HideInInspector] public Constraint constraint;
 
         // Constructor
-        public Modded(T value)
+        public Modded(T value, string name = "[Modded]")
         {
             this.value = value;
+            this.name = name;
         }
 
         // Modifiers
@@ -91,28 +133,42 @@ namespace Modifiers
         {
             if (listen != null)
                 if (!listeners.Contains(listen))
+                {
+                    if (debug) Debug.Log($"Added Listener to {name}");
                     listeners.Add(listen);
+                }
         }
 
         public void UnSubscribe(Listen listen)
         {
             if (listen != null)
                 if (listeners.Contains(listen))
+                {
+                    if (debug) Debug.Log($"Removed Listener from {name}");
                     listeners.Remove(listen);
+                }
         }
 
         // Setter
-        private void SetValue(T value)
+        public void SetValue(T value)
         {
+            if (debug) Debug.Log($"Trying to set {name} value to {value} from {this.value}.");
             foreach (Modify modifier in modifiers)
             {
                 value = modifier.Invoke(this.value, value);
             }
+            if (debug) Debug.Log($"Modifiers applied. New {name} value now {value}. ({modifiers.Count} modifiers)");
+            if (constraint != null)
+            {
+                value = constraint.Invoke(value);
+            }
+            if (debug) Debug.Log($"Constraint applied. New {name} value now {value}. ({(constraint != null ? 1 : 0)} constraint)");
+            if (debug) Debug.Log($"{name} value set to {value} from {this.value}. ({listeners.Count} listeners)");
+            this.value = value;
             foreach (Listen listener in listeners)
             {
                 listener.Invoke(value);
             }
-            this.value = value;
         }
     }
 }

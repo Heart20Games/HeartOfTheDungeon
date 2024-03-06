@@ -28,6 +28,7 @@ public class Damager : BaseMonoBehaviour, IDamager
         if (other != null && !ignored.Contains(other) && !others.Contains(other))
         {
             others.Add(other);
+            other.SetDamagePosition(impactor.impactLocation);
             other.TakeDamage(damage, identity);
         }
     }

@@ -39,6 +39,7 @@ public class Impact : Validator
     // Tracking
     public readonly List<GameObject> touching = new();
     [HideInInspector] public GameObject other;
+    [HideInInspector] public Vector3 impactLocation;
 
     // Events
 
@@ -76,11 +77,15 @@ public class Impact : Validator
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.contacts.Length > 0)
+            impactLocation = collision.GetContact(0).point;
         OnEventEnter(collision.gameObject, onCollision.enter);
     }
 
     private void OnCollisionExit(Collision collision)
     {
+        if (collision.contacts.Length > 0)
+            impactLocation = collision.GetContact(0).point;
         OnEventExit(collision.gameObject, onCollision.exit);
     }
 

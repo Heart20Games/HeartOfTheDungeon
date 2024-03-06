@@ -41,6 +41,9 @@ public class CharacterSheet : BaseMonoBehaviour
         Assert.IsNotNull(character);
         this.character = character;
 
+        // Clear the old bits
+        Clear();
+
         // Set Character Name
 
         // Set Character Portrait
@@ -51,7 +54,7 @@ public class CharacterSheet : BaseMonoBehaviour
         foreach (StatField stat in statFields)
         {
             stat.field.Name = stat.stat.ToString();
-            stat.field.SetAttribute(character.GetStat(stat.stat));
+            stat.field.SetAttribute(character.GetAttribute(stat.stat));
         }
 
         // Set Character Loadout
@@ -98,7 +101,8 @@ public class CharacterSheet : BaseMonoBehaviour
     {
         foreach(CastableField field in castables)
         {
-            Destroy(field);
+            Destroy(field.gameObject);
         }
+        castables.Clear();
     }
 }

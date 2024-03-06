@@ -15,7 +15,10 @@ namespace Body.Behavior.ContextSteering
         
         static public bool Match(Identity idA, Identity idB)
         {
-            return (idA == idB) || ((idA != Identity.NotAny && idB != Identity.NotAny) && (idA == Identity.Any || idB == Identity.Any));
+            bool neitherIsNotAny = (idA != Identity.NotAny && idB != Identity.NotAny);
+            bool atLeastOnIsAny = (idA == Identity.Any || idB == Identity.Any);
+            bool theyMatchExactly = (idA == idB);
+            return neitherIsNotAny && (theyMatchExactly || atLeastOnIsAny);
         }
     }
 

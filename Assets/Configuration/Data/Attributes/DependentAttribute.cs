@@ -12,20 +12,32 @@ namespace Attributes
         [SerializeField] protected List<Weighted<Attribute>> otherAttributes = new();
         public List<Weighted<Attribute>> OtherAttributes { get { return otherAttributes ??= new(); } }
 
-        public DependentAttribute(int startingValue) : base(startingValue) { }
+        public DependentAttribute(int startingValue, string name = "[New Dependent Attribute]") : base(startingValue, name) { }
 
         public override float FinalValue { get => CalculateValue(); }
 
         public void AddAttribute(Attribute attribute, float weight=1)
         {
             attribute.updated.AddListener(Updated);
-            OtherAttributes.Add(new(attribute, weight));
+            OtherAttributes.Add(new(attribute, weight, attribute.name));
         }
 
         public void RemoveAttribute(Attribute attribute, float weight=1)
         {
             attribute.updated.RemoveListener(Updated);
-            OtherAttributes.Remove(new(attribute, weight));
+            OtherAttributes.Remove(new(attribute, weight, attribute.name));
+        }
+
+        public bool HasAttribute(Attribute attribute, float weight=0)
+        {
+            foreach (var otherAttribute in OtherAttributes)
+            {
+                if (debug) Debug.Log($"{otherAttribute.value.name} vs {attribute.name}");
+                if (otherAttribute.value == attribute)
+                    if (weight == 0 || otherAttribute.weight == weight)
+                        return true;
+            }
+            return false;
         }
 
         public override void Clear()

@@ -14,6 +14,11 @@ public class Selectable : ASelectable
 
     public override SelectType Type { get => selectType; set => selectType = value; }
 
+    public void OnEnable()
+    {
+        DeSelect();
+    }
+
     public override void Select()
     {
         base.Select();

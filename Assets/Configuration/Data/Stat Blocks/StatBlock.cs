@@ -16,6 +16,12 @@ public struct StatBonus
 [Serializable]
 public struct StatAttribute
 {
+    public StatAttribute(Stat stat, float weight=1)
+    {
+        this.stat = stat;
+        this.weight = weight;
+    }
+
     public Stat stat;
     public float weight;
 }
@@ -23,17 +29,19 @@ public struct StatAttribute
 [CreateAssetMenu(fileName ="StatBlock", menuName = "Stats/StatBlock", order = 1)]
 public class StatBlock : PersistentScriptableObject
 {
-    public enum Stat { Strength, Dexterity, Constituion, Intelligence }
+    public enum Stat { Strength, Dexterity, Constitution, Intelligence }
     //public enum ModType { Inc, Mul, Quad, Exp, Log }
-    
-    public Attribute strength;
-    public Attribute dexterity;
-    public Attribute constitution;
-    public Attribute intelligence;
+
+    public Attribute strength; // = new(0, "Strength");
+    public Attribute dexterity; // = new(0, "Dexterity");
+    public Attribute constitution; // = new(0, "Constitution");
+    public Attribute intelligence; // = new(0, "Intelligence");
 
     public List<StatBonus> bonuses = new();
 
     private StatBlockData statData;
+
+    public virtual void Initialize() { }
 
     // Modifiers
     //public int ModifyStat(int score, StatMod mod, float rate = 1f)
@@ -59,13 +67,33 @@ public class StatBlock : PersistentScriptableObject
     //    };
     //}
 
-    public Attribute GetStat(Stat stat)
+    public void ApplyStats(List<Stat> stats, DependentAttribute dependent)
+    {
+        foreach (Stat stat in stats)
+        {
+            Attribute attribute = GetAttribute(stat);
+            if (!dependent.HasAttribute(attribute))
+                dependent.AddAttribute(attribute);
+        }
+    }
+
+    public void ApplyStats(List<StatAttribute> stats, DependentAttribute dependent)
+    {
+        foreach (StatAttribute stat in stats)
+        {
+            Attribute attribute = GetAttribute(stat.stat);
+            if (!dependent.HasAttribute(attribute, stat.weight))
+                dependent.AddAttribute(attribute, stat.weight);
+        }
+    }
+
+    public Attribute GetAttribute(Stat stat)
     {
         return stat switch
         {
             Stat.Strength => strength,
             Stat.Dexterity => dexterity,
-            Stat.Constituion => constitution,
+            Stat.Constitution => constitution,
             Stat.Intelligence => intelligence,
             _ => null,
         };
