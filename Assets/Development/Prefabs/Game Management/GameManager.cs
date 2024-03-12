@@ -19,8 +19,7 @@ namespace HotD
         // Properties
         [Foldout("Parts", true)]
         [Header("Parts")]
-        public Character playerCharacter;
-        public List<Character> playableCharacters;
+        public Party playerParty;
         public Selector selector;
         public SimpleController selectorController;
         public Targeter targeter;
@@ -60,7 +59,6 @@ namespace HotD
         [HideInInspector] public Character CurCharacter { get => curCharacter; set => SetCharacter(value); }
         private int curCharIdx = 0;
         public int CurCharIdx { get => curCharIdx; }
-        [SerializeField] private Party playerParty;
         [Foldout("Currents")][ReadOnly][SerializeField] private ASelectable selectedTarget;
 
         // TimeScale
@@ -108,26 +106,22 @@ namespace HotD
 
         public void InitializePlayableCharacters()
         {
-            bool hasPlayer = false;
-            if (playerCharacter != null)
+            if (playerParty != null)
             {
-                hud.MainCharacterSelect(playerCharacter);
-                foreach (var character in playableCharacters)
+                hud.MainCharacterSelect(playerParty.leader);
+                foreach (var character in playerParty.members)
                 {
-                    if (character != playerCharacter)
+                    if (character != playerParty.leader)
                         hud.AddAlly(character);
                 }
-                if (!hasPlayer)
-                    playableCharacters.Insert(0, playerCharacter);
+                foreach (var character in playerParty.members)
+                    character.onDeath.AddListener(OnCharacterDied);
             }
-
             hud.SetParty(playerParty);
+
             SetCharacterIdx(0);
             if (curCharacter == null)
                 SetMode(InputMode.Selection);
-
-            foreach (var character in playableCharacters)
-                character.onDeath.AddListener(OnCharacterDied);
         }
 
 
@@ -386,11 +380,12 @@ namespace HotD
 
         public void SetCharacterIdx(int idx)
         {
-            if (playableCharacters.Count > 0)
+            List<Character> members = playerParty.members;
+            if (members.Count > 0)
             {
-                idx = idx < 0 ? playableCharacters.Count + idx : idx;
-                curCharIdx = idx % (playableCharacters.Count);
-                Character character = playableCharacters[curCharIdx];
+                idx = idx < 0 ? members.Count + idx : idx;
+                curCharIdx = idx % (members.Count);
+                Character character = members[curCharIdx];
                 SetCharacter(character);
                 hud.CharacterSelect(character);
                 if (!character.alive)
@@ -402,7 +397,7 @@ namespace HotD
         {
             if (character != null)
             {
-                userInterface.SetCharacter(playerCharacter);
+                userInterface.SetCharacter(character);
                 SetControllable(curCharacter, false, false);
                 SetControllable(character, true, true);
                 curCharacter = character;
@@ -423,14 +418,14 @@ namespace HotD
 
         public void OnCharacterDied(Character character)
         {
-            if (character == playerCharacter)
+            if (character == playerParty.leader)
             {
                 SetMode(Menu.Death);
                 onPlayerDied.Invoke();
             }
             else if (character == curCharacter)
             {
-                SetCharacter(playerCharacter);
+                SetCharacter(playerParty.leader);
             }
         }
     }

@@ -40,12 +40,6 @@ namespace HotD
                 scriptableObject.Init();
             }
 
-            player = FindObjectOfType<Character>();
-            if (game.playerCharacter == null)
-            {
-                game.playerCharacter = player;
-            }
-
             if (dialogueRunner == null && userInterface != null)
             {
                 dialogueRunner = userInterface.dialogueRunner;
@@ -88,7 +82,6 @@ namespace HotD
             game.hud = hud;
 
             AssetNonNull("Game", game, "on GameObject");
-            AssetNonNull("Character", player);
             AssetNonNull("DialogueRunner", dialogueRunner);
             AssetNonNull("UserInterface", userInterface);
             AssetNonNull("HUD", hud);
