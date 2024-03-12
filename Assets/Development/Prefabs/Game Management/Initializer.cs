@@ -23,6 +23,7 @@ namespace HotD
         private List<Interactable> interactables;
         private GameController[] gameControls;
         private HUD hud;
+        private List<Checkpoint> checkpoints;
 
         private Game game;
 
@@ -33,6 +34,12 @@ namespace HotD
             game.allCharacters = new List<Character>(characters);
             game.cardboardCutouts = new List<Cutouts>(FindObjectsOfType<Cutouts>());
             gameControls = FindObjectsOfType<GameController>();
+
+            if (game.checkpoints == null || game.checkpoints.Count == 0)
+            {
+                checkpoints = new List<Checkpoint>(FindObjectsOfType<Checkpoint>());
+                game.checkpoints = checkpoints;
+            }
 
             scriptableObjects = (BaseScriptableObject[])Resources.FindObjectsOfTypeAll(typeof(BaseScriptableObject));
             foreach (var scriptableObject in scriptableObjects)
