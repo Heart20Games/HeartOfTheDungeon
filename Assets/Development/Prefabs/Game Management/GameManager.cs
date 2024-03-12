@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using Selection;
 using UnityEngine.SceneManagement;
 using HotD.PostProcessing;
+using MyBox;
 
 namespace HotD
 {
@@ -16,6 +17,7 @@ namespace HotD
         public static Game game;
 
         // Properties
+        [Foldout("Parts", true)]
         [Header("Parts")]
         public Character playerCharacter;
         public List<Character> playableCharacters;
@@ -29,14 +31,27 @@ namespace HotD
         [HideInInspector] public HUD hud;
         [HideInInspector] public List<ITimeScalable> timeScalables;
         [HideInInspector] public List<Interactable> interactables;
-        [HideInInspector] public List<Character> allCharacters;
+        [Foldout("Parts")][HideInInspector] public List<Character> allCharacters;
         private PlayerInput input;
 
-        // Initialization
+
+        // Game InputMode
+        [Foldout("Game Mode", true)]
+        [Header("Game Mode")]
         [SerializeField] private InputMode initialInputMode = InputMode.None;
         [SerializeField] private Menu initialMenu = Menu.None;
+        [SerializeField] private GameMode mode = new();
+        public GameMode Mode { get => mode; set => SetMode(value); }
+        public string ModeName { get => mode.name; set => SetMode(value); }
+        public InputMode InputMode { get => mode.inputMode; set => SetMode(value); }
+        public MoveMode MoveMode { get => mode.moveMode; }
+        public LookMode LookMode { get => mode.lookMode; }
+        public Menu ActiveMenu { get => mode.activeMenu; set => SetMode(value); }
+        public bool swapModes = false;
+        [Foldout("Game Mode")] public bool reactivateMode = false;
 
         // Current Character
+        [Foldout("Currents", true)]
         [Header("Current Character")]
         [ReadOnly][SerializeField] private Character curCharacter;
         [ReadOnly] public SimpleController curController;
@@ -46,6 +61,7 @@ namespace HotD
         private int curCharIdx = 0;
         public int CurCharIdx { get => curCharIdx; }
         [SerializeField] private Party playerParty;
+        [Foldout("Currents")][ReadOnly][SerializeField] private ASelectable selectedTarget;
 
         // TimeScale
         [Header("TimeScale")]
@@ -58,10 +74,11 @@ namespace HotD
         public bool debug = false;
 
         // Events
+        [Foldout("Events", true)]
         [Header("Events")]
         public UnityEvent onPlayerDied;
         public UnityEvent onRestartScene;
-        public UnityEvent onRestartGame;
+        [Foldout("Events")] public UnityEvent onRestartGame;
 
 
         // Initialization
@@ -172,16 +189,7 @@ namespace HotD
             }
         }
 
-        // Game InputMode
-        [SerializeField] private GameMode mode = new();
-        public GameMode Mode { get => mode; set => SetMode(value); }
-        public string ModeName { get => mode.name; set => SetMode(value); }
-        public InputMode InputMode { get => mode.inputMode; set => SetMode(value); }
-        public MoveMode MoveMode { get => mode.moveMode; }
-        public LookMode LookMode { get => mode.lookMode; }
-        public Menu ActiveMenu { get => mode.activeMenu; set => SetMode(value); }
-        public bool swapModes = false;
-        public bool reactivateMode = false;
+        // Game Mode
 
         public void SetMode(string name)
         {
@@ -330,7 +338,6 @@ namespace HotD
 
         // Selectables
 
-        [ReadOnly][SerializeField] private ASelectable selectedTarget;
         public void OnTargetSelected(ASelectable selectable)
         {
 
