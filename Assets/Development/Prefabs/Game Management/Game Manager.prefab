@@ -780,10 +780,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42d95da6e169dba4fb525878db1376d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCharacter: {fileID: 0}
-  playableCharacters:
-  - {fileID: 0}
-  - {fileID: 0}
+  playerParty: {fileID: 0}
   selector: {fileID: 914866286546759462}
   selectorController: {fileID: 7429232415349204401}
   targeter: {fileID: 2971230082445628784}
@@ -796,13 +793,28 @@ MonoBehaviour:
   allCharacters: []
   initialInputMode: 0
   initialMenu: 0
+  mode:
+    name: 
+    inputMode: 2
+    moveMode: 0
+    lookMode: 0
+    activeMenu: 0
+    activeShader: 0
+    showMouse: 0
+    hudActive: 0
+    dialogueActive: 0
+    targetLock: 0
+    timeScale: 0
+    shouldBrain: 0
+    cardboardMode: 0
+  swapModes: 0
+  reactivateMode: 0
   curCharacter: {fileID: 0}
   curController: {fileID: 0}
   curSelector: {fileID: 0}
-  playerParty: {fileID: 0}
-  timeScale: 1
-  restartable: 1
-  debug: 0
+  selectedTarget: {fileID: 0}
+  session: {fileID: 11400000, guid: 9b8250dffcc40474583f21ca1c0ae9a8, type: 2}
+  checkpoints: []
   onPlayerDied:
     m_PersistentCalls:
       m_Calls: []
@@ -824,23 +836,9 @@ MonoBehaviour:
           m_StringArgument: $MainMenu
           m_BoolArgument: 0
         m_CallState: 2
-  mode:
-    name: 
-    inputMode: 2
-    moveMode: 0
-    lookMode: 0
-    activeMenu: 0
-    activeShader: 0
-    showMouse: 0
-    hudActive: 0
-    dialogueActive: 0
-    targetLock: 0
-    timeScale: 0
-    shouldBrain: 0
-    cardboardMode: 0
-  swapModes: 0
-  reactivateMode: 0
-  selectedTarget: {fileID: 0}
+  timeScale: 1
+  restartable: 1
+  debug: 0
 --- !u!114 &8198051129787963149
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -61,6 +61,19 @@ namespace HotD
         public int CurCharIdx { get => curCharIdx; }
         [Foldout("Currents")][ReadOnly][SerializeField] private ASelectable selectedTarget;
 
+        // Session
+        [Foldout("Session", true)]
+        public Session session;
+        [Header("Checkpoints")]
+        [Foldout("Session")] public List<Checkpoint> checkpoints;
+
+        // Events
+        [Foldout("Events", true)]
+        [Header("Events")]
+        public UnityEvent onPlayerDied;
+        public UnityEvent onRestartScene;
+        [Foldout("Events")] public UnityEvent onRestartGame;
+
         // TimeScale
         [Header("TimeScale")]
         public float timeScale = 1.0f;
@@ -71,13 +84,6 @@ namespace HotD
         public bool restartable = true;
         public bool debug = false;
 
-        // Events
-        [Foldout("Events", true)]
-        [Header("Events")]
-        public UnityEvent onPlayerDied;
-        public UnityEvent onRestartScene;
-        [Foldout("Events")] public UnityEvent onRestartGame;
-
 
         // Initialization
 
@@ -85,6 +91,7 @@ namespace HotD
         {
             game = this;
             input = GetComponent<PlayerInput>();
+            if (session) session.Initialize();
         }
 
         private void Start()
@@ -122,6 +129,8 @@ namespace HotD
             SetCharacterIdx(0);
             if (curCharacter == null)
                 SetMode(InputMode.Selection);
+
+            SpawnAtCheckpoint(session.checkpoint);
         }
 
 
@@ -149,6 +158,18 @@ namespace HotD
                 curCharacter.Respawn();
             }
             SetMode(InputMode.Character);
+        }
+
+        public void SpawnAtCheckpoint(string name)
+        {
+            foreach (var checkpoint in checkpoints)
+            {
+                if (checkpoint.Name == name)
+                {
+                    checkpoint.SpawnAtCheckpoint(playerParty);
+                    break;
+                }
+            }
         }
 
         // Updates

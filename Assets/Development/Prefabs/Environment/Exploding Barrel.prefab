@@ -291,7 +291,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   portraits: {fileID: 11400000, guid: 8c8d32841b7b3e54f8a84f28d86d411b, type: 2}
   identity: 5
-  emotion: neutral
+  emotion:
+    name: Emotion
+    current:
+      debug: 0
+      name: Emotion Current
+      baseValue: 
+      value: neutral
+  onPortrait:
+    m_PersistentCalls:
+      m_Calls: []
+  onImage:
+    m_PersistentCalls:
+      m_Calls: []
+  health:
+    name: Health
+    current:
+      debug: 0
+      name: Health Current
+      baseValue: 0
+      value: 1
+    max:
+      debug: 0
+      name: Health Max
+      baseValue: 0
+      value: 1
+  armor:
+    name: Armor
+    current:
+      debug: 0
+      name: Armor Current
+      baseValue: 0
+      value: 0
+    max:
+      debug: 0
+      name: Armor Max
+      baseValue: 0
+      value: 0
 --- !u!114 &6397855051937350972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1499,7 +1535,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7229019440827395628, guid: 1fc1fbf98ab71f24c98a2333ec93a060, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
