@@ -30,7 +30,6 @@ public struct StatAttribute
 public class StatBlock : PersistentScriptableObject
 {
     public enum Stat { Strength, Dexterity, Constitution, Intelligence }
-    //public enum ModType { Inc, Mul, Quad, Exp, Log }
 
     public Attribute strength; // = new(0, "Strength");
     public Attribute dexterity; // = new(0, "Dexterity");
@@ -42,30 +41,6 @@ public class StatBlock : PersistentScriptableObject
     private StatBlockData statData;
 
     public virtual void Initialize() { }
-
-    // Modifiers
-    //public int ModifyStat(int score, StatMod mod, float rate = 1f)
-    //{
-    //    return ModifyStat(score, mod.stat, mod.modType, rate);
-    //}
-
-    //public int ModifyStat(int score, Stat stat, ModType modType, float rate = 1f)
-    //{
-    //    return ModifyNumber(score, GetStat(stat), modType, rate);
-    //}
-
-    //public int ModifyNumber(int number, int modifier, ModType modType, float rate = 1f)
-    //{
-    //    return modType switch
-    //    {
-    //        ModType.Inc => number + (int)(modifier * rate),
-    //        ModType.Mul => number * (int)(modifier * rate),
-    //        ModType.Quad => (int)Mathf.Pow(modifier * rate, number),
-    //        ModType.Exp => (int)Mathf.Pow(number, modifier * rate),
-    //        ModType.Log => (int)Mathf.Log(number, modifier * rate),
-    //        _ => number
-    //    };
-    //}
 
     public void ApplyStats(List<Stat> stats, DependentAttribute dependent)
     {
