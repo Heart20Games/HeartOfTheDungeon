@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using Selection;
 using UnityEngine.SceneManagement;
 using HotD.PostProcessing;
+using MyBox;
 
 namespace HotD
 {
@@ -16,9 +17,9 @@ namespace HotD
         public static Game game;
 
         // Properties
+        [Foldout("Parts", true)]
         [Header("Parts")]
-        public Character playerCharacter;
-        public List<Character> playableCharacters;
+        public Party playerParty;
         public Selector selector;
         public SimpleController selectorController;
         public Targeter targeter;
@@ -29,14 +30,27 @@ namespace HotD
         [HideInInspector] public HUD hud;
         [HideInInspector] public List<ITimeScalable> timeScalables;
         [HideInInspector] public List<Interactable> interactables;
-        [HideInInspector] public List<Character> allCharacters;
+        [Foldout("Parts")][HideInInspector] public List<Character> allCharacters;
         private PlayerInput input;
 
-        // Initialization
+
+        // Game InputMode
+        [Foldout("Game Mode", true)]
+        [Header("Game Mode")]
         [SerializeField] private InputMode initialInputMode = InputMode.None;
         [SerializeField] private Menu initialMenu = Menu.None;
+        [SerializeField] private GameMode mode = new();
+        public GameMode Mode { get => mode; set => SetMode(value); }
+        public string ModeName { get => mode.name; set => SetMode(value); }
+        public InputMode InputMode { get => mode.inputMode; set => SetMode(value); }
+        public MoveMode MoveMode { get => mode.moveMode; }
+        public LookMode LookMode { get => mode.lookMode; }
+        public Menu ActiveMenu { get => mode.activeMenu; set => SetMode(value); }
+        public bool swapModes = false;
+        [Foldout("Game Mode")] public bool reactivateMode = false;
 
         // Current Character
+        [Foldout("Currents", true)]
         [Header("Current Character")]
         [ReadOnly][SerializeField] private Character curCharacter;
         [ReadOnly] public SimpleController curController;
@@ -45,7 +59,20 @@ namespace HotD
         [HideInInspector] public Character CurCharacter { get => curCharacter; set => SetCharacter(value); }
         private int curCharIdx = 0;
         public int CurCharIdx { get => curCharIdx; }
-        [SerializeField] private Party playerParty;
+        [Foldout("Currents")][ReadOnly][SerializeField] private ASelectable selectedTarget;
+
+        // Session
+        [Foldout("Session", true)]
+        public Session session;
+        [Header("Checkpoints")]
+        [Foldout("Session")] public List<Checkpoint> checkpoints;
+
+        // Events
+        [Foldout("Events", true)]
+        [Header("Events")]
+        public UnityEvent onPlayerDied;
+        public UnityEvent onRestartScene;
+        [Foldout("Events")] public UnityEvent onRestartGame;
 
         // TimeScale
         [Header("TimeScale")]
@@ -57,12 +84,6 @@ namespace HotD
         public bool restartable = true;
         public bool debug = false;
 
-        // Events
-        [Header("Events")]
-        public UnityEvent onPlayerDied;
-        public UnityEvent onRestartScene;
-        public UnityEvent onRestartGame;
-
 
         // Initialization
 
@@ -70,6 +91,7 @@ namespace HotD
         {
             game = this;
             input = GetComponent<PlayerInput>();
+            if (session) session.Initialize();
         }
 
         private void Start()
@@ -91,26 +113,24 @@ namespace HotD
 
         public void InitializePlayableCharacters()
         {
-            bool hasPlayer = false;
-            if (playerCharacter != null)
+            if (playerParty != null)
             {
-                hud.MainCharacterSelect(playerCharacter);
-                foreach (var character in playableCharacters)
+                hud.MainCharacterSelect(playerParty.leader);
+                foreach (var character in playerParty.members)
                 {
-                    if (character != playerCharacter)
+                    if (character != playerParty.leader)
                         hud.AddAlly(character);
                 }
-                if (!hasPlayer)
-                    playableCharacters.Insert(0, playerCharacter);
+                foreach (var character in playerParty.members)
+                    character.onDeath.AddListener(OnCharacterDied);
             }
-
             hud.SetParty(playerParty);
+
             SetCharacterIdx(0);
             if (curCharacter == null)
                 SetMode(InputMode.Selection);
 
-            foreach (var character in playableCharacters)
-                character.onDeath.AddListener(OnCharacterDied);
+            SpawnAtCheckpoint(session.checkpoint);
         }
 
 
@@ -138,6 +158,18 @@ namespace HotD
                 curCharacter.Respawn();
             }
             SetMode(InputMode.Character);
+        }
+
+        public void SpawnAtCheckpoint(string name)
+        {
+            foreach (var checkpoint in checkpoints)
+            {
+                if (checkpoint.Name == name)
+                {
+                    checkpoint.SpawnAtCheckpoint(playerParty);
+                    break;
+                }
+            }
         }
 
         // Updates
@@ -172,16 +204,7 @@ namespace HotD
             }
         }
 
-        // Game InputMode
-        [SerializeField] private GameMode mode = new();
-        public GameMode Mode { get => mode; set => SetMode(value); }
-        public string ModeName { get => mode.name; set => SetMode(value); }
-        public InputMode InputMode { get => mode.inputMode; set => SetMode(value); }
-        public MoveMode MoveMode { get => mode.moveMode; }
-        public LookMode LookMode { get => mode.lookMode; }
-        public Menu ActiveMenu { get => mode.activeMenu; set => SetMode(value); }
-        public bool swapModes = false;
-        public bool reactivateMode = false;
+        // Game Mode
 
         public void SetMode(string name)
         {
@@ -330,7 +353,6 @@ namespace HotD
 
         // Selectables
 
-        [ReadOnly][SerializeField] private ASelectable selectedTarget;
         public void OnTargetSelected(ASelectable selectable)
         {
 
@@ -379,11 +401,12 @@ namespace HotD
 
         public void SetCharacterIdx(int idx)
         {
-            if (playableCharacters.Count > 0)
+            List<Character> members = playerParty.members;
+            if (members.Count > 0)
             {
-                idx = idx < 0 ? playableCharacters.Count + idx : idx;
-                curCharIdx = idx % (playableCharacters.Count);
-                Character character = playableCharacters[curCharIdx];
+                idx = idx < 0 ? members.Count + idx : idx;
+                curCharIdx = idx % (members.Count);
+                Character character = members[curCharIdx];
                 SetCharacter(character);
                 hud.CharacterSelect(character);
                 if (!character.alive)
@@ -395,7 +418,7 @@ namespace HotD
         {
             if (character != null)
             {
-                userInterface.SetCharacter(playerCharacter);
+                userInterface.SetCharacter(character);
                 SetControllable(curCharacter, false, false);
                 SetControllable(character, true, true);
                 curCharacter = character;
@@ -416,14 +439,14 @@ namespace HotD
 
         public void OnCharacterDied(Character character)
         {
-            if (character == playerCharacter)
+            if (character == playerParty.leader)
             {
                 SetMode(Menu.Death);
                 onPlayerDied.Invoke();
             }
             else if (character == curCharacter)
             {
-                SetCharacter(playerCharacter);
+                SetCharacter(playerParty.leader);
             }
         }
     }
