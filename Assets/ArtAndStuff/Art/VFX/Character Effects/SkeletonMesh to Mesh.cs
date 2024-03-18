@@ -27,6 +27,7 @@ public class SkeletonMeshtoMesh : MonoBehaviour
     {
         while(gameObject.activeSelf)
         {
+            Debug.Log("Updating Mesh");
             Mesh m = new Mesh();
             m = skeletonMesh.mesh;
             vfxGraph.SetMesh("Mesh", m);
