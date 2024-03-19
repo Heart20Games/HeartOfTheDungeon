@@ -7,6 +7,7 @@ using static ISelectable;
 
 public class Validator : BaseMonoBehaviour
 {
+    [Foldout("Validation", true)]
     [Header("Validation: Flags")]
     public bool desireInteractors = false;
     public bool controlledCharactersOnly = false;
@@ -18,10 +19,10 @@ public class Validator : BaseMonoBehaviour
     // Validation: Tags
     public List<string> desiredTags;
 
-    // Validation: Tags
+    // Validation: Types
     public List<SelectType> selectableTypes;
     public List<SelectType> SelectableTypes { get { return selectableTypes; } set { SetSelectableTypes(value); } }
-    [HideInInspector] public ASelectable selectable;
+    [Foldout("Validation")][HideInInspector] public ASelectable selectable;
 
     [Header("Miscelaneous")]
     public bool debug = false;

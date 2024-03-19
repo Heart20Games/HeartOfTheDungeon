@@ -82,7 +82,7 @@ namespace Body.Behavior.ContextSteering
         public Vector2 CurrentVector { get => currentVector; set { currentVector = value; onSetVector.Invoke(currentVector); } }
         public float Speed => Preset.testSpeed;
         public bool moveSelf = true;
-        private Rigidbody rigidbody;
+        private new Rigidbody rigidbody;
         public UnityEvent<Vector2> onSetVector;
 
         [Header("Noise")]

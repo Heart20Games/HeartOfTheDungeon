@@ -1,4 +1,5 @@
 using CustomUnityEvents;
+using MyBox;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,10 +32,11 @@ public class Impact : Validator
     public bool oneShot = false;
     public bool hasCollided = false;
 
+    [Foldout("Events", true)]
     [Header("Connections")]
     public BinaryEvent onCollision;
     public BinaryEvent onTrigger;
-    public ImpactEvents onImpact;
+    [Foldout("Events")] public ImpactEvents onImpact;
 
     // Tracking
     public readonly List<GameObject> touching = new();

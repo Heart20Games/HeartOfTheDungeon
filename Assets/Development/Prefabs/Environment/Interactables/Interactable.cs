@@ -1,11 +1,13 @@
+using MyBox;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Interactable : BaseMonoBehaviour
 {
+    [Foldout("Events", true)]
     public UnityEvent onInteract;
-    public UnityEvent<Interactor> onInteractSendInteractor;
+    [Foldout("Events")] public UnityEvent<Interactor> onInteractSendInteractor;
 
     public bool oneOff = false;
     [ReadOnly][SerializeField] private bool hasInteracted = false;

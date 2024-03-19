@@ -143,15 +143,15 @@ public class StatBlockData : PersistentData
 
     public override bool SaveData(GameData gameData)
     {
-        StatBlockData toLoad = gameData.statBlocks.Find((StatBlockData data) => { return data.name == name; });
-        if (toLoad != null)
+        StatBlockData toSave = gameData.statBlocks.Find((StatBlockData data) => { return data.name == name; });
+        if (toSave != null)
         {
-            toLoad.strength = this.strength;
-            toLoad.dexterity = this.dexterity;
-            toLoad.constitution = this.constitution;
-            toLoad.intelligence = this.intelligence;
+            toSave.strength = this.strength;
+            toSave.dexterity = this.dexterity;
+            toSave.constitution = this.constitution;
+            toSave.intelligence = this.intelligence;
         }
         // Returns whether data was able to be saved
-        return toLoad != null;
+        return toSave != null;
     }
 }

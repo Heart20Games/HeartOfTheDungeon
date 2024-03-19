@@ -14,7 +14,7 @@ namespace DataManagement
         [Header("File Storage Config")]
         [SerializeField] private string fileName;
     
-        private GameData gameData;
+        [SerializeField] private GameData gameData;
         private FileDataHandler dataHandler;
 
         public List<IPersistent> persistents = new();
