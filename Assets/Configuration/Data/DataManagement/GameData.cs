@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 
 namespace DataManagement
 {
+    [Serializable]
     public class GameData
     {
         public int lastId = -1;

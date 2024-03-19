@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BaseScriptableObject : ScriptableObject
 {
-    [HideInInspector] public bool initialized = false;
+    [ReadOnly] public bool initialized = false;
     public virtual void Init() { initialized = true; }
 
 #if !UNITY_EDITOR

@@ -91,11 +91,11 @@ namespace HotD
         {
             game = this;
             input = GetComponent<PlayerInput>();
-            if (session) session.Initialize();
         }
 
         private void Start()
         {
+            //if (session) session.Initialize();
             InitializePlayableCharacters();
             if (initialMenu != Menu.None)
             {

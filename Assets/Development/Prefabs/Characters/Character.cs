@@ -121,6 +121,8 @@ namespace Body
         public UnityEvent onDespawn;
         [Foldout("Death and Respawning")] public UnityEvent<bool> onAlive;
 
+        public bool debug = false;
+
         public override void Awake()
         {
             base.Awake();
@@ -204,7 +206,7 @@ namespace Body
 
         public void Respawn(bool finishCoroutine = false)
         {
-            Print($"Respawn {Name}", true);
+            Print($"Respawn {Name}", debug);
             if (finishCoroutine)
                 autoRespawnCoroutine = null;
             body.SetPositionAndRotation(spawn.position, spawn.rotation);
