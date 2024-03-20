@@ -99,7 +99,7 @@ namespace HotD
             }
             else if (initialInputMode != InputMode.None)
             {
-                InputMode = InputMode.None;
+                InputMode = initialInputMode;
             }
             else
             {
@@ -155,7 +155,8 @@ namespace HotD
                 SetCharacter(playerParty.Leader);
             }
             progressManager.SpawnParties();
-            SetMode(InputMode.Character);
+            if (mode.inputMode != InputMode.Character)
+                SetMode(InputMode.Character);
         }
 
         // Updates
@@ -238,7 +239,7 @@ namespace HotD
 
         public void ActivateMode(GameMode mode, GameMode lastMode)
         {
-            if (debug) print($"Activate inputMode {mode}.");
+            Print($"Activate inputMode {mode}.", debug);
 
             // Configure User Interface
             if (userInterface != null)
@@ -288,12 +289,13 @@ namespace HotD
             TimeScale = mode.timeScale;
 
             // Swap Controllables
+            bool canSpectate = mode.lookMode == LookMode.Character;
             IControllable newControllable = mode.Controllable;
             IControllable oldControllable = lastMode.Controllable;
             if (newControllable != null)
-                SetControllable(newControllable, true, true);
+                SetControllable(newControllable, true, canSpectate);
             if (oldControllable != null && oldControllable != newControllable)
-                SetControllable(oldControllable, false, newControllable == null);
+                SetControllable(oldControllable, false, newControllable == null && canSpectate);
 
             // Swap Target Finders
             if (targeter != null)
@@ -406,9 +408,10 @@ namespace HotD
             {
                 userInterface.SetCharacter(character);
                 SetControllable(curCharacter, false, false);
-                SetControllable(character, true, true);
+                if (Mode.inputMode == InputMode.Character)
+                    SetControllable(character, true, true);
                 curCharacter = character;
-                SetMode(InputMode.Character);
+                //SetMode(InputMode.Character);
             }
         }
 

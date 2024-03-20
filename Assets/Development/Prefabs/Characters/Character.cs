@@ -167,7 +167,7 @@ namespace Body
 
             // Value Initialization
             Identity = Identity;
-            SetAlive(alive, false, false);
+            //SetAlive(alive, false, false);
 
             MaxHealth = statBlock.MaxHealth;
             CurrentHealth = statBlock.MaxHealth;

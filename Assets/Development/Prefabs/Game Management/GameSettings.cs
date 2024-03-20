@@ -12,7 +12,7 @@ namespace HotD
     {
         public enum InputMode { None, Selection, Character, Dialogue, LockOn, Menu, Cutscene, Spectate };
         public enum MoveMode { None, Selector, Character }
-        public enum LookMode { None, Targeter }
+        public enum LookMode { None, Targeter, Character }
         public enum Menu { None, ControlSheet, CharacterSheet, Dialogue, Death }
         public enum Shader { None, Death }
         public static Dictionary<string, GameMode> ModeBank { get { return game.settings.ModeBank; } }
