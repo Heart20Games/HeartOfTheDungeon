@@ -17,7 +17,7 @@ public class Party : BaseMonoBehaviour
     [Foldout("Party Members")] public List<Character> pets = new();
 
     static List<Party> parties = new();
-    static Party mainParty;
+    public static Party mainParty;
     public bool isMainParty = false;
 
     [Foldout("Status Events", true)]
@@ -124,6 +124,15 @@ public class Party : BaseMonoBehaviour
     {
         foreach (var character in members)
             character.Respawn();
+    }
+
+    [ButtonMethod]
+    public void Despawn()
+    {
+        foreach (var character in members)
+        {
+            character.Despawn();
+        }
     }
 
     public void SetTargetParty(Party target, bool preferNew=true)

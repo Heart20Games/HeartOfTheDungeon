@@ -31,6 +31,21 @@ public class Story : PersistentScriptableObject
 
     public StoryData storyData;
 
+    // Getters and Such
+
+    public SceneProgress GetProgress(string sceneName)
+    {
+        foreach (SceneProgress scene in sceneProgress)
+        {
+            if (scene.name == sceneName)
+                return scene;
+        }
+        return new(sceneName);
+    }
+
+
+    // Persistent Stuff
+
     public override void ClearData()
     {
         storyData = null;

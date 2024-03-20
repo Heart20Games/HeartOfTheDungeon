@@ -27,6 +27,7 @@ namespace HotD
         [HideInInspector] public List<Cutouts> cardboardCutouts = new();
         [HideInInspector] public UserInterface userInterface;
         [HideInInspector] public VolumeManager volumeManager;
+        [HideInInspector] public ProgressManager progressManager;
         [HideInInspector] public HUD hud;
         [HideInInspector] public List<ITimeScalable> timeScalables;
         [HideInInspector] public List<Interactable> interactables;
@@ -61,12 +62,6 @@ namespace HotD
         public int CurCharIdx { get => curCharIdx; }
         [Foldout("Currents")][ReadOnly][SerializeField] private ASelectable selectedTarget;
 
-        // Session
-        [Foldout("Session", true)]
-        public Session session;
-        [Header("Checkpoints")]
-        [Foldout("Session")] public List<Checkpoint> checkpoints;
-
         // Events
         [Foldout("Events", true)]
         [Header("Events")]
@@ -91,6 +86,7 @@ namespace HotD
         {
             game = this;
             input = GetComponent<PlayerInput>();
+            progressManager = GetComponent<ProgressManager>();
         }
 
         private void Start()
@@ -130,7 +126,7 @@ namespace HotD
             if (curCharacter == null)
                 SetMode(InputMode.Selection);
 
-            SpawnAtCheckpoint(session.checkpoint);
+            progressManager.SpawnAtCheckpoint(playerParty);
         }
 
 
@@ -148,31 +144,13 @@ namespace HotD
         }
         public void RestartLife()
         {
-            if (checkpoints.Count > 0 && session.checkpoint != "")
-            {
-                SpawnAtCheckpoint(session.checkpoint);
-            }
+            progressManager.SpawnAtCheckpoint(playerParty);
             if (playerParty != null)
             {
                 playerParty.Respawn();
                 SetCharacter(playerParty.Leader);
             }
             SetMode(InputMode.Character);
-        }
-
-        /// <summary>Spawns the player party at a given checkpoint.</summary>
-        /// <returns>Returns true if a valid checkpoint was found.</returns>
-        public bool SpawnAtCheckpoint(string checkpointName)
-        {
-            foreach (var checkpoint in checkpoints)
-            {
-                if (checkpoint.Name == checkpointName)
-                {
-                    checkpoint.SpawnAtCheckpoint(playerParty);
-                    return true;
-                }
-            }
-            return false;
         }
 
         // Updates
