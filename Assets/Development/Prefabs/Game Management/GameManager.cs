@@ -132,24 +132,28 @@ namespace HotD
 
         // Restart
 
+        [ButtonMethod]
         public void RestartScene()
         {
             if (restartable)
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+        [ButtonMethod]
         public void RestartGame()
         {
             if (restartable)
                 onRestartGame.Invoke();
         }
+        [ButtonMethod]
         public void RestartLife()
         {
-            progressManager.SpawnAtCheckpoint(playerParty);
+            Print("Restart Life", debug);
             if (playerParty != null)
             {
-                playerParty.Respawn();
+                progressManager.SpawnAtCheckpoint(playerParty);
                 SetCharacter(playerParty.Leader);
             }
+            progressManager.SpawnParties();
             SetMode(InputMode.Character);
         }
 

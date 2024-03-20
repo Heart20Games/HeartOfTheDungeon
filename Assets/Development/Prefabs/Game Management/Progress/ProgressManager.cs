@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class ProgressManager : BaseMonoBehaviour
 {
-
-
     // Data
     [Header("Data")]
     public Session session;
@@ -18,11 +16,11 @@ public class ProgressManager : BaseMonoBehaviour
     [Header("Objects")]
     public List<Checkpoint> checkpoints;
     public List<Party> parties;
-    public Dictionary<string, Party> partyBank;
 
     // Settings
     [Header("Settings")]
     public bool alwaysSpawnAll = false;
+    public bool debug = false;
 
     private void Awake()
     {
@@ -38,13 +36,10 @@ public class ProgressManager : BaseMonoBehaviour
         if (parties == null || parties.Count == 0)
         {
             parties = new List<Party>(FindObjectsOfType<Party>());
-            partyBank = new();
-            foreach (Party party in parties)
-            {
-                partyBank.Add(party.name, party);
-            }
         }
     }
+
+    // Spawn Parties (All vs NonDefeated)
 
     public void SpawnParties()
     {
@@ -54,16 +49,18 @@ public class ProgressManager : BaseMonoBehaviour
             SpawnNonDefeated();
     }
 
-    public void SpawnNonDefeated()
+    private void SpawnNonDefeated()
     {
+        Print("Spawn Only Non_Defeated Enemies.", debug);
         Scene scene = SceneManager.GetActiveScene();
         SceneProgress progress = story.GetProgress(scene.name);
         foreach (var party in parties)
         {
             if (party != Party.mainParty)
             {
-                if (progress.groupsDefeated.Contains(party.name))
+                if (progress.groupsDefeated.Contains(party.Name))
                 {
+                    Print($"Despawning {party.Name}", debug);
                     foreach (var member in party.members)
                     {
                         member.autoRespawn = false;
@@ -72,18 +69,21 @@ public class ProgressManager : BaseMonoBehaviour
                 }
                 else
                 {
+                    Print($"Spawning {party.Name}.", debug);
                     party.Respawn();
                 }
             }
         }
     }
 
-    public void SpawnAll()
+    private void SpawnAll()
     {
+        Print("Spawn All Enemies.");
         foreach(Party party in parties)
         {
             if (party != Party.mainParty)
             {
+                Print($"Spawning {party.Name}.", debug);
                 party.Respawn();
             }
         }

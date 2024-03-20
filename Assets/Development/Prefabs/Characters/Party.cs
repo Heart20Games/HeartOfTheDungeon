@@ -9,6 +9,8 @@ using UnityEngine.Events;
 
 public class Party : BaseMonoBehaviour
 {
+    public string Name { get => gameObject.name; set => gameObject.name = value; }
+
     [Foldout("Party Members", true)]
     [Header("Party Members")]
     public Character leader;
@@ -129,8 +131,9 @@ public class Party : BaseMonoBehaviour
     [ButtonMethod]
     public void Despawn()
     {
-        foreach (var character in members)
+        foreach (Character character in members)
         {
+            character.SetAlive(false, false, false);
             character.Despawn();
         }
     }

@@ -17,6 +17,7 @@ namespace Body
     using static Body.Behavior.ContextSteering.CSIdentity;
     using static UIPips.PipGenerator;
     using System.Collections;
+    using System;
 
     [RequireComponent(typeof(Brain))]
     [RequireComponent(typeof(Movement))]
@@ -204,7 +205,7 @@ namespace Body
             SetAlive(true);
         }
 
-        public void Respawn(bool finishCoroutine = false)
+        public void Respawn(bool finishCoroutine = false, UnityAction _afterAction=null)
         {
             Print($"Respawn {Name}", debug);
             if (finishCoroutine)
@@ -216,14 +217,13 @@ namespace Body
             onRespawn.Invoke();
         }
 
-        public void Despawn(bool finishCoroutine = false)
+        public void Despawn(bool finishCoroutine = false, UnityAction afterAction=null)
         {
             Print($"Despawn {Name}", true);
             if (finishCoroutine)
                 autoDespawnCoroutine = null;
             SetDisplayable(false);
-            if (autoRespawn)
-                autoRespawnCoroutine ??= CallAfterDelay(Respawn, autoRespawnDelay);
+            afterAction?.Invoke();
             onDespawn.Invoke();
         }
 
@@ -295,7 +295,12 @@ namespace Body
 
         private Coroutine autoRespawnCoroutine;
         private Coroutine autoDespawnCoroutine;
+        
         public void SetAlive(bool alive)
+        {
+            SetAlive(alive, autoDespawn, autoRespawn);
+        }
+        public void SetAlive(bool alive, bool autoDespawn, bool autoRespawn)
         {
             movement.SetMoveVector(new());
             bool died = !alive && this.alive;
@@ -303,11 +308,13 @@ namespace Body
             onAlive.Invoke(alive);
             if (died)
             {
+                void respawnAfterDelay() => autoRespawnCoroutine ??= CallAfterDelay(Respawn, autoRespawnDelay);
+
                 // Timers
                 if (autoDespawn)
-                    autoDespawnCoroutine ??= CallAfterDelay(Despawn, autoDespawnDelay);
+                    autoDespawnCoroutine ??= CallAfterDelay(Despawn, autoDespawnDelay, respawnAfterDelay);
                 else if (autoRespawn)
-                    autoRespawnCoroutine ??= CallAfterDelay(Respawn, autoRespawnDelay);
+                    respawnAfterDelay();
                 
                 // Events
                 Emotion = "dead";
@@ -319,14 +326,14 @@ namespace Body
             }
         }
 
-        public Coroutine CallAfterDelay(UnityAction<bool> action, float delay)
+        public Coroutine CallAfterDelay(UnityAction<bool, UnityAction> action, float delay, UnityAction afterAction=null)
         {
-            return StartCoroutine(CallAfterDelayCoroutine(action, delay));
+            return StartCoroutine(CallAfterDelayCoroutine(action, delay, afterAction));
         }
-        public IEnumerator CallAfterDelayCoroutine(UnityAction<bool> action, float delay)
+        public IEnumerator CallAfterDelayCoroutine(UnityAction<bool, UnityAction> action, float delay, UnityAction afterAction=null)
         {
             yield return new WaitForSeconds(delay);
-            action.Invoke(true);
+            action.Invoke(true, afterAction);
         }
 
         // Health and Damage
