@@ -127,6 +127,7 @@ namespace HotD
                 SetMode(InputMode.Selection);
 
             progressManager.SpawnAtCheckpoint(playerParty);
+            progressManager.SpawnParties();
         }
 
 
