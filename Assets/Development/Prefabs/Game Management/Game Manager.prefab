@@ -741,6 +741,7 @@ GameObject:
   - component: {fileID: 6438564664787818369}
   - component: {fileID: 2746437236491300203}
   - component: {fileID: 4035807996893773721}
+  - component: {fileID: 938213873989446527}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -788,14 +789,15 @@ MonoBehaviour:
   cardboardCutouts: []
   userInterface: {fileID: 0}
   volumeManager: {fileID: 0}
+  progressManager: {fileID: 0}
   hud: {fileID: 0}
   interactables: []
   allCharacters: []
-  initialInputMode: 0
+  initialInputMode: 2
   initialMenu: 0
   mode:
     name: 
-    inputMode: 2
+    inputMode: 0
     moveMode: 0
     lookMode: 0
     activeMenu: 0
@@ -813,8 +815,6 @@ MonoBehaviour:
   curController: {fileID: 0}
   curSelector: {fileID: 0}
   selectedTarget: {fileID: 0}
-  session: {fileID: 11400000, guid: 9b8250dffcc40474583f21ca1c0ae9a8, type: 2}
-  checkpoints: []
   onPlayerDied:
     m_PersistentCalls:
       m_Calls: []
@@ -1111,6 +1111,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fileName: GameData.txt
+  gameData:
+    lastId: -1
+    statBlocks: []
+    characterBlocks: []
+    session:
+      name: 
+      scene: 
+      checkpoint: 
+    story:
+      name: 
+      sceneProgress: []
+      yarnNodesReached: []
   initialLoadComplete: 0
   onInitialLoadComplete:
     m_PersistentCalls:
@@ -1127,6 +1139,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &938213873989446527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8636156924694284204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8b89e566d26eed429abaf44d0da3627, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  session: {fileID: 11400000, guid: 73480b7f9fe59ec45ac170a991173323, type: 2}
+  story: {fileID: 11400000, guid: 0559e157294009040a2b647b71fcd1a2, type: 2}
+  checkpoints: []
+  parties: []
+  alwaysSpawnAll: 1
+  debug: 0
 --- !u!1001 &2759224181694214667
 PrefabInstance:
   m_ObjectHideFlags: 0

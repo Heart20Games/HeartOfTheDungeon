@@ -32,10 +32,7 @@ public class Session : PersistentScriptableObject
             this.scene = sessionData.scene;
             this.checkpoint = sessionData.checkpoint;
         }
-        else
-        {
-            Debug.LogWarning("Session Data Null. (PersistentScriptableObject)");
-        }
+        else Debug.LogWarning("Session Data Null. (PersistentScriptableObject)");
     }
 
     public override void SaveToData()
@@ -53,9 +50,7 @@ public class SessionData : PersistentData
     public string scene;
     public string checkpoint;
 
-    public SessionData(string name) : base(name)
-    {
-    }
+    public SessionData(string name) : base(name) { }
 
     // IPersistent
     public override bool LoadData(GameData gameData)
@@ -66,10 +61,7 @@ public class SessionData : PersistentData
             this.scene = toLoad.scene;
             this.checkpoint = toLoad.checkpoint;
         }
-        else
-        {
-            Debug.LogWarning("Session Data Null (PersistentData)");
-        }
+        else Debug.LogWarning("Session Data Null (PersistentData)");
         return toLoad != null;
     }
 

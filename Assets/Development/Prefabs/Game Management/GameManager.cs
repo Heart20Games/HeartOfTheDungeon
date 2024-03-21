@@ -27,6 +27,7 @@ namespace HotD
         [HideInInspector] public List<Cutouts> cardboardCutouts = new();
         [HideInInspector] public UserInterface userInterface;
         [HideInInspector] public VolumeManager volumeManager;
+        [HideInInspector] public ProgressManager progressManager;
         [HideInInspector] public HUD hud;
         [HideInInspector] public List<ITimeScalable> timeScalables;
         [HideInInspector] public List<Interactable> interactables;
@@ -61,12 +62,6 @@ namespace HotD
         public int CurCharIdx { get => curCharIdx; }
         [Foldout("Currents")][ReadOnly][SerializeField] private ASelectable selectedTarget;
 
-        // Session
-        [Foldout("Session", true)]
-        public Session session;
-        [Header("Checkpoints")]
-        [Foldout("Session")] public List<Checkpoint> checkpoints;
-
         // Events
         [Foldout("Events", true)]
         [Header("Events")]
@@ -91,6 +86,7 @@ namespace HotD
         {
             game = this;
             input = GetComponent<PlayerInput>();
+            progressManager = GetComponent<ProgressManager>();
         }
 
         private void Start()
@@ -103,7 +99,7 @@ namespace HotD
             }
             else if (initialInputMode != InputMode.None)
             {
-                InputMode = InputMode.None;
+                InputMode = initialInputMode;
             }
             else
             {
@@ -130,49 +126,37 @@ namespace HotD
             if (curCharacter == null)
                 SetMode(InputMode.Selection);
 
-            SpawnAtCheckpoint(session.checkpoint);
+            progressManager.SpawnAtCheckpoint(playerParty);
+            progressManager.SpawnParties();
         }
 
 
         // Restart
 
+        [ButtonMethod]
         public void RestartScene()
         {
             if (restartable)
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+        [ButtonMethod]
         public void RestartGame()
         {
             if (restartable)
                 onRestartGame.Invoke();
         }
+        [ButtonMethod]
         public void RestartLife()
         {
-            if (checkpoints.Count > 0 && session.checkpoint != "")
-            {
-                SpawnAtCheckpoint(session.checkpoint);
-            }
+            Print("Restart Life", debug);
             if (playerParty != null)
             {
-                playerParty.Respawn();
+                progressManager.SpawnAtCheckpoint(playerParty);
                 SetCharacter(playerParty.Leader);
             }
-            SetMode(InputMode.Character);
-        }
-
-        /// <summary>Spawns the player party at a given checkpoint.</summary>
-        /// <returns>Returns true if a valid checkpoint was found.</returns>
-        public bool SpawnAtCheckpoint(string checkpointName)
-        {
-            foreach (var checkpoint in checkpoints)
-            {
-                if (checkpoint.Name == checkpointName)
-                {
-                    checkpoint.SpawnAtCheckpoint(playerParty);
-                    return true;
-                }
-            }
-            return false;
+            progressManager.SpawnParties();
+            if (mode.inputMode != InputMode.Character)
+                SetMode(InputMode.Character);
         }
 
         // Updates
@@ -255,7 +239,7 @@ namespace HotD
 
         public void ActivateMode(GameMode mode, GameMode lastMode)
         {
-            if (debug) print($"Activate inputMode {mode}.");
+            Print($"Activate inputMode {mode}.", debug);
 
             // Configure User Interface
             if (userInterface != null)
@@ -305,12 +289,13 @@ namespace HotD
             TimeScale = mode.timeScale;
 
             // Swap Controllables
+            bool canSpectate = mode.lookMode == LookMode.Character;
             IControllable newControllable = mode.Controllable;
             IControllable oldControllable = lastMode.Controllable;
             if (newControllable != null)
-                SetControllable(newControllable, true, true);
+                SetControllable(newControllable, true, canSpectate);
             if (oldControllable != null && oldControllable != newControllable)
-                SetControllable(oldControllable, false, newControllable == null);
+                SetControllable(oldControllable, false, newControllable == null && canSpectate);
 
             // Swap Target Finders
             if (targeter != null)
@@ -423,9 +408,10 @@ namespace HotD
             {
                 userInterface.SetCharacter(character);
                 SetControllable(curCharacter, false, false);
-                SetControllable(character, true, true);
+                if (Mode.inputMode == InputMode.Character)
+                    SetControllable(character, true, true);
                 curCharacter = character;
-                SetMode(InputMode.Character);
+                //SetMode(InputMode.Character);
             }
         }
 
