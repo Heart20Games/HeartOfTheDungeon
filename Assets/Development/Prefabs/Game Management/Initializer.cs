@@ -39,6 +39,11 @@ namespace HotD
             {
                 checkpoints = new List<Checkpoint>(FindObjectsOfType<Checkpoint>());
                 game.checkpoints = checkpoints;
+                foreach (var checkpoint in checkpoints)
+                {
+                    if (checkpoint.session == null || (game.session != null && checkpoint.session != game.session))
+                        checkpoint.session = game.session;
+                }
             }
 
             scriptableObjects = (BaseScriptableObject[])Resources.FindObjectsOfTypeAll(typeof(BaseScriptableObject));

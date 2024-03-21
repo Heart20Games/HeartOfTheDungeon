@@ -1,7 +1,6 @@
 using DataManagement;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "NewSession", menuName = "Game/Session", order = 1)]
 public class Session : PersistentScriptableObject
@@ -10,8 +9,6 @@ public class Session : PersistentScriptableObject
     public string checkpoint;
 
     public SessionData sessionData;
-
-    public virtual void Initialize() { }
 
     // Persistent Scriptable Object
     public override IPersistent GetInstance() => this;
@@ -34,6 +31,10 @@ public class Session : PersistentScriptableObject
         {
             this.scene = sessionData.scene;
             this.checkpoint = sessionData.checkpoint;
+        }
+        else
+        {
+            Debug.LogWarning("Session Data Null. (PersistentScriptableObject)");
         }
     }
 
@@ -59,13 +60,17 @@ public class SessionData : PersistentData
     // IPersistent
     public override bool LoadData(GameData gameData)
     {
-        SessionData session = gameData.session;
+        SessionData toLoad = gameData.session;
         if (gameData.session != null)
         {
-            this.scene = session.scene;
-            this.checkpoint = session.checkpoint;
+            this.scene = toLoad.scene;
+            this.checkpoint = toLoad.checkpoint;
         }
-        return gameData != null;
+        else
+        {
+            Debug.LogWarning("Session Data Null (PersistentData)");
+        }
+        return toLoad != null;
     }
 
     public override void RegisterOn(GameData gameData)
@@ -76,12 +81,12 @@ public class SessionData : PersistentData
 
     public override bool SaveData(GameData gameData)
     {
-        SessionData session = gameData.session;
+        SessionData toSave = gameData.session;
         if (gameData.session != null)
         {
-            session.scene = this.scene;
-            session.checkpoint = this.checkpoint;
+            toSave.scene = this.scene;
+            toSave.checkpoint = this.checkpoint;
         }
-        return gameData != null;
+        return toSave != null;
     }
 }

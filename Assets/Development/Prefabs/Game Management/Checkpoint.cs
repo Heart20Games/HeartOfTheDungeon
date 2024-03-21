@@ -2,6 +2,7 @@ using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Checkpoint : BaseMonoBehaviour
 {
@@ -10,8 +11,16 @@ public class Checkpoint : BaseMonoBehaviour
     [ConditionalField("useGameObjectName", true)]
     public new string name = "[New Checkpoint]";
 
+    [Header("Session")]
+    public Session session;
+
     [Header("Party")]
     public Party targetParty;
+
+    [Foldout("Events", true)]
+    public UnityEvent onActivate;
+    [Foldout("Events")]
+    public UnityEvent onSpawn;
 
     public string Name
     {
@@ -25,6 +34,13 @@ public class Checkpoint : BaseMonoBehaviour
     }
 
     [ButtonMethod]
+    public void Activate()
+    {
+        session.checkpoint = Name;
+        onActivate.Invoke();
+    }
+
+    [ButtonMethod]
     public void SpawnAtCheckpoint()
     {
         SpawnAtCheckpoint(targetParty);
@@ -34,5 +50,6 @@ public class Checkpoint : BaseMonoBehaviour
     {
         party.transform.position = transform.position;
         party.Respawn();
+        targetParty = party;
     }
 }

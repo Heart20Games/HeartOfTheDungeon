@@ -91,11 +91,11 @@ namespace HotD
         {
             game = this;
             input = GetComponent<PlayerInput>();
-            if (session) session.Initialize();
         }
 
         private void Start()
         {
+            //if (session) session.Initialize();
             InitializePlayableCharacters();
             if (initialMenu != Menu.None)
             {
@@ -148,28 +148,31 @@ namespace HotD
         }
         public void RestartLife()
         {
+            if (checkpoints.Count > 0 && session.checkpoint != "")
+            {
+                SpawnAtCheckpoint(session.checkpoint);
+            }
             if (playerParty != null)
             {
                 playerParty.Respawn();
                 SetCharacter(playerParty.Leader);
             }
-            else if (curCharacter != null)
-            {
-                curCharacter.Respawn();
-            }
             SetMode(InputMode.Character);
         }
 
-        public void SpawnAtCheckpoint(string name)
+        /// <summary>Spawns the player party at a given checkpoint.</summary>
+        /// <returns>Returns true if a valid checkpoint was found.</returns>
+        public bool SpawnAtCheckpoint(string checkpointName)
         {
             foreach (var checkpoint in checkpoints)
             {
-                if (checkpoint.Name == name)
+                if (checkpoint.Name == checkpointName)
                 {
                     checkpoint.SpawnAtCheckpoint(playerParty);
-                    break;
+                    return true;
                 }
             }
+            return false;
         }
 
         // Updates

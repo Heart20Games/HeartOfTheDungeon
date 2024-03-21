@@ -25,7 +25,7 @@ public class PipImageChanger : BaseMonoBehaviour
 
     [Foldout("Events", true)]
     [ReadOnly] public Image image;
-    [ReadOnly] public SpriteRenderer renderer;
+    [ReadOnly] public new SpriteRenderer renderer;
     public UnityEvent<Sprite> onSpriteChange;
     [Foldout("Events")] public UnityEvent<Color> onColorChange;
 
