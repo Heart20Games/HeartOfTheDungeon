@@ -35,17 +35,6 @@ namespace HotD
             game.cardboardCutouts = new List<Cutouts>(FindObjectsOfType<Cutouts>());
             gameControls = FindObjectsOfType<GameController>();
 
-            if (game.checkpoints == null || game.checkpoints.Count == 0)
-            {
-                checkpoints = new List<Checkpoint>(FindObjectsOfType<Checkpoint>());
-                game.checkpoints = checkpoints;
-                foreach (var checkpoint in checkpoints)
-                {
-                    if (checkpoint.session == null || (game.session != null && checkpoint.session != game.session))
-                        checkpoint.session = game.session;
-                }
-            }
-
             scriptableObjects = (BaseScriptableObject[])Resources.FindObjectsOfTypeAll(typeof(BaseScriptableObject));
             foreach (var scriptableObject in scriptableObjects)
             {

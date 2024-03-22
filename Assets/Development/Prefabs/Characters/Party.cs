@@ -9,6 +9,8 @@ using UnityEngine.Events;
 
 public class Party : BaseMonoBehaviour
 {
+    public string Name { get => gameObject.name; set => gameObject.name = value; }
+
     [Foldout("Party Members", true)]
     [Header("Party Members")]
     public Character leader;
@@ -17,7 +19,7 @@ public class Party : BaseMonoBehaviour
     [Foldout("Party Members")] public List<Character> pets = new();
 
     static List<Party> parties = new();
-    static Party mainParty;
+    public static Party mainParty;
     public bool isMainParty = false;
 
     [Foldout("Status Events", true)]
@@ -124,6 +126,16 @@ public class Party : BaseMonoBehaviour
     {
         foreach (var character in members)
             character.Respawn();
+    }
+
+    [ButtonMethod]
+    public void Despawn()
+    {
+        foreach (Character character in members)
+        {
+            character.SetAlive(false, false, false);
+            character.Despawn();
+        }
     }
 
     public void SetTargetParty(Party target, bool preferNew=true)
