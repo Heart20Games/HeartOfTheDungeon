@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1094349008136043441}
   - component: {fileID: 1170563799041374782}
-  - component: {fileID: -114774027164638881}
+  - component: {fileID: 365239263178561269}
   - component: {fileID: 1975960043818690080}
   m_Layer: 0
   m_Name: DialogueTrigger
@@ -26,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3099208019775848333}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1170563799041374782
 MonoBehaviour:
@@ -46,11 +46,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  desireInteractors: 0
+  controlledCharactersOnly: 1
+  useTargetIdentity: 0
+  targetIdentity: 0
   desiredTags:
   - Character
   selectableTypes: 
-  desireInteractors: 0
-  controlledCharactersOnly: 1
+  selectable: {fileID: 0}
+  debug: 0
+  oneShot: 1
+  hasCollided: 0
   onCollision:
     enter:
       m_PersistentCalls:
@@ -62,8 +68,8 @@ MonoBehaviour:
     enter:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: -114774027164638881}
-          m_TargetAssemblyTypeName: Talker, Assembly-CSharp
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: HotD.Talker, Assembly-CSharp
           m_MethodName: Talk
           m_Mode: 1
           m_Arguments:
@@ -89,12 +95,31 @@ MonoBehaviour:
     exit:
       m_PersistentCalls:
         m_Calls: []
-  oneShot: 1
-  hasCollided: 0
-  debug: 0
+  onImpact:
+    impact:
+      enter:
+        m_PersistentCalls:
+          m_Calls: []
+      exit:
+        m_PersistentCalls:
+          m_Calls: []
+    other:
+      enter:
+        m_PersistentCalls:
+          m_Calls: []
+      exit:
+        m_PersistentCalls:
+          m_Calls: []
+    selectable:
+      enter:
+        m_PersistentCalls:
+          m_Calls: []
+      exit:
+        m_PersistentCalls:
+          m_Calls: []
   other: {fileID: 0}
-  selectable: {fileID: 0}
---- !u!114 &-114774027164638881
+  impactLocation: {x: 0, y: 0, z: 0}
+--- !u!114 &365239263178561269
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,7 +128,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3099208019775848333}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b523fe6c478d7646ae1a0fd4631ae6a, type: 3}
+  m_Script: {fileID: 11500000, guid: 31007b2934b6dc2479c31a011dd57be1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   game: {fileID: 0}
@@ -111,6 +136,9 @@ MonoBehaviour:
   virtualCamera: {fileID: 0}
   targetNode: 
   onStartTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onDoneTalking:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3099208019775848333}
@@ -125,21 +153,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: -114774027164638881}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onDoneTalking:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!65 &1975960043818690080
 BoxCollider:
   m_ObjectHideFlags: 0
