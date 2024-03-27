@@ -34,7 +34,7 @@ namespace HotD
         }
 
         // Actions
-        public void CompleteTalking()
+        public virtual void CompleteTalking()
         {
             dialogueRunner.onDialogueComplete.RemoveListener(CompleteTalking);
             game.InputMode = prevMode;

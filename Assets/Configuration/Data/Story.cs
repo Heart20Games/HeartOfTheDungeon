@@ -2,32 +2,33 @@ using DataManagement;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 [Serializable]
 public struct SceneProgress
 {
-    public SceneProgress(string name)
+    public SceneProgress(string name, bool initialize=true)
     {
         this.name = name;
-        checkpointsReached = new();
-        groupsDefeated = new();
+        checkpointsReached = initialize ? new() : null;
+        partiesDefeated = initialize ? new() : null;
     }
-    public SceneProgress(SceneProgress other)
+    public SceneProgress(SceneProgressData data)
     {
-        name = other.name;
-        checkpointsReached = other.checkpointsReached;
-        groupsDefeated = other.groupsDefeated;
+        name = data.name;
+        checkpointsReached = new(data.checkpointsReached);
+        partiesDefeated = new(data.partiesDefeated);
     }
     public string name;
-    public List<string> checkpointsReached;
-    public List<string> groupsDefeated;
+    public HashSet<string> checkpointsReached;
+    public HashSet<string> partiesDefeated;
 }
 
 [CreateAssetMenu(fileName = "NewStory", menuName = "Game/Story", order = 1)]
 public class Story : PersistentScriptableObject
 {
-    public List<SceneProgress> sceneProgress = new();
-    public List<string> yarnNodesReached = new();
+    public Dictionary<string, SceneProgress> sceneProgress = new();
+    public HashSet<string> yarnNodesReached = new();
 
     public StoryData storyData;
 
@@ -35,12 +36,31 @@ public class Story : PersistentScriptableObject
 
     public SceneProgress GetProgress(string sceneName)
     {
-        foreach (SceneProgress scene in sceneProgress)
+        Assert.IsNotNull(sceneProgress);
+        if (sceneProgress.TryGetValue(sceneName, out var scene))
+            return scene;
+        else
+            return new(sceneName);
+    }
+
+    public bool TryGetProgress(string sceneName, out SceneProgress result, bool addNew=false)
+    {
+        Assert.IsNotNull(sceneProgress);
+        if (sceneProgress.TryGetValue(sceneName, out result))
         {
-            if (scene.name == sceneName)
-                return scene;
+            return true;
         }
-        return new(sceneName);
+        else if (addNew)
+        {
+            result = new(sceneName);
+            sceneProgress.Add(sceneName, result);
+            return true;
+        }
+        else
+        {
+            result = new("NULL", false);
+            return false;
+        }
     }
 
 
@@ -64,27 +84,53 @@ public class Story : PersistentScriptableObject
     {
         if (storyData != null)
         {
-            sceneProgress = storyData.sceneProgress;
-            yarnNodesReached = storyData.yarnNodesReached;
+            sceneProgress = new();
+            foreach (var progress in storyData.sceneProgress)
+            {
+                sceneProgress.Add(progress.name, new(progress));
+            }
+            yarnNodesReached = new(storyData.yarnNodesReached);
         }
     }
 
     public override void SaveToData()
     {
         storyData ??= new(name);
-        storyData.sceneProgress = sceneProgress;
-        storyData.yarnNodesReached = yarnNodesReached;
+        storyData.sceneProgress = new();
+        foreach (var progress in sceneProgress.Values)
+        {
+            storyData.sceneProgress.Add(new(progress));
+        }
+        storyData.yarnNodesReached = new(yarnNodesReached);
         data.Add(storyData);
     }
 }
 
 [Serializable]
+public struct SceneProgressData
+{
+    public SceneProgressData(SceneProgress progress)
+    {
+        name = progress.name;
+        checkpointsReached = new(progress.checkpointsReached);
+        partiesDefeated = new(progress.partiesDefeated);
+    }
+    public string name;
+    public List<string> checkpointsReached;
+    public List<string> partiesDefeated;
+}
+
+[Serializable]
 public class StoryData : PersistentData
 {
-    public List<SceneProgress> sceneProgress = new();
+    public List<SceneProgressData> sceneProgress = new();
     public List<string> yarnNodesReached = new();
 
-    public StoryData(string name) : base(name) { }
+    public StoryData(string name) : base(name)
+    {
+        sceneProgress ??= new();
+        yarnNodesReached ??= new();
+    }
 
     public override bool LoadData(GameData gameData)
     {
