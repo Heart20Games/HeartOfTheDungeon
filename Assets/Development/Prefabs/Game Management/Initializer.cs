@@ -12,9 +12,9 @@ namespace HotD
         public FModEventLibary defaultFModLibrary;
 
         private BaseScriptableObject[] scriptableObjects;
-        private Character player;
+        //private Character player;
         private Character[] characters;
-        private Talker[] talkers;
+        //private Talker[] talkers;
         private FModEventPlayer[] fmodPlayers;
         private DialogueRunner dialogueRunner;
         private UserInterface userInterface;
@@ -23,7 +23,7 @@ namespace HotD
         private List<Interactable> interactables;
         private GameController[] gameControls;
         private HUD hud;
-        private List<Checkpoint> checkpoints;
+        //private List<Checkpoint> checkpoints;
 
         private Game game;
 
@@ -46,13 +46,13 @@ namespace HotD
                 dialogueRunner = userInterface.dialogueRunner;
             }
 
-            talkers = FindObjectsOfType<Talker>();
+            //talkers = FindObjectsOfType<Talker>();
             dialogueRunner = FindObjectOfType<DialogueRunner>();
-            foreach (Talker talker in talkers)
-            {
-                talker.game = game;
-                talker.dialogueRunner = dialogueRunner;
-            }
+            //foreach (Talker talker in talkers)
+            //{
+            //    talker.game = game;
+            //    talker.dialogueRunner = dialogueRunner;
+            //}
 
             if (defaultFModLibrary != null)
             {

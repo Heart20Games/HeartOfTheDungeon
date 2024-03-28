@@ -3,11 +3,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Playables;
 using Yarn.Unity;
 
 public class SceneTimeline : BaseMonoBehaviour
 {
+    public static SceneTimeline main;
+
     private PlayableDirector director;
     [Serializable] public struct Cutscene
     {
@@ -17,12 +20,26 @@ public class SceneTimeline : BaseMonoBehaviour
     public List<Cutscene> cutscenes = new();
     public Dictionary<string, PlayableDirector> cutsceneBank = new();
 
+    public UnityEvent onCutsceneCompleted;
+
     [SerializeField] private int paused = 0;
+
+    private void Awake()
+    {
+        main = main != null ? main : this;
+    }
 
     public void Start()
     {
         director = GetComponent<PlayableDirector>();
         UpdateCutsceneBank();
+    }
+
+    public void OnCutsceneCompleted(PlayableDirector director)
+    {
+        if (this.director == director)
+            director.stopped -= OnCutsceneCompleted;
+        onCutsceneCompleted.Invoke();
     }
 
     [ButtonMethod]
@@ -40,33 +57,29 @@ public class SceneTimeline : BaseMonoBehaviour
     public void Trigger(int index)
     {
         if (index >= 0 && index < cutscenes.Count)
-        {
             Trigger(cutscenes[index].director);
-        }
         else
-        {
             Debug.LogWarning($"Cutscene index {index} out of bounds.");
-        }
     }
 
     [YarnCommand("cutscene")]
     public void Trigger(string name)
     {
         if (cutsceneBank.TryGetValue(name, out var director))
-        {
             Trigger(director);
-        }
         else
-        {
             Debug.LogWarning($"Cutscene {name} does not exist.");
-        }
     }
 
     public void Trigger(PlayableDirector director)
     {
         if (this.director != null)
+        {
             this.director.Stop();
+            this.director.stopped -= OnCutsceneCompleted;
+        }
         this.director = director;
+        this.director.stopped += OnCutsceneCompleted;
         this.director.Play();
     }
 

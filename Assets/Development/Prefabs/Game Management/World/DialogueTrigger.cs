@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace HotD
         public bool setInactiveOnDialogueComplete = true;
         public bool gameObjectOnSetActive = true;
 
+        [Foldout("Events")]
         public UnityEvent<bool> onSetActive;
 
         public void SetActive(bool active)

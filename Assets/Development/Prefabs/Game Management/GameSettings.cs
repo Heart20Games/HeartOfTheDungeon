@@ -15,9 +15,9 @@ namespace HotD
         public enum LookMode { None, Targeter, Character }
         public enum Menu { None, ControlSheet, CharacterSheet, Dialogue, Death }
         public enum Shader { None, Death }
-        public static Dictionary<string, GameMode> ModeBank { get { return game.settings.ModeBank; } }
-        public static Dictionary<InputMode, GameMode> InputBank { get { return game.settings.InputBank; } }
-        public static Dictionary<Menu, GameMode> MenuBank { get { return game.settings.MenuBank; } }
+        public static Dictionary<string, GameMode> ModeBank { get { return main.settings.ModeBank; } }
+        public static Dictionary<InputMode, GameMode> InputBank { get { return main.settings.InputBank; } }
+        public static Dictionary<Menu, GameMode> MenuBank { get { return main.settings.MenuBank; } }
 
         [Serializable]
         public struct GameMode
@@ -41,8 +41,8 @@ namespace HotD
                 {
                     return moveMode switch
                     {
-                        MoveMode.Character => game.CurCharacter,
-                        MoveMode.Selector => game.curController,
+                        MoveMode.Character => main.CurCharacter,
+                        MoveMode.Selector => main.curController,
                         _ => null,
                     };
                 }
@@ -53,12 +53,12 @@ namespace HotD
                 {
                     return lookMode switch
                     {
-                        LookMode.Targeter => game.targeter,
+                        LookMode.Targeter => main.targeter,
                         _ => null,
                     };
                 }
             }
-            public readonly TargetFinder Finder { get => game.CurCharacter.targetFinder; }
+            public readonly TargetFinder Finder { get => main.CurCharacter.targetFinder; }
         }
     }
 
