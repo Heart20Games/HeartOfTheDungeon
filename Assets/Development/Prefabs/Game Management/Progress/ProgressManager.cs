@@ -67,7 +67,7 @@ public class ProgressManager : BaseMonoBehaviour
         SpawnAtCheckpoint(Party.mainParty);
     }
 
-    // Session Date Management
+    // Session Data Management
 
     public void SaveSessionData()
     {

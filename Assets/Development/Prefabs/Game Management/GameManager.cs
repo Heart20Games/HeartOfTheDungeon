@@ -7,6 +7,7 @@ using Selection;
 using UnityEngine.SceneManagement;
 using HotD.PostProcessing;
 using MyBox;
+using Yarn.Unity;
 
 namespace HotD
 {
@@ -14,7 +15,7 @@ namespace HotD
 
     public class Game : BaseMonoBehaviour
     {
-        public static Game game;
+        public static Game main;
 
         // Properties
         [Foldout("Parts", true)]
@@ -84,7 +85,7 @@ namespace HotD
 
         private void Awake()
         {
-            game = this;
+            main = this;
             input = GetComponent<PlayerInput>();
             progressManager = GetComponent<ProgressManager>();
         }
@@ -93,6 +94,7 @@ namespace HotD
         {
             //if (session) session.Initialize();
             InitializePlayableCharacters();
+            progressManager.RespawnToLastCheckpoint();
             if (initialMenu != Menu.None)
             {
                 SetMode(initialMenu);
@@ -125,9 +127,6 @@ namespace HotD
             SetCharacterIdx(0);
             if (curCharacter == null)
                 SetMode(InputMode.Selection);
-
-            progressManager.SpawnAtCheckpoint(playerParty);
-            progressManager.SpawnParties();
         }
 
 
@@ -151,10 +150,9 @@ namespace HotD
             Print("Restart Life", debug);
             if (playerParty != null)
             {
-                progressManager.SpawnAtCheckpoint(playerParty);
                 SetCharacter(playerParty.Leader);
             }
-            progressManager.SpawnParties();
+            progressManager.RespawnToLastCheckpoint();
             if (mode.inputMode != InputMode.Character)
                 SetMode(InputMode.Character);
         }
@@ -369,8 +367,8 @@ namespace HotD
         }
         public void StartDialogue(string nodeName, UnityAction<string> startListener = null, UnityAction completeListener = null)
         {
-            prevMode = game.Mode;
-            game.InputMode = InputMode.Dialogue;
+            prevMode = main.Mode;
+            main.InputMode = InputMode.Dialogue;
             userInterface.dialogueRunner.Stop();
             if (startListener != null)
                 userInterface.dialogueRunner.onNodeStart.AddListener(startListener);
@@ -381,7 +379,7 @@ namespace HotD
 
         public void EndDialogue()
         {
-            game.Mode = prevMode;
+            main.Mode = prevMode;
             userInterface.dialogueRunner.Stop();
         }
 
