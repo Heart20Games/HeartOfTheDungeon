@@ -47,25 +47,31 @@ public class Impact : Validator
 
     private void OnEventEnter(GameObject other, UnityEvent onEvent)
     {
-        this.other = other;
-        if ((!oneShot || !hasCollided) && Validate(other) && !touching.Contains(other))
+        if (isActiveAndEnabled)
         {
-            if (debug) print($"Other: {other.name}");
-            touching.Add(other);
-            hasCollided = true;
-            onEvent.Invoke();
-            onImpact.InvokeEnter(this);
+            this.other = other;
+            if ((!oneShot || !hasCollided) && Validate(other) && !touching.Contains(other))
+            {
+                if (debug) print($"Other: {other.name}");
+                touching.Add(other);
+                hasCollided = true;
+                onEvent.Invoke();
+                onImpact.InvokeEnter(this);
+            }
         }
     }
 
     private void OnEventExit(GameObject other, UnityEvent onEvent)
     {
-        this.other = other;
-        if (Validate(other))
+        if (isActiveAndEnabled)
         {
-            touching.Remove(other);
-            onEvent.Invoke();
-            onImpact.InvokeExit(this);
+            this.other = other;
+            if (Validate(other))
+            {
+                touching.Remove(other);
+                onEvent.Invoke();
+                onImpact.InvokeExit(this);
+            }
         }
     }
 

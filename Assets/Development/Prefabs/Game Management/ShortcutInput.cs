@@ -6,7 +6,7 @@ namespace HotD
     public class ShortcutInput : MonoBehaviour
     {
         private Game game;
-        public Game Game { get { game = game != null ? game : Game.game; return game; } }
+        public Game Game { get { game = game != null ? game : Game.main; return game; } }
 
         // Cheats / Shortcuts
         [Header("Shortcuts")]
