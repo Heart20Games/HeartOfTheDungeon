@@ -68,7 +68,8 @@ namespace Body
         // Behaviour
         [Header("Behaviour")]
         [HideInInspector] public Brain brain;
-        public CSController Controller { get => brain.controller; }
+        [HideInInspector] public EnemyAI enemyAI;
+        public CSController Controller { get => GetComponent<EnemyAI>() ? enemyAI.controller : brain.controller; }
 
         // Casting
         [Foldout("Casting", true)]
@@ -82,7 +83,18 @@ namespace Body
         public override Identity Identity
         {
             get => identity;
-            set { identity = value; brain.Identity = value; }
+            set 
+            {
+                identity = value;
+                if (GetComponent<EnemyAI>())
+                {
+                    enemyAI.Identity = value;
+                }
+                else
+                {
+                    brain.Identity = value;
+                }
+            }
         }
         public override string Name { get => statBlock == null ? null : statBlock.characterName; set => statBlock.characterName = value; }
         public override MaxModField<int> Health { get => health; }
@@ -135,7 +147,14 @@ namespace Body
             InitBody();
 
             // Components
-            brain = GetComponent<Brain>();
+            if(GetComponent<EnemyAI>())
+            {
+                enemyAI = GetComponent<EnemyAI>();
+            }
+            else
+            {
+                brain = GetComponent<Brain>();
+            }
             movement = GetComponent<Movement>();
             talker = GetComponent<Talker>();
             caster = GetComponent<Caster>();
@@ -268,14 +287,31 @@ namespace Body
 
         public void SetControllable(bool _controllable)
         {
-            brain.Enabled = !_controllable;
+            if(GetComponent<EnemyAI>())
+            {
+                enemyAI.Enabled = !_controllable;
+                
+            }
+            else
+            {
+                brain.Enabled = !_controllable;
+            }
+            
             controllable = _controllable;
             onControl.Invoke(_controllable);
         }
 
         public void SetBrainable(bool brainable)
         {
-            brain.Enabled = brainable;
+            if(GetComponent<EnemyAI>())
+            {
+                enemyAI.Enabled = brainable;
+            }
+            else
+            {
+                brain.Enabled = brainable;
+            }
+            
             movement.enabled = brainable;
         }
 
@@ -284,7 +320,15 @@ namespace Body
 
         private void ConnectAlive()
         {
-            onAlive.AddListener((bool alive) => { brain.Alive = alive; });
+            if(GetComponent<EnemyAI>())
+            {
+                onAlive.AddListener((bool alive) => { enemyAI.Alive = alive; });
+            }
+            else
+            {
+                onAlive.AddListener((bool alive) => { brain.Alive = alive; });
+            }
+            
             onAlive.AddListener(DoEnable(movement));
             onAlive.AddListener(DoEnable(caster));
 
@@ -417,7 +461,13 @@ namespace Body
                 SetCastable(4, Loadout.mobility);
             }
             if (brain != null)
+            {
                 brain.RegisterCastables(castableItems);
+            }
+            if(enemyAI != null)
+            {
+                enemyAI.RegisterCastables(castableItems);
+            }
         }
 
         public void SetCastable(int idx, CastableItem item)

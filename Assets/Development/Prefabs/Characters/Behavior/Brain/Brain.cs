@@ -10,6 +10,7 @@ namespace Body.Behavior
     using static ContextSteering.CSContext;
     using static Tree.LeafNode;
     using HotD.Castables;
+    using static Yarn.Compiler.BasicBlock;
 
     public class Brain : BaseMonoBehaviour, ITimeScalable
     {
@@ -64,11 +65,11 @@ namespace Body.Behavior
 
         // Tree
         public enum Type { Leaf, Condition, Selector, Sequence }
-        public enum Action { Idle, Chase, Duel }
+        public enum Action { Idle, Patrol, Chase, Duel }
         private Dictionary<Action, Tick> actions;
         public Dictionary<Action, Tick> Actions
         {
-            get => actions ??= new Dictionary<Action, Tick>() { { Action.Idle, Idle }, { Action.Chase, Chase }, { Action.Duel, Duel } };
+            get => actions ??= new Dictionary<Action, Tick>() { { Action.Idle, Idle }, { Action.Patrol, Patrol }, { Action.Chase, Chase }, { Action.Duel, Duel } };
         }
         public BehaviorTree tree;
         [HideInInspector] public BehaviorNode root;
@@ -91,7 +92,7 @@ namespace Body.Behavior
         public bool debug = false;
 
         // Initialization
-        private void Awake()
+        public virtual void Awake()
         {
             if (debug) print("Awake!");
             if (TryGetComponent(out character))
@@ -122,7 +123,7 @@ namespace Body.Behavior
 
 
         // Update
-        private void Update()
+        public virtual void Update()
         {
             //if (debug) Debug.Log("Updating Brain");
             if (status == BehaviorNode.Status.FAILURE)
@@ -195,6 +196,14 @@ namespace Body.Behavior
             return BehaviorNode.Status.SUCCESS;
         }
 
+        //Used by enemy AI
+        public BehaviorNode.Status Patrol()
+        {
+            TargetNavigation();
+
+            return BehaviorNode.Status.SUCCESS;
+        }
+
         public BehaviorNode.Status Chase()
         {
             if (!HasFoeInRange(Range.InRange)) return BehaviorNode.Status.FAILURE;
@@ -233,28 +242,25 @@ namespace Body.Behavior
 
             if (debug) Debug.Log("Dueling...");
 
-            if (!useAgent)
-            {
-                if (debug) print("Trying to attack");
-                character.Aim(-controller.CurrentVector.normalized, true);
+            if (debug) print("Trying to attack");
+            character.Aim(-controller.CurrentVector.normalized, true);
 
-                int closest = int.MaxValue;
-                int closestIdx = -1;
-                for (int i = 0; i < character.castableItems.Length; i++)
+            int closest = int.MaxValue;
+            int closestIdx = -1;
+            for (int i = 0; i < character.castableItems.Length; i++)
+            {
+                CastableItem item = character.castableItems[i];
+                if (item != null && controller.HasActiveContext(item.context))
                 {
-                    CastableItem item = character.castableItems[i];
-                    if (item != null && controller.HasActiveContext(item.context))
+                    if (item.context.vector.deadzone.y < closest)
                     {
-                        if (item.context.vector.deadzone.y < closest)
-                        {
-                            closest = (int)item.context.vector.deadzone.y;
-                            closestIdx = i;
-                        }
+                        closest = (int)item.context.vector.deadzone.y;
+                        closestIdx = i;
                     }
                 }
-                if (closestIdx >= 0)
-                    character.TriggerCastable(closestIdx);
             }
+            if (closestIdx >= 0)
+                character.TriggerCastable(closestIdx);
 
             return BehaviorNode.Status.SUCCESS;
         }
@@ -265,6 +271,7 @@ namespace Body.Behavior
         public void TargetNavigation()
         {
             pathFinder.target = target;
+
             if (pathFinder.NextPoint(out Vector3 destination))
             {
                 controller.SetDestination(destination, pathFinder.pathLength);
