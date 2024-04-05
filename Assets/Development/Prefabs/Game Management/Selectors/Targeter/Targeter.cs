@@ -1,6 +1,7 @@
 using Cinemachine;
 using CustomUnityEvents;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Selection
@@ -11,6 +12,7 @@ namespace Selection
 
 
         [ReadOnly] public List<ASelectable> selectableBank = new();
+        [ReadOnly] public List<IPartySpawner> partySpawners = new();
         [SerializeField] private bool debug = false;
 
         [Header("Targeting")]
@@ -41,7 +43,20 @@ namespace Selection
             selectableBank.AddRange(FindObjectsByType<ASelectable>(FindObjectsSortMode.None));
             if (!zoomLevels.Contains(virtualCamera))
                 zoomLevels.Add(virtualCamera);
+            partySpawners = new List<IPartySpawner>(FindObjectsOfType<BaseMonoBehaviour>().OfType<IPartySpawner>());
+            foreach (IPartySpawner party in partySpawners)
+            {
+                party.RegisterPartyReceiver(AddTarget);
+            }
+        }
 
+        // New Parties
+        public void AddTarget(ASelectable selectable)
+        {
+            if (!selectableBank.Contains(selectable))
+            {
+                selectableBank.Add(selectable);
+            }
         }
 
         // Looking
