@@ -1,7 +1,9 @@
+using Body;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace HotD
 {
@@ -17,7 +19,7 @@ namespace HotD
         public Party party;
     }
 
-    public class WaveManager : BaseMonoBehaviour
+    public class WaveManager : BaseMonoBehaviour, IPartySpawner
     {
         [SerializeField] private List<Wave> waves;
         [SerializeField] private List<Transform> spawnpoints;
@@ -29,12 +31,27 @@ namespace HotD
         [SerializeField] private bool randomizeWavePoints = false;
 
         [ReadOnly][SerializeField] private List<Party> parties = new();
+        public UnityEvent<ASelectable> onMemberSpawned;
 
         public Coroutine coroutine;
 
         public void Start()
         {
             coroutine = StartCoroutine(CountdownToWave());
+        }
+
+        public void RegisterPartyReceiver(UnityAction<ASelectable> action)
+        {
+            print("Registering...");
+            onMemberSpawned.AddListener(action);
+        }
+
+        public void OnPartySpawned(Party party)
+        {
+            foreach (Character member in party.members)
+            {
+                onMemberSpawned.Invoke(member.body.GetComponent<Selectable>());
+            }
         }
 
         public void SpawnNewWave()
@@ -45,6 +62,7 @@ namespace HotD
                 spawnpoint = randomizeWavePoints ? UnityEngine.Random.Range(0, spawnpoints.Count) : spawnpoint += 1;
                 Party party = Instantiate(waves[wave % waves.Count].party, spawnpoints[spawnpoint]);
                 parties.Add(party);
+                OnPartySpawned(party);
             }
             coroutine = StartCoroutine(CountdownToWave());
         }
