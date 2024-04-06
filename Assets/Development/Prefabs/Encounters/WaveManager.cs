@@ -42,6 +42,7 @@ namespace HotD
 
         public void RegisterPartyReceiver(UnityAction<ASelectable> action)
         {
+            print("Registering...");
             onMemberSpawned.AddListener(action);
         }
 

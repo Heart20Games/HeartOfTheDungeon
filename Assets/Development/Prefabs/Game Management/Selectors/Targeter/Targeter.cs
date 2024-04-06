@@ -53,6 +53,7 @@ namespace Selection
         // New Parties
         public void AddTarget(ASelectable selectable)
         {
+            print("Adding target!");
             if (!selectableBank.Contains(selectable))
             {
                 selectableBank.Add(selectable);
