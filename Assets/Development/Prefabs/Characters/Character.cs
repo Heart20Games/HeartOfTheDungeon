@@ -199,7 +199,18 @@ namespace Body
 
         // Respawning, Despawning and Refreshing
 
-        public void Refresh()
+        //public void ConnectSpawned()
+        //{
+        //    onAlive.AddListener((bool alive) => { brain.Alive = alive; });
+        //    onAlive.AddListener(DoEnable(movement));
+        //    onAlive.AddListener(DoEnable(caster));
+
+        //    if (artRenderer != null) onAlive.AddListener((bool alive) => { artRenderer.Dead = !alive; });
+        //    if (aliveCollider != null) onAlive.AddListener((bool alive) => { aliveCollider.enabled = alive; });
+        //    if (deadCollider != null) onAlive.AddListener((bool alive) => { deadCollider.enabled = !alive; });
+        //}
+
+public void Refresh()
         {
             CurrentHealth = MaxHealth;
             SetAlive(true);
@@ -224,6 +235,7 @@ namespace Body
                 autoDespawnCoroutine = null;
             SetDisplayable(false);
             afterAction?.Invoke();
+            SetAlive(false);
             onDespawn.Invoke();
         }
 
@@ -284,13 +296,15 @@ namespace Body
 
         private void ConnectAlive()
         {
+            print($"Connecting alive for {Name}.");
+
             onAlive.AddListener((bool alive) => { brain.Alive = alive; });
             onAlive.AddListener(DoEnable(movement));
             onAlive.AddListener(DoEnable(caster));
 
             if (artRenderer != null) onAlive.AddListener((bool alive) => { artRenderer.Dead = !alive; });
             if (aliveCollider != null) onAlive.AddListener((bool alive) => { aliveCollider.enabled = alive; });
-            if (deadCollider != null) onAlive.AddListener((bool alive) => { deadCollider.enabled = alive; });
+            if (deadCollider != null) onAlive.AddListener((bool alive) => { deadCollider.enabled = !alive; });
         }
 
         private Coroutine autoRespawnCoroutine;
@@ -298,6 +312,7 @@ namespace Body
         
         public void SetAlive(bool alive)
         {
+            print($"Setting {Name} alive.");
             SetAlive(alive, autoDespawn, autoRespawn);
         }
         public void SetAlive(bool alive, bool autoDespawn, bool autoRespawn)

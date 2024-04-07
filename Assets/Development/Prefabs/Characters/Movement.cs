@@ -85,62 +85,65 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
 
     private void FixedUpdate()
     {
-        if (canMove)
+        if (isActiveAndEnabled)
         {
-            Vector3 cameraDirection = body.position - Camera.main.transform.position;
+            if (canMove)
+            {
+                Vector3 cameraDirection = body.position - Camera.main.transform.position;
 
-            float modifier = 1f;
-            if (character != null && character.controllable)
-            {
-                Vector3 direction = moveVector.Orient(cameraDirection).FullY();
-                Debug.DrawRay(body.position, direction * 3, Color.green, Time.fixedDeltaTime);
-                myRigidbody.AddRelativeForce(speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
-            }
-            else
-            {
-                modifier = npcModifier;
-                Vector3 direction = moveVector.FullY();
-                Assert.IsFalse(float.IsNaN(direction.x) || float.IsNaN(direction.y) || float.IsNaN(direction.z));
-                Debug.DrawRay(body.position, direction, Color.green, Time.fixedDeltaTime);
-                myRigidbody.AddForce(modifier * speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
-            }
-            
-            if (myRigidbody.velocity.magnitude > maxVelocity * modifier)
-                myRigidbody.velocity = maxVelocity * modifier * myRigidbody.velocity.normalized;
-
-            if (artRenderer != null && pivot != null)
-            {
-                Vector2 hVelocity = myRigidbody.velocity.XZVector();
-                Vector2 hCamera = cameraDirection.XZVector().normalized;
-                Vector2 right = Vector2.Perpendicular(hCamera);
-                if (hVelocity.magnitude > footstepVelocity)
+                float modifier = 1f;
+                if (character != null && character.controllable)
                 {
-                    float angle = Vector2.Dot(right, hVelocity);
-
-                    if ((Flip && angle > flipBuffer) || (!Flip && angle < -flipBuffer))
-                    {
-                        Flip = !Flip;
-                    }
-
-                    if (!hasFootsteps)
-                    {
-                        artRenderer.Running = true;
-                        hasFootsteps = true;
-                    }
-                } 
-                else if (hasFootsteps)
+                    Vector3 direction = moveVector.Orient(cameraDirection).FullY();
+                    Debug.DrawRay(body.position, direction * 3, Color.green, Time.fixedDeltaTime);
+                    myRigidbody.AddRelativeForce(speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
+                }
+                else
                 {
-                    artRenderer.Running = false;
-                    hasFootsteps = false;
+                    modifier = npcModifier;
+                    Vector3 direction = moveVector.FullY();
+                    Assert.IsFalse(float.IsNaN(direction.x) || float.IsNaN(direction.y) || float.IsNaN(direction.z));
+                    Debug.DrawRay(body.position, direction, Color.green, Time.fixedDeltaTime);
+                    myRigidbody.AddForce(modifier * speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
+                }
+
+                if (myRigidbody.velocity.magnitude > maxVelocity * modifier)
+                    myRigidbody.velocity = maxVelocity * modifier * myRigidbody.velocity.normalized;
+
+                if (artRenderer != null && pivot != null)
+                {
+                    Vector2 hVelocity = myRigidbody.velocity.XZVector();
+                    Vector2 hCamera = cameraDirection.XZVector().normalized;
+                    Vector2 right = Vector2.Perpendicular(hCamera);
+                    if (hVelocity.magnitude > footstepVelocity)
+                    {
+                        float angle = Vector2.Dot(right, hVelocity);
+
+                        if ((Flip && angle > flipBuffer) || (!Flip && angle < -flipBuffer))
+                        {
+                            Flip = !Flip;
+                        }
+
+                        if (!hasFootsteps)
+                        {
+                            artRenderer.Running = true;
+                            hasFootsteps = true;
+                        }
+                    }
+                    else if (hasFootsteps)
+                    {
+                        artRenderer.Running = false;
+                        hasFootsteps = false;
+                    }
                 }
             }
-        }
 
-        if (applyGravity)
-        {
-            onGround = Physics.Raycast(body.transform.position, Vector3.down, groundDistance);
-            float power = onGround ? normalForce : gravityForce;
-            myRigidbody.AddForce(speed * timeScale * power * Time.fixedDeltaTime * Vector3.down);
+            if (applyGravity)
+            {
+                onGround = Physics.Raycast(body.transform.position, Vector3.down, groundDistance);
+                float power = onGround ? normalForce : gravityForce;
+                myRigidbody.AddForce(speed * timeScale * power * Time.fixedDeltaTime * Vector3.down);
+            }
         }
     }
 
