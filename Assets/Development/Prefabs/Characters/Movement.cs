@@ -10,6 +10,7 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     public MovementSettings settings;
     public bool applyGravity = true;
     public bool canMove = true;
+    public bool debug;
     public float Speed { get => settings.speed; }
     public float MaxVelocity { get => settings.maxVelocity; }
     public float FootstepVelocity { get => settings.footstepVelocity; }
@@ -91,12 +92,14 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
                 float modifier = 1f;
                 if (character != null && character.Controllable)
                 {
+                    Print("Character Controlled Movement", debug);
                     Vector3 direction = moveVector.Orient(cameraDirection).FullY();
                     Debug.DrawRay(body.position, direction * 3, Color.green, Time.fixedDeltaTime);
                     myRigidbody.AddRelativeForce(Speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
                 }
                 else
                 {
+                    Print($"NPC Controlled Movement ({character})", debug);
                     modifier = npcModifier;
                     Vector3 direction = moveVector.FullY();
                     Assert.IsFalse(float.IsNaN(direction.x) || float.IsNaN(direction.y) || float.IsNaN(direction.z));

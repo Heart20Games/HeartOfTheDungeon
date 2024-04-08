@@ -178,6 +178,7 @@ namespace Body
 
         private void InitMovement()
         {
+            movement.character = this;
             movement.body = body;
             movement.pivot = pivot;
             movement.artRenderer = artRenderer;
