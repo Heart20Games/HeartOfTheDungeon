@@ -12,7 +12,7 @@ namespace HotD
     public class CharacterModes
     {
         public enum ControlMode { None, Player, Brain };
-        public enum MoveMode { Disabled, GravityOnly, Active };
+        public enum MovementMode { Disabled, GravityOnly, Active };
         public enum CollisionMode { Disabled, Tall, Short };
         public enum LiveMode { Despawned, Alive, Dead };
         
@@ -22,7 +22,7 @@ namespace HotD
             public string name;
 
             public ControlMode controlMode;
-            public MoveMode moveMode;
+            public MovementMode moveMode;
             public CollisionMode collisionMode;
             public PipGenerator.DisplayMode pipMode;
             public LiveMode liveMode;
@@ -31,6 +31,8 @@ namespace HotD
             public bool useCaster;
             public bool useMoveReticle;
             public bool useInteractor;
+
+            public readonly bool Controllable { get => controlMode == ControlMode.Player; }
         }
     }
 
@@ -41,9 +43,9 @@ namespace HotD
 
         public bool TryGetMode<T>(T key, out CharacterMode mode)
         {
-            if (typeof(string) == typeof(string))
-                return ModeBank.TryGetValue((string)(object)key, out mode);
-            else if (typeof(T) == typeof(ControlMode))
+            //if (typeof(string) == typeof(string))
+            //    return ModeBank.TryGetValue((string)(object)key, out mode);
+            if (typeof(T) == typeof(ControlMode))
                 return ControlBank.TryGetValue((ControlMode)(object)key, out mode);
             else if (typeof(T) == typeof(LiveMode))
                 return LiveBank.TryGetValue((LiveMode)(object)key, out mode);

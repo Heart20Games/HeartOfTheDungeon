@@ -15,18 +15,18 @@ namespace Body
     using HotD;
     using UIPips;
     using static Body.Behavior.ContextSteering.CSIdentity;
-    using static UIPips.PipGenerator;
     using System.Collections;
+    using static HotD.CharacterModes;
     using System;
 
     [RequireComponent(typeof(Brain))]
     [RequireComponent(typeof(Movement))]
     [RequireComponent(typeof(Talker))]
     [RequireComponent(typeof(Caster))]
-    public class Character : AIdentifiable, IDamageable, IBrainable
+    public class Character : AIdentifiable, IDamageable, IControllable
     {
         // Movement and Positioning
-        [Foldout("Movement and Positioning", true)]
+        [Foldout("Parts", true)]
         [Header("Movement and Positioning")]
         public Transform body;
         public Transform pivot;
@@ -37,7 +37,8 @@ namespace Body
         // State
         [Foldout("State", true)]
         [Header("State")]
-        public bool controllable = true;
+        public CharacterSettings settings;
+        //public bool controllable = true;
         public bool aimActive = false;
         public bool alive = false;
         [Space]
@@ -45,7 +46,7 @@ namespace Body
         public UnityEvent<bool> onSpectate;
 
         // Appearance
-        [Foldout("Appearance", true)]
+        [Foldout("Parts", true)]
         [Header("Appearance")]
         public ArtRenderer artRenderer;
         public VFXEventController vfxController;
@@ -53,20 +54,20 @@ namespace Body
         public CharacterBlock statBlock;
 
         // Collision
-        [Foldout("Collision", true)]
+        [Foldout("Parts", true)]
         [Header("Collision")]
         public Collider aliveCollider;
         public Collider deadCollider;
 
         // Interaction, Selection, and Targeting
-        [Foldout("Interaction, Selection, and Targeting", true)]
+        [Foldout("Parts", true)]
         [Header("Interaction, Selection, and Targeting")]
         public Interactor interactor;
         public TargetFinder targetFinder;
         [HideInInspector] public Talker talker;
 
         // Behaviour
-        [Header("Behaviour")]
+        [Header("Parts")]
         [HideInInspector] public Brain brain;
         public CSController Controller { get => brain.controller; }
 
@@ -141,16 +142,13 @@ namespace Body
             caster = GetComponent<Caster>();
 
             // Connections
-            ConnectAlive();
             ConnectHealth();
-            ConnectControl();
 
             // Initialization
+            InitMovement();
             InitializeCastables();
             InitializeSpawn();
-            SetDisplayable(true);
             SetSpectatable(false);
-            SetControllable(false);
 
             // Statblock connections
             statBlock.Initialize();
@@ -167,13 +165,22 @@ namespace Body
 
             // Value Initialization
             Identity = Identity;
-            //SetAlive(alive, false, false);
 
             MaxHealth = statBlock.MaxHealth;
             CurrentHealth = statBlock.MaxHealth;
 
             armor.max.Value = statBlock.ArmorClass;
             armor.current.Value = statBlock.ArmorClass;
+
+            SetMode(ControlMode.None);
+
+        }
+
+        private void InitMovement()
+        {
+            movement.body = body;
+            movement.pivot = pivot;
+            movement.artRenderer = artRenderer;
         }
 
         private void InitBody()
@@ -190,64 +197,88 @@ namespace Body
         {
             if (spawn != null)
             {
-                spawn.position = body.position;
-                spawn.rotation = body.rotation;
+                spawn.SetPositionAndRotation(body.position, body.rotation);
                 spawn.localScale = body.localScale;
             }
         }
 
+        // Character Mode
 
-        // Respawning, Despawning and Refreshing
-
-        //public void ConnectSpawned()
-        //{
-        //    onAlive.AddListener((bool alive) => { brain.Alive = alive; });
-        //    onAlive.AddListener(DoEnable(movement));
-        //    onAlive.AddListener(DoEnable(caster));
-
-        //    if (artRenderer != null) onAlive.AddListener((bool alive) => { artRenderer.Dead = !alive; });
-        //    if (aliveCollider != null) onAlive.AddListener((bool alive) => { aliveCollider.enabled = alive; });
-        //    if (deadCollider != null) onAlive.AddListener((bool alive) => { deadCollider.enabled = !alive; });
-        //}
-
-public void Refresh()
+        public CharacterMode mode;
+        public bool Controllable
+        { 
+            get => mode.Controllable;
+            set => SetMode(value ? ControlMode.Player : !Controllable ? mode.controlMode : ControlMode.None);
+        }
+        public bool Alive { get => mode.liveMode == LiveMode.Alive; }
+        public void SetMode<T>(T subMode) where T : Enum
         {
-            CurrentHealth = MaxHealth;
-            SetAlive(true);
+            if (settings.TryGetMode(subMode, out var mode))
+                SetMode(mode);
+            else
+                Debug.LogWarning($"Can't find live mode for \"{subMode}\"");
+        }
+        public void SetMode(CharacterMode mode)
+        {
+            if (this.mode.name != mode.name)
+            {
+                movement.SetMoveVector(new());
+                brain.Enabled = mode.controlMode == ControlMode.Brain;
+                movement.canMove = mode.moveMode == MovementMode.Active;
+                movement.applyGravity = mode.moveMode != MovementMode.Disabled;
+                SetNonNullActive(artRenderer, mode.displayable);
+                SetNonNullActive(moveReticle, mode.useMoveReticle);
+                SetNonNullEnabled(interactor, mode.useInteractor);
+                SetNonNullEnabled(caster, mode.useCaster);
+                if (pips != null) pips.SetDisplayMode(mode.pipMode);
+                bool alive = mode.liveMode == LiveMode.Alive;
+                brain.Alive = alive;
+                if (artRenderer != null) artRenderer.Dead = !alive;
+                SetNonNullEnabled(aliveCollider, alive);
+                SetNonNullEnabled(deadCollider, !alive);
+                switch (mode.liveMode)
+                {
+                    case LiveMode.Alive:
+                        {
+                            switch (this.mode.liveMode)
+                            {
+                                case LiveMode.Dead: Refresh(); break;
+                                case LiveMode.Despawned: Respawn(); break;
+                            }
+                            break;
+                        }
+                    case LiveMode.Dead: Die(autoDespawn, autoRespawn); break;
+                    case LiveMode.Despawned: Despawn(); break;
+                }
+                if ((mode.Controllable || this.mode.Controllable) && this.mode.controlMode != mode.controlMode)
+                {
+                    onControl.Invoke(mode.Controllable);
+                }
+                this.mode = mode;
+            }
+        }
+        public void SetNonNullActive(Component component, bool active)
+        {
+            if (component != null)
+                component.gameObject.SetActive(active);
+        }
+        public void SetNonNullEnabled(Behaviour component, bool enabled)
+        {
+            if (component != null)
+                component.enabled = enabled;
+        }
+        public void SetNonNullEnabled(Collider collider, bool enabled)
+        {
+            if (collider != null)
+                collider.enabled = enabled;
         }
 
-        public void Respawn(bool finishCoroutine = false, UnityAction _afterAction=null)
-        {
-            Print($"Respawn {Name}", debug);
-            if (finishCoroutine)
-                autoRespawnCoroutine = null;
-            body.SetPositionAndRotation(spawn.position, spawn.rotation);
-            body.localScale = spawn.localScale;
-            SetDisplayable(true);
-            Refresh();
-            onRespawn.Invoke();
-        }
-
-        public void Despawn(bool finishCoroutine = false, UnityAction afterAction=null)
-        {
-            Print($"Despawn {Name}", true);
-            if (finishCoroutine)
-                autoDespawnCoroutine = null;
-            SetDisplayable(false);
-            afterAction?.Invoke();
-            SetAlive(false);
-            onDespawn.Invoke();
-        }
-
-        // Updates
+        // Status Ticks
 
         private void Update()
         {
             StatusTick();
         }
-
-
-        // Statuses
 
         private void StatusTick()
         {
@@ -258,94 +289,74 @@ public void Refresh()
             }
         }
 
-        // State
-        public void ConnectControl()
-        {
-            if (moveReticle != null) onControl.AddListener(moveReticle.gameObject.SetActive);
-            if (virtualCamera != null) onSpectate.AddListener(virtualCamera.gameObject.SetActive);
-            if (interactor != null) onControl.AddListener(DoEnable(interactor));
-            if (pips != null) onControl.AddListener((bool controllable) => { pips.SetHideMode(controllable ? HideMode.Always : HideMode.Sometimes); });
-        }
-        private UnityAction<bool> DoEnable(Behaviour behaviour, bool disable = false) { return (bool enable) => { behaviour.enabled = enable && !disable; }; }
-
-        public void SetDisplayable(bool _displayable)
-        {
-            artRenderer.gameObject.SetActive(_displayable);
-        }
+        // Controllabe, Spectatable, Displayable
 
         public void SetSpectatable(bool _spectatable)
         {
             onSpectate.Invoke(_spectatable);
         }
 
-        public void SetControllable(bool _controllable)
-        {
-            brain.Enabled = !_controllable;
-            controllable = _controllable;
-            onControl.Invoke(_controllable);
-        }
-
-        public void SetBrainable(bool brainable)
-        {
-            brain.Enabled = brainable;
-            movement.enabled = brainable;
-        }
-
-
-        // Life and Death
-
-        private void ConnectAlive()
-        {
-            print($"Connecting alive for {Name}.");
-
-            onAlive.AddListener((bool alive) => { brain.Alive = alive; });
-            onAlive.AddListener(DoEnable(movement));
-            onAlive.AddListener(DoEnable(caster));
-
-            if (artRenderer != null) onAlive.AddListener((bool alive) => { artRenderer.Dead = !alive; });
-            if (aliveCollider != null) onAlive.AddListener((bool alive) => { aliveCollider.enabled = alive; });
-            if (deadCollider != null) onAlive.AddListener((bool alive) => { deadCollider.enabled = !alive; });
-        }
+        // Life, Death and Spawning
 
         private Coroutine autoRespawnCoroutine;
         private Coroutine autoDespawnCoroutine;
+
+        public void Die(bool autoDespawn, bool autoRespawn)
+        {
+            // Timers
+            void respawnAfterDelay() => autoRespawnCoroutine ??= CallAfterDelay(TriggerRespawn, autoRespawnDelay);
+            if (autoDespawn)
+                autoDespawnCoroutine ??= CallAfterDelay(TriggerDespawn, autoDespawnDelay, respawnAfterDelay);
+            else if (autoRespawn)
+                respawnAfterDelay();
+
+            Emotion = "dead";
+            onDeath.Invoke(this);
+        }
+
+        public void Refresh()
+        {
+            CurrentHealth = MaxHealth;
+            Emotion = "neutral";
+        }
+
+        public void TriggerRespawn(bool finishCoroutine = false, UnityAction afterAction = null)
+        {
+            if (finishCoroutine)
+                autoRespawnCoroutine = null;
+            SetMode(LiveMode.Alive);
+            afterAction?.Invoke();
+        }
+        public void Respawn()
+        {
+            Print($"Respawn {Name}", debug);
+            body.SetPositionAndRotation(spawn.position, spawn.rotation);
+            body.localScale = spawn.localScale;
+            //SetDisplayable(true);
+            Refresh();
+            onRespawn.Invoke();
+        }
+
+        public void TriggerDespawn(bool finishCoroutine = false, UnityAction afterAction = null)
+        {
+            if (finishCoroutine)
+                autoDespawnCoroutine = null;
+            SetMode(LiveMode.Despawned);
+            afterAction?.Invoke();
+        }
+        public void Despawn()
+        {
+            Print($"Despawn {Name}", true);
+            //SetDisplayable(false);
+            onDespawn.Invoke();
+        }
         
-        public void SetAlive(bool alive)
-        {
-            print($"Setting {Name} alive.");
-            SetAlive(alive, autoDespawn, autoRespawn);
-        }
-        public void SetAlive(bool alive, bool autoDespawn, bool autoRespawn)
-        {
-            movement.SetMoveVector(new());
-            bool died = !alive && this.alive;
-            this.alive = alive;
-            onAlive.Invoke(alive);
-            if (died)
-            {
-                void respawnAfterDelay() => autoRespawnCoroutine ??= CallAfterDelay(Respawn, autoRespawnDelay);
-
-                // Timers
-                if (autoDespawn)
-                    autoDespawnCoroutine ??= CallAfterDelay(Despawn, autoDespawnDelay, respawnAfterDelay);
-                else if (autoRespawn)
-                    respawnAfterDelay();
-                
-                // Events
-                Emotion = "dead";
-                onDeath.Invoke(this);
-            }
-            else
-            {
-                Emotion = "neutral";
-            }
-        }
-
-        public Coroutine CallAfterDelay(UnityAction<bool, UnityAction> action, float delay, UnityAction afterAction=null)
+        // Time Helpers
+        public Coroutine CallAfterDelay(UnityAction<bool, UnityAction> action, float delay, UnityAction afterAction = null)
         {
             return StartCoroutine(CallAfterDelayCoroutine(action, delay, afterAction));
         }
-        public IEnumerator CallAfterDelayCoroutine(UnityAction<bool, UnityAction> action, float delay, UnityAction afterAction=null)
+        public IEnumerator CallAfterDelayCoroutine(UnityAction<bool, UnityAction> action, float delay, UnityAction afterAction = null)
         {
             yield return new WaitForSeconds(delay);
             action.Invoke(true, afterAction);
@@ -372,7 +383,7 @@ public void Refresh()
                 artRenderer.Hit();
                 onDmg.Invoke();
             }
-            if (amount <= 0f && alive) SetAlive(false);
+            if (amount <= 0f && alive) SetMode(LiveMode.Dead);
         }
 
         public void SetDamagePosition(Vector3 damagePosition)

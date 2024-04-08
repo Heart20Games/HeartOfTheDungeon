@@ -31,7 +31,7 @@ namespace Body.Behavior
         public bool Alive
         {
             get => controller.Alive;
-            set => controller.Alive=value;
+            set { if (controller != null) controller.Alive = value; }
         }
 
         public Identity Identity

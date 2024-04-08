@@ -27,26 +27,17 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     private bool onGround = false;
 
     private Rigidbody myRigidbody;
-    private Character character;
-    private Transform body;
-    private Transform pivot;
-    private ArtRenderer artRenderer;
+    [HideInInspector] public Character character;
+    public Transform body;
+    [HideInInspector] public Transform pivot;
+    [HideInInspector] public ArtRenderer artRenderer;
 
     public UnityEvent<Vector2> OnSetMoveVector;
 
     private void Awake()
     {
-        if (TryGetComponent(out character))
-        {
-            body = character.body;
-            pivot = character.pivot;
-            artRenderer = character.artRenderer;
-        }
-        if (body == null)
-            body = transform;
-        if (body != null)
-            myRigidbody = body.GetComponent<Rigidbody>();
-
+        if (body == null) body = transform;
+        if (body != null) myRigidbody = body.GetComponent<Rigidbody>();
     }
 
 
@@ -92,7 +83,7 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
                 Vector3 cameraDirection = body.position - Camera.main.transform.position;
 
                 float modifier = 1f;
-                if (character != null && character.controllable)
+                if (character != null && character.Controllable)
                 {
                     Vector3 direction = moveVector.Orient(cameraDirection).FullY();
                     Debug.DrawRay(body.position, direction * 3, Color.green, Time.fixedDeltaTime);
