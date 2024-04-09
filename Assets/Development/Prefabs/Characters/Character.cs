@@ -43,14 +43,14 @@ namespace Body
         public bool alive = false;
         [Space]
         public UnityEvent<bool> onControl;
-        public UnityEvent<bool> onSpectate;
 
         // Appearance
         [Foldout("Parts", true)]
         [Header("Appearance")]
         public ArtRenderer artRenderer;
         public VFXEventController vfxController;
-        public CinemachineVirtualCamera virtualCamera;
+        public CinemachineVirtualCamera orbitalCamera;
+        public CinemachineVirtualCamera aimCamera;
         public CharacterBlock statBlock;
 
         // Collision
@@ -294,7 +294,23 @@ namespace Body
 
         public void SetSpectatable(bool _spectatable)
         {
-            onSpectate.Invoke(_spectatable);
+            if (!_spectatable)
+            {
+                orbitalCamera.gameObject.SetActive(false);
+                aimCamera.gameObject.SetActive(false);
+            }
+            else if (castableItems?.Length > 0)
+            {
+                CastableItem item = castableItems[(int)Loadout.Slot.Weapon1];
+                Assert.IsNotNull(item);
+                orbitalCamera.gameObject.SetActive(item.targetingMethod != TargetingMethod.AimBased);
+                aimCamera.gameObject.SetActive(item.targetingMethod == TargetingMethod.AimBased);
+            }
+            else
+            {
+                aimCamera.gameObject.SetActive(false);
+                orbitalCamera.gameObject.SetActive(true);
+            }
         }
 
         // Life, Death and Spawning
@@ -427,19 +443,20 @@ namespace Body
 
         // Castables
 
-        public readonly CastableItem[] castableItems = new CastableItem[5];
-        public readonly Castable[] castables = new Castable[5];
+        [Foldout("Casting", true)]
+        [ReadOnly] public CastableItem[] castableItems = new CastableItem[5];
+        [Foldout("Casting")][ReadOnly] public Castable[] castables = new Castable[5];
         public void InitializeCastables()
         {
             if (Loadout != null)
             {
-                for (int i = 0; i < Mathf.Min(Loadout.abilities.Count, 2); i++)
-                {
-                    SetCastable(i, Loadout.abilities[i]);
-                }
                 for (int i = 0; i < Mathf.Min(Loadout.weapons.Count, 2); i++)
                 {
-                    SetCastable(2 + i, Loadout.weapons[i]);
+                    SetCastable(i, Loadout.weapons[i]);
+                }
+                for (int i = 0; i < Mathf.Min(Loadout.abilities.Count, 2); i++)
+                {
+                    SetCastable(2 + i, Loadout.abilities[i]);
                 }
                 SetCastable(4, Loadout.mobility);
             }
@@ -488,14 +505,14 @@ namespace Body
             else castable?.Release();
         }
 
-        public void SetAimModeActive(bool active)
-        {
-            if (virtualCamera.TryGetComponent(out CinemachineInputProvider cip))
-            {
-                cip.enabled = !active;
-            }
-            aimActive = active;
-        }
+        //public void SetAimModeActive(bool active)
+        //{
+        //    if (virtualCamera.TryGetComponent(out CinemachineInputProvider cip))
+        //    {
+        //        cip.enabled = !active;
+        //    }
+        //    aimActive = active;
+        //}
 
 
         // Actions
@@ -504,7 +521,7 @@ namespace Body
         public void TriggerCastable(int idx) { TriggerCastable(castables[idx]); }
         public void ReleaseCastable(int idx) { ReleaseCastable(castables[idx]); }
         public void Interact() { talker.Talk(); }
-        public void AimMode(bool active) { SetAimModeActive(active); }
+        //public void AimMode(bool active) { SetAimModeActive(active); }
 
 
         // Debugging

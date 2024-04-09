@@ -5,6 +5,7 @@ using Selection;
 using System.Collections;
 using MyBox;
 using HotD.PostProcessing;
+using HotD.Castables;
 
 namespace HotD
 {
@@ -82,11 +83,10 @@ namespace HotD
 
         // Aiming
         public void OnAim(InputValue inputValue) { if (CurCharacter != null) CurCharacter.Aim(inputValue.Get<Vector2>()); }
-        public void OnToggleAiming(InputValue inputValue) { if (CurCharacter != null) CurCharacter.SetAimModeActive(inputValue.isPressed); }
+        //public void OnToggleAiming(InputValue inputValue) { if (CurCharacter != null) CurCharacter.SetAimModeActive(inputValue.isPressed); }
 
         // Castables
-        public enum CastableIdx { Ability1, Ability2, Weapon1, Weapon2, Agility }
-        public void UseCastable(InputValue inputValue, CastableIdx idx)
+        public void UseCastable(InputValue inputValue, Loadout.Slot idx)
         {
             if (CurCharacter != null)
             {
@@ -96,11 +96,11 @@ namespace HotD
                 );
             }
         }
-        public void OnUseAgility(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Agility); }
-        public void OnUseWeapon1(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Weapon1); }
-        public void OnUseWeapon2(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Weapon2); }
-        public void OnUseAbility1(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Ability1); }
-        public void OnUseAbility2(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Ability2); }
+        public void OnUseAgility(InputValue inputValue) { UseCastable(inputValue, Loadout.Slot.Mobility); }
+        public void OnUseWeapon1(InputValue inputValue) { UseCastable(inputValue, Loadout.Slot.Weapon1); }
+        public void OnUseWeapon2(InputValue inputValue) { UseCastable(inputValue, Loadout.Slot.Weapon2); }
+        public void OnUseAbility1(InputValue inputValue) { UseCastable(inputValue, Loadout.Slot.Ability1); }
+        public void OnUseAbility2(InputValue inputValue) { UseCastable(inputValue, Loadout.Slot.Ability2); }
 
         // Character Switching
         public void SwitchCharacterInput(InputValue inputValue, int idx) { IsPressed(inputValue, () => { game.SwitchToCompanion(idx); }); }
