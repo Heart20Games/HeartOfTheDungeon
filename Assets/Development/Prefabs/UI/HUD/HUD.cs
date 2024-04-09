@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Body;
+using HotD.Castables;
 
 public class HUD : BaseMonoBehaviour
 {
@@ -9,6 +10,7 @@ public class HUD : BaseMonoBehaviour
     public AbilityMenu abilityMenu;
     public PartySelectPanel partySelectPanel;
     public TargetStatusDisplay targetCharacterPanel;
+    public Transform crosshair;
     private GameObject mainCamera;
     private Canvas hudCanvas;
 
@@ -35,6 +37,9 @@ public class HUD : BaseMonoBehaviour
 
     private void Awake()
     {
+        if (crosshair != null)
+            crosshair.gameObject.SetActive(false);
+
         if (targetCharacterPanel != null)
             SetTarget(null);
 
@@ -95,6 +100,15 @@ public class HUD : BaseMonoBehaviour
             mainCharacter = character;
             if (mainStatusPanel != null)
                 mainStatusPanel.ConnectCharacter(character);
+
+            character.PrimaryTargetingMethod(out var method);
+            if (crosshair != null)
+                crosshair.gameObject.SetActive(method == TargetingMethod.AimBased);
+        }
+        else
+        {
+            if (crosshair != null)
+                crosshair.gameObject.SetActive(false);
         }
     }
 }

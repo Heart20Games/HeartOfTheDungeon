@@ -299,12 +299,10 @@ namespace Body
                 orbitalCamera.gameObject.SetActive(false);
                 aimCamera.gameObject.SetActive(false);
             }
-            else if (castableItems?.Length > 0)
+            else if (PrimaryTargetingMethod(out var method))
             {
-                CastableItem item = castableItems[(int)Loadout.Slot.Weapon1];
-                Assert.IsNotNull(item);
-                orbitalCamera.gameObject.SetActive(item.targetingMethod != TargetingMethod.AimBased);
-                aimCamera.gameObject.SetActive(item.targetingMethod == TargetingMethod.AimBased);
+                orbitalCamera.gameObject.SetActive(method != TargetingMethod.AimBased);
+                aimCamera.gameObject.SetActive(method == TargetingMethod.AimBased);
             }
             else
             {
@@ -462,6 +460,22 @@ namespace Body
             }
             if (brain != null)
                 brain.RegisterCastables(castableItems);
+        }
+
+        public bool PrimaryTargetingMethod(out TargetingMethod method)
+        {
+            if (castableItems?.Length > 0)
+            {
+                CastableItem item = castableItems[(int)Loadout.Slot.Weapon1];
+                Assert.IsNotNull(item);
+                method = item.targetingMethod;
+                return true;
+            }
+            else
+            {
+                method = TargetingMethod.DirectionBased;
+                return false;
+            }
         }
 
         public void SetCastable(int idx, CastableItem item)
