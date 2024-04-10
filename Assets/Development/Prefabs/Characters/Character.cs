@@ -532,8 +532,8 @@ namespace Body
         // Actions
         public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); caster.SetFallback(movement.moveVector.FullY(), true); }
         public void Aim(Vector2 input, bool aim=false) { if (aimActive || aim) caster.SetVector(input.FullY()); }
-        public void TriggerCastable(int idx) { TriggerCastable(castables[idx]); }
-        public void ReleaseCastable(int idx) { ReleaseCastable(castables[idx]); }
+        public void TriggerCastable(int idx) { if (castables[idx] != null) TriggerCastable(castables[idx]); }
+        public void ReleaseCastable(int idx) { if (castables[idx] != null) ReleaseCastable(castables[idx]); }
         public void Interact() { talker.Talk(); }
         //public void AimMode(bool active) { SetAimModeActive(active); }
 

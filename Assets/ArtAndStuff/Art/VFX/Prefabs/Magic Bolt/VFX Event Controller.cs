@@ -7,7 +7,7 @@ using UnityEngine.VFX;
 using UnityEngine.VFX.Utility;
 
 
-public class VFXEventController : MonoBehaviour
+public class VFXEventController : BaseMonoBehaviour
 {
 
     [SerializeField] private Animator animator;
@@ -123,7 +123,6 @@ public class VFXEventController : MonoBehaviour
         {
             effects.Add(vfx);
             vfx.gameObject.SetActive(false);
-            vfx.animator.enabled = false;
             vfx.VisualsEnabled = false;
             vfx.onSetPowerLimit.AddListener(SetCastLevel);
             vfx.onTrigger.AddListener(TriggerAnimations);
@@ -144,7 +143,7 @@ public class VFXEventController : MonoBehaviour
     {
         foreach (var effect in effects)
         {
-            if (effect.equipped)
+            if (effect.animator != null && effect.equipped)
                 effect.animator.SetTrigger(property);
         }
     }
@@ -154,7 +153,6 @@ public class VFXEventController : MonoBehaviour
         foreach (var effect in effects)
         {
             effect.gameObject.SetActive(enabled && effect.equipped);
-            effect.animator.enabled = enabled && effect.equipped;
             effect.VisualsEnabled = enabled && effect.equipped;
         }
     }

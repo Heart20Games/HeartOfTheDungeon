@@ -3,7 +3,7 @@ using static Body.Behavior.ContextSteering.CSContext;
 
 namespace HotD.Castables
 {
-    public enum TargetingMethod { TargetBased, LocationBased, DirectionBased, AimBased }
+    public enum TargetingMethod { None, TargetBased, LocationBased, DirectionBased, AimBased }
 
     [CreateAssetMenu(fileName = "NewCastableItem", menuName = "Loadouts/CastableItem", order = 1)]
     public class CastableItem : ScriptableObject
