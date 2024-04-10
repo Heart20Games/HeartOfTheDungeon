@@ -12,6 +12,7 @@ namespace HotD.Castables
         private Transform pivot;
         [SerializeField] private Transform weaponLocation;
         [SerializeField] private Transform firingLocation;
+        [SerializeField] private Crosshair crosshair;
         public ICastable castable;
         private Vector3 weapRotation = Vector3.forward;
         [SerializeField] private bool debug;
@@ -32,6 +33,7 @@ namespace HotD.Castables
 
         private void Awake()
         {
+            crosshair = FindObjectOfType<Crosshair>();
             if (TryGetComponent(out character))
             {
                 artRenderer = character.artRenderer;
@@ -53,7 +55,12 @@ namespace HotD.Castables
         public void AimCaster()
         {
             Transform camera = Camera.main.transform;
-            Ray ray = new(camera.position, camera.forward);
+            Vector3 direction = camera.forward;
+            if (crosshair != null)
+            {
+                direction = crosshair.transform.position - camera.position;
+            }
+            Ray ray = new(camera.position, direction);
             if (Physics.Raycast(ray, out RaycastHit hitInfo, 1000, ~0, QueryTriggerInteraction.Ignore))
             {
                 targetOverride = hitInfo.point - firingLocation.position;
