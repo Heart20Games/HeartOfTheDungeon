@@ -10,7 +10,7 @@ namespace HotD.Castables
         private Character character;
         private ArtRenderer artRenderer;
         private Transform pivot;
-        public ICastable Castable;
+        public ICastable castable;
         private Vector3 weapRotation = Vector3.forward;
         [SerializeField] private bool debug;
 
@@ -26,7 +26,7 @@ namespace HotD.Castables
         [ReadOnly] public Vector3 finalDirection = new();
         public Vector3 rotationOffset = new();
         public UnityEvent<Vector3> OnSetCastVector;
-        [ReadOnly][SerializeField] private Transform target;
+        [ReadOnly] public Transform target;
 
         private void Awake()
         {
@@ -112,7 +112,7 @@ namespace HotD.Castables
         {
             appliedVector = castVector;
             castDirection = castVector.normalized;
-            if (Castable != null && Castable.CanCast())
+            if (castable != null && castable.CanCast())
             {
                 float pMag = Mathf.Abs(pivot.localScale.x);
                 float sign = castVector.x < 0 ? -1 : 1;
@@ -123,13 +123,13 @@ namespace HotD.Castables
                 weapRotation = castDirection; // Vector3.right * -castVector.x + Vector3.up * -castVector.y + Vector3.forward * -castVector.z;
 
                 if (artRenderer != null)
-                    artRenderer.Cast(Castable.GetItem() == null ? 0 : Castable.GetItem().attackIdx);
+                    artRenderer.Cast(castable.GetItem() == null ? 0 : castable.GetItem().attackIdx);
 
                 if (weapRotation != lastDirection)
                     lastDirection = weapRotation;
 
                 finalDirection = weapRotation;
-                Castable.Direction = weapRotation; // uses last rotation if not moving.
+                castable.Direction = weapRotation; // uses last rotation if not moving.
             }
         }
 
@@ -137,8 +137,8 @@ namespace HotD.Castables
         public void Trigger()
         {
             ApplyCastVector();
-            Castable?.Equip();
-            Castable?.Trigger();
+            castable?.Equip();
+            castable?.Trigger();
         }
         public void Trigger(Vector2 aimVector)
         {
@@ -150,7 +150,7 @@ namespace HotD.Castables
         public void Release()
         {
             ApplyCastVector();
-            Castable?.Release();
+            castable?.Release();
         }
     }
 }

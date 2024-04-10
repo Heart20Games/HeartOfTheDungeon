@@ -521,20 +521,52 @@ namespace Body
             }
         }
 
+        public void AimCaster()
+        {
+            Transform camera = Camera.main.transform;
+            Ray ray = new(camera.position, camera.forward);
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, 1000, ~0, QueryTriggerInteraction.Ignore))
+            {
+                caster.targetOverride = hitInfo.point - firingLocation.position;
+            }
+            else
+            {
+                Vector3 point = camera.position + (camera.forward * 1000);
+                caster.targetOverride = point - firingLocation.position;
+            }
+            caster.UpdateVector();
+        }
+
+        public void UnAimCaster()
+        {
+            caster.SetTarget(caster.target);
+            caster.UpdateVector();
+        }
+
         public void TriggerCastable(ICastable castable)
         {
             if (caster != null && caster.enabled)
             {
-                caster.Castable = castable;
+                TargetingMethod method = castable.GetItem().targetingMethod;
+                if (method == TargetingMethod.AimBased)
+                    AimCaster();
+                caster.castable = castable;
                 caster.Trigger();
+                if (method == TargetingMethod.AimBased)
+                    UnAimCaster();
             }
         }
 
         public void ReleaseCastable(ICastable castable)
         {
-            if (caster != null && caster.enabled && caster.Castable == castable)
+            if (caster != null && caster.enabled && caster.castable == castable)
             {
+                TargetingMethod method = castable.GetItem().targetingMethod;
+                if (method == TargetingMethod.AimBased)
+                    AimCaster();
                 caster.Release();
+                if (method == TargetingMethod.AimBased)
+                    UnAimCaster();
             }
             else castable?.Release();
         }
