@@ -486,7 +486,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""type"": ""PassThrough"",
                     ""id"": ""a2fe85a6-d37c-45b4-ae4d-135093600209"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": ""ScaleVector2(x=0.0625,y=0.0625),NormalizeVector2"",
+                    ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
@@ -614,6 +614,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FlipCamera"",
+                    ""type"": ""Button"",
+                    ""id"": ""1413b34c-dc37-4142-886f-f6e9f2850bed"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 }
             ],
@@ -755,7 +764,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""5e528783-b6b7-429f-8f51-6ecf431f6aaf"",
                     ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""ScaleVector2(x=0.5,y=0.5)"",
                     ""groups"": """",
                     ""action"": ""Look"",
                     ""isComposite"": true,
@@ -810,7 +819,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""ee15e431-15bc-4584-b858-68b8403211cb"",
                     ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
-                    ""processors"": ""NormalizeVector2,StickDeadzone"",
+                    ""processors"": ""ScaleVector2(x=0.125,y=0.125),StickDeadzone(min=0.25),ScaleVector2"",
                     ""groups"": """",
                     ""action"": ""Look"",
                     ""isComposite"": true,
@@ -1171,7 +1180,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""9a87fc62-2b98-41ae-bcd2-3d6a73dd9426"",
-                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1253,6 +1262,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Control Sheet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""351dadd5-9634-403d-8f7a-87fa9b4fafc8"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FlipCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0fd0e8e3-b8ef-4f14-8d63-00e6e29cf34a"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FlipCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2669,7 +2700,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""be29c964-0d26-4dbe-96f5-f6ea38f37e98"",
-                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -2932,6 +2963,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Character_ControlSheet = m_Character.FindAction("Control Sheet", throwIfNotFound: true);
         m_Character_PauseScreen = m_Character.FindAction("Pause Screen", throwIfNotFound: true);
         m_Character_CharacterSheet = m_Character.FindAction("Character Sheet", throwIfNotFound: true);
+        m_Character_FlipCamera = m_Character.FindAction("FlipCamera", throwIfNotFound: true);
         // Spectate
         m_Spectate = asset.FindActionMap("Spectate", throwIfNotFound: true);
         m_Spectate_Look = m_Spectate.FindAction("Look", throwIfNotFound: true);
@@ -3219,6 +3251,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_ControlSheet;
     private readonly InputAction m_Character_PauseScreen;
     private readonly InputAction m_Character_CharacterSheet;
+    private readonly InputAction m_Character_FlipCamera;
     public struct CharacterActions
     {
         private @PlayerControls m_Wrapper;
@@ -3240,6 +3273,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @ControlSheet => m_Wrapper.m_Character_ControlSheet;
         public InputAction @PauseScreen => m_Wrapper.m_Character_PauseScreen;
         public InputAction @CharacterSheet => m_Wrapper.m_Character_CharacterSheet;
+        public InputAction @FlipCamera => m_Wrapper.m_Character_FlipCamera;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -3300,6 +3334,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @CharacterSheet.started += instance.OnCharacterSheet;
             @CharacterSheet.performed += instance.OnCharacterSheet;
             @CharacterSheet.canceled += instance.OnCharacterSheet;
+            @FlipCamera.started += instance.OnFlipCamera;
+            @FlipCamera.performed += instance.OnFlipCamera;
+            @FlipCamera.canceled += instance.OnFlipCamera;
         }
 
         private void UnregisterCallbacks(ICharacterActions instance)
@@ -3355,6 +3392,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @CharacterSheet.started -= instance.OnCharacterSheet;
             @CharacterSheet.performed -= instance.OnCharacterSheet;
             @CharacterSheet.canceled -= instance.OnCharacterSheet;
+            @FlipCamera.started -= instance.OnFlipCamera;
+            @FlipCamera.performed -= instance.OnFlipCamera;
+            @FlipCamera.canceled -= instance.OnFlipCamera;
         }
 
         public void RemoveCallbacks(ICharacterActions instance)
@@ -3963,6 +4003,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnControlSheet(InputAction.CallbackContext context);
         void OnPauseScreen(InputAction.CallbackContext context);
         void OnCharacterSheet(InputAction.CallbackContext context);
+        void OnFlipCamera(InputAction.CallbackContext context);
     }
     public interface ISpectateActions
     {

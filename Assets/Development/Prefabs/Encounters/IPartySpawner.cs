@@ -5,5 +5,6 @@ using UnityEngine.Events;
 
 public interface IPartySpawner
 {
-    public void RegisterPartyReceiver(UnityAction<ASelectable> action);
+    public void RegisterPartyAdder(UnityAction<ASelectable> action);
+    public void RegisterPartyRemover(UnityAction<ASelectable> action);
 }

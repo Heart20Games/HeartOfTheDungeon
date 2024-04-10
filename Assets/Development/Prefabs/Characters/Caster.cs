@@ -10,7 +10,10 @@ namespace HotD.Castables
         private Character character;
         private ArtRenderer artRenderer;
         private Transform pivot;
-        public ICastable Castable;
+        [SerializeField] private Transform weaponLocation;
+        [SerializeField] private Transform firingLocation;
+        [SerializeField] private Crosshair crosshair;
+        public ICastable castable;
         private Vector3 weapRotation = Vector3.forward;
         [SerializeField] private bool debug;
 
@@ -26,18 +29,82 @@ namespace HotD.Castables
         [ReadOnly] public Vector3 finalDirection = new();
         public Vector3 rotationOffset = new();
         public UnityEvent<Vector3> OnSetCastVector;
-        [ReadOnly][SerializeField] private Transform target;
+        [ReadOnly] public Transform target;
 
         private void Awake()
         {
-            character = GetComponent<Character>();
-            artRenderer = character.artRenderer;
-            pivot = character.pivot;
+            crosshair = FindObjectOfType<Crosshair>();
+            if (TryGetComponent(out character))
+            {
+                artRenderer = character.artRenderer;
+                pivot = character.pivot;
+                if (weaponLocation == null)
+                    weaponLocation = character.weaponLocation;
+                if (firingLocation == null)
+                    firingLocation = character.firingLocation;
+            }
         }
 
         private void FixedUpdate()
         {
             SetTarget(target);
+        }
+
+        // Triggering the Castable
+
+        public void AimCaster()
+        {
+            Transform camera = Camera.main.transform;
+            Vector3 direction = camera.forward;
+            if (crosshair != null)
+            {
+                direction = crosshair.transform.position - camera.position;
+            }
+            Ray ray = new(camera.position, direction);
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, 1000, ~0, QueryTriggerInteraction.Ignore))
+            {
+                targetOverride = hitInfo.point - firingLocation.position;
+            }
+            else
+            {
+                Vector3 point = camera.position + (camera.forward * 1000);
+                targetOverride = point - firingLocation.position;
+            }
+            UpdateVector();
+        }
+
+        public void UnAimCaster()
+        {
+            SetTarget(target);
+            UpdateVector();
+        }
+
+        public void TriggerCastable(ICastable castable)
+        {
+            if (enabled)
+            {
+                TargetingMethod method = castable.GetItem().targetingMethod;
+                if (method == TargetingMethod.AimBased)
+                    AimCaster();
+                this.castable = castable;
+                Trigger();
+                if (method == TargetingMethod.AimBased)
+                    UnAimCaster();
+            }
+        }
+
+        public void ReleaseCastable(ICastable castable)
+        {
+            if (enabled && this.castable == castable)
+            {
+                TargetingMethod method = castable.GetItem().targetingMethod;
+                if (method == TargetingMethod.AimBased)
+                    AimCaster();
+                Release();
+                if (method == TargetingMethod.AimBased)
+                    UnAimCaster();
+            }
+            else castable?.Release();
         }
 
         // Target
@@ -91,7 +158,7 @@ namespace HotD.Castables
         // Camera Orientation
         public Vector3 OrientAimVector(Vector3 vector)
         {
-            if (character.controllable) return OrientToCamera(character.body, vector);
+            if (character.Controllable) return OrientToCamera(character.body, vector);
             else return vector;
         }
 
@@ -112,7 +179,7 @@ namespace HotD.Castables
         {
             appliedVector = castVector;
             castDirection = castVector.normalized;
-            if (Castable != null && Castable.CanCast())
+            if (castable != null && castable.CanCast())
             {
                 float pMag = Mathf.Abs(pivot.localScale.x);
                 float sign = castVector.x < 0 ? -1 : 1;
@@ -123,13 +190,13 @@ namespace HotD.Castables
                 weapRotation = castDirection; // Vector3.right * -castVector.x + Vector3.up * -castVector.y + Vector3.forward * -castVector.z;
 
                 if (artRenderer != null)
-                    artRenderer.Cast(Castable.GetItem() == null ? 0 : Castable.GetItem().attackIdx);
+                    artRenderer.Cast(castable.GetItem() == null ? 0 : castable.GetItem().attackIdx);
 
                 if (weapRotation != lastDirection)
                     lastDirection = weapRotation;
 
                 finalDirection = weapRotation;
-                Castable.Direction = weapRotation; // uses last rotation if not moving.
+                castable.Direction = weapRotation; // uses last rotation if not moving.
             }
         }
 
@@ -137,8 +204,8 @@ namespace HotD.Castables
         public void Trigger()
         {
             ApplyCastVector();
-            Castable?.Equip();
-            Castable?.Trigger();
+            castable?.Equip();
+            castable?.Trigger();
         }
         public void Trigger(Vector2 aimVector)
         {
@@ -150,7 +217,7 @@ namespace HotD.Castables
         public void Release()
         {
             ApplyCastVector();
-            Castable?.Release();
+            castable?.Release();
         }
     }
 }
