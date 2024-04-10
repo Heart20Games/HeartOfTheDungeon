@@ -10,6 +10,8 @@ namespace HotD.Castables
         private Character character;
         private ArtRenderer artRenderer;
         private Transform pivot;
+        [SerializeField] private Transform weaponLocation;
+        [SerializeField] private Transform firingLocation;
         public ICastable castable;
         private Vector3 weapRotation = Vector3.forward;
         [SerializeField] private bool debug;
@@ -30,14 +32,72 @@ namespace HotD.Castables
 
         private void Awake()
         {
-            character = GetComponent<Character>();
-            artRenderer = character.artRenderer;
-            pivot = character.pivot;
+            if (TryGetComponent(out character))
+            {
+                artRenderer = character.artRenderer;
+                pivot = character.pivot;
+                if (weaponLocation == null)
+                    weaponLocation = character.weaponLocation;
+                if (firingLocation == null)
+                    firingLocation = character.firingLocation;
+            }
         }
 
         private void FixedUpdate()
         {
             SetTarget(target);
+        }
+
+        // Triggering the Castable
+
+        public void AimCaster()
+        {
+            Transform camera = Camera.main.transform;
+            Ray ray = new(camera.position, camera.forward);
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, 1000, ~0, QueryTriggerInteraction.Ignore))
+            {
+                targetOverride = hitInfo.point - firingLocation.position;
+            }
+            else
+            {
+                Vector3 point = camera.position + (camera.forward * 1000);
+                targetOverride = point - firingLocation.position;
+            }
+            UpdateVector();
+        }
+
+        public void UnAimCaster()
+        {
+            SetTarget(target);
+            UpdateVector();
+        }
+
+        public void TriggerCastable(ICastable castable)
+        {
+            if (enabled)
+            {
+                TargetingMethod method = castable.GetItem().targetingMethod;
+                if (method == TargetingMethod.AimBased)
+                    AimCaster();
+                this.castable = castable;
+                Trigger();
+                if (method == TargetingMethod.AimBased)
+                    UnAimCaster();
+            }
+        }
+
+        public void ReleaseCastable(ICastable castable)
+        {
+            if (enabled && this.castable == castable)
+            {
+                TargetingMethod method = castable.GetItem().targetingMethod;
+                if (method == TargetingMethod.AimBased)
+                    AimCaster();
+                Release();
+                if (method == TargetingMethod.AimBased)
+                    UnAimCaster();
+            }
+            else castable?.Release();
         }
 
         // Target

@@ -131,8 +131,8 @@ namespace Body
         // Actions
         public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); caster.SetFallback(movement.moveVector.FullY(), true); }
         public void Aim(Vector2 input, bool aim = false) { if (aimActive || aim) caster.SetVector(input.FullY()); }
-        public void TriggerCastable(int idx) { if (castables[idx] != null) TriggerCastable(castables[idx]); }
-        public void ReleaseCastable(int idx) { if (castables[idx] != null) ReleaseCastable(castables[idx]); }
+        public void TriggerCastable(int idx) { if (castables[idx] != null) caster.TriggerCastable(castables[idx]); }
+        public void ReleaseCastable(int idx) { if (castables[idx] != null) caster.ReleaseCastable(castables[idx]); }
         public void Interact() { talker.Talk(); }
         public void FlipCamera() { if (cameraPivot != null) cameraPivot.FlipOverX(); }
 
@@ -519,56 +519,6 @@ namespace Body
                     item.Equip(statBlock);
                 }
             }
-        }
-
-        public void AimCaster()
-        {
-            Transform camera = Camera.main.transform;
-            Ray ray = new(camera.position, camera.forward);
-            if (Physics.Raycast(ray, out RaycastHit hitInfo, 1000, ~0, QueryTriggerInteraction.Ignore))
-            {
-                caster.targetOverride = hitInfo.point - firingLocation.position;
-            }
-            else
-            {
-                Vector3 point = camera.position + (camera.forward * 1000);
-                caster.targetOverride = point - firingLocation.position;
-            }
-            caster.UpdateVector();
-        }
-
-        public void UnAimCaster()
-        {
-            caster.SetTarget(caster.target);
-            caster.UpdateVector();
-        }
-
-        public void TriggerCastable(ICastable castable)
-        {
-            if (caster != null && caster.enabled)
-            {
-                TargetingMethod method = castable.GetItem().targetingMethod;
-                if (method == TargetingMethod.AimBased)
-                    AimCaster();
-                caster.castable = castable;
-                caster.Trigger();
-                if (method == TargetingMethod.AimBased)
-                    UnAimCaster();
-            }
-        }
-
-        public void ReleaseCastable(ICastable castable)
-        {
-            if (caster != null && caster.enabled && caster.castable == castable)
-            {
-                TargetingMethod method = castable.GetItem().targetingMethod;
-                if (method == TargetingMethod.AimBased)
-                    AimCaster();
-                caster.Release();
-                if (method == TargetingMethod.AimBased)
-                    UnAimCaster();
-            }
-            else castable?.Release();
         }
 
         //public void SetAimModeActive(bool active)
