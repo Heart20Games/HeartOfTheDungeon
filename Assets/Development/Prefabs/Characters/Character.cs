@@ -25,6 +25,9 @@ namespace Body
     [RequireComponent(typeof(Caster))]
     public class Character : AIdentifiable, IDamageable, IControllable
     {
+        [Foldout("Identity")]
+        public CharacterBlock statBlock;
+
         // Movement and Positioning
         [Foldout("Parts", true)]
         [Header("Movement and Positioning")]
@@ -45,13 +48,13 @@ namespace Body
         public UnityEvent<bool> onControl;
 
         // Appearance
-        [Foldout("Parts", true)]
+        [Foldout("Appearance", true)]
         [Header("Appearance")]
         public ArtRenderer artRenderer;
         public VFXEventController vfxController;
+        public LookAtCamera cameraPivot;
         public CinemachineVirtualCamera orbitalCamera;
         public CinemachineVirtualCamera aimCamera;
-        public CharacterBlock statBlock;
 
         // Collision
         [Foldout("Parts", true)]
@@ -125,6 +128,15 @@ namespace Body
 
         public bool debug = false;
 
+        // Actions
+        public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); caster.SetFallback(movement.moveVector.FullY(), true); }
+        public void Aim(Vector2 input, bool aim = false) { if (aimActive || aim) caster.SetVector(input.FullY()); }
+        public void TriggerCastable(int idx) { if (castables[idx] != null) TriggerCastable(castables[idx]); }
+        public void ReleaseCastable(int idx) { if (castables[idx] != null) ReleaseCastable(castables[idx]); }
+        public void Interact() { talker.Talk(); }
+        public void FlipCamera() { if (cameraPivot != null) cameraPivot.FlipOverX(); }
+
+        // Initialization
         public override void Awake()
         {
             base.Awake();
@@ -535,15 +547,6 @@ namespace Body
         //    }
         //    aimActive = active;
         //}
-
-
-        // Actions
-        public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); caster.SetFallback(movement.moveVector.FullY(), true); }
-        public void Aim(Vector2 input, bool aim=false) { if (aimActive || aim) caster.SetVector(input.FullY()); }
-        public void TriggerCastable(int idx) { if (castables[idx] != null) TriggerCastable(castables[idx]); }
-        public void ReleaseCastable(int idx) { if (castables[idx] != null) ReleaseCastable(castables[idx]); }
-        public void Interact() { talker.Talk(); }
-        //public void AimMode(bool active) { SetAimModeActive(active); }
 
 
         // Debugging
