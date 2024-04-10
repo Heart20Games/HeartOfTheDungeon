@@ -467,9 +467,17 @@ namespace Body
             if (castableItems?.Length > 0)
             {
                 CastableItem item = castableItems[(int)Loadout.Slot.Weapon1];
-                Assert.IsNotNull(item);
-                method = item.targetingMethod;
-                return true;
+                Awarn.IsNotNull(item, $"Weapon 1 Slot on {Name} is null.");
+                if (item != null)
+                {
+                    method = item.targetingMethod;
+                    return true;
+                }
+                else
+                {
+                    method = TargetingMethod.DirectionBased;
+                    return false;
+                }
             }
             else
             {
