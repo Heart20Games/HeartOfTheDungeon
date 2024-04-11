@@ -202,14 +202,14 @@ namespace UIPips
 
         public void UnHide()
         {
-            if (generator.hideMode != HideMode.Always)
+            if (generator.displayMode != DisplayMode.Off)
             {
                 // UnHide all the Pips
                 foreach (var pip in pips)
                     pip.gameObject.SetActive(true);
                 
                 // Handle the Hide Delay
-                if (generator.hideMode != HideMode.Never)
+                if (generator.displayMode != DisplayMode.On)
                     StartHideDelay();
                 else 
                     StopHideDelay();

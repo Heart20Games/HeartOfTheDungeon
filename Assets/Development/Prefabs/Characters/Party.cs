@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
+using static HotD.CharacterModes;
 
 public class Party : BaseMonoBehaviour
 {
@@ -133,8 +134,7 @@ public class Party : BaseMonoBehaviour
     {
         foreach (Character character in members)
         {
-            character.SetAlive(false, false, false);
-            character.Despawn();
+            character.SetMode(LiveMode.Despawned);
         }
     }
 
@@ -230,7 +230,7 @@ public class Party : BaseMonoBehaviour
             {
                 foreach (var character in members)
                 {
-                    if (!character.controllable)
+                    if (!character.Controllable)
                         Leader = character;
                 }
             }

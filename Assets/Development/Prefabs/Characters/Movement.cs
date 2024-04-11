@@ -2,51 +2,49 @@ using UnityEngine;
 using UnityEngine.Events;
 using Body;
 using UnityEngine.Assertions;
+using MyBox;
 
 public class Movement : BaseMonoBehaviour, ITimeScalable
 {
-    [Header("Physics")]
-    public float speed = 700f;
-    public float maxVelocity = 10f;
-    public float footstepVelocity = 1f;
-    public float moveDrag = 0.5f;
-    public float stopDrag = 7.5f;
-    public bool canMove = true;
+    [Header("Settings")]
+    public MovementSettings settings;
     public bool applyGravity = true;
-    public float normalForce = 0.1f;
-    public float gravityForce = 1f;
-    public float groundDistance = 0.01f;
+    public bool canMove = true;
+    public bool debug;
+    public float Speed { get => settings.speed; }
+    public float MaxVelocity { get => settings.maxVelocity; }
+    public float FootstepVelocity { get => settings.footstepVelocity; }
+    public float MoveDrag { get => settings.moveDrag; }
+    public float StopDrag { get => settings.stopDrag; }
+    public float NormalForce { get => settings.normalForce; }
+    public float GravityForce { get => settings.gravityForce; }
+    public float GroundDistance { get => settings.groundDistance; }
 
     [Header("Scale")]
     public float npcModifier = 0.5f;
     private float timeScale = 1f;
     public float TimeScale { get => timeScale; set => timeScale=SetTimeScale(value); }
 
-    [Header("Vectors")]
+    [Foldout("Mechanics", true)]
     [SerializeField] public Vector2 moveVector = new(0,0);
     private bool onGround = false;
 
     private Rigidbody myRigidbody;
-    private Character character;
-    private Transform body;
-    private Transform pivot;
-    private ArtRenderer artRenderer;
+    [HideInInspector] public Character character;
+    public Transform body;
+    [HideInInspector] public Transform pivot;
+    [HideInInspector] public ArtRenderer artRenderer;
 
     public UnityEvent<Vector2> OnSetMoveVector;
 
     private void Awake()
     {
-        if (TryGetComponent(out character))
+        if (body == null) body = transform;
+        if (body != null) myRigidbody = body.GetComponent<Rigidbody>();
+        if (settings != null)
         {
-            body = character.body;
-            pivot = character.pivot;
-            artRenderer = character.artRenderer;
+            applyGravity = settings.applyGravity;
         }
-        if (body == null)
-            body = transform;
-        if (body != null)
-            myRigidbody = body.GetComponent<Rigidbody>();
-
     }
 
 
@@ -55,14 +53,14 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     public void SetMoveVector(Vector2 vector)
     {
         moveVector = vector;
-        myRigidbody.drag = moveVector.magnitude == 0 ? stopDrag : moveDrag;
+        myRigidbody.drag = moveVector.magnitude == 0 ? StopDrag : MoveDrag;
         OnSetMoveVector.Invoke(moveVector);
     }
 
 
     // Movement
 
-    [Header("Animation")]
+    [Foldout("Animation", true)]
     public float flipBuffer = 0.01f;
     private bool hasFootsteps = false;
     [ReadOnly] private bool flip = false;
@@ -85,62 +83,67 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
 
     private void FixedUpdate()
     {
-        if (canMove)
+        if (isActiveAndEnabled)
         {
-            Vector3 cameraDirection = body.position - Camera.main.transform.position;
+            if (canMove)
+            {
+                Vector3 cameraDirection = body.position - Camera.main.transform.position;
 
-            float modifier = 1f;
-            if (character != null && character.controllable)
-            {
-                Vector3 direction = moveVector.Orient(cameraDirection).FullY();
-                Debug.DrawRay(body.position, direction * 3, Color.green, Time.fixedDeltaTime);
-                myRigidbody.AddRelativeForce(speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
-            }
-            else
-            {
-                modifier = npcModifier;
-                Vector3 direction = moveVector.FullY();
-                Assert.IsFalse(float.IsNaN(direction.x) || float.IsNaN(direction.y) || float.IsNaN(direction.z));
-                Debug.DrawRay(body.position, direction, Color.green, Time.fixedDeltaTime);
-                myRigidbody.AddForce(modifier * speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
-            }
-            
-            if (myRigidbody.velocity.magnitude > maxVelocity * modifier)
-                myRigidbody.velocity = maxVelocity * modifier * myRigidbody.velocity.normalized;
-
-            if (artRenderer != null && pivot != null)
-            {
-                Vector2 hVelocity = myRigidbody.velocity.XZVector();
-                Vector2 hCamera = cameraDirection.XZVector().normalized;
-                Vector2 right = Vector2.Perpendicular(hCamera);
-                if (hVelocity.magnitude > footstepVelocity)
+                float modifier = 1f;
+                if (character != null && character.Controllable)
                 {
-                    float angle = Vector2.Dot(right, hVelocity);
-
-                    if ((Flip && angle > flipBuffer) || (!Flip && angle < -flipBuffer))
-                    {
-                        Flip = !Flip;
-                    }
-
-                    if (!hasFootsteps)
-                    {
-                        artRenderer.Running = true;
-                        hasFootsteps = true;
-                    }
-                } 
-                else if (hasFootsteps)
+                    Print("Character Controlled Movement", debug);
+                    Vector3 direction = moveVector.Orient(cameraDirection).FullY();
+                    Debug.DrawRay(body.position, direction * 3, Color.green, Time.fixedDeltaTime);
+                    myRigidbody.AddRelativeForce(Speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
+                }
+                else
                 {
-                    artRenderer.Running = false;
-                    hasFootsteps = false;
+                    Print($"NPC Controlled Movement ({character})", debug);
+                    modifier = npcModifier;
+                    Vector3 direction = moveVector.FullY();
+                    Assert.IsFalse(float.IsNaN(direction.x) || float.IsNaN(direction.y) || float.IsNaN(direction.z));
+                    Debug.DrawRay(body.position, direction, Color.green, Time.fixedDeltaTime);
+                    myRigidbody.AddForce(modifier * Speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
+                }
+
+                if (myRigidbody.velocity.magnitude > MaxVelocity * modifier)
+                    myRigidbody.velocity = MaxVelocity * modifier * myRigidbody.velocity.normalized;
+
+                if (artRenderer != null && pivot != null)
+                {
+                    Vector2 hVelocity = myRigidbody.velocity.XZVector();
+                    Vector2 hCamera = cameraDirection.XZVector().normalized;
+                    Vector2 right = Vector2.Perpendicular(hCamera);
+                    if (hVelocity.magnitude > FootstepVelocity)
+                    {
+                        float angle = Vector2.Dot(right, hVelocity);
+
+                        if ((Flip && angle > flipBuffer) || (!Flip && angle < -flipBuffer))
+                        {
+                            Flip = !Flip;
+                        }
+
+                        if (!hasFootsteps)
+                        {
+                            artRenderer.Running = true;
+                            hasFootsteps = true;
+                        }
+                    }
+                    else if (hasFootsteps)
+                    {
+                        artRenderer.Running = false;
+                        hasFootsteps = false;
+                    }
                 }
             }
-        }
 
-        if (applyGravity)
-        {
-            onGround = Physics.Raycast(body.transform.position, Vector3.down, groundDistance);
-            float power = onGround ? normalForce : gravityForce;
-            myRigidbody.AddForce(speed * timeScale * power * Time.fixedDeltaTime * Vector3.down);
+            if (applyGravity)
+            {
+                onGround = Physics.Raycast(body.transform.position, Vector3.down, GroundDistance);
+                float power = onGround ? NormalForce : GravityForce;
+                myRigidbody.AddForce(Speed * timeScale * power * Time.fixedDeltaTime * Vector3.down);
+            }
         }
     }
 

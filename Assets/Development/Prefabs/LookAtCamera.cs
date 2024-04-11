@@ -1,3 +1,4 @@
+using MyBox;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +7,6 @@ using UnityEngine;
 public class LookAtCamera : BaseMonoBehaviour
 {
     public Transform target;
-    public bool flipOverX;
     public Vector3 up = Vector3.up;
 
     private void Awake()
@@ -49,5 +49,11 @@ public class LookAtCamera : BaseMonoBehaviour
         //Vector2 fyDirection = new(direction.y, xzDirection.magnitude);
         //Vector3 cross = Vector3.Cross(Vector3.up, direction);
         //transform.SetRotationWithVector(fyDirection, cross);
+    }
+
+    [ButtonMethod]
+    public void FlipOverX()
+    {
+        transform.localScale = Vector3.Scale(transform.localScale, new Vector3(-1, 1, 1));
     }
 }

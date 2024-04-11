@@ -5,6 +5,7 @@ using UnityEngine.Events;
 namespace HotD.Castables
 {
     using Body;
+    using MyBox;
     using System;
     using static Body.Behavior.ContextSteering.CSIdentity;
     using static HotD.Castables.CastableToLocation;
@@ -12,6 +13,7 @@ namespace HotD.Castables
     public class Castable : BaseMonoBehaviour, ICastable
     {
         // Positioning
+        [Foldout("Positioning and Following", true)]
         [Header("Positioning and Following")]
         public CastableItem item;
         public CastableItem GetItem() { return item; }
@@ -19,6 +21,7 @@ namespace HotD.Castables
         public Transform pivot;
         [ReadOnly][SerializeField] Vector3 pivotDirection;
         public float rOffset = 0;
+        [Foldout("Positioning and Following")]
         public bool followBody = true;
         [HideInInspector] public Character source;
 
@@ -26,6 +29,7 @@ namespace HotD.Castables
         private Vector3 direction;
         public virtual Vector3 Direction { get => direction; set => direction = value; }
 
+        [Foldout("Power Level", true)]
         [Header("Power Level")]
         [ReadOnly][SerializeField] private float powerLevel;
         public float PowerLevel { get => powerLevel; set => SetPowerLevel(value); }
@@ -37,16 +41,21 @@ namespace HotD.Castables
         public void SetMaxPowerLevel(int maxPowerLevel) { this.maxPowerLevel = maxPowerLevel; onSetMaxPowerLevel.Invoke(this.maxPowerLevel); }
         public UnityEvent<int> onSetMaxPowerLevel;
 
+        [Foldout("Positionables", true)]
         [Header("Things to Position")]
         public List<ToLocation<Positionable>> toLocations = new();
+        public List<Transform> positionables;
+        public List<CastedVFX> effects = new();
 
         // Statuses
+        [Foldout("Statuses", true)]
         [Header("Statuses")]
         public List<Status> triggerStatuses;
         public List<Status> castStatuses;
         public List<Status> hitStatuses;
 
         // Damage
+        [Foldout("Identity and Damage", true)]
         [Header("Identity and Damage")]
         private Identity identity = Identity.Neutral;
         public Identity Identity
@@ -61,10 +70,8 @@ namespace HotD.Castables
         public UnityEvent<Identity> onSetIdentity;
         private Damager damager;
 
-        public List<Transform> positionables;
-        public List<CastedVFX> effects = new();
-
         // Events
+        [Foldout("Casting", true)]
         [Header("Casting")]
         public List<GameObject> castingMethods = new();
         public bool casting = false;
