@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class VFXEventConnector : MonoBehaviour
 {
-    [SerializeField] private VFXEventController vfxEvent;
+    //[SerializeField] private VFXEventController vfxEvent;
 
-    private void Start() 
-    {
-        vfxEvent = GetComponentInParent<VFXEventController>();    
-    }
+    //private void Start() 
+    //{
+    //    vfxEvent = GetComponentInParent<VFXEventController>();    
+    //}
 
-    public void FirePoint1()
-    {
-        vfxEvent.VFXFirePoint1();
-    }
+    //public void FirePoint1()
+    //{
+    //    vfxEvent.VFXFirePoint1();
+    //}
 
-    public void FirePoint2()
-    {
-        vfxEvent.VFXFirePoint2();
-    }
+    //public void FirePoint2()
+    //{
+    //    vfxEvent.VFXFirePoint2();
+    //}
 
-    public void EndCast()
-    {
-        vfxEvent.EndCast();
-    }
+    //public void EndCast()
+    //{
+    //    vfxEvent.EndCast();
+    //}
 }

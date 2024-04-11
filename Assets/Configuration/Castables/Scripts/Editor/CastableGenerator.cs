@@ -284,7 +284,7 @@ namespace HotD.Castables
             casted.onTrigger ??= new();
             casted.onRelease ??= new();
             casted.onCast ??= new();
-            casted.onUnCast ??= new();
+            casted.onEndCast ??= new();
             casted.onSetPowerLevel ??= new();
             UnityEventTools.AddPersistentListener(castable.onTrigger, casted.OnTrigger);
             UnityEventTools.AddPersistentListener(castable.onRelease, casted.OnRelease);
