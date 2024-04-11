@@ -1,4 +1,5 @@
 using Body.Behavior.ContextSteering;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -6,15 +7,16 @@ using static Body.Behavior.ContextSteering.CSContext;
 using static Body.Behavior.ContextSteering.CSIdentity;
 
 // Context
+[Serializable]
 public class FullContext
 {
     public Dictionary<Identity, List<Context>> baseContext;
     public Dictionary<Identity, List<Context>> castableContext;
 
-    [HideInInspector] public Identity currentIdentity;
-    [HideInInspector] public List<Context> currentContexts;
-    [HideInInspector] public bool initialized = false;
-    [HideInInspector] public bool debug = false;
+    public Identity currentIdentity;
+    public List<Context> currentContexts;
+    public bool initialized = false;
+    public bool debug = false;
 
     public FullContext Initialize(CSPreset preset)
     {

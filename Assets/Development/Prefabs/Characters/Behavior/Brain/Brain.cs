@@ -102,9 +102,9 @@ namespace Body.Behavior
                 body = transform;
             if (body != null)
             {
-                if (agent == null && body.TryGetComponent(out agent))
+                if (agent != null || body.TryGetComponent(out agent))
                     agent.baseOffset = baseOffset;
-                if (controller == null && body.TryGetComponent(out controller))
+                if (controller != null || body.TryGetComponent(out controller))
                     controller.Context.castableContext = castableMap;
                 if (pathFinder == null)
                     body.TryGetComponent(out pathFinder);
@@ -238,25 +238,36 @@ namespace Body.Behavior
                 if (debug) print("Trying to attack");
                 character.Aim(-controller.CurrentVector.normalized, true);
 
-                int closest = int.MaxValue;
-                int closestIdx = -1;
-                for (int i = 0; i < character.castableItems.Length; i++)
-                {
-                    CastableItem item = character.castableItems[i];
-                    if (item != null && controller.HasActiveContext(item.context))
-                    {
-                        if (item.context.vector.deadzone.y < closest)
-                        {
-                            closest = (int)item.context.vector.deadzone.y;
-                            closestIdx = i;
-                        }
-                    }
-                }
+                // Find the closest-range weapon that I can currently use, then shoot with it.
+                int closestIdx = FindClosestRangeUsableCastable();
                 if (closestIdx >= 0)
+                {
+                    if (debug) print("Actually attacking!");
                     character.TriggerCastable(closestIdx);
+                }
             }
 
             return BehaviorNode.Status.SUCCESS;
+        }
+
+        public int FindClosestRangeUsableCastable()
+        {
+            int closest = int.MaxValue;
+            int closestIdx = -1;
+            for (int i = 0; i < character.castableItems.Length; i++)
+            {
+                CastableItem item = character.castableItems[i];
+                if (item != null && controller.HasActiveContext(item.context))
+                {
+                    if (item.context.vector.deadzone.y < closest)
+                    {
+                        if (debug) print("Found something to attack with...");
+                        closest = (int)item.context.vector.deadzone.y;
+                        closestIdx = i;
+                    }
+                }
+            }
+            return closestIdx;
         }
 
 
