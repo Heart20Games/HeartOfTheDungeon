@@ -464,7 +464,7 @@
                     "type": "PassThrough",
                     "id": "a2fe85a6-d37c-45b4-ae4d-135093600209",
                     "expectedControlType": "Vector2",
-                    "processors": "ScaleVector2(x=0.0625,y=0.0625),NormalizeVector2",
+                    "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
@@ -592,6 +592,15 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "FlipCamera",
+                    "type": "Button",
+                    "id": "1413b34c-dc37-4142-886f-f6e9f2850bed",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
                     "initialStateCheck": false
                 }
             ],
@@ -733,7 +742,7 @@
                     "id": "5e528783-b6b7-429f-8f51-6ecf431f6aaf",
                     "path": "2DVector(mode=2)",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "ScaleVector2(x=0.5,y=0.5)",
                     "groups": "",
                     "action": "Look",
                     "isComposite": true,
@@ -788,7 +797,7 @@
                     "id": "ee15e431-15bc-4584-b858-68b8403211cb",
                     "path": "2DVector(mode=2)",
                     "interactions": "",
-                    "processors": "NormalizeVector2,StickDeadzone",
+                    "processors": "ScaleVector2(x=0.125,y=0.125),StickDeadzone(min=0.25),ScaleVector2",
                     "groups": "",
                     "action": "Look",
                     "isComposite": true,
@@ -1149,7 +1158,7 @@
                 {
                     "name": "",
                     "id": "9a87fc62-2b98-41ae-bcd2-3d6a73dd9426",
-                    "path": "<Gamepad>/rightStickPress",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -1231,6 +1240,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Control Sheet",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "351dadd5-9634-403d-8f7a-87fa9b4fafc8",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FlipCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0fd0e8e3-b8ef-4f14-8d63-00e6e29cf34a",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FlipCamera",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -2647,7 +2678,7 @@
                 {
                     "name": "",
                     "id": "be29c964-0d26-4dbe-96f5-f6ea38f37e98",
-                    "path": "<Gamepad>/rightStickPress",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

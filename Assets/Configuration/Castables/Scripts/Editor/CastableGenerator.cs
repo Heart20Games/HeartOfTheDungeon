@@ -17,7 +17,6 @@ namespace HotD.Castables
     [CreateAssetMenu(fileName = "NewCastableGenerator", menuName = "Loadouts/Castable Generator", order = 1)]
     public class CastableGenerator : ScriptableObject
     {
-        public enum TargetingMethod { TargetBased, LocationBased, DirectionBased }
         public enum ExecutionMethod { ColliderBased, ProjectileBased, SelectionBased }
 
         [Header("Parameters")]
@@ -257,6 +256,7 @@ namespace HotD.Castables
             AssetDatabase.CreateAsset(item, $"{fullDirectory}/{outputName}.asset");
             EditorUtility.SetDirty(item);
             item.prefab = prefab.GetComponent<Castable>();
+            item.targetingMethod = targetingMethod;
             item.stats = stats;
             item.context = context;
             items.Add(item);
@@ -284,7 +284,7 @@ namespace HotD.Castables
             casted.onTrigger ??= new();
             casted.onRelease ??= new();
             casted.onCast ??= new();
-            casted.onUnCast ??= new();
+            casted.onEndCast ??= new();
             casted.onSetPowerLevel ??= new();
             UnityEventTools.AddPersistentListener(castable.onTrigger, casted.OnTrigger);
             UnityEventTools.AddPersistentListener(castable.onRelease, casted.OnRelease);

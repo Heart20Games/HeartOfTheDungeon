@@ -28,13 +28,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4490809449938186106}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 4.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!2083052967 &5640558220743154003
 VisualEffect:
@@ -135,7 +135,7 @@ MonoBehaviour:
   onCast:
     m_PersistentCalls:
       m_Calls: []
-  onUnCast:
+  onEndCast:
     m_PersistentCalls:
       m_Calls: []
   canUpdatePowerLevel: 0
@@ -150,15 +150,20 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   powerLimit:
+    name: 
     finalPreview: 0
     baseValue: 0
     baseMultiplier: 0
     baseValueRange: {x: 0, y: 0}
     baseMultiplierRange: {x: 0, y: 0}
+    debug: 0
     updated:
       m_PersistentCalls:
         m_Calls: []
-    updatedFinal:
+    updatedFinalFloat:
+      m_PersistentCalls:
+        m_Calls: []
+    updatedFinalInt:
       m_PersistentCalls:
         m_Calls: []
     otherAttributes: []
@@ -176,9 +181,14 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   equipped: 0
+  forceUpdate: 0
   castStatEvents: []
   animator: {fileID: 0}
   visuals: []
+  meshes: []
+  triggerParameter: MagicBolt
+  castParameter: Cast
+  castKey: MagicBolt
 --- !u!95 &334410026118029802
 Animator:
   serializedVersion: 5
@@ -199,6 +209,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &1852809689126143736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,7 +222,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aad4e6e4d966ebb409cc336bbeb22644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vfxEvent: {fileID: 0}
 --- !u!73398921 &202607290327246180
 VFXRenderer:
   serializedVersion: 1
