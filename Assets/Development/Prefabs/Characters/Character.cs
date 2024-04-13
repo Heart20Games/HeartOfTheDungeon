@@ -43,7 +43,6 @@ namespace Body
         public CharacterSettings settings;
         //public bool controllable = true;
         public bool aimActive = false;
-        public bool alive = false;
         [Space]
         public UnityEvent<bool> onControl;
 
@@ -308,16 +307,19 @@ namespace Body
         {
             if (!_spectatable)
             {
+                Print($"Do not spectate {Name}.", debug);
                 orbitalCamera.gameObject.SetActive(false);
                 aimCamera.gameObject.SetActive(false);
             }
             else if (PrimaryTargetingMethod(out var method))
             {
+                Print($"Spectate {Name} based on primary targeting method: {method}", debug);
                 orbitalCamera.gameObject.SetActive(method != TargetingMethod.AimBased);
                 aimCamera.gameObject.SetActive(method == TargetingMethod.AimBased);
             }
             else
             {
+                Print($"Spectate {Name} using default camera (orbital).", debug);
                 aimCamera.gameObject.SetActive(false);
                 orbitalCamera.gameObject.SetActive(true);
             }
@@ -410,7 +412,7 @@ namespace Body
                 artRenderer.Hit();
                 onDmg.Invoke();
             }
-            if (amount <= 0f && alive) SetMode(LiveMode.Dead);
+            if (amount <= 0f && Alive) SetMode(LiveMode.Dead);
         }
 
         public void SetDamagePosition(Vector3 damagePosition)
