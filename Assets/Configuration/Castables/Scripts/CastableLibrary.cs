@@ -11,6 +11,8 @@ namespace HotD.Castables
 
         public override void Init()
         {
+            loadouts.Clear();
+            castableItems.Clear();
             loadouts.AddRange((Loadout[])Resources.FindObjectsOfTypeAll(typeof(Loadout)));
             castableItems.AddRange((CastableItem[])Resources.FindObjectsOfTypeAll(typeof(CastableItem)));
         }
