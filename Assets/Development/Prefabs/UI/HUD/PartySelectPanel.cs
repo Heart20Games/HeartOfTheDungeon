@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PartySelectPanel : MonoBehaviour
+public class PartySelectPanel : BaseMonoBehaviour
 {
     [Header("Materials")]
     [SerializeField] private Material defaultSpriteMat;
@@ -13,7 +13,8 @@ public class PartySelectPanel : MonoBehaviour
     [SerializeField] private List<TargetStatusDisplay> displays;
     [SerializeField] private Animator portraitAnimator;
     [SerializeField] private int initialIndex;
-    private int latestIndex;
+
+    [SerializeField] private bool debug;
 
     private void Awake()
     {
@@ -24,7 +25,7 @@ public class PartySelectPanel : MonoBehaviour
     {
         if (isShimmering)
         {
-            Shimmer(latestIndex);
+            Shimmer();
         }
     }
 
@@ -35,12 +36,13 @@ public class PartySelectPanel : MonoBehaviour
             if (i == idx)
                 SelectImage(i);
             else
-                DeSelectImage(i);
+                UnSelectImage(i);
         }
     }
 
     public void SetTarget(int idx, IIdentifiable identifiable=null)
     {
+        Print($"Set Target for portrait display {idx} to {identifiable?.Name}", debug);
         displays[idx].SetTarget(identifiable);
     }
 
@@ -49,9 +51,14 @@ public class PartySelectPanel : MonoBehaviour
 
     public void Select(int idx)
     {
+        Print($"Select portrait display {idx}", debug);
         // Swap Images
         idx %= displays.Count;
-        DeSelectImage(latestIndex);
+        for (int i = 0; i < displays.Count; i++)
+        {
+            if (i != idx)
+                UnSelectImage(i);
+        }
         SelectImage(idx);
     }
 
@@ -61,14 +68,13 @@ public class PartySelectPanel : MonoBehaviour
         image.portrait.sortingOrder = 3;
         image.portrait.material = shimmerMat;
         portraitAnimator.SetTrigger($"SelectCharacter{idx}");
-        latestIndex = idx;
 
         // Reset Shimmering
         shimmerMat.SetFloat("_SheenPosition", 0f);
         isShimmering = true;
     }
 
-    public void DeSelectImage(int idx)
+    public void UnSelectImage(int idx)
     {
         TargetStatusDisplay image = displays[idx];
         image.portrait.sortingOrder = 1;
@@ -77,7 +83,7 @@ public class PartySelectPanel : MonoBehaviour
 
 
     // Shimmer
-    public void Shimmer(int idx)
+    public void Shimmer()
     {
         float endingPos = -.9f;
         float currentPos = shimmerMat.GetFloat("_SheenPosition");

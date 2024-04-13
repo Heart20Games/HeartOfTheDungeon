@@ -54,7 +54,7 @@ namespace Selection
         // New Parties
         public void AddTarget(ASelectable selectable)
         {
-            print("Adding target!");
+            Print("Adding target!", debug);
             if (!selectableBank.Contains(selectable))
             {
                 selectableBank.Add(selectable);
@@ -63,7 +63,7 @@ namespace Selection
 
         public void RemoveTarget(ASelectable selectable)
         {
-            print("Removing target!");
+            Print("Removing target!", debug);
             selectableBank.Remove(selectable);
         }
 
@@ -77,7 +77,7 @@ namespace Selection
         [ReadOnly][SerializeField] private Vector2 lookVector = Vector2.zero;
         public void Look(Vector2 vector)
         {
-            if (debug) print($"Targeter Looking ({vector})");
+            Print($"Targeter Looking ({vector})", debug);
             lookVector = vector;
             cmCollider.m_MinimumDistanceFromTarget = minDistance;
             cmCollider.m_DistanceLimit = maxDistance;
@@ -89,7 +89,7 @@ namespace Selection
             {
                 if (lookVector != Vector2.zero)
                 {
-                    if (debug) print("Targeter Zooming");
+                    Print("Targeter Zooming", debug);
 
                     //virtualCamera.zoom += zoomSpeed * Time.fixedDeltaTime * Mathf.Sign(lookVector.y);
                     //cmCollider.m_DistanceLimit = Mathf.Clamp(cmCollider.m_DistanceLimit, cmCollider.m_MinimumDistanceFromTarget, cmCollider.m_DistanceLimit);
@@ -150,7 +150,7 @@ namespace Selection
 
         public void SwitchTargets(bool left)
         {
-            if (debug) print($"Switch targets {(left ? "left" : "right")}.");
+            Print($"Switch targets {(left ? "left" : "right")}.", debug);
             if (finder.selectables.Count > 1)
             {
                 // Set selected to the next nearest selectable in the given direction.

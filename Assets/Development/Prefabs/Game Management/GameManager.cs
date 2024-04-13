@@ -388,8 +388,6 @@ namespace HotD
                 Character character = members[curCharIdx];
                 SetCharacter(character);
                 hud.CharacterSelect(character);
-                if (!character.alive)
-                    SetMode(InputMode.Spectate);
             }
         }
 
@@ -402,7 +400,8 @@ namespace HotD
                 if (Mode.inputMode == InputMode.Character)
                     SetControllable(character, true, true);
                 curCharacter = character;
-                //SetMode(InputMode.Character);
+                if (!character.Alive)
+                    SetMode(InputMode.Spectate);
             }
         }
 

@@ -251,11 +251,11 @@ public class Party : BaseMonoBehaviour
 
     public void CharacterDied(Character character)
     {
-        Assert.IsTrue(character.alive == false);
+        Assert.IsTrue(character.Alive == false);
         if (debug) print($"Character {character.body.name} Died.");
         foreach (var other in members)
         {
-            if (other.alive)
+            if (other.Alive)
             {
                 print($"Character {other.body.name} is still alive.");
                 return;

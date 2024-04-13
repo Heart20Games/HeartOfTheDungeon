@@ -1,5 +1,6 @@
 using CustomUnityEvents;
 using MyBox;
+using Sisus.ComponentNames;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,9 +40,11 @@ public class Impact : Validator
     [Foldout("Events")] public ImpactEvents onImpact;
 
     // Tracking
-    public readonly List<GameObject> touching = new();
+    [ReadOnly] public List<GameObject> touching = new();
     [HideInInspector] public GameObject other;
     [HideInInspector] public Vector3 impactLocation;
+
+    private void OnEnable() {}
 
     // Events
 
@@ -52,11 +55,15 @@ public class Impact : Validator
             this.other = other;
             if ((!oneShot || !hasCollided) && Validate(other) && !touching.Contains(other))
             {
-                if (debug) print($"Other: {other.name}");
+                Print($"Valid Other: {other.name} ({this.GetName()})", debug);
                 touching.Add(other);
                 hasCollided = true;
                 onEvent.Invoke();
                 onImpact.InvokeEnter(this);
+            }
+            else
+            {
+                Print($"Invalid Other: {other.name} ({this.GetName()})", debug);
             }
         }
     }
