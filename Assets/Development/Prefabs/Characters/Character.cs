@@ -427,6 +427,7 @@ namespace Body
 
         public void TakeDamage(int damageAmount, Identity id=Identity.Neutral)
         {
+            Print($"{Name} taking {damageAmount} from {id}. ({RelativeIdentity(id, Identity) != Identity.Friend})", true);
             if (RelativeIdentity(id, Identity) != Identity.Friend)
             {
                 CurrentHealth -= damageAmount;
