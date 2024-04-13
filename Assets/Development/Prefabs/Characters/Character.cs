@@ -230,29 +230,34 @@ namespace Body
             else
                 Debug.LogWarning($"Can't find live mode for \"{subMode}\"");
         }
-        public void SetMode(CharacterMode mode)
+        public void SetMode(CharacterMode new_mode)
         {
-            if (this.mode.name != mode.name)
+            if (this.mode.name != new_mode.name)
             {
+                CharacterMode oldMode = this.mode;
+                this.mode = new_mode;
+
                 movement.SetMoveVector(new());
-                brain.Enabled = mode.controlMode == ControlMode.Brain;
-                movement.canMove = mode.moveMode == MovementMode.Active;
-                movement.applyGravity = mode.moveMode != MovementMode.Disabled;
-                SetNonNullActive(artRenderer, mode.displayable);
-                SetNonNullActive(moveReticle, mode.useMoveReticle);
-                SetNonNullEnabled(interactor, mode.useInteractor);
-                SetNonNullEnabled(caster, mode.useCaster);
-                if (pips != null) pips.SetDisplayMode(mode.pipMode);
-                bool alive = mode.liveMode == LiveMode.Alive;
+                brain.Enabled = new_mode.controlMode == ControlMode.Brain;
+                movement.canMove = new_mode.moveMode == MovementMode.Active;
+                movement.applyGravity = new_mode.moveMode != MovementMode.Disabled;
+                SetNonNullActive(artRenderer, new_mode.displayable);
+                SetNonNullActive(moveReticle, new_mode.useMoveReticle);
+                SetNonNullEnabled(interactor, new_mode.useInteractor);
+                SetNonNullEnabled(caster, new_mode.useCaster);
+                if (pips != null) pips.SetDisplayMode(new_mode.pipMode);
+                
+                bool alive = new_mode.liveMode == LiveMode.Alive;
                 brain.Alive = alive;
                 if (artRenderer != null) artRenderer.Dead = !alive;
                 SetNonNullEnabled(aliveCollider, alive);
                 SetNonNullEnabled(deadCollider, !alive);
-                switch (mode.liveMode)
+                
+                switch (new_mode.liveMode)
                 {
                     case LiveMode.Alive:
                         {
-                            switch (this.mode.liveMode)
+                            switch (oldMode.liveMode)
                             {
                                 case LiveMode.Dead: Refresh(); break;
                                 case LiveMode.Despawned: Respawn(); break;
@@ -262,11 +267,11 @@ namespace Body
                     case LiveMode.Dead: Die(autoDespawn, autoRespawn); break;
                     case LiveMode.Despawned: Despawn(); break;
                 }
-                if ((mode.Controllable || this.mode.Controllable) && this.mode.controlMode != mode.controlMode)
+                
+                if ((new_mode.Controllable || oldMode.Controllable) && oldMode.controlMode != new_mode.controlMode)
                 {
-                    onControl.Invoke(mode.Controllable);
-                }
-                this.mode = mode;
+                    onControl.Invoke(new_mode.Controllable);
+                }   
             }
         }
         public void SetNonNullActive(Component component, bool active)
