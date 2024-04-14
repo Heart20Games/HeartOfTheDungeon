@@ -1,5 +1,4 @@
 using Body.Behavior;
-using System;
 using UnityEngine;
 
 public class EnemyAI : Brain
@@ -30,8 +29,10 @@ public class EnemyAI : Brain
     {
         base.Update();
 
-        //HomeDestination(wayPoints[wayPointIndex]);
+        HomeDestination(wayPoints[wayPointIndex]);
         WaypointDestination(wayPoints[wayPointIndex]);
+
+        AttackState();
     }
 
     public void ChasePlayer(Transform targetObject)
@@ -51,11 +52,20 @@ public class EnemyAI : Brain
 
     private void AttackState()
     {
-        if(HasFoeInRange(Body.Behavior.ContextSteering.CSContext.Range.InAttackRange))
+        if (currentAction != Action.Chase) return;
+
+        if(agent.remainingDistance <= agent.stoppingDistance)
         {
             currentAction = Action.Duel;
 
             Duel();
+        }
+        else
+        {
+            if(currentAction == Action.Duel)
+            {
+                currentAction = Action.Chase;
+            }
         }
     }
 
@@ -64,9 +74,9 @@ public class EnemyAI : Brain
     {
         if (currentAction != Action.Patrol && pathFinder.target != null)
         {
-            Vector3 distance = new Vector3(transform.position.x - targetPosition.position.x, transform.position.y, transform.position.z - targetPosition.position.z);
+            Vector3 distance = new Vector3(targetPosition.position.x - agent.transform.localPosition.x, agent.transform.localPosition.y, targetPosition.position.z - agent.transform.localPosition.z);
 
-            if(Vector3.Distance(transform.position, distance) <= distanceToReturnHome)
+            if(Vector3.Distance(targetPosition.position, distance) >= distanceToReturnHome)
             {
                 PatrolState();
             }

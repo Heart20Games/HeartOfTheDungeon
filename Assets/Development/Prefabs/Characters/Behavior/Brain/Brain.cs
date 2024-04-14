@@ -208,7 +208,7 @@ namespace Body.Behavior
         {
             if (!HasFoeInRange(Range.InRange)) return BehaviorNode.Status.FAILURE;
 
-            if (debug) Debug.Log("Chasing...");
+            //if (debug) Debug.Log("Chasing...");
 
             if (useAgent)
             {
