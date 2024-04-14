@@ -182,7 +182,7 @@ namespace HotD.Castables
             if (pivot != null)
             {
                 //pivot.SetRotationWithVector(Direction); //.XZVector());
-                pivot.forward = Direction;
+                pivot.forward = Direction == Vector3.zero ? Vector3.forward : Direction;
                 pivotDirection = pivot.forward;
             }
             foreach (Status status in castStatuses)
