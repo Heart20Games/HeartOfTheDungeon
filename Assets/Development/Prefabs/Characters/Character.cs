@@ -66,6 +66,7 @@ namespace Body
         [Header("Interaction, Selection, and Targeting")]
         public Interactor interactor;
         public TargetFinder targetFinder;
+        public Selectable selectable;
         [HideInInspector] public Talker talker;
 
         // Behaviour
@@ -252,6 +253,7 @@ namespace Body
                 if (artRenderer != null) artRenderer.Dead = !alive;
                 SetNonNullEnabled(aliveCollider, alive);
                 SetNonNullEnabled(deadCollider, !alive);
+                selectable.IsSelectable = alive;
                 
                 switch (new_mode.liveMode)
                 {
@@ -427,6 +429,7 @@ namespace Body
 
         public void TakeDamage(int damageAmount, Identity id=Identity.Neutral)
         {
+            Print($"{Name} taking {damageAmount} from {id}. ({RelativeIdentity(id, Identity) != Identity.Friend})", true);
             if (RelativeIdentity(id, Identity) != Identity.Friend)
             {
                 CurrentHealth -= damageAmount;
@@ -448,13 +451,13 @@ namespace Body
         [ButtonMethod]
         public void TestTakeDamage()
         {
-            print($"Dealing {testDamageAmount} Damage from {testDamageIdentity} Identity.");
+            Print($"Dealing {testDamageAmount} Damage from {testDamageIdentity} Identity.", debug);
             TakeDamage(testDamageAmount, testDamageIdentity);
         }
         [ButtonMethod]
         public void TestHealDamage()
         {
-            print($"Healing {testDamageAmount} Damage from {testDamageIdentity} Identity.");
+            Print($"Healing {testDamageAmount} Damage from {testDamageIdentity} Identity.", debug);
             HealDamage(testDamageAmount, testDamageIdentity);
         }
 

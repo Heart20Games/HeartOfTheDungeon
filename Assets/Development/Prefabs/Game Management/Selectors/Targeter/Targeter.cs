@@ -3,6 +3,7 @@ using CustomUnityEvents;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Selection
 {
@@ -33,7 +34,7 @@ namespace Selection
                     finder.enabled = !targetLock;
             }
         }
-        public BinaryEvent<ASelectable> onTargetSet;
+        public UnityEvent<ASelectable> onTargetSet;
 
         private void Awake()
         {
@@ -137,27 +138,44 @@ namespace Selection
             if (targetLock)
             {
                 Select();
-                onTargetSet.enter.Invoke(selected);
+                onTargetSet.Invoke(selected);
                 targetGroup.m_Targets[0].target = finder == null ? null : finder.transform;
                 targetGroup.m_Targets[1].target = selected == null ? null : selected.transform;
             }
             else
             {
-                onTargetSet.exit.Invoke(selected);
+                onTargetSet.Invoke(null);
                 DeSelect();
             } 
         }
 
+        public void SwitchTargets(int newIdx)
+        {
+            // Set selected to the next nearest selectable in the given direction.
+            DeSelect();
+            finder.TargetIdx = newIdx % finder.selectables.Count;
+            Select();
+            onTargetSet.Invoke(selected);
+        }
         public void SwitchTargets(bool left)
         {
             Print($"Switch targets {(left ? "left" : "right")}.", debug);
-            if (finder.selectables.Count > 1)
+            int newIdx = finder.TargetIdx + (left ? -1 : 1);
+            if (newIdx > 0 && finder.selectables.Count > newIdx)
             {
-                // Set selected to the next nearest selectable in the given direction.
-                DeSelect();
-                finder.TargetIdx += (left ? -1 : 1);
-                Select();
-                onTargetSet.enter.Invoke(selected);
+                SwitchTargets(newIdx);
+            }
+        }
+
+        public void TargetLost(bool stillThere=true)
+        {
+            Print($"Target lost? {(!stillThere ? "Yes" : "No")}", debug);
+            if (!stillThere)
+            {
+                if (finder.selectables.Count > 1)
+                    SwitchTargets(finder.TargetIdx + 1);
+                else
+                    DeSelect();
             }
         }
 
@@ -174,11 +192,18 @@ namespace Selection
         {
             base.Select();
             if (selected != null)
+            {
                 targetGroup.m_Targets[1].target = selected.transform;
+                selected.onIsSelectable.AddListener(TargetLost);
+            }
         }
 
         public override void DeSelect()
         {
+            if (selected != null)
+            {
+                selected.onIsSelectable.RemoveListener(TargetLost);
+            }
             base.DeSelect();
             targetGroup.m_Targets[1].target = null;
         }

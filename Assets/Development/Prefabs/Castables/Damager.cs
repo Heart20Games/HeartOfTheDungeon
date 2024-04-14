@@ -8,6 +8,8 @@ public class Damager : BaseMonoBehaviour, IDamager
     private readonly List<IDamageable> ignored = new();
     public int damage = 1;
     public Identity identity = Identity.Neutral;
+    [ReadOnly][SerializeField] private int otherCount = 0;
+    [ReadOnly][SerializeField] private int ignoredCount = 0;
 
     public void SetIdentity(Identity identity)
     {
@@ -19,6 +21,7 @@ public class Damager : BaseMonoBehaviour, IDamager
         if (toIgnore.TryGetComponent<IDamageable>(out var damageable))
         {
             ignored.Add(damageable);
+            ignoredCount = ignored.Count;
         }
     }
 
@@ -28,6 +31,7 @@ public class Damager : BaseMonoBehaviour, IDamager
         if (other != null && !ignored.Contains(other) && !others.Contains(other))
         {
             others.Add(other);
+            otherCount = others.Count;
             other.SetDamagePosition(impactor.impactLocation);
             other.TakeDamage(damage, identity);
         }
@@ -39,6 +43,7 @@ public class Damager : BaseMonoBehaviour, IDamager
         if (other != null && !ignored.Contains(other) && others.Contains(other))
         {
             others.Remove(other);
+            otherCount = others.Count;
         }
     }
 }

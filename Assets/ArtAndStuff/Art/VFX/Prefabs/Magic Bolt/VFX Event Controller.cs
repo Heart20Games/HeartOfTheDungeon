@@ -23,7 +23,6 @@ public class VFXEventController : BaseMonoBehaviour
     [Header("Cast Levels")]
     [SerializeField] private int minCastLevel = 2;
     [SerializeField] private int maxCastLevel = 3;
-    [ReadOnly][SerializeField] private int latestCastLevel = 0;
 
     [Header("Effects")]
     public List<CastedVFX> effects = new();

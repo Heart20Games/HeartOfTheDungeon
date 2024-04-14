@@ -99,10 +99,10 @@ namespace Selection
             for (int i = 0; i < Main.selectableBank.Count; i++)
             {
                 ASelectable selectable = Main.selectableBank[i];
-                if (selectable != attachedSelectable && Main.Validate(selectable))
+                // Ignore things that are disabled or unselectable.
+                if (selectable.isActiveAndEnabled && selectable.IsSelectable)
                 {
-                    // Ignore things that aren't enabled.
-                    if (selectable.isActiveAndEnabled)
+                    if (selectable != attachedSelectable && Main.Validate(selectable))
                     {
                         numValid += 1;
                         Vector3 origin = transform.position + offset;
