@@ -99,13 +99,13 @@ namespace Modifiers
 
         public delegate T Modify(T oldValue, T newValue);
         [HideInInspector] public List<Modify> modifiers = new();
-        private List<Modify> subscribedModifiers = new();
-        private List<Modify> unsubscribedModifiers = new();
+        private readonly List<Modify> subscribedModifiers = new();
+        private readonly List<Modify> unsubscribedModifiers = new();
 
         public delegate void Listen(T finalValue);
         [HideInInspector] public List<Listen> listeners = new();
-        private List<Listen> subscribedListeners = new();
-        private List<Listen> unsubscribedListeners = new();
+        private readonly List<Listen> subscribedListeners = new();
+        private readonly List<Listen> unsubscribedListeners = new();
 
         public delegate T Constraint(T finalValue);
         [HideInInspector] public Constraint constraint;
