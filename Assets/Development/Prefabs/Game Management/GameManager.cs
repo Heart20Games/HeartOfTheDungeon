@@ -335,9 +335,9 @@ namespace HotD
         public void OnTargetSelected(ASelectable selectable)
         {
 
-            if (selectedTarget == selectable || selectable == null)
+            if (selectable == null)
             {
-                if (debug) print($"Target deselected: {selectable}");
+                if (debug) print($"Target deselected: {selectedTarget}");
                 hud.SetTarget(null);
             }
             else

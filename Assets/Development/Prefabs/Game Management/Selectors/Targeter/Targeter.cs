@@ -3,6 +3,7 @@ using CustomUnityEvents;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Selection
 {
@@ -33,7 +34,7 @@ namespace Selection
                     finder.enabled = !targetLock;
             }
         }
-        public BinaryEvent<ASelectable> onTargetSet;
+        public UnityEvent<ASelectable> onTargetSet;
 
         private void Awake()
         {
@@ -137,13 +138,13 @@ namespace Selection
             if (targetLock)
             {
                 Select();
-                onTargetSet.enter.Invoke(selected);
+                onTargetSet.Invoke(selected);
                 targetGroup.m_Targets[0].target = finder == null ? null : finder.transform;
                 targetGroup.m_Targets[1].target = selected == null ? null : selected.transform;
             }
             else
             {
-                onTargetSet.exit.Invoke(selected);
+                onTargetSet.Invoke(null);
                 DeSelect();
             } 
         }
@@ -157,7 +158,7 @@ namespace Selection
                 DeSelect();
                 finder.TargetIdx += (left ? -1 : 1);
                 Select();
-                onTargetSet.enter.Invoke(selected);
+                onTargetSet.Invoke(selected);
             }
         }
 
