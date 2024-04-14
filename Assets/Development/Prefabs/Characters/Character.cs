@@ -66,6 +66,7 @@ namespace Body
         [Header("Interaction, Selection, and Targeting")]
         public Interactor interactor;
         public TargetFinder targetFinder;
+        public Selectable selectable;
         [HideInInspector] public Talker talker;
 
         // Behaviour
@@ -252,6 +253,7 @@ namespace Body
                 if (artRenderer != null) artRenderer.Dead = !alive;
                 SetNonNullEnabled(aliveCollider, alive);
                 SetNonNullEnabled(deadCollider, !alive);
+                selectable.IsSelectable = alive;
                 
                 switch (new_mode.liveMode)
                 {

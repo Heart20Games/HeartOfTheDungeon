@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using static Body.Behavior.ContextSteering.CSIdentity;
 using static ISelectable;
 
@@ -11,12 +12,25 @@ public abstract class ASelectable : BaseMonoBehaviour, ISelectable
     public GameObject source;
     public Identity Identity { get => !source.TryGetComponent<AIdentifiable>(out var idable) ? Identity.Neutral : idable.Identity; }
     public Vector3 offset = Vector3.up;
-    [HideInInspector] public bool isSelected = false;
-    [HideInInspector] public bool isHovering = false;
+    [ReadOnly] public bool isSelected = false;
+    [ReadOnly] public bool isHovering = false;
+
 
     [ReadOnly] public ASelectable next;
     [ReadOnly] public ASelectable last;
     [ReadOnly] public bool visible = false;
+
+    [ReadOnly] private bool isSelectable = false;
+    public UnityEvent<bool> onIsSelectable;
+    public bool IsSelectable
+    {
+        get => isSelectable;
+        set
+        {
+            isSelectable = value;
+            onIsSelectable.Invoke(value);
+        }
+    }
 
     private void Awake()
     {
