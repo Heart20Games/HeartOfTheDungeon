@@ -99,12 +99,18 @@ namespace Modifiers
 
         public delegate T Modify(T oldValue, T newValue);
         [HideInInspector] public List<Modify> modifiers = new();
+        private List<Modify> subscribedModifiers = new();
+        private List<Modify> unsubscribedModifiers = new();
 
         public delegate void Listen(T finalValue);
         [HideInInspector] public List<Listen> listeners = new();
+        private List<Listen> subscribedListeners = new();
+        private List<Listen> unsubscribedListeners = new();
 
         public delegate T Constraint(T finalValue);
         [HideInInspector] public Constraint constraint;
+
+        private bool settingValue = false;
 
         // Constructor
         public Modded(T value, string name = "[Modded]")
@@ -117,41 +123,77 @@ namespace Modifiers
         public void Subscribe(Modify modify)
         {
             if (modify != null)
-                if (!modifiers.Contains(modify))
+            {
+                if (settingValue)
+                    subscribedModifiers.Add(modify);
+                else if (!modifiers.Contains(modify))
                     modifiers.Add(modify);
+            }
         }
 
         public void UnSubscribe(Modify modify)
         {
             if (modify != null)
-                if (modifiers.Contains(modify))
+            {
+                if (settingValue)
+                    unsubscribedModifiers.Add(modify);
+                else if (modifiers.Contains(modify))
                     modifiers.Remove(modify);
+            }
         }
 
         // Listeners
         public void Subscribe(Listen listen)
         {
             if (listen != null)
-                if (!listeners.Contains(listen))
+            {
+                if (settingValue)
+                {
+                    subscribedListeners.Add(listen);
+                }
+                else if (!listeners.Contains(listen))
                 {
                     if (debug) Debug.Log($"Added Listener to {name}");
                     listeners.Add(listen);
                 }
+
+            }
         }
 
         public void UnSubscribe(Listen listen)
         {
             if (listen != null)
-                if (listeners.Contains(listen))
+            {
+                if (settingValue)
+                {
+                    unsubscribedListeners.Remove(listen);
+                }
+                else if (listeners.Contains(listen))
                 {
                     if (debug) Debug.Log($"Removed Listener from {name}");
                     listeners.Remove(listen);
                 }
+            }
+        }
+
+        // Note: does not account for exact cached entry order!
+        private void UpdateCachedSubscribers()
+        {
+            foreach (var modifier in subscribedModifiers)
+                Subscribe(modifier);
+            foreach (var modifier in unsubscribedModifiers)
+                UnSubscribe(modifier);
+            foreach (var listener in subscribedListeners)
+                Subscribe(listener);
+            foreach (var listener in unsubscribedListeners)
+                UnSubscribe(listener);
         }
 
         // Setter
         public void SetValue(T value)
         {
+            settingValue = true;
+
             if (debug) Debug.Log($"Trying to set {name} value to {value} from {this.value}.");
             foreach (Modify modifier in modifiers)
             {
@@ -165,10 +207,15 @@ namespace Modifiers
             if (debug) Debug.Log($"Constraint applied. New {name} value now {value}. ({(constraint != null ? 1 : 0)} constraint)");
             if (debug) Debug.Log($"{name} value set to {value} from {this.value}. ({listeners.Count} listeners)");
             this.value = value;
+
             foreach (Listen listener in listeners)
             {
                 listener.Invoke(value);
             }
+
+            settingValue = false;
+
+            UpdateCachedSubscribers();
         }
     }
 }
