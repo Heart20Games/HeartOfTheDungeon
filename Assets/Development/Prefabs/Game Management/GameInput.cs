@@ -5,6 +5,7 @@ using Selection;
 using System.Collections;
 using MyBox;
 using HotD.PostProcessing;
+using HotD.Castables;
 
 namespace HotD
 {
@@ -37,6 +38,13 @@ namespace HotD
         public void IsPressed(InputValue inputValue, Delegate yesDel, Delegate noDel = null)
         {
             if (inputValue.isPressed)
+                yesDel?.Invoke();
+            else
+                noDel?.Invoke();
+        }
+        public void IsPerformed(InputAction.CallbackContext context, Delegate yesDel, Delegate noDel = null)
+        {
+            if (context.performed)
                 yesDel?.Invoke();
             else
                 noDel?.Invoke();
@@ -81,12 +89,12 @@ namespace HotD
         }
 
         // Aiming
+        public void OnFlipCamera(InputValue inputValue) { IsPressed(inputValue, CurCharacter.FlipCamera); }
         public void OnAim(InputValue inputValue) { if (CurCharacter != null) CurCharacter.Aim(inputValue.Get<Vector2>()); }
-        public void OnToggleAiming(InputValue inputValue) { if (CurCharacter != null) CurCharacter.SetAimModeActive(inputValue.isPressed); }
+        //public void OnToggleAiming(InputValue inputValue) { if (CurCharacter != null) CurCharacter.SetAimModeActive(inputValue.isPressed); }
 
         // Castables
-        public enum CastableIdx { Ability1, Ability2, Weapon1, Weapon2, Agility }
-        public void UseCastable(InputValue inputValue, CastableIdx idx)
+        public void UseCastable(InputValue inputValue, Loadout.Slot idx)
         {
             if (CurCharacter != null)
             {
@@ -96,11 +104,11 @@ namespace HotD
                 );
             }
         }
-        public void OnUseAgility(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Agility); }
-        public void OnUseWeapon1(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Weapon1); }
-        public void OnUseWeapon2(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Weapon2); }
-        public void OnUseAbility1(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Ability1); }
-        public void OnUseAbility2(InputValue inputValue) { UseCastable(inputValue, CastableIdx.Ability2); }
+        public void OnUseAgility(InputValue inputValue) { UseCastable(inputValue, Loadout.Slot.Mobility); }
+        public void OnUseWeapon1(InputValue inputValue) { UseCastable(inputValue, Loadout.Slot.Weapon1); }
+        public void OnUseWeapon2(InputValue inputValue) { UseCastable(inputValue, Loadout.Slot.Weapon2); }
+        public void OnUseAbility1(InputValue inputValue) { UseCastable(inputValue, Loadout.Slot.Ability1); }
+        public void OnUseAbility2(InputValue inputValue) { UseCastable(inputValue, Loadout.Slot.Ability2); }
 
         // Character Switching
         public void SwitchCharacterInput(InputValue inputValue, int idx) { IsPressed(inputValue, () => { game.SwitchToCompanion(idx); }); }
@@ -147,18 +155,49 @@ namespace HotD
         public void OnDeSelect(InputValue inputValue) { SelectValue(inputValue, false); }
 
         // Lock-On
-        public void OnToggleLockOn(InputValue inputValue)
+        private bool lockOnPressed = false;
+        private void ToggleLockOn()
+        {
+            switch (Input)
+            {
+                case InputMode.LockOn:
+                    TurnOffLockOn(); break;
+                default:
+                    TurnOnLockOn(); break;
+            }
+        }
+        private void TurnOffLockOn()
+        {
+            if (Input == InputMode.LockOn)
+                Input = InputMode.Character;
+        }
+        private void TurnOnLockOn()
+        {
+            if (Targeter.HasTarget())
+                Input = InputMode.LockOn;
+        }
+        public void OnHoldLockOn(InputValue inputValue)
         {
             IsPressed(inputValue, () =>
             {
-                switch (Input)
+                if (!lockOnPressed)
                 {
-                    case InputMode.LockOn:
-                        Input = InputMode.Character; break;
-                    default:
-                        if (Targeter.HasTarget()) Input = InputMode.LockOn; break;
-                };
+                    lockOnPressed = true;
+                    TurnOnLockOn();
+                }
+            }, () =>
+            {
+                if (lockOnPressed)
+                {
+                    lockOnPressed = false;
+                    if (Input == InputMode.LockOn)
+                        TurnOffLockOn();
+                }
             });
+        }
+        public void OnToggleLockOn(InputValue inputValue)
+        {
+            IsPressed(inputValue, ToggleLockOn);
         }
         public void OnSwitchTargets(InputValue inputValue)
         {

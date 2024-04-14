@@ -15,18 +15,21 @@ namespace Body
     using HotD;
     using UIPips;
     using static Body.Behavior.ContextSteering.CSIdentity;
-    using static UIPips.PipGenerator;
     using System.Collections;
+    using static HotD.CharacterModes;
     using System;
 
     [RequireComponent(typeof(Brain))]
     [RequireComponent(typeof(Movement))]
     [RequireComponent(typeof(Talker))]
     [RequireComponent(typeof(Caster))]
-    public class Character : AIdentifiable, IDamageable, IBrainable
+    public class Character : AIdentifiable, IDamageable, IControllable
     {
+        [Foldout("Identity")]
+        public CharacterBlock statBlock;
+
         // Movement and Positioning
-        [Foldout("Movement and Positioning", true)]
+        [Foldout("Parts", true)]
         [Header("Movement and Positioning")]
         public Transform body;
         public Transform pivot;
@@ -37,39 +40,39 @@ namespace Body
         // State
         [Foldout("State", true)]
         [Header("State")]
-        public bool controllable = true;
+        public CharacterSettings settings;
+        //public bool controllable = true;
         public bool aimActive = false;
-        public bool alive = false;
         [Space]
         public UnityEvent<bool> onControl;
-        public UnityEvent<bool> onSpectate;
 
         // Appearance
         [Foldout("Appearance", true)]
         [Header("Appearance")]
         public ArtRenderer artRenderer;
         public VFXEventController vfxController;
-        public CinemachineVirtualCamera virtualCamera;
-        public CharacterBlock statBlock;
+        public LookAtCamera cameraPivot;
+        public CinemachineVirtualCamera orbitalCamera;
+        public CinemachineVirtualCamera aimCamera;
 
         // Collision
-        [Foldout("Collision", true)]
+        [Foldout("Parts", true)]
         [Header("Collision")]
         public Collider aliveCollider;
         public Collider deadCollider;
 
         // Interaction, Selection, and Targeting
-        [Foldout("Interaction, Selection, and Targeting", true)]
+        [Foldout("Parts", true)]
         [Header("Interaction, Selection, and Targeting")]
         public Interactor interactor;
         public TargetFinder targetFinder;
+        public Selectable selectable;
         [HideInInspector] public Talker talker;
 
         // Behaviour
-        [Header("Behaviour")]
+        [Header("Parts")]
         [HideInInspector] public Brain brain;
-        [HideInInspector] public EnemyAI enemyAI;
-        public CSController Controller { get => GetComponent<EnemyAI>() ? enemyAI.controller : brain.controller; }
+        public CSController Controller { get => brain.controller; }
 
         // Casting
         [Foldout("Casting", true)]
@@ -83,18 +86,7 @@ namespace Body
         public override Identity Identity
         {
             get => identity;
-            set 
-            {
-                identity = value;
-                if (GetComponent<EnemyAI>())
-                {
-                    enemyAI.Identity = value;
-                }
-                else
-                {
-                    brain.Identity = value;
-                }
-            }
+            set { identity = value; brain.Identity = value; }
         }
         public override string Name { get => statBlock == null ? null : statBlock.characterName; set => statBlock.characterName = value; }
         public override MaxModField<int> Health { get => health; }
@@ -136,6 +128,15 @@ namespace Body
 
         public bool debug = false;
 
+        // Actions
+        public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); caster.SetFallback(movement.moveVector.FullY(), true); }
+        public void Aim(Vector2 input, bool aim = false) { if (aimActive || aim) caster.SetVector(input.FullY()); }
+        public void TriggerCastable(int idx) { if (castables[idx] != null) caster.TriggerCastable(castables[idx]); }
+        public void ReleaseCastable(int idx) { if (castables[idx] != null) caster.ReleaseCastable(castables[idx]); }
+        public void Interact() { talker.Talk(); }
+        public void FlipCamera() { if (cameraPivot != null) cameraPivot.FlipOverX(); }
+
+        // Initialization
         public override void Awake()
         {
             base.Awake();
@@ -147,29 +148,19 @@ namespace Body
             InitBody();
 
             // Components
-            if(GetComponent<EnemyAI>())
-            {
-                enemyAI = GetComponent<EnemyAI>();
-            }
-            else
-            {
-                brain = GetComponent<Brain>();
-            }
+            brain = GetComponent<Brain>();
             movement = GetComponent<Movement>();
             talker = GetComponent<Talker>();
             caster = GetComponent<Caster>();
 
             // Connections
-            ConnectAlive();
             ConnectHealth();
-            ConnectControl();
 
             // Initialization
+            InitMovement();
             InitializeCastables();
             InitializeSpawn();
-            SetDisplayable(true);
             SetSpectatable(false);
-            SetControllable(false);
 
             // Statblock connections
             statBlock.Initialize();
@@ -186,13 +177,23 @@ namespace Body
 
             // Value Initialization
             Identity = Identity;
-            //SetAlive(alive, false, false);
 
             MaxHealth = statBlock.MaxHealth;
             CurrentHealth = statBlock.MaxHealth;
 
             armor.max.Value = statBlock.ArmorClass;
             armor.current.Value = statBlock.ArmorClass;
+
+            SetMode(ControlMode.None);
+
+        }
+
+        private void InitMovement()
+        {
+            movement.character = this;
+            movement.body = body;
+            movement.pivot = pivot;
+            movement.artRenderer = artRenderer;
         }
 
         private void InitBody()
@@ -209,52 +210,94 @@ namespace Body
         {
             if (spawn != null)
             {
-                spawn.position = body.position;
-                spawn.rotation = body.rotation;
+                spawn.SetPositionAndRotation(body.position, body.rotation);
                 spawn.localScale = body.localScale;
             }
         }
 
+        // Character Mode
 
-        // Respawning, Despawning and Refreshing
-
-        public void Refresh()
+        public CharacterMode mode;
+        public bool Controllable
+        { 
+            get => mode.Controllable;
+            set => SetMode(value ? ControlMode.Player : !Controllable ? mode.controlMode : ControlMode.None);
+        }
+        public bool Alive { get => mode.liveMode == LiveMode.Alive; }
+        public void SetMode<T>(T subMode) where T : Enum
         {
-            CurrentHealth = MaxHealth;
-            SetAlive(true);
+            if (settings.TryGetMode(subMode, out var mode))
+                SetMode(mode);
+            else
+                Debug.LogWarning($"Can't find live mode for \"{subMode}\"");
+        }
+        public void SetMode(CharacterMode new_mode)
+        {
+            if (this.mode.name != new_mode.name)
+            {
+                CharacterMode oldMode = this.mode;
+                this.mode = new_mode;
+
+                movement.SetMoveVector(new());
+                brain.Enabled = new_mode.controlMode == ControlMode.Brain;
+                movement.canMove = new_mode.moveMode == MovementMode.Active;
+                movement.applyGravity = new_mode.moveMode != MovementMode.Disabled;
+                SetNonNullActive(artRenderer, new_mode.displayable);
+                SetNonNullActive(moveReticle, new_mode.useMoveReticle);
+                SetNonNullEnabled(interactor, new_mode.useInteractor);
+                SetNonNullEnabled(caster, new_mode.useCaster);
+                if (pips != null) pips.SetDisplayMode(new_mode.pipMode);
+                
+                bool alive = new_mode.liveMode == LiveMode.Alive;
+                brain.Alive = alive;
+                if (artRenderer != null) artRenderer.Dead = !alive;
+                SetNonNullEnabled(aliveCollider, alive);
+                SetNonNullEnabled(deadCollider, !alive);
+                selectable.IsSelectable = alive;
+                
+                switch (new_mode.liveMode)
+                {
+                    case LiveMode.Alive:
+                        {
+                            switch (oldMode.liveMode)
+                            {
+                                case LiveMode.Dead: Refresh(); break;
+                                case LiveMode.Despawned: Respawn(); break;
+                            }
+                            break;
+                        }
+                    case LiveMode.Dead: Die(autoDespawn, autoRespawn); break;
+                    case LiveMode.Despawned: Despawn(); break;
+                }
+                
+                if ((new_mode.Controllable || oldMode.Controllable) && oldMode.controlMode != new_mode.controlMode)
+                {
+                    onControl.Invoke(new_mode.Controllable);
+                }   
+            }
+        }
+        public void SetNonNullActive(Component component, bool active)
+        {
+            if (component != null)
+                component.gameObject.SetActive(active);
+        }
+        public void SetNonNullEnabled(Behaviour component, bool enabled)
+        {
+            if (component != null)
+                component.enabled = enabled;
+        }
+        public void SetNonNullEnabled(Collider collider, bool enabled)
+        {
+            if (collider != null)
+                collider.enabled = enabled;
         }
 
-        public void Respawn(bool finishCoroutine = false, UnityAction _afterAction=null)
-        {
-            Print($"Respawn {Name}", debug);
-            if (finishCoroutine)
-                autoRespawnCoroutine = null;
-            body.SetPositionAndRotation(spawn.position, spawn.rotation);
-            body.localScale = spawn.localScale;
-            SetDisplayable(true);
-            Refresh();
-            onRespawn.Invoke();
-        }
-
-        public void Despawn(bool finishCoroutine = false, UnityAction afterAction=null)
-        {
-            Print($"Despawn {Name}", true);
-            if (finishCoroutine)
-                autoDespawnCoroutine = null;
-            SetDisplayable(false);
-            afterAction?.Invoke();
-            onDespawn.Invoke();
-        }
-
-        // Updates
+        // Status Ticks
 
         private void Update()
         {
             StatusTick();
         }
-
-
-        // Statuses
 
         private void StatusTick()
         {
@@ -265,116 +308,91 @@ namespace Body
             }
         }
 
-        // State
-        public void ConnectControl()
-        {
-            if (moveReticle != null) onControl.AddListener(moveReticle.gameObject.SetActive);
-            if (virtualCamera != null) onSpectate.AddListener(virtualCamera.gameObject.SetActive);
-            if (interactor != null) onControl.AddListener(DoEnable(interactor));
-            if (pips != null) onControl.AddListener((bool controllable) => { pips.SetHideMode(controllable ? HideMode.Always : HideMode.Sometimes); });
-        }
-        private UnityAction<bool> DoEnable(Behaviour behaviour, bool disable = false) { return (bool enable) => { behaviour.enabled = enable && !disable; }; }
-
-        public void SetDisplayable(bool _displayable)
-        {
-            artRenderer.gameObject.SetActive(_displayable);
-        }
+        // Controllabe, Spectatable, Displayable
 
         public void SetSpectatable(bool _spectatable)
         {
-            onSpectate.Invoke(_spectatable);
-        }
-
-        public void SetControllable(bool _controllable)
-        {
-            if(GetComponent<EnemyAI>())
+            if (!_spectatable)
             {
-                enemyAI.Enabled = !_controllable;
-                
+                Print($"Do not spectate {Name}.", debug);
+                orbitalCamera.gameObject.SetActive(false);
+                aimCamera.gameObject.SetActive(false);
+            }
+            else if (PrimaryTargetingMethod(out var method))
+            {
+                Print($"Spectate {Name} based on primary targeting method: {method}", debug);
+                orbitalCamera.gameObject.SetActive(method != TargetingMethod.AimBased);
+                aimCamera.gameObject.SetActive(method == TargetingMethod.AimBased);
             }
             else
             {
-                brain.Enabled = !_controllable;
+                Print($"Spectate {Name} using default camera (orbital).", debug);
+                aimCamera.gameObject.SetActive(false);
+                orbitalCamera.gameObject.SetActive(true);
             }
-            
-            controllable = _controllable;
-            onControl.Invoke(_controllable);
         }
 
-        public void SetBrainable(bool brainable)
-        {
-            if(GetComponent<EnemyAI>())
-            {
-                enemyAI.Enabled = brainable;
-            }
-            else
-            {
-                brain.Enabled = brainable;
-            }
-            
-            movement.enabled = brainable;
-        }
-
-
-        // Life and Death
-
-        private void ConnectAlive()
-        {
-            if(GetComponent<EnemyAI>())
-            {
-                onAlive.AddListener((bool alive) => { enemyAI.Alive = alive; });
-            }
-            else
-            {
-                onAlive.AddListener((bool alive) => { brain.Alive = alive; });
-            }
-            
-            onAlive.AddListener(DoEnable(movement));
-            onAlive.AddListener(DoEnable(caster));
-
-            if (artRenderer != null) onAlive.AddListener((bool alive) => { artRenderer.Dead = !alive; });
-            if (aliveCollider != null) onAlive.AddListener((bool alive) => { aliveCollider.enabled = alive; });
-            if (deadCollider != null) onAlive.AddListener((bool alive) => { deadCollider.enabled = alive; });
-        }
+        // Life, Death and Spawning
 
         private Coroutine autoRespawnCoroutine;
         private Coroutine autoDespawnCoroutine;
+
+        public void Die(bool autoDespawn, bool autoRespawn)
+        {
+            // Timers
+            void respawnAfterDelay() => autoRespawnCoroutine ??= CallAfterDelay(TriggerRespawn, autoRespawnDelay);
+            if (autoDespawn)
+                autoDespawnCoroutine ??= CallAfterDelay(TriggerDespawn, autoDespawnDelay, respawnAfterDelay);
+            else if (autoRespawn)
+                respawnAfterDelay();
+
+            Emotion = "dead";
+            onDeath.Invoke(this);
+        }
+
+        public void Refresh()
+        {
+            CurrentHealth = MaxHealth;
+            Emotion = "neutral";
+        }
+
+        public void TriggerRespawn(bool finishCoroutine = false, UnityAction afterAction = null)
+        {
+            if (finishCoroutine)
+                autoRespawnCoroutine = null;
+            SetMode(LiveMode.Alive);
+            afterAction?.Invoke();
+        }
+        public void Respawn()
+        {
+            Print($"Respawn {Name}", debug);
+            body.SetPositionAndRotation(spawn.position, spawn.rotation);
+            body.localScale = spawn.localScale;
+            //SetDisplayable(true);
+            Refresh();
+            onRespawn.Invoke();
+        }
+
+        public void TriggerDespawn(bool finishCoroutine = false, UnityAction afterAction = null)
+        {
+            if (finishCoroutine)
+                autoDespawnCoroutine = null;
+            SetMode(LiveMode.Despawned);
+            afterAction?.Invoke();
+        }
+        public void Despawn()
+        {
+            Print($"Despawn {Name}", true);
+            //SetDisplayable(false);
+            onDespawn.Invoke();
+        }
         
-        public void SetAlive(bool alive)
-        {
-            SetAlive(alive, autoDespawn, autoRespawn);
-        }
-        public void SetAlive(bool alive, bool autoDespawn, bool autoRespawn)
-        {
-            movement.SetMoveVector(new());
-            bool died = !alive && this.alive;
-            this.alive = alive;
-            onAlive.Invoke(alive);
-            if (died)
-            {
-                void respawnAfterDelay() => autoRespawnCoroutine ??= CallAfterDelay(Respawn, autoRespawnDelay);
-
-                // Timers
-                if (autoDespawn)
-                    autoDespawnCoroutine ??= CallAfterDelay(Despawn, autoDespawnDelay, respawnAfterDelay);
-                else if (autoRespawn)
-                    respawnAfterDelay();
-                
-                // Events
-                Emotion = "dead";
-                onDeath.Invoke(this);
-            }
-            else
-            {
-                Emotion = "neutral";
-            }
-        }
-
-        public Coroutine CallAfterDelay(UnityAction<bool, UnityAction> action, float delay, UnityAction afterAction=null)
+        // Time Helpers
+        public Coroutine CallAfterDelay(UnityAction<bool, UnityAction> action, float delay, UnityAction afterAction = null)
         {
             return StartCoroutine(CallAfterDelayCoroutine(action, delay, afterAction));
         }
-        public IEnumerator CallAfterDelayCoroutine(UnityAction<bool, UnityAction> action, float delay, UnityAction afterAction=null)
+        public IEnumerator CallAfterDelayCoroutine(UnityAction<bool, UnityAction> action, float delay, UnityAction afterAction = null)
         {
             yield return new WaitForSeconds(delay);
             action.Invoke(true, afterAction);
@@ -401,7 +419,7 @@ namespace Body
                 artRenderer.Hit();
                 onDmg.Invoke();
             }
-            if (amount <= 0f && alive) SetAlive(false);
+            if (amount <= 0f && Alive) SetMode(LiveMode.Dead);
         }
 
         public void SetDamagePosition(Vector3 damagePosition)
@@ -411,6 +429,7 @@ namespace Body
 
         public void TakeDamage(int damageAmount, Identity id=Identity.Neutral)
         {
+            Print($"{Name} taking {damageAmount} from {id}. ({RelativeIdentity(id, Identity) != Identity.Friend})", true);
             if (RelativeIdentity(id, Identity) != Identity.Friend)
             {
                 CurrentHealth -= damageAmount;
@@ -432,41 +451,60 @@ namespace Body
         [ButtonMethod]
         public void TestTakeDamage()
         {
-            print($"Dealing {testDamageAmount} Damage from {testDamageIdentity} Identity.");
+            Print($"Dealing {testDamageAmount} Damage from {testDamageIdentity} Identity.", debug);
             TakeDamage(testDamageAmount, testDamageIdentity);
         }
         [ButtonMethod]
         public void TestHealDamage()
         {
-            print($"Healing {testDamageAmount} Damage from {testDamageIdentity} Identity.");
+            Print($"Healing {testDamageAmount} Damage from {testDamageIdentity} Identity.", debug);
             HealDamage(testDamageAmount, testDamageIdentity);
         }
 
         // Castables
 
-        public readonly CastableItem[] castableItems = new CastableItem[5];
-        public readonly Castable[] castables = new Castable[5];
+        [Foldout("Casting", true)]
+        [ReadOnly] public CastableItem[] castableItems = new CastableItem[5];
+        [Foldout("Casting")][ReadOnly] public Castable[] castables = new Castable[5];
         public void InitializeCastables()
         {
             if (Loadout != null)
             {
-                for (int i = 0; i < Mathf.Min(Loadout.abilities.Count, 2); i++)
-                {
-                    SetCastable(i, Loadout.abilities[i]);
-                }
                 for (int i = 0; i < Mathf.Min(Loadout.weapons.Count, 2); i++)
                 {
-                    SetCastable(2 + i, Loadout.weapons[i]);
+                    SetCastable(i, Loadout.weapons[i]);
+                }
+                for (int i = 0; i < Mathf.Min(Loadout.abilities.Count, 2); i++)
+                {
+                    SetCastable(2 + i, Loadout.abilities[i]);
                 }
                 SetCastable(4, Loadout.mobility);
             }
             if (brain != null)
-            {
                 brain.RegisterCastables(castableItems);
-            }
-            if(enemyAI != null)
+        }
+
+        public bool PrimaryTargetingMethod(out TargetingMethod method)
+        {
+            if (castableItems?.Length > 0)
             {
-                enemyAI.RegisterCastables(castableItems);
+                CastableItem item = castableItems[(int)Loadout.Slot.Weapon1];
+                Awarn.IsNotNull(item, $"Weapon 1 Slot on {Name} is null.");
+                if (item != null)
+                {
+                    method = item.targetingMethod;
+                    return true;
+                }
+                else
+                {
+                    method = TargetingMethod.DirectionBased;
+                    return false;
+                }
+            }
+            else
+            {
+                method = TargetingMethod.DirectionBased;
+                return false;
             }
         }
 
@@ -493,41 +531,14 @@ namespace Body
             }
         }
 
-        public void TriggerCastable(ICastable castable)
-        {
-            if (caster != null && caster.enabled)
-            {
-                caster.Castable = castable;
-                caster.Trigger();
-            }
-        }
-
-        public void ReleaseCastable(ICastable castable)
-        {
-            if (caster != null && caster.enabled && caster.Castable == castable)
-            {
-                caster.Release();
-            }
-            else castable?.Release();
-        }
-
-        public void SetAimModeActive(bool active)
-        {
-            if (virtualCamera.TryGetComponent(out CinemachineInputProvider cip))
-            {
-                cip.enabled = !active;
-            }
-            aimActive = active;
-        }
-
-
-        // Actions
-        public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); caster.SetFallback(movement.moveVector.FullY(), true); }
-        public void Aim(Vector2 input, bool aim=false) { if (aimActive || aim) caster.SetVector(input.FullY()); }
-        public void TriggerCastable(int idx) { TriggerCastable(castables[idx]); }
-        public void ReleaseCastable(int idx) { ReleaseCastable(castables[idx]); }
-        public void Interact() { talker.Talk(); }
-        public void AimMode(bool active) { SetAimModeActive(active); }
+        //public void SetAimModeActive(bool active)
+        //{
+        //    if (virtualCamera.TryGetComponent(out CinemachineInputProvider cip))
+        //    {
+        //        cip.enabled = !active;
+        //    }
+        //    aimActive = active;
+        //}
 
 
         // Debugging

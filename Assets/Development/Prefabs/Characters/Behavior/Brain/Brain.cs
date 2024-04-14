@@ -10,7 +10,6 @@ namespace Body.Behavior
     using static ContextSteering.CSContext;
     using static Tree.LeafNode;
     using HotD.Castables;
-    using static Yarn.Compiler.BasicBlock;
 
     public class Brain : BaseMonoBehaviour, ITimeScalable
     {
@@ -32,7 +31,7 @@ namespace Body.Behavior
         public bool Alive
         {
             get => controller.Alive;
-            set => controller.Alive=value;
+            set { if (controller != null) controller.Alive = value; }
         }
 
         public Identity Identity
@@ -65,11 +64,11 @@ namespace Body.Behavior
 
         // Tree
         public enum Type { Leaf, Condition, Selector, Sequence }
-        public enum Action { Idle, Patrol, Chase, Duel }
+        public enum Action { Idle, Chase, Duel }
         private Dictionary<Action, Tick> actions;
         public Dictionary<Action, Tick> Actions
         {
-            get => actions ??= new Dictionary<Action, Tick>() { { Action.Idle, Idle }, { Action.Patrol, Patrol }, { Action.Chase, Chase }, { Action.Duel, Duel } };
+            get => actions ??= new Dictionary<Action, Tick>() { { Action.Idle, Idle }, { Action.Chase, Chase }, { Action.Duel, Duel } };
         }
         public BehaviorTree tree;
         [HideInInspector] public BehaviorNode root;
@@ -92,7 +91,7 @@ namespace Body.Behavior
         public bool debug = false;
 
         // Initialization
-        public virtual void Awake()
+        private void Awake()
         {
             if (debug) print("Awake!");
             if (TryGetComponent(out character))
@@ -103,9 +102,9 @@ namespace Body.Behavior
                 body = transform;
             if (body != null)
             {
-                if (agent == null && body.TryGetComponent(out agent))
+                if (agent != null || body.TryGetComponent(out agent))
                     agent.baseOffset = baseOffset;
-                if (controller == null && body.TryGetComponent(out controller))
+                if (controller != null || body.TryGetComponent(out controller))
                     controller.Context.castableContext = castableMap;
                 if (pathFinder == null)
                     body.TryGetComponent(out pathFinder);
@@ -123,7 +122,7 @@ namespace Body.Behavior
 
 
         // Update
-        public virtual void Update()
+        private void Update()
         {
             //if (debug) Debug.Log("Updating Brain");
             if (status == BehaviorNode.Status.FAILURE)
@@ -196,19 +195,11 @@ namespace Body.Behavior
             return BehaviorNode.Status.SUCCESS;
         }
 
-        //Used by enemy AI
-        public BehaviorNode.Status Patrol()
-        {
-            TargetNavigation();
-
-            return BehaviorNode.Status.SUCCESS;
-        }
-
         public BehaviorNode.Status Chase()
         {
             if (!HasFoeInRange(Range.InRange)) return BehaviorNode.Status.FAILURE;
 
-            //if (debug) Debug.Log("Chasing...");
+            if (debug) Debug.Log("Chasing...");
 
             if (useAgent)
             {
@@ -242,9 +233,25 @@ namespace Body.Behavior
 
             if (debug) Debug.Log("Dueling...");
 
-            if (debug) print("Trying to attack");
-            character.Aim(-controller.CurrentVector.normalized, true);
+            if (!useAgent)
+            {
+                if (debug) print("Trying to attack");
+                character.Aim(-controller.CurrentVector.normalized, true);
 
+                // Find the closest-range weapon that I can currently use, then shoot with it.
+                int closestIdx = FindClosestRangeUsableCastable();
+                if (closestIdx >= 0)
+                {
+                    if (debug) print("Actually attacking!");
+                    character.TriggerCastable(closestIdx);
+                }
+            }
+
+            return BehaviorNode.Status.SUCCESS;
+        }
+
+        public int FindClosestRangeUsableCastable()
+        {
             int closest = int.MaxValue;
             int closestIdx = -1;
             for (int i = 0; i < character.castableItems.Length; i++)
@@ -254,15 +261,13 @@ namespace Body.Behavior
                 {
                     if (item.context.vector.deadzone.y < closest)
                     {
+                        if (debug) print("Found something to attack with...");
                         closest = (int)item.context.vector.deadzone.y;
                         closestIdx = i;
                     }
                 }
             }
-            if (closestIdx >= 0)
-                character.TriggerCastable(closestIdx);
-
-            return BehaviorNode.Status.SUCCESS;
+            return closestIdx;
         }
 
 
@@ -271,7 +276,6 @@ namespace Body.Behavior
         public void TargetNavigation()
         {
             pathFinder.target = target;
-
             if (pathFinder.NextPoint(out Vector3 destination))
             {
                 controller.SetDestination(destination, pathFinder.pathLength);

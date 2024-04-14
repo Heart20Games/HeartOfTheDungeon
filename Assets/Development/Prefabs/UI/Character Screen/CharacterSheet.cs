@@ -61,15 +61,19 @@ public class CharacterSheet : BaseMonoBehaviour
         Assert.IsNotNull(character.loadout);
         foreach (CastableItem item in character.loadout.All())
         {
-            if (item.stats != null && item.stats.dealDamage)
+            if (item != null)
             {
-                CastableField field = Instantiate(castablePrefab, castableParent);
-                castables.Add(field);
-                field.CharacterName = character.characterName;
-                field.CastableName = item.name;
-                field.FinalName = "Damage";
-                field.SetAttribute(item.stats.damage);
+                if (item.stats != null && item.stats.dealDamage)
+                {
+                    CastableField field = Instantiate(castablePrefab, castableParent);
+                    castables.Add(field);
+                    field.CharacterName = character.characterName;
+                    field.CastableName = item.name;
+                    field.FinalName = "Damage";
+                    field.SetAttribute(item.stats.damage);
+                }
             }
+            else Debug.LogWarning($"Null item found in loadout {character.loadout.name}.");
         }
     }
 

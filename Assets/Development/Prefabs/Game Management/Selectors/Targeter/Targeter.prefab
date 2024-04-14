@@ -25,6 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2761415752655738766}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -36,7 +37,6 @@ Transform:
   - {fileID: 3200069100017196564}
   - {fileID: 6433256099768820846}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1112764877865052027
 MonoBehaviour:
@@ -113,24 +113,20 @@ MonoBehaviour:
   finder: {fileID: 0}
   targetLock: 0
   onTargetSet:
-    enter:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 4217905835576394470}
-          m_TargetAssemblyTypeName: FModEventPlayer, Assembly-CSharp
-          m_MethodName: PlayEvent
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: UI_EnemySelect
-            m_BoolArgument: 0
-          m_CallState: 2
-    exit:
-      m_PersistentCalls:
-        m_Calls: []
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4217905835576394470}
+        m_TargetAssemblyTypeName: FModEventPlayer, Assembly-CSharp
+        m_MethodName: PlayEvent
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: UI_EnemySelect
+          m_BoolArgument: 0
+        m_CallState: 2
   minDistance: 5
   maxDistance: 10
   rotationSpeed: 5
@@ -173,13 +169,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5318590218804434489}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 525013186208864604}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6919132822293175954
 GameObject:
@@ -205,13 +201,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6919132822293175954}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -9.185928, y: 7.934334, z: 0.011306763}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 525013186208864604}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6371564159870136585
 MonoBehaviour:

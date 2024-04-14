@@ -275,6 +275,7 @@ Transform:
   - {fileID: 6674315633517961933}
   - {fileID: 2565163089202787027}
   - {fileID: 4975229402847224804}
+  - {fileID: 4554226873366508507}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1558954319164951560
@@ -291,7 +292,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   portraits: {fileID: 11400000, guid: 8c8d32841b7b3e54f8a84f28d86d411b, type: 2}
   identity: 5
-  emotion: neutral
+  emotion:
+    name: Emotion
+    current:
+      debug: 0
+      name: Emotion Current
+      baseValue: 
+      value: neutral
+  onPortrait:
+    m_PersistentCalls:
+      m_Calls: []
+  onImage:
+    m_PersistentCalls:
+      m_Calls: []
+  health:
+    name: Health
+    current:
+      debug: 0
+      name: Health Current
+      baseValue: 0
+      value: 1
+    max:
+      debug: 0
+      name: Health Max
+      baseValue: 0
+      value: 1
+  armor:
+    name: Armor
+    current:
+      debug: 0
+      name: Armor Current
+      baseValue: 0
+      value: 0
+    max:
+      debug: 0
+      name: Armor Max
+      baseValue: 0
+      value: 0
 --- !u!114 &6397855051937350972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,6 +465,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7184025033571686437}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &3768621718914703536
 MonoBehaviour:
@@ -593,6 +642,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: Cinemachine.CinemachineImpulseSource, Cinemachine
         m_MethodName: GenerateImpulse
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7184025033571686437}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1520,3 +1581,74 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff61dc48762d3334b98a463b27516b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &6926087754511665503
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3935100993953963276}
+    m_Modifications:
+    - target: {fileID: 264763127786377594, guid: b2f069d9fa8fa0240b94c956edf8b40c, type: 3}
+      propertyPath: m_Name
+      value: AOEIndicatorNeutralDamageSphere
+      objectReference: {fileID: 0}
+    - target: {fileID: 264763127786377594, guid: b2f069d9fa8fa0240b94c956edf8b40c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6858337006650768004, guid: b2f069d9fa8fa0240b94c956edf8b40c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6858337006650768004, guid: b2f069d9fa8fa0240b94c956edf8b40c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6858337006650768004, guid: b2f069d9fa8fa0240b94c956edf8b40c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6858337006650768004, guid: b2f069d9fa8fa0240b94c956edf8b40c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 6858337006650768004, guid: b2f069d9fa8fa0240b94c956edf8b40c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 6858337006650768004, guid: b2f069d9fa8fa0240b94c956edf8b40c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6858337006650768004, guid: b2f069d9fa8fa0240b94c956edf8b40c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6858337006650768004, guid: b2f069d9fa8fa0240b94c956edf8b40c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6858337006650768004, guid: b2f069d9fa8fa0240b94c956edf8b40c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6858337006650768004, guid: b2f069d9fa8fa0240b94c956edf8b40c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b2f069d9fa8fa0240b94c956edf8b40c, type: 3}
+--- !u!4 &4554226873366508507 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6858337006650768004, guid: b2f069d9fa8fa0240b94c956edf8b40c, type: 3}
+  m_PrefabInstance: {fileID: 6926087754511665503}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7184025033571686437 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 264763127786377594, guid: b2f069d9fa8fa0240b94c956edf8b40c, type: 3}
+  m_PrefabInstance: {fileID: 6926087754511665503}
+  m_PrefabAsset: {fileID: 0}

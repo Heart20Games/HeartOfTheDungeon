@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
+using static HotD.CharacterModes;
 
 public class Party : BaseMonoBehaviour
 {
@@ -107,7 +108,7 @@ public class Party : BaseMonoBehaviour
             character.onDmg.AddListener(CharacterDamaged);
             character.onDeath.AddListener(CharacterDied);
             character.onControl.AddListener((bool controlled) => CharacterControlled(controlled, character));
-            if (debug) print($"Character {character.name} connected to party {name}.");
+            Print($"Character {character.name} connected to party {name}.", debug);
         }
     }
 
@@ -133,8 +134,7 @@ public class Party : BaseMonoBehaviour
     {
         foreach (Character character in members)
         {
-            character.SetAlive(false, false, false);
-            character.Despawn();
+            character.SetMode(LiveMode.Despawned);
         }
     }
 
@@ -153,7 +153,7 @@ public class Party : BaseMonoBehaviour
 
     public void SetFollowTarget(Transform target)
     {
-        if (debug) print($"Set {name}'s follow target: {(transform == null ? "none" : transform.name)}");
+        Print($"Set {name}'s follow target: {(transform == null ? "none" : transform.name)}", debug);
         if (followTargeter.TryGetComponent(out Brain brain))
             brain.Target = target;
     }
@@ -170,7 +170,7 @@ public class Party : BaseMonoBehaviour
     {
         if (aggro)
         {
-            if (debug) print($"{name} Aggroed!");
+            Print($"{name} Aggroed!", debug);
             Tightness = tightnessAggro;
             aggroedThisFrame = true;
             foreach (var character in members)
@@ -188,7 +188,7 @@ public class Party : BaseMonoBehaviour
         }
         else
         {
-            if (debug) print($"{name} No Longer Aggroed.");
+            Print($"{name} No Longer Aggroed.", debug);
             Tightness = tightnessIdle;
             aggroed = false;
             TargetParty = null;
@@ -211,7 +211,7 @@ public class Party : BaseMonoBehaviour
 
     public void RivalPartyDied()
     {
-        if (debug) print($"Rival Party {targetParty} Died.");
+        Print($"Rival Party {targetParty} Died.", debug);
         if (isMainParty)
             Refresh();
         SetAggroed(false);
@@ -219,7 +219,7 @@ public class Party : BaseMonoBehaviour
 
     public void CharacterControlled(bool controllable, Character controlled)
     {
-        if (debug) print($"Control changed for {controlled.body.name}.");
+        Print($"Control changed for {controlled.body.name}.", debug);
         if (controllable)
         {
             if (mainParty)
@@ -230,7 +230,7 @@ public class Party : BaseMonoBehaviour
             {
                 foreach (var character in members)
                 {
-                    if (!character.controllable)
+                    if (!character.Controllable)
                         Leader = character;
                 }
             }
@@ -245,23 +245,23 @@ public class Party : BaseMonoBehaviour
 
     public void CharacterDamaged()
     {
-        if (debug) print($"{name} Damaged");
+        Print($"{name} Damaged", debug);
         CharacterAggroed();
     }
 
     public void CharacterDied(Character character)
     {
-        Assert.IsTrue(character.alive == false);
-        if (debug) print($"Character {character.body.name} Died.");
+        Assert.IsTrue(character.Alive == false);
+        Print($"Character {character.body.name} Died.", debug);
         foreach (var other in members)
         {
-            if (other.alive)
+            if (other.Alive)
             {
-                print($"Character {other.body.name} is still alive.");
+                Print($"Character {other.body.name} is still alive.", debug);
                 return;
             }
         }
-        if (debug) print($"Party {name} Died.");
+        Print($"Party {name} Died.", debug);
         allDead = true;
         SetAggroed(false);
         onAllDead.Invoke();
