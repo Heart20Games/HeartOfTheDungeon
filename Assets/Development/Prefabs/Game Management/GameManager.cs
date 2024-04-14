@@ -220,13 +220,20 @@ namespace HotD
 
         public void SetMode(InputMode inputMode)
         {
-            if (debug) print($"Change InputMode to {inputMode} (in bank? {(InputBank.ContainsKey(inputMode) ? "yes" : "no")})");
-            if (InputBank.TryGetValue(inputMode, out GameMode mode))
-                SetMode(mode);
+            if (inputMode == InputMode.LockOn && !targeter.HasTarget())
+            {
+                return;
+            }
             else
             {
-                Debug.LogWarning($"Can't find game mode for \"{inputMode}\"");
-                SetMode(InputMode.Character);
+                if (debug) print($"Change InputMode to {inputMode} (in bank? {(InputBank.ContainsKey(inputMode) ? "yes" : "no")})");
+                if (InputBank.TryGetValue(inputMode, out GameMode mode))
+                    SetMode(mode);
+                else
+                {
+                    Debug.LogWarning($"Can't find game mode for \"{inputMode}\"");
+                    SetMode(InputMode.Character);
+                }
             }
         }
 
@@ -302,8 +309,8 @@ namespace HotD
             {
                 TargetFinder newFinder = mode.Finder;
                 TargetFinder oldFinder = lastMode.Finder;
-                if (mode.Finder != null)
-                    targeter.Finder = mode.Finder;
+                if (newFinder != null)
+                    targeter.Finder = newFinder;
                 if (oldFinder != null && oldFinder != newFinder)
                     targeter.Finder = null;
                 targeter.SetTargetLock(mode.targetLock);
@@ -337,12 +344,12 @@ namespace HotD
 
             if (selectable == null)
             {
-                if (debug) print($"Target deselected: {selectedTarget}");
+                Print($"Target deselected: {selectedTarget}", debug);
                 hud.SetTarget(null);
             }
             else
             {
-                if (debug) print($"Target selected: {selectable}");
+                Print($"Target selected: {selectable}", debug);
                 if (selectable.source.TryGetComponent<AIdentifiable>(out var identifiable))
                 {
                     hud.SetTarget(identifiable);
