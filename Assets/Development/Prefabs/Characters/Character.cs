@@ -449,13 +449,13 @@ namespace Body
         [ButtonMethod]
         public void TestTakeDamage()
         {
-            print($"Dealing {testDamageAmount} Damage from {testDamageIdentity} Identity.");
+            Print($"Dealing {testDamageAmount} Damage from {testDamageIdentity} Identity.", debug);
             TakeDamage(testDamageAmount, testDamageIdentity);
         }
         [ButtonMethod]
         public void TestHealDamage()
         {
-            print($"Healing {testDamageAmount} Damage from {testDamageIdentity} Identity.");
+            Print($"Healing {testDamageAmount} Damage from {testDamageIdentity} Identity.", debug);
             HealDamage(testDamageAmount, testDamageIdentity);
         }
 
