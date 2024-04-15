@@ -3,6 +3,7 @@ using CustomUnityEvents;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Selection
 {
@@ -33,7 +34,7 @@ namespace Selection
                     finder.enabled = !targetLock;
             }
         }
-        public BinaryEvent<ASelectable> onTargetSet;
+        public UnityEvent<ASelectable> onTargetSet;
 
         private void Awake()
         {
@@ -54,7 +55,7 @@ namespace Selection
         // New Parties
         public void AddTarget(ASelectable selectable)
         {
-            print("Adding target!");
+            Print("Adding target!", debug);
             if (!selectableBank.Contains(selectable))
             {
                 selectableBank.Add(selectable);
@@ -63,7 +64,7 @@ namespace Selection
 
         public void RemoveTarget(ASelectable selectable)
         {
-            print("Removing target!");
+            Print("Removing target!", debug);
             selectableBank.Remove(selectable);
         }
 
@@ -77,7 +78,7 @@ namespace Selection
         [ReadOnly][SerializeField] private Vector2 lookVector = Vector2.zero;
         public void Look(Vector2 vector)
         {
-            if (debug) print($"Targeter Looking ({vector})");
+            Print($"Targeter Looking ({vector})", debug);
             lookVector = vector;
             cmCollider.m_MinimumDistanceFromTarget = minDistance;
             cmCollider.m_DistanceLimit = maxDistance;
@@ -89,7 +90,7 @@ namespace Selection
             {
                 if (lookVector != Vector2.zero)
                 {
-                    if (debug) print("Targeter Zooming");
+                    Print("Targeter Zooming", debug);
 
                     //virtualCamera.zoom += zoomSpeed * Time.fixedDeltaTime * Mathf.Sign(lookVector.y);
                     //cmCollider.m_DistanceLimit = Mathf.Clamp(cmCollider.m_DistanceLimit, cmCollider.m_MinimumDistanceFromTarget, cmCollider.m_DistanceLimit);
@@ -137,27 +138,44 @@ namespace Selection
             if (targetLock)
             {
                 Select();
-                onTargetSet.enter.Invoke(selected);
+                onTargetSet.Invoke(selected);
                 targetGroup.m_Targets[0].target = finder == null ? null : finder.transform;
                 targetGroup.m_Targets[1].target = selected == null ? null : selected.transform;
             }
             else
             {
-                onTargetSet.exit.Invoke(selected);
+                onTargetSet.Invoke(null);
                 DeSelect();
             } 
         }
 
+        public void SwitchTargets(int newIdx)
+        {
+            // Set selected to the next nearest selectable in the given direction.
+            DeSelect();
+            finder.TargetIdx = newIdx % finder.selectables.Count;
+            Select();
+            onTargetSet.Invoke(selected);
+        }
         public void SwitchTargets(bool left)
         {
-            if (debug) print($"Switch targets {(left ? "left" : "right")}.");
-            if (finder.selectables.Count > 1)
+            Print($"Switch targets {(left ? "left" : "right")}.", debug);
+            int newIdx = finder.TargetIdx + (left ? -1 : 1);
+            if (newIdx > 0 && finder.selectables.Count > newIdx)
             {
-                // Set selected to the next nearest selectable in the given direction.
-                DeSelect();
-                finder.TargetIdx += (left ? -1 : 1);
-                Select();
-                onTargetSet.enter.Invoke(selected);
+                SwitchTargets(newIdx);
+            }
+        }
+
+        public void TargetLost(bool stillThere=true)
+        {
+            Print($"Target lost? {(!stillThere ? "Yes" : "No")}", debug);
+            if (!stillThere)
+            {
+                if (finder.selectables.Count > 1)
+                    SwitchTargets(finder.TargetIdx + 1);
+                else
+                    DeSelect();
             }
         }
 
@@ -174,11 +192,18 @@ namespace Selection
         {
             base.Select();
             if (selected != null)
+            {
                 targetGroup.m_Targets[1].target = selected.transform;
+                selected.onIsSelectable.AddListener(TargetLost);
+            }
         }
 
         public override void DeSelect()
         {
+            if (selected != null)
+            {
+                selected.onIsSelectable.RemoveListener(TargetLost);
+            }
             base.DeSelect();
             targetGroup.m_Targets[1].target = null;
         }

@@ -1119,6 +1119,8 @@ MonoBehaviour:
       name: 
       scene: 
       checkpoint: 
+      unsavedPartiesDefeated: []
+      unsavedYarnNodesReached: []
     story:
       name: 
       sceneProgress: []
@@ -1155,7 +1157,9 @@ MonoBehaviour:
   story: {fileID: 11400000, guid: 0559e157294009040a2b647b71fcd1a2, type: 2}
   checkpoints: []
   parties: []
+  dialogueTriggers: []
   alwaysSpawnAll: 1
+  alwaysResetDialogues: 0
   debug: 0
 --- !u!1001 &2759224181694214667
 PrefabInstance:
@@ -1210,6 +1214,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
+      propertyPath: onTargetSet.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
       propertyPath: onTargetSet.exit.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -1218,8 +1226,24 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
+      propertyPath: onTargetSet.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
+      propertyPath: onTargetSet.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 8636156924694284206}
+    - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
+      propertyPath: onTargetSet.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
       propertyPath: onTargetSet.enter.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
+      propertyPath: onTargetSet.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnTargetSelected
       objectReference: {fileID: 0}
     - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
       propertyPath: onTargetSet.exit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1246,6 +1270,10 @@ PrefabInstance:
       value: OnTargetSelected
       objectReference: {fileID: 0}
     - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
+      propertyPath: onTargetSet.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: HotD.Game, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
       propertyPath: onTargetSet.exit.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Game, Assembly-CSharp
       objectReference: {fileID: 0}
@@ -1256,6 +1284,10 @@ PrefabInstance:
     - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
       propertyPath: onTargetSet.enter.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
       value: UI_EnemySelect
+      objectReference: {fileID: 0}
+    - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
+      propertyPath: onTargetSet.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
       propertyPath: onTargetSet.exit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName

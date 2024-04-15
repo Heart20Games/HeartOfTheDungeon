@@ -1,6 +1,7 @@
 using HotD.Castables;
 using UnityEngine.VFX;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CastedVFX : Casted
 {
@@ -8,12 +9,21 @@ public class CastedVFX : Casted
     [HideInInspector] public VisualEffect[] visuals;
     [HideInInspector] public MeshRenderer[] meshes;
 
+    public string triggerParameter = "";
+    public string castParameter = "Cast";
+    public string castKey = "";
+
+    public void SetFirepoint(int firepointIdx) { toSetFirepoint.Invoke(firepointIdx); }
+    [HideInInspector] public UnityEvent<int> toSetFirepoint;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
         visuals = GetComponentsInChildren<VisualEffect>();
         meshes = GetComponentsInChildren<MeshRenderer>();
     }
+
+    public bool animatorReset = false;
 
     public bool VisualsEnabled
     {
@@ -30,7 +40,21 @@ public class CastedVFX : Casted
         set
         {
             if (animator != null)
-                animator.enabled = value;
+            {
+                if (!value)
+                {
+                    if (!animatorReset)
+                    {
+                        animator.SetTrigger("Reset");
+                        animatorReset = true;
+                    }
+                }
+                else
+                {
+                    animator.enabled = true;
+                    animatorReset = false;
+                }
+            }
             foreach (var visual in visuals)
                 visual.enabled = value;
             foreach (var mesh in meshes)

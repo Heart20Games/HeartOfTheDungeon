@@ -42,6 +42,13 @@ namespace HotD
             else
                 noDel?.Invoke();
         }
+        public void IsPerformed(InputAction.CallbackContext context, Delegate yesDel, Delegate noDel = null)
+        {
+            if (context.performed)
+                yesDel?.Invoke();
+            else
+                noDel?.Invoke();
+        }
 
 
         // Actions
@@ -148,18 +155,49 @@ namespace HotD
         public void OnDeSelect(InputValue inputValue) { SelectValue(inputValue, false); }
 
         // Lock-On
-        public void OnToggleLockOn(InputValue inputValue)
+        private bool lockOnPressed = false;
+        private void ToggleLockOn()
+        {
+            switch (Input)
+            {
+                case InputMode.LockOn:
+                    TurnOffLockOn(); break;
+                default:
+                    TurnOnLockOn(); break;
+            }
+        }
+        private void TurnOffLockOn()
+        {
+            if (Input == InputMode.LockOn)
+                Input = InputMode.Character;
+        }
+        private void TurnOnLockOn()
+        {
+            if (Targeter.HasTarget())
+                Input = InputMode.LockOn;
+        }
+        public void OnHoldLockOn(InputValue inputValue)
         {
             IsPressed(inputValue, () =>
             {
-                switch (Input)
+                if (!lockOnPressed)
                 {
-                    case InputMode.LockOn:
-                        Input = InputMode.Character; break;
-                    default:
-                        if (Targeter.HasTarget()) Input = InputMode.LockOn; break;
-                };
+                    lockOnPressed = true;
+                    TurnOnLockOn();
+                }
+            }, () =>
+            {
+                if (lockOnPressed)
+                {
+                    lockOnPressed = false;
+                    if (Input == InputMode.LockOn)
+                        TurnOffLockOn();
+                }
             });
+        }
+        public void OnToggleLockOn(InputValue inputValue)
+        {
+            IsPressed(inputValue, ToggleLockOn);
         }
         public void OnSwitchTargets(InputValue inputValue)
         {

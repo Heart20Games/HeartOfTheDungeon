@@ -43,7 +43,6 @@ namespace Body
         public CharacterSettings settings;
         //public bool controllable = true;
         public bool aimActive = false;
-        public bool alive = false;
         [Space]
         public UnityEvent<bool> onControl;
 
@@ -67,6 +66,7 @@ namespace Body
         [Header("Interaction, Selection, and Targeting")]
         public Interactor interactor;
         public TargetFinder targetFinder;
+        public Selectable selectable;
         [HideInInspector] public Talker talker;
 
         // Behaviour
@@ -231,29 +231,35 @@ namespace Body
             else
                 Debug.LogWarning($"Can't find live mode for \"{subMode}\"");
         }
-        public void SetMode(CharacterMode mode)
+        public void SetMode(CharacterMode new_mode)
         {
-            if (this.mode.name != mode.name)
+            if (this.mode.name != new_mode.name)
             {
+                CharacterMode oldMode = this.mode;
+                this.mode = new_mode;
+
                 movement.SetMoveVector(new());
-                brain.Enabled = mode.controlMode == ControlMode.Brain;
-                movement.canMove = mode.moveMode == MovementMode.Active;
-                movement.applyGravity = mode.moveMode != MovementMode.Disabled;
-                SetNonNullActive(artRenderer, mode.displayable);
-                SetNonNullActive(moveReticle, mode.useMoveReticle);
-                SetNonNullEnabled(interactor, mode.useInteractor);
-                SetNonNullEnabled(caster, mode.useCaster);
-                if (pips != null) pips.SetDisplayMode(mode.pipMode);
-                bool alive = mode.liveMode == LiveMode.Alive;
+                brain.Enabled = new_mode.controlMode == ControlMode.Brain;
+                movement.canMove = new_mode.moveMode == MovementMode.Active;
+                movement.applyGravity = new_mode.moveMode != MovementMode.Disabled;
+                SetNonNullActive(artRenderer, new_mode.displayable);
+                SetNonNullActive(moveReticle, new_mode.useMoveReticle);
+                SetNonNullEnabled(interactor, new_mode.useInteractor);
+                SetNonNullEnabled(caster, new_mode.useCaster);
+                if (pips != null) pips.SetDisplayMode(new_mode.pipMode);
+                
+                bool alive = new_mode.liveMode == LiveMode.Alive;
                 brain.Alive = alive;
                 if (artRenderer != null) artRenderer.Dead = !alive;
                 SetNonNullEnabled(aliveCollider, alive);
                 SetNonNullEnabled(deadCollider, !alive);
-                switch (mode.liveMode)
+                selectable.IsSelectable = alive;
+                
+                switch (new_mode.liveMode)
                 {
                     case LiveMode.Alive:
                         {
-                            switch (this.mode.liveMode)
+                            switch (oldMode.liveMode)
                             {
                                 case LiveMode.Dead: Refresh(); break;
                                 case LiveMode.Despawned: Respawn(); break;
@@ -263,11 +269,11 @@ namespace Body
                     case LiveMode.Dead: Die(autoDespawn, autoRespawn); break;
                     case LiveMode.Despawned: Despawn(); break;
                 }
-                if ((mode.Controllable || this.mode.Controllable) && this.mode.controlMode != mode.controlMode)
+                
+                if ((new_mode.Controllable || oldMode.Controllable) && oldMode.controlMode != new_mode.controlMode)
                 {
-                    onControl.Invoke(mode.Controllable);
-                }
-                this.mode = mode;
+                    onControl.Invoke(new_mode.Controllable);
+                }   
             }
         }
         public void SetNonNullActive(Component component, bool active)
@@ -308,16 +314,19 @@ namespace Body
         {
             if (!_spectatable)
             {
+                Print($"Do not spectate {Name}.", debug);
                 orbitalCamera.gameObject.SetActive(false);
                 aimCamera.gameObject.SetActive(false);
             }
             else if (PrimaryTargetingMethod(out var method))
             {
+                Print($"Spectate {Name} based on primary targeting method: {method}", debug);
                 orbitalCamera.gameObject.SetActive(method != TargetingMethod.AimBased);
                 aimCamera.gameObject.SetActive(method == TargetingMethod.AimBased);
             }
             else
             {
+                Print($"Spectate {Name} using default camera (orbital).", debug);
                 aimCamera.gameObject.SetActive(false);
                 orbitalCamera.gameObject.SetActive(true);
             }
@@ -410,7 +419,7 @@ namespace Body
                 artRenderer.Hit();
                 onDmg.Invoke();
             }
-            if (amount <= 0f && alive) SetMode(LiveMode.Dead);
+            if (amount <= 0f && Alive) SetMode(LiveMode.Dead);
         }
 
         public void SetDamagePosition(Vector3 damagePosition)
@@ -420,6 +429,7 @@ namespace Body
 
         public void TakeDamage(int damageAmount, Identity id=Identity.Neutral)
         {
+            Print($"{Name} taking {damageAmount} from {id}. ({RelativeIdentity(id, Identity) != Identity.Friend})", true);
             if (RelativeIdentity(id, Identity) != Identity.Friend)
             {
                 CurrentHealth -= damageAmount;
@@ -441,13 +451,13 @@ namespace Body
         [ButtonMethod]
         public void TestTakeDamage()
         {
-            print($"Dealing {testDamageAmount} Damage from {testDamageIdentity} Identity.");
+            Print($"Dealing {testDamageAmount} Damage from {testDamageIdentity} Identity.", debug);
             TakeDamage(testDamageAmount, testDamageIdentity);
         }
         [ButtonMethod]
         public void TestHealDamage()
         {
-            print($"Healing {testDamageAmount} Damage from {testDamageIdentity} Identity.");
+            Print($"Healing {testDamageAmount} Damage from {testDamageIdentity} Identity.", debug);
             HealDamage(testDamageAmount, testDamageIdentity);
         }
 
