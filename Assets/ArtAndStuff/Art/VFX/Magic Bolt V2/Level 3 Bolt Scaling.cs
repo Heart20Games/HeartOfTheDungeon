@@ -9,6 +9,7 @@ public class Level3BoltScaling : MonoBehaviour
     public VisualEffect bolt;
     public float scaleSpeed;
     public float castDuration;
+    private bool playing = false;
     [SerializeField] private float currentScale;
 
     // Start is called before the first frame update
@@ -22,6 +23,13 @@ public class Level3BoltScaling : MonoBehaviour
     {
         if (isActiveAndEnabled)
         {
+            if (!playing)
+            {
+                bolt.SetFloat("Duration", castDuration);
+                bolt.SetBool("Effect End", false);
+                bolt.Play();
+                playing = true;
+            } 
             if (currentScale < 50f)
             {
                 currentScale += Time.deltaTime * scaleSpeed;
@@ -33,8 +41,11 @@ public class Level3BoltScaling : MonoBehaviour
             }
             else if (currentScale >= 50 && (currentScale - 50) >= castDuration)
             {
+                bolt.Stop();
                 currentScale = 0f;
                 enabled = false;
+                playing = false;
+                bolt.SetBool("Effect End", true);
             }
             else if (currentScale != 0f) currentScale = 0;
         }
