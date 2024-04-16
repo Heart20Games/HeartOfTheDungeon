@@ -382,7 +382,7 @@ namespace Body
         }
         public void Despawn()
         {
-            Print($"Despawn {Name}", true);
+            Print($"Despawn {Name}", debug);
             //SetDisplayable(false);
             onDespawn.Invoke();
         }
