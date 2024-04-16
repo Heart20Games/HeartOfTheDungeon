@@ -88,10 +88,12 @@ public class Level3BoltScaling : BaseMonoBehaviour
     {
         if (playing)
         {
+            Print("Playing...", debug);
             if (!casting)
             {
+                Print("Scaling up...", debug);
                 currentScale += Time.fixedDeltaTime * scaleSpeed;
-                float clampedScale = Mathf.Min(currentScale, 50f);
+                float clampedScale = Mathf.Min(currentScale, maxScale);
                 if (currentScale != clampedScale)
                 {
                     Print("Start the laser!", debug);

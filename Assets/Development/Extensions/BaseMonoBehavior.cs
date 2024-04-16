@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Debug = UnityEngine.Debug;
 
 public interface IBaseMonoBehaviour
 {
@@ -17,7 +18,7 @@ public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
     [Conditional("DEVELOPMENT_BUILD"), Conditional("UNITY_EDITOR")]
     protected void Print(object message, bool debug = true)
     {
-        if (debug) print(message);
+        if (debug) Debug.Log(message, this);
     }
 
     void OnDestroy()
