@@ -13,6 +13,7 @@ public class SimpleController : MonoBehaviour, IControllable
 
     [Header("Control")]
     private bool controllable = false;
+    public bool Alive { get => true; }
     public bool Controllable { get { return controllable; } set { SetControllable(value); } }
     public UnityEvent<bool> onControl;
 
