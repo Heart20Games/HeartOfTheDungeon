@@ -15,6 +15,7 @@ namespace HotD
         public enum LookMode { None, Targeter, Character }
         public enum Menu { None, ControlSheet, CharacterSheet, Dialogue, Death }
         public enum Shader { None, Death }
+        public enum PlayerRespawn { None, OnEnter, OnLeave }
         public static Dictionary<string, GameMode> ModeBank { get { return main.settings.ModeBank; } }
         public static Dictionary<InputMode, GameMode> InputBank { get { return main.settings.InputBank; } }
         public static Dictionary<Menu, GameMode> MenuBank { get { return main.settings.MenuBank; } }
@@ -28,6 +29,7 @@ namespace HotD
             public LookMode lookMode;
             public Menu activeMenu;
             public Shader activeShader;
+            public PlayerRespawn playerRespawn;
             public bool showMouse;
             public bool hudActive;
             public bool dialogueActive;
