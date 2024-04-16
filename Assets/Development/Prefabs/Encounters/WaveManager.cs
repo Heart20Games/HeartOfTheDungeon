@@ -36,6 +36,8 @@ namespace HotD
         public UnityEvent<Party> onPartyDied;
         public UnityEvent<ASelectable> deregisterMember;
 
+        [SerializeField] private bool debug;
+
         public Coroutine coroutine;
 
         public void Start()
@@ -46,12 +48,13 @@ namespace HotD
         // IPartySpawner
         public void RegisterPartyAdder(UnityAction<ASelectable> action)
         {
-            print("Registering...");
+            Print("Registering party member addition receiver...", debug);
             onMemberSpawned.AddListener(action);
         }
 
         public void RegisterPartyRemover(UnityAction<ASelectable> action)
         {
+            Print("Registering party member removal receiver...");
             deregisterMember.AddListener(action);
         }
 
