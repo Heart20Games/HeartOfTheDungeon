@@ -33,6 +33,14 @@ public class Level3BoltScaling : BaseMonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        if (casting)
+        {
+            WindDown();
+        }
+    }
+
     public void ChargeUp()
     {
         Print("Charge the laser!", debug);
@@ -56,16 +64,14 @@ public class Level3BoltScaling : BaseMonoBehaviour
         }
     }
 
-    public void WindDown()
+    public void WindDownCoroutine()
     {
         InterruptWindDown();
         windDownCoroutine = StartCoroutine(DoWindDown(castDuration));
     }
 
-    private IEnumerator DoWindDown(float duration)
+    public void WindDown()
     {
-        Print("Cool off the laser...", debug);
-        yield return new WaitForSeconds(duration);
         Print("Stop the laser!", debug);
         bolt.Stop();
         currentScale = 0f;
@@ -75,6 +81,13 @@ public class Level3BoltScaling : BaseMonoBehaviour
         bolt.SetBool("Effect End", true);
         windDownCoroutine = null;
         UpdateScaling();
+    }
+
+    private IEnumerator DoWindDown(float duration)
+    {
+        Print("Cool off the laser...", debug);
+        yield return new WaitForSeconds(duration);
+        WindDown();
     }
 
     private void UpdateScaling()
@@ -99,7 +112,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
                     Print("Start the laser!", debug);
                     currentScale = clampedScale;
                     casting = true;
-                    WindDown();
+                    WindDownCoroutine();
                 }
             }
 
