@@ -15,7 +15,7 @@ public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
     public Transform Transform => transform;
 
     [Conditional("DEVELOPMENT_BUILD"), Conditional("UNITY_EDITOR")]
-    protected void Print(object message, bool debug = false)
+    protected void Print(object message, bool debug = true)
     {
         if (debug) print(message);
     }
