@@ -12,7 +12,6 @@ namespace HotD.Castables
         private Transform pivot;
         [SerializeField] private Transform weaponLocation;
         [SerializeField] private Transform firingLocation;
-        [SerializeField] private Crosshair crosshair;
         public ICastable castable;
         private Vector3 weapRotation = Vector3.forward;
         [SerializeField] private bool debug;
@@ -20,7 +19,7 @@ namespace HotD.Castables
         [Header("Vector")]
         public float aimDeadzone = 0.01f;
         public Vector3 fallback = new();
-        public Vector3 targetOverride = new();
+        public Vector3 directionOverride = new();
         public Vector3 targetOffset = new();
         public Vector3 aimVector = new();
         public Vector3 castVector = new();
@@ -33,7 +32,6 @@ namespace HotD.Castables
 
         private void Awake()
         {
-            crosshair = FindObjectOfType<Crosshair>();
             if (TryGetComponent(out character))
             {
                 artRenderer = character.artRenderer;
@@ -54,22 +52,7 @@ namespace HotD.Castables
 
         public void AimCaster()
         {
-            Transform camera = Camera.main.transform;
-            Vector3 direction = camera.forward;
-            if (crosshair != null)
-            {
-                direction = crosshair.transform.position - camera.position;
-            }
-            Ray ray = new(camera.position, direction);
-            if (Physics.Raycast(ray, out RaycastHit hitInfo, 1000, ~0, QueryTriggerInteraction.Ignore))
-            {
-                targetOverride = hitInfo.point - firingLocation.position;
-            }
-            else
-            {
-                Vector3 point = camera.position + (camera.forward * 1000);
-                targetOverride = point - firingLocation.position;
-            }
+            directionOverride = Crosshair.GetTargetedPosition() - firingLocation.position;
             UpdateVector();
         }
 
@@ -127,7 +110,7 @@ namespace HotD.Castables
         {
             if (isAimVector) fallback = OrientAimVector(fallback);
             if (debug) print($"Set fallback{(setOverride ? " override" : "")}: {fallback} (on {character.Name})");
-            if (setOverride) targetOverride = fallback;
+            if (setOverride) directionOverride = fallback;
             else this.fallback = fallback;
             SetVector(aimVector);
         }
@@ -140,13 +123,13 @@ namespace HotD.Castables
         }
         public Vector3 UpdateVector()
         {
-            if (targetOverride.magnitude > 0 || fallback.magnitude > 0 || aimVector.magnitude > 0)
+            if (directionOverride.magnitude > 0 || fallback.magnitude > 0 || aimVector.magnitude > 0)
             {
                 if (debug) print($"Set vector: {aimVector} (on {character.Name}");
                 
                 // Prefer aiming, then target override, then fallback (movement).
                 if (aimVector.magnitude > aimDeadzone) castVector = OrientAimVector(aimVector);
-                else if (targetOverride.magnitude > 0) castVector = targetOverride;
+                else if (directionOverride.magnitude > 0) castVector = directionOverride;
                 else castVector = fallback;
 
                 if (castVector.magnitude > 0)
