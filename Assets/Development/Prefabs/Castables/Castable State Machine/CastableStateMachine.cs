@@ -1,37 +1,35 @@
 using Body;
+using HotD.Body;
 using MyBox;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using static Body.Behavior.ContextSteering.CSIdentity;
-using static HotD.Castables.CastableToLocation;
-using static UnityEditor.Progress;
 
 namespace HotD.Castables
 {
-    public enum CastableState { None, Init, Equipped, Activating, Executing }
-    public enum CastableAction { None, Equip, Trigger, Release, End, UnEquip }
+    public enum CastState { None, Init, Equipped, Activating, Executing }
+    public enum CastAction { None, Equip, Trigger, Release, End, UnEquip }
 
     [Serializable]
     public struct StateTransition
     {
-        public CastableAction triggerAction;
-        public CastableState source;
-        public CastableState destination;
+        public CastState source;
+        public CastAction triggerAction;
+        public CastState destination;
     }
 
     public struct StateAction : IEquatable<StateAction>
     {
-        public StateAction(CastableState state, CastableAction action)
+        public StateAction(CastState state, CastAction action)
         {
             this.state = state;
             this.action = action;
         }
-        public CastableState state;
-        public CastableAction action;
+        public CastState state;
+        public CastAction action;
 
         public bool Equals(StateAction other)
         {
@@ -39,151 +37,102 @@ namespace HotD.Castables
         }
     }
 
-    [Serializable]
-    public class CastableFields
-    {
-        [Header("Positioning")]
-        public float rOffset;
-        public Transform weaponArt;
-        public Transform pivot;
-        [ReadOnly] public Character owner;
-        public Vector3 direction;
-        public bool followBody;
-
-        [Header("Settings")]
-        public CastableItem item;
-        public int maxPowerLevel;
-        public int curPowerLevel;
-        public bool casting = false;
-        public bool castOnTrigger = true;
-        public bool castOnRelease = false;
-        public bool unCastOnRelease = false;
-        public List<GameObject> castingMethods = new();
-
-        [Header("Positionables")]
-        public List<ToLocation<Positionable>> toLocations = new();
-        public List<Transform> positionables;
-        public List<CastedVFX> effects = new();
-
-        [Header("Damage")]
-        public Identity identity = Identity.Neutral;
-        public Damager damager;
-
-        [Header("Status Effects")]
-        public List<Status> triggerStatuses;
-        public List<Status> castStatuses;
-        public List<Status> hitStatuses;
-
-        [Header("Diagnostics")]
-        [ReadOnly] public Vector3 pivotDirection;
-    }
-
     [RequireComponent(typeof(Damager))]
-    public class CastableStateMachine : BaseMonoBehaviour
+    public class CastableStateMachine : CastableProperties
     {
-        public CastableFields fields = new();
-
-        // Properties
-        public virtual Vector3 Direction { get => fields.direction; set => fields.direction = value; }
-        public Character Owner { get => fields?.owner; set => fields.owner = value; }
-        public CastableItem Item { get => fields?.item; set => fields.item = value; }
-        public int PowerLevel
-        { 
-            get => fields.curPowerLevel;
-            set { fields.curPowerLevel = value; onSetPowerLevel.Invoke(value); }
-        }
-        public int MaxPowerLevel
-        {
-            get => fields.maxPowerLevel;
-            set { fields.maxPowerLevel = value; onSetMaxPowerLevel.Invoke(value); }
-        }
-        public Identity Identity
-        {
-            get => fields.identity;
-            set { fields.identity = value; onSetIdentity.Invoke(value); }
-        }
-
-        // Events
-        [Foldout("Events", true)]
-        public UnityEvent<int> onSetPowerLevel;
-        public UnityEvent<int> onSetMaxPowerLevel;
-        public UnityEvent<Identity> onSetIdentity;
-        public UnityEvent onTrigger;
-        public UnityEvent<Vector3> onCast;
-        public UnityEvent onRelease;
-        public UnityEvent onUnCast;
-        [Foldout("Events")] public UnityEvent onCasted;
-
         // State
-        public CastableState state;
-        [ReadOnly] public List<ICastableStateExecutor> executors;
-        public List<StateTransition> transitions;
-        public List<StateAction> queuedActions;
-        public List<StateAction> dequeuedActions;
-        public Dictionary<StateAction, StateTransition> transitionBank;
+        [Foldout("State", true)]
+        public CastState state;
+        [ReadOnly] public int executorCount;
+        public List<StateTransition> transitions = new();
+        public List<StateAction> queuedActions = new();
+        public List<StateAction> dequeuedActions = new();
+        public Dictionary<StateAction, StateTransition> transitionBank = new();
+        [Foldout("State")] public Dictionary<CastState, List<ICastStateExecutor>> executorBank = new();
+
+        public bool debug;
 
         public void Awake()
         {
-            fields.damager = GetComponent<Damager>();
+            foreach (CastState state in Enum.GetValues(typeof(CastState)))
+            {
+                executorBank.Add(state, new());
+            }
+            executorCount = 0;
             foreach (Transform child in transform)
             {
-                var behaviours = child.GetComponents<BaseMonoBehaviour>();
-                foreach (var behaviour in behaviours)
+                var executor = child.GetComponent<CastStateExecutor>();
+                if (executor)
                 {
-                    if (behaviour is ICastableStateExecutor)
-                    {
-                        executors.Add(behaviour as ICastableStateExecutor);
-                    }
+                    executorBank[executor.State].Add(executor);
+                    executorCount++;
+                    executor.SetActive(executor.State == CastState.None);
                 }
             }
-            SetState(CastableState.None);
+            foreach (var transition in transitions)
+            {
+                transitionBank.Add(new(transition.source, transition.triggerAction), transition);
+            }
+            SetState(CastState.None);
         }
 
-        public void Initialize(Character owner, CastableItem item)
+        public override void Initialize(Character owner, CastableItem item)
         {
-            Owner = owner;
-            Item = item;
-
-            if (fields.damager != null)
-                fields.damager.Ignore(owner.body);
-            Identity = owner.Identity;
-            owner.artRenderer.DisplayWeapon(fields.weaponArt);
-
-            SetState(CastableState.Init);
+            base.Initialize(owner, item);
+            SetState(CastState.Init);
         }
 
         // State
 
-        public void SetState(CastableState state)
+        public void SetState(CastState state)
         {
-            foreach (var executor in executors)
+            foreach (var keyState in executorBank.Keys)
             {
-                executor.SetActive(executor.State == state);
+                foreach (var executor in executorBank[keyState])
+                {
+                    Print($"SetActive({executor.State == state}) on {keyState} executor. (Seeking {state})", debug);
+                    executor.SetActive(executor.State == state);
+                }
             }
+            this.state = state;
         }
 
         // Action Queue
 
-        public void QueueAction(CastableAction action)
+        public void QueueAction(CastAction action)
         {
             StateAction stateAction = new(state, action);
             if (transitionBank.TryGetValue(stateAction, out StateTransition transition))
             {
-                foreach (var executor in executors)
+                Print($"Performing {transition.triggerAction} transition from {transition.source} to {transition.destination}.", debug);
+                var executors = executorBank[state];
+                if (executors.Count > 0)
                 {
-                    if (executor.PerformAction(stateAction, ActionPerformed))
-                        queuedActions.Add(stateAction);
+                    foreach (var executor in executors)
+                    {
+                        Print($"Executor performing {stateAction.action} on {stateAction.state}.", debug);
+                        if (executor.PerformAction(stateAction, ActionPerformed))
+                            queuedActions.Add(stateAction);
+                    }
+                    DequeueFirst();
                 }
-                DequeueFirst();
+                else
+                {
+                    Print($"No executors, setting state to {transition.destination}.", debug);
+                    SetState(transition.destination);
+                }
             }
         }
 
         public void DequeueFirst()
         {
-            var nextAction = queuedActions.First();
-            if (dequeuedActions.Remove(nextAction))
+            if (queuedActions.Count > 0)
             {
-                ActionPerformed(nextAction);
+                var nextAction = queuedActions.First();
+                if (dequeuedActions.Remove(nextAction))
+                {
+                    ActionPerformed(nextAction);
+                }
             }
         }
 
@@ -206,13 +155,15 @@ namespace HotD.Castables
 
         // Tests
         [Header("Tests")]
-        public CastableAction testAction;
-        public CastableState testState;
+        public CastAction testAction;
+        public CastState testState;
 
+        [ButtonMethod]
         public void TestQueueAction()
         {
             QueueAction(testAction);
         }
+        [ButtonMethod]
         public void TestSetState()
         {
             SetState(testState);

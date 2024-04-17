@@ -5,18 +5,18 @@ using UnityEngine.Events;
 
 namespace HotD.Castables
 {
-    public interface ICastableStateExecutor
+    public interface ICastStateExecutor
     {
-        public CastableState State { get; set; }
+        public CastState State { get; set; }
         public void SetActive(bool active);
         public bool PerformAction(StateAction stateAction, UnityAction<StateAction> onActionPerformed);
     }
 
-    public class CastableStateExecutor : BaseMonoBehaviour, ICastableStateExecutor
+    public class CastStateExecutor : BaseMonoBehaviour, ICastStateExecutor
     {
-        protected CastableState state;
+        [SerializeField] protected CastState state;
 
-        public CastableState State { get => state; set => state = value; }
+        public CastState State { get => state; set => state = value; }
 
         public void SetActive(bool active)
         {
@@ -28,8 +28,12 @@ namespace HotD.Castables
             if (stateAction.state == state)
             {
                 onActionPerformed.Invoke(stateAction);
+                return true;
             }
-            return true;
+            else
+            {
+                return false;
+            }
         }
     }
 }
