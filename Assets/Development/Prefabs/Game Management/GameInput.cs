@@ -6,6 +6,7 @@ using System.Collections;
 using MyBox;
 using HotD.PostProcessing;
 using HotD.Castables;
+using HotD.Body;
 
 namespace HotD
 {

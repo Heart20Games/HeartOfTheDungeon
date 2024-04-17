@@ -9,6 +9,7 @@ using HotD.PostProcessing;
 using MyBox;
 using Yarn.Unity;
 using UnityEngine.Assertions;
+using HotD.Body;
 
 namespace HotD
 {

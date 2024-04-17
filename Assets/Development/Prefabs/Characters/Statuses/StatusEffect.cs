@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using Body;
+using HotD.Body;
 
 [Serializable]
 public struct Status

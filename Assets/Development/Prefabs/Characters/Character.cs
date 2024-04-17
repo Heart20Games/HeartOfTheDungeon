@@ -4,20 +4,20 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
 
-namespace Body
+namespace HotD.Body
 {
-    using Behavior;
-    using Body.Behavior.ContextSteering;
     using HotD.Castables;
     using Modifiers;
     using MyBox;
     using Selection;
     using HotD;
     using UIPips;
-    using static Body.Behavior.ContextSteering.CSIdentity;
     using System.Collections;
     using static HotD.CharacterModes;
     using System;
+    using global::Body.Behavior;
+    using global::Body.Behavior.ContextSteering;
+    using static global::Body.Behavior.ContextSteering.CSIdentity;
 
     [RequireComponent(typeof(Brain))]
     [RequireComponent(typeof(Movement))]

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Body;
 using HotD.Castables;
+using HotD.Body;
 
 public class HUD : BaseMonoBehaviour
 {

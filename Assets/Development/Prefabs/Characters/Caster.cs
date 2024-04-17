@@ -1,6 +1,7 @@
 using UnityEngine;
 using Body;
 using UnityEngine.Events;
+using HotD.Body;
 
 namespace HotD.Castables
 {

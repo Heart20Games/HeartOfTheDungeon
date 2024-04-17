@@ -7,7 +7,7 @@ namespace HotD.Castables
     using Body;
     using MyBox;
     using System;
-    using static Body.Behavior.ContextSteering.CSIdentity;
+    using static global::Body.Behavior.ContextSteering.CSIdentity;
     using static HotD.Castables.CastableToLocation;
 
     public class Castable : BaseMonoBehaviour, ICastable

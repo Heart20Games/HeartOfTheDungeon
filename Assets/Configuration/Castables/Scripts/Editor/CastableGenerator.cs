@@ -9,10 +9,10 @@ using UnityEngine.Assertions;
 
 namespace HotD.Castables
 {
-    using static Body.Behavior.ContextSteering.CSContext;
+    using static global::Body.Behavior.ContextSteering.CSContext;
     using static HotD.Castables.CastableToLocation;
     using static Loadout;
-    using Range = Body.Behavior.ContextSteering.CSContext.Range;
+    using Range = global::Body.Behavior.ContextSteering.CSContext.Range;
 
     [CreateAssetMenu(fileName = "NewCastableGenerator", menuName = "Loadouts/Castable Generator", order = 1)]
     public class CastableGenerator : ScriptableObject

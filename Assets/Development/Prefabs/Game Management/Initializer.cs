@@ -4,6 +4,7 @@ using UnityEngine;
 using Yarn.Unity;
 using Body;
 using HotD.PostProcessing;
+using HotD.Body;
 
 namespace HotD
 {

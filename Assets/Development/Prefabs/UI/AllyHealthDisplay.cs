@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UIPips;
 using Body;
+using HotD.Body;
 
 public class AllyHealthDisplay : MonoBehaviour
 {
