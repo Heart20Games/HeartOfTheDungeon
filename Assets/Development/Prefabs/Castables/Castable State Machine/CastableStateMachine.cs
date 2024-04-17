@@ -11,7 +11,7 @@ using static Body.Behavior.ContextSteering.CSIdentity;
 namespace HotD.Castables
 {
     public enum CastState { None, Init, Equipped, Activating, Executing }
-    public enum CastAction { None, Equip, Trigger, Release, End, UnEquip }
+    public enum CastAction { None, Equip, Start, Trigger, Release, End, UnEquip }
 
     [Serializable]
     public struct StateTransition
@@ -76,7 +76,7 @@ namespace HotD.Castables
             SetState(CastState.None);
         }
 
-        public override void Initialize(Character owner, CastableItem item)
+        public override void Initialize(ICastCompatible owner, CastableItem item)
         {
             base.Initialize(owner, item);
             SetState(CastState.Init);
@@ -92,6 +92,10 @@ namespace HotD.Castables
                 {
                     Print($"SetActive({executor.State == state}) on {keyState} executor. (Seeking {state})", debug);
                     executor.SetActive(executor.State == state);
+                    if (executor.State == state)
+                    {
+                        executor.PerformAction(new(state, CastAction.Start), ActionPerformed);
+                    }
                 }
             }
             this.state = state;
@@ -138,18 +142,21 @@ namespace HotD.Castables
 
         public void ActionPerformed(StateAction stateAction)
         {
-            if (queuedActions.First().Equals(stateAction))
+            if (queuedActions.Count > 0)
             {
-                queuedActions.RemoveAt(0);
-                if (transitionBank.TryGetValue(stateAction, out StateTransition transition))
+                if (queuedActions.First().Equals(stateAction))
                 {
-                    SetState(transition.destination);
+                    queuedActions.RemoveAt(0);
+                    if (transitionBank.TryGetValue(stateAction, out StateTransition transition))
+                    {
+                        SetState(transition.destination);
+                    }
+                    DequeueFirst();
                 }
-                DequeueFirst();
-            }
-            else
-            {
-                dequeuedActions.Add(stateAction);
+                else
+                {
+                    dequeuedActions.Add(stateAction);
+                }
             }
         }
 
@@ -157,6 +164,8 @@ namespace HotD.Castables
         [Header("Tests")]
         public CastAction testAction;
         public CastState testState;
+        public TestCastCompatible testCastCompatible;
+        public CastableItem testItem;
 
         [ButtonMethod]
         public void TestQueueAction()
@@ -167,6 +176,11 @@ namespace HotD.Castables
         public void TestSetState()
         {
             SetState(testState);
+        }
+        [ButtonMethod]
+        public void TestInitialize()
+        {
+            Initialize(testCastCompatible, testItem);
         }
     }
 }

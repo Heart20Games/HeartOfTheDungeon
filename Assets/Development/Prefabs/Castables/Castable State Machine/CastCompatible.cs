@@ -1,16 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Body.Behavior.ContextSteering.CSIdentity;
 
 namespace HotD.Castables
 {
-    public interface IWeaponDisplay
+    public class TestCastCompatible : BaseMonoBehaviour, ICastCompatible
     {
-        public void DisplayWeapon(Transform weaponArt);
+        [SerializeField] private TestWeaponDisplay weaponDisplay;
+        [SerializeField] private Transform body;
+        [SerializeField] private Identity identity;
+
+        public IWeaponDisplay WeaponDisplay { get => weaponDisplay; }
+
+        public Transform Body { get => body; }
+
+        public Identity Identity { get => identity; }
     }
 
-    public class CastCompatible : BaseMonoBehaviour
+    public interface ICastCompatible
     {
-
+        public IWeaponDisplay WeaponDisplay { get; }
+        public Transform Body { get; }
+        public Identity Identity { get; }
     }
+
 }

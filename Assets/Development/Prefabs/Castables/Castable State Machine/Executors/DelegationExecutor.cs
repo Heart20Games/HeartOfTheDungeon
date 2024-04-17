@@ -1,4 +1,5 @@
 using MyBox;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,17 +10,27 @@ namespace HotD.Castables
 {
     public class DelegatedSingleExecutor : CastStateExecutor
     {
-        public UnityAction StartAction;
-        public List<CastAction> supportedActions;
+        [Serializable]
+        public struct ActionEvent
+        {
+            public string name;
+            public CastAction action;
+            public bool waitForPerformance;
+            public UnityEvent startAction;
+        }
 
-        private UnityAction actionPerformed;
+        public List<ActionEvent> supportedActions;
+
+        private UnityAction<StateAction> actionPerformed;
+        private StateAction stateAction;
 
         public override bool PerformAction(StateAction stateAction, UnityAction<StateAction> onActionPerformed)
         {
-            if (actionPerformed == null && supportedActions.Contains(stateAction.action))
+            if (actionPerformed == null && SupportsAction(stateAction.action))
             {
-                actionPerformed = () => { onActionPerformed.Invoke(stateAction); };
-                return true;
+                actionPerformed = onActionPerformed;
+                this.stateAction = stateAction;
+                return StartAction(stateAction.action);
             }
             else
             {
@@ -27,10 +38,35 @@ namespace HotD.Castables
             }
         }
 
+        private bool StartAction(CastAction action)
+        {
+            foreach (ActionEvent actionEvent in supportedActions)
+            {
+                if (actionEvent.action == action)
+                {
+                    actionEvent.startAction.Invoke();
+                    return actionEvent.waitForPerformance;
+                }
+            }
+            return false;
+        }
+
+        private bool SupportsAction(CastAction action)
+        {
+            foreach (ActionEvent actionEvent in supportedActions)
+            {
+                if (actionEvent.action == action)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         [ButtonMethod]
         public void FinishAction()
         {
-            actionPerformed.Invoke();
+            actionPerformed.Invoke(stateAction);
         }
     }
 }

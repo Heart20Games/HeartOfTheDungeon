@@ -16,7 +16,7 @@ namespace HotD.Castables
 
         // Properties
         public virtual Vector3 Direction { get => fields.direction; set => fields.direction = value; }
-        public Character Owner { get => fields?.owner; set => fields.owner = value; }
+        public ICastCompatible Owner { get => fields?.owner; set => fields.owner = value; }
         public CastableItem Item { get => fields?.item; set => fields.item = value; }
         public int PowerLevel
         {
@@ -50,28 +50,28 @@ namespace HotD.Castables
             fields.damager = GetComponent<Damager>();
         }
 
-        public virtual void Initialize(Character owner, CastableItem item)
+        public virtual void Initialize(ICastCompatible owner, CastableItem item)
         {
             Owner = owner;
             Item = item;
 
             if (fields.damager != null)
-                fields.damager.Ignore(owner.body);
+                fields.damager.Ignore(owner.Body);
             Identity = owner.Identity;
-            owner.artRenderer.DisplayWeapon(fields.weaponArt);
+            owner.WeaponDisplay.DisplayWeapon(fields.weaponArt);
         }
     }
 
     [Serializable]
     public class CastableFields
     {
-        [Header("Positioning")]
+        [Header("Configuration")]
         public float rOffset;
         public Transform weaponArt;
         public Transform pivot;
-        [ReadOnly] public Character owner;
         public Vector3 direction;
         public bool followBody;
+        public ICastCompatible owner;
 
         [Header("Settings")]
         public CastableItem item;

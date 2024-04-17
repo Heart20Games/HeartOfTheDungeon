@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 9057122764883080907}
   - component: {fileID: 9023533805528778401}
+  - component: {fileID: 3436195197084661273}
   m_Layer: 0
-  m_Name: ChargeExecution
+  m_Name: Charge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,7 +46,93 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 3
-  supportedActions: 03000000
+  supportedActions:
+  - name: Cast on Release
+    action: 4
+    waitForPerformance: 1
+    startAction:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: Charge on Start
+    action: 2
+    waitForPerformance: 0
+    startAction:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3436195197084661273}
+          m_TargetAssemblyTypeName: Charger, Assembly-CSharp
+          m_MethodName: Begin
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &3436195197084661273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2064162538980655438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c62583458018a94fb86c54296434b53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debug: 0
+  interrupt: 0
+  level: 0
+  maxLevel: 0
+  chargeLimit:
+    name: 
+    finalPreview: 0
+    baseValue: 4
+    baseMultiplier: 0
+    baseValueRange: {x: 0, y: 4}
+    baseMultiplierRange: {x: 0, y: 0}
+    debug: 0
+    updated:
+      m_PersistentCalls:
+        m_Calls: []
+    updatedFinalFloat:
+      m_PersistentCalls:
+        m_Calls: []
+    updatedFinalInt:
+      m_PersistentCalls:
+        m_Calls: []
+    otherAttributes: []
+  chargeTimes:
+  - 1
+  - 2
+  - 3
+  onBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  onCharge:
+    m_PersistentCalls:
+      m_Calls: []
+  onCharged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9023533805528778401}
+        m_TargetAssemblyTypeName: HotD.Castables.DelegatedSingleExecutor, Assembly-CSharp
+        m_MethodName: FinishAction
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onInterrupt:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &3921333796322629136
 GameObject:
   m_ObjectHideFlags: 0
@@ -91,7 +178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 4
-  supportedActions: 04000000
+  supportedActions: []
 --- !u!1 &6669269691476346238
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,7 +246,6 @@ MonoBehaviour:
     rOffset: 0
     weaponArt: {fileID: 0}
     pivot: {fileID: 0}
-    owner: {fileID: 0}
     direction: {x: 0, y: 0, z: 0}
     followBody: 0
     item: {fileID: 0}
@@ -221,3 +307,5 @@ MonoBehaviour:
   debug: 1
   testAction: 0
   testState: 0
+  testCastCompatible: {fileID: 0}
+  testItem: {fileID: 11400000, guid: f554b8dbbf9b65f4ca8f42e4de4349a4, type: 2}

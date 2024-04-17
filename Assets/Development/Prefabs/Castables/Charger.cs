@@ -12,8 +12,8 @@ public class Charger : BaseMonoBehaviour
     [SerializeField] private bool interrupt = false;
     [ReadOnly][SerializeField] private int level;
     [ReadOnly][SerializeField] private int maxLevel;
-    public float[] chargeTimes = new float[0];
     public DependentAttribute chargeLimit;
+    public float[] chargeTimes = new float[0];
 
     [Header("Events")]
     public UnityEvent onBegin;
