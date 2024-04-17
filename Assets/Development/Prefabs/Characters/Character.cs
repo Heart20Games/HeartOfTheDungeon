@@ -239,7 +239,7 @@ namespace Body
                 this.mode = new_mode;
 
                 movement.SetMoveVector(new());
-                brain.Enabled = new_mode.controlMode == ControlMode.Brain;
+                //brain.Enabled = new_mode.controlMode == ControlMode.Brain;
                 movement.canMove = new_mode.moveMode == MovementMode.Active;
                 movement.applyGravity = new_mode.moveMode != MovementMode.Disabled;
                 SetNonNullActive(artRenderer, new_mode.displayable);

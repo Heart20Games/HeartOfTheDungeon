@@ -27,7 +27,13 @@ public class Damager : BaseMonoBehaviour, IDamager
 
     public void HitDamageable(Impact impactor)
     {
-        IDamageable other = impactor.other.GetComponent<IDamageable>();
+        IDamageable other = impactor.GetComponent<IDamageable>();
+
+        if(impactor._Character != null)
+        {
+            if (impactor._Character.CurrentHealth <= 0) return;
+        }
+
         if (other != null && !ignored.Contains(other) && !others.Contains(other))
         {
             others.Add(other);
