@@ -17,6 +17,12 @@ public class CastCoordinator : MecanimCoordinator
             onAction.RemoveListener(listener);
     }
 
+    public void SetAction(int idx)
+    {
+        SetInt("Action", idx);
+        SetTrigger("StartAction");
+    }
+
     [ButtonMethod]
     public void Cast()
     {

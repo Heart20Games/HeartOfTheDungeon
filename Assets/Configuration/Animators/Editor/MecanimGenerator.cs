@@ -172,9 +172,10 @@ public class MecanimGenerator : Generator
         public Motion holdMotion;
     }
 
-    public AnimatorStateMachine AddChargeStateMachine(AnimatorStateMachine root, Charges blueprints)
+    public AnimatorStateMachine AddChargeStateMachine(AnimatorStateMachine root, Charges blueprints, Vector2 position=new())
     {
         var sub = root.AddStateMachine(blueprints.name);
+        sub.entryPosition = new();
 
         List<AnimatorStateMachine> charges = new();
         int num = 0;
@@ -184,7 +185,7 @@ public class MecanimGenerator : Generator
         foreach(Charge blueprint in blueprints.charges)
         {
             num += 1;
-            var cur = AddChargeSubMachine(sub, blueprint, num, out var charge, out var cast);
+            var cur = AddChargeSubMachine(sub, blueprint, num, out var charge, out var cast, new(0, 150 * num));
             charges.Add(cur);
 
             if (prev != null)
@@ -203,16 +204,20 @@ public class MecanimGenerator : Generator
             prevCast = cast;
         }
 
+        sub.exitPosition = new(300, 150 * (num / 2));
+
         return sub;
     }
 
-    public AnimatorStateMachine AddChargeSubMachine(AnimatorStateMachine root, Charge blueprint, int level, out AnimatorState charge, out AnimatorState cast)
+    public AnimatorStateMachine AddChargeSubMachine(AnimatorStateMachine root, Charge blueprint, int level, out AnimatorState charge, out AnimatorState cast, Vector2 position=new())
     {
-        var sub = root.AddStateMachine($"Charge {level} ({blueprint.name})");
+        var sub = root.AddStateMachine($"Charge {level} ({blueprint.name})", position);
 
         charge = sub.AddState("Charge", new());
-        var sustain = sub.AddState("Sustain", new(0, 75));
-        cast = sub.AddState("Cast", new(0, 150));
+        var sustain = sub.AddState("Sustain", new(0, 150));
+        cast = sub.AddState("Cast", new(225, 300));
+
+        sub.parentStateMachinePosition = new(-225, 150);
 
         charge.motion = blueprint.chargeMotion;
         sustain.motion = blueprint.sustainMotion;
@@ -243,8 +248,12 @@ public class MecanimGenerator : Generator
             var hold = sub.AddState("Hold", new(0, 225));
             hold.motion = blueprint.holdMotion;
 
+            var holdTransition = cast.AddTransition(hold);
+            holdTransition.hasExitTime = true;
+
             var exitTransition = hold.AddExitTransition();
             exitTransition.hasExitTime = true;
+
         }
         else
         {
