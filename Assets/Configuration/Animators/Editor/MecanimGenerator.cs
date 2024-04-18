@@ -1,10 +1,9 @@
-using Codice.CM.Common.Tree;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
-using static UnityEditor.Rendering.CameraUI;
+using Yarn.Unity;
 
 [CreateAssetMenu(fileName = "NewMecanimGenerator", menuName = "Mecanim Generator", order = 1)]
 public class MecanimGenerator : Generator
@@ -19,10 +18,26 @@ public class MecanimGenerator : Generator
         public Motion motion;
     }
 
+    [Serializable]
+    public struct Condition
+    {
+        public Condition(string parameter, AnimatorConditionMode mode, float threshold)
+        {
+            this.parameter = parameter;
+            this.mode = mode;
+            this.threshold = threshold;
+        }
+        public string parameter;
+        public AnimatorConditionMode mode;
+        public float threshold;
+    }
+
     [Header("Settings")]
     public AnimatorController mecanim;
 
-    public List<MotionSlot> slots;
+    public List<MotionSlot> slots = new();
+    public List<Charges> chargeActions = new();
+    public List<Combos> comboActions = new();
 
     public void GenerateMecanim()
     {
@@ -58,8 +73,10 @@ public class MecanimGenerator : Generator
         mecanim = AnimatorController.CreateAnimatorControllerAtPath($"{fullDirectory}/{outputName}.controller");
 
         // Add Parameters
-        mecanim.AddParameter("CastLevel", AnimatorControllerParameterType.Int);
+        mecanim.AddParameter("ChargeLevel", AnimatorControllerParameterType.Int);
+        mecanim.AddParameter("ComboLevel", AnimatorControllerParameterType.Int);
         mecanim.AddParameter("StartCast", AnimatorControllerParameterType.Trigger);
+        mecanim.AddParameter("StartAction", AnimatorControllerParameterType.Trigger);
         mecanim.AddParameter("Action", AnimatorControllerParameterType.Int);
         mecanim.AddParameter("Hit", AnimatorControllerParameterType.Trigger);
         mecanim.AddParameter("Run", AnimatorControllerParameterType.Bool);
@@ -67,7 +84,7 @@ public class MecanimGenerator : Generator
 
         // Add StateMachines
         var root = mecanim.layers[0].stateMachine;
-        var action = root.AddStateMachine("Actions", new(-275, -150));
+        var actions = root.AddStateMachine("Actions", new(-275, -150));
 
         // Add States
         var idle = root.AddState("Idle", new());
@@ -100,6 +117,7 @@ public class MecanimGenerator : Generator
         var deathTransition = root.AddAnyStateTransition(dead);
         deathTransition.AddCondition(AnimatorConditionMode.If, 0, "Dead");
         deathTransition.duration = 0;
+        deathTransition.canTransitionToSelf = false;
         var unDeathTransition = dead.AddTransition(idle);
         unDeathTransition.AddCondition(AnimatorConditionMode.IfNot, 0, "Dead");
 
@@ -107,6 +125,7 @@ public class MecanimGenerator : Generator
         hitTransition.AddCondition(AnimatorConditionMode.If, 0, "Hit");
         var unHitTransition = hit.AddTransition(idle);
         unHitTransition.duration = 0;
+        unHitTransition.hasExitTime = true;
 
         var runTransition = idle.AddTransition(run);
         runTransition.AddCondition(AnimatorConditionMode.If, 0, "Run");
@@ -115,13 +134,155 @@ public class MecanimGenerator : Generator
         unRunTransition.AddCondition(AnimatorConditionMode.IfNot, 0, "Run");
         unRunTransition.duration = 0;
 
-        var actionTransition = root.AddAnyStateTransition(action);
+        var actionTransition = root.AddAnyStateTransition(actions);
         actionTransition.AddCondition(AnimatorConditionMode.Greater, 0, "Action");
+        actionTransition.AddCondition(AnimatorConditionMode.If, 0, "StartAction");
+
+        foreach (var charges in chargeActions)
+        {
+            AddChargeStateMachine(actions, charges);
+        }
+
+        foreach (var combos in comboActions)
+        {
+            AddComboStateMachine(actions, combos);
+        }
 
         EditorUtility.SetDirty(mecanim);
 
         EditorUtility.SetDirty(this);
     }
+
+    // Charge Machine
+    [Serializable]
+    public struct Charges
+    {
+        public string name;
+        public List<Charge> charges;
+    }
+
+    [Serializable]
+    public struct Charge
+    {
+        public string name;
+        public bool shortCircuit;
+        public Motion chargeMotion;
+        public Motion sustainMotion;
+        public Motion castMotion;
+        public Motion holdMotion;
+    }
+
+    public AnimatorStateMachine AddChargeStateMachine(AnimatorStateMachine root, Charges blueprints)
+    {
+        var sub = root.AddStateMachine(blueprints.name);
+
+        List<AnimatorStateMachine> charges = new();
+        int num = 0;
+        AnimatorStateMachine prev = null;
+        AnimatorState prevCharge = null;
+        AnimatorState prevCast = null;
+        foreach(Charge blueprint in blueprints.charges)
+        {
+            num += 1;
+            var cur = AddChargeSubMachine(sub, blueprint, num, out var charge, out var cast);
+            charges.Add(cur);
+
+            if (prev != null)
+            {
+                var chargeTransition = prevCharge.AddTransition(charge);
+                chargeTransition.AddCondition(AnimatorConditionMode.Greater, num, "ChargeLevel");
+
+                var backtrackTransition = charge.AddTransition(prevCast);
+                backtrackTransition.AddCondition(AnimatorConditionMode.If, 0, "StartCast");
+            }
+
+            sub.AddStateMachineExitTransition(cur);
+            
+            prev = cur;
+            prevCharge = charge;
+            prevCast = cast;
+        }
+
+        return sub;
+    }
+
+    public AnimatorStateMachine AddChargeSubMachine(AnimatorStateMachine root, Charge blueprint, int level, out AnimatorState charge, out AnimatorState cast)
+    {
+        var sub = root.AddStateMachine($"Charge {level} ({blueprint.name})");
+
+        charge = sub.AddState("Charge", new());
+        var sustain = sub.AddState("Sustain", new(0, 75));
+        cast = sub.AddState("Cast", new(0, 150));
+
+        charge.motion = blueprint.chargeMotion;
+        sustain.motion = blueprint.sustainMotion;
+        cast.motion = blueprint.castMotion;
+
+        sub.AddEntryTransition(charge);
+
+        var elevateTransition = charge.AddExitTransition(false);
+        elevateTransition.AddCondition(AnimatorConditionMode.Greater, level, "ChargeLevel");
+
+        var sustainTransition = charge.AddTransition(sustain);
+        sustainTransition.duration = 0;
+        sustainTransition.AddCondition(AnimatorConditionMode.Less, level + 1, "ChargeLevel");
+
+        var castTransition = sustain.AddTransition(cast);
+        castTransition.duration = 0;
+        castTransition.AddCondition(AnimatorConditionMode.If, 0, "StartCast");
+
+        if (blueprint.shortCircuit)
+        {
+            var shortTransition = charge.AddTransition(cast);
+            shortTransition.duration = 0;
+            shortTransition.AddCondition(AnimatorConditionMode.If, 0, "StartCast");
+        }
+
+        if (blueprint.holdMotion != null)
+        {
+            var hold = sub.AddState("Hold", new(0, 225));
+            hold.motion = blueprint.holdMotion;
+
+            var exitTransition = hold.AddExitTransition();
+            exitTransition.hasExitTime = true;
+        }
+        else
+        {
+            var exitTransition = cast.AddExitTransition();
+            exitTransition.hasExitTime = true;
+        }
+
+        return sub;
+    }
+
+    // Combo Machine
+    [Serializable]
+    public struct Combos
+    {
+        public string name;
+        public List<Motion> motions;
+    }
+
+    public AnimatorStateMachine AddComboStateMachine(AnimatorStateMachine root, Combos blueprint)
+    {
+        var sub = root.AddStateMachine($"Combo ({blueprint.name})");
+
+        int num = 0;
+        foreach (Motion motion in blueprint.motions)
+        {
+            num += 1;
+            var combo = sub.AddState($"Combo {num}");
+            combo.motion = motion;
+
+            var entryTransition = sub.AddEntryTransition(combo);
+            entryTransition.AddCondition(AnimatorConditionMode.Equals, num, "ComboLevel");
+            
+            var exitTransition = combo.AddExitTransition(false);
+        }
+
+        return sub;
+    }
+
 
     // Helpers
 
