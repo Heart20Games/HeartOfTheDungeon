@@ -8,7 +8,7 @@ using UnityEngine.Events;
 
 namespace HotD.Castables
 {
-    public class DelegatedSingleExecutor : CastStateExecutor
+    public class DelegatedExecutor : CastStateExecutor
     {
         [Serializable]
         public struct ActionEvent
