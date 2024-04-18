@@ -8,6 +8,8 @@ public class Charger : BaseMonoBehaviour
 {
     public bool debug = false;
 
+    public bool resetOnBegin;
+
     [Header("Status")]
     [SerializeField] private bool interrupt = false;
     [ReadOnly][SerializeField] private int level;
@@ -23,6 +25,8 @@ public class Charger : BaseMonoBehaviour
 
     public void Begin()
     {
+        if (resetOnBegin)
+            level = 0;
         interrupt = false;
         onBegin.Invoke();
         StartCoroutine(ChargeTimer());
@@ -44,9 +48,9 @@ public class Charger : BaseMonoBehaviour
             yield return new WaitForSeconds(waitTime);
             if (interrupt) break;
             maxLevel = (int)chargeLimit.FinalValue;
-            if (level >= chargeLimit.FinalValue)
+            if (level >= maxLevel)
             {
-                if (debug) print($"Fully Charged at {level} / {chargeLimit.FinalValue}");
+                if (debug) print($"Fully Charged at {level} / {maxLevel}");
                 onCharged.Invoke(); break;
             }
             level++;

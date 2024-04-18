@@ -10,13 +10,21 @@ using static HotD.Castables.CastableToLocation;
 
 namespace HotD.Castables
 {
-    public class CastableProperties : BaseMonoBehaviour
+    public interface ICastableProperties
+    {
+        public void SetActive(bool active);
+        public void Initialize(CastableFields field);
+        public void Initialize(ICastCompatible owner, CastableItem item);
+    }
+
+    public class CastableProperties : BaseMonoBehaviour, ICastableProperties
     {
         public CastableFields fields = new();
 
         // Properties
         public virtual Vector3 Direction { get => fields.direction; set => fields.direction = value; }
         public ICastCompatible Owner { get => fields?.owner; set => fields.owner = value; }
+        public CastCoordinator Coordinator { get => fields?.castCoordinator; set => fields.castCoordinator = value; }
         public CastableItem Item { get => fields?.item; set => fields.item = value; }
         public int PowerLevel
         {
@@ -50,6 +58,20 @@ namespace HotD.Castables
             fields.damager = GetComponent<Damager>();
         }
 
+        public virtual void SetActive(bool active)
+        {
+            gameObject.SetActive(active);
+            if (Coordinator)
+            {
+                onSetPowerLevel.AddListener((int powerLevel) => { Coordinator.SetInt("Level", powerLevel); });
+            }
+        }
+
+        public virtual void Initialize(CastableFields fields)
+        {
+            this.fields = fields;
+        }
+        
         public virtual void Initialize(ICastCompatible owner, CastableItem item)
         {
             Owner = owner;
@@ -72,6 +94,7 @@ namespace HotD.Castables
         public Vector3 direction;
         public bool followBody;
         public ICastCompatible owner;
+        public CastCoordinator castCoordinator;
 
         [Header("Settings")]
         public CastableItem item;

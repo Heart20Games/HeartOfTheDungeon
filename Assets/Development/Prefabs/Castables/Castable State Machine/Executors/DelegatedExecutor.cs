@@ -21,16 +21,27 @@ namespace HotD.Castables
 
         public List<ActionEvent> supportedActions;
 
-        private UnityAction<StateAction> actionPerformed;
-        private StateAction stateAction;
+        public List<StateAction> actionsToPerform;
 
-        public override bool PerformAction(StateAction stateAction, UnityAction<StateAction> onActionPerformed)
+        [Header("Tests")]
+        public StateAction testAction;
+
+        public override void SetActive(bool active)
         {
-            if (actionPerformed == null && SupportsAction(stateAction.action))
+            base.SetActive(active);
+            if (Coordinator)
+                Coordinator.RegisterActionListener(FinishAction, active);
+        }
+
+        public override bool PerformAction(StateAction stateAction)
+        {
+            if (SupportsAction(stateAction.action))
             {
-                actionPerformed = onActionPerformed;
-                this.stateAction = stateAction;
-                return StartAction(stateAction.action);
+                actionsToPerform.Add(stateAction);
+                bool wait = StartAction(stateAction.action);
+                if (!wait)
+                    actionsToPerform.Remove(stateAction);
+                return wait;
             }
             else
             {
@@ -64,9 +75,48 @@ namespace HotD.Castables
         }
 
         [ButtonMethod]
-        public void FinishAction()
+        public void TestFinishAction()
         {
-            actionPerformed.Invoke(stateAction);
+            if (actionsToPerform.Count > 0)
+            {
+                FinishAction(testAction);
+            }
+        }
+
+        public void FinishAction(StateAction stateAction)
+        {
+            if (actionsToPerform.Contains(stateAction))
+            {
+                actionsToPerform.Remove(stateAction);
+                actionPerformed.Invoke(stateAction);
+            }
+        }
+
+        public void FinishAction(CastAction action)
+        {
+            foreach (StateAction stateAction in actionsToPerform)
+            {
+                if (stateAction.action == action)
+                {
+                    FinishAction(stateAction);
+                }
+            }
+        }
+
+        public void ReportAction(CastAction action)
+        {
+            actionReported.Invoke(action);
+        }
+
+        public void End()
+        {
+            ReportAction(CastAction.End);
+        }
+
+        [ButtonMethod]
+        public void TestReportAction()
+        {
+            ReportAction(testAction.action);
         }
     }
 }

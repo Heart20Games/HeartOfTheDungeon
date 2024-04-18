@@ -45,7 +45,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56b915fc48b630043a509ce34e1da8b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fields:
+    rOffset: 0
+    weaponArt: {fileID: 0}
+    pivot: {fileID: 0}
+    direction: {x: 0, y: 0, z: 0}
+    followBody: 0
+    castCoordinator: {fileID: 0}
+    item: {fileID: 0}
+    maxPowerLevel: 0
+    curPowerLevel: 0
+    casting: 0
+    castOnTrigger: 1
+    castOnRelease: 0
+    unCastOnRelease: 0
+    castingMethods: []
+    toLocations: []
+    positionables: []
+    effects: []
+    identity: 0
+    damager: {fileID: 0}
+    triggerStatuses: []
+    castStatuses: []
+    hitStatuses: []
+    pivotDirection: {x: 0, y: 0, z: 0}
+  onSetPowerLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetMaxPowerLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetIdentity:
+    m_PersistentCalls:
+      m_Calls: []
+  onTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onCasted:
+    m_PersistentCalls:
+      m_Calls: []
   state: 3
+  onAction:
+    m_PersistentCalls:
+      m_Calls: []
   supportedActions:
   - name: Charge on Start
     action: 2
@@ -67,10 +118,14 @@ MonoBehaviour:
           m_CallState: 2
   - name: Cast on Release
     action: 4
-    waitForPerformance: 1
+    waitForPerformance: 0
     startAction:
       m_PersistentCalls:
         m_Calls: []
+  actionsToPerform: []
+  testAction:
+    state: 0
+    action: 0
 --- !u!114 &3436195197084661273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,6 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 0
+  resetOnBegin: 0
   interrupt: 0
   level: 0
   maxLevel: 0
@@ -177,14 +233,69 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56b915fc48b630043a509ce34e1da8b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fields:
+    rOffset: 0
+    weaponArt: {fileID: 0}
+    pivot: {fileID: 0}
+    direction: {x: 0, y: 0, z: 0}
+    followBody: 0
+    castCoordinator: {fileID: 0}
+    item: {fileID: 0}
+    maxPowerLevel: 0
+    curPowerLevel: 0
+    casting: 0
+    castOnTrigger: 1
+    castOnRelease: 0
+    unCastOnRelease: 0
+    castingMethods: []
+    toLocations: []
+    positionables: []
+    effects: []
+    identity: 0
+    damager: {fileID: 0}
+    triggerStatuses: []
+    castStatuses: []
+    hitStatuses: []
+    pivotDirection: {x: 0, y: 0, z: 0}
+  onSetPowerLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetMaxPowerLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetIdentity:
+    m_PersistentCalls:
+      m_Calls: []
+  onTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onCasted:
+    m_PersistentCalls:
+      m_Calls: []
   state: 4
+  onAction:
+    m_PersistentCalls:
+      m_Calls: []
   supportedActions:
-  - name: Wait for End
-    action: 5
-    waitForPerformance: 1
+  - name: Cast on Start
+    action: 2
+    waitForPerformance: 0
     startAction:
       m_PersistentCalls:
         m_Calls: []
+  actionsToPerform: []
+  testAction:
+    state: 0
+    action: 0
 --- !u!1 &6669269691476346238
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,6 +365,7 @@ MonoBehaviour:
     pivot: {fileID: 0}
     direction: {x: 0, y: 0, z: 0}
     followBody: 0
+    castCoordinator: {fileID: 0}
     item: {fileID: 0}
     maxPowerLevel: 0
     curPowerLevel: 0
@@ -299,17 +411,19 @@ MonoBehaviour:
   executorCount: 0
   transitions:
   - source: 2
-    triggerAction: 2
+    triggerAction: 3
     destination: 3
   - source: 3
-    triggerAction: 3
+    triggerAction: 4
+    destination: 4
+  - source: 3
+    triggerAction: 5
     destination: 4
   - source: 4
-    triggerAction: 4
-    destination: 2
-  - source: 2
     triggerAction: 5
-    destination: 0
+    destination: 2
+  queuedActions: []
+  dequeuedActions: []
   debug: 1
   testAction: 0
   testState: 0

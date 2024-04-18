@@ -21,6 +21,7 @@ namespace HotD.Castables
         public CastState destination;
     }
 
+    [Serializable]
     public struct StateAction : IEquatable<StateAction>
     {
         public StateAction(CastState state, CastAction action)
@@ -48,6 +49,7 @@ namespace HotD.Castables
         public List<StateAction> queuedActions = new();
         public List<StateAction> dequeuedActions = new();
         public Dictionary<StateAction, StateTransition> transitionBank = new();
+        public List<ICastStateExecutor> executorList = new();
         [Foldout("State")] public Dictionary<CastState, List<ICastStateExecutor>> executorBank = new();
 
         public bool debug;
@@ -64,8 +66,11 @@ namespace HotD.Castables
                 var executor = child.GetComponent<CastStateExecutor>();
                 if (executor)
                 {
+                    executorList.Add(executor);
                     executorBank[executor.State].Add(executor);
                     executorCount++;
+                    executor.ActionPerformer = ActionPerformed;
+                    executor.ActionReporter = QueueAction;
                     executor.SetActive(executor.State == CastState.None);
                 }
             }
@@ -79,6 +84,10 @@ namespace HotD.Castables
         public override void Initialize(ICastCompatible owner, CastableItem item)
         {
             base.Initialize(owner, item);
+            foreach (var executor in executorList)
+            {
+                executor.Initialize(fields);
+            }
             SetState(CastState.Init);
         }
 
@@ -94,7 +103,11 @@ namespace HotD.Castables
                     executor.SetActive(executor.State == state);
                     if (executor.State == state)
                     {
-                        executor.PerformAction(new(state, CastAction.Start), ActionPerformed);
+                        executor.PerformAction(new(state, CastAction.Start));
+                    }
+                    else if (executor.State == this.state)
+                    {
+                        executor.PerformAction(new(this.state, CastAction.End));
                     }
                 }
             }
@@ -108,21 +121,27 @@ namespace HotD.Castables
             StateAction stateAction = new(state, action);
             if (transitionBank.TryGetValue(stateAction, out StateTransition transition))
             {
+                bool waitingOnExecutor = false;
+                
                 Print($"Performing {transition.triggerAction} transition from {transition.source} to {transition.destination}.", debug);
                 var executors = executorBank[state];
                 if (executors.Count > 0)
                 {
                     foreach (var executor in executors)
                     {
-                        Print($"Executor performing {stateAction.action} on {stateAction.state}.", debug);
-                        if (executor.PerformAction(stateAction, ActionPerformed))
+                        if (executor.PerformAction(stateAction))
+                        {
+                            Print($"Executor performing {stateAction.action} on {stateAction.state}.", debug);
                             queuedActions.Add(stateAction);
+                            waitingOnExecutor = true;
+                        }
                     }
                     DequeueFirst();
                 }
-                else
+
+                if (!waitingOnExecutor)
                 {
-                    Print($"No executors, setting state to {transition.destination}.", debug);
+                    Print($"No executors to wait on, setting state to {transition.destination}.", debug);
                     SetState(transition.destination);
                 }
             }
