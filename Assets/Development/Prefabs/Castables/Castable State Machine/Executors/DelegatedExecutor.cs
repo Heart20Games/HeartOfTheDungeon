@@ -23,14 +23,13 @@ namespace HotD.Castables
 
         public List<StateAction> actionsToPerform;
 
-        [Header("Tests")]
-        public StateAction testAction;
-
         public override void SetActive(bool active)
         {
             base.SetActive(active);
             if (Coordinator)
                 Coordinator.RegisterActionListener(FinishAction, active);
+            if (!active)
+                actionsToPerform.Clear();
         }
 
         public override bool PerformAction(StateAction stateAction)
@@ -74,15 +73,6 @@ namespace HotD.Castables
             return false;
         }
 
-        [ButtonMethod]
-        public void TestFinishAction()
-        {
-            if (actionsToPerform.Count > 0)
-            {
-                FinishAction(testAction);
-            }
-        }
-
         public void FinishAction(StateAction stateAction)
         {
             if (actionsToPerform.Contains(stateAction))
@@ -103,14 +93,23 @@ namespace HotD.Castables
             }
         }
 
-        public void ReportAction(CastAction action)
-        {
-            actionReported.Invoke(action);
-        }
-
+        // Reporting
         public void End()
         {
             ReportAction(CastAction.End);
+        }
+
+        // Testing
+        [Header("Tests")]
+        public StateAction testAction;
+
+        [ButtonMethod]
+        public void TestFinishAction()
+        {
+            if (actionsToPerform.Count > 0)
+            {
+                FinishAction(testAction);
+            }
         }
 
         [ButtonMethod]

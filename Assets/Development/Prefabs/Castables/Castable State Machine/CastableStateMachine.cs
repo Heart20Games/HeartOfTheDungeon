@@ -111,6 +111,9 @@ namespace HotD.Castables
                     }
                 }
             }
+            queuedActions.RemoveAll(
+                (StateAction stateAction) => { return stateAction.state != state; }
+            );
             this.state = state;
         }
 
