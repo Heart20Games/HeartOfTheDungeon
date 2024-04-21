@@ -44,11 +44,9 @@ public class CastCoordinator : MecanimCoordinator
         }
     }
 
-    public void SetActionIndex(int idx, bool trigger=false)
+    public void SetActionIndex(int idx)
     {
         SetInt("Action", idx);
-        if (trigger)
-            SetTrigger("StartAction");
     }
 
     public void OnEndCast()

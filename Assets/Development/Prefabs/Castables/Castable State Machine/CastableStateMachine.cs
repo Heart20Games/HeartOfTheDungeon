@@ -96,7 +96,7 @@ namespace HotD.Castables
 
         public override void Initialize(ICastCompatible owner, CastableItem item, int actionIndex = 0)
         {
-            base.Initialize(owner, item);
+            base.Initialize(owner, item, actionIndex);
             foreach (var executor in executorList)
             {
                 executor.Initialize(fields);

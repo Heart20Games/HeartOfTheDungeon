@@ -43,7 +43,6 @@ namespace HotD.Castables
         }
 
         // Events
-        public bool haveCoordinatorStartOnActive = false;
         [Foldout("Events", true)]
         public UnityEvent<int> onSetPowerLevel;
         public UnityEvent<int> onSetMaxPowerLevel;
@@ -65,8 +64,11 @@ namespace HotD.Castables
             if (Coordinator)
             {
                 onSetPowerLevel.AddListener((int powerLevel) => { Coordinator.SetInt("Level", powerLevel); });
-                if (active && haveCoordinatorStartOnActive)
-                    Coordinator.SetActionIndex(fields.actionIndex, true);
+                if (active)
+                {
+                    Print($"Set Action Index on Coordinator: {fields.actionIndex}");
+                    Coordinator.SetActionIndex(fields.actionIndex);
+                }
             }
         }
 
