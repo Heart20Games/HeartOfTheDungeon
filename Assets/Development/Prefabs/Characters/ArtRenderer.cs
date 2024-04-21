@@ -3,18 +3,17 @@ using UnityEngine;
 
 namespace HotD.Body
 {
-    public class ArtRenderer : BaseMonoBehaviour, IWeaponDisplay
+    public class ArtRenderer : CastCoordinator, IWeaponDisplay
     {
         // Properties
 
+        [Header("Base")]
         public Transform baseArt;
         public Material baseMaterial;
 
         [Header("Equipment")]
         public Transform weaponHand;
 
-        [Header("Animation")]
-        public Animator animator;
         //public List<string> animationParameters = new() { "run", "hit", "attack", "dead", "die" };
         //private readonly Dictionary<string, bool> parameterExists = new();
         //public List<string> existingParameters = new();
@@ -39,9 +38,6 @@ namespace HotD.Body
 
         public string renderLayer = "CharacterRender";
         public string maskLayer = "CharacterMask";
-
-        public bool debug = false;
-
 
         // Initialization
 

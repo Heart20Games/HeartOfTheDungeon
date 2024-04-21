@@ -33,7 +33,8 @@ namespace HotD
         private void Start()
         {
             game = Game.main;
-            dialogueRunner = game.userInterface.dialogueRunner;
+            if (game != null && game.userInterface != null)
+                dialogueRunner = game.userInterface.dialogueRunner;
             sceneTimeline = SceneTimeline.main;
         }
 

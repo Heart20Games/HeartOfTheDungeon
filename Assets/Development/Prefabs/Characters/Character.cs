@@ -23,7 +23,7 @@ namespace HotD.Body
     [RequireComponent(typeof(Movement))]
     [RequireComponent(typeof(Talker))]
     [RequireComponent(typeof(Caster))]
-    public class Character : AIdentifiable, IDamageable, IControllable
+    public class Character : AIdentifiable, IDamageable, IControllable, ICastCompatible
     {
         [Foldout("Identity")]
         public CharacterBlock statBlock;
@@ -36,6 +36,11 @@ namespace HotD.Body
         public Pivot moveReticle;
         [HideInInspector] public Movement movement;
         [HideInInspector] public float baseOffset;
+
+        // Cast Compatability
+        public Transform Body { get => body; }
+        public IWeaponDisplay WeaponDisplay { get => artRenderer; }
+        public CastCoordinator Coordinator { get => artRenderer; }
 
         // State
         [Foldout("State", true)]

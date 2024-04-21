@@ -1,3 +1,4 @@
+using MyBox;
 using UnityEngine;
 
 public class AnimatorEvent : StateMachineBehaviour
@@ -10,11 +11,17 @@ public class AnimatorEvent : StateMachineBehaviour
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.gameObject.SendMessage(methodName, eventName);
+        if (eventType == Event.EnterState)
+        {
+            animator.gameObject.SendMessage(methodName, eventName);
+        }
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.gameObject.SendMessage(methodName, eventName);
+        if (eventType == Event.ExitState)
+        {
+            animator.gameObject.SendMessage(methodName, eventName);
+        }
     }
 }

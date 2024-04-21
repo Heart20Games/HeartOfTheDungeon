@@ -51,7 +51,7 @@ MonoBehaviour:
     pivot: {fileID: 0}
     direction: {x: 0, y: 0, z: 0}
     followBody: 0
-    castCoordinator: {fileID: 0}
+    actionIndex: 0
     item: {fileID: 0}
     maxPowerLevel: 0
     curPowerLevel: 0
@@ -69,6 +69,7 @@ MonoBehaviour:
     castStatuses: []
     hitStatuses: []
     pivotDirection: {x: 0, y: 0, z: 0}
+  haveCoordinatorStartOnActive: 1
   onSetPowerLevel:
     m_PersistentCalls:
       m_Calls: []
@@ -99,7 +100,8 @@ MonoBehaviour:
       m_Calls: []
   supportedActions:
   - name: Charge on Start
-    action: 2
+    triggerAction: 4
+    sendToCoordinator: 1
     waitForPerformance: 0
     startAction:
       m_PersistentCalls:
@@ -117,12 +119,14 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   - name: Cast on Release
-    action: 4
+    triggerAction: 16
+    sendToCoordinator: 0
     waitForPerformance: 1
     startAction:
       m_PersistentCalls:
         m_Calls: []
   actionsToPerform: []
+  debug: 0
   testAction:
     state: 0
     action: 0
@@ -139,7 +143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 0
-  resetOnBegin: 0
+  resetOnBegin: 1
   interrupt: 0
   level: 0
   maxLevel: 0
@@ -175,8 +179,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 9023533805528778401}
-        m_TargetAssemblyTypeName: HotD.Castables.DelegatedSingleExecutor, Assembly-CSharp
-        m_MethodName: FinishAction
+        m_TargetAssemblyTypeName: HotD.Castables.DelegatedExecutor, Assembly-CSharp
+        m_MethodName: End
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -239,7 +243,7 @@ MonoBehaviour:
     pivot: {fileID: 0}
     direction: {x: 0, y: 0, z: 0}
     followBody: 0
-    castCoordinator: {fileID: 0}
+    actionIndex: 0
     item: {fileID: 0}
     maxPowerLevel: 0
     curPowerLevel: 0
@@ -257,6 +261,7 @@ MonoBehaviour:
     castStatuses: []
     hitStatuses: []
     pivotDirection: {x: 0, y: 0, z: 0}
+  haveCoordinatorStartOnActive: 0
   onSetPowerLevel:
     m_PersistentCalls:
       m_Calls: []
@@ -287,12 +292,21 @@ MonoBehaviour:
       m_Calls: []
   supportedActions:
   - name: Cast on Start
-    action: 2
+    triggerAction: 4
+    sendToCoordinator: 2
     waitForPerformance: 0
     startAction:
       m_PersistentCalls:
         m_Calls: []
+  - name: Finish
+    triggerAction: 32
+    sendToCoordinator: 0
+    waitForPerformance: 1
+    startAction:
+      m_PersistentCalls:
+        m_Calls: []
   actionsToPerform: []
+  debug: 0
   testAction:
     state: 0
     action: 0
@@ -365,7 +379,7 @@ MonoBehaviour:
     pivot: {fileID: 0}
     direction: {x: 0, y: 0, z: 0}
     followBody: 0
-    castCoordinator: {fileID: 0}
+    actionIndex: 1
     item: {fileID: 0}
     maxPowerLevel: 0
     curPowerLevel: 0
@@ -383,6 +397,7 @@ MonoBehaviour:
     castStatuses: []
     hitStatuses: []
     pivotDirection: {x: 0, y: 0, z: 0}
+  haveCoordinatorStartOnActive: 0
   onSetPowerLevel:
     m_PersistentCalls:
       m_Calls: []
@@ -410,22 +425,18 @@ MonoBehaviour:
   state: 0
   executorCount: 0
   transitions:
+  - source: 1
+    triggerActions: 1
+    destination: 2
   - source: 2
-    triggerAction: 3
+    triggerActions: 8
     destination: 3
   - source: 3
-    triggerAction: 4
-    destination: 4
-  - source: 3
-    triggerAction: 5
+    triggerActions: 48
     destination: 4
   - source: 4
-    triggerAction: 5
+    triggerActions: 32
     destination: 2
   queuedActions: []
   dequeuedActions: []
   debug: 1
-  testAction: 0
-  testState: 0
-  testCastCompatible: {fileID: 0}
-  testItem: {fileID: 11400000, guid: f554b8dbbf9b65f4ca8f42e4de4349a4, type: 2}

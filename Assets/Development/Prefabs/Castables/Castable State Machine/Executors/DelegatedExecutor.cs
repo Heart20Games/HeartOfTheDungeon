@@ -2,9 +2,11 @@ using MyBox;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using static CastCoordinator;
 
 namespace HotD.Castables
 {
@@ -14,7 +16,8 @@ namespace HotD.Castables
         public struct ActionEvent
         {
             public string name;
-            public CastAction action;
+            public CastAction triggerAction;
+            public Triggers sendToCoordinator;
             public bool waitForPerformance;
             public UnityEvent startAction;
         }
@@ -52,9 +55,10 @@ namespace HotD.Castables
         {
             foreach (ActionEvent actionEvent in supportedActions)
             {
-                if (actionEvent.action == action)
+                if (actionEvent.triggerAction == action)
                 {
                     actionEvent.startAction.Invoke();
+                    Coordinator.Coordinate(actionEvent.sendToCoordinator);
                     return actionEvent.waitForPerformance;
                 }
             }
@@ -65,7 +69,7 @@ namespace HotD.Castables
         {
             foreach (ActionEvent actionEvent in supportedActions)
             {
-                if (actionEvent.action == action)
+                if (actionEvent.triggerAction == action)
                 {
                     return true;
                 }
@@ -84,7 +88,9 @@ namespace HotD.Castables
 
         public void FinishAction(CastAction action)
         {
-            foreach (StateAction stateAction in actionsToPerform)
+            Print($"Finish Cast Action: {action}", debug, this);
+            StateAction[] actions = actionsToPerform.ToArray();
+            foreach (StateAction stateAction in actions)
             {
                 if (stateAction.action == action)
                 {
@@ -101,6 +107,7 @@ namespace HotD.Castables
 
         // Testing
         [Header("Tests")]
+        public bool debug;
         public StateAction testAction;
 
         [ButtonMethod]

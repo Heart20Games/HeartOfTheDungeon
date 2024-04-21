@@ -11,13 +11,22 @@ using static Body.Behavior.ContextSteering.CSIdentity;
 namespace HotD.Castables
 {
     public enum CastState { None, Init, Equipped, Activating, Executing }
-    public enum CastAction { None, Equip, Start, Trigger, Release, End, UnEquip }
+    [Flags] public enum CastAction
+    {
+        None = 0,
+        Equip = 1 << 0,
+        Start = 1 << 2,
+        Trigger = 1 << 3,
+        Release = 1 << 4,
+        End = 1 << 5,
+        UnEquip = 1 << 6 
+    }
 
     [Serializable]
     public struct StateTransition
     {
         public CastState source;
-        public CastAction triggerAction;
+        public CastAction triggerActions;
         public CastState destination;
     }
 
@@ -76,12 +85,16 @@ namespace HotD.Castables
             }
             foreach (var transition in transitions)
             {
-                transitionBank.Add(new(transition.source, transition.triggerAction), transition);
+                foreach (CastAction value in Enum.GetValues(typeof(CastAction)))
+                {
+                    if (HasAction(value, transition.triggerActions))
+                        transitionBank.Add(new(transition.source, value), transition);
+                }
             }
             SetState(CastState.None);
         }
 
-        public override void Initialize(ICastCompatible owner, CastableItem item)
+        public override void Initialize(ICastCompatible owner, CastableItem item, int actionIndex = 0)
         {
             base.Initialize(owner, item);
             foreach (var executor in executorList)
@@ -89,6 +102,13 @@ namespace HotD.Castables
                 executor.Initialize(fields);
             }
             SetState(CastState.Init);
+        }
+
+        // Helpers
+
+        private bool HasAction(CastAction action, CastAction actions)
+        {
+            return (action & actions) == action;
         }
 
         // State
@@ -104,6 +124,7 @@ namespace HotD.Castables
                     if (executor.State == state)
                     {
                         executor.PerformAction(new(state, CastAction.Start));
+                        QueueAction(CastAction.End, false, state);
                     }
                     else if (executor.State == this.state)
                     {
@@ -121,12 +142,17 @@ namespace HotD.Castables
 
         public void QueueAction(CastAction action)
         {
+            QueueAction(action, true, CastState.None);
+        }
+        public void QueueAction(CastAction action, bool transitionIfNotWaiting = true, CastState state = CastState.None)
+        {
+            state = state == CastState.None ? this.state : state;
             StateAction stateAction = new(state, action);
             if (transitionBank.TryGetValue(stateAction, out StateTransition transition))
             {
                 bool waitingOnExecutor = false;
                 
-                Print($"Performing {transition.triggerAction} transition from {transition.source} to {transition.destination}.", debug);
+                Print($"Attempting {transition.triggerActions} transition from {transition.source} to {transition.destination}.", debug);
                 var executors = executorBank[state];
                 if (executors.Count > 0)
                 {
@@ -142,7 +168,7 @@ namespace HotD.Castables
                     DequeueFirst();
                 }
 
-                if (!waitingOnExecutor)
+                if (!waitingOnExecutor && transitionIfNotWaiting)
                 {
                     Print($"No executors to wait on, setting state to {transition.destination}.", debug);
                     SetState(transition.destination);
@@ -180,29 +206,6 @@ namespace HotD.Castables
                     dequeuedActions.Add(stateAction);
                 }
             }
-        }
-
-        // Tests
-        [Header("Tests")]
-        public CastAction testAction;
-        public CastState testState;
-        public TestCastCompatible testCastCompatible;
-        public CastableItem testItem;
-
-        [ButtonMethod]
-        public void TestQueueAction()
-        {
-            QueueAction(testAction);
-        }
-        [ButtonMethod]
-        public void TestSetState()
-        {
-            SetState(testState);
-        }
-        [ButtonMethod]
-        public void TestInitialize()
-        {
-            Initialize(testCastCompatible, testItem);
         }
     }
 }

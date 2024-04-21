@@ -134,18 +134,25 @@ public class MecanimGenerator : Generator
         unRunTransition.AddCondition(AnimatorConditionMode.IfNot, 0, "Run");
         unRunTransition.duration = 0;
 
-        var actionTransition = root.AddAnyStateTransition(actions);
-        actionTransition.AddCondition(AnimatorConditionMode.Greater, 0, "Action");
-        actionTransition.AddCondition(AnimatorConditionMode.If, 0, "StartAction");
+        var actionsTransition = root.AddAnyStateTransition(actions);
+        actionsTransition.AddCondition(AnimatorConditionMode.Greater, 0, "Action");
+        actionsTransition.AddCondition(AnimatorConditionMode.If, 0, "StartAction");
 
+        int actionIndex = 0;
         foreach (var charges in chargeActions)
         {
-            AddChargeStateMachine(actions, charges);
+            actionIndex++;
+            var action = AddChargeStateMachine(actions, charges);
+            var actionTransition = actions.AddEntryTransition(action);
+            actionTransition.AddCondition(AnimatorConditionMode.Equals, actionIndex, "Action");
         }
 
         foreach (var combos in comboActions)
         {
-            AddComboStateMachine(actions, combos);
+            actionIndex++;
+            var action = AddComboStateMachine(actions, combos);
+            var actionTransition = actions.AddEntryTransition(action);
+            actionTransition.AddCondition(AnimatorConditionMode.Equals, actionIndex, "Action");
         }
 
         EditorUtility.SetDirty(mecanim);
@@ -172,17 +179,34 @@ public class MecanimGenerator : Generator
         public Motion holdMotion;
     }
 
+    public AnimatorState AddEndCastState(AnimatorStateMachine root, Vector2 position = new())
+    {
+        AnimatorState endCast = root.AddState("EndCast", position);
+        var animEvent = endCast.AddStateMachineBehaviour<AnimatorEvent>();
+        animEvent.methodName = "OnEndCast";
+        animEvent.eventName = null;
+        animEvent.eventType = AnimatorEvent.Event.EnterState;
+        
+        var exitTransition = endCast.AddExitTransition();
+        exitTransition.exitTime = 0;
+        exitTransition.hasExitTime = true;
+
+        return endCast;
+    }
+
     public AnimatorStateMachine AddChargeStateMachine(AnimatorStateMachine root, Charges blueprints, Vector2 position=new())
     {
         var sub = root.AddStateMachine(blueprints.name);
         sub.entryPosition = new();
+
+        AnimatorState endCast = AddEndCastState(sub, new(300, 0));
 
         List<AnimatorStateMachine> charges = new();
         int num = 0;
         AnimatorStateMachine prev = null;
         AnimatorState prevCharge = null;
         AnimatorState prevCast = null;
-        foreach(Charge blueprint in blueprints.charges)
+        foreach (Charge blueprint in blueprints.charges)
         {
             num += 1;
             var cur = AddChargeSubMachine(sub, blueprint, num, out var charge, out var cast, new(0, 150 * num));
@@ -196,15 +220,19 @@ public class MecanimGenerator : Generator
                 var backtrackTransition = charge.AddTransition(prevCast);
                 backtrackTransition.AddCondition(AnimatorConditionMode.If, 0, "StartCast");
             }
+            else
+            {
+                sub.defaultState = cur.defaultState;
+            }
 
-            sub.AddStateMachineExitTransition(cur);
+            var endCastTransition = sub.AddStateMachineTransition(cur, endCast);
             
             prev = cur;
             prevCharge = charge;
             prevCast = cast;
         }
 
-        sub.exitPosition = new(300, 150 * (num / 2));
+        sub.exitPosition = new(300, 150 * (num));
 
         return sub;
     }

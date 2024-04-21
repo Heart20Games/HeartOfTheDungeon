@@ -14,7 +14,7 @@ namespace HotD.Castables
     {
         public void SetActive(bool active);
         public void Initialize(CastableFields field);
-        public void Initialize(ICastCompatible owner, CastableItem item);
+        public void Initialize(ICastCompatible owner, CastableItem item, int actionIndex = 0);
     }
 
     public class CastableProperties : BaseMonoBehaviour, ICastableProperties
@@ -24,7 +24,7 @@ namespace HotD.Castables
         // Properties
         public virtual Vector3 Direction { get => fields.direction; set => fields.direction = value; }
         public ICastCompatible Owner { get => fields?.owner; set => fields.owner = value; }
-        public CastCoordinator Coordinator { get => fields?.castCoordinator; set => fields.castCoordinator = value; }
+        public CastCoordinator Coordinator { get => fields?.owner?.Coordinator; }
         public CastableItem Item { get => fields?.item; set => fields.item = value; }
         public int PowerLevel
         {
@@ -43,6 +43,7 @@ namespace HotD.Castables
         }
 
         // Events
+        public bool haveCoordinatorStartOnActive = false;
         [Foldout("Events", true)]
         public UnityEvent<int> onSetPowerLevel;
         public UnityEvent<int> onSetMaxPowerLevel;
@@ -64,6 +65,8 @@ namespace HotD.Castables
             if (Coordinator)
             {
                 onSetPowerLevel.AddListener((int powerLevel) => { Coordinator.SetInt("Level", powerLevel); });
+                if (active && haveCoordinatorStartOnActive)
+                    Coordinator.SetActionIndex(fields.actionIndex, true);
             }
         }
 
@@ -71,8 +74,8 @@ namespace HotD.Castables
         {
             this.fields = fields;
         }
-        
-        public virtual void Initialize(ICastCompatible owner, CastableItem item)
+
+        public virtual void Initialize(ICastCompatible owner, CastableItem item, int actionIndex = 0)
         {
             Owner = owner;
             Item = item;
@@ -81,6 +84,7 @@ namespace HotD.Castables
                 fields.damager.Ignore(owner.Body);
             Identity = owner.Identity;
             owner.WeaponDisplay.DisplayWeapon(fields.weaponArt);
+            fields.actionIndex = actionIndex;
         }
     }
 
@@ -94,7 +98,7 @@ namespace HotD.Castables
         public Vector3 direction;
         public bool followBody;
         public ICastCompatible owner;
-        public CastCoordinator castCoordinator;
+        public int actionIndex;
 
         [Header("Settings")]
         public CastableItem item;

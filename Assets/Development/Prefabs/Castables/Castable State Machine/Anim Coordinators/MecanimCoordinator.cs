@@ -2,19 +2,23 @@ using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class MecanimCoordinator : AnimationCoordinator
 {
-    private Animator animator;
+    [ReadOnly][SerializeField] protected Animator animator;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        Print("Animator not found.", animator == null, this);
     }
 
     // Warnings
     protected bool HasValidParameter(string kind, string parameter)
     {
+        Assert.IsNotNull(animator);
+
         if (animator.HasParameter(parameter))
         {
             return true;
@@ -27,6 +31,29 @@ public class MecanimCoordinator : AnimationCoordinator
     }
 
     // Parameter Helpers
+
+    public override float GetFloat(string parameter)
+    {
+        if (HasValidParameter("Float", parameter))
+        {
+            return animator.GetFloat(parameter);
+        }
+        return 0;
+    }
+
+    public override int GetInt(string parameter)
+    {
+        if (HasValidParameter("Int", parameter))
+            animator.GetInteger(parameter);
+        return 0;
+    }
+
+    public override bool GetBool(string parameter)
+    {
+        if (HasValidParameter("Bool", parameter))
+            return animator.GetBool(parameter);
+        return false;
+    }
 
     public override void SetFloat(string parameter, float value)
     {
