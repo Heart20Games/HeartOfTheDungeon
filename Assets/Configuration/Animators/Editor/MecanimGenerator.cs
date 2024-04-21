@@ -145,6 +145,7 @@ public class MecanimGenerator : Generator
             var action = AddChargeStateMachine(actions, charges);
             var actionTransition = actions.AddEntryTransition(action);
             actionTransition.AddCondition(AnimatorConditionMode.Equals, actionIndex, "Action");
+            var exitActionTransition = actions.AddStateMachineExitTransition(action);
         }
 
         foreach (var combos in comboActions)
@@ -153,6 +154,7 @@ public class MecanimGenerator : Generator
             var action = AddComboStateMachine(actions, combos);
             var actionTransition = actions.AddEntryTransition(action);
             actionTransition.AddCondition(AnimatorConditionMode.Equals, actionIndex, "Action");
+            var exitActionTransition = actions.AddStateMachineExitTransition(action);
         }
 
         EditorUtility.SetDirty(mecanim);
@@ -186,6 +188,7 @@ public class MecanimGenerator : Generator
         animEvent.methodName = "OnEndCast";
         animEvent.eventName = null;
         animEvent.eventType = AnimatorEvent.Event.EnterState;
+        animEvent.targets = AnimatorEvent.Target.Parent;
         
         var exitTransition = endCast.AddExitTransition();
         exitTransition.exitTime = 0;
