@@ -9,6 +9,7 @@ public abstract class Generator : ScriptableObject
     public bool createSubFolder = true;
     public bool overwrite = true;
     public bool replace = true;
+    public bool emptyTest = false;
     [ReadOnly] public string fullDirectory = "";
     [ReadOnly] public float timeOfLastGeneration;
 

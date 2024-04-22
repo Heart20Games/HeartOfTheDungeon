@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 using Yarn.Unity;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 [CreateAssetMenu(fileName = "NewMecanimGenerator", menuName = "Mecanim Generator", order = 1)]
 public class MecanimGenerator : Generator
@@ -58,14 +59,14 @@ public class MecanimGenerator : Generator
             return;
         }
 
-        if (replace) // && !sameDirectory)
-        {
-            if (mecanim != null)
-            {
-                AssetDatabase.DeleteAsset($"{oldDirectory}/{mecanim.name}.prefab");
-                mecanim = null;
-            }
-        }
+        //if (replace) // && !sameDirectory)
+        //{
+        //    if (mecanim != null)
+        //    {
+        //        AssetDatabase.DeleteAsset($"{oldDirectory}/{mecanim.name}.prefab");
+        //        mecanim = null;
+        //    }
+        //}
 
         // Trim the name so it doesn't look like a series of subdirectories
         outputName = outputName.Trim('/');
@@ -84,8 +85,12 @@ public class MecanimGenerator : Generator
             // Create a new controller.
             mecanim = AnimatorController.CreateAnimatorControllerAtPath(mecanimPath);
         }
-        else
+        else if (replace)
         {
+            foreach(var layer in mecanim.layers)
+            {
+                RecursiveClearStateMachine(layer.stateMachine);
+            }
             for (int i = mecanim.parameters.Length - 1; i >= 0; i--)
             {
                 mecanim.RemoveParameter(mecanim.parameters[i]);
@@ -94,7 +99,10 @@ public class MecanimGenerator : Generator
             {
                 mecanim.RemoveLayer(i);
             }
+            mecanim.AddLayer("Base Layer");
         }
+
+        if (emptyTest) return;
 
         // Add Parameters
         mecanim.AddParameter("ChargeLevel", AnimatorControllerParameterType.Int);
@@ -183,6 +191,21 @@ public class MecanimGenerator : Generator
 
         EditorUtility.SetDirty(mecanim);
         EditorUtility.SetDirty(this);
+    }
+
+    // Clear
+
+    public void RecursiveClearStateMachine(AnimatorStateMachine root)
+    {
+        for (int i = root.states.Length - 1; i >= 0; i--)
+        {
+            root.RemoveState(root.states[i].state);
+        }
+        for (int i = root.stateMachines.Length - 1; i >= 0; i--)
+        {
+            RecursiveClearStateMachine(root.stateMachines[i].stateMachine);
+            root.RemoveStateMachine(root.stateMachines[i].stateMachine);
+        }
     }
 
     // Charge Machine
