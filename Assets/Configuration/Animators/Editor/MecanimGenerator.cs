@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -69,8 +70,31 @@ public class MecanimGenerator : Generator
         // Trim the name so it doesn't look like a series of subdirectories
         outputName = outputName.Trim('/');
 
-        // Create a new controller
-        mecanim = AnimatorController.CreateAnimatorControllerAtPath($"{fullDirectory}/{outputName}.controller");
+        // Get a controller to work with
+        string mecanimPath = $"{fullDirectory}/{outputName}.controller";
+        if (mecanim == null)
+        {
+            // Load whatever Animator Controller we find.
+            mecanim = AssetDatabase.LoadAssetAtPath<AnimatorController>(mecanimPath);
+        }
+        
+        // Make a new one, or clear the old one.
+        if (mecanim == null)
+        {
+            // Create a new controller.
+            mecanim = AnimatorController.CreateAnimatorControllerAtPath(mecanimPath);
+        }
+        else
+        {
+            for (int i = mecanim.parameters.Length - 1; i >= 0; i--)
+            {
+                mecanim.RemoveParameter(mecanim.parameters[i]);
+            }
+            for (int i = mecanim.layers.Length - 1; i >= 0; i--)
+            {
+                mecanim.RemoveLayer(i);
+            }
+        }
 
         // Add Parameters
         mecanim.AddParameter("ChargeLevel", AnimatorControllerParameterType.Int);
@@ -158,7 +182,6 @@ public class MecanimGenerator : Generator
         }
 
         EditorUtility.SetDirty(mecanim);
-
         EditorUtility.SetDirty(this);
     }
 
