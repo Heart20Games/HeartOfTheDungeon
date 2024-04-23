@@ -46,7 +46,8 @@ namespace Selection
             partySpawners = new List<IPartySpawner>(FindObjectsOfType<BaseMonoBehaviour>().OfType<IPartySpawner>());
             foreach (IPartySpawner party in partySpawners)
             {
-                party.RegisterPartyReceiver(AddTarget);
+                party.RegisterPartyAdder(AddTarget);
+                party.RegisterPartyRemover(RemoveTarget);
             }
         }
 
@@ -58,6 +59,12 @@ namespace Selection
             {
                 selectableBank.Add(selectable);
             }
+        }
+
+        public void RemoveTarget(ASelectable selectable)
+        {
+            print("Removing target!");
+            selectableBank.Remove(selectable);
         }
 
         // Looking

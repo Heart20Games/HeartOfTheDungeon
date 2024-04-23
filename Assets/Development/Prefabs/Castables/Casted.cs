@@ -8,10 +8,17 @@ using Attributes;
 
 namespace HotD.Castables
 {
+    public struct CastedMechanic
+    {
+        public bool disableMovementWhileCasting;
+    }
+
     public class Casted : Positionable, ICollidables
     {
         public CastableStats stats;
         [SerializeField] private bool debug;
+
+        protected bool casting = false;
 
         [Foldout("Base Events", true)]
         public UnityEvent onStart = new();
@@ -22,11 +29,11 @@ namespace HotD.Castables
         public UnityEvent onTrigger = new();
         public UnityEvent onRelease = new();
         public UnityEvent<Vector3> onCast = new();
-        public UnityEvent onUnCast = new();
+        public UnityEvent onEndCast = new();
         public void Trigger() { onTrigger.Invoke(); }
         public void Release() { onRelease.Invoke(); }
-        public void Cast(Vector3 vector) { onCast.Invoke(vector); }
-        public void UnCast() { onUnCast.Invoke(); }
+        public void Cast(Vector3 vector) { casting = true; onCast.Invoke(vector); }
+        public void EndCast() { casting = false; onEndCast.Invoke(); }
 
         [Foldout("Power Level", true)]
         public bool canUpdatePowerLevel = false;
@@ -174,7 +181,7 @@ namespace HotD.Castables
         {
             if (isActiveAndEnabled)
             {
-                onUnCast.Invoke();
+                onEndCast.Invoke();
             }
         }
     }

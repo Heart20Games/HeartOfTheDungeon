@@ -69,6 +69,7 @@ namespace HotD
         public bool useD20Menu;
         public List<GameMode> modes;
 
+        // Modes by Name
         private Dictionary<string, GameMode> modeBank;
         public Dictionary<string, GameMode> ModeBank { get => modeBank ?? GetGameModes(); }
         public Dictionary<string, GameMode> GetGameModes()
@@ -79,6 +80,7 @@ namespace HotD
             return modeBank;
         }
 
+        // Modes by Input Mode
         private Dictionary<InputMode, GameMode> inputBank;
         public Dictionary<InputMode, GameMode> InputBank { get => inputBank ?? GetInputModes(); }
         public Dictionary<InputMode, GameMode> GetInputModes()
@@ -92,6 +94,7 @@ namespace HotD
             return inputBank;
         }
 
+        // Modes by Menu
         private Dictionary<Menu, GameMode> menuBank;
         public Dictionary<Menu, GameMode> MenuBank { get => menuBank ?? GetMenuModes(); }
         public Dictionary<Menu, GameMode> GetMenuModes()

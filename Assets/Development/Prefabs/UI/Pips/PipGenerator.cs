@@ -11,12 +11,12 @@ namespace UIPips
 {
     public class PipGenerator : BaseMonoBehaviour
     {
-        public enum HideMode { Sometimes, Always, Never }
+        public enum DisplayMode { Dynamic, Off, On }
 
         [Header("Configuration")]
         public Transform pipTarget;
         public AutoPip basePrefab;
-        public HideMode hideMode = HideMode.Sometimes;
+        public DisplayMode displayMode = DisplayMode.Dynamic;
         public bool usedInWorldSpace;
         [ConditionalField("usedInWorldSpace")] [SerializeField] private Vector3 worldSpaceOffset = new();
         [ConditionalField("usedInWorldSpace")][SerializeField] private Vector3 worldSpaceScale = new();
@@ -54,20 +54,20 @@ namespace UIPips
             }
         }
 
-        public void SetHideMode(HideMode hideMode)
+        public void SetDisplayMode(DisplayMode hideMode)
         {
-            this.hideMode = hideMode;
+            this.displayMode = hideMode;
             switch (hideMode)
             {
-                case HideMode.Always:
+                case DisplayMode.Off:
                     foreach (var partition in partitions)
                         partition.Hide();
                     break;
-                case HideMode.Never:
+                case DisplayMode.On:
                     foreach (var partition in partitions)
                         partition.UnHide();
                     break;
-                case HideMode.Sometimes: break;
+                case DisplayMode.Dynamic: break;
             }
         }
 
@@ -97,7 +97,7 @@ namespace UIPips
             }
         }
 
-        private HideMode oldHideMode;
+        private DisplayMode oldHideMode;
         private void Update()
         {
             if (updatePips)
@@ -109,10 +109,10 @@ namespace UIPips
                     childOffset += partition.pips.Count;
                 }
 
-                if (hideMode != oldHideMode)
+                if (displayMode != oldHideMode)
                 {
-                    SetHideMode(hideMode);
-                    oldHideMode = hideMode;
+                    SetDisplayMode(displayMode);
+                    oldHideMode = displayMode;
                 }
             }
         }

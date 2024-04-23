@@ -29,21 +29,30 @@ namespace HotD
         [ReadOnly][SerializeField] private int spawnpoint = -1;
 
         [SerializeField] private bool randomizeWavePoints = false;
+        [SerializeField] private bool patientWaves = false;
 
         [ReadOnly][SerializeField] private List<Party> parties = new();
         public UnityEvent<ASelectable> onMemberSpawned;
+        public UnityEvent<Party> onPartyDied;
+        public UnityEvent<ASelectable> deregisterMember;
 
         public Coroutine coroutine;
 
         public void Start()
         {
-            coroutine = StartCoroutine(CountdownToWave());
+            coroutine ??= StartCoroutine(CountdownToWave());
         }
 
-        public void RegisterPartyReceiver(UnityAction<ASelectable> action)
+        // IPartySpawner
+        public void RegisterPartyAdder(UnityAction<ASelectable> action)
         {
             print("Registering...");
             onMemberSpawned.AddListener(action);
+        }
+
+        public void RegisterPartyRemover(UnityAction<ASelectable> action)
+        {
+            deregisterMember.AddListener(action);
         }
 
         public void OnPartySpawned(Party party)
@@ -54,6 +63,20 @@ namespace HotD
             }
         }
 
+        public void OnPartyDied(Party party)
+        {
+            parties.Remove(party);
+            foreach (Character member in party.members)
+            {
+                deregisterMember.Invoke(member.body.GetComponent<ASelectable>());
+            }
+            Destroy(party);
+
+            if (parties.Count == 0)
+                coroutine ??= StartCoroutine(CountdownToWave());
+        }
+
+        // Actual Spawning
         public void SpawnNewWave()
         {
             wave += 1;
@@ -62,9 +85,12 @@ namespace HotD
                 spawnpoint = randomizeWavePoints ? UnityEngine.Random.Range(0, spawnpoints.Count) : spawnpoint += 1;
                 Party party = Instantiate(waves[wave % waves.Count].party, spawnpoints[spawnpoint]);
                 parties.Add(party);
+                party.onAllDead.AddListener(() => { OnPartyDied(party); });
                 OnPartySpawned(party);
             }
-            coroutine = StartCoroutine(CountdownToWave());
+
+            if (!patientWaves)
+                coroutine ??= StartCoroutine(CountdownToWave());
         }
 
         public IEnumerator CountdownToWave()

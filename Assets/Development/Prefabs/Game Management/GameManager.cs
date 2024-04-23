@@ -12,6 +12,7 @@ using Yarn.Unity;
 namespace HotD
 {
     using static GameModes;
+    using static HotD.CharacterModes;
 
     public class Game : BaseMonoBehaviour
     {
@@ -271,9 +272,10 @@ namespace HotD
             {
                 if (character != null)
                 {
-                    if (mode.cardboardMode)
-                        SetDisplayable(character, false);
-                    SetBrainable(character, mode.shouldBrain);
+                    character.SetMode(mode.shouldBrain ? ControlMode.Brain : ControlMode.None);
+                    // May require a "cardboard" Character Mode
+                    //if (mode.cardboardMode)
+                    //    SetDisplayable(character, false);
                 }
             }
 
@@ -323,18 +325,9 @@ namespace HotD
 
         public void SetControllable(IControllable controllable, bool shouldControl, bool shouldSpectate)
         {
-            controllable?.SetControllable(shouldControl);
+            if (controllable != null)
+                controllable.Controllable = shouldControl;
             controllable?.SetSpectatable(shouldSpectate);
-        }
-
-        public void SetBrainable(IBrainable brainable, bool shouldBrain)
-        {
-            brainable?.SetBrainable(shouldBrain);
-        }
-
-        public void SetDisplayable(IDisplayable displayable, bool shouldDisplay)
-        {
-            displayable?.SetDisplayable(shouldDisplay);
         }
 
         // Selectables

@@ -100,7 +100,7 @@ public class Validator : BaseMonoBehaviour
             {
                 Character character = other.GetComponentInParent<Character>();
                 if (character != null)
-                    return character.controllable;
+                    return character.Controllable;
             }
         }
         return true;

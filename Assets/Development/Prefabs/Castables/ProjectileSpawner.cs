@@ -11,7 +11,7 @@ namespace HotD.Castables
         public Projectile projectile;
         public bool followBody = false;
         public Collider[] exceptions;
-        private readonly List<Projectile> projectiles = new();
+        [SerializeField] private List<Projectile> projectiles = new();
         public bool debug = false;
 
         private void Awake()
