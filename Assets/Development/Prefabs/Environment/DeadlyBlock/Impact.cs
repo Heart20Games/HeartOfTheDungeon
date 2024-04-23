@@ -1,4 +1,6 @@
 using CustomUnityEvents;
+using MyBox;
+using Sisus.ComponentNames;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,39 +33,52 @@ public class Impact : Validator
     public bool oneShot = false;
     public bool hasCollided = false;
 
+    [Foldout("Events", true)]
     [Header("Connections")]
     public BinaryEvent onCollision;
     public BinaryEvent onTrigger;
-    public ImpactEvents onImpact;
+    [Foldout("Events")] public ImpactEvents onImpact;
 
     // Tracking
-    public readonly List<GameObject> touching = new();
+    [ReadOnly] public List<GameObject> touching = new();
     [HideInInspector] public GameObject other;
     [HideInInspector] public Vector3 impactLocation;
+
+    private void OnEnable() {}
 
     // Events
 
     private void OnEventEnter(GameObject other, UnityEvent onEvent)
     {
-        this.other = other;
-        if ((!oneShot || !hasCollided) && Validate(other) && !touching.Contains(other))
+        if (isActiveAndEnabled)
         {
-            if (debug) print($"Other: {other.name}");
-            touching.Add(other);
-            hasCollided = true;
-            onEvent.Invoke();
-            onImpact.InvokeEnter(this);
+            this.other = other;
+            if ((!oneShot || !hasCollided) && Validate(other) && !touching.Contains(other))
+            {
+                Print($"Valid Other: {other.name} ({this.GetName()})", debug);
+                touching.Add(other);
+                hasCollided = true;
+                onEvent.Invoke();
+                onImpact.InvokeEnter(this);
+            }
+            else
+            {
+                Print($"Invalid Other: {other.name} ({this.GetName()})", debug);
+            }
         }
     }
 
     private void OnEventExit(GameObject other, UnityEvent onEvent)
     {
-        this.other = other;
-        if (Validate(other))
+        if (isActiveAndEnabled)
         {
-            touching.Remove(other);
-            onEvent.Invoke();
-            onImpact.InvokeExit(this);
+            this.other = other;
+            if (Validate(other))
+            {
+                touching.Remove(other);
+                onEvent.Invoke();
+                onImpact.InvokeExit(this);
+            }
         }
     }
 

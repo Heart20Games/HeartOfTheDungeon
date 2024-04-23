@@ -6,19 +6,22 @@ using UnityEngine.Events;
 using Selection;
 using UnityEngine.SceneManagement;
 using HotD.PostProcessing;
+using MyBox;
+using Yarn.Unity;
 
 namespace HotD
 {
     using static GameModes;
+    using static HotD.CharacterModes;
 
     public class Game : BaseMonoBehaviour
     {
-        public static Game game;
+        public static Game main;
 
         // Properties
+        [Foldout("Parts", true)]
         [Header("Parts")]
-        public Character playerCharacter;
-        public List<Character> playableCharacters;
+        public Party playerParty;
         public Selector selector;
         public SimpleController selectorController;
         public Targeter targeter;
@@ -26,17 +29,31 @@ namespace HotD
         [HideInInspector] public List<Cutouts> cardboardCutouts = new();
         [HideInInspector] public UserInterface userInterface;
         [HideInInspector] public VolumeManager volumeManager;
+        [HideInInspector] public ProgressManager progressManager;
         [HideInInspector] public HUD hud;
         [HideInInspector] public List<ITimeScalable> timeScalables;
         [HideInInspector] public List<Interactable> interactables;
-        [HideInInspector] public List<Character> allCharacters;
+        [Foldout("Parts")][HideInInspector] public List<Character> allCharacters;
         private PlayerInput input;
 
-        // Initialization
+
+        // Game InputMode
+        [Foldout("Game Mode", true)]
+        [Header("Game Mode")]
         [SerializeField] private InputMode initialInputMode = InputMode.None;
         [SerializeField] private Menu initialMenu = Menu.None;
+        [SerializeField] private GameMode mode = new();
+        public GameMode Mode { get => mode; set => SetMode(value); }
+        public string ModeName { get => mode.name; set => SetMode(value); }
+        public InputMode InputMode { get => mode.inputMode; set => SetMode(value); }
+        public MoveMode MoveMode { get => mode.moveMode; }
+        public LookMode LookMode { get => mode.lookMode; }
+        public Menu ActiveMenu { get => mode.activeMenu; set => SetMode(value); }
+        public bool swapModes = false;
+        [Foldout("Game Mode")] public bool reactivateMode = false;
 
         // Current Character
+        [Foldout("Currents", true)]
         [Header("Current Character")]
         [ReadOnly][SerializeField] private Character curCharacter;
         [ReadOnly] public SimpleController curController;
@@ -45,7 +62,14 @@ namespace HotD
         [HideInInspector] public Character CurCharacter { get => curCharacter; set => SetCharacter(value); }
         private int curCharIdx = 0;
         public int CurCharIdx { get => curCharIdx; }
-        [SerializeField] private Party playerParty;
+        [Foldout("Currents")][ReadOnly][SerializeField] private ASelectable selectedTarget;
+
+        // Events
+        [Foldout("Events", true)]
+        [Header("Events")]
+        public UnityEvent onPlayerDied;
+        public UnityEvent onRestartScene;
+        [Foldout("Events")] public UnityEvent onRestartGame;
 
         // TimeScale
         [Header("TimeScale")]
@@ -57,31 +81,28 @@ namespace HotD
         public bool restartable = true;
         public bool debug = false;
 
-        // Events
-        [Header("Events")]
-        public UnityEvent onPlayerDied;
-        public UnityEvent onRestartScene;
-        public UnityEvent onRestartGame;
-
 
         // Initialization
 
         private void Awake()
         {
-            game = this;
+            main = this;
             input = GetComponent<PlayerInput>();
+            progressManager = GetComponent<ProgressManager>();
         }
 
         private void Start()
         {
+            //if (session) session.Initialize();
             InitializePlayableCharacters();
+            progressManager.RespawnToLastCheckpoint();
             if (initialMenu != Menu.None)
             {
                 SetMode(initialMenu);
             }
             else if (initialInputMode != InputMode.None)
             {
-                InputMode = InputMode.None;
+                InputMode = initialInputMode;
             }
             else
             {
@@ -91,53 +112,50 @@ namespace HotD
 
         public void InitializePlayableCharacters()
         {
-            bool hasPlayer = false;
-            if (playerCharacter != null)
+            if (playerParty != null)
             {
-                hud.MainCharacterSelect(playerCharacter);
-                foreach (var character in playableCharacters)
+                hud.MainCharacterSelect(playerParty.leader);
+                foreach (var character in playerParty.members)
                 {
-                    if (character != playerCharacter)
+                    if (character != playerParty.leader)
                         hud.AddAlly(character);
                 }
-                if (!hasPlayer)
-                    playableCharacters.Insert(0, playerCharacter);
+                foreach (var character in playerParty.members)
+                    character.onDeath.AddListener(OnCharacterDied);
             }
-
             hud.SetParty(playerParty);
+
             SetCharacterIdx(0);
             if (curCharacter == null)
                 SetMode(InputMode.Selection);
-
-            foreach (var character in playableCharacters)
-                character.onDeath.AddListener(OnCharacterDied);
         }
 
 
         // Restart
 
+        [ButtonMethod]
         public void RestartScene()
         {
             if (restartable)
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+        [ButtonMethod]
         public void RestartGame()
         {
             if (restartable)
                 onRestartGame.Invoke();
         }
+        [ButtonMethod]
         public void RestartLife()
         {
+            Print("Restart Life", debug);
             if (playerParty != null)
             {
-                playerParty.Respawn();
                 SetCharacter(playerParty.Leader);
             }
-            else if (curCharacter != null)
-            {
-                curCharacter.Respawn();
-            }
-            SetMode(InputMode.Character);
+            progressManager.RespawnToLastCheckpoint();
+            if (mode.inputMode != InputMode.Character)
+                SetMode(InputMode.Character);
         }
 
         // Updates
@@ -172,16 +190,7 @@ namespace HotD
             }
         }
 
-        // Game InputMode
-        [SerializeField] private GameMode mode = new();
-        public GameMode Mode { get => mode; set => SetMode(value); }
-        public string ModeName { get => mode.name; set => SetMode(value); }
-        public InputMode InputMode { get => mode.inputMode; set => SetMode(value); }
-        public MoveMode MoveMode { get => mode.moveMode; }
-        public LookMode LookMode { get => mode.lookMode; }
-        public Menu ActiveMenu { get => mode.activeMenu; set => SetMode(value); }
-        public bool swapModes = false;
-        public bool reactivateMode = false;
+        // Game Mode
 
         public void SetMode(string name)
         {
@@ -211,13 +220,20 @@ namespace HotD
 
         public void SetMode(InputMode inputMode)
         {
-            if (debug) print($"Change InputMode to {inputMode} (in bank? {(InputBank.ContainsKey(inputMode) ? "yes" : "no")})");
-            if (InputBank.TryGetValue(inputMode, out GameMode mode))
-                SetMode(mode);
+            if (inputMode == InputMode.LockOn && !targeter.HasTarget())
+            {
+                return;
+            }
             else
             {
-                Debug.LogWarning($"Can't find game mode for \"{inputMode}\"");
-                SetMode(InputMode.Character);
+                if (debug) print($"Change InputMode to {inputMode} (in bank? {(InputBank.ContainsKey(inputMode) ? "yes" : "no")})");
+                if (InputBank.TryGetValue(inputMode, out GameMode mode))
+                    SetMode(mode);
+                else
+                {
+                    Debug.LogWarning($"Can't find game mode for \"{inputMode}\"");
+                    SetMode(InputMode.Character);
+                }
             }
         }
 
@@ -229,7 +245,7 @@ namespace HotD
 
         public void ActivateMode(GameMode mode, GameMode lastMode)
         {
-            if (debug) print($"Activate inputMode {mode}.");
+            Print($"Activate inputMode {mode}.", debug);
 
             // Configure User Interface
             if (userInterface != null)
@@ -263,9 +279,10 @@ namespace HotD
             {
                 if (character != null)
                 {
-                    if (mode.cardboardMode)
-                        SetDisplayable(character, false);
-                    SetBrainable(character, mode.shouldBrain);
+                    character.SetMode(mode.shouldBrain ? ControlMode.Brain : ControlMode.None);
+                    // May require a "cardboard" Character Mode
+                    //if (mode.cardboardMode)
+                    //    SetDisplayable(character, false);
                 }
             }
 
@@ -279,20 +296,21 @@ namespace HotD
             TimeScale = mode.timeScale;
 
             // Swap Controllables
+            bool canSpectate = mode.lookMode == LookMode.Character;
             IControllable newControllable = mode.Controllable;
             IControllable oldControllable = lastMode.Controllable;
             if (newControllable != null)
-                SetControllable(newControllable, true, true);
+                SetControllable(newControllable, true, canSpectate);
             if (oldControllable != null && oldControllable != newControllable)
-                SetControllable(oldControllable, false, newControllable == null);
+                SetControllable(oldControllable, false, newControllable == null && canSpectate);
 
             // Swap Target Finders
             if (targeter != null)
             {
                 TargetFinder newFinder = mode.Finder;
                 TargetFinder oldFinder = lastMode.Finder;
-                if (mode.Finder != null)
-                    targeter.Finder = mode.Finder;
+                if (newFinder != null)
+                    targeter.Finder = newFinder;
                 if (oldFinder != null && oldFinder != newFinder)
                     targeter.Finder = null;
                 targeter.SetTargetLock(mode.targetLock);
@@ -314,34 +332,24 @@ namespace HotD
 
         public void SetControllable(IControllable controllable, bool shouldControl, bool shouldSpectate)
         {
-            controllable?.SetControllable(shouldControl);
+            if (controllable != null)
+                controllable.Controllable = shouldControl;
             controllable?.SetSpectatable(shouldSpectate);
-        }
-
-        public void SetBrainable(IBrainable brainable, bool shouldBrain)
-        {
-            brainable?.SetBrainable(shouldBrain);
-        }
-
-        public void SetDisplayable(IDisplayable displayable, bool shouldDisplay)
-        {
-            displayable?.SetDisplayable(shouldDisplay);
         }
 
         // Selectables
 
-        [ReadOnly][SerializeField] private ASelectable selectedTarget;
         public void OnTargetSelected(ASelectable selectable)
         {
 
-            if (selectedTarget == selectable || selectable == null)
+            if (selectable == null)
             {
-                if (debug) print($"Target deselected: {selectable}");
+                Print($"Target deselected: {selectedTarget}", debug);
                 hud.SetTarget(null);
             }
             else
             {
-                if (debug) print($"Target selected: {selectable}");
+                Print($"Target selected: {selectable}", debug);
                 if (selectable.source.TryGetComponent<AIdentifiable>(out var identifiable))
                 {
                     hud.SetTarget(identifiable);
@@ -359,8 +367,8 @@ namespace HotD
         }
         public void StartDialogue(string nodeName, UnityAction<string> startListener = null, UnityAction completeListener = null)
         {
-            prevMode = game.Mode;
-            game.InputMode = InputMode.Dialogue;
+            prevMode = main.Mode;
+            main.InputMode = InputMode.Dialogue;
             userInterface.dialogueRunner.Stop();
             if (startListener != null)
                 userInterface.dialogueRunner.onNodeStart.AddListener(startListener);
@@ -371,7 +379,7 @@ namespace HotD
 
         public void EndDialogue()
         {
-            game.Mode = prevMode;
+            main.Mode = prevMode;
             userInterface.dialogueRunner.Stop();
         }
 
@@ -379,15 +387,14 @@ namespace HotD
 
         public void SetCharacterIdx(int idx)
         {
-            if (playableCharacters.Count > 0)
+            List<Character> members = playerParty.members;
+            if (members.Count > 0)
             {
-                idx = idx < 0 ? playableCharacters.Count + idx : idx;
-                curCharIdx = idx % (playableCharacters.Count);
-                Character character = playableCharacters[curCharIdx];
+                idx = idx < 0 ? members.Count + idx : idx;
+                curCharIdx = idx % (members.Count);
+                Character character = members[curCharIdx];
                 SetCharacter(character);
                 hud.CharacterSelect(character);
-                if (!character.alive)
-                    SetMode(InputMode.Spectate);
             }
         }
 
@@ -395,11 +402,13 @@ namespace HotD
         {
             if (character != null)
             {
-                userInterface.SetCharacter(playerCharacter);
+                userInterface.SetCharacter(character);
                 SetControllable(curCharacter, false, false);
-                SetControllable(character, true, true);
+                if (Mode.inputMode == InputMode.Character)
+                    SetControllable(character, true, true);
                 curCharacter = character;
-                SetMode(InputMode.Character);
+                if (!character.Alive)
+                    SetMode(InputMode.Spectate);
             }
         }
 
@@ -416,14 +425,14 @@ namespace HotD
 
         public void OnCharacterDied(Character character)
         {
-            if (character == playerCharacter)
+            if (character == playerParty.leader)
             {
                 SetMode(Menu.Death);
                 onPlayerDied.Invoke();
             }
             else if (character == curCharacter)
             {
-                SetCharacter(playerCharacter);
+                SetCharacter(playerParty.leader);
             }
         }
     }

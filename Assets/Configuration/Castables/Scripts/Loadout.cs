@@ -6,10 +6,10 @@ namespace HotD.Castables
     [CreateAssetMenu(fileName = "NewLoadout", menuName = "Loadouts/Loadout", order = 1)]
     public class Loadout : ScriptableObject
     {
-        public enum Slot { None, Weapon1, Weapon2, Ability1, Ability2, Mobility }
+        public enum Slot { Weapon1, Weapon2, Ability1, Ability2, Mobility, None }
 
-        public List<CastableItem> abilities;
         public List<CastableItem> weapons;
+        public List<CastableItem> abilities;
 
         public CastableItem mobility;
 
@@ -40,11 +40,11 @@ namespace HotD.Castables
         {
             allItems ??= new();
             allItems.Clear();
-            foreach(var item in abilities)
+            foreach(var item in weapons)
             {
                 allItems.Add(item);
             }
-            foreach(var item in weapons)
+            foreach(var item in abilities)
             {
                 allItems.Add(item);
             }

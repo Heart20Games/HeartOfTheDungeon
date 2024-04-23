@@ -20,10 +20,6 @@ namespace Body.Behavior.ContextSteering
         public ScriptableObjectReference preset;
         public CSPreset Preset { get { return (CSPreset)preset.value; } set { preset.value = value; } }
 
-        // Context
-        private readonly FullContext context = new();
-        public FullContext Context { get { return context.initialized ? context : context.Initialize(Preset); } }
-
         // Scaling
         public float scale = 0f;
         public float Scale { get { return scale == 0 ? (Preset.scale == 0 ? 1f : Preset.scale) : scale; } }
@@ -82,7 +78,7 @@ namespace Body.Behavior.ContextSteering
         public Vector2 CurrentVector { get => currentVector; set { currentVector = value; onSetVector.Invoke(currentVector); } }
         public float Speed => Preset.testSpeed;
         public bool moveSelf = true;
-        private Rigidbody rigidbody;
+        private new Rigidbody rigidbody;
         public UnityEvent<Vector2> onSetVector;
 
         [Header("Noise")]
@@ -92,6 +88,9 @@ namespace Body.Behavior.ContextSteering
 
         // Generated
         [Header("Context Data")]
+        // Context
+        [SerializeField] private FullContext context = new();
+        public FullContext Context { get { return context.initialized ? context : context.Initialize(Preset); } }
         public List<Context> activeContexts = new();
         private readonly List<Transform> obstacles = new();
         private Maps Maps { get; } = new(null, null);
@@ -128,7 +127,13 @@ namespace Body.Behavior.ContextSteering
 
         public bool HasActiveContext(Context context)
         {
-            return activeContexts.Contains(context);
+            foreach (Context other in activeContexts)
+            {
+                if (other.name == context.name)
+                    return true;
+            }
+            return false;
+            //return activeContexts.Contains(context);
         }
 
         // Update
@@ -240,7 +245,7 @@ namespace Body.Behavior.ContextSteering
             vector /= Scale;
             ContextVector cVector = context.vector;
             float magnitude = distanceOverride >= 0 ? distanceOverride : vector.magnitude;
-            if (magnitude == Mathf.Clamp(magnitude, cVector.deadzone.x, cVector.deadzone.y))
+            if (magnitude == Mathf.Clamp(magnitude, cVector.deadzone.x, cVector.deadzone.y)) // min < magnitude < max ?
             {
                 if (debug && context.range == Range.InAttackRange) print("Caster Range!");
                 if (!activeContexts.Contains(context))

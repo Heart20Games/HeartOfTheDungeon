@@ -11,7 +11,7 @@ public class CastableStats : ScriptableObject
     // Details
     public enum CastableType { Melee, Ranged, Magic }
     public enum CastableStat { Damage, Cooldown, ChargeRate, ChargeLimit, Knockback, Range, CastStatusPower, HitStatusPower}
-    public string usabilityTag = "None";
+    public string usabilityTag = "None"; // Currently Does Absolutely Nothing
     public CastableType type = CastableType.Melee;
     public Identity targetIdentity = Identity.Neutral;
 
@@ -89,14 +89,17 @@ public class CastableStats : ScriptableObject
     public void Equip(StatBlock statBlock)
     {
         UnEquip();
-        AssignBonuses(damage, attributes.damage, statBlock);
-        AssignBonuses(cooldown, attributes.cooldown, statBlock);
-        AssignBonuses(chargeRate, attributes.chargeRate, statBlock);
-        AssignBonuses(chargeLimit, attributes.chargeLimit, statBlock);
-        AssignBonuses(knockback, attributes.knockback, statBlock);
-        AssignBonuses(range, attributes.range, statBlock);
-        AssignBonuses(castStatusPower, attributes.castStatusPower, statBlock);
-        AssignBonuses(hitStatusPower, attributes.hitStatusPower, statBlock);
+        if (attributes != null)
+        {
+            AssignBonuses(damage, attributes.damage, statBlock);
+            AssignBonuses(cooldown, attributes.cooldown, statBlock);
+            AssignBonuses(chargeRate, attributes.chargeRate, statBlock);
+            AssignBonuses(chargeLimit, attributes.chargeLimit, statBlock);
+            AssignBonuses(knockback, attributes.knockback, statBlock);
+            AssignBonuses(range, attributes.range, statBlock);
+            AssignBonuses(castStatusPower, attributes.castStatusPower, statBlock);
+            AssignBonuses(hitStatusPower, attributes.hitStatusPower, statBlock);
+        }
     }
 
     public void UnEquip()

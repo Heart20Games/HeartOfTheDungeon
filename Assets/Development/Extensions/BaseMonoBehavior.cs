@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Assertions;
+using Debug = UnityEngine.Debug;
 
 public interface IBaseMonoBehaviour
 {
@@ -12,13 +15,16 @@ public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
 {
     public Transform Transform => transform;
 
-    protected void Print(object message, bool debug = false)
+    [Conditional("DEVELOPMENT_BUILD"), Conditional("UNITY_EDITOR")]
+    protected void Print(object message, bool debug = true)
     {
-        if (debug) print(message);
+        if (debug) Debug.Log(message, this);
     }
 
     void OnDestroy()
     {
+        // Clears any and all lists, dictionaries, and non-primitive fields on the GameObject when it is destroyed.
+        // Intention: to minimize the risk of memory leaks resulting from incorrect disposal of such things.
         foreach (FieldInfo field in GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
         {
             Type fieldType = field.FieldType;

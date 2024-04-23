@@ -33,7 +33,7 @@ public class YarnCommands : BaseMonoBehaviour
 
     // Yarn Commands
     [YarnCommand("enter_room")]
-    private void EnterRoom(string roomName)
+    public void EnterRoom(string roomName)
     {
         string sceneName = roomName;
         if (roomName.StartsWith("$"))

@@ -10,14 +10,16 @@ namespace HotD.Castables
         private Character character;
         private ArtRenderer artRenderer;
         private Transform pivot;
-        public ICastable Castable;
+        [SerializeField] private Transform weaponLocation;
+        [SerializeField] private Transform firingLocation;
+        public ICastable castable;
         private Vector3 weapRotation = Vector3.forward;
         [SerializeField] private bool debug;
 
         [Header("Vector")]
         public float aimDeadzone = 0.01f;
         public Vector3 fallback = new();
-        public Vector3 targetOverride = new();
+        public Vector3 directionOverride = new();
         public Vector3 targetOffset = new();
         public Vector3 aimVector = new();
         public Vector3 castVector = new();
@@ -26,18 +28,66 @@ namespace HotD.Castables
         [ReadOnly] public Vector3 finalDirection = new();
         public Vector3 rotationOffset = new();
         public UnityEvent<Vector3> OnSetCastVector;
-        [ReadOnly][SerializeField] private Transform target;
+        [ReadOnly] public Transform target;
 
         private void Awake()
         {
-            character = GetComponent<Character>();
-            artRenderer = character.artRenderer;
-            pivot = character.pivot;
+            if (TryGetComponent(out character))
+            {
+                artRenderer = character.artRenderer;
+                pivot = character.pivot;
+                if (weaponLocation == null)
+                    weaponLocation = character.weaponLocation;
+                if (firingLocation == null)
+                    firingLocation = character.firingLocation;
+            }
         }
 
         private void FixedUpdate()
         {
             SetTarget(target);
+        }
+
+        // Triggering the Castable
+
+        public void AimCaster()
+        {
+            directionOverride = Crosshair.GetTargetedPosition() - firingLocation.position;
+            UpdateVector();
+        }
+
+        public void UnAimCaster()
+        {
+            SetTarget(target);
+            UpdateVector();
+        }
+
+        public void TriggerCastable(ICastable castable)
+        {
+            if (enabled)
+            {
+                TargetingMethod method = castable.GetItem().targetingMethod;
+                if (method == TargetingMethod.AimBased)
+                    AimCaster();
+                this.castable = castable;
+                Trigger();
+                if (method == TargetingMethod.AimBased)
+                    UnAimCaster();
+            }
+        }
+
+        public void ReleaseCastable(ICastable castable)
+        {
+            if (enabled && this.castable == castable)
+            {
+                TargetingMethod method = castable.GetItem().targetingMethod;
+                if (method == TargetingMethod.AimBased)
+                    AimCaster();
+                Release();
+                if (method == TargetingMethod.AimBased)
+                    UnAimCaster();
+            }
+            else castable?.Release();
         }
 
         // Target
@@ -60,7 +110,7 @@ namespace HotD.Castables
         {
             if (isAimVector) fallback = OrientAimVector(fallback);
             if (debug) print($"Set fallback{(setOverride ? " override" : "")}: {fallback} (on {character.Name})");
-            if (setOverride) targetOverride = fallback;
+            if (setOverride) directionOverride = fallback;
             else this.fallback = fallback;
             SetVector(aimVector);
         }
@@ -73,13 +123,13 @@ namespace HotD.Castables
         }
         public Vector3 UpdateVector()
         {
-            if (targetOverride.magnitude > 0 || fallback.magnitude > 0 || aimVector.magnitude > 0)
+            if (directionOverride.magnitude > 0 || fallback.magnitude > 0 || aimVector.magnitude > 0)
             {
                 if (debug) print($"Set vector: {aimVector} (on {character.Name}");
                 
                 // Prefer aiming, then target override, then fallback (movement).
                 if (aimVector.magnitude > aimDeadzone) castVector = OrientAimVector(aimVector);
-                else if (targetOverride.magnitude > 0) castVector = targetOverride;
+                else if (directionOverride.magnitude > 0) castVector = directionOverride;
                 else castVector = fallback;
 
                 if (castVector.magnitude > 0)
@@ -91,7 +141,7 @@ namespace HotD.Castables
         // Camera Orientation
         public Vector3 OrientAimVector(Vector3 vector)
         {
-            if (character.controllable) return OrientToCamera(character.body, vector);
+            if (character.Controllable) return OrientToCamera(character.body, vector);
             else return vector;
         }
 
@@ -112,7 +162,7 @@ namespace HotD.Castables
         {
             appliedVector = castVector;
             castDirection = castVector.normalized;
-            if (Castable != null && Castable.CanCast())
+            if (castable != null && castable.CanCast())
             {
                 float pMag = Mathf.Abs(pivot.localScale.x);
                 float sign = castVector.x < 0 ? -1 : 1;
@@ -123,13 +173,13 @@ namespace HotD.Castables
                 weapRotation = castDirection; // Vector3.right * -castVector.x + Vector3.up * -castVector.y + Vector3.forward * -castVector.z;
 
                 if (artRenderer != null)
-                    artRenderer.Cast(Castable.GetItem() == null ? 0 : Castable.GetItem().attackIdx);
+                    artRenderer.Cast(castable.GetItem() == null ? 0 : castable.GetItem().attackIdx);
 
                 if (weapRotation != lastDirection)
                     lastDirection = weapRotation;
 
                 finalDirection = weapRotation;
-                Castable.Direction = weapRotation; // uses last rotation if not moving.
+                castable.Direction = weapRotation; // uses last rotation if not moving.
             }
         }
 
@@ -137,8 +187,8 @@ namespace HotD.Castables
         public void Trigger()
         {
             ApplyCastVector();
-            Castable?.Equip();
-            Castable?.Trigger();
+            castable?.Equip();
+            castable?.Trigger();
         }
         public void Trigger(Vector2 aimVector)
         {
@@ -150,7 +200,7 @@ namespace HotD.Castables
         public void Release()
         {
             ApplyCastVector();
-            Castable?.Release();
+            castable?.Release();
         }
     }
 }

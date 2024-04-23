@@ -741,6 +741,7 @@ GameObject:
   - component: {fileID: 6438564664787818369}
   - component: {fileID: 2746437236491300203}
   - component: {fileID: 4035807996893773721}
+  - component: {fileID: 938213873989446527}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -780,10 +781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42d95da6e169dba4fb525878db1376d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCharacter: {fileID: 0}
-  playableCharacters:
-  - {fileID: 0}
-  - {fileID: 0}
+  playerParty: {fileID: 0}
   selector: {fileID: 914866286546759462}
   selectorController: {fileID: 7429232415349204401}
   targeter: {fileID: 2971230082445628784}
@@ -791,18 +789,32 @@ MonoBehaviour:
   cardboardCutouts: []
   userInterface: {fileID: 0}
   volumeManager: {fileID: 0}
+  progressManager: {fileID: 0}
   hud: {fileID: 0}
   interactables: []
   allCharacters: []
-  initialInputMode: 0
+  initialInputMode: 2
   initialMenu: 0
+  mode:
+    name: 
+    inputMode: 0
+    moveMode: 0
+    lookMode: 0
+    activeMenu: 0
+    activeShader: 0
+    showMouse: 0
+    hudActive: 0
+    dialogueActive: 0
+    targetLock: 0
+    timeScale: 0
+    shouldBrain: 0
+    cardboardMode: 0
+  swapModes: 0
+  reactivateMode: 0
   curCharacter: {fileID: 0}
   curController: {fileID: 0}
   curSelector: {fileID: 0}
-  playerParty: {fileID: 0}
-  timeScale: 1
-  restartable: 1
-  debug: 0
+  selectedTarget: {fileID: 0}
   onPlayerDied:
     m_PersistentCalls:
       m_Calls: []
@@ -824,23 +836,9 @@ MonoBehaviour:
           m_StringArgument: $MainMenu
           m_BoolArgument: 0
         m_CallState: 2
-  mode:
-    name: 
-    inputMode: 2
-    moveMode: 0
-    lookMode: 0
-    activeMenu: 0
-    activeShader: 0
-    showMouse: 0
-    hudActive: 0
-    dialogueActive: 0
-    targetLock: 0
-    timeScale: 0
-    shouldBrain: 0
-    cardboardMode: 0
-  swapModes: 0
-  reactivateMode: 0
-  selectedTarget: {fileID: 0}
+  timeScale: 1
+  restartable: 1
+  debug: 0
 --- !u!114 &8198051129787963149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1113,6 +1111,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fileName: GameData.txt
+  gameData:
+    lastId: -1
+    statBlocks: []
+    characterBlocks: []
+    session:
+      name: 
+      scene: 
+      checkpoint: 
+      unsavedPartiesDefeated: []
+      unsavedYarnNodesReached: []
+    story:
+      name: 
+      sceneProgress: []
+      yarnNodesReached: []
   initialLoadComplete: 0
   onInitialLoadComplete:
     m_PersistentCalls:
@@ -1129,6 +1141,26 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &938213873989446527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8636156924694284204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8b89e566d26eed429abaf44d0da3627, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  session: {fileID: 11400000, guid: 73480b7f9fe59ec45ac170a991173323, type: 2}
+  story: {fileID: 11400000, guid: 0559e157294009040a2b647b71fcd1a2, type: 2}
+  checkpoints: []
+  parties: []
+  dialogueTriggers: []
+  alwaysSpawnAll: 1
+  alwaysResetDialogues: 0
+  debug: 0
 --- !u!1001 &2759224181694214667
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1182,6 +1214,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
+      propertyPath: onTargetSet.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
       propertyPath: onTargetSet.exit.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -1190,8 +1226,24 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
+      propertyPath: onTargetSet.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
+      propertyPath: onTargetSet.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 8636156924694284206}
+    - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
+      propertyPath: onTargetSet.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
       propertyPath: onTargetSet.enter.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
+      propertyPath: onTargetSet.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnTargetSelected
       objectReference: {fileID: 0}
     - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
       propertyPath: onTargetSet.exit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1218,6 +1270,10 @@ PrefabInstance:
       value: OnTargetSelected
       objectReference: {fileID: 0}
     - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
+      propertyPath: onTargetSet.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: HotD.Game, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
       propertyPath: onTargetSet.exit.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Game, Assembly-CSharp
       objectReference: {fileID: 0}
@@ -1228,6 +1284,10 @@ PrefabInstance:
     - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
       propertyPath: onTargetSet.enter.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
       value: UI_EnemySelect
+      objectReference: {fileID: 0}
+    - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
+      propertyPath: onTargetSet.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 1112764877865052027, guid: 72ff01564e5bcfc49b21b12c3ae40597, type: 3}
       propertyPath: onTargetSet.exit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName

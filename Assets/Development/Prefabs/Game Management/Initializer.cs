@@ -12,9 +12,9 @@ namespace HotD
         public FModEventLibary defaultFModLibrary;
 
         private BaseScriptableObject[] scriptableObjects;
-        private Character player;
+        //private Character player;
         private Character[] characters;
-        private Talker[] talkers;
+        //private Talker[] talkers;
         private FModEventPlayer[] fmodPlayers;
         private DialogueRunner dialogueRunner;
         private UserInterface userInterface;
@@ -23,6 +23,7 @@ namespace HotD
         private List<Interactable> interactables;
         private GameController[] gameControls;
         private HUD hud;
+        //private List<Checkpoint> checkpoints;
 
         private Game game;
 
@@ -40,24 +41,18 @@ namespace HotD
                 scriptableObject.Init();
             }
 
-            player = FindObjectOfType<Character>();
-            if (game.playerCharacter == null)
-            {
-                game.playerCharacter = player;
-            }
-
             if (dialogueRunner == null && userInterface != null)
             {
                 dialogueRunner = userInterface.dialogueRunner;
             }
 
-            talkers = FindObjectsOfType<Talker>();
+            //talkers = FindObjectsOfType<Talker>();
             dialogueRunner = FindObjectOfType<DialogueRunner>();
-            foreach (Talker talker in talkers)
-            {
-                talker.game = game;
-                talker.dialogueRunner = dialogueRunner;
-            }
+            //foreach (Talker talker in talkers)
+            //{
+            //    talker.game = game;
+            //    talker.dialogueRunner = dialogueRunner;
+            //}
 
             if (defaultFModLibrary != null)
             {
@@ -88,7 +83,6 @@ namespace HotD
             game.hud = hud;
 
             AssetNonNull("Game", game, "on GameObject");
-            AssetNonNull("Character", player);
             AssetNonNull("DialogueRunner", dialogueRunner);
             AssetNonNull("UserInterface", userInterface);
             AssetNonNull("HUD", hud);

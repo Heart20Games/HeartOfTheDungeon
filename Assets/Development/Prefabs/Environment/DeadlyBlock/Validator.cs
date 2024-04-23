@@ -7,6 +7,7 @@ using static ISelectable;
 
 public class Validator : BaseMonoBehaviour
 {
+    [Foldout("Validation", true)]
     [Header("Validation: Flags")]
     public bool desireInteractors = false;
     public bool controlledCharactersOnly = false;
@@ -18,10 +19,10 @@ public class Validator : BaseMonoBehaviour
     // Validation: Tags
     public List<string> desiredTags;
 
-    // Validation: Tags
+    // Validation: Types
     public List<SelectType> selectableTypes;
     public List<SelectType> SelectableTypes { get { return selectableTypes; } set { SetSelectableTypes(value); } }
-    [HideInInspector] public ASelectable selectable;
+    [Foldout("Validation")][HideInInspector] public ASelectable selectable;
 
     [Header("Miscelaneous")]
     public bool debug = false;
@@ -67,9 +68,8 @@ public class Validator : BaseMonoBehaviour
         {
             if (other == gameObject)
                 Debug.LogWarning($"Colliding with self: {other.tag}-{other.name}");
-            if (debug)
-                print($"Valid Tag? {(desiredTags.Count == 0 || desiredTags.Contains(other.tag))} (them:{other.tag}-{other.name} me:{gameObject.tag}-{gameObject.name})");
-            return desiredTags.Count == 0 || desiredTags.Contains(other.tag);
+            Print($"Valid Tag? {(desiredTags.Count == 0 || desiredTags.Contains(other.tag))} (them:{other.tag}-{other.name} me:{gameObject.tag}-{gameObject.name})", debug);
+            return desiredTags.Contains(other.tag);
         }
         else return true;
     }
@@ -99,7 +99,7 @@ public class Validator : BaseMonoBehaviour
             {
                 Character character = other.GetComponentInParent<Character>();
                 if (character != null)
-                    return character.controllable;
+                    return character.Controllable;
             }
         }
         return true;
