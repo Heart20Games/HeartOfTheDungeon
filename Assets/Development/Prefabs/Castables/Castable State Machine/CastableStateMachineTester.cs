@@ -8,7 +8,7 @@ namespace HotD.Castables
 {
     public class CastableStateMachineTester : MonoBehaviour
     {
-        public CastableStateMachine target;
+        public StateCastable target;
 
         // Tests
         [Header("Tests")]

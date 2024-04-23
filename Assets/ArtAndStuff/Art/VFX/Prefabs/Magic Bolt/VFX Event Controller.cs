@@ -38,7 +38,7 @@ namespace HotD.Body
 
         public void AddVFX(CastedVFX vfx)
         {
-            if (vfx != null)
+            if (isActiveAndEnabled && vfx != null)
             {
                 effects.Add(vfx);
                 vfx.gameObject.SetActive(false);

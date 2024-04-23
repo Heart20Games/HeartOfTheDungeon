@@ -9,6 +9,7 @@ namespace HotD.Castables
     public class CastableItem : ScriptableObject
     {
         public Castable prefab;
+        public StateCastable statePrefab;
         public int attackIdx = 0;
         public TargetingMethod targetingMethod;
         public CastableStats stats;

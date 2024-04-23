@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Body;
 using HotD.Body;
+using System.Collections.Generic;
 
 [Serializable]
 public struct Status
@@ -16,6 +17,11 @@ public struct Status
     public string name;
     public StatusEffect effect;
     public int strength;
+}
+
+public interface IStatusEffectable
+{
+    public List<Status> Statuses { get; }
 }
 
 public abstract class StatusEffect: ScriptableObject
@@ -33,19 +39,19 @@ public abstract class StatusEffect: ScriptableObject
 
     public virtual void Apply(Character character, int strength)
     {
-        foreach (Status status in character.statuses)
+        foreach (Status status in character.Statuses)
         {
             if (status.effect == this)
             {
                 return;
             }
         }
-        character.statuses.Add(new Status(this, strength));
+        character.Statuses.Add(new Status(this, strength));
     }
 
     public virtual void Proc(int strength, Character character)
     {
-        character.statuses.Add(new Status(this, strength));
+        character.Statuses.Add(new Status(this, strength));
         onProc.Invoke();
     }
     
@@ -56,12 +62,12 @@ public abstract class StatusEffect: ScriptableObject
     
     public virtual void Remove(Character character)
     {
-        for (int i = 0; i < character.statuses.Count;)
+        for (int i = 0; i < character.Statuses.Count;)
         {
-            Status status = character.statuses[i];
+            Status status = character.Statuses[i];
             if (status.effect == this)
             {
-                character.statuses.RemoveAt(i);
+                character.Statuses.RemoveAt(i);
             }
             else i++;
         }

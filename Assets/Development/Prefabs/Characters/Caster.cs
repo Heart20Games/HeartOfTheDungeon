@@ -67,7 +67,7 @@ namespace HotD.Castables
         {
             if (enabled)
             {
-                TargetingMethod method = castable.GetItem().targetingMethod;
+                TargetingMethod method = castable.Item.targetingMethod;
                 if (method == TargetingMethod.AimBased)
                     AimCaster();
                 this.castable = castable;
@@ -81,14 +81,14 @@ namespace HotD.Castables
         {
             if (enabled && this.castable == castable)
             {
-                TargetingMethod method = castable.GetItem().targetingMethod;
+                TargetingMethod method = castable.Item.targetingMethod;
                 if (method == TargetingMethod.AimBased)
                     AimCaster();
                 Release();
                 if (method == TargetingMethod.AimBased)
                     UnAimCaster();
             }
-            else castable?.Release();
+            else castable?.QueueAction(CastAction.Release);
         }
 
         // Target
@@ -174,7 +174,7 @@ namespace HotD.Castables
                 weapRotation = castDirection; // Vector3.right * -castVector.x + Vector3.up * -castVector.y + Vector3.forward * -castVector.z;
 
                 if (artRenderer != null)
-                    artRenderer.Cast(castable.GetItem() == null ? 0 : castable.GetItem().attackIdx);
+                    artRenderer.Cast(castable.Item == null ? 0 : castable.Item.attackIdx);
 
                 if (weapRotation != lastDirection)
                     lastDirection = weapRotation;
@@ -188,8 +188,8 @@ namespace HotD.Castables
         public void Trigger()
         {
             ApplyCastVector();
-            castable?.Equip();
-            castable?.Trigger();
+            castable?.QueueAction(CastAction.Equip);
+            castable?.QueueAction(CastAction.Trigger);
         }
         public void Trigger(Vector2 aimVector)
         {
@@ -201,7 +201,7 @@ namespace HotD.Castables
         public void Release()
         {
             ApplyCastVector();
-            castable?.Release();
+            castable?.QueueAction(CastAction.Release);
         }
     }
 }

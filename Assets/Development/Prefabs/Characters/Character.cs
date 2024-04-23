@@ -23,7 +23,7 @@ namespace HotD.Body
     [RequireComponent(typeof(Movement))]
     [RequireComponent(typeof(Talker))]
     [RequireComponent(typeof(Caster))]
-    public class Character : AIdentifiable, IDamageable, IControllable, ICastCompatible
+    public class Character : AIdentifiable, IDamageable, IControllable, ICastCompatible, IStatusEffectable
     {
         [Foldout("Identity")]
         public CharacterBlock statBlock;
@@ -39,6 +39,8 @@ namespace HotD.Body
 
         // Cast Compatability
         public Transform Body { get => body; }
+        //public new Transform Transform { get => transform; } // Contained in BaseMonoBehaviour
+        public Transform WeaponLocation { get => weaponLocation; }
         public IWeaponDisplay WeaponDisplay { get => artRenderer; }
         public CastCoordinator Coordinator { get => artRenderer; }
 
@@ -101,6 +103,7 @@ namespace HotD.Body
         [Foldout("Status Effects", true)]
         [Header("Status Effects")]
         public List<Status> statuses;
+        public List<Status> Statuses { get => statuses; }
 
         // Health and Damage
         [Foldout("Health and Damage", true)]
@@ -519,7 +522,7 @@ namespace HotD.Body
         public void SetCastable(int idx, CastableItem item)
         {
             if (castableItems[idx] != null)
-                castables[idx]?.UnEquip();
+                castables[idx]?.QueueAction(CastAction.UnEquip);
             castableItems[idx] = null;
             castables[idx] = null;
 

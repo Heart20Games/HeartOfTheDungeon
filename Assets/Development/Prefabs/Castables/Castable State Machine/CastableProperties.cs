@@ -15,6 +15,14 @@ namespace HotD.Castables
         public void SetActive(bool active);
         public void Initialize(CastableFields field);
         public void Initialize(ICastCompatible owner, CastableItem item, int actionIndex = 0);
+
+        public CastableItem Item { get; set; }
+        //public Vector3 Direction { get; set; }
+        //public ICastCompatible Owner { get; }
+        //public CastCoordinator Coordinator { get; }
+        //public int PowerLevel { get; set; }
+        //public int MaxPowerLevel { get; set; }
+        //public Identity Identity { get; set; }
     }
 
     public class CastableProperties : BaseMonoBehaviour, ICastableProperties

@@ -23,9 +23,8 @@ namespace HotD.Castables
             {
                 animator.speed = speed;
             }
-            pivot.gameObject.SetActive(false);
+            fields.pivot.gameObject.SetActive(false);
         }
-
 
         // Castable
 
@@ -97,13 +96,13 @@ namespace HotD.Castables
         public void StartSwinging()
         {
             swinging = true;
-            pivot.gameObject.SetActive(true);
+            fields.pivot.gameObject.SetActive(true);
         }
 
         public void DoneSwinging()
         {
             swinging = false;
-            pivot.gameObject.SetActive(false);
+            fields.pivot.gameObject.SetActive(false);
             others.Clear();
         }
 
@@ -112,10 +111,10 @@ namespace HotD.Castables
 
         private void OnDestroy()
         {
-            Destroy(pivot.gameObject);
-            if (weaponArt != null)
+            Destroy(fields.pivot.gameObject);
+            if (fields.weaponArt != null)
             {
-                Destroy(weaponArt.gameObject);
+                Destroy(fields.weaponArt.gameObject);
             }
         }
     }

@@ -124,8 +124,8 @@ namespace HotD.Castables
 
                     // Fields
                     Context context = new(stats.targetIdentity, Range.InAttackRange, new(), new(), new(0, stats.Range), 50);
-                    castable.castStatuses = stats.castStatuses;
-                    castable.hitStatuses = stats.hitStatuses;
+                    castable.fields.castStatuses = stats.castStatuses;
+                    castable.fields.hitStatuses = stats.hitStatuses;
 
                     // Targeting Methods
                     switch (targetingMethod)
@@ -196,7 +196,7 @@ namespace HotD.Castables
             castable.onUnCast ??= new();
             castable.onCasted ??= new();
             settings.ApplyToCastable(castable);
-            castable.pivot = pivot.transform;
+            castable.fields.pivot = pivot.transform;
             return castable;
         }
 
@@ -214,7 +214,7 @@ namespace HotD.Castables
                 charger.chargeLimit = stats.chargeLimit;
                 UnityEventTools.AddPersistentListener(castable.onTrigger, charger.Begin);
                 UnityEventTools.AddPersistentListener(castable.onRelease, charger.Interrupt);
-                UnityEventTools.AddPersistentListener(charger.onCharge, castable.SetPowerLevel);
+                UnityEventTools.AddPersistentListener(charger.onCharge, (float value) => { castable.PowerLevel = (int)value; });
                 if (settings.castOnChargeUp)
                     UnityEventTools.AddPersistentListener(charger.onCharged, castable.Cast);
                 return charger;
@@ -290,7 +290,7 @@ namespace HotD.Castables
             UnityEventTools.AddPersistentListener(castable.onRelease, casted.OnRelease);
             UnityEventTools.AddPersistentListener(castable.onCast, casted.OnCast);
             UnityEventTools.AddPersistentListener(castable.onUnCast, casted.OnUnCast);
-            UnityEventTools.AddPersistentListener(castable.onSetPowerLevel, casted.SetPowerLevel);
+            UnityEventTools.AddPersistentListener(castable.onSetPowerLevel, (int value) => { casted.SetPowerLevel(value); });
         }
 
 
@@ -324,7 +324,7 @@ namespace HotD.Castables
 
                 castable.onSetIdentity ??= new();
 
-                castable.followBody = followBody;
+                castable.fields.followBody = followBody;
                 castable.castOnTrigger = castOnTrigger;
                 castable.castOnRelease = castOnRelease;
                 castable.unCastOnRelease = unCastOnRelease;
@@ -365,7 +365,7 @@ namespace HotD.Castables
                     body.comboRange = comboSteps;
                     body.applyOnSet = true;
 
-                    castable.toLocations.Add(new(body, source, target));
+                    castable.fields.toLocations.Add(new(body, source, target));
                     castable.castingMethods.Add(body.gameObject);
                 }
             }
@@ -427,7 +427,7 @@ namespace HotD.Castables
                     collider.powerRange = chargeLevels;
                     collider.comboRange = comboSteps;
 
-                    castable.toLocations.Add(new(collider, source, target));
+                    castable.fields.toLocations.Add(new(collider, source, target));
                     castable.castingMethods.Add(collider.gameObject);
                     
                     if (damager != null)
@@ -460,7 +460,7 @@ namespace HotD.Castables
                 spawner.lifeSpan = projectileLifeSpan;
                 spawner.applyOnSet = false;
                 castedPivot.enabled = false;
-                castable.toLocations.Add(new(spawner, source, target));
+                castable.fields.toLocations.Add(new(spawner, source, target));
 
                 if (projectilePrefab != null)
                 {

@@ -1,26 +1,12 @@
-using Body;
-using HotD.Body;
 using MyBox;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
-using static Body.Behavior.ContextSteering.CSIdentity;
 
 namespace HotD.Castables
 {
     public enum CastState { None, Init, Equipped, Activating, Executing }
-    [Flags] public enum CastAction
-    {
-        None = 0,
-        Equip = 1 << 0,
-        Start = 1 << 2,
-        Trigger = 1 << 3,
-        Release = 1 << 4,
-        End = 1 << 5,
-        UnEquip = 1 << 6 
-    }
 
     [Serializable]
     public struct StateTransition
@@ -48,7 +34,7 @@ namespace HotD.Castables
     }
 
     [RequireComponent(typeof(Damager))]
-    public class CastableStateMachine : CastableProperties
+    public class StateCastable : CastableProperties, ICastable
     {
         // State
         [Foldout("State", true)]
@@ -105,6 +91,11 @@ namespace HotD.Castables
         }
 
         // Helpers
+
+        public bool CanCast()
+        {
+            return state == CastState.Equipped;
+        }
 
         private bool HasAction(CastAction action, CastAction actions)
         {
