@@ -476,7 +476,7 @@ namespace HotD.Body
 
         [Foldout("Casting", true)]
         [ReadOnly] public CastableItem[] castableItems = new CastableItem[5];
-        [Foldout("Casting")][ReadOnly] public Castable[] castables = new Castable[5];
+        [Foldout("Casting")][ReadOnly] public ICastable[] castables = new ICastable[5];
         public void InitializeCastables()
         {
             if (Loadout != null)

@@ -75,9 +75,9 @@ namespace HotD.Castables
         [Header("Casting")]
         public List<GameObject> castingMethods = new();
         public bool casting = false;
-        public bool castOnTrigger = true;
-        public bool castOnRelease = false;
-        public bool unCastOnRelease = false;
+        //public bool castOnTrigger = true;
+        //public bool castOnRelease = false;
+        //public bool unCastOnRelease = false;
         //public UnityEvent onTrigger;
         //public UnityEvent<Vector3> onCast;
         //public UnityEvent onRelease;

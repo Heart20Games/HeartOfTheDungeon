@@ -8,8 +8,7 @@ namespace HotD.Castables
     [CreateAssetMenu(fileName = "NewCastableItem", menuName = "Loadouts/CastableItem", order = 1)]
     public class CastableItem : ScriptableObject
     {
-        public Castable prefab;
-        public StateCastable statePrefab;
+        public StateCastable prefab;
         public int attackIdx = 0;
         public TargetingMethod targetingMethod;
         public CastableStats stats;

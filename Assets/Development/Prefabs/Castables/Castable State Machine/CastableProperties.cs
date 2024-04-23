@@ -52,6 +52,9 @@ namespace HotD.Castables
 
         // Events
         [Foldout("Events", true)]
+        public bool castOnTrigger = true;
+        public bool castOnRelease = false;
+        public bool unCastOnRelease = false;
         public UnityEvent<int> onSetPowerLevel;
         public UnityEvent<int> onSetMaxPowerLevel;
         public UnityEvent<Identity> onSetIdentity;

@@ -15,6 +15,15 @@ namespace HotD.Castables
         [Serializable]
         public struct ActionEvent
         {
+            public ActionEvent (string name, CastAction triggerAction, Triggers sendToCoordinator, bool waitForPerformance)
+            {
+                this.name = name;
+                this.triggerAction = triggerAction;
+                this.sendToCoordinator = sendToCoordinator;
+                this.waitForPerformance = waitForPerformance;
+                this.startAction = new();
+            }
+
             public string name;
             public CastAction triggerAction;
             public Triggers sendToCoordinator;
