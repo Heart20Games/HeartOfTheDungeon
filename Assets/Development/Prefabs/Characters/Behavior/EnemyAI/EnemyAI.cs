@@ -1,5 +1,7 @@
 using Body.Behavior;
+using HotD.Castables;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class EnemyAI : Brain
 {
@@ -54,9 +56,18 @@ public class EnemyAI : Brain
     {
         if (currentAction != Action.Chase) return;
 
-        if(agent.remainingDistance <= agent.stoppingDistance)
+        if (!Target.parent.GetComponent<Body.Character>().Alive)
+        {
+            PatrolState();
+
+            return;
+        }
+
+        if (agent.remainingDistance <= agent.stoppingDistance)
         {
             currentAction = Action.Duel;
+
+            _Character.castables[_Character.CastableID].GetComponent<Damager>()._Impactor = Target.GetComponent<Impact>();
 
             Duel();
         }

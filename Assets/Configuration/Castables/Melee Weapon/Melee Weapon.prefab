@@ -91,7 +91,19 @@ MonoBehaviour:
   unCastOnRelease: 0
   onTrigger:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2407744559943647114}
+        m_TargetAssemblyTypeName: Damager, Assembly-CSharp
+        m_MethodName: DamageTarget
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onCast:
     m_PersistentCalls:
       m_Calls:
@@ -130,6 +142,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   identity: 0
+  _impactor: {fileID: 0}
+  otherCount: 0
+  ignoredCount: 0
 --- !u!114 &7188851266036858301
 MonoBehaviour:
   m_ObjectHideFlags: 0

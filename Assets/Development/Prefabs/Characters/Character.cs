@@ -109,6 +109,8 @@ namespace Body
         public int CurrentHealth { get => health.current.Value; set => health.current.Value = value; }
         public int MaxHealth { get => health.max.Value; set => Health.max.Value = value; }
 
+        private int castableID;
+
         // Death and Respawning
         [Foldout("Death and Respawning", true)]
         [Header("Death and Respawning")]
@@ -128,11 +130,13 @@ namespace Body
 
         public bool debug = false;
 
+        public int CastableID => castableID;
+
         // Actions
         public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); caster.SetFallback(movement.moveVector.FullY(), true); }
         public void Aim(Vector2 input, bool aim = false) { if (aimActive || aim) caster.SetVector(input.FullY()); }
-        public void TriggerCastable(int idx) { if (castables[idx] != null) caster.TriggerCastable(castables[idx]); }
-        public void ReleaseCastable(int idx) { if (castables[idx] != null) caster.ReleaseCastable(castables[idx]); }
+        public void TriggerCastable(int idx) { if (castables[idx] != null) caster.TriggerCastable(castables[idx]); castableID = idx; }
+        public void ReleaseCastable(int idx) { if (castables[idx] != null) caster.ReleaseCastable(castables[idx]); castableID = idx; }
         public void Interact() { talker.Talk(); }
         public void FlipCamera() { if (cameraPivot != null) cameraPivot.FlipOverX(); }
 
@@ -427,11 +431,11 @@ namespace Body
             this.damagePosition.position = damagePosition;
         }
 
-        public void TakeDamage(int damageAmount, Identity id=Identity.Neutral)
+        public void TakeDamage(int damageAmount, Identity id = Identity.Neutral)
         {
             Print($"{Name} taking {damageAmount} from {id}. ({RelativeIdentity(id, Identity) != Identity.Friend})", true);
             if (RelativeIdentity(id, Identity) != Identity.Friend)
-            {
+            { 
                 CurrentHealth -= damageAmount;
             }
         }

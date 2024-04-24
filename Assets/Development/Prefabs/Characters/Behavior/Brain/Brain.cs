@@ -88,6 +88,8 @@ namespace Body.Behavior
             set => timeScale = SetTimeScale(value);
         }
 
+        public Character _Character => character;
+
         // Helpers
         private float timeKeeper = 0f;
         public bool debug = false;

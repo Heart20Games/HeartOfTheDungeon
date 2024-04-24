@@ -8,8 +8,15 @@ public class Damager : BaseMonoBehaviour, IDamager
     private readonly List<IDamageable> ignored = new();
     public int damage = 1;
     public Identity identity = Identity.Neutral;
+    private Impact _impactor;
     [ReadOnly][SerializeField] private int otherCount = 0;
     [ReadOnly][SerializeField] private int ignoredCount = 0;
+
+    public Impact _Impactor
+    {
+        get => _impactor;
+        set => _impactor = value;
+    }
 
     public void SetIdentity(Identity identity)
     {
@@ -27,11 +34,13 @@ public class Damager : BaseMonoBehaviour, IDamager
 
     public void HitDamageable(Impact impactor)
     {
+        impactor = _impactor;
+
         IDamageable other = impactor.GetComponent<IDamageable>();
 
         if(impactor._Character != null)
         {
-            if (impactor._Character.CurrentHealth <= 0) return;
+            if (!impactor._Character.Alive) return;
         }
 
         if (other != null && !ignored.Contains(other) && !others.Contains(other))
@@ -45,11 +54,31 @@ public class Damager : BaseMonoBehaviour, IDamager
 
     public void LeftDamageable(Impact impactor)
     {
+        impactor = _impactor;
+
         IDamageable other = impactor.other.GetComponent<IDamageable>();
         if (other != null && !ignored.Contains(other) && others.Contains(other))
         {
             others.Remove(other);
             otherCount = others.Count;
+        }
+    }
+
+    public void DamageTarget()
+    {
+        IDamageable other = _impactor.GetComponent<IDamageable>();
+
+        if (_impactor._Character != null)
+        {
+            if (_impactor._Character.CurrentHealth <= 0) return;
+        }
+
+        if (other != null && !ignored.Contains(other) && !others.Contains(other))
+        {
+            others.Add(other);
+            otherCount = others.Count;
+            other.SetDamagePosition(_impactor.impactLocation);
+            other.TakeDamage(damage, identity);
         }
     }
 }
