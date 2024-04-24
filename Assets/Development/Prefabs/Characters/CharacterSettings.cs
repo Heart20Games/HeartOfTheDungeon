@@ -14,7 +14,7 @@ namespace HotD
         public enum ControlMode { None, Player, Brain };
         public enum MovementMode { Disabled, GravityOnly, Active };
         public enum CollisionMode { Disabled, Tall, Short };
-        public enum LiveMode { Despawned, Alive, Dead };
+        public enum LiveMode { Alive, Despawned, Dead };
         
         [Serializable]
         public struct CharacterMode

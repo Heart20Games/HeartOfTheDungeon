@@ -128,7 +128,7 @@ namespace HotD
 
             SetCharacterIdx(0);
             if (curCharacter == null)
-                SetMode(InputMode.Selection);
+                SetMode(InputMode.Character);
         }
 
 
@@ -284,15 +284,22 @@ namespace HotD
                 cutout.enabled = mode.cardboardMode;
             }
 
-            ControlMode sourceMode = mode.shouldBrain ? ControlMode.Brain : ControlMode.None;
-            ControlMode destinationMode = mode.shouldBrain ? ControlMode.None : ControlMode.Brain;
+            // Swap Controllables
+            bool canSpectate = mode.lookMode == LookMode.Character;
+            IControllable newControllable = mode.Controllable;
+            IControllable oldControllable = lastMode.Controllable;
+            if (newControllable != null)
+                SetControllable(newControllable, true, canSpectate);
+            if (oldControllable != null && oldControllable != newControllable)
+                SetControllable(oldControllable, false, newControllable == null && canSpectate);
+
             foreach (Character character in allCharacters)
             {
-                Print($"{character.Name} is in mode {character.mode.name}. (GameManager)", debug);
-                if (character != null && character.Alive && character.mode.controlMode == sourceMode)
+                Print($"{character.Name} is in mode {character.mode.name}. (GameManager)", debug, this);
+                if (character != null && character.Alive && (character != curCharacter))
                 {
-                    Print($"Setting {character.Name} to control mode {destinationMode}.", debug);
-                    character.SetMode(destinationMode);
+                    Print($"Setting {character.Name} to control mode {ControlMode.Brain}.", debug, this);
+                    character.SetMode(ControlMode.Brain);
                     // May require a "cardboard" Character Mode
                     //if (mode.cardboardMode)
                     //    SetDisplayable(character, false);
@@ -307,15 +314,6 @@ namespace HotD
 
             // Set Time Scale
             TimeScale = mode.timeScale;
-
-            // Swap Controllables
-            bool canSpectate = mode.lookMode == LookMode.Character;
-            IControllable newControllable = mode.Controllable;
-            IControllable oldControllable = lastMode.Controllable;
-            if (newControllable != null)
-                SetControllable(newControllable, true, canSpectate);
-            if (oldControllable != null && oldControllable != newControllable)
-                SetControllable(oldControllable, false, newControllable == null && canSpectate);
 
             // Swap Target Finders
             if (targeter != null)
