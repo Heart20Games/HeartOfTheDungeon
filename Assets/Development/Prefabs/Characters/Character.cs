@@ -188,7 +188,8 @@ namespace Body
             armor.max.Value = statBlock.ArmorClass;
             armor.current.Value = statBlock.ArmorClass;
 
-            SetMode(ControlMode.None);
+            //if (!hasModeBeenSet)
+            //    SetMode(ControlMode.None);
 
         }
 
@@ -237,6 +238,8 @@ namespace Body
         }
         public void SetMode(CharacterMode new_mode)
         {
+            Print($"Set mode on {Name} to {new_mode.name} (was {this.mode.name})");
+
             if (this.mode.name != new_mode.name)
             {
                 CharacterMode oldMode = this.mode;

@@ -29,10 +29,13 @@ public class VFXEventController : BaseMonoBehaviour
     public List<CastedVFX> effectsBeingCasted = new();
    
     private void Start()
-    {        
-        animator = GetComponent<Animator>();
-        movement = GetComponentInParent<Movement>();
-        character = GetComponentInParent<Rigidbody>();
+    {
+        if (animator == null)
+            animator = GetComponent<Animator>();
+        if (movement == null)
+            movement = GetComponentInParent<Movement>();
+        if (character == null)
+            character = GetComponentInParent<Rigidbody>();
     }
 
     public void AddVFX(CastedVFX vfx)
@@ -64,7 +67,7 @@ public class VFXEventController : BaseMonoBehaviour
 
     public void OnVFXTriggered(CastedVFX vfx)
     {
-        Print($"VFX Triggered ({vfx.name})", debug);
+        Print($"VFX Triggered ({vfx.name})", true, this);
         SetVFXEnabled(vfx, true);
         SetVFXBool(vfx, "Sustain", true);
         if (animator.HasParameter(vfx.triggerParameter))

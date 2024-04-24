@@ -34,33 +34,43 @@ public class Damager : BaseMonoBehaviour, IDamager
 
     public void HitDamageable(Impact impactor)
     {
-        impactor = _impactor;
-
-        IDamageable other = impactor.GetComponent<IDamageable>();
-
-        if(impactor._Character != null)
+        if (impactor != null)
         {
-            if (!impactor._Character.Alive) return;
+            IDamageable other = impactor.GetComponent<IDamageable>();
+
+            if(impactor._Character != null)
+            {
+                if (!impactor._Character.Alive) return;
+            }
+
+            if (other != null && !ignored.Contains(other) && !others.Contains(other))
+            {
+                others.Add(other);
+                otherCount = others.Count;
+                other.SetDamagePosition(impactor.impactLocation);
+                other.TakeDamage(damage, identity);
+            }
         }
-
-        if (other != null && !ignored.Contains(other) && !others.Contains(other))
+        else
         {
-            others.Add(other);
-            otherCount = others.Count;
-            other.SetDamagePosition(impactor.impactLocation);
-            other.TakeDamage(damage, identity);
+            Debug.LogWarning("Impactor is null.", this);
         }
     }
 
     public void LeftDamageable(Impact impactor)
     {
-        impactor = _impactor;
-
-        IDamageable other = impactor.other.GetComponent<IDamageable>();
-        if (other != null && !ignored.Contains(other) && others.Contains(other))
+        if (impactor != null)
         {
-            others.Remove(other);
-            otherCount = others.Count;
+            IDamageable other = impactor.other.GetComponent<IDamageable>();
+            if (other != null && !ignored.Contains(other) && others.Contains(other))
+            {
+                others.Remove(other);
+                otherCount = others.Count;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Impactor is null.", this);
         }
     }
 
