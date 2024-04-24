@@ -1,7 +1,7 @@
 using UnityEngine;
 using static Body.Behavior.ContextSteering.CSIdentity;
 
-public class Explosion: MonoBehaviour
+public class Explosion: BaseMonoBehaviour
 {
     public Identity identity = Identity.Neutral;
     public float radius = 5f;
@@ -9,6 +9,8 @@ public class Explosion: MonoBehaviour
     public int damage = 10;
 
     public bool triggerExplosion = false;
+
+    public bool debug;
     
     private void Update()
     {
@@ -31,12 +33,12 @@ public class Explosion: MonoBehaviour
             RaycastHit hit = hits[i];
             if (hit.collider.TryGetComponent(out Rigidbody rigidbody))
             {
-                print($"Push them! {hit.collider.gameObject.name}");
+                Print($"Push them! {hit.collider.gameObject.name}", debug);
                 rigidbody.AddExplosionForce(force, transform.position, radius);
             }
             if (hit.collider.TryGetComponent(out IDamageable damageable))
             {
-                print($"Damage them! {hit.collider.gameObject.name}");
+                Print($"Damage them! {hit.collider.gameObject.name}", debug);
                 damageable.SetDamagePosition(hit.point);
                 damageable.TakeDamage(damage, identity);
             }

@@ -251,7 +251,8 @@ public class Party : BaseMonoBehaviour
 
     public void CharacterDied(Character character)
     {
-        Assert.IsTrue(character.Alive == false);
+        Print($"Dead character {character.Name} is in {character.mode.name} mode. (live mode: {character.mode.liveMode})", debug);
+        Assert.IsFalse(character.Alive);
         Print($"Character {character.body.name} Died.", debug);
         foreach (var other in members)
         {
