@@ -346,15 +346,16 @@ namespace Body
 
         public void Die(bool autoDespawn, bool autoRespawn)
         {
+            Print($"{Name} died, is in {mode.name} mode. ({mode.liveMode})", debug);
+            Emotion = "dead";
+            onDeath.Invoke(this);
+
             // Timers
             void respawnAfterDelay() => autoRespawnCoroutine ??= CallAfterDelay(TriggerRespawn, autoRespawnDelay);
             if (autoDespawn)
                 autoDespawnCoroutine ??= CallAfterDelay(TriggerDespawn, autoDespawnDelay, respawnAfterDelay);
             else if (autoRespawn)
                 respawnAfterDelay();
-
-            Emotion = "dead";
-            onDeath.Invoke(this);
         }
 
         public void Refresh()
@@ -436,7 +437,7 @@ namespace Body
 
         public void TakeDamage(int damageAmount, Identity id = Identity.Neutral)
         {
-            Print($"{Name} taking {damageAmount} from {id}. ({RelativeIdentity(id, Identity) != Identity.Friend})", true);
+            Print($"{Name} taking {damageAmount} from {id}. ({RelativeIdentity(id, Identity) != Identity.Friend})", debug);
             if (RelativeIdentity(id, Identity) != Identity.Friend)
             { 
                 CurrentHealth -= damageAmount;

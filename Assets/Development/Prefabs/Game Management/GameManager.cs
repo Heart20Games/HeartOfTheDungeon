@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using HotD.PostProcessing;
 using MyBox;
 using Yarn.Unity;
+using UnityEngine.Assertions;
 
 namespace HotD
 {
@@ -226,7 +227,7 @@ namespace HotD
             }
             else
             {
-                if (debug) print($"Change InputMode to {inputMode} (in bank? {(InputBank.ContainsKey(inputMode) ? "yes" : "no")})");
+                Print($"Change InputMode to {inputMode} (in bank? {(InputBank.ContainsKey(inputMode) ? "yes" : "no")})", debug);
                 if (InputBank.TryGetValue(inputMode, out GameMode mode))
                     SetMode(mode);
                 else
@@ -245,7 +246,15 @@ namespace HotD
 
         public void ActivateMode(GameMode mode, GameMode lastMode)
         {
-            Print($"Activate inputMode {mode}.", debug);
+            Print($"Activate inputMode {mode.name}.", debug);
+
+            if (playerParty.leader != null && !playerParty.leader.Alive)
+            {
+                if (mode.name != lastMode.name && lastMode.playerRespawn == PlayerRespawn.OnLeave || mode.playerRespawn == PlayerRespawn.OnEnter)
+                {
+                    playerParty.leader.SetMode(LiveMode.Alive);
+                }
+            }
 
             // Configure User Interface
             if (userInterface != null)
@@ -275,11 +284,15 @@ namespace HotD
                 cutout.enabled = mode.cardboardMode;
             }
 
+            ControlMode sourceMode = mode.shouldBrain ? ControlMode.Brain : ControlMode.None;
+            ControlMode destinationMode = mode.shouldBrain ? ControlMode.None : ControlMode.Brain;
             foreach (Character character in allCharacters)
             {
-                if (character != null)
+                Print($"{character.Name} is in mode {character.mode.name}. (GameManager)", debug);
+                if (character != null && character.Alive && character.mode.controlMode == sourceMode)
                 {
-                    character.SetMode(mode.shouldBrain ? ControlMode.Brain : ControlMode.None);
+                    Print($"Setting {character.Name} to control mode {destinationMode}.", debug);
+                    character.SetMode(destinationMode);
                     // May require a "cardboard" Character Mode
                     //if (mode.cardboardMode)
                     //    SetDisplayable(character, false);
@@ -332,7 +345,7 @@ namespace HotD
 
         public void SetControllable(IControllable controllable, bool shouldControl, bool shouldSpectate)
         {
-            if (controllable != null)
+            if (controllable != null && controllable.Alive)
                 controllable.Controllable = shouldControl;
             controllable?.SetSpectatable(shouldSpectate);
         }

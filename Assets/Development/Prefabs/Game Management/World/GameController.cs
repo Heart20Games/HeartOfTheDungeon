@@ -26,10 +26,10 @@ namespace HotD
             game = FindObjectOfType<Game>();
         }
 
-        public void CharacterDied(Character character)
-        {
-            game.OnCharacterDied(character);
-        }
+        //public void CharacterDied(Character character)
+        //{
+        //    game.OnCharacterDied(character);
+        //}
 
         public void OnSelectorConfirmed()
         {
