@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 using HotD.PostProcessing;
 using MyBox;
 using Yarn.Unity;
-using UnityEngine.Assertions;
 
 namespace HotD
 {
@@ -121,14 +120,13 @@ namespace HotD
                     if (character != playerParty.leader)
                         hud.AddAlly(character);
                 }
-                foreach (var character in playerParty.members)
-                    character.onDeath.AddListener(OnCharacterDied);
+                playerParty.onMemberDeath = OnCharacterDied;
             }
             hud.SetParty(playerParty);
 
             SetCharacterIdx(0);
             if (curCharacter == null)
-                SetMode(InputMode.Character);
+                SetMode(InputMode.Selection);
         }
 
 
@@ -227,7 +225,7 @@ namespace HotD
             }
             else
             {
-                Print($"Change InputMode to {inputMode} (in bank? {(InputBank.ContainsKey(inputMode) ? "yes" : "no")})", debug);
+                if (debug) print($"Change InputMode to {inputMode} (in bank? {(InputBank.ContainsKey(inputMode) ? "yes" : "no")})");
                 if (InputBank.TryGetValue(inputMode, out GameMode mode))
                     SetMode(mode);
                 else
@@ -246,15 +244,7 @@ namespace HotD
 
         public void ActivateMode(GameMode mode, GameMode lastMode)
         {
-            Print($"Activate inputMode {mode.name}.", debug);
-
-            if (playerParty.leader != null && !playerParty.leader.Alive)
-            {
-                if (mode.name != lastMode.name && lastMode.playerRespawn == PlayerRespawn.OnLeave || mode.playerRespawn == PlayerRespawn.OnEnter)
-                {
-                    playerParty.leader.SetMode(LiveMode.Alive);
-                }
-            }
+            Print($"Activate inputMode {mode}.", debug);
 
             // Configure User Interface
             if (userInterface != null)
@@ -284,22 +274,11 @@ namespace HotD
                 cutout.enabled = mode.cardboardMode;
             }
 
-            // Swap Controllables
-            bool canSpectate = mode.lookMode == LookMode.Character;
-            IControllable newControllable = mode.Controllable;
-            IControllable oldControllable = lastMode.Controllable;
-            if (newControllable != null)
-                SetControllable(newControllable, true, canSpectate);
-            if (oldControllable != null && oldControllable != newControllable)
-                SetControllable(oldControllable, false, newControllable == null && canSpectate);
-
             foreach (Character character in allCharacters)
             {
-                Print($"{character.Name} is in mode {character.mode.name}. (GameManager)", debug, this);
-                if (character != null && character.Alive && (character != curCharacter))
+                if (character != null && character.Alive)
                 {
-                    Print($"Setting {character.Name} to control mode {ControlMode.Brain}.", debug, this);
-                    character.SetMode(ControlMode.Brain);
+                    character.SetMode(mode.shouldBrain ? ControlMode.Brain : ControlMode.None);
                     // May require a "cardboard" Character Mode
                     //if (mode.cardboardMode)
                     //    SetDisplayable(character, false);
@@ -314,6 +293,15 @@ namespace HotD
 
             // Set Time Scale
             TimeScale = mode.timeScale;
+
+            // Swap Controllables
+            bool canSpectate = mode.lookMode == LookMode.Character;
+            IControllable newControllable = mode.Controllable;
+            IControllable oldControllable = lastMode.Controllable;
+            if (newControllable != null)
+                SetControllable(newControllable, true, canSpectate);
+            if (oldControllable != null && oldControllable != newControllable)
+                SetControllable(oldControllable, false, newControllable == null && canSpectate);
 
             // Swap Target Finders
             if (targeter != null)
@@ -343,7 +331,7 @@ namespace HotD
 
         public void SetControllable(IControllable controllable, bool shouldControl, bool shouldSpectate)
         {
-            if (controllable != null && controllable.Alive)
+            if (controllable != null)
                 controllable.Controllable = shouldControl;
             controllable?.SetSpectatable(shouldSpectate);
         }
@@ -436,6 +424,7 @@ namespace HotD
 
         public void OnCharacterDied(Character character)
         {
+            Print($"Character died: {character.Name} ({character.mode.liveMode})");
             if (character == playerParty.leader)
             {
                 SetMode(Menu.Death);

@@ -109,8 +109,6 @@ namespace Body
         public int CurrentHealth { get => health.current.Value; set => health.current.Value = value; }
         public int MaxHealth { get => health.max.Value; set => Health.max.Value = value; }
 
-        private int castableID;
-
         // Death and Respawning
         [Foldout("Death and Respawning", true)]
         [Header("Death and Respawning")]
@@ -123,20 +121,18 @@ namespace Body
         [ConditionalField("autoDespawn")] public float autoDespawnDelay;
         [Space]
         // Events
-        public UnityEvent<Character> onDeath;
+        public UnityAction<Character> onDeath;
         public UnityEvent onRespawn;
         public UnityEvent onDespawn;
         [Foldout("Death and Respawning")] public UnityEvent<bool> onAlive;
 
         public bool debug = false;
 
-        public int CastableID => castableID;
-
         // Actions
         public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); caster.SetFallback(movement.moveVector.FullY(), true); }
         public void Aim(Vector2 input, bool aim = false) { if (aimActive || aim) caster.SetVector(input.FullY()); }
-        public void TriggerCastable(int idx) { if (castables[idx] != null) caster.TriggerCastable(castables[idx]); castableID = idx; }
-        public void ReleaseCastable(int idx) { if (castables[idx] != null) caster.ReleaseCastable(castables[idx]); castableID = idx; }
+        public void TriggerCastable(int idx) { if (castables[idx] != null) caster.TriggerCastable(castables[idx]); }
+        public void ReleaseCastable(int idx) { if (castables[idx] != null) caster.ReleaseCastable(castables[idx]); }
         public void Interact() { talker.Talk(); }
         public void FlipCamera() { if (cameraPivot != null) cameraPivot.FlipOverX(); }
 
@@ -188,8 +184,7 @@ namespace Body
             armor.max.Value = statBlock.ArmorClass;
             armor.current.Value = statBlock.ArmorClass;
 
-            //if (!hasModeBeenSet)
-            //    SetMode(ControlMode.None);
+            SetMode(ControlMode.None);
 
         }
 
@@ -224,9 +219,9 @@ namespace Body
 
         public CharacterMode mode;
         public bool Controllable
-        { 
+        {
             get => mode.Controllable;
-            set => SetMode(value ? ControlMode.Player : !Controllable ? mode.controlMode : ControlMode.None);
+            set => SetMode(value ? ControlMode.Player : ControlMode.Brain); //!Controllable ? mode.controlMode : ControlMode.None);
         }
         public bool Alive { get => mode.liveMode == LiveMode.Alive; }
         public void SetMode<T>(T subMode) where T : Enum
@@ -236,17 +231,15 @@ namespace Body
             else
                 Debug.LogWarning($"Can't find live mode for \"{subMode}\"");
         }
-        public void SetMode(CharacterMode new_mode)
+        private void SetMode(CharacterMode new_mode)
         {
-            Print($"Set mode on {Name} to {new_mode.name} (was {this.mode.name})");
-
             if (this.mode.name != new_mode.name)
             {
                 CharacterMode oldMode = this.mode;
                 this.mode = new_mode;
 
                 movement.SetMoveVector(new());
-                //brain.Enabled = new_mode.controlMode == ControlMode.Brain;
+                brain.Enabled = new_mode.controlMode == ControlMode.Brain;
                 movement.canMove = new_mode.moveMode == MovementMode.Active;
                 movement.applyGravity = new_mode.moveMode != MovementMode.Disabled;
                 SetNonNullActive(artRenderer, new_mode.displayable);
@@ -346,10 +339,10 @@ namespace Body
 
         public void Die(bool autoDespawn, bool autoRespawn)
         {
-            Print($"{Name} died, is in {mode.name} mode. ({mode.liveMode})", debug);
+            Print($"{Name} died -- {mode.liveMode}");
             Emotion = "dead";
             onDeath.Invoke(this);
-
+            
             // Timers
             void respawnAfterDelay() => autoRespawnCoroutine ??= CallAfterDelay(TriggerRespawn, autoRespawnDelay);
             if (autoDespawn)
@@ -435,11 +428,11 @@ namespace Body
             this.damagePosition.position = damagePosition;
         }
 
-        public void TakeDamage(int damageAmount, Identity id = Identity.Neutral)
+        public void TakeDamage(int damageAmount, Identity id=Identity.Neutral)
         {
-            Print($"{Name} taking {damageAmount} from {id}. ({RelativeIdentity(id, Identity) != Identity.Friend})", debug);
+            Print($"{Name} taking {damageAmount} from {id}. ({RelativeIdentity(id, Identity) != Identity.Friend})", true);
             if (RelativeIdentity(id, Identity) != Identity.Friend)
-            { 
+            {
                 CurrentHealth -= damageAmount;
             }
         }
