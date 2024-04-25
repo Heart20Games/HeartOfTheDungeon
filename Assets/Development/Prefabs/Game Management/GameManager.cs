@@ -120,8 +120,7 @@ namespace HotD
                     if (character != playerParty.leader)
                         hud.AddAlly(character);
                 }
-                foreach (var character in playerParty.members)
-                    character.onDeath.AddListener(OnCharacterDied);
+                playerParty.onMemberDeath = OnCharacterDied;
             }
             hud.SetParty(playerParty);
 
@@ -277,7 +276,7 @@ namespace HotD
 
             foreach (Character character in allCharacters)
             {
-                if (character != null)
+                if (character != null && character.Alive)
                 {
                     character.SetMode(mode.shouldBrain ? ControlMode.Brain : ControlMode.None);
                     // May require a "cardboard" Character Mode
@@ -425,6 +424,7 @@ namespace HotD
 
         public void OnCharacterDied(Character character)
         {
+            Print($"Character died: {character.Name} ({character.mode.liveMode})");
             if (character == playerParty.leader)
             {
                 SetMode(Menu.Death);

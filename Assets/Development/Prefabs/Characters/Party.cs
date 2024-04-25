@@ -105,8 +105,8 @@ public class Party : BaseMonoBehaviour
                 character.autoDespawnDelay = autoDespawnDelay;
             }
             character.Controller.onFoeContextActive.AddListener(CharacterAggroed);
-            character.onDmg.AddListener(CharacterDamaged);
-            character.onDeath.AddListener(CharacterDied);
+            character.onDmg.AddListener(MemberDamaged);
+            character.onDeath = MemberDied;
             character.onControl.AddListener((bool controlled) => CharacterControlled(controlled, character));
             Print($"Character {character.name} connected to party {name}.", debug);
         }
@@ -243,27 +243,37 @@ public class Party : BaseMonoBehaviour
             SetAggroed(true);
     }
 
-    public void CharacterDamaged()
+    public void MemberDamaged()
     {
         Print($"{name} Damaged", debug);
         CharacterAggroed();
     }
 
-    public void CharacterDied(Character character)
+    [HideInInspector] public UnityAction<Character> onMemberDeath;
+    public void MemberDied(Character character)
     {
-        Assert.IsTrue(character.Alive == false);
-        Print($"Character {character.body.name} Died.", debug);
+        Print($"Character {character.body.name} Died. ({character.mode.liveMode})", debug);
+        Assert.IsFalse(character.Alive);
+
+        bool anyAlive = false;
         foreach (var other in members)
         {
             if (other.Alive)
             {
                 Print($"Character {other.body.name} is still alive.", debug);
-                return;
+                anyAlive = true;
             }
         }
-        Print($"Party {name} Died.", debug);
-        allDead = true;
-        SetAggroed(false);
-        onAllDead.Invoke();
+        
+        if (!anyAlive)
+        {
+            Print($"Party {name} Died.", debug);
+            allDead = true;
+            SetAggroed(false);
+            onAllDead.Invoke();
+        }
+
+        if (onMemberDeath != null)
+            onMemberDeath.Invoke(character);
     }
 }
