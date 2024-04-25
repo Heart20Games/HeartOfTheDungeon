@@ -121,7 +121,7 @@ namespace Body
         [ConditionalField("autoDespawn")] public float autoDespawnDelay;
         [Space]
         // Events
-        public UnityEvent<Character> onDeath;
+        public UnityAction<Character> onDeath;
         public UnityEvent onRespawn;
         public UnityEvent onDespawn;
         [Foldout("Death and Respawning")] public UnityEvent<bool> onAlive;
@@ -219,9 +219,9 @@ namespace Body
 
         public CharacterMode mode;
         public bool Controllable
-        { 
+        {
             get => mode.Controllable;
-            set => SetMode(value ? ControlMode.Player : !Controllable ? mode.controlMode : ControlMode.None);
+            set => SetMode(value ? ControlMode.Player : ControlMode.Brain); //!Controllable ? mode.controlMode : ControlMode.None);
         }
         public bool Alive { get => mode.liveMode == LiveMode.Alive; }
         public void SetMode<T>(T subMode) where T : Enum
@@ -231,7 +231,7 @@ namespace Body
             else
                 Debug.LogWarning($"Can't find live mode for \"{subMode}\"");
         }
-        public void SetMode(CharacterMode new_mode)
+        private void SetMode(CharacterMode new_mode)
         {
             if (this.mode.name != new_mode.name)
             {
@@ -339,15 +339,16 @@ namespace Body
 
         public void Die(bool autoDespawn, bool autoRespawn)
         {
+            Print($"{Name} died -- {mode.liveMode}");
+            Emotion = "dead";
+            onDeath.Invoke(this);
+            
             // Timers
             void respawnAfterDelay() => autoRespawnCoroutine ??= CallAfterDelay(TriggerRespawn, autoRespawnDelay);
             if (autoDespawn)
                 autoDespawnCoroutine ??= CallAfterDelay(TriggerDespawn, autoDespawnDelay, respawnAfterDelay);
             else if (autoRespawn)
                 respawnAfterDelay();
-
-            Emotion = "dead";
-            onDeath.Invoke(this);
         }
 
         public void Refresh()
