@@ -13,7 +13,7 @@ public class SimpleController : MonoBehaviour, IControllable
 
     [Header("Control")]
     private bool controllable = false;
-    public bool Controllable { get { return controllable; } set { SetControllable(value); } }
+    public bool PlayerControlled { get { return controllable; } set { SetControllable(value); } }
     public UnityEvent<bool> onControl;
 
     public Vector2 MoveVector { get => movement.MoveVector; set => movement.MoveVector = value; }
@@ -21,7 +21,7 @@ public class SimpleController : MonoBehaviour, IControllable
     private void Awake()
     {
         movement = GetComponent<SimpleMovement>();
-        Controllable = false;
+        PlayerControlled = false;
     }
 
     public void SetDisplayable(bool displayable = true)

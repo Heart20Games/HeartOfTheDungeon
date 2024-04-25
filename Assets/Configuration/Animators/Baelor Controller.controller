@@ -90,9 +90,9 @@ AnimatorStateMachine:
   - {fileID: -6033640433957429562}
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_AnyStatePosition: {x: 400, y: -60, z: 0}
+  m_EntryPosition: {x: 20, y: -90, z: 0}
+  m_ExitPosition: {x: 520, y: 140, z: 0}
   m_ParentStateMachinePosition: {x: -225, y: 150, z: 0}
   m_DefaultState: {fileID: -6328882388561169656}
 --- !u!1101 &-7913896669730010909
@@ -161,7 +161,7 @@ AnimatorStateMachine:
   m_ChildStateMachines:
   - serializedVersion: 1
     m_StateMachine: {fileID: -1347269829927887164}
-    m_Position: {x: 0, y: 0, z: 0}
+    m_Position: {x: 390, y: 0, z: 0}
   m_AnyStateTransitions: []
   m_EntryTransitions:
   - {fileID: 2608183002845757048}
@@ -506,7 +506,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 2482704761812479009}
-    m_Position: {x: 300, y: 0, z: 0}
+    m_Position: {x: 280, y: 150, z: 0}
   m_ChildStateMachines:
   - serializedVersion: 1
     m_StateMachine: {fileID: -7941108743717247072}
@@ -520,15 +520,15 @@ AnimatorStateMachine:
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions:
-  - first: {fileID: 5163213209098102302}
-    second:
-    - {fileID: 197987589079148597}
-  - first: {fileID: -7164299290315037152}
-    second:
-    - {fileID: -1268251663956441243}
   - first: {fileID: -7941108743717247072}
     second:
     - {fileID: -6268642011124825223}
+  - first: {fileID: -7164299290315037152}
+    second:
+    - {fileID: -1268251663956441243}
+  - first: {fileID: 5163213209098102302}
+    second:
+    - {fileID: 197987589079148597}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_EntryPosition: {x: 0, y: 0, z: 0}
@@ -827,7 +827,7 @@ AnimatorController:
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
   - m_Name: Action
-    m_Type: 3
+    m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
@@ -1269,13 +1269,13 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 4001691198132154535, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
-    m_Threshold: 0
+    m_Threshold: 1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Blend
     m_Mirror: 0
-  m_BlendParameter: Blend
+  m_BlendParameter: Action
   m_BlendParameterY: Blend
   m_MinThreshold: 0
   m_MaxThreshold: 1

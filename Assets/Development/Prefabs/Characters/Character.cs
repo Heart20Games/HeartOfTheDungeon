@@ -184,7 +184,7 @@ namespace Body
             armor.max.Value = statBlock.ArmorClass;
             armor.current.Value = statBlock.ArmorClass;
 
-            SetMode(ControlMode.None);
+            SetMode(ControlMode.Brain);
 
         }
 
@@ -218,9 +218,19 @@ namespace Body
         // Character Mode
 
         public CharacterMode mode;
-        public bool Controllable
+        public bool brainDead = false;
+        public bool BrainDead
         {
-            get => mode.Controllable;
+            get => brainDead;
+            set
+            {
+                brainDead = value;
+                SetMode(mode);
+            }
+        }
+        public bool PlayerControlled
+        {
+            get => mode.PlayerControlled;
             set => SetMode(value ? ControlMode.Player : ControlMode.Brain); //!Controllable ? mode.controlMode : ControlMode.None);
         }
         public bool Alive { get => mode.liveMode == LiveMode.Alive; }
@@ -233,28 +243,28 @@ namespace Body
         }
         private void SetMode(CharacterMode new_mode)
         {
-            if (this.mode.name != new_mode.name)
-            {
-                CharacterMode oldMode = this.mode;
-                this.mode = new_mode;
+            CharacterMode oldMode = this.mode;
+            this.mode = new_mode;
 
-                movement.SetMoveVector(new());
-                brain.Enabled = new_mode.controlMode == ControlMode.Brain;
-                movement.canMove = new_mode.moveMode == MovementMode.Active;
-                movement.applyGravity = new_mode.moveMode != MovementMode.Disabled;
-                SetNonNullActive(artRenderer, new_mode.displayable);
-                SetNonNullActive(moveReticle, new_mode.useMoveReticle);
-                SetNonNullEnabled(interactor, new_mode.useInteractor);
-                SetNonNullEnabled(caster, new_mode.useCaster);
-                if (pips != null) pips.SetDisplayMode(new_mode.pipMode);
+            movement.SetMoveVector(new());
+            brain.Enabled = !new_mode.PlayerControlled && !brainDead;
+            movement.canMove = new_mode.moveMode == MovementMode.Active && !brainDead;
+            movement.applyGravity = new_mode.moveMode != MovementMode.Disabled;
+            SetNonNullActive(artRenderer, new_mode.displayable);
+            SetNonNullActive(moveReticle, new_mode.useMoveReticle && !brainDead);
+            SetNonNullEnabled(interactor, new_mode.useInteractor && !brainDead);
+            SetNonNullEnabled(caster, new_mode.useCaster && !brainDead);
+            if (pips != null) pips.SetDisplayMode(new_mode.pipMode);
                 
-                bool alive = new_mode.liveMode == LiveMode.Alive;
-                brain.Alive = alive;
-                if (artRenderer != null) artRenderer.Dead = !alive;
-                SetNonNullEnabled(aliveCollider, alive);
-                SetNonNullEnabled(deadCollider, !alive);
-                selectable.IsSelectable = alive;
-                
+            bool alive = new_mode.liveMode == LiveMode.Alive;
+            brain.Alive = alive;
+            if (artRenderer != null) artRenderer.Dead = !alive;
+            SetNonNullEnabled(aliveCollider, alive);
+            SetNonNullEnabled(deadCollider, !alive);
+            selectable.IsSelectable = alive;
+            
+            if (new_mode.liveMode != oldMode.liveMode)
+            {
                 switch (new_mode.liveMode)
                 {
                     case LiveMode.Alive:
@@ -269,12 +279,12 @@ namespace Body
                     case LiveMode.Dead: Die(autoDespawn, autoRespawn); break;
                     case LiveMode.Despawned: Despawn(); break;
                 }
-                
-                if ((new_mode.Controllable || oldMode.Controllable) && oldMode.controlMode != new_mode.controlMode)
-                {
-                    onControl.Invoke(new_mode.Controllable);
-                }   
             }
+                
+            if ((new_mode.PlayerControlled || oldMode.PlayerControlled) && oldMode.controlMode != new_mode.controlMode)
+            {
+                onControl.Invoke(new_mode.PlayerControlled);
+            }   
         }
         public void SetNonNullActive(Component component, bool active)
         {

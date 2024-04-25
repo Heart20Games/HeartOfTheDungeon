@@ -230,7 +230,7 @@ public class Party : BaseMonoBehaviour
             {
                 foreach (var character in members)
                 {
-                    if (!character.Controllable)
+                    if (!character.PlayerControlled)
                         Leader = character;
                 }
             }
