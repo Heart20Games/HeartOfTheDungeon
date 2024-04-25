@@ -16,6 +16,7 @@ namespace Modifiers
 
         [HideInInspector] public string name;
         public Modded<T> current;
+        public T Value { get => current.Value; set => current.Value = value; }
 
         // Subscribe
         public void Subscribe(Modded<T>.Modify currentModifier = null) { current.Subscribe(currentModifier); }

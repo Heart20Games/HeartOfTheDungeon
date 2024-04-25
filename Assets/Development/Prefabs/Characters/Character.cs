@@ -218,13 +218,13 @@ namespace Body
         // Character Mode
 
         public CharacterMode mode;
-        public bool brainDead = false;
+        public ModField<bool> brainDead = new("Brain Dead", false);
         public bool BrainDead
         {
-            get => brainDead;
+            get => brainDead.Value;
             set
             {
-                brainDead = value;
+                brainDead.Value = value;
                 SetMode(mode);
             }
         }
@@ -247,13 +247,13 @@ namespace Body
             this.mode = new_mode;
 
             movement.SetMoveVector(new());
-            brain.Enabled = !new_mode.PlayerControlled && !brainDead;
-            movement.canMove = new_mode.moveMode == MovementMode.Active && !brainDead;
+            brain.Enabled = !new_mode.PlayerControlled && !BrainDead;
+            movement.canMove = new_mode.moveMode == MovementMode.Active && !BrainDead;
             movement.applyGravity = new_mode.moveMode != MovementMode.Disabled;
             SetNonNullActive(artRenderer, new_mode.displayable);
-            SetNonNullActive(moveReticle, new_mode.useMoveReticle && !brainDead);
-            SetNonNullEnabled(interactor, new_mode.useInteractor && !brainDead);
-            SetNonNullEnabled(caster, new_mode.useCaster && !brainDead);
+            SetNonNullActive(moveReticle, new_mode.useMoveReticle && !BrainDead);
+            SetNonNullEnabled(interactor, new_mode.useInteractor && !BrainDead);
+            SetNonNullEnabled(caster, new_mode.useCaster && !BrainDead);
             if (pips != null) pips.SetDisplayMode(new_mode.pipMode);
                 
             bool alive = new_mode.liveMode == LiveMode.Alive;
