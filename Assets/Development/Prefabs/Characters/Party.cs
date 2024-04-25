@@ -273,7 +273,6 @@ public class Party : BaseMonoBehaviour
             onAllDead.Invoke();
         }
 
-        if (onMemberDeath != null)
-            onMemberDeath.Invoke(character);
+        onMemberDeath?.Invoke(character);
     }
 }
