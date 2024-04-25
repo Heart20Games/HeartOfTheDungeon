@@ -356,9 +356,13 @@ namespace Body
             // Timers
             void respawnAfterDelay() => autoRespawnCoroutine ??= CallAfterDelay(TriggerRespawn, autoRespawnDelay);
             if (autoDespawn)
-                autoDespawnCoroutine ??= CallAfterDelay(TriggerDespawn, autoDespawnDelay, respawnAfterDelay);
+            {
+                autoDespawnCoroutine ??= CallAfterDelay(TriggerDespawn, autoDespawnDelay, autoRespawn ? respawnAfterDelay : null);
+            }
             else if (autoRespawn)
-                respawnAfterDelay();
+            {
+                 respawnAfterDelay();
+            }
         }
 
         public void Refresh()
