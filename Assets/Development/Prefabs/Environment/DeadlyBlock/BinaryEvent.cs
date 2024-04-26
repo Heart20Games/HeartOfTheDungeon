@@ -11,8 +11,8 @@ namespace CustomUnityEvents
     {
         public BinaryEvent(UnityEvent _enter, UnityEvent _exit)
         {
-            enter = _enter;
-            exit = _exit;
+            enter = _enter != null ? _enter : new();
+            exit = _exit != null ? _exit : new();
         }
         public UnityEvent enter;
         public UnityEvent exit;

@@ -27,6 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3871019425331648394}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -34,7 +35,6 @@ Transform:
   m_Children:
   - {fileID: 6558707891785421943}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4511247513421251100
 MonoBehaviour:
@@ -48,23 +48,79 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8cb252bdcab0c4c8630cb96b7c25b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  standardEvents:
-    onStart:
+  applyOnSet: 1
+  source: {fileID: 0}
+  target: {fileID: 0}
+  offset: {x: 0, y: 0, z: 0}
+  rOffset: 0
+  stats: {fileID: 0}
+  debug: 0
+  onStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  onDisable:
+    m_PersistentCalls:
+      m_Calls: []
+  onTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  onCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onEndCast:
+    m_PersistentCalls:
+      m_Calls: []
+  canUpdatePowerLevel: 0
+  powerRange: {x: 0, y: 0}
+  onHasCharge:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetPowerLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetPowerLimit:
+    m_PersistentCalls:
+      m_Calls: []
+  powerLimit:
+    name: 
+    finalPreview: 0
+    baseValue: 0
+    baseMultiplier: 0
+    baseValueRange: {x: 0, y: 0}
+    baseMultiplierRange: {x: 0, y: 0}
+    debug: 0
+    updated:
       m_PersistentCalls:
         m_Calls: []
-    onEnable:
+    updatedFinalFloat:
       m_PersistentCalls:
         m_Calls: []
-    onDisable:
+    updatedFinalInt:
       m_PersistentCalls:
         m_Calls: []
-  castableEvents:
-    onSetPowerLevel:
-      m_PersistentCalls:
-        m_Calls: []
-    onSetPowerLimit:
-      m_PersistentCalls:
-        m_Calls: []
+    otherAttributes: []
+  finalPowerLimit: 0
+  powerLevel: 0
+  actualLevel: 0
+  clampedPower: 0
+  comboRange: {x: 0, y: 0}
+  onSetComboStep:
+    m_PersistentCalls:
+      m_Calls: []
+  comboStep: 0
+  clampedCombo: 0
+  onSetExceptions:
+    m_PersistentCalls:
+      m_Calls: []
+  equipped: 0
+  forceUpdate: 0
+  castStatEvents: []
   hitDamageable:
     m_PersistentCalls:
       m_Calls: []
@@ -155,7 +211,9 @@ MonoBehaviour:
       exit:
         m_PersistentCalls:
           m_Calls: []
+  touching: []
   other: {fileID: 0}
+  impactLocation: {x: 0, y: 0, z: 0}
 --- !u!114 &2793953885192666107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,7 +233,7 @@ MonoBehaviour:
       Data2: 1230227664
       Data3: 768917642
       Data4: 161759417
-    Path: event:/Player SFX/DaggerSwing
+    Path: event:/NPC SFX/Gobkin/DaggerSwing
   Event: 
   PlayEvent: 11
   StopEvent: 0
