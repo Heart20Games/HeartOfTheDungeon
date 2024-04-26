@@ -201,7 +201,7 @@ namespace Body.Behavior
 
         public BehaviorNode.Status Chase()
         {
-            if (!HasFoeInRange(Range.InRange)) return BehaviorNode.Status.FAILURE;
+            //if (!HasFoeInRange(Range.InRange)) return BehaviorNode.Status.FAILURE;
 
             if (debug) Debug.Log("Chasing...");
 

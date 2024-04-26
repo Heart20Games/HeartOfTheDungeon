@@ -49,6 +49,10 @@ public class EnemyAI : Brain
         Target = wayPoints[wayPointIndex];
         currentAction = Action.Patrol;
 
+        agent.destination = Target.position;
+
+        agent.isStopped = false;
+
         Patrol();
     }
 
