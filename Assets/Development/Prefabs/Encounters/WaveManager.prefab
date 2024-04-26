@@ -83,6 +83,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd59339b4dbdb164da068b19e0c2948f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  kills: 0
+  partyKills: 0
+  minutesBetweenWaves: 0.125
+  deleteDeadPartyDelay: 2
+  randomizeWavePoints: 1
+  patientWaves: 1
   waves:
   - name: Clump
     party: {fileID: 7996886654321388824, guid: 4a11ef1b64c93ad48a5de0271d9cda98, type: 3}
@@ -97,11 +103,10 @@ MonoBehaviour:
   - {fileID: 4725554153758785284}
   - {fileID: 6989264334092060709}
   - {fileID: 7647110647175122840}
-  minutesBetweenWaves: 0.5
+  debug: 0
+  startingSkillPoints: 3
   wave: -1
   spawnpoint: -1
-  randomizeWavePoints: 1
-  patientWaves: 1
   parties: []
   onMemberSpawned:
     m_PersistentCalls:

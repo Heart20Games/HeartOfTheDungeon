@@ -6,6 +6,5 @@ public interface ISpectatable
 
 public interface IControllable: ISpectatable
 {
-    public bool Alive { get; }
-    public bool Controllable { get; set; }
+    public bool PlayerControlled { get; set; }
 }

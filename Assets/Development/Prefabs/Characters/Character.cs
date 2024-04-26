@@ -109,8 +109,6 @@ namespace Body
         public int CurrentHealth { get => health.current.Value; set => health.current.Value = value; }
         public int MaxHealth { get => health.max.Value; set => Health.max.Value = value; }
 
-        private int castableID;
-
         // Death and Respawning
         [Foldout("Death and Respawning", true)]
         [Header("Death and Respawning")]
@@ -130,13 +128,11 @@ namespace Body
 
         public bool debug = false;
 
-        public int CastableID => castableID;
-
         // Actions
         public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); caster.SetFallback(movement.moveVector.FullY(), true); }
         public void Aim(Vector2 input, bool aim = false) { if (aimActive || aim) caster.SetVector(input.FullY()); }
-        public void TriggerCastable(int idx) { if (castables[idx] != null) caster.TriggerCastable(castables[idx]); castableID = idx; }
-        public void ReleaseCastable(int idx) { if (castables[idx] != null) caster.ReleaseCastable(castables[idx]); castableID = idx; }
+        public void TriggerCastable(int idx) { if (castables[idx] != null) caster.TriggerCastable(castables[idx]); }
+        public void ReleaseCastable(int idx) { if (castables[idx] != null) caster.ReleaseCastable(castables[idx]); }
         public void Interact() { talker.Talk(); }
         public void FlipCamera() { if (cameraPivot != null) cameraPivot.FlipOverX(); }
 
@@ -167,9 +163,12 @@ namespace Body
             SetSpectatable(false);
 
             // Statblock connections
-            statBlock.Initialize();
-            statBlock.healthMax.updatedFinalInt.AddListener(health.max.SetValue); // max health dependent attribute;
-            statBlock.armorClass.updatedFinalInt.AddListener(armor.max.SetValue); // armor class dependent attribute;
+            if (statBlock != null)
+            {
+                statBlock.Initialize();
+                statBlock.healthMax.updatedFinalInt.AddListener(health.max.SetValue); // max health dependent attribute;
+                statBlock.armorClass.updatedFinalInt.AddListener(armor.max.SetValue); // armor class dependent attribute;
+            }
         }
 
         private void Start()
@@ -182,13 +181,16 @@ namespace Body
             // Value Initialization
             Identity = Identity;
 
-            MaxHealth = statBlock.MaxHealth;
-            CurrentHealth = statBlock.MaxHealth;
+            if (statBlock != null)
+            {
+                MaxHealth = statBlock.MaxHealth;
+                CurrentHealth = statBlock.MaxHealth;
 
-            armor.max.Value = statBlock.ArmorClass;
-            armor.current.Value = statBlock.ArmorClass;
+                armor.max.Value = statBlock.ArmorClass;
+                armor.current.Value = statBlock.ArmorClass;
+            }
 
-            SetMode(ControlMode.None);
+            SetMode(ControlMode.Brain);
 
         }
 
@@ -222,9 +224,19 @@ namespace Body
         // Character Mode
 
         public CharacterMode mode;
-        public bool Controllable
+        public ModField<bool> brainDead = new("Brain Dead", false);
+        public bool BrainDead
         {
-            get => mode.Controllable;
+            get => brainDead.Value;
+            set
+            {
+                brainDead.Value = value;
+                SetMode(mode);
+            }
+        }
+        public bool PlayerControlled
+        {
+            get => mode.PlayerControlled;
             set => SetMode(value ? ControlMode.Player : ControlMode.Brain); //!Controllable ? mode.controlMode : ControlMode.None);
         }
         public bool Alive { get => mode.liveMode == LiveMode.Alive; }
@@ -237,28 +249,29 @@ namespace Body
         }
         private void SetMode(CharacterMode new_mode)
         {
-            if (this.mode.name != new_mode.name)
-            {
-                CharacterMode oldMode = this.mode;
-                this.mode = new_mode;
+            CharacterMode oldMode = this.mode;
+            this.mode = new_mode;
 
-                movement.SetMoveVector(new());
-                brain.enabled = new_mode.controlMode == ControlMode.Brain;
-                movement.canMove = new_mode.moveMode == MovementMode.Active;
-                movement.applyGravity = new_mode.moveMode != MovementMode.Disabled;
-                SetNonNullActive(artRenderer, new_mode.displayable);
-                SetNonNullActive(moveReticle, new_mode.useMoveReticle);
-                SetNonNullEnabled(interactor, new_mode.useInteractor);
-                SetNonNullEnabled(caster, new_mode.useCaster);
-                if (pips != null) pips.SetDisplayMode(new_mode.pipMode);
+            movement.StopMoving();
+            movement.SetMoveVector(new());
+            brain.Enabled = !new_mode.PlayerControlled && !BrainDead;
+            movement.canMove = new_mode.moveMode == MovementMode.Active && !BrainDead;
+            movement.applyGravity = new_mode.moveMode != MovementMode.Disabled;
+            SetNonNullActive(artRenderer, new_mode.displayable);
+            SetNonNullActive(moveReticle, new_mode.useMoveReticle && !BrainDead);
+            SetNonNullEnabled(interactor, new_mode.useInteractor && !BrainDead);
+            SetNonNullEnabled(caster, new_mode.useCaster && !BrainDead);
+            if (pips != null) pips.SetDisplayMode(new_mode.pipMode);
                 
-                bool alive = new_mode.liveMode == LiveMode.Alive;
-                brain.Alive = alive;
-                if (artRenderer != null) artRenderer.Dead = !alive;
-                SetNonNullEnabled(aliveCollider, alive);
-                SetNonNullEnabled(deadCollider, !alive);
-                selectable.IsSelectable = alive;
-                
+            bool alive = new_mode.liveMode == LiveMode.Alive;
+            brain.Alive = alive;
+            if (artRenderer != null) artRenderer.Dead = !alive;
+            SetNonNullEnabled(aliveCollider, alive);
+            SetNonNullEnabled(deadCollider, !alive);
+            selectable.IsSelectable = alive;
+            
+            if (new_mode.liveMode != oldMode.liveMode)
+            {
                 switch (new_mode.liveMode)
                 {
                     case LiveMode.Alive:
@@ -273,12 +286,12 @@ namespace Body
                     case LiveMode.Dead: Die(autoDespawn, autoRespawn); break;
                     case LiveMode.Despawned: Despawn(); break;
                 }
-                
-                if ((new_mode.Controllable || oldMode.Controllable) && oldMode.controlMode != new_mode.controlMode)
-                {
-                    onControl.Invoke(new_mode.Controllable);
-                }   
             }
+                
+            if ((new_mode.PlayerControlled || oldMode.PlayerControlled) && oldMode.controlMode != new_mode.controlMode)
+            {
+                onControl.Invoke(new_mode.PlayerControlled);
+            }   
         }
         public void SetNonNullActive(Component component, bool active)
         {
@@ -350,9 +363,13 @@ namespace Body
             // Timers
             void respawnAfterDelay() => autoRespawnCoroutine ??= CallAfterDelay(TriggerRespawn, autoRespawnDelay);
             if (autoDespawn)
-                autoDespawnCoroutine ??= CallAfterDelay(TriggerDespawn, autoDespawnDelay, respawnAfterDelay);
+            {
+                autoDespawnCoroutine ??= CallAfterDelay(TriggerDespawn, autoDespawnDelay, autoRespawn ? respawnAfterDelay : null);
+            }
             else if (autoRespawn)
-                respawnAfterDelay();
+            {
+                 respawnAfterDelay();
+            }
         }
 
         public void Refresh()

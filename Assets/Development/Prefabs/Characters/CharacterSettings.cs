@@ -11,7 +11,7 @@ namespace HotD
 
     public class CharacterModes
     {
-        public enum ControlMode { None, Player, Brain };
+        public enum ControlMode { Player, Brain };
         public enum MovementMode { Disabled, GravityOnly, Active };
         public enum CollisionMode { Disabled, Tall, Short };
         public enum LiveMode { Alive, Despawned, Dead };
@@ -32,7 +32,8 @@ namespace HotD
             public bool useMoveReticle;
             public bool useInteractor;
 
-            public readonly bool Controllable { get => controlMode == ControlMode.Player; }
+            public readonly bool PlayerControlled { get => controlMode == ControlMode.Player; }
+            public readonly bool Alive { get => liveMode == LiveMode.Alive; }
         }
     }
 

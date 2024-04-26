@@ -138,6 +138,26 @@ public class Party : BaseMonoBehaviour
         }
     }
 
+    public void ResetAttributes(int baseSkillPoints = 0)
+    {
+        foreach (var member in members)
+        {
+            member.statBlock.strength.BaseValue = 0;
+            member.statBlock.constitution.BaseValue = 0;
+            member.statBlock.intelligence.BaseValue = 0;
+            member.statBlock.dexterity.BaseValue = 0;
+            member.statBlock.skillPoints = baseSkillPoints;
+        }
+    }
+
+    public void LevelUp(int amount = 1)
+    {
+        foreach (var member in members)
+        {
+            member.statBlock.skillPoints += amount;
+        }
+    }
+
     public void SetTargetParty(Party target, bool preferNew=true)
     {
         if (preferNew || targetParty == null)
@@ -230,7 +250,7 @@ public class Party : BaseMonoBehaviour
             {
                 foreach (var character in members)
                 {
-                    if (!character.Controllable)
+                    if (!character.PlayerControlled)
                         Leader = character;
                 }
             }
@@ -273,7 +293,6 @@ public class Party : BaseMonoBehaviour
             onAllDead.Invoke();
         }
 
-        if (onMemberDeath != null)
-            onMemberDeath.Invoke(character);
+        onMemberDeath?.Invoke(character);
     }
 }

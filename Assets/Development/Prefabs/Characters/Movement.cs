@@ -48,6 +48,14 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     }
 
 
+    // Stop Moving
+
+    public void StopMoving()
+    {
+        myRigidbody.velocity = Vector3.zero;
+    }
+
+
     // Move Vector
 
     public void SetMoveVector(Vector2 vector)
@@ -90,7 +98,7 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
                 Vector3 cameraDirection = body.position - Camera.main.transform.position;
 
                 float modifier = 1f;
-                if (character != null && character.Controllable)
+                if (character != null && character.PlayerControlled)
                 {
                     Print("Character Controlled Movement", debug);
                     Vector3 direction = moveVector.Orient(cameraDirection).FullY();

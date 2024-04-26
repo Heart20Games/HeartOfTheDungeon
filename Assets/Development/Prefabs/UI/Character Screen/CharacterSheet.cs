@@ -12,12 +12,15 @@ public class CharacterSheet : BaseMonoBehaviour
     [Serializable]
     public struct StatField
     {
+        public string name;
         public AttributeField field;
         public Stat stat;
     }
 
     public CharacterBlock character;
 
+    [SerializeField] private TMP_Text pointText;
+    [SerializeField] private TMP_Text pointTotalText;
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private StatField[] statFields;
     [SerializeField] private CastableField castablePrefab;
@@ -32,8 +35,28 @@ public class CharacterSheet : BaseMonoBehaviour
         {
             statFields[i].field.statIndex = i;
             statFields[i].field.onSelect.AddListener(OnStatSelected);
+            statFields[i].field.onUpdateField = UpdateFields;
         }
         OnStatSelected(0);
+    }
+
+    public void UpdateFields()
+    {
+        // Set Character Name
+        nameText.text = character.characterName;
+
+        // Set Character Portrait
+
+        // Set Character Points
+        pointText.text = $"{(character.skillPoints - character.spentSkillPoints)}";
+        pointTotalText.text = $"{character.skillPoints}";
+        bool skillPointLimitReached = character.spentSkillPoints >= character.skillPoints;
+
+        // Set Character Stats
+        foreach (StatField stat in statFields)
+        {
+            stat.field.limitReached = skillPointLimitReached;
+        }
     }
 
     public void SetCharacter(CharacterBlock character)
@@ -44,36 +67,35 @@ public class CharacterSheet : BaseMonoBehaviour
         // Clear the old bits
         Clear();
 
-        // Set Character Name
-
-        // Set Character Portrait
-
-        // Set Character Points
-
-        // Set Character Stats
-        foreach (StatField stat in statFields)
+        if (character != null)
         {
-            stat.field.Name = stat.stat.ToString();
-            stat.field.SetAttribute(character.GetAttribute(stat.stat));
-        }
-
-        // Set Character Loadout
-        Assert.IsNotNull(character.loadout);
-        foreach (CastableItem item in character.loadout.All())
-        {
-            if (item != null)
+            // Set Character Stats
+            foreach (StatField stat in statFields)
             {
-                if (item.stats != null && item.stats.dealDamage)
-                {
-                    CastableField field = Instantiate(castablePrefab, castableParent);
-                    castables.Add(field);
-                    field.CharacterName = character.characterName;
-                    field.CastableName = item.name;
-                    field.FinalName = "Damage";
-                    field.SetAttribute(item.stats.damage);
-                }
+                stat.field.Name = stat.stat.ToString();
+                stat.field.SetAttribute(character.GetAttribute(stat.stat));
             }
-            else Debug.LogWarning($"Null item found in loadout {character.loadout.name}.");
+
+            UpdateFields();
+
+            // Set Character Loadout
+            Assert.IsNotNull(character.loadout);
+            foreach (CastableItem item in character.loadout.All())
+            {
+                if (item != null)
+                {
+                    if (item.stats != null && item.stats.dealDamage)
+                    {
+                        CastableField field = Instantiate(castablePrefab, castableParent);
+                        castables.Add(field);
+                        field.CharacterName = character.characterName;
+                        field.CastableName = item.name;
+                        field.FinalName = "Damage";
+                        field.SetAttribute(item.stats.damage);
+                    }
+                }
+                else Debug.LogWarning($"Null item found in loadout {character.loadout.name}.");
+            }
         }
     }
 

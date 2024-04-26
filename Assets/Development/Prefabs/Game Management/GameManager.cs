@@ -274,11 +274,20 @@ namespace HotD
                 cutout.enabled = mode.cardboardMode;
             }
 
+            // Swap Controllables
+            bool canSpectate = mode.lookMode == LookMode.Character;
+            IControllable newControllable = mode.Controllable;
+            IControllable oldControllable = lastMode.Controllable;
+            if (newControllable != null)
+                SetControllable(newControllable, true, canSpectate);
+            if (oldControllable != null && oldControllable != newControllable)
+                SetControllable(oldControllable, false, newControllable == null && canSpectate);
+
             foreach (Character character in allCharacters)
             {
-                if (character != null && character.Alive)
+                if (character != null && character.Alive && !character.PlayerControlled)
                 {
-                    character.SetMode(mode.shouldBrain ? ControlMode.Brain : ControlMode.None);
+                    character.SetMode(ControlMode.Brain);
                     // May require a "cardboard" Character Mode
                     //if (mode.cardboardMode)
                     //    SetDisplayable(character, false);
@@ -293,15 +302,6 @@ namespace HotD
 
             // Set Time Scale
             TimeScale = mode.timeScale;
-
-            // Swap Controllables
-            bool canSpectate = mode.lookMode == LookMode.Character;
-            IControllable newControllable = mode.Controllable;
-            IControllable oldControllable = lastMode.Controllable;
-            if (newControllable != null)
-                SetControllable(newControllable, true, canSpectate);
-            if (oldControllable != null && oldControllable != newControllable)
-                SetControllable(oldControllable, false, newControllable == null && canSpectate);
 
             // Swap Target Finders
             if (targeter != null)
@@ -332,7 +332,7 @@ namespace HotD
         public void SetControllable(IControllable controllable, bool shouldControl, bool shouldSpectate)
         {
             if (controllable != null)
-                controllable.Controllable = shouldControl;
+                controllable.PlayerControlled = shouldControl;
             controllable?.SetSpectatable(shouldSpectate);
         }
 

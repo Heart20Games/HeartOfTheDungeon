@@ -37,6 +37,7 @@ public class CastableField : MonoBehaviour
             {
                 AttributeLabel label = Instantiate(bonusPrefab, bonusParent);
                 bonuses.Add(label);
+                label.abbreviate = true;
                 label.SetAttribute(sub.value);
             }
         }
