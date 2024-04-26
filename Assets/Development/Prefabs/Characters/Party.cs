@@ -230,7 +230,7 @@ public class Party : BaseMonoBehaviour
             {
                 foreach (var character in members)
                 {
-                    if (!character.Controllable)
+                    if (!character.PlayerControlled)
                         Leader = character;
                 }
             }
@@ -273,7 +273,6 @@ public class Party : BaseMonoBehaviour
             onAllDead.Invoke();
         }
 
-        if (onMemberDeath != null)
-            onMemberDeath.Invoke(character);
+        onMemberDeath?.Invoke(character);
     }
 }

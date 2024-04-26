@@ -23,6 +23,7 @@ public class Portraits : ScriptableObject
 
     public PortraitImage GetPortrait(string name, string emotion)
     {
+        name = name == null ? "" : name;
         if (portraits != null && bank.TryGetValue(name, out var emotions))
             if (emotions.TryGetValue(emotion, out PortraitImage portrait))
                 return portrait;
