@@ -12,7 +12,7 @@ namespace Attributes
         [SerializeField] protected List<Weighted<Attribute>> otherAttributes = new();
         public List<Weighted<Attribute>> OtherAttributes { get { return otherAttributes ??= new(); } }
 
-        public DependentAttribute(int startingValue, string name = "[New Dependent Attribute]") : base(startingValue, name) { }
+        public DependentAttribute(int startingValue, string name = "[New Dependent Attribute]", string owner = "[Unknown]") : base(startingValue, name, owner) { }
 
         public override float FinalValue { get => CalculateValue(); }
 

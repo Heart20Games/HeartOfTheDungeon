@@ -17,7 +17,7 @@ namespace Attributes
 
         protected float finalValue;
 
-        public Attribute(int startingValue, string name = "[New Attribute]") : base(startingValue, name)
+        public Attribute(int startingValue, string name = "[New Attribute]", string owner = "[Unknown]") : base(startingValue, name, owner)
         {
             finalValue = BaseValue;
         }

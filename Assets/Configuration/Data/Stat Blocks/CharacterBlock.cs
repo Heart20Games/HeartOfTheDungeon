@@ -21,6 +21,8 @@ public class CharacterBlock : StatBlock
     [Header("Armor Class")]
     public DependentAttribute armorClass = new(0, "Armor Class");
     public List<StatAttribute> armorAttributes = new();
+
+    private BaseAttribute[] allAttributes;
     
     private CharacterData charData = null;
 
@@ -35,11 +37,22 @@ public class CharacterBlock : StatBlock
     public override void Initialize()
     {
         base.Initialize();
-        strength.name = $"{characterName}'s Strength";
-        dexterity.name = $"{characterName}'s Dexterity";
-        constitution.name = $"{characterName}'s Constitution";
-        intelligence.name = $"{characterName}'s Intelligence";
-        healthMax.name = $"{characterName}'s Health Max";
+        
+        // Names
+        strength.name = "Strength";
+        dexterity.name = "Dexterity";
+        constitution.name = "Constitution";
+        intelligence.name = "Intelligence";
+        healthMax.name = "Health Max";
+        armorClass.name = "Armor Class";
+
+        // Owner
+        allAttributes = new BaseAttribute[] { strength, dexterity, constitution, intelligence, healthMax, armorClass }; 
+        foreach (var attribute in allAttributes)
+        {
+            attribute.owner = characterName;
+        }
+
         healthMax.Clear();
         ApplyStats(healthAttributes, healthMax);
         armorClass.Clear();

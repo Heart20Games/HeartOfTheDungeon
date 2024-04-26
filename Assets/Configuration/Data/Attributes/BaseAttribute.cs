@@ -27,6 +27,7 @@ namespace Attributes
         public enum Part { BaseValue, BaseMultiplier }
 
         public string name;
+        public string owner;
 
         [ReadOnly][SerializeField] private float finalPreview;
 
@@ -49,10 +50,11 @@ namespace Attributes
             updatedFinalInt.Invoke((int)finalValue);
         }
 
-        public BaseAttribute(int value, string name = "[New Base Attribute]", float multiplier = 0)
+        public BaseAttribute(int value, string name = "[New Base Attribute]", string owner = "[Unknown]", float multiplier = 0)
         {
             baseValue = value;
             this.name = name;
+            this.owner = owner;
             baseMultiplier = multiplier;
         }
 
