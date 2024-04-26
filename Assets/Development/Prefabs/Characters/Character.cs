@@ -163,9 +163,12 @@ namespace Body
             SetSpectatable(false);
 
             // Statblock connections
-            statBlock.Initialize();
-            statBlock.healthMax.updatedFinalInt.AddListener(health.max.SetValue); // max health dependent attribute;
-            statBlock.armorClass.updatedFinalInt.AddListener(armor.max.SetValue); // armor class dependent attribute;
+            if (statBlock != null)
+            {
+                statBlock.Initialize();
+                statBlock.healthMax.updatedFinalInt.AddListener(health.max.SetValue); // max health dependent attribute;
+                statBlock.armorClass.updatedFinalInt.AddListener(armor.max.SetValue); // armor class dependent attribute;
+            }
         }
 
         private void Start()
@@ -178,11 +181,14 @@ namespace Body
             // Value Initialization
             Identity = Identity;
 
-            MaxHealth = statBlock.MaxHealth;
-            CurrentHealth = statBlock.MaxHealth;
+            if (statBlock != null)
+            {
+                MaxHealth = statBlock.MaxHealth;
+                CurrentHealth = statBlock.MaxHealth;
 
-            armor.max.Value = statBlock.ArmorClass;
-            armor.current.Value = statBlock.ArmorClass;
+                armor.max.Value = statBlock.ArmorClass;
+                armor.current.Value = statBlock.ArmorClass;
+            }
 
             SetMode(ControlMode.Brain);
 
