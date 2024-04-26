@@ -29,6 +29,7 @@ namespace HotD
 
         [Header("Settings")]
         [SerializeField] private float minutesBetweenWaves = 0.5f;
+        [SerializeField] private float deleteDeadPartyDelay = 2f;
 
         [SerializeField] private bool randomizeWavePoints = false;
         [SerializeField] private bool patientWaves = false;
@@ -88,12 +89,8 @@ namespace HotD
             else
             {
                 parties.Remove(party);
-                foreach (Character member in party.members)
-                {
-                    deregisterMember.Invoke(member.body.GetComponent<ASelectable>());
-                }
 
-                Destroy(party.gameObject);
+                StartCoroutine(DeletePartyAfterTime(deleteDeadPartyDelay, party));
 
                 partyKills += 1;
 
@@ -103,6 +100,18 @@ namespace HotD
                     coroutine ??= StartCoroutine(CountdownToWave());
                 }
             }
+        }
+
+        public IEnumerator DeletePartyAfterTime(float time, Party party)
+        {
+            yield return new WaitForSeconds(time);
+
+            foreach (Character member in party.members)
+            {
+                deregisterMember.Invoke(member.body.GetComponent<ASelectable>());
+            }
+
+            Destroy(party.gameObject);
         }
 
         public void OnMemberDied(Character member)
