@@ -252,6 +252,7 @@ namespace Body
             CharacterMode oldMode = this.mode;
             this.mode = new_mode;
 
+            movement.StopMoving();
             movement.SetMoveVector(new());
             brain.Enabled = !new_mode.PlayerControlled && !BrainDead;
             movement.canMove = new_mode.moveMode == MovementMode.Active && !BrainDead;
