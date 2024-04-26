@@ -66,12 +66,12 @@ namespace HotD.Castables
         {
             if (enabled)
             {
-                TargetingMethod method = castable.GetItem().targetingMethod;
-                if (method == TargetingMethod.AimBased)
+                AimingMethod method = castable.GetItem().aimingMethod;
+                if (method == AimingMethod.OverTheShoulder)
                     AimCaster();
                 this.castable = castable;
                 Trigger();
-                if (method == TargetingMethod.AimBased)
+                if (method == AimingMethod.OverTheShoulder)
                     UnAimCaster();
             }
         }

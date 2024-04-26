@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Events;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -29,6 +30,7 @@ namespace HotD.Castables
 
         [Header("Targeting")]
         public TargetingMethod targetingMethod;
+        public AimingMethod aimingMethod;
 
         // EXECUTION
         public List<Execution> executions;
@@ -257,6 +259,7 @@ namespace HotD.Castables
             EditorUtility.SetDirty(item);
             item.prefab = prefab.GetComponent<Castable>();
             item.targetingMethod = targetingMethod;
+            item.aimingMethod = aimingMethod;
             item.stats = stats;
             item.context = context;
             items.Add(item);
