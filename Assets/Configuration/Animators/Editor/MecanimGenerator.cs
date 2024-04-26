@@ -59,15 +59,6 @@ public class MecanimGenerator : Generator
             return;
         }
 
-        //if (replace) // && !sameDirectory)
-        //{
-        //    if (mecanim != null)
-        //    {
-        //        AssetDatabase.DeleteAsset($"{oldDirectory}/{mecanim.name}.prefab");
-        //        mecanim = null;
-        //    }
-        //}
-
         // Trim the name so it doesn't look like a series of subdirectories
         outputName = outputName.Trim('/');
 

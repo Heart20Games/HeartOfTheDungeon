@@ -141,7 +141,7 @@ namespace HotD.Castables
         // Camera Orientation
         public Vector3 OrientAimVector(Vector3 vector)
         {
-            if (character.Controllable) return OrientToCamera(character.body, vector);
+            if (character.PlayerControlled) return OrientToCamera(character.body, vector);
             else return vector;
         }
 
