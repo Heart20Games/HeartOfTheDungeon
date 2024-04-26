@@ -138,6 +138,14 @@ public class Party : BaseMonoBehaviour
         }
     }
 
+    public void LevelUp(int amount = 1)
+    {
+        foreach (var member in members)
+        {
+            
+        }
+    }
+
     public void SetTargetParty(Party target, bool preferNew=true)
     {
         if (preferNew || targetParty == null)

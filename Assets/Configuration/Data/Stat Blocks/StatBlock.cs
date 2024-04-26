@@ -1,5 +1,6 @@
 using Attributes;
 using DataManagement;
+using MyBox;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,11 +32,14 @@ public class StatBlock : PersistentScriptableObject
 {
     public enum Stat { Strength, Dexterity, Constitution, Intelligence }
 
+    [Foldout("Stat Block", true)]
+    [Header("Stat Block")]
     public Attribute strength; // = new(0, "Strength");
     public Attribute dexterity; // = new(0, "Dexterity");
     public Attribute constitution; // = new(0, "Constitution");
     public Attribute intelligence; // = new(0, "Intelligence");
 
+    [Foldout("Stat Block")]
     public List<StatBonus> bonuses = new();
 
     private StatBlockData statData;

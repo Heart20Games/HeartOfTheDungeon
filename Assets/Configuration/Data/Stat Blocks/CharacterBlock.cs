@@ -7,18 +7,30 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CharacterBlock", menuName = "Character/Block", order = 1)]
 public class CharacterBlock : StatBlock
 {
+    [Header("Character")]
     public CastableLibrary castableBank;
     public int portraitIndex = 0;
     public string characterName = "Nobody";
     public Loadout loadout = null;
+    public int skillPoints = 0;
 
+    [Header("Health")]
     public DependentAttribute healthMax = new(1, "Health Max");
     public List<StatAttribute> healthAttributes = new();
 
+    [Header("Armor Class")]
     public DependentAttribute armorClass = new(0, "Armor Class");
     public List<StatAttribute> armorAttributes = new();
     
     private CharacterData charData = null;
+
+    public int spentSkillPoints
+    {
+        get
+        {
+            return (int)(strength.FinalValue + constitution.FinalValue + dexterity.FinalValue + intelligence.FinalValue);
+        }
+    }
     
     public override void Initialize()
     {
