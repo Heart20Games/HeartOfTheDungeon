@@ -39,6 +39,9 @@ namespace HotD
 
         [SerializeField] private bool debug;
 
+        [Header("Player Stats")]
+        [SerializeReference] private int startingSkillPoints;
+
         [Header("Status")]
         [ReadOnly][SerializeField] private int wave = -1;
         [ReadOnly][SerializeField] private int spawnpoint = -1;
@@ -50,11 +53,22 @@ namespace HotD
         public UnityEvent<Party> onPartyDied;
         [Foldout("Events")] public UnityEvent<ASelectable> deregisterMember;
 
+
+        private bool initialized = false;
         public Coroutine coroutine;
 
         public void Start()
         {
             coroutine ??= StartCoroutine(CountdownToWave());
+        }
+
+        public void Update()
+        {
+            if (!initialized)
+            {
+                initialized = true;
+                Party.mainParty.ResetAttributes(startingSkillPoints);
+            }
         }
 
         // IPartySpawner
@@ -85,6 +99,7 @@ namespace HotD
                 wave = -1;
                 kills = 0;
                 partyKills = 0;
+                party.ResetAttributes(startingSkillPoints);
             }
             else
             {
@@ -96,7 +111,9 @@ namespace HotD
 
                 if (parties.Count == 0)
                 {
-                    Print("Counting down till next wave arrives.");
+                    Party.mainParty.LevelUp();
+                    Game.main.SetMode(GameModes.Menu.CharacterSheet);
+                    Print("Counting down till next wave arrives.", debug);
                     coroutine ??= StartCoroutine(CountdownToWave());
                 }
             }

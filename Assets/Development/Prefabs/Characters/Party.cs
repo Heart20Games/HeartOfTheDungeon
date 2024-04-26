@@ -138,11 +138,23 @@ public class Party : BaseMonoBehaviour
         }
     }
 
+    public void ResetAttributes(int baseSkillPoints = 0)
+    {
+        foreach (var member in members)
+        {
+            member.statBlock.strength.BaseValue = 0;
+            member.statBlock.constitution.BaseValue = 0;
+            member.statBlock.intelligence.BaseValue = 0;
+            member.statBlock.dexterity.BaseValue = 0;
+            member.statBlock.skillPoints = baseSkillPoints;
+        }
+    }
+
     public void LevelUp(int amount = 1)
     {
         foreach (var member in members)
         {
-            
+            member.statBlock.skillPoints += amount;
         }
     }
 
