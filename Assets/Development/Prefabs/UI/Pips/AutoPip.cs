@@ -1,7 +1,5 @@
 using MyBox;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Events;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -45,8 +43,14 @@ namespace UIPips
                     {
                         changer.onColorChange.RemoveAllListeners();
                         changer.onSpriteChange.RemoveAllListeners();
-                        UnityEventTools.AddPersistentListener(changer.onSpriteChange, changer.SetSprite);
-                        UnityEventTools.AddPersistentListener(changer.onColorChange, changer.SetColor);
+#if UNITY_EDITOR
+                        UnityEditor.Events.UnityEventTools.AddPersistentListener(changer.onSpriteChange, changer.SetSprite);
+                        UnityEditor.Events.UnityEventTools.AddPersistentListener(changer.onColorChange, changer.SetColor);
+#else
+                        changer.onSpriteChange.AddListener(changer.SetSprite);
+                        changer.onColorChange.AddListener(changer.SetColor);
+#endif
+
                         initialized = true;
                     }
 
