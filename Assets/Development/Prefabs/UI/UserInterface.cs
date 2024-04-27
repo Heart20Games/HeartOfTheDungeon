@@ -27,6 +27,7 @@ public class UserInterface : BaseMonoBehaviour
         panels.Add(dialogueRunner.gameObject);
         panels.Add(hud.gameObject);
         panels.Add(controlScreen);
+        Portraits.main.Initialize();
     }
 
     public void Start()
