@@ -252,6 +252,7 @@ namespace Body
             CharacterMode oldMode = this.mode;
             this.mode = new_mode;
 
+            movement.StopMoving();
             movement.SetMoveVector(new());
             brain.Enabled = !new_mode.PlayerControlled && !BrainDead;
             movement.canMove = new_mode.moveMode == MovementMode.Active && !BrainDead;
@@ -337,8 +338,8 @@ namespace Body
             else if (PrimaryTargetingMethod(out var method))
             {
                 Print($"Spectate {Name} based on primary targeting method: {method}", debug);
-                orbitalCamera.gameObject.SetActive(method != TargetingMethod.AimBased);
-                aimCamera.gameObject.SetActive(method == TargetingMethod.AimBased);
+                orbitalCamera.gameObject.SetActive(method != AimingMethod.OverTheShoulder);
+                aimCamera.gameObject.SetActive(method == AimingMethod.OverTheShoulder);
             }
             else
             {
@@ -505,7 +506,7 @@ namespace Body
                 brain.RegisterCastables(castableItems);
         }
 
-        public bool PrimaryTargetingMethod(out TargetingMethod method)
+        public bool PrimaryTargetingMethod(out AimingMethod method)
         {
             if (castableItems?.Length > 0)
             {
@@ -513,18 +514,18 @@ namespace Body
                 Awarn.IsNotNull(item, $"Weapon 1 Slot on {Name} is null.");
                 if (item != null)
                 {
-                    method = item.targetingMethod;
+                    method = item.aimingMethod;
                     return true;
                 }
                 else
                 {
-                    method = TargetingMethod.DirectionBased;
+                    method = AimingMethod.Centered;
                     return false;
                 }
             }
             else
             {
-                method = TargetingMethod.DirectionBased;
+                method = AimingMethod.Centered;
                 return false;
             }
         }

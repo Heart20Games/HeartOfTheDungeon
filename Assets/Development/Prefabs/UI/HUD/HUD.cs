@@ -103,7 +103,7 @@ public class HUD : BaseMonoBehaviour
 
             character.PrimaryTargetingMethod(out var method);
             if (crosshair != null)
-                crosshair.gameObject.SetActive(method == TargetingMethod.AimBased);
+                crosshair.gameObject.SetActive(method == AimingMethod.OverTheShoulder);
         }
         else
         {

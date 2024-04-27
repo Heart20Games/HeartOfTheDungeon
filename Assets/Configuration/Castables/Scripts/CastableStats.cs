@@ -58,8 +58,20 @@ public class CastableStats : ScriptableObject
     [Header("Bonuses")]
     public List<StatBonus> bonuses;
 
+    private void OnEnable()
+    {
+        damage.name = "Damage";
+        cooldown.name = "Cooldown";
+        range.name = "Range";
+        chargeRate.name = "Charge Rate";
+        chargeLimit.name = "Charge Limit";
+        knockback.name = "Knockback";
+        castStatusPower.name = "Cast Status Power";
+        hitStatusPower.name = "Hit Status Power";
+    }
+
     // Accessors
-    
+
     public DependentAttribute GetAttribute(CastableStat stat)
     {
         return stat switch

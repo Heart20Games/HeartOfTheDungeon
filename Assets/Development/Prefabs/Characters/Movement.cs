@@ -48,6 +48,14 @@ public class Movement : BaseMonoBehaviour, ITimeScalable
     }
 
 
+    // Stop Moving
+
+    public void StopMoving()
+    {
+        myRigidbody.velocity = Vector3.zero;
+    }
+
+
     // Move Vector
 
     public void SetMoveVector(Vector2 vector)

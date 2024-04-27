@@ -13,15 +13,18 @@ public class AttributeLabel : BaseMonoBehaviour
 
     [ReadOnly][SerializeField] private BaseAttribute attribute;
 
+    public bool abbreviate = false;
+
     public void SetName(string name)
     {
         this.name = name;
-        nameText.text = name;
+        nameText.text = !abbreviate ? name : name.Substring(0, 3);
     }
 
     public void SetAttribute(BaseAttribute attribute)
     {
         this.attribute = attribute;
+        SetName(attribute.name);
         if (attribute != null)
             UpdateField();
     }

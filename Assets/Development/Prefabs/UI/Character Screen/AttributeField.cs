@@ -12,9 +12,12 @@ public class AttributeField : BaseMonoBehaviour
     [SerializeField] private GameObject[] selectedIndicators = new GameObject[0];
     [ReadOnly][SerializeField] private BaseAttribute attribute;
 
+    public bool limitReached = false;
+
     public bool selected;
     public int statIndex;
     public UnityEvent<int> onSelect;
+    public UnityAction onUpdateField;
 
     [SerializeField] private bool debug = false;
 
@@ -49,11 +52,12 @@ public class AttributeField : BaseMonoBehaviour
         if (debug) print($"Update Field: {name}");
         label.UpdateField();
         pips.SetFilled(Mathf.FloorToInt(attribute.FinalValue) + pipOffset);
+        onUpdateField?.Invoke();
     }
 
     public void AddPoint()
     {
-        if (attribute != null)
+        if (attribute != null && !limitReached)
         {
             attribute.BaseValue += 1;
             UpdateField();
