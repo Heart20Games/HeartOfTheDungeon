@@ -5,6 +5,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Debug = UnityEngine.Debug;
+using Object = UnityEngine.Object;
 
 public interface IBaseMonoBehaviour
 {
@@ -16,9 +17,9 @@ public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
     public Transform Transform => transform;
 
     [Conditional("DEVELOPMENT_BUILD"), Conditional("UNITY_EDITOR")]
-    protected void Print(object message, bool debug = true)
+    protected void Print(object message, bool debug = true, Object context = null)
     {
-        if (debug) Debug.Log(message, this);
+        if (debug) Debug.Log(message, context == null ? this : context);
     }
 
     void OnDestroy()
