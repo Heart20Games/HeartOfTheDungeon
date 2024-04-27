@@ -254,6 +254,7 @@ namespace HotD
                 userInterface.SetControlScreenActive(mode.activeMenu == Menu.ControlSheet);
                 userInterface.SetCharacterSheetActive(mode.activeMenu == Menu.CharacterSheet);
                 userInterface.SetMenuInputsActive(mode.activeMenu != Menu.None);
+                userInterface.SetDeathScreenActive(mode.activeMenu == Menu.Death);
             }
             else
             {

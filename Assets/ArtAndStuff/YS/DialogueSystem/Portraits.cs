@@ -1,12 +1,22 @@
+using MyBox;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Portraits", order = 1)]
 public class Portraits : ScriptableObject
 {
+    public static Portraits main;
     public Portrait[] portraits = new Portrait[5];
     public Dictionary<string, Dictionary<string, PortraitImage>> bank = new();
+
+    public bool debug = false;
+
+    private void OnEnable()
+    {
+        main = this;
+    }
 
     public void Initialize()
     {
@@ -21,12 +31,42 @@ public class Portraits : ScriptableObject
         }
     }
 
+    [ButtonMethod]
+    public void TestPrintBank()
+    {
+        Debug.Log("Test-Printing Portrait Bank.");
+        foreach (var key in bank.Keys)
+        {
+            Debug.Log($"Key: {key}");
+            foreach (var subKey in bank[key].Keys)
+            {
+                var pi = bank[key][subKey];
+                Debug.Log($"- {pi.name} / {pi.image.name} / {pi.orientation}");
+            }
+        }
+    }
+
     public PortraitImage GetPortrait(string name, string emotion)
     {
         name = name == null ? "" : name;
+        if (debug) Debug.Log($"Getting Portrait by {name} and {emotion}.", this);
         if (portraits != null && bank.TryGetValue(name, out var emotions))
+        {
+            if (debug) Debug.Log($"Got emotion list.");
             if (emotions.TryGetValue(emotion, out PortraitImage portrait))
+            {
+                if (debug) Debug.Log($"Found portrait/image pair.");
                 return portrait;
+            }
+            else
+            {
+                if (debug) Debug.Log("No portrait/image pair found.");
+            }
+        }
+        else
+        {
+            if (debug) Debug.Log("No valid emotion list found.");
+        }
         return new();
     }
 
