@@ -188,6 +188,7 @@ GameObject:
   - component: {fileID: 16618934}
   - component: {fileID: 16618933}
   - component: {fileID: 16618932}
+  - component: {fileID: 16618935}
   m_Layer: 0
   m_Name: MagicBolt_CastingPointVFX
   m_TagString: Untagged
@@ -265,13 +266,13 @@ VisualEffect:
       - m_Value: 2.5
         m_Name: Level 2 Charge Duration
         m_Overridden: 1
-      - m_Value: 1
+      - m_Value: 0
         m_Name: Level 3 Charge
         m_Overridden: 1
-      - m_Value: 1
+      - m_Value: 0
         m_Name: Casting
         m_Overridden: 1
-      - m_Value: 1
+      - m_Value: 0
         m_Name: Level 2 Charge
         m_Overridden: 1
     m_Vector2f:
@@ -300,7 +301,7 @@ VisualEffect:
       m_Array: []
     m_Bool:
       m_Array:
-      - m_Value: 1
+      - m_Value: 0
         m_Name: CastingEnd
         m_Overridden: 1
 --- !u!4 &16618934
@@ -318,6 +319,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &16618935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16618931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94e62392afa1ca74c8abe09fcd6cd5c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualEffect: {fileID: 16618933}
+  level2ChargeTime: 2
+  level3ChargeTime: 4
+  castingChargeTime: 1
+  level2Charge: 0
+  level3Charge: 0
+  castingCharge: 0
+  level2: 0
+  level3: 0
+  casting: 0
+  castingEnd: 0
+  isPlaying: 0
 --- !u!850595691 &24226718
 LightingSettings:
   m_ObjectHideFlags: 0
