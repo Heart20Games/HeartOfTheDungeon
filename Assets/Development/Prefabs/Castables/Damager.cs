@@ -13,6 +13,8 @@ public class Damager : BaseMonoBehaviour, IDamager
     [ReadOnly][SerializeField] private int otherCount = 0;
     [ReadOnly][SerializeField] private int ignoredCount = 0;
 
+    public bool debug = false;
+
     public Impact _Impactor
     {
         get => _impactor;
@@ -37,7 +39,9 @@ public class Damager : BaseMonoBehaviour, IDamager
     {
         if (impactor != null)
         {
-            IDamageable other = impactor.GetComponent<IDamageable>();
+            IDamageable other = impactor.other.GetComponent<IDamageable>();
+            
+            Print($"Hit Damageable: {other}", debug, this);
 
             if(impactor._Character != null)
             {
@@ -46,6 +50,8 @@ public class Damager : BaseMonoBehaviour, IDamager
 
             if (other != null && !ignored.Contains(other) && !others.Contains(other))
             {
+                Print("Doing stuff with damageable.", debug, this);
+
                 others.Add(other);
                 otherCount = others.Count;
                 other.SetDamagePosition(impactor.impactLocation);
@@ -63,8 +69,13 @@ public class Damager : BaseMonoBehaviour, IDamager
         if (impactor != null)
         {
             IDamageable other = impactor.other.GetComponent<IDamageable>();
+
+            Print($"Left Damageable: {other}", debug, this);
+
             if (other != null && !ignored.Contains(other) && others.Contains(other))
             {
+                Print("Removing Damageable.", debug, this);
+
                 others.Remove(other);
                 otherCount = others.Count;
             }
