@@ -329,9 +329,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Game, Assembly-CSharp
-        m_MethodName: RestartGame
+      - m_Target: {fileID: 6402053050114862401}
+        m_TargetAssemblyTypeName: RoomLoader, Assembly-CSharp
+        m_MethodName: Load
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -456,6 +456,7 @@ GameObject:
   - component: {fileID: 1844531258069672110}
   - component: {fileID: 7404617003120461297}
   - component: {fileID: 694517326899820510}
+  - component: {fileID: 6402053050114862401}
   m_Layer: 0
   m_Name: Death Screen
   m_TagString: Untagged
@@ -561,6 +562,27 @@ MonoBehaviour:
   eventSystem: {fileID: 2349693522488697614}
   button: {fileID: 8625247951106740194}
   focusOnEnable: 1
+--- !u!114 &6402053050114862401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2020151447196564126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1899db93195d214fabcb31a6d039eaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storage: {fileID: 0}
+  targetRoom: $MainMenu
+  asynchronous: 1
+  progressThreshold: 0.9
+  canActivate: 1
+  onSceneLoaded:
+    m_PersistentCalls:
+      m_Calls: []
+  debug: 0
 --- !u!1 &2251183479197776735
 GameObject:
   m_ObjectHideFlags: 0
@@ -1163,6 +1185,7 @@ MonoBehaviour:
   characterSheet: {fileID: 6316178458476340317}
   simpleDialogue: {fileID: 7250048029162628151}
   menuInputSystem: {fileID: 2349693522488697614}
+  deathScreen: {fileID: 7070854595698002503}
   onContinue:
     m_PersistentCalls:
       m_Calls:
