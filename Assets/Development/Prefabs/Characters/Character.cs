@@ -378,6 +378,7 @@ namespace Body
 
         public void Refresh()
         {
+            Print($"Refreshing {Name}.");
             CurrentHealth = MaxHealth;
             Emotion = "neutral";
         }
@@ -392,6 +393,8 @@ namespace Body
         }
         public void Respawn()
         {
+            Print($"Respawing {Name}.");
+            SetMode(LiveMode.Alive);
             Print($"Respawn {Name}", debug);
             body.SetPositionAndRotation(spawn.position, spawn.rotation);
             body.localScale = spawn.localScale;
@@ -409,7 +412,7 @@ namespace Body
         }
         public void Despawn()
         {
-            Print($"Despawn {Name}", debug);
+            Print($"Despawning {Name}");
             //SetDisplayable(false);
             onDespawn.Invoke();
         }
