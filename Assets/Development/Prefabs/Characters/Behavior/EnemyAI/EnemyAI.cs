@@ -1,4 +1,5 @@
 using Body.Behavior;
+using Body.Behavior.ContextSteering;
 using UnityEngine;
 
 public class EnemyAI : Brain
@@ -60,7 +61,9 @@ public class EnemyAI : Brain
 
     private void AttackState()
     {
-        if(!Target.parent.GetComponent<Body.Character>()) return;
+        if(!Target.GetComponent<CSController>()) return;
+
+        if(Target.GetComponent<CSController>().identity != CSIdentity.Identity.Friend) return;
 
         if(Target.parent.GetComponent<Body.Character>().CurrentHealth <= 0)
         {
@@ -75,7 +78,10 @@ public class EnemyAI : Brain
         {
             currentAction = Action.Duel;
 
-            _Character.castables[_Character.CastableID].GetComponent<Damager>()._Impactor = Target.GetComponent<Impact>();
+            if(_Character.castables[_Character.CastableID] != null)
+            {
+                _Character.castables[_Character.CastableID].GetComponent<Damager>()._Impactor = Target.GetComponent<Impact>();
+            }
 
             attackTimeStep += Time.deltaTime;
             if(attackTimeStep >= attackTime)

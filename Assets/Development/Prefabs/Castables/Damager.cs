@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 using static Body.Behavior.ContextSteering.CSIdentity;
 
 public class Damager : BaseMonoBehaviour, IDamager
@@ -76,6 +77,8 @@ public class Damager : BaseMonoBehaviour, IDamager
 
     public void DamageTarget()
     {
+        if (_impactor == null) return;
+
         IDamageable other = _impactor.GetComponent<IDamageable>();
 
         if (_impactor._Character != null)
@@ -83,12 +86,23 @@ public class Damager : BaseMonoBehaviour, IDamager
             if (_impactor._Character.CurrentHealth <= 0) return;
         }
 
-        if (other != null)//&& !ignored.Contains(other) && !others.Contains(other))
+        if (other != null)
         {
             others.Add(other);
             otherCount = others.Count;
             other.SetDamagePosition(_impactor.impactLocation);
             other.TakeDamage(damage, identity);
         }
+    }
+
+    public void SpawnDamagerEffect(GameObject effect)
+    {
+        Transform childTransform = transform.GetChild(0);
+
+        GameObject go = Instantiate(effect, childTransform);
+
+        go.GetComponent<VisualEffect>().Play();
+
+        Destroy(go, 2f);
     }
 }
