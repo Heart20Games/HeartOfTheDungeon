@@ -14,7 +14,7 @@ public class EnemyAI : Brain
     [SerializeField] private float attackTime;
 
     private float wayPointTimeStep;
-    [SerializeField] private float attackTimeStep;
+    private float attackTimeStep;
 
     private int wayPointIndex;
 
@@ -144,5 +144,11 @@ public class EnemyAI : Brain
         }
 
         return targetPosition;
+    }
+
+    public void SetWayPoints(Transform wayPointOne, Transform wayPointTwo)
+    {
+        wayPoints[0] = wayPointOne;
+        wayPoints[1] = wayPointTwo;
     }
 }

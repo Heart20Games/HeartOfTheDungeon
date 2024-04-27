@@ -37,6 +37,8 @@ namespace HotD
         [SerializeField] private List<Wave> waves;
         [SerializeField] private List<Transform> spawnpoints;
 
+        [SerializeField] private Transform[] wayPoints;
+
         [SerializeField] private bool debug;
 
         [Header("Player Stats")]
@@ -149,10 +151,17 @@ namespace HotD
                 party.onAllDead.AddListener(() => { OnPartyDied(party); });
                 party.TargetParty = Party.mainParty;
                 OnPartySpawned(party);
+
+                AddWayPoints(party.transform.GetChild(0).GetComponent<EnemyAI>());
             }
 
             if (!patientWaves)
                 coroutine ??= StartCoroutine(CountdownToWave());
+        }
+
+        private void AddWayPoints(EnemyAI ai)
+        {
+            ai.SetWayPoints(wayPoints[UnityEngine.Random.Range(0, wayPoints.Length)], wayPoints[UnityEngine.Random.Range(0, wayPoints.Length)]);
         }
 
         public IEnumerator CountdownToWave()
