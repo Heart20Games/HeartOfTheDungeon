@@ -119,14 +119,20 @@ public class Party : BaseMonoBehaviour
     public void Refresh()
     {
         foreach (var character in members)
+        {
+            Print($"Refresh {character.Name}.");
             character.Refresh();
+        }
     }
 
     [ButtonMethod]
     public void Respawn()
     {
         foreach (var character in members)
+        {
+            Print($"Respawn {character.Name}.");
             character.Respawn();
+        }
     }
 
     [ButtonMethod]
@@ -134,6 +140,7 @@ public class Party : BaseMonoBehaviour
     {
         foreach (Character character in members)
         {
+            Print($"Despawn {character.Name}.");
             character.SetMode(LiveMode.Despawned);
         }
     }

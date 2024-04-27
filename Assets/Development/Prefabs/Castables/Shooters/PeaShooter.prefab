@@ -24,6 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1904680909052718346}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,7 +32,6 @@ Transform:
   m_Children:
   - {fileID: 4362733425235696987}
   m_Father: {fileID: 5486033062484575967}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5725732564351482645
 MonoBehaviour:
@@ -73,6 +73,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7671084196221756564}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -80,7 +81,6 @@ Transform:
   m_Children:
   - {fileID: 8528749275021607426}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8666214379601827426
 MonoBehaviour:
@@ -94,11 +94,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80a7ea508bfd494c8639b88a320691c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item: {fileID: 0}
   weaponArt: {fileID: 0}
   pivot: {fileID: 0}
+  pivotDirection: {x: 0, y: 0, z: 0}
   rOffset: 0
   followBody: 1
   source: {fileID: 0}
+  debug: 0
+  powerLevel: 0
+  onSetPowerLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  maxPowerLevel: 1
+  onSetMaxPowerLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  toLocations: []
+  positionables: []
+  effects: []
+  triggerStatuses: []
   castStatuses: []
   hitStatuses: []
   onSetIdentity:
@@ -116,22 +131,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  castingMethods: []
   casting: 0
-  doCast:
+  castOnTrigger: 1
+  castOnRelease: 0
+  unCastOnRelease: 0
+  onTrigger:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: -8678082863888368465}
-        m_TargetAssemblyTypeName: ProjectileSpawner, Assembly-CSharp
-        m_MethodName: Spawn
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onCast:
     m_PersistentCalls:
       m_Calls:
@@ -147,6 +154,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onRelease:
+    m_PersistentCalls:
+      m_Calls: []
   onUnCast:
     m_PersistentCalls:
       m_Calls: []
@@ -165,6 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f98769c1196b948ba8dd4676372f91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  applyOnSet: 1
   source: {fileID: 0}
   target: {fileID: 0}
   offset: {x: 0, y: 0, z: 0}
@@ -174,6 +185,7 @@ MonoBehaviour:
   projectile: {fileID: 6258354108924013221}
   followBody: 0
   exceptions: []
+  projectiles: []
   debug: 0
 --- !u!114 &816360339111934779
 MonoBehaviour:
@@ -189,6 +201,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   identity: 0
+  otherCount: 0
+  ignoredCount: 0
 --- !u!114 &6114431599006201392
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ namespace Body.Behavior
     public class Brain : BaseMonoBehaviour, ITimeScalable
     {
         // Enabled
+        /*
         public bool Enabled
         {
             get => enabled;
@@ -26,6 +27,7 @@ namespace Body.Behavior
                 if (controller != null) controller.Active = !useAgent && value;
             }
         }
+        */
 
         // Alive
         public bool Alive
@@ -64,11 +66,11 @@ namespace Body.Behavior
 
         // Tree
         public enum Type { Leaf, Condition, Selector, Sequence }
-        public enum Action { Idle, Chase, Duel }
+        public enum Action { Idle, Patrol, Chase, Duel }
         private Dictionary<Action, Tick> actions;
         public Dictionary<Action, Tick> Actions
         {
-            get => actions ??= new Dictionary<Action, Tick>() { { Action.Idle, Idle }, { Action.Chase, Chase }, { Action.Duel, Duel } };
+            get => actions ??= new Dictionary<Action, Tick>() { { Action.Idle, Idle }, { Action.Patrol, Patrol }, { Action.Chase, Chase }, { Action.Duel, Duel } };
         }
         public BehaviorTree tree;
         [HideInInspector] public BehaviorNode root;
@@ -86,12 +88,14 @@ namespace Body.Behavior
             set => timeScale = SetTimeScale(value);
         }
 
+        public Character _Character => character;
+
         // Helpers
         private float timeKeeper = 0f;
         public bool debug = false;
 
         // Initialization
-        private void Awake()
+        public virtual void Awake()
         {
             if (debug) print("Awake!");
             if (TryGetComponent(out character))
@@ -117,12 +121,12 @@ namespace Body.Behavior
             Alive = true;
 
             if (debug) root.PrintTree();
-            Enabled = Enabled;
+            //Enabled = Enabled;
         }
 
 
         // Update
-        private void Update()
+        public virtual void Update()
         {
             //if (debug) Debug.Log("Updating Brain");
             if (status == BehaviorNode.Status.FAILURE)
@@ -197,7 +201,7 @@ namespace Body.Behavior
 
         public BehaviorNode.Status Chase()
         {
-            if (!HasFoeInRange(Range.InRange)) return BehaviorNode.Status.FAILURE;
+            //if (!HasFoeInRange(Range.InRange)) return BehaviorNode.Status.FAILURE;
 
             if (debug) Debug.Log("Chasing...");
 
@@ -227,24 +231,28 @@ namespace Body.Behavior
             return BehaviorNode.Status.SUCCESS;
         }
 
+        public BehaviorNode.Status Patrol()
+        {
+            TargetNavigation();
+
+            return BehaviorNode.Status.SUCCESS;
+        }
+
         public BehaviorNode.Status Duel()
         {
-            if (!HasFoeInRange(Range.InAttackRange)) return BehaviorNode.Status.FAILURE;
+            //if (!HasFoeInRange(Range.InAttackRange)) return BehaviorNode.Status.FAILURE;
 
-            if (debug) Debug.Log("Dueling...");
+            Debug.Log("Dueling...");
 
-            if (!useAgent)
+            Debug.Log("Trying to attack");
+            character.Aim(-controller.CurrentVector.normalized, true);
+
+            // Find the closest-range weapon that I can currently use, then shoot with it.
+            int closestIdx = FindClosestRangeUsableCastable();
+            if (closestIdx >= 0)
             {
-                if (debug) print("Trying to attack");
-                character.Aim(-controller.CurrentVector.normalized, true);
-
-                // Find the closest-range weapon that I can currently use, then shoot with it.
-                int closestIdx = FindClosestRangeUsableCastable();
-                if (closestIdx >= 0)
-                {
-                    if (debug) print("Actually attacking!");
-                    character.TriggerCastable(closestIdx);
-                }
+                Debug.Log("Actually attacking!");
+                character.TriggerCastable(closestIdx);
             }
 
             return BehaviorNode.Status.SUCCESS;
@@ -261,7 +269,7 @@ namespace Body.Behavior
                 {
                     if (item.context.vector.deadzone.y < closest)
                     {
-                        if (debug) print("Found something to attack with...");
+                        Debug.Log("Found something to attack with...");
                         closest = (int)item.context.vector.deadzone.y;
                         closestIdx = i;
                     }

@@ -6,9 +6,13 @@ public static class ExtensionMethods
     // Animator
     public static bool HasParameter(this Animator _animator, string parameterName)
     {
-        foreach (AnimatorControllerParameter param in _animator.parameters)
+        Awarn.IsNotNull(_animator, "Animator.HasParameter: Animator is null for some dumb reason.");
+        if (_animator != null)
         {
-            if (param.name == parameterName) return true;
+            foreach (AnimatorControllerParameter param in _animator.parameters)
+            {
+                if (param.name == parameterName) return true;
+            }
         }
         return false;
     }

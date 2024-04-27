@@ -130,9 +130,11 @@ namespace Body.Behavior.ContextSteering
             foreach (Context other in activeContexts)
             {
                 if (other.name == context.name)
+                {
                     return true;
+                }
             }
-            return false;
+            return true;
             //return activeContexts.Contains(context);
         }
 
