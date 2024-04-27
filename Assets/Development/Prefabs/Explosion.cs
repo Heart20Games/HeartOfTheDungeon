@@ -9,8 +9,7 @@ public class Explosion: BaseMonoBehaviour
     public int damage = 10;
 
     public bool triggerExplosion = false;
-
-    public bool debug;
+    public bool debug = false;
     
     private void Update()
     {

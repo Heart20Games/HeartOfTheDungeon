@@ -17,6 +17,7 @@ public class UserInterface : BaseMonoBehaviour
     public CharacterSheet characterSheet;
     public GameObject simpleDialogue;
     public EventSystem menuInputSystem;
+    public Transform deathScreen;
 
     private readonly List<GameObject> panels = new();
 
@@ -27,6 +28,7 @@ public class UserInterface : BaseMonoBehaviour
         panels.Add(dialogueRunner.gameObject);
         panels.Add(hud.gameObject);
         panels.Add(controlScreen);
+        Portraits.main.Initialize();
     }
 
     public void Start()
@@ -67,6 +69,11 @@ public class UserInterface : BaseMonoBehaviour
     public void SetMenuInputsActive(bool active)
     {
         menuInputSystem.gameObject.SetActive(active);
+    }
+
+    public void SetDeathScreenActive(bool active)
+    {
+        deathScreen.gameObject.SetActive(active);
     }
 
     // Set Character

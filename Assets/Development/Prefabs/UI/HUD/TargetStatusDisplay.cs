@@ -62,7 +62,7 @@ public class TargetStatusDisplay : BaseMonoBehaviour
 
     public void UpdatePortraitImage(Sprite image)
     {
-        if (debug) print("Updating portrait image.");
+        Print($"Updating portrait image. ({image})", debug, this);
         portrait.sprite = image;
     }
 
@@ -70,6 +70,7 @@ public class TargetStatusDisplay : BaseMonoBehaviour
     [ButtonMethod]
     public void TestEmotion()
     {
+        Print($"Testing Emotion {testEmotion} for {target.Name}.", debug, this);
         string name = target.Name;
         UpdatePortraitImage(portraits.GetImage(name, testEmotion));
     }
