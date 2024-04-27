@@ -20,6 +20,7 @@ public class Timer : BaseMonoBehaviour
     {
         onPlay.Invoke();
         StartCoroutine(RunTimer());
+        Debug.Log("Pl");
     }
 
     public IEnumerator RunTimer()

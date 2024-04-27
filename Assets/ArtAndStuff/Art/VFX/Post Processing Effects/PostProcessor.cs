@@ -2,6 +2,7 @@ using MyBox;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 namespace HotD.PostProcessing
 {
@@ -10,6 +11,11 @@ namespace HotD.PostProcessing
         public enum PStatus { Inactive, Transitioning, Active, None };
 
         [SerializeField] protected VolumeProfile volumeProfile;
+        [SerializeField] protected Volume volume;
+
+        private ColorAdjustments colorAdjustments;
+
+        private VolumeParameter<float> colorFilter = new VolumeParameter<float>();
 
         [Tooltip("The number of refreshes per second. (think of it like the \"framerate\")")]
         [Range(0.01f, 200f)][SerializeField] private float refreshRate = 50f; // Refreshes per second.
@@ -65,6 +71,15 @@ namespace HotD.PostProcessing
 
             status = activate ? PStatus.Active : PStatus.Inactive;
             coroutine = null;
+        }
+
+        public void ResetColorFilter()
+        {
+            volume.profile.TryGet<ColorAdjustments>(out colorAdjustments);
+
+            colorFilter.value = 0;
+
+            colorAdjustments.colorFilter.SetValue(colorFilter);
         }
     }
 }

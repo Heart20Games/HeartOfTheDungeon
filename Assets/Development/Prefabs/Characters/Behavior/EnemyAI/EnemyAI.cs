@@ -1,7 +1,5 @@
 using Body.Behavior;
-using HotD.Castables;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 public class EnemyAI : Brain
 {
@@ -12,8 +10,10 @@ public class EnemyAI : Brain
     [SerializeField] private float distanceToReturnHome;
     [SerializeField] private float distanceToChangeWaypoints;
     [SerializeField] private float wayPointWaitTime;
+    [SerializeField] private float attackTime;
 
     private float wayPointTimeStep;
+    [SerializeField] private float attackTimeStep;
 
     private int wayPointIndex;
 
@@ -41,6 +41,8 @@ public class EnemyAI : Brain
     {
         currentAction = Action.Chase;
 
+        attackTimeStep = 0;
+
         Target = targetObject;
     }
 
@@ -58,11 +60,13 @@ public class EnemyAI : Brain
 
     private void AttackState()
     {
-        if (currentAction != Action.Chase) return;
+        if(!Target.parent.GetComponent<Body.Character>()) return;
 
-        if (!Target.parent.GetComponent<Body.Character>().Alive)
+        if(Target.parent.GetComponent<Body.Character>().CurrentHealth <= 0)
         {
             PatrolState();
+
+            attackTimeStep = 0;
 
             return;
         }
@@ -73,13 +77,19 @@ public class EnemyAI : Brain
 
             _Character.castables[_Character.CastableID].GetComponent<Damager>()._Impactor = Target.GetComponent<Impact>();
 
-            Duel();
+            attackTimeStep += Time.deltaTime;
+            if(attackTimeStep >= attackTime)
+            {
+                Duel();
+
+                attackTimeStep = 0;
+            }
         }
         else
         {
             if(currentAction == Action.Duel)
             {
-                currentAction = Action.Chase;
+                ChasePlayer(Target);
             }
         }
     }

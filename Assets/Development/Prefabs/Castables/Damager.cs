@@ -83,7 +83,7 @@ public class Damager : BaseMonoBehaviour, IDamager
             if (_impactor._Character.CurrentHealth <= 0) return;
         }
 
-        if (other != null && !ignored.Contains(other) && !others.Contains(other))
+        if (other != null)//&& !ignored.Contains(other) && !others.Contains(other))
         {
             others.Add(other);
             otherCount = others.Count;
