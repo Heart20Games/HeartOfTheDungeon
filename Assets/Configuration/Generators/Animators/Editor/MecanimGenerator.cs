@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
-using Yarn.Unity;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 [CreateAssetMenu(fileName = "NewMecanimGenerator", menuName = "Mecanim Generator", order = 1)]
 public class MecanimGenerator : Generator
