@@ -5,7 +5,7 @@ using System.Collections;
 namespace TMPro.Examples
 {
     
-    public class ShaderPropAnimator : BaseMonoBehaviour
+    public class ShaderPropAnimator : MonoBehaviour
     {
 
         private Renderer m_Renderer;

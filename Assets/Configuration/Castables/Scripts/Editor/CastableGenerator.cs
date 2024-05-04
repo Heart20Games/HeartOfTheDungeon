@@ -7,13 +7,14 @@ using UnityEditor.Events;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Body;
+using static Body.Behavior.ContextSteering.CSContext;
+using Range = Body.Behavior.ContextSteering.CSContext.Range;
 
 namespace HotD.Castables
 {
-    using static Body.Behavior.ContextSteering.CSContext;
     using static HotD.Castables.CastableToLocation;
     using static Loadout;
-    using Range = Body.Behavior.ContextSteering.CSContext.Range;
 
     [CreateAssetMenu(fileName = "NewCastableGenerator", menuName = "Loadouts/Castable Generator", order = 1)]
     public class CastableGenerator : ScriptableObject
