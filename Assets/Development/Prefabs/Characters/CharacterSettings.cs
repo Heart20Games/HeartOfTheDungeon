@@ -11,10 +11,10 @@ namespace HotD
 
     public class CharacterModes
     {
-        public enum ControlMode { Player, Brain };
+        public enum ControlMode { Player, Brain, None };
         public enum MovementMode { Disabled, GravityOnly, Active };
         public enum CollisionMode { Disabled, Tall, Short };
-        public enum LiveMode { Despawned, Alive, Dead };
+        public enum LiveMode { Alive, Despawned, Dead };
         
         [Serializable]
         public struct CharacterMode

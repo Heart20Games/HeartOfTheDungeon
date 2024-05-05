@@ -2,6 +2,7 @@ using MyBox;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 namespace HotD.PostProcessing
 {
@@ -10,6 +11,7 @@ namespace HotD.PostProcessing
         public enum PStatus { Inactive, Transitioning, Active, None };
 
         [SerializeField] protected VolumeProfile volumeProfile;
+        [SerializeField] protected Volume volume;
 
         [Tooltip("The number of refreshes per second. (think of it like the \"framerate\")")]
         [Range(0.01f, 200f)][SerializeField] private float refreshRate = 50f; // Refreshes per second.

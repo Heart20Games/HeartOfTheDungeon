@@ -92,6 +92,8 @@ namespace Body
         public override MaxModField<int> Health { get => health; }
         public override MaxModField<int> Armor { get => armor; }
 
+        private int castableID;
+
         // Status Effects
         [Foldout("Status Effects", true)]
         [Header("Status Effects")]
@@ -128,11 +130,13 @@ namespace Body
 
         public bool debug = false;
 
+        public int CastableID => castableID;
+
         // Actions
         public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); caster.SetFallback(movement.moveVector.FullY(), true); }
         public void Aim(Vector2 input, bool aim = false) { if (aimActive || aim) caster.SetVector(input.FullY()); }
-        public void TriggerCastable(int idx) { if (castables[idx] != null) caster.TriggerCastable(castables[idx]); }
-        public void ReleaseCastable(int idx) { if (castables[idx] != null) caster.ReleaseCastable(castables[idx]); }
+        public void TriggerCastable(int idx) { if (castables[idx] != null) caster.TriggerCastable(castables[idx]); castableID = idx; }
+        public void ReleaseCastable(int idx) { if (castables[idx] != null) caster.ReleaseCastable(castables[idx]); castableID = idx; }
         public void Interact() { talker.Talk(); }
         public void FlipCamera() { if (cameraPivot != null) cameraPivot.FlipOverX(); }
 
@@ -254,7 +258,7 @@ namespace Body
 
             movement.StopMoving();
             movement.SetMoveVector(new());
-            brain.Enabled = !new_mode.PlayerControlled && !BrainDead;
+            brain.enabled = !new_mode.PlayerControlled && !BrainDead;
             movement.canMove = new_mode.moveMode == MovementMode.Active && !BrainDead;
             movement.applyGravity = new_mode.moveMode != MovementMode.Disabled;
             SetNonNullActive(artRenderer, new_mode.displayable);
@@ -278,7 +282,7 @@ namespace Body
                         {
                             switch (oldMode.liveMode)
                             {
-                                case LiveMode.Dead: Refresh(); break;
+                                case LiveMode.Dead: break;
                                 case LiveMode.Despawned: Respawn(); break;
                             }
                             break;
@@ -368,12 +372,13 @@ namespace Body
             }
             else if (autoRespawn)
             {
-                 respawnAfterDelay();
+                respawnAfterDelay();
             }
         }
 
         public void Refresh()
         {
+            Print($"Refreshing {Name}.");
             CurrentHealth = MaxHealth;
             Emotion = "neutral";
         }
@@ -384,9 +389,12 @@ namespace Body
                 autoRespawnCoroutine = null;
             SetMode(LiveMode.Alive);
             afterAction?.Invoke();
+            Respawn();
         }
         public void Respawn()
         {
+            Print($"Respawing {Name}.");
+            SetMode(LiveMode.Alive);
             Print($"Respawn {Name}", debug);
             body.SetPositionAndRotation(spawn.position, spawn.rotation);
             body.localScale = spawn.localScale;
@@ -404,7 +412,7 @@ namespace Body
         }
         public void Despawn()
         {
-            Print($"Despawn {Name}", debug);
+            Print($"Despawning {Name}");
             //SetDisplayable(false);
             onDespawn.Invoke();
         }

@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.TextCore.Text;
+using Body;
 
 public class Impact : Validator
 {
@@ -37,12 +39,15 @@ public class Impact : Validator
     [Header("Connections")]
     public BinaryEvent onCollision;
     public BinaryEvent onTrigger;
+    [SerializeField] private Body.Character character;
     [Foldout("Events")] public ImpactEvents onImpact;
 
     // Tracking
     [ReadOnly] public List<GameObject> touching = new();
     [HideInInspector] public GameObject other;
     [HideInInspector] public Vector3 impactLocation;
+
+    public Body.Character _Character => character;
 
     private void OnEnable() {}
 
