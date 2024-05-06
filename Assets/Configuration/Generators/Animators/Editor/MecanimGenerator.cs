@@ -352,6 +352,7 @@ public class MecanimGenerator : Generator
             entryTransition.AddCondition(AnimatorConditionMode.Equals, num, "ComboLevel");
             
             var exitTransition = combo.AddExitTransition(false);
+            exitTransition.hasExitTime = true;
         }
 
         return sub;
