@@ -42,11 +42,22 @@ namespace HotD.Body
         private void Awake()
         {
             if (body == null) body = transform;
-            if (body != null) myRigidbody = body.GetComponent<Rigidbody>();
+            if (body != null)
+            {
+                if (!body.TryGetComponent(out myRigidbody))
+                {
+                    Debug.LogError("Movement expects it's body to have a Rigidbody. None found.", this);
+                }
+                else
+                {
+                    myRigidbody.useGravity = false;
+                }
+            }
             if (settings != null)
             {
                 applyGravity = settings.applyGravity;
             }
+            OnSetMoveVector ??= new();
         }
 
 
@@ -97,24 +108,20 @@ namespace HotD.Body
             {
                 if (canMove)
                 {
-                    Vector3 cameraDirection = body.position - Camera.main.transform.position;
+                    Vector3 cameraDirection = body.position;
+                    if (Camera.main != null)
+                    {
+                        cameraDirection -= Camera.main.transform.position;
+                    }
 
                     float modifier = 1f;
                     if (character != null && character.PlayerControlled)
                     {
-                        Print("Character Controlled Movement", debug);
-                        Vector3 direction = moveVector.Orient(cameraDirection).FullY();
-                        Debug.DrawRay(body.position, direction * 3, Color.green, Time.fixedDeltaTime);
-                        myRigidbody.AddRelativeForce(Speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
+                        ApplyPlayerMovement(cameraDirection, moveVector);
                     }
                     else
                     {
-                        Print($"NPC Controlled Movement ({character})", debug);
-                        modifier = npcModifier;
-                        Vector3 direction = moveVector.FullY();
-                        Assert.IsFalse(float.IsNaN(direction.x) || float.IsNaN(direction.y) || float.IsNaN(direction.z));
-                        Debug.DrawRay(body.position, direction, Color.green, Time.fixedDeltaTime);
-                        myRigidbody.AddForce(modifier * Speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
+                        ApplyNPCMovement(ref modifier, moveVector);
                     }
 
                     if (myRigidbody.velocity.magnitude > MaxVelocity * modifier)
@@ -150,11 +157,38 @@ namespace HotD.Body
 
                 if (applyGravity)
                 {
-                    onGround = Physics.Raycast(body.transform.position, Vector3.down, GroundDistance);
-                    float power = onGround ? NormalForce : GravityForce;
-                    myRigidbody.AddForce(Speed * timeScale * power * Time.fixedDeltaTime * Vector3.down);
+                    ApplyGravity();
                 }
             }
+        }
+
+        public void ApplyGravity(float scale=1, bool checkForGround=true)
+        {
+            float power = GravityForce;
+            if (checkForGround)
+            {
+                onGround = Physics.Raycast(body.transform.position, Vector3.down, GroundDistance);
+                power = onGround ? NormalForce : GravityForce;
+            }
+            myRigidbody.AddForce(power * scale * Speed * Time.fixedDeltaTime * timeScale * Vector3.down, ForceMode.Force);
+        }
+
+        public void ApplyPlayerMovement(Vector3 cameraDirection, Vector2 moveVector, float scale=1)
+        {
+            Print("Character Controlled Movement", debug);
+            Vector3 direction = moveVector.Orient(cameraDirection).FullY();
+            Debug.DrawRay(body.position, direction * 3, Color.green, Time.fixedDeltaTime);
+            myRigidbody.AddRelativeForce(scale * Speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
+        }
+
+        public void ApplyNPCMovement(ref float modifier, Vector2 moveVector, float scale=1)
+        {
+            Print($"NPC Controlled Movement ({character})", debug);
+            modifier = npcModifier;
+            Vector3 direction = moveVector.FullY();
+            Assert.IsFalse(float.IsNaN(direction.x) || float.IsNaN(direction.y) || float.IsNaN(direction.z));
+            Debug.DrawRay(body.position, direction, Color.green, Time.fixedDeltaTime);
+            myRigidbody.AddForce(modifier * timeScale * scale * Speed * Time.fixedDeltaTime * direction, ForceMode.Force);
         }
 
 
