@@ -9,7 +9,15 @@ namespace HotD
     using static GameModes;
     using static YarnTags;
 
-    public class Talker : BaseMonoBehaviour
+    public interface ITalker
+    {
+        // Actions
+        public void CompleteTalking();
+        public void Talk();
+        public void Talk(string targetNode);
+    }
+
+    public class Talker : BaseMonoBehaviour, ITalker
     {
         [Header("Parts")]
         public Game game;
@@ -30,6 +38,26 @@ namespace HotD
         
         private InputMode prevMode;
 
+        private readonly List<IViewable> viewables = new();
+        private List<IViewable> Viewables
+        {
+            get
+            {
+                viewables.Clear();
+                DialogueViewBase[] dialogueViews = dialogueRunner.dialogueViews;
+                for (int i = 0; i < dialogueViews.Length; i++)
+                {
+                    if (dialogueViews[i] is IViewable)
+                    {
+                        viewables.Add(dialogueViews[i] as IViewable);
+                    }
+                }
+                return viewables;
+            }
+        }
+
+        // Initialization
+
         private void Start()
         {
             game = Game.main;
@@ -37,25 +65,8 @@ namespace HotD
             sceneTimeline = SceneTimeline.main;
         }
 
-        public bool ShouldUseDialogueRunner()
-        {
-            return talkMode == TalkMode.DialogueRunner;
-        }
-        public bool ShouldUseSceneTimeline()
-        {
-            return talkMode == TalkMode.SceneTimeline;
-        }
-
-        private void ResetMode()
-        {
-            game.InputMode = prevMode;
-            if (virtualCamera != null)
-            {
-                virtualCamera.SetActive(false);
-            }
-        }
-
         // Actions
+
         public virtual void CompleteTalking()
         {
             dialogueRunner.onDialogueComplete.RemoveListener(CompleteTalking);
@@ -91,7 +102,28 @@ namespace HotD
             }
         }
 
-        public bool NodeIsValid(string node)
+        // Helpers and Such
+
+        private bool ShouldUseDialogueRunner()
+        {
+            return talkMode == TalkMode.DialogueRunner;
+        }
+
+        private bool ShouldUseSceneTimeline()
+        {
+            return talkMode == TalkMode.SceneTimeline;
+        }
+
+        private void ResetMode()
+        {
+            game.InputMode = prevMode;
+            if (virtualCamera != null)
+            {
+                virtualCamera.SetActive(false);
+            }
+        }
+
+        private bool NodeIsValid(string node)
         {
             if (dialogueRunner == null)
             {
@@ -106,25 +138,7 @@ namespace HotD
             else return true;
         }
 
-        private readonly List<IViewable> viewables = new();
-        private List<IViewable> Viewables
-        {
-            get
-            {
-                viewables.Clear();
-                DialogueViewBase[] dialogueViews = dialogueRunner.dialogueViews;
-                for (int i = 0; i < dialogueViews.Length; i++)
-                {
-                    if (dialogueViews[i] is IViewable)
-                    {
-                        viewables.Add(dialogueViews[i] as IViewable);
-                    }
-                }
-                return viewables;
-            }
-        }
-
-        public void OnNodeStarted(string node)
+        private void OnNodeStarted(string node)
         {
             IEnumerable<string> tags = dialogueRunner.Dialogue.GetTagsForNode(targetNode);
             SetNodeInclusion(tags, Viewables);

@@ -78,9 +78,9 @@ public class EnemyAI : Brain
         {
             currentAction = Action.Duel;
 
-            if(_Character.castables[_Character.CastableID] != null)
+            if(character.castables[character.CastableID] != null)
             {
-                _Character.castables[_Character.CastableID].GetComponent<Damager>()._Impactor = Target.GetComponent<Impact>();
+                character.castables[character.CastableID].GetComponent<Damager>()._Impactor = Target.GetComponent<Impact>();
             }
 
             attackTimeStep += Time.deltaTime;

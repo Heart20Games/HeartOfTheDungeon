@@ -9,7 +9,7 @@ public class MovementSettings : ScriptableObject
     public float footstepVelocity = 1f;
     public float moveDrag = 0.5f;
     public float stopDrag = 7.5f;
-    public bool applyGravity = true;
+    public bool useGravity = true;
     public float normalForce = 0.1f;
     public float gravityForce = 1f;
     public float groundDistance = 0.01f;

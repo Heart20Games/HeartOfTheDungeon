@@ -10,26 +10,36 @@ namespace Body.Behavior
     using static ContextSteering.CSContext;
     using static Tree.LeafNode;
     using HotD.Castables;
+    using UnityEngine.InputSystem.XR;
 
-    public class Brain : BaseMonoBehaviour, ITimeScalable
+    public enum Action { Idle, Patrol, Chase, Duel }
+
+    public interface IBrain : ITimeScalable, IEnableable
     {
-        // Enabled
-        /*
-        public bool Enabled
-        {
-            get => enabled;
-            set
-            {
-                if (debug && !value)
-                    print("Brain disabled");
-                enabled = value;
-                if (agent != null) agent.enabled = useAgent && value;
-                if (controller != null) controller.Active = !useAgent && value;
-            }
-        }
-        */
+        // Properties
+        public bool Alive { get; set; }
+        public Identity Identity { get; set; }
+        public Transform Target { get; set; }
 
-        // Alive
+        // Context Steering
+        public CSController Controller { get; }
+
+        // Tree
+        public Dictionary<Action, Tick> Actions { get; }
+
+        // Castables
+        public void RegisterCastables(CastableItem[] items);
+    }
+
+    public class Brain : BaseMonoBehaviour, IBrain
+    {
+        // Properties
+        public new bool enabled
+        {
+            get => base.enabled;
+            set => base.enabled = value;
+        }
+        
         public bool Alive
         {
             get => controller.Alive;
@@ -42,7 +52,6 @@ namespace Body.Behavior
             set => controller.identity=value;
         }
 
-        // Target
         [SerializeField] private Transform target = null;
         public Transform Target
         {
@@ -51,11 +60,12 @@ namespace Body.Behavior
         }
 
         // Components
-        public CSController controller;
-        private Character character;
+        private CSController controller;
+        protected Character character;
         private Transform body;
         public NavMeshAgent agent;
-        public BalancedPathfinder pathFinder;
+        protected BalancedPathfinder pathFinder;
+        public CSController Controller => controller;
 
         // Agent
         public float navUpdate = 1f;
@@ -65,34 +75,22 @@ namespace Body.Behavior
         public Modifiers modifiers;
 
         // Tree
-        public enum Type { Leaf, Condition, Selector, Sequence }
-        public enum Action { Idle, Patrol, Chase, Duel }
         private Dictionary<Action, Tick> actions;
         public Dictionary<Action, Tick> Actions
         {
             get => actions ??= new Dictionary<Action, Tick>() { { Action.Idle, Idle }, { Action.Patrol, Patrol }, { Action.Chase, Chase }, { Action.Duel, Duel } };
         }
-        public BehaviorTree tree;
-        [HideInInspector] public BehaviorNode root;
-        public BehaviorNode Root { get => root ??= tree != null ? tree.GenerateTree(this) : new(); set => root = value; }
+        private BehaviorTree tree;
+        private BehaviorNode root;
+        private BehaviorNode Root { get => root ??= tree != null ? tree.GenerateTree(this) : new(); set => root = value; }
         private BehaviorNode.Status status;
 
         // Castable Contexts
-        public Dictionary<Identity, List<Context>> castableMap = new();
-
-        // TimeScale
-        private float timeScale = 1f;
-        public float TimeScale
-        {
-            get => timeScale;
-            set => timeScale = SetTimeScale(value);
-        }
-
-        public Character _Character => character;
+        private readonly Dictionary<Identity, List<Context>> castableMap = new();
 
         // Helpers
         private float timeKeeper = 0f;
-        public bool debug = false;
+        [SerializeField] protected bool debug = false;
 
         // Initialization
         public virtual void Awake()
@@ -146,7 +144,7 @@ namespace Body.Behavior
             }
         }
 
-        public void RegisterCastable(CastableItem item)
+        private void RegisterCastable(CastableItem item)
         {
             if (debug) print("Register Castable: " + item.name);
             
@@ -161,7 +159,7 @@ namespace Body.Behavior
         }
 
         // Target
-        public void SetTarget(Transform target)
+        private void SetTarget(Transform target)
         {
             this.target = target;
             if (this.target != null)
@@ -175,13 +173,13 @@ namespace Body.Behavior
 
         // Checks
 
-        public bool HasTarget()
+        private bool HasTarget()
         {
             if (debug) Debug.Log("Has Target? " + (target != null ? "Yes" : "No") + " (" + target + ")");
             return target != null;
         }
 
-        public bool HasFoeInRange(Range range)
+        private bool HasFoeInRange(Range range)
         {
             bool result = controller.HasActiveContext(Identity.Foe, range);
             if (debug) print($"Has Foe In Range: {range}");
@@ -190,7 +188,7 @@ namespace Body.Behavior
 
         // Actions
 
-        public BehaviorNode.Status Idle()
+        private BehaviorNode.Status Idle()
         {
             TargetNavigation();
 
@@ -199,7 +197,7 @@ namespace Body.Behavior
             return BehaviorNode.Status.SUCCESS;
         }
 
-        public BehaviorNode.Status Chase()
+        private BehaviorNode.Status Chase()
         {
             //if (!HasFoeInRange(Range.InRange)) return BehaviorNode.Status.FAILURE;
 
@@ -231,14 +229,14 @@ namespace Body.Behavior
             return BehaviorNode.Status.SUCCESS;
         }
 
-        public BehaviorNode.Status Patrol()
+        protected BehaviorNode.Status Patrol()
         {
             TargetNavigation();
 
             return BehaviorNode.Status.SUCCESS;
         }
 
-        public BehaviorNode.Status Duel()
+        protected BehaviorNode.Status Duel()
         {
             //if (!HasFoeInRange(Range.InAttackRange)) return BehaviorNode.Status.FAILURE;
 
@@ -258,7 +256,7 @@ namespace Body.Behavior
             return BehaviorNode.Status.SUCCESS;
         }
 
-        public int FindClosestRangeUsableCastable()
+        private int FindClosestRangeUsableCastable()
         {
             int closest = int.MaxValue;
             int closestIdx = -1;
@@ -281,7 +279,7 @@ namespace Body.Behavior
 
         // Behavior
 
-        public void TargetNavigation()
+        private void TargetNavigation()
         {
             pathFinder.target = target;
             if (pathFinder.NextPoint(out Vector3 destination))
@@ -292,6 +290,12 @@ namespace Body.Behavior
 
 
         // TimeScaling
+        private float timeScale = 1f;
+        public float TimeScale
+        {
+            get => timeScale;
+            set => timeScale = SetTimeScale(value);
+        }
         private float tempSpeed;
         private float tempAngularSpeed;
         private float tempAcceleration;

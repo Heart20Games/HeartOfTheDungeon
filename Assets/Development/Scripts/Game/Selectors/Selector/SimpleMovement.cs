@@ -56,7 +56,7 @@ public class SimpleMovement : BaseMonoBehaviour, ITimeScalable
         if (myRigidbody.velocity.magnitude > maxVelocity)
             myRigidbody.velocity = myRigidbody.velocity.normalized * maxVelocity;
 
-        if (settings.applyGravity)
+        if (settings.useGravity)
         {
             onGround = Physics.Raycast(transform.position, Vector3.down, settings.groundDistance);
             float power = onGround ? settings.normalForce : settings.gravityForce;

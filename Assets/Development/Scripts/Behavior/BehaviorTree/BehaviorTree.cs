@@ -18,7 +18,7 @@ namespace Body.Behavior.Tree
                 this.behavior = behavior;
             }
             public string name;
-            public Type type;
+            public NodeType type;
             public Action action;
             public int childCount;
             [HideInInspector] public BehaviorNode behavior;
@@ -39,10 +39,10 @@ namespace Body.Behavior.Tree
                 BehaviorNode newNode = null;
                 switch (node.type)
                 {
-                    case Type.Leaf: newNode = new LeafNode(node.name, pm); break;
-                    case Type.Selector: newNode = new SelectorNode(node.name); break;
-                    case Type.Sequence: newNode = new SequenceNode(node.name); break;
-                    case Type.Condition: newNode = new ConditionNode(node.name, pm); break;
+                    case NodeType.Leaf: newNode = new LeafNode(node.name, pm); break;
+                    case NodeType.Selector: newNode = new SelectorNode(node.name); break;
+                    case NodeType.Sequence: newNode = new SequenceNode(node.name); break;
+                    case NodeType.Condition: newNode = new ConditionNode(node.name, pm); break;
                 }
                 node.behavior = newNode;
                 parent.AddChild(newNode);

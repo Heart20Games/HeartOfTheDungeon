@@ -6,38 +6,66 @@ using MyBox;
 
 namespace HotD.Body
 {
-    public class Movement : BaseMonoBehaviour, ITimeScalable
+    public interface IMovement : ITimeScalable
+    {
+        // Settings
+        public MovementSettings Settings { get; set; }
+        public bool UseGravity { get; set; }
+        public bool CanMove { get; set; }
+        
+        // Initialization
+        public void SetCharacter(Character character);
+        
+        // Status
+        public void StopMoving();
+        public Vector2 MoveVector { get; set; }
+        public bool ShouldFlip { get; set; }
+    }
+
+    public class Movement : BaseMonoBehaviour, IMovement
     {
         [Header("Settings")]
-        public MovementSettings settings;
-        public bool applyGravity = true;
-        public bool canMove = true;
-        public bool debug;
-        public float Speed { get => settings.speed; }
-        public float MaxVelocity { get => settings.maxVelocity; }
-        public float FootstepVelocity { get => settings.footstepVelocity; }
-        public float MoveDrag { get => settings.moveDrag; }
-        public float StopDrag { get => settings.stopDrag; }
-        public float NormalForce { get => settings.normalForce; }
-        public float GravityForce { get => settings.gravityForce; }
-        public float GroundDistance { get => settings.groundDistance; }
+        [SerializeField] protected MovementSettings settings;
+        [SerializeField] protected bool useGravity = true;
+        [SerializeField] protected bool canMove = true;
+        [SerializeField] protected bool debug;
+        public MovementSettings Settings { get => settings; set => settings = value; }
+        public bool UseGravity { get => useGravity; set => useGravity = value; }
+        public bool CanMove { get => canMove; set => canMove = value; }
 
-        [Header("Scale")]
+        [Header("Scaling")]
         public float npcModifier = 0.5f;
-        private float timeScale = 1f;
-        public float TimeScale { get => timeScale; set => timeScale = SetTimeScale(value); }
 
         [Foldout("Mechanics", true)]
-        [SerializeField] public Vector2 moveVector = new(0, 0);
         private bool onGround = false;
 
-        private Rigidbody myRigidbody;
-        [HideInInspector] public Character character;
-        public Transform body;
-        [HideInInspector] public Transform pivot;
-        [HideInInspector] public ArtRenderer artRenderer;
+        [SerializeField] private Vector2 moveVector = new(0, 0);
+        public Vector2 MoveVector
+        {
+            get => moveVector;
+            set
+            {
+                moveVector = value;
+                myRigidbody.drag = moveVector.magnitude == 0 ? settings.stopDrag : settings.moveDrag;
+                onSetMoveVector.Invoke(moveVector);
+            }
+        }
 
-        public UnityEvent<Vector2> OnSetMoveVector;
+        protected Rigidbody myRigidbody;
+        private Character character;
+        [SerializeField] private Transform body;
+        private Transform pivot;
+        private ArtRenderer artRenderer;
+
+        [SerializeField] private UnityEvent<Vector2> onSetMoveVector;
+
+        public void SetCharacter(Character character)
+        {
+            this.character = character;
+            body = character.body;
+            pivot = character.pivot;
+            artRenderer = character.artRenderer;
+        }
 
         private void Awake()
         {
@@ -55,9 +83,9 @@ namespace HotD.Body
             }
             if (settings != null)
             {
-                applyGravity = settings.applyGravity;
+                useGravity = settings.useGravity;
             }
-            OnSetMoveVector ??= new();
+            onSetMoveVector ??= new();
         }
 
 
@@ -69,27 +97,17 @@ namespace HotD.Body
         }
 
 
-        // Move Vector
-
-        public void SetMoveVector(Vector2 vector)
-        {
-            moveVector = vector;
-            myRigidbody.drag = moveVector.magnitude == 0 ? StopDrag : MoveDrag;
-            OnSetMoveVector.Invoke(moveVector);
-        }
-
-
         // Movement
 
         [Foldout("Animation", true)]
-        public float flipBuffer = 0.01f;
+        private float flipBuffer = 0.01f;
         private bool hasFootsteps = false;
         [ReadOnly] private bool flip = false;
-        public UnityEvent startWalking;
-        public UnityEvent stopWalking;
-        public UnityEvent<bool> onFlip;
+        [SerializeField] private UnityEvent startWalking;
+        [SerializeField] private UnityEvent stopWalking;
+        [SerializeField] private UnityEvent<bool> onFlip;
 
-        public bool Flip
+        public bool ShouldFlip
         {
             get => flip;
             set
@@ -124,21 +142,21 @@ namespace HotD.Body
                         ApplyNPCMovement(ref modifier, moveVector);
                     }
 
-                    if (myRigidbody.velocity.magnitude > MaxVelocity * modifier)
-                        myRigidbody.velocity = MaxVelocity * modifier * myRigidbody.velocity.normalized;
+                    if (myRigidbody.velocity.magnitude > settings.maxVelocity * modifier)
+                        myRigidbody.velocity = settings.maxVelocity * modifier * myRigidbody.velocity.normalized;
 
                     if (artRenderer != null && pivot != null)
                     {
                         Vector2 hVelocity = myRigidbody.velocity.XZVector();
                         Vector2 hCamera = cameraDirection.XZVector().normalized;
                         Vector2 right = Vector2.Perpendicular(hCamera);
-                        if (hVelocity.magnitude > FootstepVelocity)
+                        if (hVelocity.magnitude > settings.footstepVelocity)
                         {
                             float angle = Vector2.Dot(right, hVelocity);
 
-                            if ((Flip && angle > flipBuffer) || (!Flip && angle < -flipBuffer))
+                            if ((ShouldFlip && angle > flipBuffer) || (!ShouldFlip && angle < -flipBuffer))
                             {
-                                Flip = !Flip;
+                                ShouldFlip = !ShouldFlip;
                             }
 
                             if (!hasFootsteps)
@@ -155,44 +173,50 @@ namespace HotD.Body
                     }
                 }
 
-                if (applyGravity)
+                if (useGravity)
                 {
-                    ApplyGravity();
+                    ApplyGravityForce();
                 }
             }
         }
 
-        public void ApplyGravity(float scale=1, bool checkForGround=true)
+        protected void ApplyGravityForce(float scale=1, bool checkForGround=true)
         {
-            float power = GravityForce;
+            float power = settings.gravityForce;
             if (checkForGround)
             {
-                onGround = Physics.Raycast(body.transform.position, Vector3.down, GroundDistance);
-                power = onGround ? NormalForce : GravityForce;
+                onGround = Physics.Raycast(body.transform.position, Vector3.down, settings.groundDistance);
+                power = onGround ? settings.normalForce : settings.gravityForce;
             }
-            myRigidbody.AddForce(power * scale * Speed * Time.fixedDeltaTime * timeScale * Vector3.down, ForceMode.Force);
+            myRigidbody.AddForce(power * scale * settings.speed * Time.fixedDeltaTime * timeScale * Vector3.down, ForceMode.Force);
         }
 
-        public void ApplyPlayerMovement(Vector3 cameraDirection, Vector2 moveVector, float scale=1)
+        protected void ApplyPlayerMovement(Vector3 cameraDirection, Vector2 moveVector, float scale=1)
         {
             Print("Character Controlled Movement", debug);
             Vector3 direction = moveVector.Orient(cameraDirection).FullY();
             Debug.DrawRay(body.position, direction * 3, Color.green, Time.fixedDeltaTime);
-            myRigidbody.AddRelativeForce(scale * Speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
+            myRigidbody.AddRelativeForce(scale * settings.speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
         }
 
-        public void ApplyNPCMovement(ref float modifier, Vector2 moveVector, float scale=1)
+        protected void ApplyNPCMovement(ref float modifier, Vector2 moveVector, float scale=1)
         {
             Print($"NPC Controlled Movement ({character})", debug);
             modifier = npcModifier;
             Vector3 direction = moveVector.FullY();
             Assert.IsFalse(float.IsNaN(direction.x) || float.IsNaN(direction.y) || float.IsNaN(direction.z));
             Debug.DrawRay(body.position, direction, Color.green, Time.fixedDeltaTime);
-            myRigidbody.AddForce(modifier * timeScale * scale * Speed * Time.fixedDeltaTime * direction, ForceMode.Force);
+            myRigidbody.AddForce(modifier * timeScale * scale * settings.speed * Time.fixedDeltaTime * direction, ForceMode.Force);
         }
 
 
         // TimeScaling
+        private float timeScale = 1f;
+        public float TimeScale 
+        {
+            get => timeScale;
+            set => timeScale = SetTimeScale(value);
+        }
         private Vector3 tempVelocity;
         public float SetTimeScale(float timeScale)
         {

@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace Body.Behavior.Tree
 {
+    public enum NodeType { Leaf, Condition, Selector, Sequence }
+
     public class BehaviorNode
     {
         public enum Status { SUCCESS, RUNNING, FAILURE };

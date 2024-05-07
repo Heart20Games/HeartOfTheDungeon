@@ -20,10 +20,10 @@ namespace Body
     using System;
     using HotD.Body;
 
-    [RequireComponent(typeof(Brain))]
-    [RequireComponent(typeof(Movement))]
-    [RequireComponent(typeof(Talker))]
-    [RequireComponent(typeof(Caster))]
+    //[RequireComponent(typeof(Brain))]
+    //[RequireComponent(typeof(Movement))]
+    //[RequireComponent(typeof(Talker))]
+    //[RequireComponent(typeof(Caster))]
     public class Character : AIdentifiable, IDamageable, IControllable
     {
         [Foldout("Identity")]
@@ -35,7 +35,7 @@ namespace Body
         public Transform body;
         public Transform pivot;
         public Pivot moveReticle;
-        [HideInInspector] public Movement movement;
+        [HideInInspector] public IMovement movement;
         [HideInInspector] public float baseOffset;
 
         // State
@@ -68,17 +68,17 @@ namespace Body
         public Interactor interactor;
         public TargetFinder targetFinder;
         public Selectable selectable;
-        [HideInInspector] public Talker talker;
+        [HideInInspector] public ITalker talker;
 
         // Behaviour
         [Header("Parts")]
-        [HideInInspector] public Brain brain;
-        public CSController Controller { get => brain.controller; }
+        [HideInInspector] public IBrain brain;
+        public CSController Controller { get => brain.Controller; }
 
         // Casting
         [Foldout("Casting", true)]
         [Header("Casting")]
-        [HideInInspector] public Caster caster;
+        [HideInInspector] public ICaster caster;
         public Transform weaponLocation;
         public Transform firingLocation;
         public Loadout Loadout { get => statBlock == null ? null : statBlock.loadout; }
@@ -134,7 +134,7 @@ namespace Body
         public int CastableID => castableID;
 
         // Actions
-        public void MoveCharacter(Vector2 input) { movement.SetMoveVector(input); caster.SetFallback(movement.moveVector.FullY(), true); }
+        public void MoveCharacter(Vector2 input) { movement.MoveVector = input; caster.SetFallback(movement.MoveVector.FullY(), true); }
         public void Aim(Vector2 input, bool aim = false) { if (aimActive || aim) caster.SetVector(input.FullY()); }
         public void TriggerCastable(int idx) { if (castables[idx] != null) caster.TriggerCastable(castables[idx]); castableID = idx; }
         public void ReleaseCastable(int idx) { if (castables[idx] != null) caster.ReleaseCastable(castables[idx]); castableID = idx; }
@@ -149,20 +149,20 @@ namespace Body
             // Body Initialization
             transform.rotation = new(0, 0, 0, 0);
             if (!firingLocation) firingLocation = transform;
-            Awarn.IsNotNull(body, "Character has no Character");
+            Awarn.IsNotNull(body, "Character has no Character (no body)");
             InitBody();
 
             // Components
-            brain = GetComponent<Brain>();
-            movement = GetComponent<Movement>();
-            talker = GetComponent<Talker>();
-            caster = GetComponent<Caster>();
+            brain = GetIComponent<IBrain>();
+            movement = GetIComponent<IMovement>();
+            talker = GetIComponent<ITalker>();
+            caster = GetIComponent<ICaster>();
 
             // Connections
             ConnectHealth();
 
             // Initialization
-            InitMovement();
+            movement.SetCharacter(this);
             InitializeCastables();
             InitializeSpawn();
             SetSpectatable(false);
@@ -197,14 +197,6 @@ namespace Body
 
             SetMode(ControlMode.Brain);
 
-        }
-
-        private void InitMovement()
-        {
-            movement.character = this;
-            movement.body = body;
-            movement.pivot = pivot;
-            movement.artRenderer = artRenderer;
         }
 
         private void InitBody()
@@ -258,14 +250,14 @@ namespace Body
             this.mode = new_mode;
 
             movement.StopMoving();
-            movement.SetMoveVector(new());
-            brain.enabled = !new_mode.PlayerControlled && !BrainDead;
-            movement.canMove = new_mode.moveMode == MovementMode.Active && !BrainDead;
-            movement.applyGravity = new_mode.moveMode != MovementMode.Disabled;
+            movement.MoveVector = new();
+            movement.CanMove = new_mode.moveMode == MovementMode.Active && !BrainDead;
+            movement.UseGravity = new_mode.moveMode != MovementMode.Disabled;
+            SetNonNullEnabled(brain, !new_mode.PlayerControlled && !BrainDead);
+            SetNonNullEnabled(caster, new_mode.useCaster && !BrainDead);
             SetNonNullActive(artRenderer, new_mode.displayable);
             SetNonNullActive(moveReticle, new_mode.useMoveReticle && !BrainDead);
             SetNonNullEnabled(interactor, new_mode.useInteractor && !BrainDead);
-            SetNonNullEnabled(caster, new_mode.useCaster && !BrainDead);
             if (pips != null) pips.SetDisplayMode(new_mode.pipMode);
                 
             bool alive = new_mode.liveMode == LiveMode.Alive;
@@ -298,21 +290,6 @@ namespace Body
                 onControl.Invoke(new_mode.PlayerControlled);
             }   
         }
-        public void SetNonNullActive(Component component, bool active)
-        {
-            if (component != null)
-                component.gameObject.SetActive(active);
-        }
-        public void SetNonNullEnabled(Behaviour component, bool enabled)
-        {
-            if (component != null)
-                component.enabled = enabled;
-        }
-        public void SetNonNullEnabled(Collider collider, bool enabled)
-        {
-            if (collider != null)
-                collider.enabled = enabled;
-        }
 
         // Status Ticks
 
@@ -337,21 +314,30 @@ namespace Body
             if (!_spectatable)
             {
                 Print($"Do not spectate {Name}.", debug);
-                orbitalCamera.gameObject.SetActive(false);
-                aimCamera.gameObject.SetActive(false);
+                SetCamerasActive(false, false);
             }
             else if (PrimaryTargetingMethod(out var method))
             {
                 Print($"Spectate {Name} based on primary targeting method: {method}", debug);
-                orbitalCamera.gameObject.SetActive(method != AimingMethod.OverTheShoulder);
-                aimCamera.gameObject.SetActive(method == AimingMethod.OverTheShoulder);
+                SetCamerasActive
+                (
+                    method != AimingMethod.OverTheShoulder,
+                    method == AimingMethod.OverTheShoulder
+                );
             }
             else
             {
                 Print($"Spectate {Name} using default camera (orbital).", debug);
-                aimCamera.gameObject.SetActive(false);
-                orbitalCamera.gameObject.SetActive(true);
+                SetCamerasActive(true, false);
             }
+        }
+
+        private void SetCamerasActive(bool orbital, bool aim)
+        {
+            if (orbitalCamera != null)
+                orbitalCamera.gameObject.SetActive(orbital);
+            if (aimCamera != null)
+                aimCamera.gameObject.SetActive(aim);
         }
 
         // Life, Death and Spawning

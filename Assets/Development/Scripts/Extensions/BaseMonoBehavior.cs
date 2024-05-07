@@ -3,9 +3,14 @@ using System.Collections;
 using System.Diagnostics;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.Assertions;
 using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
+using System.Linq;
+
+public interface IEnableable
+{
+    public bool enabled { get; set; }
+}
 
 public interface IBaseMonoBehaviour
 {
@@ -20,6 +25,42 @@ public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
     protected void Print(object message, bool debug = true, Object context = null)
     {
         if (debug) Debug.Log(message, context == null ? this : context);
+    }
+
+    protected bool TryGetIComponent<I>(out I result) where I : class
+    {
+        result = GetIComponent<I>();
+        return result != null;
+    }
+
+    protected I GetIComponent<I>() where I : class
+    {
+        foreach (var component in GetComponents<I>().Where(component => component is I))
+        {
+            return component;
+        }
+        return null;
+    }
+
+    public void SetNonNullActive(Component component, bool active)
+    {
+        if (component != null)
+            component.gameObject.SetActive(active);
+    }
+    public void SetNonNullEnabled(Behaviour component, bool enabled)
+    {
+        if (component != null)
+            component.enabled = enabled;
+    }
+    public void SetNonNullEnabled(IEnableable enableable, bool enabled)
+    {
+        if (enableable != null)
+            enableable.enabled = enabled;
+    }
+    public void SetNonNullEnabled(Collider collider, bool enabled)
+    {
+        if (collider != null)
+            collider.enabled = enabled;
     }
 
     void OnDestroy()

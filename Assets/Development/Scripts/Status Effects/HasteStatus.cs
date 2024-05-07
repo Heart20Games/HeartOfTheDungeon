@@ -38,8 +38,11 @@ public class HasteStatus : StatusEffect, ITimeScalable
         }
     }
 
+    public float TimeScale { get => lastTimeScale; set => SetTimeScale(value); }
+    private float lastTimeScale;
     public float SetTimeScale(float timeScale)
     {
+        lastTimeScale = timeScale;
         AdjustTimeScaleDictionary(oldMovementTimeScales, timeScale);
         AdjustTimeScaleDictionary(oldBrainTimeScales, timeScale);
         return timeScale;
