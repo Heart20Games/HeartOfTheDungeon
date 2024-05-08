@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace TMPro.Examples
 {
     
-    public class Benchmark01_UGUI : BaseMonoBehaviour
+    public class Benchmark01_UGUI : MonoBehaviour
     {
 
         public int BenchmarkType = 0;

@@ -6,7 +6,7 @@ using System.Collections;
 namespace TMPro.Examples
 {
 
-    public class TMP_TextSelector_A : BaseMonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class TMP_TextSelector_A : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         private TextMeshPro m_TextMeshPro;
 

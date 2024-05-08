@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace TMPro.Examples
 {
 
-    public class TMP_TextSelector_B : BaseMonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IPointerUpHandler
+    public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IPointerUpHandler
     {
         public RectTransform TextPopup_Prefab_01;
 
