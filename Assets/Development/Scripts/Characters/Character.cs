@@ -349,7 +349,7 @@ namespace Body
         {
             Print($"{Name} died -- {mode.liveMode}");
             Emotion = "dead";
-            onDeath.Invoke(this);
+            onDeath?.Invoke(this);
             
             // Timers
             void respawnAfterDelay() => autoRespawnCoroutine ??= CallAfterDelay(TriggerRespawn, autoRespawnDelay);

@@ -22,7 +22,14 @@ namespace Body.Behavior.Tree
 
         public virtual Status Process()
         {
-            return children[currentChild].Process();
+            if (currentChild != 0)
+            {
+                return children[currentChild].Process();
+            }
+            else
+            {
+                return Status.SUCCESS;
+            }
         }
 
         public void AddChild(BehaviorNode n)

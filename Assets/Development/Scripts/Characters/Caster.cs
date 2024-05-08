@@ -47,7 +47,7 @@ namespace HotD.Castables
                 if (weaponLocation == null)
                     weaponLocation = character.weaponLocation;
                 if (firingLocation == null)
-                    firingLocation = character.firingLocation;
+                    firingLocation = character.firingLocation != null ? character.firingLocation : character.pivot;
             }
         }
 

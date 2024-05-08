@@ -32,8 +32,11 @@ public class EnemyAI : Brain
     {
         base.Update();
 
-        HomeDestination(wayPoints[wayPointIndex]);
-        WaypointDestination(wayPoints[wayPointIndex]);
+        if (TryGetWayPoint(wayPointIndex, out var wayPoint))
+        {
+            HomeDestination(wayPoint);
+            WaypointDestination(wayPoint);
+        }
 
         AttackState();
     }
@@ -49,18 +52,24 @@ public class EnemyAI : Brain
 
     public void PatrolState()
     {
-        Target = wayPoints[wayPointIndex];
-        currentAction = Action.Patrol;
+        if (TryGetWayPoint(wayPointIndex, out var target))
+        {
+            Target = wayPoints[wayPointIndex];
+            currentAction = Action.Patrol;
 
-        agent.destination = Target.position;
+            agent.destination = Target.position;
 
-        agent.isStopped = false;
+            agent.isStopped = false;
+            
+            Patrol();
+        }
 
-        Patrol();
     }
 
     private void AttackState()
     {
+        if (Target == null) return;
+
         if(!Target.GetComponent<CSController>()) return;
 
         if(Target.GetComponent<CSController>().identity != CSIdentity.Identity.Friend) return;
@@ -144,6 +153,17 @@ public class EnemyAI : Brain
         }
 
         return targetPosition;
+    }
+
+    private bool TryGetWayPoint(int wayPointIndex, out Transform wayPoint)
+    {
+        wayPoint = null;
+        if (wayPoints != null && wayPoints.Length > wayPointIndex)
+        {
+            wayPoint = wayPoints[wayPointIndex];
+            return wayPoint != null;
+        }
+        else return false;
     }
 
     public void SetWayPoints(Transform wayPointOne, Transform wayPointTwo)
