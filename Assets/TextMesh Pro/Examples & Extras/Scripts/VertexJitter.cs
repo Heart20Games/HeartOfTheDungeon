@@ -5,7 +5,7 @@ using System.Collections;
 namespace TMPro.Examples
 {
 
-    public class VertexJitter : BaseMonoBehaviour
+    public class VertexJitter : MonoBehaviour
     {
 
         public float AngleMultiplier = 1.0f;
