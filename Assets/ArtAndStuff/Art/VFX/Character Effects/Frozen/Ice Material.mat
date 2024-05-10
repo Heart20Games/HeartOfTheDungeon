@@ -11,13 +11,17 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: 557716e9dbc9c5e4d9433915a069ed23, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _ALPHAPREMULTIPLY_ON
+  - _RECEIVE_SHADOWS_OFF
+  - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
+  stringTagMap:
+    RenderType: Transparent
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
@@ -62,6 +66,12 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
+    - _AlphaToMask: 0
+    - _Blend: 0
+    - _BlendModePreserveSpecular: 1
+    - _CastShadows: 1
+    - _Cull: 2
+    - _DstBlend: 10
     - _NormalStrength: 2
     - _POLayer1Depth: 50
     - _POLayer2Depth: 200
@@ -69,8 +79,15 @@ Material:
     - _ParallaxNormalStrength: 0.1
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _ReceiveShadows: 0
     - _Smoothness: 0.3
+    - _SrcBlend: 1
+    - _Surface: 1
     - _TextureResolution: 512
+    - _WorkflowMode: 1
+    - _ZTest: 4
+    - _ZWrite: 1
+    - _ZWriteControl: 1
     m_Colors:
     - _FresnelColor: {r: 0, g: 85.42621, b: 116.0763, a: 0}
     - _IceColor: {r: 0.0207352, g: 2.799525, b: 3.296962, a: 0}

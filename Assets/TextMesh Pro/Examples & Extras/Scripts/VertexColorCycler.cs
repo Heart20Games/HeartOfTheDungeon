@@ -5,7 +5,7 @@ using System.Collections;
 namespace TMPro.Examples
 {
 
-    public class VertexColorCycler : BaseMonoBehaviour
+    public class VertexColorCycler : MonoBehaviour
     {
 
         private TMP_Text m_TextComponent;

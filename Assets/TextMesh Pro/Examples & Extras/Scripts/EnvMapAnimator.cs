@@ -2,7 +2,7 @@
 using System.Collections;
 using TMPro;
 
-public class EnvMapAnimator : BaseMonoBehaviour {
+public class EnvMapAnimator : MonoBehaviour {
 
     //private Vector3 TranslationSpeeds;
     public Vector3 RotationSpeeds;
