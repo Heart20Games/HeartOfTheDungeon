@@ -4,51 +4,9 @@ using UnityEngine;
 namespace HotD.Body
 {
     public class ArtRenderer : CastCoordinator, IWeaponDisplay
-    // Properties
-
-    public Transform baseArt;
-    public Material baseMaterial;
-
-    [Header("Equipment")]
-    public Transform weaponHand;
-
-    [Header("Animation")]
-    public Animator animator;
-    //public List<string> animationParameters = new() { "run", "hit", "attack", "dead", "die" };
-    //private readonly Dictionary<string, bool> parameterExists = new();
-    //public List<string> existingParameters = new();
-    public bool Running { get => GetAnimBool("Run"); set => SetAnimBool("Run", value); }
-    public void Trigger(int idx) { AnimTrigger($"trigger{idx}"); }
-    public void Release(int idx) { AnimTrigger($"release{idx}"); }
-    public void Cast(int idx) { AnimTrigger($"Action{idx}"); }
-    public void UnCast(int idx) { AnimTrigger($"EndCast{idx}"); }
-    public void Hit() { AnimTrigger("Hit"); }
-    public bool Dead { get => GetAnimBool("Dead"); set => SetAnimBool("Dead", value); }
-
-    public bool toggleDead = false;
-
-    [Header("Camera Shader Layers")]
-    public bool useCameraShaderLayers;
-    public Transform renderMask;
-    public MeshRenderer renderSurface;
-
-    public Material maskShader;
-    public RenderTexture maskTexture;
-    public RenderTexture renderTexture;
-
-    public string renderLayer = "CharacterRender";
-    public string maskLayer = "CharacterMask";
-
-    public bool debug = false;
-
-
-    // Initialization
-
-    private void Awake()
     {
         // Properties
 
-        [Header("Base")]
         public Transform baseArt;
         public Material baseMaterial;
 
@@ -58,13 +16,13 @@ namespace HotD.Body
         //public List<string> animationParameters = new() { "run", "hit", "attack", "dead", "die" };
         //private readonly Dictionary<string, bool> parameterExists = new();
         //public List<string> existingParameters = new();
-        public bool Running { get => GetAnimBool("run"); set => SetAnimBool("run", value); }
+        public bool Running { get => GetAnimBool("Run"); set => SetAnimBool("Run", value); }
         public void Trigger(int idx) { AnimTrigger($"trigger{idx}"); }
         public void Release(int idx) { AnimTrigger($"release{idx}"); }
-        public void Cast(int idx) { AnimTrigger($"cast{idx}"); }
-        public void UnCast(int idx) { AnimTrigger($"unCast{idx}"); }
-        public void Hit() { AnimTrigger("hit"); }
-        public bool Dead { get => GetAnimBool("dead"); set => SetAnimBoolTrigger("dead", value, "die"); }
+        public void Cast(int idx) { AnimTrigger($"Action{idx}"); }
+        public void UnCast(int idx) { AnimTrigger($"EndCast{idx}"); }
+        public void Hit() { AnimTrigger("Hit"); }
+        public bool Dead { get => GetAnimBool("Dead"); set => SetAnimBool("Dead", value); }
 
         public bool toggleDead = false;
 

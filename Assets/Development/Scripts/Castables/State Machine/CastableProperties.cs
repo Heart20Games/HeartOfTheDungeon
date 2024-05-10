@@ -17,6 +17,8 @@ namespace HotD.Castables
         public void Initialize(ICastCompatible owner, CastableItem item, int actionIndex = 0);
 
         public CastableItem Item { get; set; }
+        public Damager Damager { get; }
+
         //public Vector3 Direction { get; set; }
         //public ICastCompatible Owner { get; }
         //public CastCoordinator Coordinator { get; }
@@ -34,6 +36,7 @@ namespace HotD.Castables
         public ICastCompatible Owner { get => fields?.owner; set => fields.owner = value; }
         public CastCoordinator Coordinator { get => fields?.owner?.Coordinator; }
         public CastableItem Item { get => fields?.item; set => fields.item = value; }
+        public Damager Damager { get => GetComponent<Damager>(); }
         public int PowerLevel
         {
             get => fields.curPowerLevel;

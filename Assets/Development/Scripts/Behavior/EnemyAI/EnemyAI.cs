@@ -1,5 +1,6 @@
 using Body.Behavior;
 using Body.Behavior.ContextSteering;
+using HotD.Body;
 using UnityEngine;
 
 public class EnemyAI : Brain
@@ -74,7 +75,7 @@ public class EnemyAI : Brain
 
         if(Target.GetComponent<CSController>().identity != CSIdentity.Identity.Friend) return;
 
-        if(Target.parent.GetComponent<Body.Character>().CurrentHealth <= 0)
+        if(Target.parent.GetComponent<Character>().CurrentHealth <= 0)
         {
             PatrolState();
 
@@ -89,7 +90,7 @@ public class EnemyAI : Brain
 
             if(character.castables[character.CastableID] != null)
             {
-                character.castables[character.CastableID].GetComponent<Damager>()._Impactor = Target.GetComponent<Impact>();
+                character.castables[character.CastableID].Damager._Impactor = Target.GetComponent<Impact>();
             }
 
             attackTimeStep += Time.deltaTime;

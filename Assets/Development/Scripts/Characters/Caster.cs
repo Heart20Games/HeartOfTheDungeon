@@ -77,7 +77,7 @@ namespace HotD.Castables
         {
             if (enabled)
             {
-                AimingMethod method = castable.GetItem().aimingMethod;
+                AimingMethod method = castable.Item.aimingMethod;
                 if (method == AimingMethod.OverTheShoulder)
                     AimCaster();
                 this.castable = castable;
@@ -173,7 +173,7 @@ namespace HotD.Castables
         {
             appliedVector = castVector;
             castDirection = castVector.normalized;
-            if (castable != null && castable.CanCast())
+            if (castable != null && castable.CanCast)
             {
                 float pMag = Mathf.Abs(pivot.localScale.x);
                 float sign = castVector.x < 0 ? -1 : 1;

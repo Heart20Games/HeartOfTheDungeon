@@ -69,6 +69,9 @@ MonoBehaviour:
     castStatuses: []
     hitStatuses: []
     pivotDirection: {x: 0, y: 0, z: 0}
+  castOnTrigger: 1
+  castOnRelease: 0
+  unCastOnRelease: 0
   onSetPowerLevel:
     m_PersistentCalls:
       m_Calls: []
@@ -148,6 +151,7 @@ MonoBehaviour:
   maxLevel: 0
   chargeLimit:
     name: 
+    owner: 
     finalPreview: 0
     baseValue: 4
     baseMultiplier: 0
@@ -260,6 +264,9 @@ MonoBehaviour:
     castStatuses: []
     hitStatuses: []
     pivotDirection: {x: 0, y: 0, z: 0}
+  castOnTrigger: 1
+  castOnRelease: 0
+  unCastOnRelease: 0
   onSetPowerLevel:
     m_PersistentCalls:
       m_Calls: []
@@ -317,8 +324,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2919104870091448915}
+  - component: {fileID: 1261136474130310848}
   - component: {fileID: 2063330373022745201}
-  - component: {fileID: 3512566822794291359}
   m_Layer: 0
   m_Name: CastStateTest
   m_TagString: Untagged
@@ -343,7 +350,7 @@ Transform:
   - {fileID: 7894649960903874482}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2063330373022745201
+--- !u!114 &1261136474130310848
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -352,23 +359,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6669269691476346238}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc6e98420917628498e843205b370fc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 1
-  identity: 0
-  otherCount: 0
-  ignoredCount: 0
---- !u!114 &3512566822794291359
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6669269691476346238}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1ae6e965bb08084488f1991dcb6326d, type: 3}
+  m_Script: {fileID: 11500000, guid: 2482107b4b7d694499417bb62ca09cc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fields:
@@ -377,8 +368,8 @@ MonoBehaviour:
     pivot: {fileID: 0}
     direction: {x: 0, y: 0, z: 0}
     followBody: 0
-    actionIndex: 1
-    item: {fileID: 0}
+    actionIndex: 0
+    item: {fileID: 11400000, guid: f554b8dbbf9b65f4ca8f42e4de4349a4, type: 2}
     maxPowerLevel: 0
     curPowerLevel: 0
     casting: 0
@@ -390,11 +381,14 @@ MonoBehaviour:
     positionables: []
     effects: []
     identity: 0
-    damager: {fileID: 0}
+    damager: {fileID: 2063330373022745201}
     triggerStatuses: []
     castStatuses: []
     hitStatuses: []
     pivotDirection: {x: 0, y: 0, z: 0}
+  castOnTrigger: 1
+  castOnRelease: 0
+  unCastOnRelease: 0
   onSetPowerLevel:
     m_PersistentCalls:
       m_Calls: []
@@ -426,6 +420,9 @@ MonoBehaviour:
     triggerActions: 1
     destination: 2
   - source: 2
+    triggerActions: 64
+    destination: 1
+  - source: 2
     triggerActions: 8
     destination: 3
   - source: 3
@@ -436,4 +433,21 @@ MonoBehaviour:
     destination: 2
   queuedActions: []
   dequeuedActions: []
+  debug: 0
+--- !u!114 &2063330373022745201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6669269691476346238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc6e98420917628498e843205b370fc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  identity: 0
+  otherCount: 0
+  ignoredCount: 0
   debug: 0

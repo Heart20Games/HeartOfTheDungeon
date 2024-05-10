@@ -9,11 +9,22 @@ namespace HotD.Castables
     public enum CastState { None, Init, Equipped, Activating, Executing }
 
     [Serializable]
-    public struct StateTransition
+    public struct StateTransition : IEquatable<StateTransition>
     {
+        public StateTransition(CastState source, CastAction actions, CastState destination)
+        {
+            this.source = source;
+            this.triggerActions = actions;
+            this.destination = destination;
+        }
         public CastState source;
         public CastAction triggerActions;
         public CastState destination;
+
+        public readonly bool Equals(StateTransition other)
+        {
+            return source == other.source && ((triggerActions & other.triggerActions) == other.triggerActions) && destination == other.destination;
+        }
     }
 
     [Serializable]
@@ -27,7 +38,7 @@ namespace HotD.Castables
         public CastState state;
         public CastAction action;
 
-        public bool Equals(StateAction other)
+        public readonly bool Equals(StateAction other)
         {
             return state == other.state && action == other.action;
         }
@@ -46,6 +57,8 @@ namespace HotD.Castables
         public Dictionary<StateAction, StateTransition> transitionBank = new();
         public List<ICastStateExecutor> executorList = new();
         [Foldout("State")] public Dictionary<CastState, List<ICastStateExecutor>> executorBank = new();
+
+        public bool CanCast { get => state == CastState.Equipped; }
 
         public bool debug;
 
@@ -91,11 +104,6 @@ namespace HotD.Castables
         }
 
         // Helpers
-
-        public bool CanCast()
-        {
-            return state == CastState.Equipped;
-        }
 
         private bool HasAction(CastAction action, CastAction actions)
         {
@@ -197,6 +205,41 @@ namespace HotD.Castables
                     dequeuedActions.Add(stateAction);
                 }
             }
+        }
+
+        // Transition Set Up
+
+        private void AddTransition(StateTransition transition)
+        {
+            if (!transitions.Contains(transition))
+            {
+                transitions.Add(transition);
+            }
+        }
+
+        [ButtonMethod]
+        public void AddBaseTransitions()
+        {
+            AddTransition(new(CastState.Init, CastAction.Equip, CastState.Equipped));
+            AddTransition(new(CastState.Equipped, CastAction.UnEquip, CastState.Init));
+        }
+
+        [ButtonMethod]
+        public void AddChargeTransitions()
+        {
+            AddBaseTransitions();
+            AddTransition(new(CastState.Equipped, CastAction.Trigger, CastState.Activating));
+            AddTransition(new(CastState.Activating, CastAction.Release | CastAction.End, CastState.Executing));
+            AddTransition(new(CastState.Executing, CastAction.End, CastState.Equipped));
+        }
+
+        [ButtonMethod]
+        public void AddComboTransitions()
+        {
+            AddBaseTransitions();
+            AddTransition(new(CastState.Equipped, CastAction.Trigger, CastState.Activating));
+            AddTransition(new(CastState.Activating, CastAction.End, CastState.Executing));
+            AddTransition(new(CastState.Executing, CastAction.End, CastState.Equipped));
         }
     }
 }

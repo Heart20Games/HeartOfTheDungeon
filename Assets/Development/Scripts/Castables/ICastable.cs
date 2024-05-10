@@ -28,16 +28,7 @@ namespace HotD.Castables
 
         public void QueueAction(CastAction action);
         public Vector3 Direction { get; set; }
-        public void Cast();
-        public void UnCast();
-        public void Trigger();
-        public void Release();
-        public UnityEvent OnCasted();
-        public void Initialize(Character source);
-        public void Disable();
-        public void Enable();
-        public bool CanCast();
-        public Vector3 Direction { get; set; }
+        public bool CanCast { get; }
 
         //public void Cast();
         //public void UnCast();

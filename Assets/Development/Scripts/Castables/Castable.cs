@@ -77,6 +77,7 @@ namespace HotD.Castables
         [Header("Casting")]
         public List<GameObject> castingMethods = new();
         public bool casting = false;
+        public virtual bool CanCast { get => !casting; }
         //public bool castOnTrigger = true;
         //public bool castOnRelease = false;
         //public bool unCastOnRelease = false;
@@ -148,7 +149,6 @@ namespace HotD.Castables
             }
         }
 
-        public virtual bool CanCast() { return !casting; }
         public virtual UnityEvent OnCasted() { return onCasted; }
 
         // Equipping

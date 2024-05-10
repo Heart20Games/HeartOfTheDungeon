@@ -17,6 +17,8 @@ namespace HotD.Castables
         private readonly List<IDamageable> others = new();
         private readonly List<IDamageable> ignored = new();
 
+        public override bool CanCast { get => !swinging; }
+
         private void Awake()
         {
             if (TryGetComponent(out animator))
@@ -42,8 +44,6 @@ namespace HotD.Castables
         {
             Swing();
         }
-
-        public override bool CanCast() { return !swinging; }
 
 
         // Swinging

@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Body;
+using HotD.Body;
 
 namespace HotD.Castables
 {

@@ -16,12 +16,15 @@ namespace HotD.Body
     using static HotD.CharacterModes;
     using System;
     using HotD.Body;
+    using global::Body.Behavior.ContextSteering;
+    using global::Body.Behavior;
+    using static global::Body.Behavior.ContextSteering.CSIdentity;
 
     //[RequireComponent(typeof(Brain))]
     //[RequireComponent(typeof(Movement))]
     //[RequireComponent(typeof(Talker))]
     //[RequireComponent(typeof(Caster))]
-    public class Character : AIdentifiable, IDamageable, IControllable
+    public class Character : AIdentifiable, IDamageable, IControllable, ICastCompatible
     {
         [Foldout("Identity")]
         public CharacterBlock statBlock;
