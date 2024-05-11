@@ -9,7 +9,7 @@ namespace HotD.Castables
     public enum CastState { None, Init, Equipped, Activating, Executing }
 
     [Serializable]
-    public struct StateTransition : IEquatable<StateTransition>
+    public struct StateTransition
     {
         public StateTransition(CastState source, CastAction actions, CastState destination)
         {
@@ -20,11 +20,6 @@ namespace HotD.Castables
         public CastState source;
         public CastAction triggerActions;
         public CastState destination;
-
-        public readonly bool Equals(StateTransition other)
-        {
-            return source == other.source && ((triggerActions & other.triggerActions) == other.triggerActions) && destination == other.destination;
-        }
     }
 
     [Serializable]
@@ -82,12 +77,16 @@ namespace HotD.Castables
                     executor.SetActive(executor.State == CastState.None);
                 }
             }
+            transitionBank.Clear();
             foreach (var transition in transitions)
             {
                 foreach (CastAction value in Enum.GetValues(typeof(CastAction)))
                 {
-                    if (HasAction(value, transition.triggerActions))
+                    if (value != CastAction.None && HasAction(value, transition.triggerActions))
+                    {
+                        Print($"Added to transition bank: ({transition.source} / {value}) : {transition}", debug, this);
                         transitionBank.Add(new(transition.source, value), transition);
+                    }
                 }
             }
             SetState(CastState.None);
@@ -209,9 +208,27 @@ namespace HotD.Castables
 
         // Transition Set Up
 
+        private bool FindTransitionBase(StateTransition transition, out int idx)
+        {
+            for (idx = 0; idx < transitions.Count; idx++)
+            {
+                var trans = transitions[idx];
+                if (trans.source == transition.source && trans.destination == transition.destination)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private void AddTransition(StateTransition transition)
         {
-            if (!transitions.Contains(transition))
+            if (FindTransitionBase(transition, out int index))
+            {
+                CastAction actions = transition.triggerActions | transitions[index].triggerActions;
+                transitions[index] = new(transition.source, actions, transition.destination);
+            }
+            else
             {
                 transitions.Add(transition);
             }

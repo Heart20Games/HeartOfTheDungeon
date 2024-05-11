@@ -124,7 +124,7 @@ namespace HotD.Castables
         {
             if (actionsToPerform.Count > 0)
             {
-                FinishAction(testAction);
+                FinishAction(testAction.Equals(new StateAction()) ? testAction : actionsToPerform[0]);
             }
         }
 
