@@ -31,9 +31,9 @@ namespace HotD.Castables
             public UnityEvent startAction;
         }
 
-        public List<ActionEvent> supportedActions;
+        public List<ActionEvent> supportedActions = new();
 
-        public List<StateAction> actionsToPerform;
+        public List<StateAction> actionsToPerform = new();
 
         public override void SetActive(bool active)
         {
@@ -109,6 +109,7 @@ namespace HotD.Castables
         }
 
         // Reporting
+        [ButtonMethod]
         public void End()
         {
             ReportAction(CastAction.End);

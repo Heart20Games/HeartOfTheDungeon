@@ -2,7 +2,10 @@ using MyBox;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Events;
 using UnityEngine;
+using UnityEngine.Events;
+using static CastCoordinator;
 
 namespace HotD.Castables
 {
@@ -149,7 +152,7 @@ namespace HotD.Castables
             if (transitionBank.TryGetValue(stateAction, out StateTransition transition))
             {
                 bool waitingOnExecutor = false;
-                
+
                 Print($"Attempting {transition.triggerActions} transition from {transition.source} to {transition.destination}.", debug);
                 var executors = executorBank[state];
                 if (executors.Count > 0)
@@ -234,6 +237,8 @@ namespace HotD.Castables
             }
         }
 
+        // Quick Set-up Methods
+
         [ButtonMethod]
         public void AddBaseTransitions()
         {
@@ -257,6 +262,56 @@ namespace HotD.Castables
             AddTransition(new(CastState.Equipped, CastAction.Trigger, CastState.Activating));
             AddTransition(new(CastState.Activating, CastAction.End, CastState.Executing));
             AddTransition(new(CastState.Executing, CastAction.End, CastState.Equipped));
+        }
+
+        [ButtonMethod]
+        public void CreateCastExecutor()
+        {
+            GameObject parent = new("Cast");
+            parent.transform.SetParent(gameObject.transform);
+            var executor = parent.AddComponent<DelegatedExecutor>();
+
+            executor.State = CastState.Executing;
+            
+            executor.supportedActions.Add(new(
+                "Cast on Start", CastAction.Start,
+                Triggers.StartCast, false
+            ));
+            executor.supportedActions.Add(new(
+                "Finish", CastAction.End, 
+                Triggers.None, true
+            ));
+        }
+
+        [ButtonMethod]
+        public void CreateChargeThenCastExecutors()
+        {
+            GameObject parent = new("Charge");
+            parent.transform.SetParent(gameObject.transform);
+            var executor = parent.AddComponent<DelegatedExecutor>();
+
+            executor.State = CastState.Activating;
+
+            executor.supportedActions.Add(new(
+                "Charge on Start", CastAction.Start,
+                Triggers.StartAction, false
+            ));
+            executor.supportedActions.Add(new(
+                "Cast on Release", CastAction.Release,
+                Triggers.None, true
+            ));
+
+            var charger = parent.AddComponent<Charger>();
+
+            charger.resetOnBegin = true;
+
+            UnityEvent onCharged = charger.onCharged;
+            UnityEventTools.AddPersistentListener(onCharged, executor.End);
+
+            UnityEvent startAction = executor.supportedActions[0].startAction;
+            UnityEventTools.AddPersistentListener(startAction, charger.Begin);
+
+            CreateCastExecutor();
         }
     }
 }

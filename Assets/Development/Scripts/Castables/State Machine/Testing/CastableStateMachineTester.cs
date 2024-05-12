@@ -2,6 +2,8 @@ using HotD.Body;
 using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.EditorCoroutines.Editor;
+using UnityEditor;
 using UnityEngine;
 
 namespace HotD.Castables
@@ -38,11 +40,31 @@ namespace HotD.Castables
             target.Initialize(testCharacter, testItem, 1);
         }
         [ButtonMethod]
-        public void TestCharacterInitializeThenEquipAndTrigger()
+        public void TestCharacterInitializeAndEquip()
         {
             target.Initialize(testCharacter, testItem, 1);
             target.QueueAction(CastAction.Equip);
+        }
+
+        [ButtonMethod]
+        public void TestTriggerThenReleaseThenEnd()
+        {
             target.QueueAction(CastAction.Trigger);
+            if (Application.isPlaying)
+            {
+                StartCoroutine(DelayedReleaseAndEnd(2f));
+            }
+            else
+            {
+                EditorCoroutineUtility.StartCoroutine(DelayedReleaseAndEnd(2f), this);
+            }
+        }
+        private IEnumerator DelayedReleaseAndEnd(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            target.QueueAction(CastAction.Release);
+            yield return new WaitForSeconds(delay);
+            target.QueueAction(CastAction.End);
         }
     }
 }

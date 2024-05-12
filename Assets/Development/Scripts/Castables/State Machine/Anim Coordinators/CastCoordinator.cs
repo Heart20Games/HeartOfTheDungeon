@@ -15,7 +15,7 @@ public class CastCoordinator : MecanimCoordinator
         StartCast = 1 << 1,
     }
 
-    public int ActionIndex { get => GetInt("Action"); set => SetActionIndex(value); }
+    public int ActionIndex { get => (int)GetFloat("Action"); set => SetActionIndex(value); }
 
     public UnityEvent<CastAction> onAction;
 
@@ -46,7 +46,7 @@ public class CastCoordinator : MecanimCoordinator
 
     public void SetActionIndex(int idx)
     {
-        SetInt("Action", idx);
+        SetFloat("Action", idx);
     }
 
     public void OnEndCast()

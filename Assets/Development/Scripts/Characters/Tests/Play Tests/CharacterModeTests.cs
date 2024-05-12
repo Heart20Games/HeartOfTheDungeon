@@ -1,4 +1,3 @@
-using Body;
 using Body.Behavior;
 using HotD;
 using HotD.Body;
@@ -27,7 +26,7 @@ public class CharacterModeTests
         // Stubs
         brain = parent.AddComponent<BrainStub>();
         talker = parent.AddComponent<TalkerStub>();
-        caster = parent.AddComponent<Caster>();
+        caster = parent.AddComponent<CasterStub>();
 
         // Character
         character = parent.AddComponent<Character>();
