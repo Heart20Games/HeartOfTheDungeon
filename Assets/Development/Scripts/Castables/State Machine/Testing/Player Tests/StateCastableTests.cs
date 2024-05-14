@@ -7,49 +7,41 @@ using HotD.Body;
 
 public class StateCastableTests
 {
-    [SerializeField] private Character characterPrefab;
-    [SerializeField] private CastableItem testItem;
+    private CastableItem testItem;
 
     private GameObject parent;
     private StateCastable state;
     private Damager damager;
 
     private GameObject parent2;
-    private Character character;
+    private ICharacter character;
 
     [OneTimeSetUp]
     public void InitialSetUp()
     {
-        if (characterPrefab != null && testItem != null)
-        {
-            parent = new GameObject("State Castable Tests Parent");
-            state = parent.AddComponent<StateCastable>();
-            
-            // Damager
-            damager = parent.AddComponent<Damager>();
-            
-            // Charge Set Up
-            state.AddChargeTransitions();
-            state.CreateChargeThenCastExecutors();
+        parent = new GameObject("State Castable Tests Parent");
+        state = parent.AddComponent<StateCastable>();
+        state.fields = new();
 
-            // Character
-            character = Object.Instantiate(characterPrefab);
+        // Damager
+        damager = parent.AddComponent<Damager>();
 
-            state.Initialize(character, testItem, 1);
-        }
+        // Charge Set Up
+        state.AddChargeTransitions();
+        state.CreateChargeThenCastExecutors();
+
+        // Character
+        parent2 = new GameObject("Character Parent");
+        character = parent2.AddComponent<CharacterStub>();
+
+        state.Initialize(character, testItem, 1);
     }
 
     [OneTimeTearDown]
     public void FinalTearDown()
     {
-        if (parent != null)
-        {
-            Object.Destroy(parent);
-        }
-        if (character != null)
-        {
-            Object.Destroy(character.gameObject);
-        }
+        Object.Destroy(parent);
+        Object.Destroy(parent2);
     }
 
     [Test]

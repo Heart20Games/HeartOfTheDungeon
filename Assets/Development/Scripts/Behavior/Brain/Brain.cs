@@ -98,7 +98,7 @@ namespace Body.Behavior
             if (debug) print("Awake!");
             if (TryGetComponent(out character))
             {
-                body = character.body;
+                body = character.Body;
             }
             if (body == null)
                 body = transform;
@@ -163,7 +163,7 @@ namespace Body.Behavior
         {
             this.target = target;
             if (this.target != null)
-                this.target = (target.TryGetComponent(out Character targetChar) ? targetChar.body : target);
+                this.target = (target.TryGetComponent(out Character targetChar) ? targetChar.Body : target);
             if (agent != null && agent.isActiveAndEnabled)
                 agent.destination = this.target == null ? new() : this.target.position;
             if (pathFinder != null)

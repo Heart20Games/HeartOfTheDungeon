@@ -43,12 +43,12 @@ namespace HotD.Castables
         {
             if (TryGetComponent(out character))
             {
-                artRenderer = character.artRenderer;
-                pivot = character.pivot;
+                artRenderer = character.ArtRenderer;
+                pivot = character.Pivot;
                 if (weaponLocation == null)
-                    weaponLocation = character.weaponLocation;
+                    weaponLocation = character.WeaponLocation;
                 if (firingLocation == null)
-                    firingLocation = character.firingLocation != null ? character.firingLocation : character.pivot;
+                    firingLocation = character.FiringLocation != null ? character.FiringLocation : character.Pivot;
             }
         }
 
@@ -108,7 +108,7 @@ namespace HotD.Castables
             if (target != null)
             {
                 if (debug) print($"Set target: {target} (on {character.Name})");
-                Vector3 castPoint = character.firingLocation.position;
+                Vector3 castPoint = character.FiringLocation.position;
                 Vector3 direction = (target.position + targetOffset) - castPoint;
                 //direction = Quaternion.Euler(rotationOffset) * direction;
                 SetFallback(direction, false, true);
@@ -152,7 +152,7 @@ namespace HotD.Castables
         // Camera Orientation
         private Vector3 OrientAimVector(Vector3 vector)
         {
-            if (character.PlayerControlled) return OrientToCamera(character.body, vector);
+            if (character.PlayerControlled) return OrientToCamera(character.Body, vector);
             else return vector;
         }
 
@@ -177,7 +177,7 @@ namespace HotD.Castables
             {
                 float pMag = Mathf.Abs(pivot.localScale.x);
                 float sign = castVector.x < 0 ? -1 : 1;
-                sign *= character.movement.ShouldFlip ? 1 : -1;
+                sign *= character.Movement.ShouldFlip ? 1 : -1;
                 pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
 
                 //if (Mathf.Abs(castVector.x) > 0.5f || Mathf.Abs(castVector.y) > 0.5f || Mathf.Abs(castVector.z) > 0.5f)

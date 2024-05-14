@@ -82,7 +82,7 @@ public class UserInterface : BaseMonoBehaviour
     public void SetCharacter(Character character)
     {
         controlledCharacter = character;
-        characterSheet.SetCharacter(character.statBlock);
+        characterSheet.SetCharacter(character.StatBlock);
     }
 
     public void UpdateWeapon()

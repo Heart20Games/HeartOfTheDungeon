@@ -13,8 +13,8 @@ namespace HotD.Castables
             return location switch
             {
                 Location.Character => character.transform,
-                Location.WeaponPoint => character.weaponLocation,
-                Location.FiringPoint => character.firingLocation,
+                Location.WeaponPoint => character.WeaponLocation,
+                Location.FiringPoint => character.FiringLocation,
                 _ => null
             };
         }

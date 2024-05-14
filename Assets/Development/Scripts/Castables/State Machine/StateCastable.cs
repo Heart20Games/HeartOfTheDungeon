@@ -302,9 +302,10 @@ namespace HotD.Castables
             ));
 
             var charger = parent.AddComponent<Charger>();
-
+            
             charger.resetOnBegin = true;
 
+            charger.onCharged = new();
             UnityEvent onCharged = charger.onCharged;
             UnityEventTools.AddPersistentListener(onCharged, executor.End);
 

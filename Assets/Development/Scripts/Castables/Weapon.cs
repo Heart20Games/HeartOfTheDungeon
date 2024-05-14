@@ -33,7 +33,7 @@ namespace HotD.Castables
         public override void Initialize(Character source)
         {
             base.Initialize(source);
-            IDamageable damageable = source.body.GetComponent<IDamageable>();
+            IDamageable damageable = source.Body.GetComponent<IDamageable>();
             if (damageable != null)
             {
                 ignored.Add(damageable);

@@ -7,6 +7,104 @@ using System.Collections.Generic;
 using UnityEngine;
 using HotD.Body;
 using Body;
+using Selection;
+using Modifiers;
+using UnityEngine.Events;
+using UIPips;
+using static Body.Behavior.ContextSteering.CSIdentity;
+
+public abstract class AIdentifiableStub : BaseMonoBehaviour, IIdentifiable
+{
+    // Fields
+    public Portraits portraits = null;
+    public Identity identity = Identity.Neutral;
+    public ModField<string> emotion = null;
+
+    // Events
+    public UnityEvent<PortraitImage> onPortrait;
+    public UnityEvent<Sprite> onImage;
+
+    // Properties
+    public virtual Identity Identity { get => Identity.Neutral; set => NULL(); }
+    public virtual PortraitImage Portrait
+    {
+        get => new();
+        set => NULL();
+    }
+    public virtual Sprite Image
+    {
+        get => null;
+        set => NULL();
+    }
+    public virtual string Emotion { get => ""; set => NULL(); }
+    public virtual string Name { get; set; }
+    public virtual string Description { get => ""; set => NULL(); }
+
+    // Mod Fields
+    public virtual MaxModField<int> Health { get => null; }
+    public virtual MaxModField<int> Armor { get => null; }
+
+    protected void NULL() { /* Do Nothing */ }
+
+    // Portrait Connections
+    private void UpdatePortraits(string _emotion) { }
+    public void ConnectPortrait(UnityAction<PortraitImage> action, bool initialize = false) { }
+    public void DisconnectPortrait(UnityAction<PortraitImage> action) { }
+
+    public void ConnectImage(UnityAction<Sprite> action, bool initialize = false) { }
+    public void DisconnectImage(UnityAction<Sprite> action) { }
+
+
+    // Pip Connections
+    public void ConnectPipType(MaxModField<int> modField, Modded<int>.Listen current, Modded<int>.Listen total, bool initialize = false) { }
+    public virtual void ConnectPips(PipGenerator generator, bool initialize = false) { }
+
+    public void DisconnectPipType(MaxModField<int> modField, Modded<int>.Listen current, Modded<int>.Listen total) { }
+    public virtual void DisconnectPips(PipGenerator generator) { }
+}
+
+public class CharacterStub : AIdentifiableStub, ICharacter
+{
+    public CharacterBlock StatBlock => null;
+    public Transform Pivot => null;
+    public IMovement Movement => null;
+    public ArtRenderer ArtRenderer => null;
+    public TargetFinder TargetFinder => null;
+    public IBrain Brain => null;
+    public CSController Controller => null;
+
+    private int currentHealth = 1;
+    private bool autoRespawn = false;
+    private bool autoDespawn = false;
+    public List<Status> Statuses => new();
+    public int CurrentHealth { get => currentHealth; set => currentHealth = value; }
+    public bool AutoRespawn { get => autoRespawn; set => autoRespawn = value; }
+    public bool AutoDespawn { get => autoDespawn; set => autoDespawn = value; }
+
+    private bool playerControlled = false;
+    public bool PlayerControlled { get => playerControlled; set => playerControlled = value; }
+    public IWeaponDisplay WeaponDisplay => null;
+    public Transform Body => null;
+    public Transform WeaponLocation => null;
+    public Transform FiringLocation => null;
+    public CastCoordinator Coordinator => null;
+    public int CastableID => 0;
+
+    public void Aim(Vector2 input, bool aim = false) { }
+    public void MoveCharacter(Vector2 input) { }
+    public void FlipCamera() { }
+    public void Interact() { }
+    public void ReleaseCastable(int idx) { }
+    public void TriggerCastable(int idx) { }
+
+    public void ListenForControlChanged(UnityAction<bool> action) { }
+    public void ListenForDamage(UnityAction action) { }
+    public void ListenForDeath(UnityAction<Character> action) { }
+
+    public void SetDamagePosition(Vector3 damagePosition) { }
+    public void TakeDamage(int amount, CSIdentity.Identity id = CSIdentity.Identity.Neutral) { }
+    public void SetSpectatable(bool spectable) { }
+}
 
 public class MovementStub : BaseMonoBehaviour, IMovement
 {

@@ -78,18 +78,18 @@ public class Party : BaseMonoBehaviour
     private void Start()
     {
         if (useLeaderAsFollowTargeter)
-            followTargeter = leader.body.transform;
+            followTargeter = leader.Body.transform;
         if (isMainParty)
             mainParty = this;
         if (leader != null)
         {
-            defaultFollowTarget = leader.body.transform;
+            defaultFollowTarget = leader.Body.transform;
             SetFollowTarget(defaultFollowTarget);
         }
         foreach (var character in members)
         {
             if (followTargeter)
-                character.brain.Target = followTargeter;
+                character.Brain.Target = followTargeter;
             if (noise != null)
             {
                 character.Controller.noise = noise;
@@ -97,18 +97,18 @@ public class Party : BaseMonoBehaviour
             }
             if (autoRespawnAll)
             {
-                character.autoRespawn = true;
+                character.AutoRespawn = true;
                 character.autoRespawnDelay = autoRespawnDelay;
             }
             if (autoDespawnAll)
             {
-                character.autoDespawn = true;
+                character.AutoDespawn = true;
                 character.autoDespawnDelay = autoDespawnDelay;
             }
             character.Controller.onFoeContextActive.AddListener(CharacterAggroed);
-            character.onDmg.AddListener(MemberDamaged);
-            character.onDeath = MemberDied;
-            character.onControl.AddListener((bool controlled) => CharacterControlled(controlled, character));
+            character.ListenForDamage(MemberDamaged);
+            character.ListenForDeath(MemberDied);
+            character.ListenForControlChanged((bool controlled) => CharacterControlled(controlled, character));
             Print($"Character {character.name} connected to party {name}.", debug);
         }
     }
@@ -150,11 +150,11 @@ public class Party : BaseMonoBehaviour
     {
         foreach (var member in members)
         {
-            member.statBlock.strength.BaseValue = 0;
-            member.statBlock.constitution.BaseValue = 0;
-            member.statBlock.intelligence.BaseValue = 0;
-            member.statBlock.dexterity.BaseValue = 0;
-            member.statBlock.skillPoints = baseSkillPoints;
+            member.StatBlock.strength.BaseValue = 0;
+            member.StatBlock.constitution.BaseValue = 0;
+            member.StatBlock.intelligence.BaseValue = 0;
+            member.StatBlock.dexterity.BaseValue = 0;
+            member.StatBlock.skillPoints = baseSkillPoints;
         }
     }
 
@@ -162,7 +162,7 @@ public class Party : BaseMonoBehaviour
     {
         foreach (var member in members)
         {
-            member.statBlock.skillPoints += amount;
+            member.StatBlock.skillPoints += amount;
         }
     }
 
@@ -189,7 +189,7 @@ public class Party : BaseMonoBehaviour
     public void SetLeader(Character character)
     {
         leader = character;
-        defaultFollowTarget = leader.body.transform;
+        defaultFollowTarget = leader.Body.transform;
         if (!aggroed)
             SetFollowTarget(defaultFollowTarget);
     }
@@ -247,7 +247,7 @@ public class Party : BaseMonoBehaviour
 
     public void CharacterControlled(bool controllable, Character controlled)
     {
-        Print($"Control changed for {controlled.body.name}.", debug);
+        Print($"Control changed for {controlled.Body.name}.", debug);
         if (controllable)
         {
             if (mainParty)
@@ -280,7 +280,7 @@ public class Party : BaseMonoBehaviour
     [HideInInspector] public UnityAction<Character> onMemberDeath;
     public void MemberDied(Character character)
     {
-        Print($"Character {character.body.name} Died. ({character.mode.liveMode})", debug);
+        Print($"Character {character.Body.name} Died. ({character.mode.liveMode})", debug);
         Assert.IsFalse(character.Alive);
 
         bool anyAlive = false;
@@ -288,7 +288,7 @@ public class Party : BaseMonoBehaviour
         {
             if (other.Alive)
             {
-                Print($"Character {other.body.name} is still alive.", debug);
+                Print($"Character {other.Body.name} is still alive.", debug);
                 anyAlive = true;
             }
         }

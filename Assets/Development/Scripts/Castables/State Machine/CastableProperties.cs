@@ -1,4 +1,5 @@
 using Body;
+using Body.Behavior.ContextSteering;
 using HotD.Body;
 using MyBox;
 using System;
@@ -58,14 +59,14 @@ namespace HotD.Castables
         public bool castOnTrigger = true;
         public bool castOnRelease = false;
         public bool unCastOnRelease = false;
-        public UnityEvent<int> onSetPowerLevel;
-        public UnityEvent<int> onSetMaxPowerLevel;
-        public UnityEvent<Identity> onSetIdentity;
-        public UnityEvent onTrigger;
-        public UnityEvent<Vector3> onCast;
-        public UnityEvent onRelease;
-        public UnityEvent onUnCast;
-        [Foldout("Events")] public UnityEvent onCasted;
+        public UnityEvent<int> onSetPowerLevel = new();
+        public UnityEvent<int> onSetMaxPowerLevel = new();
+        public UnityEvent<Identity> onSetIdentity = new();
+        public UnityEvent onTrigger = new();
+        public UnityEvent<Vector3> onCast = new();
+        public UnityEvent onRelease = new();
+        public UnityEvent onUnCast = new();
+        [Foldout("Events")] public UnityEvent onCasted = new();
 
         private void Awake()
         {
@@ -89,17 +90,22 @@ namespace HotD.Castables
         public virtual void Initialize(CastableFields fields)
         {
             this.fields = fields;
+            this.fields ??= new();
         }
 
         public virtual void Initialize(ICastCompatible owner, CastableItem item, int actionIndex = 0)
         {
+            fields ??= new();
+            onSetIdentity ??= new();
+
             Owner = owner;
             Item = item;
 
             if (fields.damager != null)
                 fields.damager.Ignore(owner.Body);
+
             Identity = owner.Identity;
-            owner.WeaponDisplay.DisplayWeapon(fields.weaponArt);
+            owner?.WeaponDisplay?.DisplayWeapon(fields.weaponArt);
             fields.actionIndex = actionIndex;
         }
     }
