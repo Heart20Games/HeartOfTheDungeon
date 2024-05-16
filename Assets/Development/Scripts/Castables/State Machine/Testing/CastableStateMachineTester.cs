@@ -18,6 +18,7 @@ namespace HotD.Castables
         public TestCastCompatible testCastCompatible;
         public Character testCharacter;
         public CastableItem testItem;
+        public float testDelay = 2f;
 
         [ButtonMethod]
         public void TestQueueAction()
@@ -52,11 +53,11 @@ namespace HotD.Castables
             target.QueueAction(CastAction.Trigger);
             if (Application.isPlaying)
             {
-                StartCoroutine(DelayedReleaseAndEnd(2f));
+                StartCoroutine(DelayedReleaseAndEnd(testDelay));
             }
             else
             {
-                EditorCoroutineUtility.StartCoroutine(DelayedReleaseAndEnd(2f), this);
+                EditorCoroutineUtility.StartCoroutine(DelayedReleaseAndEnd(testDelay), this);
             }
         }
         private IEnumerator DelayedReleaseAndEnd(float delay)
