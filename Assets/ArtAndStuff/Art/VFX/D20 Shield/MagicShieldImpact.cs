@@ -17,11 +17,16 @@ public class MagicShieldImpact : MonoBehaviour
     [SerializeField] private Vector3 vertexMovementAmount = new Vector3 (.12f, .12f, .12f);
     [SerializeField] private float vertexDistortionAmount;
     [SerializeField] float impactDuration = .35f;
+    [SerializeField] private bool shieldOn = false;
+    [SerializeField] private float dissolveAmount;
+    [SerializeField] private float dissolveDuration;
+    [SerializeField] private bool shieldTransitioning;
     
     // Start is called before the first frame update
     void Start()
     {
         visualEffect = GetComponent<VisualEffect>();
+        dissolveAmount = 1;
     }
 
     // Update is called once per frame
@@ -31,6 +36,7 @@ public class MagicShieldImpact : MonoBehaviour
         {
             objectPivot = gameObject.transform.position * -1;
             visualEffect.SetVector3("Impact Object Pivot", objectPivot);
+            visualEffect.SetFloat("Dissolve Amount", dissolveAmount);
             if(impact == true)
             {
                 impactTrigger();
@@ -41,6 +47,16 @@ public class MagicShieldImpact : MonoBehaviour
             {
                 VertexDistortion();
             }
+
+            if (shieldOn && !shieldTransitioning)
+            {
+                StartCoroutine(ShieldActivate());
+            }
+            else if (!shieldOn && !shieldTransitioning)
+            {
+                StartCoroutine(ShieldDeactivate());
+            }
+
         }
     }
 
@@ -71,5 +87,29 @@ public class MagicShieldImpact : MonoBehaviour
         visualEffect.SetVector3("Vertex Movement Amount", Vector3.Lerp(vertexMovementAmount, new Vector3(0.0f, 0.0f, 0.0f), vertexDistortDuration/impactDuration)); 
     }
 
+    IEnumerator ShieldActivate()
+    {
+        visualEffect.SetBool("ShieldOff", false);
+        shieldTransitioning = true;
+        while(dissolveAmount > 0)
+        {
+            dissolveAmount -= 1f/50f;
+            yield return new WaitForSeconds(dissolveDuration/50f);
+        }
+        visualEffect.SendEvent("ShieldOn");
+        shieldTransitioning = false;
+    }
+
+    IEnumerator ShieldDeactivate()
+    {
+        shieldTransitioning = true;
+        visualEffect.SetBool("ShieldOff", true);
+        while(dissolveAmount < 1f)
+        {
+            dissolveAmount += 1f/50f;
+            yield return new WaitForSeconds(dissolveDuration/50f);
+        }    
+        shieldTransitioning = false;
+    }
 
 }
