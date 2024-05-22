@@ -21,12 +21,14 @@ public class MagicShieldImpact : MonoBehaviour
     [SerializeField] private float dissolveAmount;
     [SerializeField] private float dissolveDuration;
     [SerializeField] private bool shieldTransitioning;
+    [SerializeField] private float starSpherePower;
     
     // Start is called before the first frame update
     void Start()
     {
         visualEffect = GetComponent<VisualEffect>();
         dissolveAmount = 1;
+        starSpherePower = 1;
     }
 
     // Update is called once per frame
@@ -37,6 +39,7 @@ public class MagicShieldImpact : MonoBehaviour
             objectPivot = gameObject.transform.position * -1;
             visualEffect.SetVector3("Impact Object Pivot", objectPivot);
             visualEffect.SetFloat("Dissolve Amount", dissolveAmount);
+            visualEffect.SetFloat("Star Sphere Power", starSpherePower);
             if(impact == true)
             {
                 impactTrigger();
@@ -67,7 +70,8 @@ public class MagicShieldImpact : MonoBehaviour
         else
             impact = false;
     }
-
+    
+    //Creates an impact using Impact System 1 at the Impact Ripples Position, and aligns the it along the axis provided in Impact Rotation Axis
     IEnumerator Impact1()
     {
         impact1Active = true;
@@ -79,7 +83,8 @@ public class MagicShieldImpact : MonoBehaviour
         impact1Active = false;
         impact = false;
     }
-
+    
+    //causes gradually diminishing distortions in the mesh when called, based on the impactDuration variable value
     void VertexDistortion()
     {
         vertexDistortDuration -= impactDuration/50;
@@ -87,26 +92,27 @@ public class MagicShieldImpact : MonoBehaviour
         visualEffect.SetVector3("Vertex Movement Amount", Vector3.Lerp(vertexMovementAmount, new Vector3(0.0f, 0.0f, 0.0f), vertexDistortDuration/impactDuration)); 
     }
 
+    //begins the shield activation VFX cycle
     IEnumerator ShieldActivate()
     {
-        visualEffect.SetBool("ShieldOff", false);
         shieldTransitioning = true;
         while(dissolveAmount > 0)
         {
             dissolveAmount -= 1f/50f;
+            starSpherePower -= 1f/50f;
             yield return new WaitForSeconds(dissolveDuration/50f);
         }
-        visualEffect.SendEvent("ShieldOn");
         shieldTransitioning = false;
     }
 
+    //begins the shield deactivation VFX cycle
     IEnumerator ShieldDeactivate()
     {
         shieldTransitioning = true;
-        visualEffect.SetBool("ShieldOff", true);
         while(dissolveAmount < 1f)
         {
             dissolveAmount += 1f/50f;
+            starSpherePower += 1f/50f;
             yield return new WaitForSeconds(dissolveDuration/50f);
         }    
         shieldTransitioning = false;
