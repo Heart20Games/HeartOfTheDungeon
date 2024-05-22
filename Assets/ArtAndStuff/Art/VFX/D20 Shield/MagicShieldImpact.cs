@@ -1,9 +1,11 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
+using static Impact;
 
-public class MagicShieldImpact : MonoBehaviour
+public class MagicShieldImpact : BaseMonoBehaviour
 {
     private Vector3 objectPivot;
     public bool impact = false;
@@ -11,6 +13,7 @@ public class MagicShieldImpact : MonoBehaviour
     [SerializeField] private bool impact2Active;
     [SerializeField] private bool impact3Active;
     public Vector3 impactLocation;
+    [ReadOnly][SerializeField] private Vector3 impactDirection;
     public Vector3 impactAxis;
     private VisualEffect visualEffect;
     private float vertexDistortDuration = 0f;
@@ -42,7 +45,7 @@ public class MagicShieldImpact : MonoBehaviour
             visualEffect.SetFloat("Star Sphere Power", starSpherePower);
             if(impact == true)
             {
-                impactTrigger();
+                ImpactTrigger();
                 impact = false;
             }
 
@@ -63,7 +66,7 @@ public class MagicShieldImpact : MonoBehaviour
         }
     }
 
-    void impactTrigger()
+    void ImpactTrigger()
     {
         if(!impact1Active)
             StartCoroutine(Impact1());
@@ -118,4 +121,25 @@ public class MagicShieldImpact : MonoBehaviour
         shieldTransitioning = false;
     }
 
+    public void OnImpact(Impact.Other other)
+    {
+        if (visualEffect != null && other.gameObject != null)
+        {
+            objectPivot = gameObject.transform.position * -1;
+            impactLocation = other.ImpactLocation;
+            impactDirection = (impactLocation - objectPivot).normalized;
+            Quaternion quatRotation = Quaternion.FromToRotation(Vector3.forward, impactDirection);
+            impactAxis = quatRotation.eulerAngles;
+            ImpactTrigger();
+        }
+    }
+
+    [ButtonMethod]
+    public void TestImpactTrigger()
+    {
+        if (visualEffect != null)
+        {
+            ImpactTrigger();
+        }
+    }
 }
