@@ -13,7 +13,7 @@ public class ImpactOtherDrawer : PropertyDrawer
     {
         SerializedProperty gameObjectProperty = property.FindPropertyRelative("gameObject");
         SerializedProperty colliderProperty = property.FindPropertyRelative("collider");
-
+        SerializedProperty collisionProperty = property.FindPropertyRelative("collision");
 
         EditorGUI.BeginProperty(position, label, property);
 
@@ -22,13 +22,19 @@ public class ImpactOtherDrawer : PropertyDrawer
 
         if (show)
         {
-            Rect pos1 = position, pos2 = position;
-            pos1.height = EditorGUIUtility.singleLineHeight;
-            pos2.height = EditorGUIUtility.singleLineHeight;
+            Rect pos = position;
+            pos.height = EditorGUIUtility.singleLineHeight;
+            Rect pos1 = pos, pos2 = pos, pos3 = pos;
+
             pos1.y += (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing);
             pos2.y += (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing) * 2;
+            pos3.y += (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing) * 3;
             EditorGUI.PropertyField(pos1, gameObjectProperty, GUIContent.none);
             EditorGUI.PropertyField(pos2, colliderProperty, GUIContent.none);
+            GUI.enabled = false;
+            pos3 = EditorGUI.PrefixLabel(pos3, new("Has Collision?"));
+            EditorGUI.Toggle(pos3, collisionProperty?.objectReferenceValue != null);
+            GUI.enabled = true;
         }
 
         EditorGUI.EndFoldoutHeaderGroup();
@@ -40,7 +46,7 @@ public class ImpactOtherDrawer : PropertyDrawer
     {
         if (show)
         {
-            return (EditorGUIUtility.singleLineHeight * 3) + (EditorGUIUtility.standardVerticalSpacing * 2);
+            return (EditorGUIUtility.singleLineHeight * 4) + (EditorGUIUtility.standardVerticalSpacing * 3);
         }
         else
         {
