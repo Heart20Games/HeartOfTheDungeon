@@ -24,6 +24,7 @@ public class MagicShieldImpact : BaseMonoBehaviour
     [SerializeField] private float dissolveAmount;
     [SerializeField] private float dissolveDuration;
     [SerializeField] private bool shieldTransitioning;
+    [SerializeField] private bool debug;
     [SerializeField] private float starSpherePower;
     
     // Start is called before the first frame update
@@ -68,14 +69,19 @@ public class MagicShieldImpact : BaseMonoBehaviour
 
     void ImpactTrigger()
     {
+        ImpactTrigger(impactAxis, impactLocation);
+    }
+
+    void ImpactTrigger(Vector3 impactAxis, Vector3 impactLocation)
+    {
         if(!impact1Active)
-            StartCoroutine(Impact1());
+            StartCoroutine(Impact1(impactAxis, impactLocation));
         else
             impact = false;
     }
-    
+
     //Creates an impact using Impact System 1 at the Impact Ripples Position, and aligns the it along the axis provided in Impact Rotation Axis
-    IEnumerator Impact1()
+    IEnumerator Impact1(Vector3 impactAxis, Vector3 impactLocation)
     {
         impact1Active = true;
         visualEffect.SetVector3("Impact Rotation Axis", impactAxis);
@@ -125,11 +131,12 @@ public class MagicShieldImpact : BaseMonoBehaviour
     {
         if (visualEffect != null && other.gameObject != null)
         {
-            objectPivot = gameObject.transform.position * -1;
             impactLocation = other.ImpactLocation;
             impactDirection = (impactLocation - objectPivot).normalized;
+            objectPivot = gameObject.transform.position * -1;
             Quaternion quatRotation = Quaternion.FromToRotation(Vector3.forward, impactDirection);
             impactAxis = quatRotation.eulerAngles;
+            Print($"Impact! {impactLocation} / {impactAxis}");
             ImpactTrigger();
         }
     }
