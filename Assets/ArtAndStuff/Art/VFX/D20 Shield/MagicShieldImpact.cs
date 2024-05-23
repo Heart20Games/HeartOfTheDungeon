@@ -26,6 +26,7 @@ public class MagicShieldImpact : BaseMonoBehaviour
     [SerializeField] private bool shieldTransitioning;
     [SerializeField] private bool debug;
     [SerializeField] private float starSpherePower;
+    public bool explode;
     
     // Start is called before the first frame update
     void Start()
@@ -62,6 +63,12 @@ public class MagicShieldImpact : BaseMonoBehaviour
             else if (!shieldOn && !shieldTransitioning)
             {
                 StartCoroutine(ShieldDeactivate());
+            }
+
+            if(explode == true)
+            {
+                explode = false;
+                ShieldExplode();
             }
 
         }
@@ -127,6 +134,14 @@ public class MagicShieldImpact : BaseMonoBehaviour
         shieldTransitioning = false;
     }
 
+      private void ShieldExplode()
+    {
+        dissolveAmount = 1f;
+        starSpherePower = 1f;
+        visualEffect.SendEvent("Explode");
+        shieldOn = false;
+    }
+
     public void OnImpact(Impact.Other other)
     {
         if (visualEffect != null && other.gameObject != null)
@@ -149,4 +164,6 @@ public class MagicShieldImpact : BaseMonoBehaviour
             ImpactTrigger();
         }
     }
+
+  
 }
