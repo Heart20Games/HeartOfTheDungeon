@@ -26,6 +26,7 @@ public class MagicShieldImpact : BaseMonoBehaviour
     [SerializeField] private bool shieldTransitioning;
     [SerializeField] private bool debug;
     [SerializeField] private float starSpherePower;
+    [SerializeField] private float starSphereExplode;
     public bool explode;
     
     // Start is called before the first frame update
@@ -34,6 +35,7 @@ public class MagicShieldImpact : BaseMonoBehaviour
         visualEffect = GetComponent<VisualEffect>();
         dissolveAmount = 1;
         starSpherePower = 1;
+        starSphereExplode = 0;
     }
 
     // Update is called once per frame
@@ -45,6 +47,8 @@ public class MagicShieldImpact : BaseMonoBehaviour
             visualEffect.SetVector3("Impact Object Pivot", objectPivot);
             visualEffect.SetFloat("Dissolve Amount", dissolveAmount);
             visualEffect.SetFloat("Star Sphere Power", starSpherePower);
+            visualEffect.SetFloat("Star Sphere Explosion", starSphereExplode);
+
             if(impact == true)
             {
                 ImpactTrigger();
@@ -56,19 +60,18 @@ public class MagicShieldImpact : BaseMonoBehaviour
                 VertexDistortion();
             }
 
-            if (shieldOn && !shieldTransitioning)
+            if (shieldOn && !shieldTransitioning && !explode && dissolveAmount > 0f)
             {
                 StartCoroutine(ShieldActivate());
             }
-            else if (!shieldOn && !shieldTransitioning)
+            else if (!shieldOn && !shieldTransitioning && !explode && dissolveAmount < 1f)
             {
                 StartCoroutine(ShieldDeactivate());
             }
 
-            if(explode == true)
+            if(explode == true &&!shieldTransitioning)
             {
-                explode = false;
-                ShieldExplode();
+                StartCoroutine(ShieldExplode());
             }
 
         }
@@ -112,34 +115,54 @@ public class MagicShieldImpact : BaseMonoBehaviour
     IEnumerator ShieldActivate()
     {
         shieldTransitioning = true;
-        while(dissolveAmount > 0)
+        while(dissolveAmount >= 0)
         {
-            dissolveAmount -= 1f/50f;
-            starSpherePower -= 1f/50f;
+            dissolveAmount -= Mathf.Clamp(1f/50f, 0f, 1f);
+            starSpherePower -= Mathf.Clamp(1f/50f, 0f, 1f);
             yield return new WaitForSeconds(dissolveDuration/50f);
         }
         shieldTransitioning = false;
+        dissolveAmount = 0f;
+        starSpherePower = 0f;
     }
 
     //begins the shield deactivation VFX cycle
     IEnumerator ShieldDeactivate()
     {
         shieldTransitioning = true;
-        while(dissolveAmount < 1f)
+        while(dissolveAmount <= 1f)
         {
-            dissolveAmount += 1f/50f;
-            starSpherePower += 1f/50f;
+            dissolveAmount += Mathf.Clamp(1f/50f, 0f, 1f);
+            starSpherePower += Mathf.Clamp(1f/50f, 0f, 1f);
             yield return new WaitForSeconds(dissolveDuration/50f);
         }    
         shieldTransitioning = false;
-    }
-
-      private void ShieldExplode()
-    {
         dissolveAmount = 1f;
         starSpherePower = 1f;
+    }
+
+      IEnumerator ShieldExplode()
+    {
+        shieldTransitioning = true;
         visualEffect.SendEvent("Explode");
+        dissolveAmount = 1f;
+        while(starSphereExplode < 1f)
+        {
+            //dissolveAmount += Mathf.Clamp(1f/50f, 0f, 1f);
+            starSpherePower -= Mathf.Clamp(1f/50f, -1f, 1f);
+            starSphereExplode += Mathf.Clamp(1f/50f, 0f, 1f);
+            yield return new WaitForSeconds(dissolveDuration/400f);
+        }
+        while(starSpherePower < 1f)
+        {
+            starSpherePower += Mathf.Clamp(1f/50f, 0f, 1f);
+            yield return new WaitForSeconds(dissolveDuration/200f);
+        }
         shieldOn = false;
+        starSphereExplode = 0f;
+        starSpherePower = 1f;
+        explode = false;
+        shieldTransitioning = false;
     }
 
     public void OnImpact(Impact.Other other)

@@ -156,6 +156,7 @@ MonoBehaviour:
   shieldTransitioning: 0
   debug: 0
   starSpherePower: 0
+  starSphereExplode: 0
   explode: 0
 --- !u!210 &13091285
 SortingGroup:
@@ -164,7 +165,7 @@ SortingGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 13091280}
-  m_Enabled: 1
+  m_Enabled: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -2094,9 +2095,13 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 92816480133640785, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 726856205564614705, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.73913
+      value: -1.73913
       objectReference: {fileID: 0}
     - target: {fileID: 726856205564614705, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
       propertyPath: m_LocalScale.y
@@ -2151,6 +2156,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 738940548478413957, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 738940548478413957, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
       propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
@@ -2172,7 +2181,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
       propertyPath: m_PropertySheet.m_Float.m_Array.Array.size
-      value: 28
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
       propertyPath: m_PropertySheet.m_Gradient.m_Array.Array.size
@@ -2319,8 +2328,28 @@ PrefabInstance:
       value: Fresnel Power
       objectReference: {fileID: 0}
     - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[28].m_Name
+      value: Star Sphere Distortion Size
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[29].m_Name
+      value: Star Sphere Power
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
       propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[2].m_Value
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[30].m_Name
+      value: Star Sphere Fresnel Power
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[31].m_Name
+      value: Star Sphere Explosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[32].m_Name
+      value: Destruction Dissolve Amount
       objectReference: {fileID: 0}
     - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
       propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[3].m_Value
@@ -2421,6 +2450,26 @@ PrefabInstance:
     - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
       propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[27].m_Value
       value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[28].m_Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[29].m_Value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[30].m_Value
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[31].m_Value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[32].m_Value
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
       propertyPath: m_PropertySheet.m_Gradient.m_Array.Array.data[0].m_Name
@@ -2868,6 +2917,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
       propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[27].m_Overridden
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[28].m_Overridden
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[29].m_Overridden
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[30].m_Overridden
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[31].m_Overridden
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[32].m_Overridden
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7347126332372060857, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
@@ -38080,7 +38149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9211135789248738155, guid: c2d49873384aa584791b001a27d4a338, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.03
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -58733,14 +58802,14 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
-  m_Intensity: 0.5
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 0.2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -58776,7 +58845,7 @@ Light:
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 3
+  m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
@@ -58792,13 +58861,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1528250405}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 26.251173, y: 11.92, z: 26.130466}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!43 &1559337616
 Mesh:
   m_ObjectHideFlags: 0
@@ -67111,11 +67180,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 538137417172398592, guid: 57b68b585e290714bbd31798c838c288, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 708694369653136250, guid: 57b68b585e290714bbd31798c838c288, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 881590131144288442, guid: 57b68b585e290714bbd31798c838c288, type: 3}
       propertyPath: m_LocalScale.x
@@ -67187,7 +67256,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2907510715664304114, guid: 57b68b585e290714bbd31798c838c288, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3257808038831168532, guid: 57b68b585e290714bbd31798c838c288, type: 3}
       propertyPath: m_Enabled
@@ -67199,11 +67268,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3725668495245412647, guid: 57b68b585e290714bbd31798c838c288, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4608060401549700022, guid: 57b68b585e290714bbd31798c838c288, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
