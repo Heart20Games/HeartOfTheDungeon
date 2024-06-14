@@ -20,6 +20,7 @@ public class Charger : BaseMonoBehaviour
     [Header("Events")]
     public UnityEvent onBegin;
     public UnityEvent<float> onCharge;
+    public UnityEvent<int> onChargeInt;
     public UnityEvent onCharged;
     public UnityEvent onInterrupt;
 
@@ -44,6 +45,7 @@ public class Charger : BaseMonoBehaviour
         {
             if (debug) print($"Charged to level {level}");
             onCharge.Invoke(level);
+            onChargeInt.Invoke(Mathf.FloorToInt(level));
             float waitTime = level >= chargeTimes.Length ? 1 : chargeTimes[level];
             yield return new WaitForSeconds(waitTime);
             if (interrupt) break;
