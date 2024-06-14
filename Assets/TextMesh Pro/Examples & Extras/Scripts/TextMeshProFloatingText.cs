@@ -5,7 +5,7 @@ using System.Collections;
 namespace TMPro.Examples
 {
 
-    public class TextMeshProFloatingText : BaseMonoBehaviour
+    public class TextMeshProFloatingText : MonoBehaviour
     {
         public Font TheFont;
 

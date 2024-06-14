@@ -509,6 +509,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Hold LockOn"",
+                    ""type"": ""Button"",
+                    ""id"": ""4fe38776-2f9d-494b-a085-fd8484a710b1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Toggle Skill Wheel"",
                     ""type"": ""Button"",
                     ""id"": ""ec6c4732-f5e7-4bf5-9111-3603ad942e20"",
@@ -1179,17 +1188,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""9a87fc62-2b98-41ae-bcd2-3d6a73dd9426"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Toggle LockOn"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""2830157a-312b-4075-a9a2-a19d6cb738c5"",
                     ""path"": ""<Keyboard>/l"",
                     ""interactions"": """",
@@ -1284,6 +1282,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""FlipCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""adc40cfe-9847-4708-8de5-a19cd0315498"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hold LockOn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2102,6 +2111,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""Hold LockOn"",
+                    ""type"": ""Button"",
+                    ""id"": ""fc41faf8-a1fc-4361-9418-dcd2de246d77"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Toggle LockOn"",
                     ""type"": ""Button"",
                     ""id"": ""d10d109c-2ec6-4734-9a3c-7c028af1ca72"",
@@ -2699,17 +2717,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""be29c964-0d26-4dbe-96f5-f6ea38f37e98"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Toggle LockOn"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""a479b615-22c4-4f6e-964f-d8fac44addb9"",
                     ""path"": ""<Keyboard>/l"",
                     ""interactions"": """",
@@ -2782,6 +2789,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Pause Screen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""be29c964-0d26-4dbe-96f5-f6ea38f37e98"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hold LockOn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2951,6 +2969,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Character_Look = m_Character.FindAction("Look", throwIfNotFound: true);
         m_Character_Aim = m_Character.FindAction("Aim", throwIfNotFound: true);
         m_Character_ToggleLockOn = m_Character.FindAction("Toggle LockOn", throwIfNotFound: true);
+        m_Character_HoldLockOn = m_Character.FindAction("Hold LockOn", throwIfNotFound: true);
         m_Character_ToggleSkillWheel = m_Character.FindAction("Toggle Skill Wheel", throwIfNotFound: true);
         m_Character_ToggleAiming = m_Character.FindAction("ToggleAiming", throwIfNotFound: true);
         m_Character_UseAgility = m_Character.FindAction("Use Agility", throwIfNotFound: true);
@@ -2998,6 +3017,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_LockOn_PauseScreen = m_LockOn.FindAction("Pause Screen", throwIfNotFound: true);
         m_LockOn_CharacterScreen = m_LockOn.FindAction("Character Screen", throwIfNotFound: true);
         m_LockOn_SwitchTargetsScroll = m_LockOn.FindAction("Switch Targets Scroll", throwIfNotFound: true);
+        m_LockOn_HoldLockOn = m_LockOn.FindAction("Hold LockOn", throwIfNotFound: true);
         m_LockOn_ToggleLockOn = m_LockOn.FindAction("Toggle LockOn", throwIfNotFound: true);
         m_LockOn_ToggleSkillWheel = m_LockOn.FindAction("Toggle Skill Wheel", throwIfNotFound: true);
         m_LockOn_ToggleAiming = m_LockOn.FindAction("ToggleAiming", throwIfNotFound: true);
@@ -3239,6 +3259,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_Look;
     private readonly InputAction m_Character_Aim;
     private readonly InputAction m_Character_ToggleLockOn;
+    private readonly InputAction m_Character_HoldLockOn;
     private readonly InputAction m_Character_ToggleSkillWheel;
     private readonly InputAction m_Character_ToggleAiming;
     private readonly InputAction m_Character_UseAgility;
@@ -3261,6 +3282,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Character_Look;
         public InputAction @Aim => m_Wrapper.m_Character_Aim;
         public InputAction @ToggleLockOn => m_Wrapper.m_Character_ToggleLockOn;
+        public InputAction @HoldLockOn => m_Wrapper.m_Character_HoldLockOn;
         public InputAction @ToggleSkillWheel => m_Wrapper.m_Character_ToggleSkillWheel;
         public InputAction @ToggleAiming => m_Wrapper.m_Character_ToggleAiming;
         public InputAction @UseAgility => m_Wrapper.m_Character_UseAgility;
@@ -3298,6 +3320,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ToggleLockOn.started += instance.OnToggleLockOn;
             @ToggleLockOn.performed += instance.OnToggleLockOn;
             @ToggleLockOn.canceled += instance.OnToggleLockOn;
+            @HoldLockOn.started += instance.OnHoldLockOn;
+            @HoldLockOn.performed += instance.OnHoldLockOn;
+            @HoldLockOn.canceled += instance.OnHoldLockOn;
             @ToggleSkillWheel.started += instance.OnToggleSkillWheel;
             @ToggleSkillWheel.performed += instance.OnToggleSkillWheel;
             @ToggleSkillWheel.canceled += instance.OnToggleSkillWheel;
@@ -3356,6 +3381,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ToggleLockOn.started -= instance.OnToggleLockOn;
             @ToggleLockOn.performed -= instance.OnToggleLockOn;
             @ToggleLockOn.canceled -= instance.OnToggleLockOn;
+            @HoldLockOn.started -= instance.OnHoldLockOn;
+            @HoldLockOn.performed -= instance.OnHoldLockOn;
+            @HoldLockOn.canceled -= instance.OnHoldLockOn;
             @ToggleSkillWheel.started -= instance.OnToggleSkillWheel;
             @ToggleSkillWheel.performed -= instance.OnToggleSkillWheel;
             @ToggleSkillWheel.canceled -= instance.OnToggleSkillWheel;
@@ -3682,6 +3710,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_LockOn_PauseScreen;
     private readonly InputAction m_LockOn_CharacterScreen;
     private readonly InputAction m_LockOn_SwitchTargetsScroll;
+    private readonly InputAction m_LockOn_HoldLockOn;
     private readonly InputAction m_LockOn_ToggleLockOn;
     private readonly InputAction m_LockOn_ToggleSkillWheel;
     private readonly InputAction m_LockOn_ToggleAiming;
@@ -3705,6 +3734,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @PauseScreen => m_Wrapper.m_LockOn_PauseScreen;
         public InputAction @CharacterScreen => m_Wrapper.m_LockOn_CharacterScreen;
         public InputAction @SwitchTargetsScroll => m_Wrapper.m_LockOn_SwitchTargetsScroll;
+        public InputAction @HoldLockOn => m_Wrapper.m_LockOn_HoldLockOn;
         public InputAction @ToggleLockOn => m_Wrapper.m_LockOn_ToggleLockOn;
         public InputAction @ToggleSkillWheel => m_Wrapper.m_LockOn_ToggleSkillWheel;
         public InputAction @ToggleAiming => m_Wrapper.m_LockOn_ToggleAiming;
@@ -3749,6 +3779,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwitchTargetsScroll.started += instance.OnSwitchTargetsScroll;
             @SwitchTargetsScroll.performed += instance.OnSwitchTargetsScroll;
             @SwitchTargetsScroll.canceled += instance.OnSwitchTargetsScroll;
+            @HoldLockOn.started += instance.OnHoldLockOn;
+            @HoldLockOn.performed += instance.OnHoldLockOn;
+            @HoldLockOn.canceled += instance.OnHoldLockOn;
             @ToggleLockOn.started += instance.OnToggleLockOn;
             @ToggleLockOn.performed += instance.OnToggleLockOn;
             @ToggleLockOn.canceled += instance.OnToggleLockOn;
@@ -3810,6 +3843,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwitchTargetsScroll.started -= instance.OnSwitchTargetsScroll;
             @SwitchTargetsScroll.performed -= instance.OnSwitchTargetsScroll;
             @SwitchTargetsScroll.canceled -= instance.OnSwitchTargetsScroll;
+            @HoldLockOn.started -= instance.OnHoldLockOn;
+            @HoldLockOn.performed -= instance.OnHoldLockOn;
+            @HoldLockOn.canceled -= instance.OnHoldLockOn;
             @ToggleLockOn.started -= instance.OnToggleLockOn;
             @ToggleLockOn.performed -= instance.OnToggleLockOn;
             @ToggleLockOn.canceled -= instance.OnToggleLockOn;
@@ -3991,6 +4027,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
         void OnToggleLockOn(InputAction.CallbackContext context);
+        void OnHoldLockOn(InputAction.CallbackContext context);
         void OnToggleSkillWheel(InputAction.CallbackContext context);
         void OnToggleAiming(InputAction.CallbackContext context);
         void OnUseAgility(InputAction.CallbackContext context);
@@ -4042,6 +4079,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnPauseScreen(InputAction.CallbackContext context);
         void OnCharacterScreen(InputAction.CallbackContext context);
         void OnSwitchTargetsScroll(InputAction.CallbackContext context);
+        void OnHoldLockOn(InputAction.CallbackContext context);
         void OnToggleLockOn(InputAction.CallbackContext context);
         void OnToggleSkillWheel(InputAction.CallbackContext context);
         void OnToggleAiming(InputAction.CallbackContext context);

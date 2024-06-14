@@ -7,7 +7,7 @@ using System;
 namespace TMPro
 {
 
-    public class TMP_TextEventHandler : BaseMonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class TMP_TextEventHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [Serializable]
         public class CharacterSelectionEvent : UnityEvent<char, int> { }

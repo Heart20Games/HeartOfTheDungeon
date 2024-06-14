@@ -5,7 +5,7 @@ using System.Collections;
 namespace TMPro.Examples
 {
     
-    public class ObjectSpin : BaseMonoBehaviour
+    public class ObjectSpin : MonoBehaviour
     {
 
 #pragma warning disable 0414
