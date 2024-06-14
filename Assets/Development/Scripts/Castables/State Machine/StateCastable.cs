@@ -9,7 +9,7 @@ using static CastCoordinator;
 
 namespace HotD.Castables
 {
-    public enum CastState { None, Init, Equipped, Activating, Executing }
+    public enum CastState { None, Init, Equipped, Activating, Executing, Cooldown }
 
     [Serializable]
     public struct StateTransition
@@ -48,7 +48,8 @@ namespace HotD.Castables
         // State
         [Foldout("State", true)]
         public CastState state;
-        [ReadOnly] public int executorCount;
+        [Tooltip("Executors are found among child objects on Awake.")]
+        [ReadOnly][SerializeField] private int executorCount;
         public List<StateTransition> transitions = new();
         public List<StateAction> queuedActions = new();
         public List<StateAction> dequeuedActions = new();
@@ -66,11 +67,11 @@ namespace HotD.Castables
             {
                 executorBank.Add(state, new());
             }
+            // Finds Executors Among Children At Runtime
             executorCount = 0;
             foreach (Transform child in transform)
             {
-                var executor = child.GetComponent<CastStateExecutor>();
-                if (executor)
+                if (child.TryGetComponent<CastStateExecutor>(out var executor))
                 {
                     executorList.Add(executor);
                     executorBank[executor.State].Add(executor);
@@ -237,6 +238,23 @@ namespace HotD.Castables
             }
         }
 
+        private void RemoveTransition(StateTransition transition)
+        {
+            if (FindTransitionBase(transition, out int index))
+            {
+                if (transition.triggerActions == transitions[index].triggerActions)
+                {
+                    transitions.RemoveAt(index);
+                }
+                else
+                {
+                    // ( toRemove XOR alreadyHave ) AND alreadyHave -- result includes only bits not in the removed transition actions.
+                    CastAction actions = (transition.triggerActions ^ transitions[index].triggerActions) & transitions[index].triggerActions;
+                    transitions[index] = new(transitions[index].source, actions, transitions[index].destination);
+                }
+            }
+        }
+
         // Quick Set-up Methods
 
         [ButtonMethod]
@@ -262,6 +280,14 @@ namespace HotD.Castables
             AddTransition(new(CastState.Equipped, CastAction.Trigger, CastState.Activating));
             AddTransition(new(CastState.Activating, CastAction.End, CastState.Executing));
             AddTransition(new(CastState.Executing, CastAction.End, CastState.Equipped));
+        }
+
+        [ButtonMethod]
+        public void AddCooldownTransitions()
+        {
+            RemoveTransition(new(CastState.Executing, CastAction.End, CastState.Equipped));
+            AddTransition(new(CastState.Executing, CastAction.End, CastState.Cooldown));
+            AddTransition(new(CastState.Cooldown, CastAction.End, CastState.Equipped));
         }
 
         [ButtonMethod]
