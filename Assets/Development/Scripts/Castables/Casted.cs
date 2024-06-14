@@ -117,6 +117,10 @@ namespace HotD.Castables
         }
 
         // Power Level
+        public void SetPowerLevel(int powerLevel)
+        {
+            SetPowerLevel((float)powerLevel);
+        }
         public void SetPowerLevel(float powerLevel)
         {
             if (debug) print($"Set Power Level {powerLevel}");

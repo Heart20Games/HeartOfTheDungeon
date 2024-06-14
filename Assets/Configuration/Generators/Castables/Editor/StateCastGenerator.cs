@@ -347,7 +347,7 @@ namespace HotD.Generators
             UnityEventTools.AddPersistentListener(castable.onRelease, casted.OnRelease);
             UnityEventTools.AddPersistentListener(castable.onCast, casted.OnCast);
             UnityEventTools.AddPersistentListener(castable.onUnCast, casted.OnUnCast);
-            UnityEventTools.AddPersistentListener(castable.onSetPowerLevel, (int value) => { casted.SetPowerLevel(value); });
+            UnityEventTools.AddPersistentListener(castable.onSetPowerLevel, casted.SetPowerLevel);
         }
 
 

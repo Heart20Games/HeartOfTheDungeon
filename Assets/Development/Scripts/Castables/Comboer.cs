@@ -31,11 +31,13 @@ public class Comboer : BaseMonoBehaviour
 
     public void AddStep(int step, GameObject comboObject)
     {
+        comboSteps ??= new();
         comboSteps.Add(new ComboStep(step, comboObject));
     }
 
     public void SetStep(int step)
     {
+        comboSteps ??= new();
         foreach (var comboStep in comboSteps)
         {
             comboStep.comboObject.SetActive(comboStep.step == step);

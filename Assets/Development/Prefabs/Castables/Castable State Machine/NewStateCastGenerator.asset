@@ -19,23 +19,60 @@ MonoBehaviour:
   replace: 1
   emptyTest: 0
   fullDirectory: Assets/Development/Prefabs/Castables/Castable State Machine/TestCastItem
-  timeOfLastGeneration: 391.65588
+  timeOfLastGeneration: 837.9165
   settings:
     followBody: 0
     castOnTrigger: 0
     castOnRelease: 1
     unCastOnRelease: 0
     castOnChargeUp: 1
-  stats: {fileID: 11400000, guid: 31192fe2afe30614f844b4ddc02cdcb8, type: 2}
+  stats: {fileID: 11400000, guid: acc746f74347cdb42bcab74a55a02b29, type: 2}
   chargeTimes:
-  - 0
-  - 0
-  - 0
-  effects: []
-  targetingMethod: 0
-  aimingMethod: 0
-  executions: []
-  outputs: []
-  prefab: {fileID: 7954601809811998102, guid: 09352656b7c88fc42b1cc822234de2c2, type: 3}
+  - 0.05
+  - 3
+  - 4
+  effects:
+  - name: MB Cast Point
+    casted: {fileID: 4832110597611120834, guid: 21c9eb078add5f144a14a139e317f2f6, type: 3}
+    source: 2
+    target: 2
+    chargeLevels: {x: 0, y: 0}
+    comboSteps: {x: 0, y: 0}
+  targetingMethod: 4
+  aimingMethod: 1
+  executions:
+  - name: Small Bolt
+    method: 1
+    source: 0
+    target: 2
+    chargeLevels: {x: 1, y: 2}
+    comboSteps: {x: 0, y: 0}
+    colliderPrefab: {fileID: 0}
+    projectileLifeSpan: 3
+    projectilePrefab: {fileID: 1265971933285588912, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
+  - name: Follow Bolt
+    method: 1
+    source: 0
+    target: 2
+    chargeLevels: {x: 2, y: 3}
+    comboSteps: {x: 0, y: 0}
+    colliderPrefab: {fileID: 0}
+    projectileLifeSpan: 3
+    projectilePrefab: {fileID: 6905857983329156208, guid: 34118f11da5906c4da1b4afd206d1316, type: 3}
+  - name: Super Laser
+    method: 0
+    source: 1
+    target: 1
+    chargeLevels: {x: 3, y: 10}
+    comboSteps: {x: 0, y: 0}
+    colliderPrefab: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+    projectileLifeSpan: 3
+    projectilePrefab: {fileID: 1265971933285588912, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
+  outputs:
+  - alias: TestCastItem
+    targets:
+    - slot: 2
+      loadout: {fileID: 11400000, guid: d48a3852097c5e447a1e86341c71ab53, type: 2}
+  prefab: {fileID: 9109740875726187553, guid: 09352656b7c88fc42b1cc822234de2c2, type: 3}
   items:
   - {fileID: 11400000, guid: 2cabb7c2f3539ed4799037cbe5a26b01, type: 2}
