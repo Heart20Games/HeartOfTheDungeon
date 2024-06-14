@@ -300,15 +300,189 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3436195197084661273, guid: 7c3eb919346119b41a5af941b884883f, type: 3}
+      propertyPath: onCharge.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3436195197084661273, guid: 7c3eb919346119b41a5af941b884883f, type: 3}
+      propertyPath: onCharge.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3436195197084661273, guid: 7c3eb919346119b41a5af941b884883f, type: 3}
+      propertyPath: onCharge.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3436195197084661273, guid: 7c3eb919346119b41a5af941b884883f, type: 3}
+      propertyPath: onCharge.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 459876551}
+    - target: {fileID: 3436195197084661273, guid: 7c3eb919346119b41a5af941b884883f, type: 3}
+      propertyPath: onCharge.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3436195197084661273, guid: 7c3eb919346119b41a5af941b884883f, type: 3}
+      propertyPath: onCharge.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3436195197084661273, guid: 7c3eb919346119b41a5af941b884883f, type: 3}
+      propertyPath: onCharge.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_PowerLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 3436195197084661273, guid: 7c3eb919346119b41a5af941b884883f, type: 3}
+      propertyPath: onCharge.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HotD.Castables.CastableProperties, Core
+      objectReference: {fileID: 0}
+    - target: {fileID: 3436195197084661273, guid: 7c3eb919346119b41a5af941b884883f, type: 3}
+      propertyPath: onCharge.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6669269691476346238, guid: 7c3eb919346119b41a5af941b884883f, type: 3}
       propertyPath: m_Name
       value: CastStateTest
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 2919104870091448915, guid: 7c3eb919346119b41a5af941b884883f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 560493689}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c3eb919346119b41a5af941b884883f, type: 3}
+--- !u!114 &459876551 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9023533805528778401, guid: 7c3eb919346119b41a5af941b884883f, type: 3}
+  m_PrefabInstance: {fileID: 459876550}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b915fc48b630043a509ce34e1da8b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &459876552 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2919104870091448915, guid: 7c3eb919346119b41a5af941b884883f, type: 3}
+  m_PrefabInstance: {fileID: 459876550}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &560493688
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 560493689}
+  - component: {fileID: 560493690}
+  m_Layer: 0
+  m_Name: Cooldown
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &560493689
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560493688}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 459876552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &560493690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560493688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b915fc48b630043a509ce34e1da8b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fields:
+    rOffset: 0
+    weaponArt: {fileID: 0}
+    pivot: {fileID: 0}
+    direction: {x: 0, y: 0, z: 0}
+    followBody: 0
+    actionIndex: 0
+    item: {fileID: 0}
+    maxPowerLevel: 0
+    curPowerLevel: 0
+    casting: 0
+    castOnTrigger: 1
+    castOnRelease: 0
+    unCastOnRelease: 0
+    castingMethods: []
+    toLocations: []
+    positionables: []
+    effects: []
+    identity: 0
+    damager: {fileID: 0}
+    triggerStatuses: []
+    castStatuses: []
+    hitStatuses: []
+    pivotDirection: {x: 0, y: 0, z: 0}
+  castOnTrigger: 1
+  castOnRelease: 0
+  unCastOnRelease: 0
+  onSetPowerLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetMaxPowerLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetIdentity:
+    m_PersistentCalls:
+      m_Calls: []
+  onTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onCasted:
+    m_PersistentCalls:
+      m_Calls: []
+  state: 4
+  onAction:
+    m_PersistentCalls:
+      m_Calls: []
+  supportedActions:
+  - name: Cast on Start
+    triggerAction: 4
+    sendToCoordinator: 2
+    waitForPerformance: 0
+    startAction:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: Finish
+    triggerAction: 32
+    sendToCoordinator: 0
+    waitForPerformance: 1
+    startAction:
+      m_PersistentCalls:
+        m_Calls: []
+  actionsToPerform: []
+  debug: 0
+  testAction:
+    state: 0
+    action: 0
 --- !u!1 &1069748800
 GameObject:
   m_ObjectHideFlags: 0

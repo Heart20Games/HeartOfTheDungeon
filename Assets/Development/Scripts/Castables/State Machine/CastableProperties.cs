@@ -54,6 +54,12 @@ namespace HotD.Castables
             set { fields.identity = value; onSetIdentity.Invoke(value); }
         }
 
+        // Setters
+        public void SetPowerLevel(int value)
+        {
+            PowerLevel = value;
+        }
+
         // Events
         [Foldout("Events", true)]
         public bool castOnTrigger = true;

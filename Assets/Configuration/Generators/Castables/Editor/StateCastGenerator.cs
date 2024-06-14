@@ -14,15 +14,14 @@ using static CastCoordinator;
 
 namespace HotD.Generators
 {
-    using HotD.Castables;
+    using Castables;
 
-    [CreateAssetMenu(fileName = "NewCastableGenerator", menuName = "Loadouts/Castable Generator", order = 1)]
-    public class CastableGenerator : ScriptableObject
+    [CreateAssetMenu(fileName = "NewStateCastGenerator", menuName = "Loadouts/State Cast Generator", order = 1)]
+    public class StateCastGenerator : Generator
     {
         public enum ExecutionMethod { ColliderBased, ProjectileBased, SelectionBased }
 
         [Header("Parameters")]
-        public string outputName = "New Castable";
         public CastableSettings settings = new();
         [Space]
         public CastableStats stats;
@@ -37,15 +36,9 @@ namespace HotD.Generators
         public List<Execution> executions;
 
         [Header("Results")]
-        public string castablesDirectory = "Assets/Configuration/Castables/";
-        public bool createSubFolder = true;
-        public bool overwrite = true;
-        public bool replace = true;
         public List<Outputs> outputs;
-        [ReadOnly] public string fullDirectory = "";
         [ReadOnly] public GameObject prefab;
         [ReadOnly] public List<CastableItem> items = new();
-        [ReadOnly] public float timeOfLastGeneration;
 
         [Serializable]
         public struct Outputs
@@ -61,7 +54,7 @@ namespace HotD.Generators
         }
 
         // Generate All Castables
-        static public List<CastableGenerator> generators = new();
+        static public List<StateCastGenerator> generators = new();
         [MenuItem("Tools / Generate Castables")]
         static public void GenerateAllCastables()
         {
@@ -73,6 +66,7 @@ namespace HotD.Generators
         }
 
         // Generate Castable
+        [ButtonMethod]
         public void GenerateCastable()
         {
             if (!Application.isEditor)
@@ -113,11 +107,33 @@ namespace HotD.Generators
                     GameObject gameObject = new(outputName);
                     Pivot pivot = GeneratePivot(gameObject);
 
-                    // Components
-                    Castable castable = GenerateCastableBase(gameObject, pivot);
+                    // Base
+                    StateCastable castable = GenerateCastableBase(gameObject, pivot);
                     Damager damager = GenerateDamager(castable, gameObject);
-                    Charger charger = GenerateCharger(castable, gameObject);
-                    Timer coolDownTimer = GenerateCooldownTimer(castable, gameObject);
+                    castable.AddBaseTransitions();
+
+                    // Activation
+                    DelegatedExecutor activationExecutor = GenerateExecutor(castable, CastState.Activating, "Activation");
+                    if (stats.useChargeUp)
+                    {
+                        castable.AddChargeTransitions();
+                        Charger charger = GenerateCharger(activationExecutor);
+                    }
+
+                    // Execution
+                    DelegatedExecutor executionExecutor = GenerateExecutor(castable, CastState.Executing, "Execution");
+                    if (executions.Count > 0)
+                    {
+                        GenerateComboer(executionExecutor, stats, pivot, gameObject, damager);
+                    }
+
+                    // Cooldown
+                    if (stats.useCooldown)
+                    {
+                        DelegatedExecutor cooldownExecutor = GenerateExecutor(castable, CastState.Cooldown, "Cooldown");
+                        castable.AddCooldownTransitions();
+                        Timer coolDownTimer = GenerateCooldownTimer(cooldownExecutor);
+                    }
 
                     // Effects
                     foreach (var effect in effects)
@@ -136,12 +152,6 @@ namespace HotD.Generators
                         case TargetingMethod.TargetBased: break;
                         case TargetingMethod.LocationBased: break;
                         case TargetingMethod.DirectionBased: break;
-                    }
-
-                    // Execution Methods
-                    foreach (Execution execution in executions)
-                    {
-                        execution.PrepareExecutionMethod(castable, stats, pivot, gameObject, damager);
                     }
 
                     // Save to Prefab
@@ -188,9 +198,9 @@ namespace HotD.Generators
             return pivot;
         }
 
-        private Castable GenerateCastableBase(GameObject gameObject, Pivot pivot)
+        private StateCastable GenerateCastableBase(GameObject gameObject, Pivot pivot)
         {
-            Castable castable = gameObject.AddComponent<Castable>();
+            StateCastable castable = gameObject.AddComponent<StateCastable>();
             castable.onSetPowerLevel ??= new();
             castable.onSetIdentity ??= new();
             castable.onCast ??= new();
@@ -203,43 +213,84 @@ namespace HotD.Generators
             return castable;
         }
 
-        private Charger GenerateCharger(Castable castable, GameObject gameObject)
+        private DelegatedExecutor GenerateExecutor(StateCastable castable, CastState executorState, string executorName)
         {
             Assert.IsNotNull(castable);
-            if (stats.useChargeUp)
-            {
-                Charger charger = gameObject.AddComponent<Charger>();
-                charger.onBegin = new();
-                charger.onCharge = new();
-                charger.onCharged = new();
-                charger.onInterrupt = new();
-                charger.chargeTimes = chargeTimes;
-                charger.chargeLimit = stats.chargeLimit;
-                
-                // Start Transition
-                UnityEventTools.AddPersistentListener(castable.onTrigger, charger.Begin);
-                UnityEventTools.AddPersistentListener(castable.onRelease, charger.Interrupt);
-                UnityEventTools.AddPersistentListener(charger.onCharge, (float value) => { castable.PowerLevel = (int)value; });
-                if (settings.castOnChargeUp)
-                    UnityEventTools.AddPersistentListener(charger.onCharged, () => { castable.Cast(); });
-                return charger;
-            }
-            else return null;
+
+            GameObject gameObject = new(executorName);
+            DelegatedExecutor executor = gameObject.AddComponent<DelegatedExecutor>();
+            executor.State = executorState;
+
+            // Needs to be a child of the StateCastable
+            gameObject.transform.SetParent(castable.gameObject.transform);
+
+            return executor;
         }
 
-        private Timer GenerateCooldownTimer(Castable castable, GameObject gameObject)
+        private Charger GenerateCharger(DelegatedExecutor executor)
         {
-            Assert.IsNotNull(castable);
-            if (stats.useCooldown)
+            Assert.IsNotNull(executor);
+            
+            Charger charger = executor.gameObject.AddComponent<Charger>();
+            charger.onBegin = new();
+            charger.onCharge = new();
+            charger.onChargeInt = new();
+            charger.onCharged = new();
+            charger.onInterrupt = new();
+            charger.chargeTimes = chargeTimes;
+            charger.chargeLimit = stats.chargeLimit;
+
+            // Start Transition
+            ActionEvent startTransition = new("Start", CastAction.Start, Triggers.StartAction, false);
+            UnityEventTools.AddPersistentListener(startTransition.startAction, charger.Begin);
+            executor.supportedActions.Add(startTransition);
+
+            // Release Transition
+            ActionEvent releaseTransition = new("Release", CastAction.Start, Triggers.None, true);
+            executor.supportedActions.Add(releaseTransition);
+            //UnityEventTools.AddPersistentListener(releaseTransition.startAction, charger.Interrupt);
+
+            // Keep Power Level Updated
+            UnityEventTools.AddPersistentListener(charger.onChargeInt, executor.SetPowerLevel);
+                
+            // Executor On Full Charge?
+            if (settings.castOnChargeUp)
+                UnityEventTools.AddPersistentListener(charger.onCharged, executor.End);
+                
+            return charger;
+        }
+
+        public void GenerateComboer(DelegatedExecutor executor, CastableStats stats, Pivot pivot, GameObject gameObject, Damager damager = null)
+        {
+            Assert.IsNotNull(executor);
+
+            Comboer comboer = executor.gameObject.AddComponent<Comboer>();
+
+            for (int i = 0; i < executions.Count; i++)
             {
-                Timer coolDownTimer = gameObject.AddComponent<Timer>();
-                coolDownTimer.onComplete = new();
-                coolDownTimer.length = stats.Cooldown; // TODO: Account for bonuses
-                UnityEventTools.AddVoidPersistentListener(castable.onCast, coolDownTimer.Play);
-                UnityEventTools.AddPersistentListener(coolDownTimer.onComplete, castable.UnCast);
-                return coolDownTimer;
+                Execution execution = executions[i];
+                Casted casted = execution.PrepareExecutionMethod(executor, stats, pivot, gameObject, damager);
+                comboer.AddStep(i + 1, casted.gameObject);
             }
-            else return null;
+        }
+
+        private Timer GenerateCooldownTimer(DelegatedExecutor executor)
+        {
+            Assert.IsNotNull(executor);
+
+            Timer coolDownTimer = executor.gameObject.AddComponent<Timer>();
+            coolDownTimer.onComplete = new();
+            coolDownTimer.length = stats.Cooldown; // TODO: Account for bonuses
+
+            // Start Transition
+            ActionEvent startTransition = new("Start", CastAction.Start, Triggers.None, false);
+            UnityEventTools.AddVoidPersistentListener(startTransition.startAction, coolDownTimer.Play);
+            executor.supportedActions.Add(startTransition);
+
+            // Finish on Timer Complete
+            UnityEventTools.AddPersistentListener(coolDownTimer.onComplete, executor.End);
+
+            return coolDownTimer;
         }
 
         private Damager GenerateDamager(CastableProperties castable, GameObject gameObject)
@@ -412,29 +463,30 @@ namespace HotD.Generators
             [ConditionalField("method", false, ExecutionMethod.ProjectileBased)]
             public Projectile projectilePrefab;
 
-            public readonly void PrepareExecutionMethod(Castable castable, CastableStats stats, Pivot pivot, GameObject gameObject, Damager damager = null)
+            public readonly Casted PrepareExecutionMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, GameObject gameObject, Damager damager = null)
             {
-                switch (method)
+                return method switch
                 {
-                    case ExecutionMethod.ColliderBased: PrepareCollisionMethod(castable, stats, pivot, damager); break;
-                    case ExecutionMethod.ProjectileBased: PrepareProjectileMethod(castable, stats, pivot, gameObject, damager); break;
-                    case ExecutionMethod.SelectionBased: break;
-                }
+                    ExecutionMethod.ColliderBased => PrepareCollisionMethod(executor, stats, pivot, damager),
+                    ExecutionMethod.ProjectileBased => PrepareProjectileMethod(executor, stats, pivot, damager),
+                    ExecutionMethod.SelectionBased => null,
+                    _ => null,
+                };
             }
 
-            public readonly void PrepareCollisionMethod(Castable castable, CastableStats stats, Pivot pivot, Damager damager = null)
+            public readonly Casted PrepareCollisionMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
             {
                 pivot.enabled = false;
                 if (colliderPrefab != null)
                 {
                     CastedCollider collider = (PrefabUtility.InstantiatePrefab(colliderPrefab.gameObject) as GameObject).GetComponent<CastedCollider>(); // , pivot.transform);
                     collider.transform.SetParent(pivot.transform);
-                    ConnectCastedComponent(collider, castable, stats);
+                    ConnectCastedComponent(collider, executor, stats);
                     collider.powerRange = chargeLevels;
                     collider.comboRange = comboSteps;
 
-                    castable.fields.toLocations.Add(new(collider, source, target));
-                    castable.castingMethods.Add(collider.gameObject);
+                    executor.fields.toLocations.Add(new(collider, source, target));
+                    executor.fields.castingMethods.Add(collider.gameObject);
                     
                     if (damager != null)
                     {
@@ -443,20 +495,23 @@ namespace HotD.Generators
                         UnityEventTools.AddPersistentListener(collider.hitDamageable, damager.HitDamageable);
                         UnityEventTools.AddPersistentListener(collider.leftDamageable, damager.LeftDamageable);
                     }
+
+                    return collider;
                 }
+                return null;
             }
 
-            public readonly void PrepareProjectileMethod(Castable castable, CastableStats stats, Pivot pivot, GameObject gameObject, Damager damager = null)
+            public readonly Casted PrepareProjectileMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
             {
                 GameObject castedObject = new(name);
                 castedObject.transform.parent = pivot.transform;
-                castable.castingMethods.Add(castedObject);
+                executor.fields.castingMethods.Add(castedObject);
                 
                 GameObject pivotObject = new($"{name} Pivot");
                 pivotObject.transform.parent = castedObject.transform;
                 Pivot castedPivot = pivotObject.AddComponent<Pivot>();
 
-                Casted casted = AddCastedComponent(castedObject, castable, stats);
+                Casted casted = AddCastedComponent(castedObject, executor, stats);
                 casted.powerRange = chargeLevels;
                 casted.comboRange = comboSteps;
 
@@ -466,7 +521,7 @@ namespace HotD.Generators
                 spawner.lifeSpan = projectileLifeSpan;
                 spawner.applyOnSet = false;
                 castedPivot.enabled = false;
-                castable.fields.toLocations.Add(new(spawner, source, target));
+                executor.fields.toLocations.Add(new(spawner, source, target));
 
                 if (projectilePrefab != null)
                 {
@@ -483,42 +538,44 @@ namespace HotD.Generators
                         UnityEventTools.AddPersistentListener(projectile.leftDamageable, damager.LeftDamageable);
                     }
                 }
+
+                return casted;
             }
         }
 
 
-        // Results
+        //// Results
 
-        private void PrepareResultDirectory()
-        {
-            fullDirectory = castablesDirectory;
+        //private void PrepareResultDirectory()
+        //{
+        //    fullDirectory = baseDirectory;
 
-            // Adjust for adding a sub folder using the output name.
-            if (createSubFolder)
-            {
-                // Fix the Directory components to make sure they're valid.
-                if (!fullDirectory.EndsWith('/'))
-                {
-                    fullDirectory += "/";
-                }
-                fullDirectory += outputName;
-            }
+        //    // Adjust for adding a sub folder using the output name.
+        //    if (createSubFolder)
+        //    {
+        //        // Fix the Directory components to make sure they're valid.
+        //        if (!fullDirectory.EndsWith('/'))
+        //        {
+        //            fullDirectory += "/";
+        //        }
+        //        fullDirectory += outputName;
+        //    }
 
-            // Loop through directories, creating them as necessary.
-            string[] steps = (fullDirectory).Split('/', System.StringSplitOptions.RemoveEmptyEntries);
-            string lastPath = steps[0];
-            for (int i = 1; i < steps.Length; i++)
-            {
-                if (steps[i].Trim() != "")
-                {
-                    string path = string.Join('/', steps, 0, i + 1);
-                    if (!AssetDatabase.IsValidFolder(path))
-                    {
-                        AssetDatabase.CreateFolder(lastPath, steps[i]);
-                    }
-                    lastPath = path;
-                }
-            }
-        }
+        //    // Loop through directories, creating them as necessary.
+        //    string[] steps = (fullDirectory).Split('/', System.StringSplitOptions.RemoveEmptyEntries);
+        //    string lastPath = steps[0];
+        //    for (int i = 1; i < steps.Length; i++)
+        //    {
+        //        if (steps[i].Trim() != "")
+        //        {
+        //            string path = string.Join('/', steps, 0, i + 1);
+        //            if (!AssetDatabase.IsValidFolder(path))
+        //            {
+        //                AssetDatabase.CreateFolder(lastPath, steps[i]);
+        //            }
+        //            lastPath = path;
+        //        }
+        //    }
+        //}
     }
 }
