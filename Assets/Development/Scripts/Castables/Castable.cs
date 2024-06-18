@@ -8,93 +8,17 @@ namespace HotD.Castables
 {
     using HotD.Body;
     using MyBox;
-    using System;
-    using static global::Body.Behavior.ContextSteering.CSIdentity;
-    using static HotD.Castables.CastableToLocation;
 
     public class Castable : CastableProperties, ICastable
     {
-        // Positioning
-        //[Foldout("Positioning and Following", true)]
-        //[Header("Positioning and Following")]
-        //public CastableItem item;
-        //public CastableItem GetItem() { return item; }
-        //public Transform weaponArt;
-        //public Transform pivot;
-        //[ReadOnly][SerializeField] Vector3 pivotDirection;
-        //public float rOffset = 0;
-        //[Foldout("Positioning and Following")]
-        //public bool followBody = true;
-        //[HideInInspector] public Character source;
-
-        //[SerializeField] private bool debug;
-        //private Vector3 direction;
-        //public virtual Vector3 Direction { get => direction; set => direction = value; }
-
-        //[Foldout("Power Level", true)]
-        //[Header("Power Level")]
-        //[ReadOnly][SerializeField] private float powerLevel;
-        //public float PowerLevel { get => powerLevel; set => SetPowerLevel(value); }
-        //public void SetPowerLevel(float powerLevel) { this.powerLevel = powerLevel; onSetPowerLevel.Invoke(this.powerLevel); }
-        //public UnityEvent<float> onSetPowerLevel;
-
-        //[ReadOnly][SerializeField] private int maxPowerLevel = 1;
-        //public int MaxPowerLevel { get => maxPowerLevel; set => maxPowerLevel = value; }
-        //public void SetMaxPowerLevel(int maxPowerLevel) { this.maxPowerLevel = maxPowerLevel; onSetMaxPowerLevel.Invoke(this.maxPowerLevel); }
-        //public UnityEvent<int> onSetMaxPowerLevel;
-
-        //[Foldout("Positionables", true)]
-        //[Header("Things to Position")]
-        //public List<ToLocation<Positionable>> toLocations = new();
-        //public List<Transform> positionables;
-        //public List<CastedVFX> effects = new();
-
-        //// Statuses
-        //[Foldout("Statuses", true)]
-        //[Header("Statuses")]
-        //public List<Status> triggerStatuses;
-        //public List<Status> castStatuses;
-        //public List<Status> hitStatuses;
-
-        //// Damage
-        //[Foldout("Identity and Damage", true)]
-        //[Header("Identity and Damage")]
-        //private Identity identity = Identity.Neutral;
-        //public Identity Identity
-        //{
-        //    get => identity;
-        //    set
-        //    {
-        //        identity = value;
-        //        onSetIdentity.Invoke(identity);
-        //    }
-        //}
-        //public UnityEvent<Identity> onSetIdentity;
-        //private Damager damager;
-
         // Events
         [Foldout("Casting", true)]
         [Header("Casting")]
         public List<GameObject> castingMethods = new();
         public bool casting = false;
         public virtual bool CanCast { get => !casting; }
-        //public bool castOnTrigger = true;
-        //public bool castOnRelease = false;
-        //public bool unCastOnRelease = false;
-        //public UnityEvent onTrigger;
-        //public UnityEvent<Vector3> onCast;
-        //public UnityEvent onRelease;
-        //public UnityEvent onUnCast;
-        //public UnityEvent onCasted;
-
+        
         public bool debug;
-
-
-        // Initialization
-        //private void Awake()
-        //{
-        //    damager = GetComponent<Damager>();
-        //}
 
         public virtual void Initialize(Character owner)
         {
@@ -102,12 +26,6 @@ namespace HotD.Castables
         }
         public override void Initialize(ICastCompatible owner, CastableItem item = null, int action=0)
         {
-            //this.item = item;
-            //this.source = source;
-            //Identity = source.Identity;
-            //if (damager != null) { damager.Ignore(source.body); }
-            //owner.artRenderer.DisplayWeapon(weaponArt);
-
             base.Initialize(owner, item, action);
 
             // Positioning
@@ -123,9 +41,12 @@ namespace HotD.Castables
             }
             foreach (var toLocation in fields.toLocations)
             {
-                Transform toSource = toLocation.GetSourceTransform(owner as Character);
-                Transform toTarget = toLocation.GetTargetTransform(owner as Character);
-                toLocation.toMove.SetOrigin(toSource, toTarget);
+                if (owner is Character)
+                {
+                    Transform toSource = toLocation.GetSourceTransform(owner as Character);
+                    Transform toTarget = toLocation.GetTargetTransform(owner as Character);
+                    toLocation.toMove.SetOrigin(toSource, toTarget);
+                }
                 if (toLocation.toMove.TryGetComponent<CastedVFX>(out var vfx))
                 {
                     fields.effects.Add(vfx);

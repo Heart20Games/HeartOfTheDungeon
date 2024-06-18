@@ -5,8 +5,9 @@ using UnityEngine.Events;
 
 public class Timer : BaseMonoBehaviour
 {
-    public float length;
-    public bool playOnStart = false;
+    [SerializeField] public float length;
+    [SerializeField] public bool playOnStart = false;
+    [SerializeField] private bool debug = false;
 
     public UnityEvent onPlay;
     public UnityEvent onComplete;
@@ -20,7 +21,7 @@ public class Timer : BaseMonoBehaviour
     {
         onPlay.Invoke();
         StartCoroutine(RunTimer());
-        Debug.Log("Pl");
+        Print("Play", debug, this);
     }
 
     public IEnumerator RunTimer()

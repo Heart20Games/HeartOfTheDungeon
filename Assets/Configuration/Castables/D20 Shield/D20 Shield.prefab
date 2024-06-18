@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6119185740610628800
+--- !u!1 &4546339277469830313
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4962179867726287366}
-  - component: {fileID: 1058757466032490036}
+  - component: {fileID: 4323202140390633526}
+  - component: {fileID: 9159394460441551989}
   m_Layer: 0
   m_Name: D20 Shield
   m_TagString: Untagged
@@ -17,49 +17,75 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4962179867726287366
+--- !u!4 &4323202140390633526
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6119185740610628800}
+  m_GameObject: {fileID: 4546339277469830313}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4169387542703627144}
-  - {fileID: 6281160127613692149}
+  - {fileID: 1900506451179308222}
+  - {fileID: 5788976664800767774}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1058757466032490036
+--- !u!114 &9159394460441551989
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6119185740610628800}
+  m_GameObject: {fileID: 4546339277469830313}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b80a7ea508bfd494c8639b88a320691c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 0}
-  weaponArt: {fileID: 0}
-  pivot: {fileID: 4169387542703627144}
-  pivotDirection: {x: 0, y: 0, z: 0}
-  rOffset: 0
-  followBody: 1
-  source: {fileID: 0}
-  debug: 0
-  powerLevel: 0
+  fields:
+    rOffset: 0
+    weaponArt: {fileID: 0}
+    pivot: {fileID: 1900506451179308222}
+    direction: {x: 0, y: 0, z: 0}
+    followBody: 1
+    actionIndex: 0
+    item: {fileID: 0}
+    maxPowerLevel: 0
+    curPowerLevel: 0
+    casting: 0
+    castOnTrigger: 1
+    castOnRelease: 0
+    unCastOnRelease: 0
+    castingMethods:
+    - {fileID: 2018779451155193041}
+    toLocations:
+    - name: Body/Body
+      toMove: {fileID: 5649229768863773895}
+      source: 1
+      target: 1
+    positionables: []
+    effects: []
+    identity: 0
+    damager: {fileID: 0}
+    triggerStatuses: []
+    castStatuses:
+    - name: Shield
+      effect: {fileID: 11400000, guid: 33cc3ac5086c359489e77991f45991d8, type: 2}
+      strength: 10
+    hitStatuses: []
+    pivotDirection: {x: 0, y: 0, z: 0}
+  castOnTrigger: 1
+  castOnRelease: 0
+  unCastOnRelease: 1
   onSetPowerLevel:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5267983180460503852}
-        m_TargetAssemblyTypeName: HotD.Castables.Casted, Assembly-CSharp
+      - m_Target: {fileID: 5649229768863773895}
+        m_TargetAssemblyTypeName: HotD.Castables.Casted, Core
         m_MethodName: SetPowerLevel
         m_Mode: 0
         m_Arguments:
@@ -70,37 +96,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  maxPowerLevel: 1
   onSetMaxPowerLevel:
     m_PersistentCalls:
       m_Calls: []
-  toLocations:
-  - name: Character/Character
-    toMove: {fileID: 5267983180460503852}
-    source: 0
-    target: 0
-  positionables: []
-  effects: []
-  triggerStatuses: []
-  castStatuses:
-  - name: Shield
-    effect: {fileID: 11400000, guid: 33cc3ac5086c359489e77991f45991d8, type: 2}
-    strength: 10
-  hitStatuses: []
   onSetIdentity:
     m_PersistentCalls:
       m_Calls: []
-  castingMethods:
-  - {fileID: 1979788842782022458}
-  casting: 0
-  castOnTrigger: 1
-  castOnRelease: 0
-  unCastOnRelease: 1
   onTrigger:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5267983180460503852}
-        m_TargetAssemblyTypeName: HotD.Castables.Casted, Assembly-CSharp
+      - m_Target: {fileID: 5649229768863773895}
+        m_TargetAssemblyTypeName: HotD.Castables.Casted, Core
         m_MethodName: OnTrigger
         m_Mode: 0
         m_Arguments:
@@ -114,8 +120,8 @@ MonoBehaviour:
   onCast:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5267983180460503852}
-        m_TargetAssemblyTypeName: HotD.Castables.Casted, Assembly-CSharp
+      - m_Target: {fileID: 5649229768863773895}
+        m_TargetAssemblyTypeName: HotD.Castables.Casted, Core
         m_MethodName: OnCast
         m_Mode: 0
         m_Arguments:
@@ -129,8 +135,8 @@ MonoBehaviour:
   onRelease:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5267983180460503852}
-        m_TargetAssemblyTypeName: HotD.Castables.Casted, Assembly-CSharp
+      - m_Target: {fileID: 5649229768863773895}
+        m_TargetAssemblyTypeName: HotD.Castables.Casted, Core
         m_MethodName: OnRelease
         m_Mode: 0
         m_Arguments:
@@ -144,8 +150,8 @@ MonoBehaviour:
   onUnCast:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5267983180460503852}
-        m_TargetAssemblyTypeName: HotD.Castables.Casted, Assembly-CSharp
+      - m_Target: {fileID: 5649229768863773895}
+        m_TargetAssemblyTypeName: HotD.Castables.Casted, Core
         m_MethodName: OnUnCast
         m_Mode: 0
         m_Arguments:
@@ -159,7 +165,10 @@ MonoBehaviour:
   onCasted:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &7456523275848036642
+  castingMethods: []
+  casting: 0
+  debug: 0
+--- !u!1 &8627523686221226324
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -167,8 +176,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4169387542703627144}
-  - component: {fileID: 369340201851046611}
+  - component: {fileID: 1900506451179308222}
+  - component: {fileID: 7209552031807869492}
   m_Layer: 0
   m_Name: Pivot
   m_TagString: Untagged
@@ -176,45 +185,45 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4169387542703627144
+--- !u!4 &1900506451179308222
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7456523275848036642}
+  m_GameObject: {fileID: 8627523686221226324}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4962179867726287366}
+  m_Father: {fileID: 4323202140390633526}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &369340201851046611
+--- !u!114 &7209552031807869492
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7456523275848036642}
+  m_GameObject: {fileID: 8627523686221226324}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43b97ecb1e3625c468a11ddcbd29b35f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  body: {fileID: 4169387542703627144}
---- !u!1001 &4462981190139750013
+  body: {fileID: 0}
+--- !u!1001 &4220448988701974934
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 4962179867726287366}
+    m_TransformParent: {fileID: 4323202140390633526}
     m_Modifications:
     - target: {fileID: 2780461263150021959, guid: a8eebf9235b3d5e45aa99ca93497312b, type: 3}
       propertyPath: m_Name
-      value: D20 Shield
+      value: D20 Shield Casted VFX
       objectReference: {fileID: 0}
     - target: {fileID: 7693441620771163784, guid: a8eebf9235b3d5e45aa99ca93497312b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -222,7 +231,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7693441620771163784, guid: a8eebf9235b3d5e45aa99ca93497312b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7693441620771163784, guid: a8eebf9235b3d5e45aa99ca93497312b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -262,16 +271,12 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 54fcbad541d7ea442a7eca3b79248775, type: 2}
     - target: {fileID: 8427382199029011793, guid: a8eebf9235b3d5e45aa99ca93497312b, type: 3}
       propertyPath: powerLimit.name
-      value: '[New Dependent Attribute]'
+      value: Charge Limit
       objectReference: {fileID: 0}
     - target: {fileID: 8427382199029011793, guid: a8eebf9235b3d5e45aa99ca93497312b, type: 3}
-      propertyPath: meshes.Array.size
-      value: 1
+      propertyPath: powerLimit.owner
+      value: '[Unknown]'
       objectReference: {fileID: 0}
-    - target: {fileID: 8427382199029011793, guid: a8eebf9235b3d5e45aa99ca93497312b, type: 3}
-      propertyPath: meshes.Array.data[0]
-      value: 
-      objectReference: {fileID: 5945139307988877365}
     - target: {fileID: 8427382199029011793, guid: a8eebf9235b3d5e45aa99ca93497312b, type: 3}
       propertyPath: powerLimit.baseValue
       value: 1
@@ -289,29 +294,24 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8eebf9235b3d5e45aa99ca93497312b, type: 3}
---- !u!1 &1979788842782022458 stripped
+--- !u!1 &2018779451155193041 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2780461263150021959, guid: a8eebf9235b3d5e45aa99ca93497312b, type: 3}
-  m_PrefabInstance: {fileID: 4462981190139750013}
+  m_PrefabInstance: {fileID: 4220448988701974934}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5267983180460503852 stripped
+--- !u!114 &5649229768863773895 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8427382199029011793, guid: a8eebf9235b3d5e45aa99ca93497312b, type: 3}
-  m_PrefabInstance: {fileID: 4462981190139750013}
+  m_PrefabInstance: {fileID: 4220448988701974934}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1979788842782022458}
+  m_GameObject: {fileID: 2018779451155193041}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f83c99b26049f40479de280376f43aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!23 &5945139307988877365 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 8029585038027007560, guid: a8eebf9235b3d5e45aa99ca93497312b, type: 3}
-  m_PrefabInstance: {fileID: 4462981190139750013}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &6281160127613692149 stripped
+--- !u!4 &5788976664800767774 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7693441620771163784, guid: a8eebf9235b3d5e45aa99ca93497312b, type: 3}
-  m_PrefabInstance: {fileID: 4462981190139750013}
+  m_PrefabInstance: {fileID: 4220448988701974934}
   m_PrefabAsset: {fileID: 0}

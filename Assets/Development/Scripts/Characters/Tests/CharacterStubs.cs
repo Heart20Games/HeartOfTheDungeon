@@ -65,7 +65,7 @@ public abstract class AIdentifiableStub : BaseMonoBehaviour, IIdentifiable
 
 public class CharacterStub : AIdentifiableStub, ICharacter
 {
-    public CharacterBlock StatBlock => null;
+    public CharacterBlock StatBlock { get => null; set => NULL(); }
     public Transform Pivot => null;
     public IMovement Movement => null;
     public ArtRenderer ArtRenderer => null;

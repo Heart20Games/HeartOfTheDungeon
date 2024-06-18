@@ -18,6 +18,7 @@ namespace HotD.Body
     using global::Body.Behavior.ContextSteering;
     using global::Body.Behavior;
     using static global::Body.Behavior.ContextSteering.CSIdentity;
+    using Codice.CM.Triggers;
 
     public interface ICharacterInputs
     {
@@ -38,7 +39,7 @@ namespace HotD.Body
     }
     public interface ICharacter : ICharacterStatus, ICharacterInputs, IIdentifiable, IDamageable, IControllable, ICastCompatible
     {
-        public CharacterBlock StatBlock { get; }
+        public CharacterBlock StatBlock { get; set; }
         public Transform Pivot { get; }
         public IMovement Movement { get; }
         public ArtRenderer ArtRenderer { get; }
@@ -70,7 +71,7 @@ namespace HotD.Body
 
 
         // Properties
-        public CharacterBlock StatBlock { get => statBlock; }
+        public CharacterBlock StatBlock { get => statBlock; set => statBlock = value; }
         public Transform Pivot { get => pivot; }
         public IMovement Movement { get => movement; }
         public Transform Body { get => body; }
@@ -129,10 +130,9 @@ namespace HotD.Body
         [Foldout("Casting", true)]
         [Header("Casting")]
         [SerializeField] private Transform weaponLocation;
-        [SerializeField] private Loadout Loadout { get => statBlock == null ? null : statBlock.loadout; }
-        private Transform firingLocation;
+        [SerializeField] private Transform firingLocation;
         private ICaster caster;
-
+        [SerializeField] private Loadout Loadout { get => statBlock == null ? null : statBlock.loadout; }
         public Transform FiringLocation { get => firingLocation; }
 
         // Identifiable
@@ -562,8 +562,7 @@ namespace HotD.Body
                 }
                 SetCastable(4, Loadout.mobility);
             }
-            if (brain != null)
-                brain.RegisterCastables(castableItems);
+            brain?.RegisterCastables(castableItems);
         }
 
         public bool PrimaryTargetingMethod(out AimingMethod method)
@@ -606,7 +605,7 @@ namespace HotD.Body
                 else
                 {
                     castableItems[idx] = item;
-                    castables[idx] = Instantiate(item.prefab, transform);
+                    castables[idx] = Instantiate(item.prefab, transform).GetComponent<ICastable>();
                     castables[idx].Initialize(this, item);
                     item.Equip(statBlock);
                 }

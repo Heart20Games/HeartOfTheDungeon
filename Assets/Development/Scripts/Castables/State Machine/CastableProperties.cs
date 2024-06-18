@@ -55,6 +55,10 @@ namespace HotD.Castables
         }
 
         // Setters
+        public void SetPowerLevel(float value)
+        {
+            SetPowerLevel((int)value);
+        }
         public void SetPowerLevel(int value)
         {
             PowerLevel = value;

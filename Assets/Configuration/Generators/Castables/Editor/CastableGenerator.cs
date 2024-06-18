@@ -219,7 +219,7 @@ namespace HotD.Generators
                 // Start Transition
                 UnityEventTools.AddPersistentListener(castable.onTrigger, charger.Begin);
                 UnityEventTools.AddPersistentListener(castable.onRelease, charger.Interrupt);
-                UnityEventTools.AddPersistentListener(charger.onCharge, (float value) => { castable.PowerLevel = (int)value; });
+                UnityEventTools.AddPersistentListener(charger.onCharge, castable.SetPowerLevel);
                 if (settings.castOnChargeUp)
                     UnityEventTools.AddPersistentListener(charger.onCharged, () => { castable.Cast(); });
                 return charger;
@@ -260,7 +260,7 @@ namespace HotD.Generators
             CastableItem item = (CastableItem)CreateInstance(typeof(CastableItem));
             AssetDatabase.CreateAsset(item, $"{fullDirectory}/{outputName}.asset");
             EditorUtility.SetDirty(item);
-            item.prefab = prefab.GetComponent<StateCastable>();
+            item.prefab = prefab;
             item.targetingMethod = targetingMethod;
             item.aimingMethod = aimingMethod;
             item.stats = stats;
@@ -296,7 +296,7 @@ namespace HotD.Generators
             UnityEventTools.AddPersistentListener(castable.onRelease, casted.OnRelease);
             UnityEventTools.AddPersistentListener(castable.onCast, casted.OnCast);
             UnityEventTools.AddPersistentListener(castable.onUnCast, casted.OnUnCast);
-            UnityEventTools.AddPersistentListener(castable.onSetPowerLevel, (int value) => { casted.SetPowerLevel(value); });
+            UnityEventTools.AddPersistentListener(castable.onSetPowerLevel, casted.SetPowerLevel);
         }
 
 

@@ -9,7 +9,8 @@ namespace HotD.Castables
     [CreateAssetMenu(fileName = "NewCastableItem", menuName = "Loadouts/CastableItem", order = 1)]
     public class CastableItem : ScriptableObject
     {
-        public StateCastable prefab;
+        public GameObject prefab;
+        public ICastable Prefab { get => prefab.GetComponent<ICastable>(); }
         public int attackIdx = 0;
         public TargetingMethod targetingMethod;
         public AimingMethod aimingMethod;

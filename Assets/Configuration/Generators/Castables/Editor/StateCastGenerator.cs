@@ -311,7 +311,7 @@ namespace HotD.Generators
             CastableItem item = (CastableItem)CreateInstance(typeof(CastableItem));
             AssetDatabase.CreateAsset(item, $"{fullDirectory}/{outputName}.asset");
             EditorUtility.SetDirty(item);
-            item.prefab = prefab.GetComponent<StateCastable>();
+            item.prefab = prefab;
             item.targetingMethod = targetingMethod;
             item.aimingMethod = aimingMethod;
             item.stats = stats;

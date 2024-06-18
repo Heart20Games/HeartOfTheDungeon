@@ -125,7 +125,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5f622eaaa87602041b813930562d8f0d, type: 2}
+  - {fileID: 2100000, guid: 7d98b9884e630c040b097b8779bd0680, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -203,12 +203,46 @@ MonoBehaviour:
     materialsInsideMask: []
     materialsOutsideMask: []
   disableRenderingOnOverride: 1
+  physicsPositionInheritanceFactor: {x: 1, y: 1}
+  physicsRotationInheritanceFactor: 1
+  physicsMovementRelativeTo: {fileID: 0}
   translator:
     autoReset: 1
     useCustomMixMode: 1
     layerMixModes: 0100000001000000
     layerBlendModes: 0100000002000000
   updateTiming: 1
+--- !u!1 &6782210380302351405
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9030935779675157936}
+  m_Layer: 7
+  m_Name: Firing Location
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9030935779675157936
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6782210380302351405}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.38268343, z: -0, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7058373731214483547}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8177667113544327990
 GameObject:
   m_ObjectHideFlags: 0
@@ -1105,7 +1139,7 @@ PrefabInstance:
     - target: {fileID: 8821639319113660216, guid: 048debae2a09fea4da163512b6086164, type: 3}
       propertyPath: firingLocation
       value: 
-      objectReference: {fileID: 1640897297852101296}
+      objectReference: {fileID: 9030935779675157936}
     - target: {fileID: 8821639319113660216, guid: 048debae2a09fea4da163512b6086164, type: 3}
       propertyPath: weaponLocation
       value: 
@@ -1134,6 +1168,9 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 2694281844500606266, guid: 048debae2a09fea4da163512b6086164, type: 3}
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 2809474898818320486, guid: 048debae2a09fea4da163512b6086164, type: 3}
+      insertIndex: 4
+      addedObject: {fileID: 9030935779675157936}
     - targetCorrespondingSourceObject: {fileID: 2516675609872073451, guid: 048debae2a09fea4da163512b6086164, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5190071973015555783}
@@ -1186,6 +1223,11 @@ MonoBehaviour:
   maxCastLevel: 3
   effects: []
   effectsBeingCasted: []
+--- !u!4 &7058373731214483547 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2809474898818320486, guid: 048debae2a09fea4da163512b6086164, type: 3}
+  m_PrefabInstance: {fileID: 5118660985821702205}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7342033054872709846 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2516675609872073451, guid: 048debae2a09fea4da163512b6086164, type: 3}

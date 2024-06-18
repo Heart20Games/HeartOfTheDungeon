@@ -212,15 +212,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  controller: {fileID: 0}
   agent: {fileID: 0}
-  pathFinder: {fileID: 0}
   navUpdate: 1
   followingDistance: 0
   baseOffset: 0
   useAgent: 0
   modifiers: {fileID: 11400000, guid: e747a79b96270f8488105465899547d7, type: 2}
-  tree: {fileID: 11400000, guid: 5140f609f0a38fb48865e6fb826fc149, type: 2}
   debug: 0
 --- !u!114 &1895181659443492097
 MonoBehaviour:
@@ -250,18 +247,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   statBlock: {fileID: 0}
-  body: {fileID: 5106106832475441759}
   pivot: {fileID: 4813447189290614994}
+  body: {fileID: 5106106832475441759}
   moveReticle: {fileID: 8706531923607348711}
-  movement: {fileID: 0}
-  baseOffset: 0
   settings: {fileID: 11400000, guid: 6d7eeb5dfc435564f9376a9e58c901c4, type: 2}
   aimActive: 0
-  onControl:
-    m_PersistentCalls:
-      m_Calls: []
   artRenderer: {fileID: 4122626737896113915}
-  vfxController: {fileID: 0}
   cameraPivot: {fileID: 1293615231503594153}
   orbitalCamera: {fileID: 3832840258595731421}
   aimCamera: {fileID: 390952305994644025}
@@ -270,9 +261,6 @@ MonoBehaviour:
   interactor: {fileID: 5701398888138556133}
   targetFinder: {fileID: 8777460246787828422}
   selectable: {fileID: 1891658906475348255}
-  talker: {fileID: 0}
-  brain: {fileID: 0}
-  caster: {fileID: 0}
   weaponLocation: {fileID: 0}
   firingLocation: {fileID: 0}
   statuses: []
@@ -303,7 +291,7 @@ MonoBehaviour:
       name: Armor Max
       baseValue: 0
       value: 1
-  onDmg:
+  onDamage:
     m_PersistentCalls:
       m_Calls: []
   spawn: {fileID: 3190216237390131692}
@@ -311,9 +299,6 @@ MonoBehaviour:
   autoRespawnDelay: 0
   autoDespawn: 0
   autoDespawnDelay: 0
-  onDeath:
-    m_PersistentCalls:
-      m_Calls: []
   onRespawn:
     m_PersistentCalls:
       m_Calls: []
@@ -347,7 +332,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  debug: 0
   mode:
     name: 
     controlMode: 0
@@ -359,15 +343,16 @@ MonoBehaviour:
     useCaster: 0
     useMoveReticle: 0
     useInteractor: 0
+  brainDead:
+    name: Brain Dead
+    current:
+      debug: 0
+      name: Brain Dead Current
+      baseValue: 0
+      value: 0
   testDamageIdentity: 0
   testDamageAmount: 1
   castableItems:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  castables:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -385,7 +370,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa7ce0bf50a48e04cbc70180ef616e60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canAttack: 1
   weaponLocation: {fileID: 0}
   firingLocation: {fileID: 0}
   debug: 0
@@ -398,7 +382,6 @@ MonoBehaviour:
   appliedVector: {x: 0, y: 0, z: 0}
   castDirection: {x: 0, y: 0, z: 0}
   finalDirection: {x: 0, y: 0, z: 0}
-  rotationOffset: {x: 0, y: 0, z: 0}
   OnSetCastVector:
     m_PersistentCalls:
       m_Calls:
@@ -428,19 +411,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: 954c3b6bf2f9fb04fbe24ce394bf9e94, type: 2}
-  applyGravity: 1
+  useGravity: 1
   canMove: 1
   debug: 0
   npcModifier: 1
   moveVector: {x: 0, y: 0}
-  character: {fileID: 0}
   body: {fileID: 5106106832475441759}
-  pivot: {fileID: 0}
-  artRenderer: {fileID: 0}
-  OnSetMoveVector:
+  onSetMoveVector:
     m_PersistentCalls:
       m_Calls: []
-  flipBuffer: 0.01
   startWalking:
     m_PersistentCalls:
       m_Calls: []
@@ -904,6 +883,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  character: {fileID: 0}
   onImpact:
     impact:
       enter:
@@ -989,6 +969,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  character: {fileID: 0}
   onImpact:
     impact:
       enter:
@@ -1317,7 +1298,7 @@ GameObject:
   m_Component:
   - component: {fileID: 844723266406932610}
   m_Layer: 7
-  m_Name: Weapon Offset
+  m_Name: Weapon Location
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1560,6 +1541,7 @@ MonoBehaviour:
   target: {fileID: 4813447189290614994}
   offset: {x: 0, y: 0, z: 0}
   rOffset: 0
+  deathPoof: {fileID: 0}
   effects:
   - lifeTime: 5
     prefab: {fileID: 364385636823216239, guid: cd86f526df3cb474a811f86cb27bf003, type: 3}
