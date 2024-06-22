@@ -178,7 +178,7 @@ public class VFXEventController : BaseMonoBehaviour
     }
     public void SetVFXBool(CastedVFX vfx, string property, bool value)
     {
-        if (vfx.equipped)
+        if (vfx && vfx.equipped && vfx.animator)
             vfx.animator.SetBool(property, value);
     }
 
@@ -189,7 +189,7 @@ public class VFXEventController : BaseMonoBehaviour
     }
     public void SetVFXTrigger(CastedVFX vfx, string property)
     {
-        if (vfx.animator != null && vfx.equipped)
+        if (vfx.animator && vfx.equipped)
             vfx.animator.SetTrigger(property);
     }
 
