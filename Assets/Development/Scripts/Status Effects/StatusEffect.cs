@@ -55,7 +55,7 @@ public abstract class StatusEffect: ScriptableObject
         {
             instance = Instantiate(prefab, character.transform);
         }
-        character.statuses.Add(new Status(this, strength, instance));
+        character.Statuses.Add(new Status(this, strength, instance));
     }
 
     public virtual void Proc(int strength, Character character)
@@ -65,7 +65,7 @@ public abstract class StatusEffect: ScriptableObject
         {
             instance = Instantiate(prefab, character.transform);
         }
-        character.statuses.Add(new Status(this, strength, instance));
+        character.Statuses.Add(new Status(this, strength, instance));
         onProc.Invoke();
     }
     
@@ -81,12 +81,12 @@ public abstract class StatusEffect: ScriptableObject
             Status status = character.Statuses[i];
             if (status.effect == this)
             {
-                GameObject instance = character.statuses[i].instance;
+                GameObject instance = character.Statuses[i].instance;
                 if (instance != null)
                 {
                     Destroy(instance);
                 }
-                character.statuses.RemoveAt(i);
+                character.Statuses.RemoveAt(i);
             }
             else i++;
         }
