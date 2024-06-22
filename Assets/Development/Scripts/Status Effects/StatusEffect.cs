@@ -6,15 +6,17 @@ using Body;
 [Serializable]
 public struct Status
 {
-    public Status(StatusEffect _effect, int _strength)
+    public Status(StatusEffect effect, int strength, GameObject instance)
     {
-        name = _effect.name;
-        effect = _effect;
-        strength = _strength;
+        name = effect.name;
+        this.effect = effect;
+        this.strength = strength;
+        this.instance = instance;
     }
     public string name;
     public StatusEffect effect;
     public int strength;
+    public GameObject instance;
 }
 
 public abstract class StatusEffect: ScriptableObject
@@ -27,6 +29,7 @@ public abstract class StatusEffect: ScriptableObject
      */
 
     public new string name;
+    [SerializeField] private GameObject prefab;
     private UnityEvent onProc = new();
     private UnityEvent onTick = new();
 
@@ -39,12 +42,23 @@ public abstract class StatusEffect: ScriptableObject
                 return;
             }
         }
-        character.statuses.Add(new Status(this, strength));
+
+        GameObject instance = null;
+        if (prefab != null)
+        {
+            instance = Instantiate(prefab, character.transform);
+        }
+        character.statuses.Add(new Status(this, strength, instance));
     }
 
     public virtual void Proc(int strength, Character character)
     {
-        character.statuses.Add(new Status(this, strength));
+        GameObject instance = null;
+        if (prefab != null)
+        {
+            instance = Instantiate(prefab, character.transform);
+        }
+        character.statuses.Add(new Status(this, strength, instance));
         onProc.Invoke();
     }
     
@@ -60,6 +74,11 @@ public abstract class StatusEffect: ScriptableObject
             Status status = character.statuses[i];
             if (status.effect == this)
             {
+                GameObject instance = character.statuses[i].instance;
+                if (instance != null)
+                {
+                    Destroy(instance);
+                }
                 character.statuses.RemoveAt(i);
             }
             else i++;
