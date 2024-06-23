@@ -60,17 +60,17 @@ namespace HotD.Generators
             public Loadout loadout;
         }
 
-        // Generate All Castables
-        static public List<CastableGenerator> generators = new();
-        [MenuItem("Tools / Generate Castables")]
-        static public void GenerateAllCastables()
-        {
-            Debug.Log($"Generating {generators.Count} Castables");
-            foreach (var generator in generators)
-            {
-                generator.GenerateCastable();
-            }
-        }
+        //// Generate All Castables
+        //static public List<CastableGenerator> generators = new();
+        //[MenuItem("Tools / Generate Castables")]
+        //static public void GenerateAllCastables()
+        //{
+        //    Debug.Log($"Generating {generators.Count} Castables");
+        //    foreach (var generator in generators)
+        //    {
+        //        generator.GenerateCastable();
+        //    }
+        //}
 
         // Generate Castable
         public void GenerateCastable()
@@ -81,8 +81,8 @@ namespace HotD.Generators
             }
             else
             {
-                if (!generators.Contains(this))
-                    generators.Add(this);
+                //if (!generators.Contains(this))
+                //    generators.Add(this);
                 string oldDirectory = fullDirectory;
                 PrepareResultDirectory();
                 bool sameDirectory = oldDirectory.Equals(fullDirectory);
