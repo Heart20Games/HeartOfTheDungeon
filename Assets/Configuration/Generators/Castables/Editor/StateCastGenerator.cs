@@ -124,7 +124,7 @@ namespace HotD.Generators
                     DelegatedExecutor executionExecutor = GenerateExecutor(castable, CastState.Executing, "Execution");
                     if (executions.Count > 0)
                     {
-                        GenerateComboer(executionExecutor, stats, pivot, gameObject, damager);
+                        Comboer comboer = GenerateComboer(executionExecutor, stats, pivot, gameObject, damager);
                     }
 
                     // Cooldown
@@ -260,18 +260,25 @@ namespace HotD.Generators
             return charger;
         }
 
-        public void GenerateComboer(DelegatedExecutor executor, CastableStats stats, Pivot pivot, GameObject gameObject, Damager damager = null)
+        public Comboer GenerateComboer(DelegatedExecutor executor, CastableStats stats, Pivot pivot, GameObject gameObject, Damager damager = null)
         {
             Assert.IsNotNull(executor);
 
             Comboer comboer = executor.gameObject.AddComponent<Comboer>();
 
+            GameObject methods = new("Methods");
+            methods.transform.SetParent(comboer.transform);
+            Pivot methodPivot = methods.AddComponent<Pivot>();
+            methodPivot.body = pivot.body;
+
             for (int i = 0; i < executions.Count; i++)
             {
                 Execution execution = executions[i];
-                Casted casted = execution.PrepareExecutionMethod(executor, stats, pivot, gameObject, damager);
+                Casted casted = execution.PrepareExecutionMethod(executor, stats, methodPivot, gameObject, damager);
                 comboer.AddStep(i + 1, casted.gameObject);
             }
+
+            return comboer;
         }
 
         private Timer GenerateCooldownTimer(DelegatedExecutor executor)

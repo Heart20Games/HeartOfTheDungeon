@@ -1,3 +1,5 @@
+using MyBox;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,15 +12,18 @@ using UnityEngine;
 
 public class Comboer : BaseMonoBehaviour
 {
-    private readonly struct ComboStep
+    [Serializable]
+    private struct ComboStep
     {
         public ComboStep(int step, GameObject comboObject)
         {
+            this.name = $"{step}: {comboObject.name}";
             this.step = step;
             this.comboObject = comboObject;
         }
-        public readonly GameObject comboObject;
-        public readonly int step;
+        public string name;
+        public GameObject comboObject;
+        public int step;
     }
 
     [SerializeField] private int step;
@@ -42,5 +47,11 @@ public class Comboer : BaseMonoBehaviour
         {
             comboStep.comboObject.SetActive(comboStep.step == step);
         }
+    }
+
+    [ButtonMethod]
+    public void Refresh()
+    {
+        SetStep(step);
     }
 }
