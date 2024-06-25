@@ -117,7 +117,6 @@ namespace HotD.Castables
 
         // Testing
         [Header("Tests")]
-        public bool debug;
         public StateAction testAction;
 
         [ButtonMethod]

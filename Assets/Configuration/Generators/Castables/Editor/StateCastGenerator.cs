@@ -201,15 +201,9 @@ namespace HotD.Generators
         private StateCastable GenerateCastableBase(GameObject gameObject, Pivot pivot)
         {
             StateCastable castable = gameObject.AddComponent<StateCastable>();
-            castable.onSetPowerLevel ??= new();
-            castable.onSetIdentity ??= new();
-            castable.onCast ??= new();
-            castable.onTrigger ??= new();
-            castable.onRelease ??= new();
-            castable.onUnCast ??= new();
-            castable.onCasted ??= new();
             settings.ApplyToCastable(castable);
             castable.fields.pivot = pivot.transform;
+            castable.fields.Stats = stats;
             return castable;
         }
 
@@ -230,15 +224,12 @@ namespace HotD.Generators
         private Charger GenerateCharger(DelegatedExecutor executor)
         {
             Assert.IsNotNull(executor);
+
+            executor.connectToFieldEvents = true;
             
             Charger charger = executor.gameObject.AddComponent<Charger>();
-            charger.onBegin = new();
-            charger.onCharge = new();
-            charger.onChargeInt = new();
-            charger.onCharged = new();
-            charger.onInterrupt = new();
+            charger.InitializeEvents();
             charger.chargeTimes = chargeTimes;
-            charger.chargeLimit = stats.chargeLimit;
 
             // Start Transition
             ActionEvent startTransition = new("Start", CastAction.Start, Triggers.StartAction, false);
@@ -252,6 +243,7 @@ namespace HotD.Generators
 
             // Keep Power Level Updated
             UnityEventTools.AddPersistentListener(charger.onChargeInt, executor.SetPowerLevel);
+            UnityEventTools.AddPersistentListener(executor.fieldEvents.onSetMaxPowerLevel, charger.SetMaxLevel);
                 
             // Executor On Full Charge?
             if (settings.castOnChargeUp)
@@ -264,12 +256,17 @@ namespace HotD.Generators
         {
             Assert.IsNotNull(executor);
 
+            executor.connectToFieldEvents = true;
+
             Comboer comboer = executor.gameObject.AddComponent<Comboer>();
 
             GameObject methods = new("Methods");
             methods.transform.SetParent(comboer.transform);
             Pivot methodPivot = methods.AddComponent<Pivot>();
             methodPivot.body = pivot.body;
+
+            // Keep Combo Step Updated
+            UnityEventTools.AddPersistentListener(executor.fieldEvents.onSetComboStep, comboer.SetStep);
 
             for (int i = 0; i < executions.Count; i++)
             {
@@ -307,7 +304,7 @@ namespace HotD.Generators
             {
                 Damager damager = gameObject.AddComponent<Damager>();
                 damager.damage = stats.Damage; // TODO: Account for bonuses
-                UnityEventTools.AddPersistentListener(castable.onSetIdentity, damager.SetIdentity);
+                UnityEventTools.AddPersistentListener(castable.fieldEvents.onSetIdentity, damager.SetIdentity);
                 return damager;
             }
             else return null;
@@ -354,7 +351,7 @@ namespace HotD.Generators
             UnityEventTools.AddPersistentListener(castable.onRelease, casted.OnRelease);
             UnityEventTools.AddPersistentListener(castable.onCast, casted.OnCast);
             UnityEventTools.AddPersistentListener(castable.onUnCast, casted.OnUnCast);
-            UnityEventTools.AddPersistentListener(castable.onSetPowerLevel, casted.SetPowerLevel);
+            UnityEventTools.AddPersistentListener(castable.fieldEvents.onSetPowerLevel, casted.SetPowerLevel);
         }
 
 
@@ -363,35 +360,30 @@ namespace HotD.Generators
         [Serializable]
         public struct CastableSettings
         {
-            public CastableSettings(bool followBody = true, bool castOnTrigger = true, bool castOnRelease = false, bool unCastOnRelease = false, bool castOnChargeUp = false)
+            public CastableSettings(bool followBody = true, bool castOnTrigger = true, bool castOnRelease = false, bool unCastOnRelease = false, bool castOnChargeUp = false, bool usePowerLevelAsComboStep = false)
             {
                 this.followBody = followBody;
                 this.castOnTrigger = castOnTrigger;
                 this.castOnRelease = castOnRelease;
                 this.unCastOnRelease = unCastOnRelease;
                 this.castOnChargeUp = castOnChargeUp;
+                this.usePowerLevelAsComboStep = usePowerLevelAsComboStep;
             }
             public bool followBody;
             public bool castOnTrigger;
             public bool castOnRelease;
             public bool unCastOnRelease;
             public bool castOnChargeUp;
+            public bool usePowerLevelAsComboStep;
             public readonly void ApplyToCastable(CastableProperties castable)
             {
-                castable.onTrigger ??= new();
-                castable.onRelease ??= new();
-                castable.onCast ??= new();
-                castable.onUnCast ??= new();
-
-                castable.onSetPowerLevel ??= new();
-                castable.onSetMaxPowerLevel ??= new();
-
-                castable.onSetIdentity ??= new();
+                castable.InitializeEvents();
 
                 castable.fields.followBody = followBody;
                 castable.castOnTrigger = castOnTrigger;
                 castable.castOnRelease = castOnRelease;
                 castable.unCastOnRelease = unCastOnRelease;
+                castable.fields.usePowerLevelAsComboStep = usePowerLevelAsComboStep;
             }
         }
 

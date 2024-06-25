@@ -9,10 +9,11 @@ namespace HotD.Castables
         public float lifeSpan;
         public Transform pivot;
         public Projectile projectile;
-        public bool followBody = false;
-        public Collider[] exceptions;
+        [SerializeField] private bool followBody = false;
+        [SerializeField] private bool spawnOnEnable = true;
+        [SerializeField] private Collider[] exceptions;
         [SerializeField] private List<Projectile> projectiles = new();
-        public bool debug = false;
+        [SerializeField] private bool debug = false;
 
         private void Awake()
         {
@@ -31,6 +32,14 @@ namespace HotD.Castables
                     projectile = Instantiate(projectile, pivot);
                 }
                 projectile.SetActive(false);
+            }
+        }
+
+        private void OnEnable()
+        {
+            if (spawnOnEnable)
+            {
+                Spawn();
             }
         }
 
@@ -81,7 +90,7 @@ namespace HotD.Castables
         {
             if (!followBody)
             {
-                pInstance.position = target.position + offset;
+                pInstance.position = OriginPosition + offset;
             }
             else
             {

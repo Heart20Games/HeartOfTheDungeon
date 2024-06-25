@@ -19,6 +19,7 @@ namespace HotD.Castables
         [SerializeField] private bool debug;
 
         protected bool casting = false;
+        public bool castOnEnable = true;
 
         [Foldout("Base Events", true)]
         public UnityEvent onStart = new();
@@ -96,6 +97,10 @@ namespace HotD.Castables
         {
             ReportStats();
             onEnable.Invoke();
+            if (castOnEnable)
+            {
+                Cast(Vector3.forward); // TODO: Need to know what the correct vector is.
+            }
         }
 
         private void OnDisable()

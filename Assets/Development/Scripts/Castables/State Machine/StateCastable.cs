@@ -59,8 +59,6 @@ namespace HotD.Castables
 
         public bool CanCast { get => state == CastState.Equipped; }
 
-        public bool debug;
-
         public void Awake()
         {
             foreach (CastState state in Enum.GetValues(typeof(CastState)))

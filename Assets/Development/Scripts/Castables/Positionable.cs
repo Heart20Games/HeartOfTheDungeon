@@ -6,11 +6,19 @@ public class Positionable : BaseMonoBehaviour, IPositionable
     //[Header("Positionable")]
     [Foldout("Positionable", true)]
     public bool applyOnSet = true;
-    public Transform source;
-    public Transform target;
-    public Vector3 offset=new();
+    [SerializeField] protected Transform source;
+    [SerializeField] protected Transform target;
+    [SerializeField] protected Vector3 offset=new();
     [Foldout("Positionable")]
-    public float rOffset=0;
+    [SerializeField] protected float rOffset=0;
+
+    public Vector3 OriginPosition
+    {
+        get
+        {
+            return target ? target.position : (source ? source.position : transform.position);
+        }
+    }
 
     public virtual void SetOrigin(Transform source, Transform target)
     {

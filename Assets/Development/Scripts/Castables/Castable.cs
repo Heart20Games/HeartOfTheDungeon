@@ -18,8 +18,6 @@ namespace HotD.Castables
         public bool casting = false;
         public virtual bool CanCast { get => !casting; }
         
-        public bool debug;
-
         public virtual void Initialize(Character owner)
         {
             Initialize(owner, null);

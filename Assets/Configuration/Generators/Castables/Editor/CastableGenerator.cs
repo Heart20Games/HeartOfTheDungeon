@@ -191,15 +191,9 @@ namespace HotD.Generators
         private Castable GenerateCastableBase(GameObject gameObject, Pivot pivot)
         {
             Castable castable = gameObject.AddComponent<Castable>();
-            castable.onSetPowerLevel ??= new();
-            castable.onSetIdentity ??= new();
-            castable.onCast ??= new();
-            castable.onTrigger ??= new();
-            castable.onRelease ??= new();
-            castable.onUnCast ??= new();
-            castable.onCasted ??= new();
             settings.ApplyToCastable(castable);
             castable.fields.pivot = pivot.transform;
+            castable.fields.Stats = stats;
             return castable;
         }
 
@@ -214,7 +208,6 @@ namespace HotD.Generators
                 charger.onCharged = new();
                 charger.onInterrupt = new();
                 charger.chargeTimes = chargeTimes;
-                charger.chargeLimit = stats.chargeLimit;
                 
                 // Start Transition
                 UnityEventTools.AddPersistentListener(castable.onTrigger, charger.Begin);
@@ -249,7 +242,7 @@ namespace HotD.Generators
             {
                 Damager damager = gameObject.AddComponent<Damager>();
                 damager.damage = stats.Damage; // TODO: Account for bonuses
-                UnityEventTools.AddPersistentListener(castable.onSetIdentity, damager.SetIdentity);
+                UnityEventTools.AddPersistentListener(castable.fieldEvents.onSetIdentity, damager.SetIdentity);
                 return damager;
             }
             else return null;
@@ -296,7 +289,7 @@ namespace HotD.Generators
             UnityEventTools.AddPersistentListener(castable.onRelease, casted.OnRelease);
             UnityEventTools.AddPersistentListener(castable.onCast, casted.OnCast);
             UnityEventTools.AddPersistentListener(castable.onUnCast, casted.OnUnCast);
-            UnityEventTools.AddPersistentListener(castable.onSetPowerLevel, casted.SetPowerLevel);
+            UnityEventTools.AddPersistentListener(castable.fieldEvents.onSetPowerLevel, casted.SetPowerLevel);
         }
 
 
@@ -320,15 +313,7 @@ namespace HotD.Generators
             public bool castOnChargeUp;
             public readonly void ApplyToCastable(CastableProperties castable)
             {
-                castable.onTrigger ??= new();
-                castable.onRelease ??= new();
-                castable.onCast ??= new();
-                castable.onUnCast ??= new();
-
-                castable.onSetPowerLevel ??= new();
-                castable.onSetMaxPowerLevel ??= new();
-
-                castable.onSetIdentity ??= new();
+                castable.InitializeEvents();
 
                 castable.fields.followBody = followBody;
                 castable.castOnTrigger = castOnTrigger;

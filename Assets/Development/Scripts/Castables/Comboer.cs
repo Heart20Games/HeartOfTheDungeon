@@ -28,6 +28,7 @@ public class Comboer : BaseMonoBehaviour
 
     [SerializeField] private int step;
     [SerializeField] private List<ComboStep> comboSteps;
+    [SerializeField] private bool debug;
 
     private void OnEnable()
     {
@@ -42,6 +43,8 @@ public class Comboer : BaseMonoBehaviour
 
     public void SetStep(int step)
     {
+        Print($"Combo step: {step}", debug, this);
+        this.step = step;
         comboSteps ??= new();
         foreach (var comboStep in comboSteps)
         {

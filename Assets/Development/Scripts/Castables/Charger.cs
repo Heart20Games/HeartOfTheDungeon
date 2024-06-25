@@ -1,4 +1,5 @@
 using Attributes;
+using MyBox;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -12,17 +13,28 @@ public class Charger : BaseMonoBehaviour
 
     [Header("Status")]
     [SerializeField] private bool interrupt = false;
-    [ReadOnly][SerializeField] private int level;
-    [ReadOnly][SerializeField] private int maxLevel;
-    public DependentAttribute chargeLimit;
+    [SerializeField] private int level;
+    [SerializeField] private int maxLevel;
     public float[] chargeTimes = new float[0];
 
-    [Header("Events")]
+    [Foldout("Events", true)]
     public UnityEvent onBegin;
     public UnityEvent<float> onCharge;
     public UnityEvent<int> onChargeInt;
     public UnityEvent onCharged;
+    [Foldout("Events")]
     public UnityEvent onInterrupt;
+
+    public void SetMaxLevel(int level)
+    {
+        maxLevel = level;
+        if (level > maxLevel)
+        {
+            level = maxLevel;
+            onCharge.Invoke(level);
+            onChargeInt.Invoke(level);
+        }
+    }
 
     public void Begin()
     {
@@ -38,6 +50,15 @@ public class Charger : BaseMonoBehaviour
         interrupt = true;
     }
 
+    public void InitializeEvents()
+    {
+        onBegin = new();
+        onCharge = new();
+        onChargeInt = new();
+        onCharged = new();
+        onInterrupt = new();
+    }
+
     public IEnumerator ChargeTimer()
     {
         level = 0;
@@ -49,7 +70,6 @@ public class Charger : BaseMonoBehaviour
             float waitTime = level >= chargeTimes.Length ? 1 : chargeTimes[level];
             yield return new WaitForSeconds(waitTime);
             if (interrupt) break;
-            maxLevel = (int)chargeLimit.FinalValue;
             if (level >= maxLevel)
             {
                 if (debug) print($"Fully Charged at {level} / {maxLevel}");
