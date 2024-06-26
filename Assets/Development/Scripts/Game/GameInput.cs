@@ -371,6 +371,18 @@ namespace HotD
                 Menu = Menu == menu ? Menu.None : menu;
             }
         }
+        public void OnCancel(InputValue inputValue)
+        {
+            IsPressed(inputValue, () =>
+            {
+                switch (Menu)
+                {
+                    case Menu.ControlSheet: ToggleMenu(Menu.ControlSheet); break;
+                    case Menu.CharacterSheet: ToggleMenu(Menu.CharacterSheet); break;
+                    default: break;
+                }
+            });
+        }
         public void OnControlSheet(InputValue inputValue) { IsPressed(inputValue, () => { ToggleMenu(Menu.ControlSheet); }); }
         public void OnCharacterSheet(InputValue inputValue) { IsPressed(inputValue, () => { ToggleMenu(Menu.CharacterSheet); }); }
         public void OnPauseMenu(InputValue inputValue) { IsPressed(inputValue, () => { return; }); }
