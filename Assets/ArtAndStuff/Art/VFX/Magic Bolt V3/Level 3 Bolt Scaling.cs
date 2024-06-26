@@ -116,7 +116,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
                 }
             }
 
-            transform.LookAt(Crosshair.GetTargetedPosition());
+            transform.LookAt(Crosshair.GetTargetedPosition(transform));
             UpdateScaling();
         }
     }
