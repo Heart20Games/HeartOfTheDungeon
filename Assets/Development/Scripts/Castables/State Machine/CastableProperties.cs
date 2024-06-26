@@ -82,6 +82,18 @@ namespace HotD.Castables
         {
             ComboStep = value;
         }
+        public void IncrementComboStep()
+        {
+            IncrementComboStep(1);
+        }
+        public void IncrementComboStep(int step = 1)
+        {
+            ComboStep += step;
+        }
+        public void ResetComboStep()
+        {
+            ComboStep = 0;
+        }
 
         // Events
         [Foldout("Events", true)]

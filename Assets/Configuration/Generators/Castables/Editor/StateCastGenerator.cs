@@ -112,6 +112,13 @@ namespace HotD.Generators
                     Damager damager = GenerateDamager(castable, gameObject);
                     castable.AddBaseTransitions();
 
+                    // Equipped
+                    if (stats.useComboCooldown)
+                    {
+                        DelegatedExecutor equippedExecutor = GenerateExecutor(castable, CastState.Equipped, "Equipped");
+                        Timer coolDownTimer = GenerateComboIncrementation(equippedExecutor);
+                    }
+
                     // Activation
                     DelegatedExecutor activationExecutor = GenerateExecutor(castable, CastState.Activating, "Activation");
                     if (stats.useChargeUp)
@@ -276,6 +283,50 @@ namespace HotD.Generators
             }
 
             return comboer;
+        }
+
+        private Timer GenerateComboIncrementation(DelegatedExecutor executor)
+        {
+            Assert.IsNotNull(executor);
+
+            if (!settings.usePowerLevelAsComboStep)
+            {
+                // Trigger Transition
+                ActionEvent triggerTransition = new("Trigger", CastAction.Trigger, Triggers.None, false);
+                UnityEventTools.AddVoidPersistentListener(triggerTransition.startAction, executor.IncrementComboStep);
+                executor.supportedActions.Add(triggerTransition);
+            }
+
+            if (stats.useComboCooldownTime)
+            {
+                Timer coolDownTimer = executor.gameObject.AddComponent<Timer>();
+                coolDownTimer.onComplete = new();
+                coolDownTimer.length = stats.ComboCooldown; // TODO: Account for bonuses
+
+                // Start Transition
+                ActionEvent startTransition = new("Start", CastAction.Start, Triggers.None, false);
+                UnityEventTools.AddVoidPersistentListener(startTransition.startAction, coolDownTimer.Play);
+                executor.supportedActions.Add(startTransition);
+
+                // Reset on Timer Complete
+                UnityEventTools.AddPersistentListener(coolDownTimer.onComplete, executor.ResetComboStep);
+
+                // End Transition
+                ActionEvent endTransition = new("End", CastAction.End, Triggers.None, false);
+                UnityEventTools.AddVoidPersistentListener(endTransition.startAction, coolDownTimer.Interrupt);
+                executor.supportedActions.Add(endTransition);
+                
+                return coolDownTimer;
+            }
+            else
+            {
+                // Start Transition
+                ActionEvent startTransition = new("Start", CastAction.Start, Triggers.None, false);
+                UnityEventTools.AddVoidPersistentListener(startTransition.startAction, executor.ResetComboStep);
+                executor.supportedActions.Add(startTransition);
+
+                return null;
+            }
         }
 
         private Timer GenerateCooldownTimer(DelegatedExecutor executor)

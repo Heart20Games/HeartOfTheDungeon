@@ -7,10 +7,13 @@ public class Timer : BaseMonoBehaviour
 {
     [SerializeField] public float length;
     [SerializeField] public bool playOnStart = false;
+    [SerializeField] private bool interruptOnPlay = false;
     [SerializeField] private bool debug = false;
 
     public UnityEvent onPlay;
     public UnityEvent onComplete;
+
+    private Coroutine running;
 
     private void Start()
     {
@@ -19,14 +22,28 @@ public class Timer : BaseMonoBehaviour
 
     public void Play()
     {
-        onPlay.Invoke();
-        StartCoroutine(RunTimer());
-        Print("Play", debug, this);
+        if (interruptOnPlay) Interrupt();
+        if (running == null)
+        {
+            onPlay.Invoke();
+            StartCoroutine(RunTimer());
+            Print("Play", debug, this);
+        }
+    }
+
+    public void Interrupt()
+    {
+        if (running != null)
+        {
+            StopCoroutine(running);
+            running = null;
+        }
     }
 
     public IEnumerator RunTimer()
     {
         yield return new WaitForSeconds(length);
+        running = null;
         onComplete.Invoke();
     }
 }

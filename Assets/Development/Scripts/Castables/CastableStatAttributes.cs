@@ -8,6 +8,7 @@ public class CastableStatAttributes : ScriptableObject
     public StatAttribute[] cooldown;
     public StatAttribute[] chargeRate;
     public StatAttribute[] chargeLimit;
+    public StatAttribute[] comboCooldown;
     public StatAttribute[] knockback;
     public StatAttribute[] range;
     public StatAttribute[] castStatusPower;
