@@ -34,7 +34,7 @@ public class StateCastableTests
         parent2 = new GameObject("Character Parent");
         character = parent2.AddComponent<CharacterStub>();
 
-        state.Initialize(character, testItem, 1);
+        state.Initialize(character, testItem);
     }
 
     [OneTimeTearDown]

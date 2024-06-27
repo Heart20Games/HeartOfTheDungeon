@@ -18,7 +18,7 @@ namespace HotD.Castables
     {
         public void SetActive(bool active);
         public void Initialize(CastableFieldsEditor field);
-        public void Initialize(ICastCompatible owner, CastableItem item, int actionIndex = 0);
+        public void Initialize(ICastCompatible owner, CastableItem item);
 
         public CastableItem Item { get; set; }
         public Damager Damager { get; }
@@ -118,11 +118,12 @@ namespace HotD.Castables
             gameObject.SetActive(active);
             if (Coordinator)
             {
-                fieldEvents.onSetPowerLevel.AddListener((int powerLevel) => { Coordinator.SetInt("Level", powerLevel); });
+                fieldEvents.onSetPowerLevel.AddListener(Coordinator.SetPowerLevel);
+                fieldEvents.onSetComboStep.AddListener(Coordinator.SetComboLevel);
                 if (active)
                 {
-                    Print($"Set Action Index on Coordinator: {fields.actionIndex}");
-                    Coordinator.SetActionIndex(fields.actionIndex);
+                    Print($"Set Action Index on Coordinator: {fields.ActionType}");
+                    Coordinator.ActionIndex = fields.ActionType;
                 }
             }
         }
@@ -150,7 +151,7 @@ namespace HotD.Castables
             connectToFieldEvents = true;
         }
 
-        public virtual void Initialize(ICastCompatible owner, CastableItem item, int actionIndex = 0)
+        public virtual void Initialize(ICastCompatible owner, CastableItem item)
         {
             fields ??= new();
 
@@ -162,7 +163,6 @@ namespace HotD.Castables
 
             Identity = owner.Identity;
             owner?.WeaponDisplay?.DisplayWeapon(fields.weaponArt);
-            fields.actionIndex = actionIndex;
         }
     }
 
@@ -280,7 +280,10 @@ namespace HotD.Castables
         public Vector3 direction;
         public bool followBody;
         public ICastCompatible owner;
-        public int actionIndex;
+        public ActionType ActionType
+        {
+            get { return item != null ? item.actionType : ActionType.Passive; }
+        }
 
         [Header("Settings")]
         public CastableItem item;

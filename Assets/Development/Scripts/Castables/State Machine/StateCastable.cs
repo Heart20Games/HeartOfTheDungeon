@@ -94,9 +94,9 @@ namespace HotD.Castables
             SetState(CastState.None);
         }
 
-        public override void Initialize(ICastCompatible owner, CastableItem item, int actionIndex = 0)
+        public override void Initialize(ICastCompatible owner, CastableItem item)
         {
-            base.Initialize(owner, item, actionIndex);
+            base.Initialize(owner, item);
             foreach (var executor in executorList)
             {
                 executor.Initialize(fields);

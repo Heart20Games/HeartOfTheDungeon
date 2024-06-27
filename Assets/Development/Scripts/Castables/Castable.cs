@@ -22,9 +22,9 @@ namespace HotD.Castables
         {
             Initialize(owner, null);
         }
-        public override void Initialize(ICastCompatible owner, CastableItem item = null, int action=0)
+        public override void Initialize(ICastCompatible owner, CastableItem item = null)
         {
-            base.Initialize(owner, item, action);
+            base.Initialize(owner, item);
 
             // Positioning
             //ReportOriginToPositionables();

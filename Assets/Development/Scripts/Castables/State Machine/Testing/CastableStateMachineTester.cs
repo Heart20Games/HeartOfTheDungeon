@@ -38,12 +38,12 @@ namespace HotD.Castables
         [ButtonMethod]
         public void TestCharacterInitialize()
         {
-            target.Initialize(testCharacter, testItem, 1);
+            target.Initialize(testCharacter, testItem);
         }
         [ButtonMethod]
         public void TestCharacterInitializeAndEquip()
         {
-            target.Initialize(testCharacter, testItem, 1);
+            target.Initialize(testCharacter, testItem);
             target.QueueAction(CastAction.Equip);
         }
 

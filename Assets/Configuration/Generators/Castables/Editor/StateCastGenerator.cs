@@ -29,6 +29,8 @@ namespace HotD.Generators
         public List<Effect> effects;
 
         [Header("Targeting")]
+        [Tooltip("Used to describe the shape of the animations and weapon art that should be used.")]
+        public ActionType actionType;
         public TargetingMethod targetingMethod;
         public AimingMethod aimingMethod;
 
@@ -367,6 +369,7 @@ namespace HotD.Generators
             AssetDatabase.CreateAsset(item, $"{fullDirectory}/{outputName}.asset");
             EditorUtility.SetDirty(item);
             item.prefab = prefab;
+            item.actionType = actionType;
             item.targetingMethod = targetingMethod;
             item.aimingMethod = aimingMethod;
             item.stats = stats;
@@ -411,7 +414,7 @@ namespace HotD.Generators
         [Serializable]
         public struct CastableSettings
         {
-            public CastableSettings(bool followBody = true, bool castOnTrigger = true, bool castOnRelease = false, bool unCastOnRelease = false, bool castOnChargeUp = false, bool usePowerLevelAsComboStep = false)
+            public CastableSettings(bool followBody = true, bool castOnTrigger = true, bool castOnRelease = false, bool unCastOnRelease = false, bool castOnChargeUp = false, bool usePowerLevelAsComboStep = false, int actionIndex = 0)
             {
                 this.followBody = followBody;
                 this.castOnTrigger = castOnTrigger;

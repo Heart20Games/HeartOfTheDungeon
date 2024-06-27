@@ -14,7 +14,7 @@ public class CastableStub : BaseMonoBehaviour, ICastable
     public Damager Damager => null;
 
     public void Initialize(CastableFieldsEditor field) { }
-    public void Initialize(ICastCompatible owner, CastableItem item, int actionIndex = 0) { }
+    public void Initialize(ICastCompatible owner, CastableItem item) { }
     public void QueueAction(CastAction action) { }
     public void SetActive(bool active) { }
 }

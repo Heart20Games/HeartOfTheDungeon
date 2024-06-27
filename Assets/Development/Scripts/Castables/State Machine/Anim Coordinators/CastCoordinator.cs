@@ -15,7 +15,9 @@ public class CastCoordinator : MecanimCoordinator
         StartCast = 1 << 1,
     }
 
-    public int ActionIndex { get => (int)GetFloat("Action"); set => SetActionIndex(value); }
+    public int PowerLevel { get => GetInt("ChargeLevel"); set => SetPowerLevel(value); }
+    public int ComboLevel { get => GetInt("ComboLevel"); set => SetComboLevel(value); }
+    public ActionType ActionIndex { get => (ActionType)(int)GetFloat("Action"); set => SetActionIndex((int)value); }
 
     public UnityEvent<CastAction> onAction;
 
@@ -42,6 +44,16 @@ public class CastCoordinator : MecanimCoordinator
         {
             SetTrigger("StartCast");
         }
+    }
+
+    public void SetComboLevel(int level)
+    {
+        SetInt("ComboLevel", level);
+    }
+
+    public void SetPowerLevel(int level)
+    {
+        SetInt("ChargeLevel", level);
     }
 
     public void SetActionIndex(int idx)
