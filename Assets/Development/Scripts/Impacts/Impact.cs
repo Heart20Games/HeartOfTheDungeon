@@ -57,6 +57,8 @@ public class Impact : Validator
     {
         if (isActiveAndEnabled)
         {
+            if (other.layer == LayerMask.NameToLayer("DodgeZone")) return;
+
             this.other = other;
             if ((!oneShot || !hasCollided) && Validate(other) && !touching.Contains(other))
             {

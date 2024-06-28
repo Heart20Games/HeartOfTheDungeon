@@ -13,6 +13,8 @@ namespace HotD.Castables
         public Vector3 direction = new();
         public float speed = 0;
 
+        private bool shouldIgnoreDodgeLayer;
+
         [Foldout("Collision", true)]
         private new Rigidbody rigidbody;
         private Collider[] colliders;
@@ -23,6 +25,12 @@ namespace HotD.Castables
         public Transform trackingTarget;
         public Transform TrackingTarget { get => trackingTarget; set => trackingTarget = value; }
         [Foldout("Tracking")] public float damping;
+
+        public bool ShouldIgnoreDodgeLayer
+        {
+            get => shouldIgnoreDodgeLayer;
+            set => shouldIgnoreDodgeLayer = value;
+        }
 
         private void LateUpdate()
         {

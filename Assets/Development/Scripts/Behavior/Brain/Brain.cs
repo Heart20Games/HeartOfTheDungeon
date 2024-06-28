@@ -159,7 +159,7 @@ namespace Body.Behavior
         }
 
         // Target
-        private void SetTarget(Transform target)
+        public void SetTarget(Transform target)
         {
             this.target = target;
             if (this.target != null)
