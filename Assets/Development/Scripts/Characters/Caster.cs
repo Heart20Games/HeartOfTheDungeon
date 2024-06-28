@@ -60,7 +60,7 @@ namespace HotD.Castables
 
         private void AimCaster()
         {
-            directionOverride = Crosshair.GetTargetedPosition() - firingLocation.position;
+            directionOverride = Crosshair.GetTargetedPosition(firingLocation) - firingLocation.position;
             UpdateVector();
         }
 

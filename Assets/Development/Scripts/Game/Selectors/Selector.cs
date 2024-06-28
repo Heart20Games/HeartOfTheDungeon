@@ -58,7 +58,7 @@ public class Selector : BaseMonoBehaviour
     {
         if (selectable != null)
         {
-            if (hoveringOver.Count > 0)
+            if (hoveringOver.Count > 0 && hoveringOver[^1] != null)
             {
                 hoveringOver[^1].UnHover();
             }
@@ -79,7 +79,7 @@ public class Selector : BaseMonoBehaviour
             hoveringOver.Remove(selectable);
             selectable.UnHover();
             onHover.InvokeExit(selectable);
-            if (hoveringOver.Count > 0)
+            if (hoveringOver.Count > 0 && hoveringOver[^1] != null)
             {
                 hoveringOver[^1].Hover();
             }
