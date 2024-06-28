@@ -69,6 +69,7 @@ namespace HotD
         [Header("Events")]
         public UnityEvent onPlayerDied;
         public UnityEvent onRestartScene;
+        public UnityEvent onRestartLife;
         [Foldout("Events")] public UnityEvent onRestartGame;
 
         // TimeScale
@@ -155,6 +156,7 @@ namespace HotD
             progressManager.RespawnToLastCheckpoint();
             if (mode.inputMode != InputMode.Character)
                 SetMode(InputMode.Character);
+            onRestartLife.Invoke();
         }
 
         // Updates
