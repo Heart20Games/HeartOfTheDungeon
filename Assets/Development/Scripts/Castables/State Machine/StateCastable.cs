@@ -181,14 +181,18 @@ namespace HotD.Castables
         {
             state = state == CastState.None ? this.state : state;
             StateAction stateAction = new(state, action);
+            
+            // Find the first relevant transition found in the transition bank.
             if (transitionBank.TryGetValue(stateAction, out StateTransition transition))
             {
                 bool waitingOnExecutor = false;
 
+                // Attempt that transition.
                 Print($"? Attempting {transition.triggerActions} transition from {transition.source} to {transition.destination}.", debugCastable);
                 var executors = executorBank[state];
                 if (executors.Count > 0)
                 {
+                    // Perform the transition on each executor in the given state.
                     foreach (var executor in executors)
                     {
                         waitingOnExecutor = PerformAndWait(executor, stateAction);
@@ -196,6 +200,7 @@ namespace HotD.Castables
                     DequeueFirst();
                 }
 
+                // We're all done here if we're not waiting on anything.
                 if (!waitingOnExecutor && transitionIfNotWaiting)
                 {
                     Print($"No executors to wait on, setting state to {transition.destination}.", debugCastable);
@@ -204,6 +209,7 @@ namespace HotD.Castables
             }
         }
 
+        // Perform the state transition, add any actions it needs to wait for onto the queue. Returns whether we're waiting for something.
         private bool PerformAndWait(ICastStateExecutor executor, StateAction stateAction)
         {
             if (executor.PerformAction(stateAction, out CastAction waitOn))

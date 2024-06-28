@@ -65,7 +65,7 @@ namespace HotD.Castables
             return (actions & action) == action;
         }
 
-        // Returns a StateAction to wait on.
+        // Executes any events associated with the given CastAction. Returns a StateAction to wait on.
         private CastAction StartAction(CastAction action)
         {
             Assert.IsFalse(action == CastAction.None);
@@ -75,21 +75,32 @@ namespace HotD.Castables
                 
                 if (HasAction(actionEvent.triggerAction, action))
                 {
-                    if (actionEvent.CanFire())
-                    {
-                        Print($"Firing action event {actionEvent.name}.", debugExecutor, this);
-                        supportedActions[i] = actionEvent.MarkFired(true);
-                        actionEvent.startAction.Invoke();
-                        Coordinator.Coordinate(actionEvent.sendToCoordinator);
-                        return !actionEvent.waitForPerformance ? CastAction.None : actionEvent.waitAction;
-                    }
-                    else
-                    {
-                        Print($"Discarding one-shot {actionEvent.name}.", debugExecutor, this);
-                    }
+                    // Execute the event.
+                    var waitOn = ExecuteEvent(actionEvent, out var eventStatus);
+                    supportedActions[i] = eventStatus;
+                    return waitOn;
                 }
             }
             return CastAction.None;
+        }
+
+        // Execute the given action event, and track whether the event has been fired. Returns the CastAction to wait for.
+        private CastAction ExecuteEvent(ActionEvent actionEvent, out ActionEvent eventStatus)
+        {
+            if (actionEvent.CanFire())
+            {
+                Print($"Firing action event {actionEvent.name}.", debugExecutor, this);
+                eventStatus = actionEvent.MarkFired(true);
+                actionEvent.startAction.Invoke();
+                Coordinator.Coordinate(actionEvent.sendToCoordinator);
+                return !actionEvent.waitForPerformance ? CastAction.None : actionEvent.waitAction;
+            }
+            else
+            {
+                Print($"Discarding one-shot {actionEvent.name}.", debugExecutor, this);
+                eventStatus = actionEvent;
+                return CastAction.None;
+            }
         }
 
         private bool SupportsAction(CastAction action)
@@ -104,6 +115,7 @@ namespace HotD.Castables
             return false;
         }
 
+        // Finishes the given action, if it's being waited on.
         public void FinishAction(StateAction stateAction)
         {
             if (actionsToPerform.Contains(stateAction))
@@ -113,6 +125,7 @@ namespace HotD.Castables
             }
         }
 
+        // Finishes the given action, if it's being waited on (finds the action from the actionsToPerform list).
         public void FinishAction(CastAction action)
         {
             Print($"Finish Cast Action: {action}", debugExecutor, this);
