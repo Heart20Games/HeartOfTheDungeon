@@ -34,7 +34,7 @@ namespace HotD.Castables
     public class CastableProperties : BaseMonoBehaviour, ICastableProperties
     {
         public CastableFieldsEditor fields = new();
-        [SerializeField] protected bool debug = false;
+        [SerializeField] protected bool debugProperties = false;
 
         // Properties
         public virtual Vector3 Direction { get => fields.direction; set => fields.direction = value; }
@@ -75,8 +75,12 @@ namespace HotD.Castables
         }
         public void SetPowerLevel(int value)
         {
-            Print($"Setting Power Level on {name}", debug, this);
+            Print($"Setting Power Level on {name}", debugProperties, this);
             PowerLevel = value;
+        }
+        public void ResetPowerLevel()
+        {
+            PowerLevel = 0;
         }
         public void SetComboStep(int value)
         {
@@ -134,7 +138,7 @@ namespace HotD.Castables
             this.fields ??= new();
             if (connectToFieldEvents)
             {
-                Print($"Connecting Field Events on {name}.", debug, this);
+                Print($"Connecting Field Events on {name}.", debugProperties, this);
                 this.fields.ConnectFieldEvents(fieldEvents);
             }
             this.fields.InitializeConnections();

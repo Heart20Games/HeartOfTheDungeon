@@ -36,39 +36,53 @@ public class CastCoordinator : MecanimCoordinator
 
     public void Coordinate(Triggers triggers)
     {
+        if (triggers == Triggers.None) return;
         if (HasTrigger(triggers, Triggers.StartAction))
         {
+            Print($"Triggering StartAction ({triggers})", debugTriggers, this);
             SetTrigger("StartAction");
         }
         if (HasTrigger(triggers, Triggers.StartCast))
         {
+            Print($"Triggering StartCast ({triggers})", debugTriggers, this);
             SetTrigger("StartCast");
         }
     }
 
     public void SetComboLevel(int level)
     {
+        Print("Set Combo Level", debugValues, this);
         SetInt("ComboLevel", level);
     }
 
     public void SetPowerLevel(int level)
     {
+        Print("Set Power Level", debugValues, this);
         SetInt("ChargeLevel", level);
     }
 
     public void SetActionIndex(int idx)
     {
+        Print("Set Action Index", debugValues, this);
         SetFloat("Action", idx);
+    }
+
+    public void OnStartCast()
+    {
+        Print("OnStartCast", debugTriggers, this);
+        onAction.Invoke(CastAction.End);
     }
 
     public void OnEndCast()
     {
-        Print("OnEndCast", debug);
+        Print("OnEndCast", debugTriggers, this);
         onAction.Invoke(CastAction.End);
     }
 
     [Header("Tests")]
     public bool debug = false;
+    [SerializeField] protected bool debugValues = false;
+    [SerializeField] protected bool debugTriggers = false;
     public int testIdx = 0;
     [ButtonMethod]
     public void TestSetAction()

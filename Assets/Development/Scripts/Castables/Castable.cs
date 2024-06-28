@@ -17,7 +17,8 @@ namespace HotD.Castables
         public List<GameObject> castingMethods = new();
         public bool casting = false;
         public virtual bool CanCast { get => !casting; }
-        
+        [SerializeField] protected bool debugCastable = false;
+
         public virtual void Initialize(Character owner)
         {
             Initialize(owner, null);
@@ -128,7 +129,7 @@ namespace HotD.Castables
             {
                 status.effect.Apply(Owner as Character, status.strength);
             }
-            if (debug) { Debug.Log($"{name} casting in {fields.direction} direction."); }
+            Print($"{name} casting in {fields.direction} direction.", debugCastable, this);
             onCast.Invoke(fields.direction);
         }
 

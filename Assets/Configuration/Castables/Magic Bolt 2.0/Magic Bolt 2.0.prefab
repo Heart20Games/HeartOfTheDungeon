@@ -88,7 +88,7 @@ MonoBehaviour:
     castStatuses: []
     hitStatuses: []
     pivotDirection: {x: 0, y: 0, z: 0}
-  debug: 0
+  debugProperties: 0
   castOnTrigger: 1
   castOnRelease: 0
   unCastOnRelease: 0
@@ -141,11 +141,14 @@ MonoBehaviour:
   onAction:
     m_PersistentCalls:
       m_Calls: []
+  debugExecutor: 1
   supportedActions:
   - name: Start
     triggerAction: 4
     sendToCoordinator: 1
     waitForPerformance: 0
+    waitAction: 0
+    oneShot: 1
     startAction:
       m_PersistentCalls:
         m_Calls:
@@ -162,14 +165,17 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   - name: Release
-    triggerAction: 4
-    sendToCoordinator: 0
+    triggerAction: 48
+    sendToCoordinator: 2
     waitForPerformance: 1
+    waitAction: 32
+    oneShot: 1
     startAction:
       m_PersistentCalls:
         m_Calls: []
   actionsToPerform: []
   testAction:
+    name: 
     state: 0
     action: 0
 --- !u!114 &7282001920473987893
@@ -692,7 +698,7 @@ MonoBehaviour:
     castStatuses: []
     hitStatuses: []
     pivotDirection: {x: 0, y: 0, z: 0}
-  debug: 0
+  debugProperties: 0
   castOnTrigger: 1
   castOnRelease: 0
   unCastOnRelease: 0
@@ -925,9 +931,20 @@ MonoBehaviour:
   onAction:
     m_PersistentCalls:
       m_Calls: []
-  supportedActions: []
+  debugExecutor: 1
+  supportedActions:
+  - name: Start
+    triggerAction: 4
+    sendToCoordinator: 0
+    waitForPerformance: 1
+    waitAction: 32
+    oneShot: 0
+    startAction:
+      m_PersistentCalls:
+        m_Calls: []
   actionsToPerform: []
   testAction:
+    name: 
     state: 0
     action: 0
 --- !u!114 &6162899637602569367
@@ -1042,7 +1059,7 @@ MonoBehaviour:
     castStatuses: []
     hitStatuses: []
     pivotDirection: {x: 0, y: 0, z: 0}
-  debug: 0
+  debugProperties: 0
   castOnTrigger: 1
   castOnRelease: 0
   unCastOnRelease: 0
@@ -1083,11 +1100,14 @@ MonoBehaviour:
   onAction:
     m_PersistentCalls:
       m_Calls: []
+  debugExecutor: 0
   supportedActions:
   - name: Start
     triggerAction: 4
     sendToCoordinator: 0
     waitForPerformance: 0
+    waitAction: 0
+    oneShot: 0
     startAction:
       m_PersistentCalls:
         m_Calls:
@@ -1105,6 +1125,7 @@ MonoBehaviour:
           m_CallState: 2
   actionsToPerform: []
   testAction:
+    name: 
     state: 0
     action: 0
 --- !u!114 &4697921180036621098
@@ -1273,7 +1294,7 @@ MonoBehaviour:
     castStatuses: []
     hitStatuses: []
     pivotDirection: {x: 0, y: 0, z: 0}
-  debug: 0
+  debugProperties: 0
   castOnTrigger: 1
   castOnRelease: 0
   unCastOnRelease: 0
@@ -1314,11 +1335,14 @@ MonoBehaviour:
   onAction:
     m_PersistentCalls:
       m_Calls: []
+  debugExecutor: 0
   supportedActions:
   - name: Start
     triggerAction: 4
     sendToCoordinator: 0
     waitForPerformance: 0
+    waitAction: 0
+    oneShot: 0
     startAction:
       m_PersistentCalls:
         m_Calls:
@@ -1334,8 +1358,21 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 5613628593897543514}
+          m_TargetAssemblyTypeName: HotD.Castables.CastableProperties, Core
+          m_MethodName: ResetPowerLevel
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   actionsToPerform: []
   testAction:
+    name: 
     state: 0
     action: 0
 --- !u!1 &6988790488576478904
@@ -1549,7 +1586,7 @@ MonoBehaviour:
     castStatuses: []
     hitStatuses: []
     pivotDirection: {x: 0, y: 0, z: 0}
-  debug: 0
+  debugProperties: 0
   castOnTrigger: 0
   castOnRelease: 1
   unCastOnRelease: 0
@@ -1681,6 +1718,7 @@ MonoBehaviour:
     destination: 2
   queuedActions: []
   dequeuedActions: []
+  debugCastable: 0
 --- !u!114 &6180123455463994957
 MonoBehaviour:
   m_ObjectHideFlags: 0

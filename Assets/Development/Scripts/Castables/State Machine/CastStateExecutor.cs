@@ -8,7 +8,7 @@ namespace HotD.Castables
     public interface ICastStateExecutor : ICastableProperties
     {
         public CastState State { get; set; }
-        public bool PerformAction(StateAction stateAction);
+        public bool PerformAction(StateAction stateAction, out CastAction waitOn);
         public void ReportAction(CastAction action);
 
         public UnityAction<StateAction> ActionPerformer { get; set; }
@@ -28,8 +28,9 @@ namespace HotD.Castables
         protected UnityAction<StateAction> actionPerformed;
         protected UnityAction<CastAction> actionReported;
 
-        public virtual bool PerformAction(StateAction stateAction)
+        public virtual bool PerformAction(StateAction stateAction, out CastAction waitOn)
         {
+            waitOn = CastAction.None;
             if (stateAction.state == state)
             {
                 actionPerformed.Invoke(stateAction);

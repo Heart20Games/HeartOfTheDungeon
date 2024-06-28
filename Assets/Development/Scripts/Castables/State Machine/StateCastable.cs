@@ -30,9 +30,17 @@ namespace HotD.Castables
     {
         public StateAction(CastState state, CastAction action)
         {
+            this.name = $"[{state} -> {action}]";
             this.state = state;
             this.action = action;
         }
+        
+        public string Name()
+        {
+            return $"[{state} -> {action}]";
+        }
+
+        public string name;
         public CastState state;
         public CastAction action;
 
@@ -56,6 +64,7 @@ namespace HotD.Castables
         public Dictionary<StateAction, StateTransition> transitionBank = new();
         public List<ICastStateExecutor> executorList = new();
         [Foldout("State")] public Dictionary<CastState, List<ICastStateExecutor>> executorBank = new();
+        [SerializeField] protected bool debugCastable = false;
 
         public bool CanCast { get => state == CastState.Equipped; }
 
@@ -86,7 +95,7 @@ namespace HotD.Castables
                 {
                     if (value != CastAction.None && HasAction(value, transition.triggerActions))
                     {
-                        Print($"Added to transition bank: ({transition.source} / {value}) : {transition}", debug, this);
+                        Print($"Added to transition bank: ({transition.source} / {value}) : {transition}", debugCastable, this);
                         transitionBank.Add(new(transition.source, value), transition);
                     }
                 }
@@ -115,23 +124,47 @@ namespace HotD.Castables
 
         public void SetState(CastState state)
         {
+            // End the ones we don't want.
             foreach (var keyState in executorBank.Keys)
             {
                 foreach (var executor in executorBank[keyState])
                 {
-                    Print($"SetActive({executor.State == state}) on {keyState} executor. (Seeking {state})", debug);
-                    executor.SetActive(executor.State == state);
-                    if (executor.State == state)
+                    if (executor.State != state)
                     {
-                        executor.PerformAction(new(state, CastAction.Start));
-                        QueueAction(CastAction.End, false, state);
-                    }
-                    else if (executor.State == this.state)
-                    {
-                        executor.PerformAction(new(this.state, CastAction.End));
+                        Print($"- Remove {keyState} executor. (Seeking {state})", debugCastable);
+
+                        // End it first
+                        if (executor.State == this.state)
+                        {
+                            PerformAndWait(executor, new(this.state, CastAction.End));
+                        }
+
+                        // Then deactivate
+                        executor.SetActive(false);
                     }
                 }
             }
+
+            // Now Activate the one(s) we want.
+            foreach (var keyState in executorBank.Keys)
+            {
+                foreach (var executor in executorBank[keyState])
+                {
+                    if (executor.State == state)
+                    {
+                        Print($"+ Add {keyState} executor. (Seeking {state})", debugCastable);
+
+                        // Activate first
+                        executor.SetActive(true);
+
+                        // Then start
+                        PerformAndWait(executor, new(state, CastAction.Start));
+                        //QueueAction(CastAction.End, false, state);
+                    }
+                }
+            }
+
+            // Remove actions queued for the state we just entered (give us a fresh start).
             queuedActions.RemoveAll(
                 (StateAction stateAction) => { return stateAction.state != state; }
             );
@@ -152,28 +185,35 @@ namespace HotD.Castables
             {
                 bool waitingOnExecutor = false;
 
-                Print($"Attempting {transition.triggerActions} transition from {transition.source} to {transition.destination}.", debug);
+                Print($"? Attempting {transition.triggerActions} transition from {transition.source} to {transition.destination}.", debugCastable);
                 var executors = executorBank[state];
                 if (executors.Count > 0)
                 {
                     foreach (var executor in executors)
                     {
-                        if (executor.PerformAction(stateAction))
-                        {
-                            Print($"Executor performing {stateAction.action} on {stateAction.state}.", debug);
-                            queuedActions.Add(stateAction);
-                            waitingOnExecutor = true;
-                        }
+                        waitingOnExecutor = PerformAndWait(executor, stateAction);
                     }
                     DequeueFirst();
                 }
 
                 if (!waitingOnExecutor && transitionIfNotWaiting)
                 {
-                    Print($"No executors to wait on, setting state to {transition.destination}.", debug);
+                    Print($"No executors to wait on, setting state to {transition.destination}.", debugCastable);
                     SetState(transition.destination);
                 }
             }
+        }
+
+        private bool PerformAndWait(ICastStateExecutor executor, StateAction stateAction)
+        {
+            if (executor.PerformAction(stateAction, out CastAction waitOn))
+            {
+                StateAction waitStateAction = new(stateAction.state, waitOn);
+                Print($"... Executor performing {waitStateAction.action} on {waitStateAction.state}.", debugCastable);
+                queuedActions.Add(waitStateAction);
+                return true;
+            }
+            return false;
         }
 
         public void DequeueFirst()

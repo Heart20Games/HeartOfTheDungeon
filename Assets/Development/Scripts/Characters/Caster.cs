@@ -15,7 +15,6 @@ namespace HotD.Castables
 
     public class Caster : BaseMonoBehaviour, ICaster
     {
-        private bool canAttack = true;
         private Character character;
         private ArtRenderer artRenderer;
         private Transform pivot;
@@ -35,7 +34,6 @@ namespace HotD.Castables
         [SerializeField][ReadOnly] private Vector3 appliedVector = new();
         [SerializeField][ReadOnly] private Vector3 castDirection = new();
         [SerializeField][ReadOnly] private Vector3 finalDirection = new();
-        private Vector3 rotationOffset = new();
         [SerializeField] private UnityEvent<Vector3> OnSetCastVector = new();
         [SerializeField][ReadOnly] private Transform target;
 
