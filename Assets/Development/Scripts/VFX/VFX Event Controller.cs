@@ -62,7 +62,7 @@ public class VFXEventController : BaseMonoBehaviour
 
     public void OnVFXTriggered(CastedVFX vfx)
     {
-        Print($"VFX Triggered ({vfx.name})", true, this);
+        Print($"VFX Triggered ({vfx.name})", debug, this);
         SetVFXEnabled(vfx, true);
         SetVFXBool(vfx, "Sustain", true);
         if (animator.HasParameter(vfx.triggerParameter))

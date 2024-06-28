@@ -20,8 +20,11 @@ public interface IBaseMonoBehaviour
 public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
 {
     public Transform Transform => transform;
+    public Rigidbody Rigidbody { get { return transform.GetComponent<Rigidbody>(); } }
+    public Collider Collider { get { return transform.GetComponent<Collider>(); } }
 
     [Conditional("DEVELOPMENT_BUILD"), Conditional("UNITY_EDITOR")]
+    [HideInCallstack]
     protected void Print(object message, bool debug = true, Object context = null)
     {
         if (debug) Debug.Log(message, context == null ? this : context);
