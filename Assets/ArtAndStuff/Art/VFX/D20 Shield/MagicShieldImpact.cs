@@ -1,4 +1,6 @@
+using HotD.Castables;
 using MyBox;
+using PlasticGui.WebApi.Responses;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -66,7 +68,7 @@ public class MagicShieldImpact : BaseMonoBehaviour
             }
             else if (!shieldOn && !shieldTransitioning && !explode && dissolveAmount < 1f)
             {
-                StartCoroutine(ShieldDeactivate());
+                //StartCoroutine(ShieldDeactivate());
             }
 
             if(explode == true &&!shieldTransitioning)
@@ -127,7 +129,7 @@ public class MagicShieldImpact : BaseMonoBehaviour
     }
 
     //begins the shield deactivation VFX cycle
-    IEnumerator ShieldDeactivate()
+    private IEnumerator ShieldDeactivate()
     {
         shieldTransitioning = true;
         while(dissolveAmount <= 1f)
@@ -165,6 +167,19 @@ public class MagicShieldImpact : BaseMonoBehaviour
         shieldTransitioning = false;
     }
 
+    public void ToggleShield(bool enabled)
+    {
+        if(enabled)
+        {
+            shieldOn = true;
+        }
+        else
+        {
+            shieldOn = false;
+            StartCoroutine(ShieldDeactivate());
+        }
+    }
+
     public void OnImpact(Impact.Other other)
     {
         if (visualEffect != null && other.gameObject != null)
@@ -179,6 +194,16 @@ public class MagicShieldImpact : BaseMonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<Projectile>().ShouldIgnoreDodgeLayer) return;
+
+        if(other.GetComponent<Impact>())
+        {
+            OnImpact(other.GetComponent<Impact>().other);
+        }
+    }
+
     [ButtonMethod]
     public void TestImpactTrigger()
     {
@@ -187,6 +212,4 @@ public class MagicShieldImpact : BaseMonoBehaviour
             ImpactTrigger();
         }
     }
-
-  
 }

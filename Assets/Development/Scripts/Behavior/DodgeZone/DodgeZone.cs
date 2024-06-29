@@ -1,35 +1,82 @@
 using HotD.Castables;
-using MyBox;
 using System.Collections;
 using UnityEngine;
 
 public class DodgeZone : MonoBehaviour
 {
-    private Coroutine dodgeRoutine;
-
     [SerializeField] private Transform characterTransform;
 
+    [SerializeField] private MagicShieldImpact magicShieldPrefab;
+
     [SerializeField] private int dodgeChance;
+
+    private Coroutine sidestepRoutine;
+    private Coroutine magicShieldRoutine;
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.GetComponent<Projectile>())
         {
-            if (other.GetComponent<Projectile>().ShouldIgnoreDodgeLayer) return;
+            if(other.GetComponent<Projectile>().ShouldIgnoreDodgeLayer) return;
 
-            int randomChance = Random.Range(0, 100);
+            CalculateDodgeChance();
+        }
+    }
 
-            if (randomChance <= dodgeChance)
+    private void CalculateDodgeChance()
+    {
+        int randomChance = Random.Range(0, 100);
+
+        if (randomChance <= dodgeChance)
+        {
+            ChooseDodgeManeuver();
+        }
+    }
+
+    private void ChooseDodgeManeuver()
+    {
+        if(sidestepRoutine != null) return;
+        if(magicShieldRoutine != null) return;
+
+        int randomChance = Random.Range(0, 2);
+
+        if (randomChance == 0)
+        {
+            if (sidestepRoutine == null)
             {
-                if(dodgeRoutine == null)
-                {
-                    dodgeRoutine = StartCoroutine(DodgeAttack());
-                }
+                sidestepRoutine = StartCoroutine(SidestepDodge());
+            }
+        }
+        else
+        {
+            if(magicShieldRoutine == null)
+            {
+                magicShieldRoutine = StartCoroutine(MagicShieldDodge());
             }
         }
     }
 
-    private IEnumerator DodgeAttack()
+    private IEnumerator MagicShieldDodge()
+    {
+        var magicShield = Instantiate(magicShieldPrefab);
+
+        magicShield.transform.parent = characterTransform;
+        magicShield.transform.localScale = new Vector3(-2, 2, 2);
+        magicShield.transform.localPosition = new Vector3(0, 3.157f, 0);
+
+        magicShield.ToggleShield(true);
+
+        yield return new WaitForSeconds(3);
+
+        magicShield.ToggleShield(false);
+
+        yield return new WaitForSeconds(1f);
+
+        magicShieldRoutine = null;
+        Destroy(magicShield.gameObject);
+    }
+
+    private IEnumerator SidestepDodge()
     {
         float t = 0;
 
@@ -45,6 +92,6 @@ public class DodgeZone : MonoBehaviour
             yield return null;
         }
 
-        dodgeRoutine = null;
+        sidestepRoutine = null;
     }
 }

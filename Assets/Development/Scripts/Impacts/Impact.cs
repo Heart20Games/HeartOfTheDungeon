@@ -56,7 +56,7 @@ public class Impact : Validator
     {
         if (isActiveAndEnabled)
         {
-            if (other.layer == LayerMask.NameToLayer("DodgeZone")) return;
+            if (other.gameObject.layer == LayerMask.NameToLayer("DodgeZone")) return;
 
             this.other = other;
             this.other.gameObject = other.gameObject;
