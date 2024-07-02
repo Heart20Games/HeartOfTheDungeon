@@ -101,16 +101,10 @@ namespace HotD.Castables
 
         // Events
         [Foldout("Events", true)]
-        public bool castOnTrigger = true;
-        public bool castOnRelease = false;
-        public bool unCastOnRelease = false;
         public bool connectToFieldEvents = false;
         public FieldEvents fieldEvents = new("Local Events");
-        public UnityEvent onTrigger = new();
-        public UnityEvent<Vector3> onCast = new();
-        public UnityEvent onRelease = new();
-        public UnityEvent onUnCast = new();
-        [Foldout("Events")] public UnityEvent onCasted = new();
+        [Foldout("Events")] public CastEvents castEvents = new("Cast Events");
+        
 
         private void Awake()
         {
@@ -147,11 +141,7 @@ namespace HotD.Castables
         public void InitializeEvents()
         {
             fieldEvents = new("Local Events");
-            onCast ??= new();
-            onTrigger ??= new();
-            onRelease ??= new();
-            onUnCast ??= new();
-            onCasted ??= new();
+            castEvents = new("Cast Events");
             connectToFieldEvents = true;
         }
 
@@ -167,6 +157,27 @@ namespace HotD.Castables
 
             Identity = owner.Identity;
             owner?.WeaponDisplay?.DisplayWeapon(fields.weaponArt);
+        }
+    }
+
+    [Serializable]
+    public struct CastEvents
+    {
+        public string name;
+        public UnityEvent onTrigger;
+        public UnityEvent<Vector3> onStartCast;
+        public UnityEvent onRelease;
+        public UnityEvent onEndCast;
+        public UnityEvent onCasted;
+
+        public CastEvents(string name)
+        {
+            this.name = name;
+            onTrigger = new();
+            onRelease = new();
+            onStartCast = new();
+            onEndCast = new();
+            onCasted = new();
         }
     }
 
@@ -295,10 +306,6 @@ namespace HotD.Castables
         public int curPowerLevel;
         public int maxComboStep;
         public int curComboStep;
-        //public bool casting = false;
-        //public bool castOnTrigger = true;
-        //public bool castOnRelease = false;
-        //public bool unCastOnRelease = false;
         public bool usePowerLevelAsComboStep = false;
         public List<GameObject> castingMethods = new();
 

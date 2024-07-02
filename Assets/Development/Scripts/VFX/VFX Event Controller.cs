@@ -36,14 +36,14 @@ namespace HotD.Body
             if (isActiveAndEnabled && vfx != null)
             {
                 effects.Add(vfx);
-                vfx.gameObject.SetActive(false);
-                vfx.VisualsEnabled = false;
-                vfx.onSetPowerLimit.AddListener((int limit) => { SetCastLimit(vfx, limit); });
-                vfx.onTrigger.AddListener(() => { OnVFXTriggered(vfx); });
-                vfx.onRelease.AddListener(() => { OnVFXReleased(vfx); });
-                vfx.onCast.AddListener((_) => { OnVFXCasted(vfx); });
-                vfx.onEndCast.AddListener(() => { OnVFXEndCast(vfx); });
-                vfx.toSetFirepoint.AddListener((int firepointIdx) => { SetFirePoint(vfx, firepointIdx); });
+                vfx.AddListenerController(false, false,
+                    (int firepointIdx) => { SetFirePoint(vfx, firepointIdx); },
+                    (int limit) => { SetCastLimit(vfx, limit); },
+                    () => { OnVFXTriggered(vfx); },
+                    () => { OnVFXReleased(vfx); },
+                    (_) => { OnVFXCasted(vfx); },
+                    () => { OnVFXEndCast(vfx); }
+                );
             }
         }
 
@@ -176,7 +176,7 @@ namespace HotD.Body
         }
         public void SetVFXBool(CastedVFX vfx, string property, bool value)
         {
-            if (vfx.equipped)
+            if (vfx.Equipped)
                 vfx.animator.SetBool(property, value);
         }
 
@@ -187,7 +187,7 @@ namespace HotD.Body
         }
         public void SetVFXTrigger(CastedVFX vfx, string property)
         {
-            if (vfx.animator != null && vfx.equipped)
+            if (vfx.animator != null && vfx.Equipped)
                 vfx.animator.SetTrigger(property);
         }
 
@@ -201,7 +201,7 @@ namespace HotD.Body
         {
             //vfx.gameObject.SetActive(enabled && vfx.equipped);
             Print($"Set VFX Enabled? {vfx.name}", debug);
-            vfx.VisualsEnabled = enabled && vfx.equipped;
+            vfx.VisualsEnabled = enabled && vfx.Equipped;
         }
 
         public void SetVFXParent(Transform parent, Vector3 position = new())

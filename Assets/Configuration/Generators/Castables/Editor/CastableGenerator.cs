@@ -210,8 +210,8 @@ namespace HotD.Generators
                 charger.chargeTimes = chargeTimes;
                 
                 // Start Transition
-                UnityEventTools.AddPersistentListener(castable.onTrigger, charger.Begin);
-                UnityEventTools.AddPersistentListener(castable.onRelease, charger.Interrupt);
+                UnityEventTools.AddPersistentListener(castable.castEvents.onTrigger, charger.Begin);
+                UnityEventTools.AddPersistentListener(castable.castEvents.onRelease, charger.Interrupt);
                 UnityEventTools.AddPersistentListener(charger.onCharge, castable.SetPowerLevel);
                 if (settings.castOnChargeUp)
                     UnityEventTools.AddPersistentListener(charger.onCharged, () => { castable.Cast(); });
@@ -228,7 +228,7 @@ namespace HotD.Generators
                 Timer coolDownTimer = gameObject.AddComponent<Timer>();
                 coolDownTimer.onComplete = new();
                 coolDownTimer.length = stats.Cooldown; // TODO: Account for bonuses
-                UnityEventTools.AddVoidPersistentListener(castable.onCast, coolDownTimer.Play);
+                UnityEventTools.AddVoidPersistentListener(castable.castEvents.onStartCast, coolDownTimer.Play);
                 UnityEventTools.AddPersistentListener(coolDownTimer.onComplete, castable.UnCast);
                 return coolDownTimer;
             }
@@ -274,21 +274,16 @@ namespace HotD.Generators
             //casted.gameObject.SetActive(false);
             //casted.enabled = false;
 
-            casted.stats = stats;
-            casted.powerLimit = stats.chargeLimit;
+            casted.InitializeUnityEvents();
+            casted.Stats = stats;
+            casted.PowerLimit = stats.chargeLimit;
 
-            casted.onSetPowerLimit ??= new();
             //UnityEventTools.AddPersistentListener(stats.chargeLimit.updatedFinal, casted.OnSetPowerLimit);
 
-            casted.onTrigger ??= new();
-            casted.onRelease ??= new();
-            casted.onCast ??= new();
-            casted.onEndCast ??= new();
-            casted.onSetPowerLevel ??= new();
-            UnityEventTools.AddPersistentListener(castable.onTrigger, casted.OnTrigger);
-            UnityEventTools.AddPersistentListener(castable.onRelease, casted.OnRelease);
-            UnityEventTools.AddPersistentListener(castable.onCast, casted.OnCast);
-            UnityEventTools.AddPersistentListener(castable.onUnCast, casted.OnUnCast);
+            UnityEventTools.AddPersistentListener(castable.castEvents.onTrigger, casted.OnTrigger);
+            UnityEventTools.AddPersistentListener(castable.castEvents.onRelease, casted.OnRelease);
+            UnityEventTools.AddPersistentListener(castable.castEvents.onStartCast, casted.OnStartCast);
+            UnityEventTools.AddPersistentListener(castable.castEvents.onEndCast, casted.OnEndCast);
             UnityEventTools.AddPersistentListener(castable.fieldEvents.onSetPowerLevel, casted.SetPowerLevel);
         }
 
@@ -311,7 +306,7 @@ namespace HotD.Generators
             public bool castOnRelease;
             public bool unCastOnRelease;
             public bool castOnChargeUp;
-            public readonly void ApplyToCastable(CastableProperties castable)
+            public readonly void ApplyToCastable(Castable castable)
             {
                 castable.InitializeEvents();
 
@@ -352,8 +347,8 @@ namespace HotD.Generators
                     body.transform.SetParent(castable.transform);
                     ConnectCastedComponent(body, castable, stats);
 
-                    body.powerRange = chargeLevels;
-                    body.comboRange = comboSteps;
+                    body.PowerRange = chargeLevels;
+                    body.ComboRange = comboSteps;
                     body.applyOnSet = true;
 
                     castable.fields.toLocations.Add(new(body, source, target));
@@ -415,8 +410,8 @@ namespace HotD.Generators
                     CastedCollider collider = (PrefabUtility.InstantiatePrefab(colliderPrefab.gameObject) as GameObject).GetComponent<CastedCollider>(); // , pivot.transform);
                     collider.transform.SetParent(pivot.transform);
                     ConnectCastedComponent(collider, castable, stats);
-                    collider.powerRange = chargeLevels;
-                    collider.comboRange = comboSteps;
+                    collider.PowerRange = chargeLevels;
+                    collider.ComboRange = comboSteps;
 
                     castable.fields.toLocations.Add(new(collider, source, target));
                     castable.castingMethods.Add(collider.gameObject);
@@ -442,8 +437,8 @@ namespace HotD.Generators
                 Pivot castedPivot = pivotObject.AddComponent<Pivot>();
 
                 Casted casted = AddCastedComponent(castedObject, castable, stats);
-                casted.powerRange = chargeLevels;
-                casted.comboRange = comboSteps;
+                casted.PowerRange = chargeLevels;
+                casted.ComboRange = comboSteps;
 
                 ProjectileSpawner spawner = castedObject.AddComponent<ProjectileSpawner>();
                 UnityEventTools.AddPersistentListener(casted.onCast, spawner.Spawn);

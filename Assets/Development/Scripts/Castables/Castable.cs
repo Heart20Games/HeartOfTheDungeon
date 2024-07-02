@@ -16,6 +16,10 @@ namespace HotD.Castables
         [Header("Casting")]
         public List<GameObject> castingMethods = new();
         public bool casting = false;
+        [Foldout("Events", true)]
+        public bool castOnTrigger = true;
+        public bool castOnRelease = false;
+        [Foldout("Events")] public bool unCastOnRelease = false;
         public virtual bool CanCast { get => !casting; }
         [SerializeField] protected bool debugCastable = false;
 
@@ -69,7 +73,7 @@ namespace HotD.Castables
             }
         }
 
-        public virtual UnityEvent OnCasted() { return onCasted; }
+        public virtual UnityEvent OnCasted() { return castEvents.onCasted; }
 
         // Equipping
         //public virtual void Disable() { }
@@ -78,14 +82,14 @@ namespace HotD.Castables
         {
             foreach (var effect in fields.effects)
             {
-                effect.equipped = true;
+                effect.Equipped = true;
             }
         }
         private void UnEquip()
         {
             foreach (var effect in fields.effects)
             {
-                effect.equipped = false;
+                effect.Equipped = false;
             }
             Item.UnEquip(); Destroy(gameObject);
         }
@@ -99,7 +103,7 @@ namespace HotD.Castables
             {
                 status.effect.Apply(Owner as Character, status.strength);
             }
-            onTrigger.Invoke();
+            castEvents.onTrigger.Invoke();
             if (castOnTrigger) Cast();
         }
 
@@ -109,7 +113,7 @@ namespace HotD.Castables
             {
                 status.effect.Remove(Owner as Character);
             }
-            onRelease.Invoke();
+            castEvents.onRelease.Invoke();
             if (castOnRelease) Cast();
             if (unCastOnRelease) UnCast();
         }
@@ -130,7 +134,7 @@ namespace HotD.Castables
                 status.effect.Apply(Owner as Character, status.strength);
             }
             Print($"{name} casting in {fields.direction} direction.", debugCastable, this);
-            onCast.Invoke(fields.direction);
+            castEvents.onStartCast.Invoke(fields.direction);
         }
 
         public virtual void UnCast()
@@ -140,8 +144,8 @@ namespace HotD.Castables
             {
                 status.effect.Remove(Owner as Character);
             }
-            onUnCast.Invoke();
-            onCasted.Invoke();
+            castEvents.onEndCast.Invoke();
+            castEvents.onCasted.Invoke();
         }
 
 
@@ -162,10 +166,10 @@ namespace HotD.Castables
         private void ReportOriginToPositionables()
         {
             Transform effectParent = fields.followBody ? Owner.Body : Owner.Transform;
-            ReportOriginAmong(onTrigger, effectParent);
-            ReportOriginAmong(onCast, effectParent);
-            ReportOriginAmong(onUnCast, effectParent);
-            ReportOriginAmong(onRelease, effectParent);
+            ReportOriginAmong(castEvents.onTrigger, effectParent);
+            ReportOriginAmong(castEvents.onStartCast, effectParent);
+            ReportOriginAmong(castEvents.onEndCast, effectParent);
+            ReportOriginAmong(castEvents.onRelease, effectParent);
         }
 
         private void ReportOriginAmong(UnityEventBase uEvent, Transform effectParent)
@@ -184,8 +188,8 @@ namespace HotD.Castables
 
         private void ReportExceptionsToCollidables(Collider[] exceptions)
         {
-            ReportExceptionsAmong(onTrigger, exceptions);
-            ReportExceptionsAmong(onCast, exceptions);
+            ReportExceptionsAmong(castEvents.onTrigger, exceptions);
+            ReportExceptionsAmong(castEvents.onStartCast, exceptions);
         }
 
         private void ReportExceptionsAmong(UnityEventBase uEvent, Collider[] exceptions)
