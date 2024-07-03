@@ -142,11 +142,11 @@ namespace HotD
                         {
                             if (VolumeManager.IsTransitioning(PType.Death, true, true))
                                 VolumeManager.SpeedUp(PType.Death);
-                            else    
-                                Game.RestartLife();
                         }
                         else
-                            UserInterface.Select(); 
+                        {
+                            UserInterface.Select();
+                        }
                         break;
                 }
             }

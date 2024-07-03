@@ -347,7 +347,7 @@ namespace Body
 
         public void Die(bool autoDespawn, bool autoRespawn)
         {
-            Print($"{Name} died -- {mode.liveMode}");
+            Print($"{Name} died -- {mode.liveMode}", debug, this);
             Emotion = "dead";
             onDeath?.Invoke(this);
             
@@ -380,7 +380,7 @@ namespace Body
         }
         public void Respawn()
         {
-            Print($"Respawing {Name}.");
+            Print($"Respawing {Name}.", debug);
             SetMode(LiveMode.Alive);
             Print($"Respawn {Name}", debug);
             body.SetPositionAndRotation(spawn.position, spawn.rotation);
