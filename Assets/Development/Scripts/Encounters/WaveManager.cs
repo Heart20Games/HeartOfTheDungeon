@@ -157,6 +157,7 @@ namespace HotD
 
                 AddWayPoints(party.transform.GetChild(0).GetComponent<EnemyAI>());
             }
+            TimeScaler.UpdateScalables();
 
             if (!patientWaves)
                 coroutine ??= StartCoroutine(CountdownToWave());

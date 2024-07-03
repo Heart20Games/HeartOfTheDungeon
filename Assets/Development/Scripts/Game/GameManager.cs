@@ -31,7 +31,6 @@ namespace HotD
         [HideInInspector] public VolumeManager volumeManager;
         [HideInInspector] public ProgressManager progressManager;
         [HideInInspector] public HUD hud;
-        [HideInInspector] public List<ITimeScalable> timeScalables;
         [HideInInspector] public List<Interactable> interactables;
         [Foldout("Parts")][HideInInspector] public List<Character> allCharacters;
         private PlayerInput input;
@@ -71,11 +70,6 @@ namespace HotD
         public UnityEvent onRestartScene;
         public UnityEvent onRestartLife;
         [Foldout("Events")] public UnityEvent onRestartGame;
-
-        // TimeScale
-        [Header("TimeScale")]
-        public float timeScale = 1.0f;
-        public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
 
         // Cheats / Shortcuts
         [Header("Cheats and Shortcuts")]
@@ -177,19 +171,6 @@ namespace HotD
 
 
         // Setters
-
-        // Time Scale
-        public void SetTimeScale(float timeScale)
-        {
-            this.timeScale = timeScale;
-            foreach (ITimeScalable timeScalable in timeScalables)
-            {
-                if (timeScalable != null)
-                    timeScalable.SetTimeScale(this.timeScale);
-                else
-                    print("Invalid Object");
-            }
-        }
 
         // Game Mode
 
@@ -304,7 +285,7 @@ namespace HotD
             Cursor.visible = false;
 
             // Set Time Scale
-            TimeScale = mode.timeScale;
+            TimeScaler.TimeScale = mode.timeScale;
 
             // Swap Target Finders
             if (targeter != null)

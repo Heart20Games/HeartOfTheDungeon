@@ -51,7 +51,7 @@ public abstract class AIdentifiable : BaseMonoBehaviour, IIdentifiable
         set => NULL();
     }
     public virtual string Emotion { get => emotion.current.Value; set => emotion.current.Value = value; }
-    public virtual string Name { get; set; }
+    public new virtual string Name { get; set; }
     public virtual string Description { get => ""; set => NULL(); }
 
     // Mod Fields

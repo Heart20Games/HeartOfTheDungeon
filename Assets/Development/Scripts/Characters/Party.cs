@@ -10,7 +10,7 @@ using static HotD.CharacterModes;
 
 public class Party : BaseMonoBehaviour
 {
-    public string Name { get => gameObject.name; set => gameObject.name = value; }
+    public new string Name { get => gameObject.name; set => gameObject.name = value; }
 
     [Foldout("Party Members", true)]
     [Header("Party Members")]
