@@ -65,7 +65,11 @@ public class ProgressManager : BaseMonoBehaviour
     {
         ActivateDialogues();
         SpawnParties();
-        SpawnAtCheckpoint(Party.mainParty);
+
+        if(Party.mainParty != null)
+        {
+            SpawnAtCheckpoint(Party.mainParty);
+        }  
     }
 
     // Session Data Management
