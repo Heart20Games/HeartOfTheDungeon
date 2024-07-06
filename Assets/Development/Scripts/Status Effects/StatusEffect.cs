@@ -19,7 +19,7 @@ public struct Status
     public GameObject instance;
 }
 
-public abstract class StatusEffect: ScriptableObject
+public abstract class StatusEffect: BaseScriptableObject
 {
     /* Statuses will likely be expected to:
      * 1. Apply modifiers or effects to characters

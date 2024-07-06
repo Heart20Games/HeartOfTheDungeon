@@ -32,7 +32,7 @@ public class Impact : Validator
     private void OnEventEnter(Collider collider, UnityEvent onEvent)
     {
         var normal = (collider.transform.position - transform.position).normalized;
-        var location = Collider.ClosestPoint(collider.transform.position);
+        var location = collider.ClosestPoint(collider.transform.position);
         Other.ContactPoint point = new(normal, location);
         //if (vector.magnitude != 0)
         //    Ray ray = new(collider.transform.position, vector.normalized);

@@ -11,6 +11,7 @@ namespace Body.Behavior
     using static Tree.LeafNode;
     using HotD.Castables;
     using UnityEngine.InputSystem.XR;
+    using HotD;
 
     public enum Action { Idle, Patrol, Chase, Duel }
 

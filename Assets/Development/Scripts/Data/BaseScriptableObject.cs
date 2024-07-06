@@ -3,8 +3,10 @@ using System.Collections;
 using System.Reflection;
 using UnityEngine;
 
-public class BaseScriptableObject : ScriptableObject
+public class BaseScriptableObject : ScriptableObject, INamed
 {
+    public string Name { get => name; }
+
     [ReadOnly] public bool initialized = false;
     public virtual void Init() { initialized = true; }
 
