@@ -138,7 +138,7 @@ namespace HotD.Castables
             this.fields.InitializeConnections();
         }
 
-        public void InitializeEvents()
+        public virtual void InitializeEvents()
         {
             fieldEvents = new("Local Events");
             castEvents = new("Cast Events");

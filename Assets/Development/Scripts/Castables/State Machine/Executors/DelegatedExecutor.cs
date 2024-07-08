@@ -60,6 +60,20 @@ namespace HotD.Castables
             return false;
         }
 
+        public bool TryFindActionEvent(CastAction action, out ActionEvent actionEvent, ActionEvent fallback=new())
+        {
+            actionEvent = fallback;
+            foreach (var supportedAction in supportedActions)
+            {
+                if (supportedAction.triggerAction == action)
+                {
+                    actionEvent = supportedAction;
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private bool HasAction(CastAction actions, CastAction action)
         {
             return (actions & action) == action;

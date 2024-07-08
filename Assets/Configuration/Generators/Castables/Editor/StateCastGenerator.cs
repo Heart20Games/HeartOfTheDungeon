@@ -119,6 +119,10 @@ namespace HotD.Generators
                     {
                         DelegatedExecutor equippedExecutor = GenerateExecutor(castable, CastState.Equipped, "Equipped");
                         Timer coolDownTimer = GenerateComboIncrementation(equippedExecutor);
+                        if (stats.useChargeUp)
+                        {
+                            AddChargeReset(equippedExecutor);
+                        }
                     }
 
                     // Activation
@@ -241,12 +245,12 @@ namespace HotD.Generators
             charger.chargeTimes = chargeTimes;
 
             // Start Transition
-            ActionEvent startTransition = new("Start", CastAction.Start, Triggers.StartAction, false);
+            ActionEvent startTransition = new("Start", CastAction.Start, Triggers.StartAction, false, CastAction.None, true);
             UnityEventTools.AddPersistentListener(startTransition.startAction, charger.Begin);
             executor.supportedActions.Add(startTransition);
 
             // Release Transition
-            ActionEvent releaseTransition = new("Release", CastAction.Start, Triggers.None, true);
+            ActionEvent releaseTransition = new("Release / End", CastAction.Release | CastAction.End, Triggers.StartCast, true, CastAction.End, true);
             executor.supportedActions.Add(releaseTransition);
             //UnityEventTools.AddPersistentListener(releaseTransition.startAction, charger.Interrupt);
 
@@ -267,6 +271,10 @@ namespace HotD.Generators
 
             executor.connectToFieldEvents = true;
 
+            // Start Transition
+            ActionEvent startTransition = new("Start", CastAction.Start, Triggers.None, true, CastAction.End, false);
+            executor.supportedActions.Add(startTransition);
+
             Comboer comboer = executor.gameObject.AddComponent<Comboer>();
 
             GameObject methods = new("Methods");
@@ -280,11 +288,24 @@ namespace HotD.Generators
             for (int i = 0; i < executions.Count; i++)
             {
                 Execution execution = executions[i];
-                Casted casted = execution.PrepareExecutionMethod(executor, stats, methodPivot, gameObject, damager);
+                Castables.ExecutionMethod casted = execution.PrepareExecutionMethod(executor, stats, methodPivot, gameObject, damager);
                 comboer.AddStep(i + 1, casted.gameObject);
             }
 
             return comboer;
+        }
+
+        private void AddChargeReset(DelegatedExecutor executor)
+        {
+            Assert.IsNotNull(executor);
+
+            // Start Transition
+            ActionEvent startTransition = new("Start", CastAction.Start, Triggers.None, false);
+            if (!executor.TryFindActionEvent(CastAction.Start, out startTransition, startTransition))
+            {
+                executor.supportedActions.Add(startTransition);
+            }
+            UnityEventTools.AddVoidPersistentListener(startTransition.startAction, executor.ResetPowerLevel);
         }
 
         private Timer GenerateComboIncrementation(DelegatedExecutor executor)
@@ -378,6 +399,14 @@ namespace HotD.Generators
             return item;
         }
 
+        private static Castables.ExecutionMethod AddExecutionMethod(GameObject castedObject, CastableProperties castable)
+        {
+            Castables.ExecutionMethod executionMethod = castedObject.AddComponent<Castables.ExecutionMethod>();
+            executionMethod.aimAtCrosshair = true;
+            executionMethod.initializeOffOf = castable;
+            return executionMethod;
+        }
+
         private static Casted AddCastedComponent(GameObject castedObject, CastableProperties castable, CastableStats stats)
         {
             Casted casted = castedObject.AddComponent<Casted>();
@@ -396,10 +425,10 @@ namespace HotD.Generators
             casted.InitializeUnityEvents();
             //UnityEventTools.AddPersistentListener(stats.chargeLimit.updatedFinal, casted.OnSetPowerLimit);
 
-            UnityEventTools.AddPersistentListener(castable.castEvents.onTrigger, casted.OnTrigger);
-            UnityEventTools.AddPersistentListener(castable.castEvents.onRelease, casted.OnRelease);
-            UnityEventTools.AddPersistentListener(castable.castEvents.onStartCast, casted.OnStartCast);
-            UnityEventTools.AddPersistentListener(castable.castEvents.onEndCast, casted.OnEndCast);
+            //UnityEventTools.AddPersistentListener(castable.castEvents.onTrigger, casted.OnTrigger);
+            //UnityEventTools.AddPersistentListener(castable.castEvents.onRelease, casted.OnRelease);
+            //UnityEventTools.AddPersistentListener(castable.castEvents.onStartCast, casted.OnStartCast);
+            //UnityEventTools.AddPersistentListener(castable.castEvents.onEndCast, casted.OnEndCast);
             UnityEventTools.AddPersistentListener(castable.fieldEvents.onSetPowerLevel, casted.SetPowerLevel);
         }
 
@@ -508,7 +537,7 @@ namespace HotD.Generators
             [ConditionalField("method", false, ExecutionMethod.ProjectileBased)]
             public Projectile projectilePrefab;
 
-            public readonly Casted PrepareExecutionMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, GameObject gameObject, Damager damager = null)
+            public readonly Castables.ExecutionMethod PrepareExecutionMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, GameObject gameObject, Damager damager = null)
             {
                 return method switch
                 {
@@ -519,7 +548,7 @@ namespace HotD.Generators
                 };
             }
 
-            public readonly Casted PrepareCollisionMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
+            public readonly Castables.ExecutionMethod PrepareCollisionMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
             {
                 pivot.enabled = false;
                 if (colliderPrefab != null)
@@ -532,7 +561,9 @@ namespace HotD.Generators
 
                     executor.fields.toLocations.Add(new(collider, source, target));
                     executor.fields.castingMethods.Add(collider.gameObject);
-                    
+
+                    Castables.ExecutionMethod method = AddExecutionMethod(collider.gameObject, executor);
+
                     if (damager != null)
                     {
                         collider.hitDamageable = new();
@@ -541,12 +572,12 @@ namespace HotD.Generators
                         UnityEventTools.AddPersistentListener(collider.leftDamageable, damager.LeftDamageable);
                     }
 
-                    return collider;
+                    return method;
                 }
                 return null;
             }
 
-            public readonly Casted PrepareProjectileMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
+            public readonly Castables.ExecutionMethod PrepareProjectileMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
             {
                 GameObject castedObject = new(name);
                 castedObject.transform.parent = pivot.transform;
@@ -556,17 +587,17 @@ namespace HotD.Generators
                 pivotObject.transform.parent = castedObject.transform;
                 Pivot castedPivot = pivotObject.AddComponent<Pivot>();
 
-                Casted casted = AddCastedComponent(castedObject, executor, stats);
-                casted.PowerRange = chargeLevels;
-                casted.ComboRange = comboSteps;
+                Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
+                method.InitializeEvents();
 
                 ProjectileSpawner spawner = castedObject.AddComponent<ProjectileSpawner>();
-                UnityEventTools.AddPersistentListener(casted.onCast, spawner.Spawn);
+                UnityEventTools.AddPersistentListener(method.onEnable, spawner.Spawn);
+                method.positionables.Add(spawner);
                 spawner.pivot = castedPivot.transform;
                 spawner.lifeSpan = projectileLifeSpan;
                 spawner.applyOnSet = false;
-                castedPivot.enabled = false;
-                executor.fields.toLocations.Add(new(spawner, source, target));
+                //castedPivot.enabled = false;
+                //executor.fields.toLocations.Add(new(spawner, source, target));
 
                 if (projectilePrefab != null)
                 {
@@ -584,7 +615,7 @@ namespace HotD.Generators
                     }
                 }
 
-                return casted;
+                return method;
             }
         }
 

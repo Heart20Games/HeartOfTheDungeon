@@ -43,14 +43,27 @@ namespace HotD.Castables
             }
         }
 
-        public override void SetOrigin(Transform source, Transform target)
+        public override void SetOrigin(Transform source, Transform location)
         {
-            base.SetOrigin(source, target);
+            base.SetOrigin(source, location);
         }
 
         public void Spawn()
         {
-            Spawn(new Vector3());
+            Spawn(false);
+        }
+
+        public void Spawn(bool noDirection)
+        {
+            if (noDirection)
+            {
+                Spawn(new Vector3());
+            }
+            else
+            {
+                Vector3 direction = (TargetPosition - OriginPosition).normalized;
+                Spawn(direction);
+            }
         }
 
         public void Spawn(Vector3 direction = new Vector3())
