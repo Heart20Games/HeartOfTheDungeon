@@ -60,6 +60,13 @@ public class Impact : Validator
 
             this.other = other;
             this.other.gameObject = other.gameObject;
+            if(other.gameObject.tag == "Character")
+            {
+                touching.Add(other.gameObject);
+                hasCollided = true;
+                onEvent.Invoke();
+                onImpact.InvokeEnter(this);
+            }
             if ((!oneShot || !hasCollided) && Validate(other.gameObject) && !touching.Contains(other.gameObject))
             {
                 Print($"Valid Other: {other.gameObject.name} ({this.GetName()})", debug, this);

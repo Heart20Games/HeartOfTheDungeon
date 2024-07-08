@@ -24,6 +24,8 @@ public class SlimeWizard : EnemyAI
 
     public override void Update()
     {
+        if (character.CurrentHealth <= 0) return;
+
         base.Update();
 
         if(DidAttack)

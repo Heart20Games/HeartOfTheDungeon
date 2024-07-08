@@ -10,7 +10,7 @@ public class DodgeZone : MonoBehaviour
 
     [SerializeField] private int dodgeChance;
 
-    private Coroutine sidestepRoutine;
+    private Coroutine sideStepRoutine;
     private Coroutine magicShieldRoutine;
 
     private void OnTriggerEnter(Collider other)
@@ -35,21 +35,21 @@ public class DodgeZone : MonoBehaviour
 
     private void ChooseDodgeManeuver()
     {
-        if(sidestepRoutine != null) return;
+        if(sideStepRoutine != null) return;
         if(magicShieldRoutine != null) return;
 
         int randomChance = Random.Range(0, 2);
 
         if (randomChance == 0)
         {
-            if (sidestepRoutine == null)
+            if (sideStepRoutine == null)
             {
-                sidestepRoutine = StartCoroutine(SidestepDodge());
+                sideStepRoutine = StartCoroutine(SidestepDodge());
             }
         }
         else
         {
-            if(magicShieldRoutine == null)
+            if (magicShieldRoutine == null)
             {
                 magicShieldRoutine = StartCoroutine(MagicShieldDodge());
             }
@@ -80,18 +80,38 @@ public class DodgeZone : MonoBehaviour
     {
         float t = 0;
 
-        int randNum = Random.Range(0, 1);
+        int randNum = Random.Range(0, 2);
+
+        bool hitObstacle = false;
+
+        RaycastHit hit;
 
         while (t < 0.5f)
         {
             t += Time.deltaTime;
 
-            characterTransform.position = new Vector3(randNum == 0 ? characterTransform.position.x + 10 * Time.deltaTime : characterTransform.position.x - 10 * Time.deltaTime, characterTransform.position.y, 
-                                                      characterTransform.position.z);
+            if(!hitObstacle)
+            {
+                if (Physics.Raycast(characterTransform.position, randNum == 0 ? characterTransform.right : -characterTransform.right, out hit, 10))
+                {
+                    if (randNum == 0)
+                    {
+                        randNum = 1;
+                    }
+                    else
+                    {
+                        randNum = 0;
+                    }
+                }
+
+                hitObstacle = true;
+            }
+
+            characterTransform.position += randNum == 0 ? characterTransform.right * 10 * Time.deltaTime : -characterTransform.right * 10 * Time.deltaTime;
 
             yield return null;
         }
 
-        sidestepRoutine = null;
+        sideStepRoutine = null;
     }
 }
