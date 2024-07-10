@@ -1,3 +1,4 @@
+using Body.Behavior.ContextSteering;
 using CustomUnityEvents;
 using MyBox;
 using Sisus.ComponentNames;
@@ -57,6 +58,7 @@ public class Impact : Validator
         if (isActiveAndEnabled)
         {
             if (other.gameObject.layer == LayerMask.NameToLayer("DodgeZone")) return;
+            if (other.gameObject.GetComponent<MagicShieldImpact>()) return;
 
             this.other = other;
             this.other.gameObject = other.gameObject;

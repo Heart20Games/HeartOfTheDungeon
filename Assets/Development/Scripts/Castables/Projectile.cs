@@ -78,6 +78,11 @@ namespace HotD.Castables
             rigidbody.velocity = speed * Time.fixedDeltaTime * direction;
         }
 
+        public void SetSpeed(float val)
+        {
+            speed = val;
+        }
+
         public void SetActive(bool active)
         {
             gameObject.SetActive(active);

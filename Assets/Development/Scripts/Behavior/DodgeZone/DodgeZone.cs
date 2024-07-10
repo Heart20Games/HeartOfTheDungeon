@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DodgeZone : MonoBehaviour
 {
+    [SerializeField] private SlimeWizard slimeWizard;
+
     [SerializeField] private Transform characterTransform;
 
     [SerializeField] private MagicShieldImpact magicShieldPrefab;
@@ -15,6 +17,8 @@ public class DodgeZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (slimeWizard.IsShootingLaser) return;
+
         if(other.GetComponent<Projectile>())
         {
             if(other.GetComponent<Projectile>().ShouldIgnoreDodgeLayer) return;
@@ -61,7 +65,7 @@ public class DodgeZone : MonoBehaviour
         var magicShield = Instantiate(magicShieldPrefab);
 
         magicShield.transform.parent = characterTransform;
-        magicShield.transform.localScale = new Vector3(-2, 2, 2);
+        magicShield.transform.localScale = new Vector3(-2.5f, 2.5f, 2.5f);
         magicShield.transform.localPosition = new Vector3(0, 3.157f, 0);
 
         magicShield.ToggleShield(true);
@@ -90,6 +94,7 @@ public class DodgeZone : MonoBehaviour
         {
             t += Time.deltaTime;
 
+            //Draws a ray to check if there are any obstacles nearby so that the wizard doesn't sidestep into a wall.
             if(!hitObstacle)
             {
                 if (Physics.Raycast(characterTransform.position, randNum == 0 ? characterTransform.right : -characterTransform.right, out hit, 10))

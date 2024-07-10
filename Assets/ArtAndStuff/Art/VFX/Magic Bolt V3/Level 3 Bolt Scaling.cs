@@ -17,6 +17,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
     [ReadOnly][SerializeField] private bool playing = false;
     [ReadOnly][SerializeField] private bool casting = false;
     [SerializeField] private float currentScale;
+    [SerializeField] private bool shouldFollowCrossHair;
     private Coroutine windDownCoroutine;
 
     // Start is called before the first frame update
@@ -116,7 +117,11 @@ public class Level3BoltScaling : BaseMonoBehaviour
                 }
             }
 
-            transform.LookAt(Crosshair.GetTargetedPosition(transform));
+            if(shouldFollowCrossHair)
+            {
+                transform.LookAt(Crosshair.GetTargetedPosition(transform));
+            }
+            
             UpdateScaling();
         }
     }

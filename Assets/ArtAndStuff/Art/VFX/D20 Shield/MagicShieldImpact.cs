@@ -196,7 +196,10 @@ public class MagicShieldImpact : BaseMonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<Projectile>().ShouldIgnoreDodgeLayer) return;
+        if(other.GetComponent<Projectile>())
+        {
+            if (other.GetComponent<Projectile>().ShouldIgnoreDodgeLayer) return;
+        }
 
         if(other.GetComponent<Impact>())
         {
