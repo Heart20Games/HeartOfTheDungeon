@@ -6,6 +6,8 @@ using UnityEngine;
 
 namespace HotD.Generators
 {
+    using HotD.Castables;
+
     [CreateAssetMenu(fileName = "NewMecanimGenerator", menuName = "Mecanim Generator", order = 1)]
     public class MecanimGenerator : Generator
     {
@@ -166,16 +168,16 @@ namespace HotD.Generators
                 actionIndex++;
                 var action = AddChargeStateMachine(actions, charges);
                 var actionTransition = actions.AddEntryTransition(action);
-                actionTransition.AddCondition(AnimatorConditionMode.Equals, actionIndex, "Action");
+                actionTransition.AddCondition(AnimatorConditionMode.Equals, (int)charges.actionType, "Action");
                 var exitActionTransition = actions.AddStateMachineExitTransition(action);
             }
 
             foreach (var combos in comboActions)
             {
                 actionIndex++;
-                var action = AddComboStateMachine(actions, combos);
+                var action = AddComboStateMachine(actions, combos, new Vector2(400, -(comboActions.Count/2) + (100 * actionIndex)));
                 var actionTransition = actions.AddEntryTransition(action);
-                actionTransition.AddCondition(AnimatorConditionMode.Equals, actionIndex, "Action");
+                actionTransition.AddCondition(AnimatorConditionMode.Equals, (int)combos.actionType, "Action");
                 var exitActionTransition = actions.AddStateMachineExitTransition(action);
             }
 
@@ -203,6 +205,7 @@ namespace HotD.Generators
         public struct Charges
         {
             public string name;
+            public ActionType actionType;
             public List<Charge> charges;
         }
 
@@ -336,12 +339,17 @@ namespace HotD.Generators
         public struct Combos
         {
             public string name;
+            public ActionType actionType;
             public List<Motion> motions;
         }
 
         public AnimatorStateMachine AddComboStateMachine(AnimatorStateMachine root, Combos blueprint)
         {
-            var sub = root.AddStateMachine($"Combo ({blueprint.name})");
+            return AddComboStateMachine(root, blueprint, new Vector2(400, 0));
+        }
+        public AnimatorStateMachine AddComboStateMachine(AnimatorStateMachine root, Combos blueprint, Vector2 position)
+        {
+            var sub = root.AddStateMachine($"Combo ({blueprint.name} - {blueprint.actionType})", position);
 
             int num = 0;
             foreach (Motion motion in blueprint.motions)

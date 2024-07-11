@@ -5,7 +5,7 @@ namespace HotD.Castables
 {
     public enum TargetingMethod { None, TargetBased, LocationBased, DirectionBased, AimBased }
     public enum AimingMethod { Centered, OverTheShoulder }
-    public enum ActionType { Passive, Staff, Daggers, Rapier, Throw, Sabre }
+    public enum ActionType { Passive, Staff, Daggers, Rapier, Throw, Sabre, Charge }
 
     [CreateAssetMenu(fileName = "NewCastableItem", menuName = "Loadouts/CastableItem", order = 1)]
     public class CastableItem : ScriptableObject
