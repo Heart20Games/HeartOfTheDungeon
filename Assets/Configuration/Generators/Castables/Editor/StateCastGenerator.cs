@@ -15,6 +15,8 @@ using static CastCoordinator;
 namespace HotD.Generators
 {
     using Castables;
+    using System.CodeDom.Compiler;
+    using UnityEditor.Experimental.GraphView;
 
     [CreateAssetMenu(fileName = "NewStateCastGenerator", menuName = "Loadouts/State Cast Generator", order = 1)]
     public class StateCastGenerator : Generator
@@ -132,12 +134,21 @@ namespace HotD.Generators
                         castable.AddChargeTransitions();
                         Charger charger = GenerateCharger(activationExecutor);
                     }
+                    else
+                    {
+                        castable.AddComboTransitions();
+                        GenerateWindUp(activationExecutor);
+                    }
 
                     // Execution
                     DelegatedExecutor executionExecutor = GenerateExecutor(castable, CastState.Executing, "Execution");
                     if (executions.Count > 0)
                     {
                         Comboer comboer = GenerateComboer(executionExecutor, stats, pivot, gameObject, damager);
+                    }
+                    else
+                    {
+                        GenerateWindDown(executionExecutor);
                     }
 
                     // Cooldown
@@ -234,6 +245,15 @@ namespace HotD.Generators
             return executor;
         }
 
+        private void GenerateWindUp(DelegatedExecutor executor)
+        {
+            Assert.IsNotNull(executor);
+
+            // Wait For Wind Up Transition
+            ActionEvent windUpTransition = new("Wind Up", CastAction.Start, Triggers.StartCast, true, CastAction.End, true);
+            executor.supportedActions.Add(windUpTransition);
+        }
+
         private Charger GenerateCharger(DelegatedExecutor executor)
         {
             Assert.IsNotNull(executor);
@@ -263,6 +283,15 @@ namespace HotD.Generators
                 UnityEventTools.AddPersistentListener(charger.onCharged, executor.End);
                 
             return charger;
+        }
+
+        public void GenerateWindDown(DelegatedExecutor executor)
+        {
+            Assert.IsNotNull(executor);
+
+            // Start Transition
+            ActionEvent startTransition = new("Start", CastAction.Start, Triggers.None, true, CastAction.End, false);
+            executor.supportedActions.Add(startTransition);
         }
 
         public Comboer GenerateComboer(DelegatedExecutor executor, CastableStats stats, Pivot pivot, GameObject gameObject, Damager damager = null)
