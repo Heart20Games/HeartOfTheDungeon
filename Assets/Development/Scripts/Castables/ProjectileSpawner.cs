@@ -4,7 +4,14 @@ using UnityEngine;
 
 namespace HotD.Castables
 {
-    public class ProjectileSpawner : Positionable, ICollidables
+    public interface IProjectileSpawner
+    {
+        public void Spawn();
+        public void Spawn(Vector3 direction = new Vector3());
+        public void Activate(Vector3 direction);
+    }
+
+    public class ProjectileSpawner : Positionable, IProjectileSpawner, ICollidables
     {
         public float lifeSpan;
         public Transform pivot;
@@ -53,7 +60,7 @@ namespace HotD.Castables
             Spawn(false);
         }
 
-        public void Spawn(bool noDirection)
+        private void Spawn(bool noDirection)
         {
             if (noDirection)
             {
@@ -99,7 +106,7 @@ namespace HotD.Castables
                 LaunchInstance(direction, pivot.transform, projectile);
         }
 
-        public void LaunchInstance(Vector3 direction, Transform pInstance, Projectile projectile)
+        private void LaunchInstance(Vector3 direction, Transform pInstance, Projectile projectile)
         {
             if (!followBody)
             {
@@ -119,7 +126,7 @@ namespace HotD.Castables
             projectile.transform.localRotation = bRotation;
         }
 
-        public IEnumerator CleanupInstance(Transform pInstance, Projectile bInstance)
+        private IEnumerator CleanupInstance(Transform pInstance, Projectile bInstance)
         {
             yield return new WaitForSeconds(lifeSpan);
             projectiles.Remove(bInstance);

@@ -56,7 +56,7 @@ namespace HotD.Castables
                 );
                 Vector3 target = (aimAtCrosshair ? Crosshair.main.TargetedPosition() : location.position);
                 positionable.SetOrigin(source, location);
-                positionable.SetTarget(target);
+                positionable.SetTargetPosition(target);
             }
             onEnable.Invoke();
         }

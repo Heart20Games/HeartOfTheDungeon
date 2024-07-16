@@ -558,7 +558,7 @@ namespace HotD.Generators
 
             // Execution: Collider
             [ConditionalField("method", false, ExecutionMethod.ColliderBased)]
-            public CastedCollider colliderPrefab;
+            public CollidablePositioner colliderPrefab;
 
             // Execution: Projectile
             [ConditionalField("method", false, ExecutionMethod.ProjectileBased)]
@@ -582,23 +582,31 @@ namespace HotD.Generators
                 pivot.enabled = false;
                 if (colliderPrefab != null)
                 {
-                    CastedCollider collider = (PrefabUtility.InstantiatePrefab(colliderPrefab.gameObject) as GameObject).GetComponent<CastedCollider>(); // , pivot.transform);
-                    collider.transform.SetParent(pivot.transform);
-                    ConnectCastedComponent(collider, executor, stats);
-                    collider.PowerRange = chargeLevels;
-                    collider.ComboRange = comboSteps;
+                    GameObject castedObject = new(name);
+                    castedObject.transform.parent = pivot.transform;
+                    executor.fields.castingMethods.Add(castedObject);
 
-                    executor.fields.toLocations.Add(new(collider, source, target));
-                    executor.fields.castingMethods.Add(collider.gameObject);
+                    Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
+                    method.InitializeEvents();
 
-                    Castables.ExecutionMethod method = AddExecutionMethod(collider.gameObject, executor);
+                    CollidablePositioner positioner = (PrefabUtility.InstantiatePrefab(colliderPrefab.gameObject) as GameObject).GetComponent<CollidablePositioner>();
+                    positioner.transform.SetParent(castedObject.transform);
+                    method.positionables.Add(positioner);
+                    positioner.InitializeEvents();
+
+                    ////CastedCollider collider = (PrefabUtility.InstantiatePrefab(colliderPrefab.gameObject) as GameObject).GetComponent<CastedCollider>(); // , pivot.transform);
+                    //collider.transform.SetParent(pivot.transform);
+                    //ConnectCastedComponent(collider, executor, stats);
+                    //collider.PowerRange = chargeLevels;
+                    //collider.ComboRange = comboSteps;
+
+                    //executor.fields.toLocations.Add(new(collider, source, target));
+                    //executor.fields.castingMethods.Add(collider.gameObject);
 
                     if (damager != null)
                     {
-                        collider.hitDamageable = new();
-                        collider.leftDamageable = new();
-                        UnityEventTools.AddPersistentListener(collider.hitDamageable, damager.HitDamageable);
-                        UnityEventTools.AddPersistentListener(collider.leftDamageable, damager.LeftDamageable);
+                        UnityEventTools.AddPersistentListener(positioner.hitDamageable, damager.HitDamageable);
+                        UnityEventTools.AddPersistentListener(positioner.leftDamageable, damager.LeftDamageable);
                     }
 
                     return method;

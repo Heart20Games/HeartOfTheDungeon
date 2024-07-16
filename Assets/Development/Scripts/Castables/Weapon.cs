@@ -14,8 +14,8 @@ namespace HotD.Castables
         public float speed = 3f; // speed of the animation
         public int damage = 1;
 
-        private readonly List<IDamageable> others = new();
-        private readonly List<IDamageable> ignored = new();
+        private readonly List<IDamageReceiver> others = new();
+        private readonly List<IDamageReceiver> ignored = new();
 
         public override bool CanCast { get => !swinging; }
 
@@ -33,7 +33,7 @@ namespace HotD.Castables
         public override void Initialize(Character source)
         {
             base.Initialize(source);
-            IDamageable damageable = source.Body.GetComponent<IDamageable>();
+            IDamageReceiver damageable = source.Body.GetComponent<IDamageReceiver>();
             if (damageable != null)
             {
                 ignored.Add(damageable);
@@ -75,7 +75,7 @@ namespace HotD.Castables
 
         public void HitDamagable(Impact impactor)
         {
-            IDamageable other = impactor.other.GetComponent<IDamageable>();
+            IDamageReceiver other = impactor.other.GetComponent<IDamageReceiver>();
             if (other != null && !ignored.Contains(other) && !others.Contains(other))
             {
                 others.Add(other);
@@ -86,7 +86,7 @@ namespace HotD.Castables
 
         public void LeftDamagable(Impact impactor)
         {
-            IDamageable other = impactor.other.GetComponent<IDamageable>();
+            IDamageReceiver other = impactor.other.GetComponent<IDamageReceiver>();
             if (other != null && !ignored.Contains(other) && others.Contains(other))
             {
                 others.Remove(other);

@@ -37,7 +37,7 @@ namespace HotD.Body
         public bool AutoRespawn { get; set; }
         public bool AutoDespawn { get; set; }
     }
-    public interface ICharacter : ICharacterStatus, ICharacterInputs, IIdentifiable, IDamageable, IControllable, ICastCompatible
+    public interface ICharacter : ICharacterStatus, ICharacterInputs, IIdentifiable, IDamageReceiver, IControllable, ICastCompatible
     {
         public CharacterBlock StatBlock { get; set; }
         public Transform Pivot { get; }

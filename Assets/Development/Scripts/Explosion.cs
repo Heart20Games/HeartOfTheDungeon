@@ -36,7 +36,7 @@ public class Explosion: BaseMonoBehaviour
                 Print($"Push them! {hit.collider.gameObject.name}", debug);
                 rigidbody.AddExplosionForce(force, transform.position, radius);
             }
-            if (hit.collider.TryGetComponent(out IDamageable damageable))
+            if (hit.collider.TryGetComponent(out IDamageReceiver damageable))
             {
                 Print($"Damage them! {hit.collider.gameObject.name}", debug);
                 damageable.SetDamagePosition(hit.point);

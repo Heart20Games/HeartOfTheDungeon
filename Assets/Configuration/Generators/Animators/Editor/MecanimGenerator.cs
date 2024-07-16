@@ -114,6 +114,7 @@ namespace HotD.Generators
             var idle = root.AddState("Idle", new());
             var hit = root.AddState("Hit", new(0, -75));
             var dead = root.AddState("Dead", new(-275, 0));
+            var actionSplit = actions.AddState("Action Split", new(250, 100));
 
             // Add Blend Trees
             var run = mecanim.CreateBlendTreeInController("Run", out var runTree);
@@ -162,23 +163,28 @@ namespace HotD.Generators
             actionsTransition.AddCondition(AnimatorConditionMode.Greater, 0, "Action");
             actionsTransition.AddCondition(AnimatorConditionMode.If, 0, "StartAction");
 
+            var actionSplitTransition = actions.AddEntryTransition(actionSplit);
+
+            int actionCount = chargeActions.Count + comboActions.Count;
             int actionIndex = 0;
             foreach (var charges in chargeActions)
             {
-                actionIndex++;
-                var action = AddChargeStateMachine(actions, charges);
-                var actionTransition = actions.AddEntryTransition(action);
+                var action = AddChargeStateMachine(actions, charges, new Vector2(550, -(actionCount / 2) + (100 * actionIndex)));
+                var actionTransition = actionSplit.AddTransition(action);
+                actionTransition.duration = 0;
                 actionTransition.AddCondition(AnimatorConditionMode.Equals, (int)charges.actionType, "Action");
                 var exitActionTransition = actions.AddStateMachineExitTransition(action);
+                actionIndex++;
             }
 
             foreach (var combos in comboActions)
             {
-                actionIndex++;
-                var action = AddComboStateMachine(actions, combos, new Vector2(400, -(comboActions.Count/2) + (100 * actionIndex)));
-                var actionTransition = actions.AddEntryTransition(action);
+                var action = AddComboStateMachine(actions, combos, new Vector2(550, -(actionCount/2) + (100 * actionIndex)));
+                var actionTransition = actionSplit.AddTransition(action);
+                actionTransition.duration = 0;
                 actionTransition.AddCondition(AnimatorConditionMode.Equals, (int)combos.actionType, "Action");
                 var exitActionTransition = actions.AddStateMachineExitTransition(action);
+                actionIndex++;
             }
 
             EditorUtility.SetDirty(mecanim);
