@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Body;
+using HotD;
 using HotD.Body;
 
 [CreateAssetMenu(fileName = "NewHasteStatus", menuName = "Statuses/HasteStatus", order = 1)]
