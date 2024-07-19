@@ -95,7 +95,7 @@ namespace HotD
 
         public void SetTimeScale(float timeScale)
         {
-            game.TimeScale = timeScale;
+            TimeScaler.TimeScale = timeScale;
         }
     }
 }

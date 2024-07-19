@@ -744,6 +744,7 @@ GameObject:
   - component: {fileID: 938213873989446527}
   - component: {fileID: 3623303477363658634}
   - component: {fileID: 6014394982080331156}
+  - component: {fileID: 7938462949171305758}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -866,7 +867,6 @@ MonoBehaviour:
           m_StringArgument: $MainMenu
           m_BoolArgument: 0
         m_CallState: 2
-  timeScale: 1
   restartable: 1
   debug: 0
 --- !u!114 &8198051129787963149
@@ -1185,6 +1185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   session: {fileID: 11400000, guid: 73480b7f9fe59ec45ac170a991173323, type: 2}
   story: {fileID: 11400000, guid: 0559e157294009040a2b647b71fcd1a2, type: 2}
+  initialSpawnpoint: {fileID: 0}
   checkpoints: []
   parties: []
   dialogueTriggers: []
@@ -1223,6 +1224,20 @@ MonoBehaviour:
   Parameter: DeathMusicSwitch
   TriggerEvent: 0
   Value: 0
+--- !u!114 &7938462949171305758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8636156924694284204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e454deecd39c1dc4595a6d8d25d06701, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeScale: 1
+  debugTimeScale: 0
 --- !u!1001 &2759224181694214667
 PrefabInstance:
   m_ObjectHideFlags: 0

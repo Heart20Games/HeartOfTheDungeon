@@ -145,11 +145,11 @@ namespace HotD
                         {
                             if (VolumeManager.IsTransitioning(PType.Death, true, true))
                                 VolumeManager.SpeedUp(PType.Death);
-                            else    
-                                Game.RestartLife();
                         }
                         else
-                            UserInterface.Select(); 
+                        {
+                            UserInterface.Select();
+                        }
                         break;
                 }
             }
@@ -367,8 +367,27 @@ namespace HotD
         }
 
         // Menus
-        public void OnControlSheet(InputValue inputValue) { IsPressed(inputValue, () => { Menu = Menu == Menu.ControlSheet ? Menu.None : Menu.ControlSheet; }); }
-        public void OnCharacterSheet(InputValue inputValue) { IsPressed(inputValue, () => { Menu = Menu == Menu.CharacterSheet ? Menu.None : Menu.CharacterSheet; }); }
+        public void ToggleMenu(Menu menu)
+        {
+            if (Menu == menu || Menu == Menu.None)
+            {
+                Menu = Menu == menu ? Menu.None : menu;
+            }
+        }
+        public void OnCancel(InputValue inputValue)
+        {
+            IsPressed(inputValue, () =>
+            {
+                switch (Menu)
+                {
+                    case Menu.ControlSheet: ToggleMenu(Menu.ControlSheet); break;
+                    case Menu.CharacterSheet: ToggleMenu(Menu.CharacterSheet); break;
+                    default: break;
+                }
+            });
+        }
+        public void OnControlSheet(InputValue inputValue) { IsPressed(inputValue, () => { ToggleMenu(Menu.ControlSheet); }); }
+        public void OnCharacterSheet(InputValue inputValue) { IsPressed(inputValue, () => { ToggleMenu(Menu.CharacterSheet); }); }
         public void OnPauseMenu(InputValue inputValue) { IsPressed(inputValue, () => { return; }); }
         public void OnDismiss(InputValue inputValue) { IsPressed(inputValue, () => { Input = InputMode.Character; }); }
     }

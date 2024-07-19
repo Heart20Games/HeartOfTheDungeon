@@ -54,11 +54,7 @@ public class PartySelectPanel : BaseMonoBehaviour
         Print($"Select portrait display {idx}", debug);
         // Swap Images
         idx %= displays.Count;
-        for (int i = 0; i < displays.Count; i++)
-        {
-            if (i != idx)
-                UnSelectImage(i);
-        }
+        //UnSelectAllBut(idx);
         SelectImage(idx);
     }
 
@@ -72,6 +68,17 @@ public class PartySelectPanel : BaseMonoBehaviour
         // Reset Shimmering
         shimmerMat.SetFloat("_SheenPosition", 0f);
         isShimmering = true;
+    }
+
+    public void UnSelectAllBut(int idx)
+    {
+        for (int i = 0; i < displays.Count; i++)
+        {
+            if (i != idx)
+            {
+                UnSelectImage(i);
+            }
+        }
     }
 
     public void UnSelectImage(int idx)

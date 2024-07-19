@@ -9,7 +9,7 @@ public class AttributeLabel : BaseMonoBehaviour
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private Part part;
 
-    public string Name { get => name; set => SetName(value); }
+    public new string Name { get => name; set => SetName(value); }
 
     [ReadOnly][SerializeField] private BaseAttribute attribute;
 

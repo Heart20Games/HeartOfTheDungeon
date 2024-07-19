@@ -15,6 +15,7 @@ public class ProgressManager : BaseMonoBehaviour
 
     // Objects
     [Header("Objects")]
+    public Checkpoint initialSpawnpoint;
     public List<Checkpoint> checkpoints;
     public List<Party> parties;
     public List<DialogueTrigger> dialogueTriggers;
@@ -64,7 +65,11 @@ public class ProgressManager : BaseMonoBehaviour
     {
         ActivateDialogues();
         SpawnParties();
-        SpawnAtCheckpoint(Party.mainParty);
+
+        if(Party.mainParty != null)
+        {
+            SpawnAtCheckpoint(Party.mainParty);
+        }  
     }
 
     // Session Data Management
@@ -205,6 +210,12 @@ public class ProgressManager : BaseMonoBehaviour
                 checkpoint.SpawnAtCheckpoint(party);
                 return true;
             }
+        }
+        if (initialSpawnpoint != null)
+        {
+            initialSpawnpoint.SpawnAtCheckpoint(party);
+            initialSpawnpoint.Activate();
+            return true;
         }
         return false;
     }

@@ -114,10 +114,13 @@ namespace HotD
 
                 if (parties.Count == 0)
                 {
-                    Party.mainParty.LevelUp();
-                    Game.main.SetMode(GameModes.Menu.CharacterSheet);
-                    Print("Counting down till next wave arrives.", debug);
-                    coroutine ??= StartCoroutine(CountdownToWave());
+                    if (Game.main.ActiveMenu != GameModes.Menu.Death)
+                    {
+                        Game.main.SetMode(GameModes.Menu.CharacterSheet);
+                        Party.mainParty.LevelUp();
+                        Print("Counting down till next wave arrives.", debug);
+                        coroutine ??= StartCoroutine(CountdownToWave());
+                    }
                 }
             }
         }
@@ -155,6 +158,7 @@ namespace HotD
 
                 AddWayPoints(party.transform.GetChild(0).GetComponent<EnemyAI>());
             }
+            TimeScaler.UpdateScalables();
 
             if (!patientWaves)
                 coroutine ??= StartCoroutine(CountdownToWave());

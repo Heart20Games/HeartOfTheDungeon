@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using HotD;
 
 public class SimpleMovement : BaseMonoBehaviour, ITimeScalable
 {
