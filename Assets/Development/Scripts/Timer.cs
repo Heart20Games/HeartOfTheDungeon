@@ -6,6 +6,16 @@ using UnityEngine.Events;
 public class Timer : BaseMonoBehaviour
 {
     [SerializeField] public float length;
+    public float Length
+    {
+        get => length;
+        set
+        {
+            length = value;
+            Print($"Set Timer Length: {length}", debug, this);
+        }
+    }
+    public void SetLength(float length) { Length = length; }
     [SerializeField] public bool playOnStart = false;
     [SerializeField] private bool interruptOnPlay = false;
     [SerializeField] private bool debug = false;

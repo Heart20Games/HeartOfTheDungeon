@@ -317,8 +317,11 @@ namespace HotD.Generators
             for (int i = 0; i < executions.Count; i++)
             {
                 Execution execution = executions[i];
-                Castables.ExecutionMethod casted = execution.PrepareExecutionMethod(executor, stats, methodPivot, gameObject, damager);
-                comboer.AddStep(i + 1, casted.gameObject);
+                Castables.ExecutionMethod method = execution.PrepareExecutionMethod(executor, stats, methodPivot, gameObject, damager);
+                if (method != null)
+                {
+                    comboer.AddStep(i + 1, method.gameObject);
+                }
             }
 
             return comboer;
@@ -385,6 +388,8 @@ namespace HotD.Generators
         {
             Assert.IsNotNull(executor);
 
+            executor.connectToFieldEvents = true;
+
             Timer coolDownTimer = executor.gameObject.AddComponent<Timer>();
             coolDownTimer.onComplete = new();
             coolDownTimer.length = stats.Cooldown; // TODO: Account for bonuses
@@ -396,6 +401,9 @@ namespace HotD.Generators
 
             // Finish on Timer Complete
             UnityEventTools.AddPersistentListener(coolDownTimer.onComplete, executor.End);
+
+            // Keep Cooldown Length Updated
+            UnityEventTools.AddPersistentListener(executor.fieldEvents.onSetCooldown, coolDownTimer.SetLength);
 
             return coolDownTimer;
         }

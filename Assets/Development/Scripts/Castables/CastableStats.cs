@@ -98,6 +98,21 @@ public class CastableStats : ScriptableObject
         };
     }
 
+    // Updating
+
+    public void SendUpdateOnAll()
+    {
+        damage.Updated();
+        cooldown.Updated();
+        range.Updated();
+        chargeRate.Updated();
+        chargeLimit.Updated();
+        comboCooldown.Updated();
+        knockback.Updated();
+        castStatusPower.Updated();
+        hitStatusPower.Updated();
+    }
+
     // Equipping
 
     public void AssignBonuses(DependentAttribute dependent, StatAttribute[] attributes, StatBlock statBlock)
@@ -123,6 +138,7 @@ public class CastableStats : ScriptableObject
             AssignBonuses(castStatusPower, attributes.castStatusPower, statBlock);
             AssignBonuses(hitStatusPower, attributes.hitStatusPower, statBlock);
         }
+        SendUpdateOnAll();
     }
 
     public void UnEquip()

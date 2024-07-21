@@ -1,16 +1,15 @@
-using Attributes;
-using Body;
-using Body.Behavior.ContextSteering;
-using HotD.Body;
 using MyBox;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Events;
 using static Body.Behavior.ContextSteering.CSIdentity;
 using static HotD.Castables.CastableFields;
 using static HotD.Castables.CastableToLocation;
 using static UnityEngine.Rendering.DebugUI;
+using Object = UnityEngine.Object;
+using Debug = UnityEngine.Debug;
 
 namespace HotD.Castables
 {
@@ -184,16 +183,28 @@ namespace HotD.Castables
     [Serializable]
     public class CastableFieldsEditor : CastableFields
     {
+        [SerializeField] private bool debugFieldsEditor = false;
+
         // Properties
         public int PowerLevel
         {
             get => curPowerLevel;
-            set { curPowerLevel = value; events.onSetPowerLevel.Invoke(value); }
+            set
+            { 
+                curPowerLevel = value; 
+                events.onSetPowerLevel.Invoke(value);
+                Print($"Power Level set: {value}", debugFieldsEditor);
+            }
         }
         public int MaxPowerLevel
         {
             get => maxPowerLevel;
-            set { maxPowerLevel = value; events.onSetMaxPowerLevel.Invoke(value); }
+            set 
+            { 
+                maxPowerLevel = value; 
+                events.onSetMaxPowerLevel.Invoke(value);
+                Print($"Max Power Level set: {value}", debugFieldsEditor);
+            }
         }
         public int ComboStep
         {
@@ -207,6 +218,7 @@ namespace HotD.Castables
                 else
                 {
                     curComboStep = value; events.onSetComboStep.Invoke(value);
+                    Print($"Combo Step set: {value}", debugFieldsEditor);
                 }
             }
         }
@@ -222,8 +234,18 @@ namespace HotD.Castables
                 else
                 {
                     maxComboStep = value; 
-                    events.onSetMaxComboStep.Invoke(value); 
+                    events.onSetMaxComboStep.Invoke(value);
+                    Print($"Max Combo Step set: {value}", debugFieldsEditor);
                 }
+            }
+        }
+        public float Cooldown
+        {
+            get => stats.stats.Cooldown;
+            set
+            {
+                events.onSetCooldown.Invoke(value);
+                Print($"Cooldown set: {value}", debugFieldsEditor);
             }
         }
         public Identity Identity
@@ -239,6 +261,7 @@ namespace HotD.Castables
         }
 
         public void SetMaxPowerLevel(int level) { MaxPowerLevel = level; }
+        public void SetCooldown(float length) { Cooldown = length; }
 
         public void SetStats(CastableStats stats)
         {
@@ -246,6 +269,7 @@ namespace HotD.Castables
             if (this.stats.stats != null)
             {
                 this.stats.stats.chargeLimit.updatedFinalInt.RemoveListener(SetMaxPowerLevel);
+                this.stats.stats.cooldown.updatedFinalFloat.RemoveListener(SetCooldown);
             }
             this.stats = new(stats);
         }
@@ -255,6 +279,7 @@ namespace HotD.Castables
             if (this.stats.stats != null)
             {
                 this.stats.stats.chargeLimit.updatedFinalInt.AddListener(SetMaxPowerLevel);
+                this.stats.stats.cooldown.updatedFinalFloat.AddListener(SetCooldown);
             }
         }
 
@@ -277,6 +302,9 @@ namespace HotD.Castables
             
             // Identity
             this.events.onSetIdentity.AddListener(events.onSetIdentity.Invoke);
+
+            // Cooldown
+            this.events.onSetCooldown.AddListener(events.onSetCooldown.Invoke);
         }
     }
 
@@ -287,6 +315,12 @@ namespace HotD.Castables
         [SerializeField] protected bool debug = false;
         [HideInInspector] public FieldEvents events = new("Events");
         [HideInInspector] public FieldStats stats;
+
+        [Conditional("DEVELOPMENT_BUILD"), Conditional("UNITY_EDITOR")]
+        protected void Print(object message, bool debug = true)
+        {
+            if (debug) Debug.Log(message);
+        }
 
         [Header("Configuration")]
         public float rOffset;
@@ -335,6 +369,7 @@ namespace HotD.Castables
             public UnityEvent<int> onSetComboStep;
             public UnityEvent<int> onSetMaxComboStep;
             public UnityEvent<Identity> onSetIdentity;
+            public UnityEvent<float> onSetCooldown;
 
             public FieldEvents(string name)
             {
@@ -344,6 +379,7 @@ namespace HotD.Castables
                 onSetComboStep = new();
                 onSetMaxComboStep = new();
                 onSetIdentity = new();
+                onSetCooldown = new();
             }
         }
 
