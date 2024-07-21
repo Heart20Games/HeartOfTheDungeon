@@ -1,46 +1,50 @@
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public abstract class Generator : ScriptableObject
+namespace HotD.Generators
 {
-    [Header("Results")]
-    public string outputName = "New Object";
-    public string castablesDirectory = "Assets/Configuration/TEMP/";
-    public bool createSubFolder = true;
-    public bool overwrite = true;
-    public bool replace = true;
-    public bool emptyTest = false;
-    [ReadOnly] public string fullDirectory = "";
-    [ReadOnly] public float timeOfLastGeneration;
-
-    protected void PrepareResultDirectory()
+    public abstract class Generator : ScriptableObject
     {
-        fullDirectory = castablesDirectory;
+        [Header("Results")]
+        public string outputName = "New Object";
+        [FormerlySerializedAs("castablesDirectory")]public string baseDirectory = "Assets/Configuration/TEMP/";
+        public bool createSubFolder = true;
+        public bool overwrite = true;
+        public bool replace = true;
+        public bool emptyTest = false;
+        [ReadOnly] public string fullDirectory = "";
+        [ReadOnly] public float timeOfLastGeneration;
 
-        // Adjust for adding a sub folder using the output name.
-        if (createSubFolder)
+        protected void PrepareResultDirectory()
         {
-            // Fix the Directory components to make sure they're valid.
-            if (!fullDirectory.EndsWith('/'))
-            {
-                fullDirectory += "/";
-            }
-            fullDirectory += outputName;
-        }
+            fullDirectory = baseDirectory;
 
-        // Loop through directories, creating them as necessary.
-        string[] steps = (fullDirectory).Split('/', System.StringSplitOptions.RemoveEmptyEntries);
-        string lastPath = steps[0];
-        for (int i = 1; i < steps.Length; i++)
-        {
-            if (steps[i].Trim() != "")
+            // Adjust for adding a sub folder using the output name.
+            if (createSubFolder)
             {
-                string path = string.Join('/', steps, 0, i + 1);
-                if (!AssetDatabase.IsValidFolder(path))
+                // Fix the Directory components to make sure they're valid.
+                if (!fullDirectory.EndsWith('/'))
                 {
-                    AssetDatabase.CreateFolder(lastPath, steps[i]);
+                    fullDirectory += "/";
                 }
-                lastPath = path;
+                fullDirectory += outputName;
+            }
+
+            // Loop through directories, creating them as necessary.
+            string[] steps = (fullDirectory).Split('/', System.StringSplitOptions.RemoveEmptyEntries);
+            string lastPath = steps[0];
+            for (int i = 1; i < steps.Length; i++)
+            {
+                if (steps[i].Trim() != "")
+                {
+                    string path = string.Join('/', steps, 0, i + 1);
+                    if (!AssetDatabase.IsValidFolder(path))
+                    {
+                        AssetDatabase.CreateFolder(lastPath, steps[i]);
+                    }
+                    lastPath = path;
+                }
             }
         }
     }

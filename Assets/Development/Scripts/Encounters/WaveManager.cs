@@ -1,4 +1,5 @@
 using Body;
+using HotD.Body;
 using MyBox;
 using System;
 using System.Collections;
@@ -90,7 +91,7 @@ namespace HotD
         {
             foreach (Character member in party.members)
             {
-                onMemberSpawned.Invoke(member.body.GetComponent<Selectable>());
+                onMemberSpawned.Invoke(member.Body.GetComponent<Selectable>());
             }
         }
 
@@ -130,7 +131,7 @@ namespace HotD
 
             foreach (Character member in party.members)
             {
-                deregisterMember.Invoke(member.body.GetComponent<ASelectable>());
+                deregisterMember.Invoke(member.Body.GetComponent<ASelectable>());
             }
 
             Destroy(party.gameObject);

@@ -4,15 +4,23 @@ using UnityEngine;
 
 namespace HotD.Castables
 {
-    public class ProjectileSpawner : Positionable, ICollidables
+    public interface IProjectileSpawner
+    {
+        public void Spawn();
+        public void Spawn(Vector3 direction = new Vector3());
+        public void Activate(Vector3 direction);
+    }
+
+    public class ProjectileSpawner : Positionable, IProjectileSpawner, ICollidables
     {
         public float lifeSpan;
         public Transform pivot;
         public Projectile projectile;
-        public bool followBody = false;
-        public Collider[] exceptions;
+        [SerializeField] private bool followBody = false;
+        [SerializeField] private bool spawnOnEnable = true;
+        [SerializeField] private Collider[] exceptions;
         [SerializeField] private List<Projectile> projectiles = new();
-        public bool debug = false;
+        [SerializeField] private bool debug = false;
 
         private void Awake()
         {
@@ -34,14 +42,35 @@ namespace HotD.Castables
             }
         }
 
-        public override void SetOrigin(Transform source, Transform target)
+        private void OnEnable()
         {
-            base.SetOrigin(source, target);
+            if (spawnOnEnable)
+            {
+                Spawn();
+            }
+        }
+
+        public override void SetOrigin(Transform source, Transform location)
+        {
+            base.SetOrigin(source, location);
         }
 
         public void Spawn()
         {
-            Spawn(new Vector3());
+            Spawn(false);
+        }
+
+        private void Spawn(bool noDirection)
+        {
+            if (noDirection)
+            {
+                Spawn(new Vector3());
+            }
+            else
+            {
+                Vector3 direction = (TargetPosition - OriginPosition).normalized;
+                Spawn(direction);
+            }
         }
 
         public void Spawn(Vector3 direction = new Vector3())
@@ -77,11 +106,11 @@ namespace HotD.Castables
                 LaunchInstance(direction, pivot.transform, projectile);
         }
 
-        public void LaunchInstance(Vector3 direction, Transform pInstance, Projectile projectile)
+        private void LaunchInstance(Vector3 direction, Transform pInstance, Projectile projectile)
         {
             if (!followBody)
             {
-                pInstance.position = target.position + offset;
+                pInstance.position = OriginPosition + offset;
             }
             else
             {
@@ -97,7 +126,7 @@ namespace HotD.Castables
             projectile.transform.localRotation = bRotation;
         }
 
-        public IEnumerator CleanupInstance(Transform pInstance, Projectile bInstance)
+        private IEnumerator CleanupInstance(Transform pInstance, Projectile bInstance)
         {
             yield return new WaitForSeconds(lifeSpan);
             projectiles.Remove(bInstance);

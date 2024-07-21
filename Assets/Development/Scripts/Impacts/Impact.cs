@@ -1,12 +1,11 @@
 using CustomUnityEvents;
+using HotD.Body;
 using MyBox;
 using Sisus.ComponentNames;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.TextCore.Text;
-using Body;
 
 public class Impact : Validator
 {
@@ -39,7 +38,7 @@ public class Impact : Validator
     [Header("Connections")]
     public BinaryEvent onCollision;
     public BinaryEvent onTrigger;
-    [SerializeField] private Body.Character character;
+    [SerializeField] private Character character;
     [Foldout("Events")] public ImpactEvents onImpact;
 
     // Tracking
@@ -47,7 +46,7 @@ public class Impact : Validator
     [HideInInspector] public GameObject other;
     [HideInInspector] public Vector3 impactLocation;
 
-    public Body.Character _Character => character;
+    public Character _Character => character;
 
     private void OnEnable() {}
 

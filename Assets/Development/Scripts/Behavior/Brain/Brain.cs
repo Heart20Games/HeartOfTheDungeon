@@ -10,7 +10,7 @@ namespace Body.Behavior
     using static ContextSteering.CSContext;
     using static Tree.LeafNode;
     using HotD.Castables;
-    using UnityEngine.InputSystem.XR;
+    using HotD.Body;
     using HotD;
 
     public enum Action { Idle, Patrol, Chase, Duel }
@@ -96,10 +96,10 @@ namespace Body.Behavior
         // Initialization
         public virtual void Awake()
         {
-            if (debug) print("Awake!");
+            Print("Awake!", debug, this);
             if (TryGetComponent(out character))
             {
-                body = character.body;
+                body = character.Body;
             }
             if (body == null)
                 body = transform;
@@ -147,7 +147,7 @@ namespace Body.Behavior
 
         private void RegisterCastable(CastableItem item)
         {
-            if (debug) print("Register Castable: " + item.name);
+            Print($"Register Castable: {item.name}", debug, this);
             
             if (!castableMap.TryGetValue(item.context.identity, out List<Context> contexts))
             {
@@ -164,7 +164,7 @@ namespace Body.Behavior
         {
             this.target = target;
             if (this.target != null)
-                this.target = (target.TryGetComponent(out Character targetChar) ? targetChar.body : target);
+                this.target = (target.TryGetComponent(out Character targetChar) ? targetChar.Body : target);
             if (agent != null && agent.isActiveAndEnabled)
                 agent.destination = this.target == null ? new() : this.target.position;
             if (pathFinder != null)
@@ -176,14 +176,14 @@ namespace Body.Behavior
 
         private bool HasTarget()
         {
-            if (debug) Debug.Log("Has Target? " + (target != null ? "Yes" : "No") + " (" + target + ")");
+            Print("Has Target? " + (target != null ? "Yes" : "No") + " (" + target + ")", debug, this);
             return target != null;
         }
 
         private bool HasFoeInRange(Range range)
         {
             bool result = controller.HasActiveContext(Identity.Foe, range);
-            if (debug) print($"Has Foe In Range: {range}");
+            Print($"Has Foe In Range: {range}", debug, this);
             return result;
         }
 
@@ -202,7 +202,7 @@ namespace Body.Behavior
         {
             //if (!HasFoeInRange(Range.InRange)) return BehaviorNode.Status.FAILURE;
 
-            if (debug) Debug.Log("Chasing...");
+            if (debug) Print("Chasing...", debug, this);
 
             if (useAgent)
             {
@@ -241,16 +241,16 @@ namespace Body.Behavior
         {
             //if (!HasFoeInRange(Range.InAttackRange)) return BehaviorNode.Status.FAILURE;
 
-            Debug.Log("Dueling...");
+            Print("Dueling...", debug, this);
 
-            Debug.Log("Trying to attack");
+            Print("Trying to attack", debug, this);
             character.Aim(-controller.CurrentVector.normalized, true);
 
             // Find the closest-range weapon that I can currently use, then shoot with it.
             int closestIdx = FindClosestRangeUsableCastable();
             if (closestIdx >= 0)
             {
-                Debug.Log("Actually attacking!");
+                Print("Actually attacking!", debug, this);
                 character.TriggerCastable(closestIdx);
             }
 
@@ -268,7 +268,7 @@ namespace Body.Behavior
                 {
                     if (item.context.vector.deadzone.y < closest)
                     {
-                        Debug.Log("Found something to attack with...");
+                        Print("Found something to attack with...", debug, this);
                         closest = (int)item.context.vector.deadzone.y;
                         closestIdx = i;
                     }
