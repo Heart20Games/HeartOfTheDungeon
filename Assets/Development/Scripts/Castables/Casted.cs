@@ -40,7 +40,6 @@ namespace HotD.Castables
         public CastableStats Stats { get => stats; set => stats = value; }
         [SerializeField] private bool debug;
 
-        private bool casting = false;
         private readonly bool castOnEnable = true;
 
         [Foldout("Base Events", true)]
@@ -54,10 +53,9 @@ namespace HotD.Castables
         public UnityEvent<Vector3> onCast = new();
         [SerializeField] private UnityEvent onEndCast = new();
         public void Release() { onRelease.Invoke(); }
-        private void StartCast(Vector3 vector) { casting = true; onCast.Invoke(vector); }
+        private void StartCast(Vector3 vector) { onCast.Invoke(vector); }
 
         [Foldout("Power Level", true)]
-        private bool canUpdatePowerLevel = false;
         private Vector2 powerRange;
         public Vector2 PowerRange { get => powerRange; set => powerRange = value; }
         [SerializeField] private UnityEvent<bool> onHasCharge = new();
@@ -65,7 +63,6 @@ namespace HotD.Castables
         [SerializeField] private UnityEvent<int> onSetPowerLimit = new();
         [SerializeField] private DependentAttribute powerLimit;
         public DependentAttribute PowerLimit { get => powerLimit; set => powerLimit = value; }
-        [ReadOnly][SerializeField] private float finalPowerLimit = 0f;
         [ReadOnly][SerializeField] private float powerLevel = 0f;
         [ReadOnly][SerializeField] private float actualLevel = 0f;
         [ReadOnly][SerializeField] private float clampedPower = 0f;
@@ -185,7 +182,6 @@ namespace HotD.Castables
         private void OnSetPowerLimit(float powerLimit) { OnSetPowerLimit((int) powerLimit); }
         private void OnSetPowerLimit(int powerLimit)
         {
-            finalPowerLimit = powerLimit;
             onSetPowerLimit.Invoke(powerLimit);
             UpdateEnabled();
         }
@@ -213,12 +209,10 @@ namespace HotD.Castables
         // Cast Events
         public virtual void OnTrigger()
         {
-            canUpdatePowerLevel = true;
             onTrigger.Invoke();
         }
         public virtual void OnRelease()
         {
-            canUpdatePowerLevel = false;
             HasCharge(false);
             onRelease.Invoke();
         }

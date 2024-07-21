@@ -37,7 +37,6 @@ public abstract class AIdentifiableStub : BaseMonoBehaviour, IIdentifiable
         set => NULL();
     }
     public virtual string Emotion { get => ""; set => NULL(); }
-    public virtual string Name { get; set; }
     public virtual string Description { get => ""; set => NULL(); }
 
     // Mod Fields

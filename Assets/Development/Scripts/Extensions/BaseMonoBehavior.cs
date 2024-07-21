@@ -26,7 +26,11 @@ public interface INamed
 public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
 {
     public Transform Transform => transform;
-    public string Name { get => $"{this.GetName()} ({gameObject.name})"; }
+    public string Name 
+    {
+        get => $"{this.GetName()} ({gameObject.name})";
+        set => this.SetName(value);
+    }
 
     [Conditional("DEVELOPMENT_BUILD"), Conditional("UNITY_EDITOR")]
     protected void Print(object message, bool debug = true, Object context = null)

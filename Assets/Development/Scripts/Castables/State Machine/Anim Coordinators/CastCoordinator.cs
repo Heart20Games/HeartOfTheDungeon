@@ -67,12 +67,14 @@ public class CastCoordinator : MecanimCoordinator
         SetFloat("Action", idx);
     }
 
+    [ButtonMethod]
     public void OnStartCast()
     {
         Print("OnStartCast", debugTriggers, this);
         onAction.Invoke(CastAction.End);
     }
 
+    [ButtonMethod]
     public void OnEndCast()
     {
         Print("OnEndCast", debugTriggers, this);
