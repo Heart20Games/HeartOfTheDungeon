@@ -134,6 +134,11 @@ namespace HotD.Castables
         }
 
         // Collision Exceptions
+        public Collider[] Exceptions
+        {
+            get => exceptions;
+            set => SetExceptions(value);
+        }
         public void SetExceptions(Collider[] exceptions)
         {
             for (int i = 0; i < projectiles.Count; i++)

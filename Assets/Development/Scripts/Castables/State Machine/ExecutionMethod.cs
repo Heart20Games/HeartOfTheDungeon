@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace HotD.Castables
         public List<Positionable> positionables = new();
         public UnityEvent onEnable = new();
         public CastableProperties initializeOffOf;
+        private ICollidables[] collidables;
 
         public override void InitializeEvents()
         {
@@ -22,6 +24,7 @@ namespace HotD.Castables
         private void Awake()
         {
             Initialize(initializeOffOf.fields);
+            collidables = GetComponentsInChildren<ICollidables>();
         }
 
         private void OnEnable()
@@ -58,7 +61,17 @@ namespace HotD.Castables
                 positionable.SetOrigin(source, location);
                 positionable.SetTargetPosition(target);
             }
+            foreach (var collidable in collidables)
+            {
+                collidable.SetExceptions(fields.CollisionExceptions);
+            }
             onEnable.Invoke();
+        }
+
+        [ButtonMethod]
+        public void TestCollisionExceptions()
+        {
+            fields.CollisionExceptions = fields.CollisionExceptions;
         }
     }
 }

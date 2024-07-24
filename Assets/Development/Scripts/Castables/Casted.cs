@@ -147,6 +147,11 @@ namespace HotD.Castables
             }
         }
 
+        public Collider[] Exceptions
+        {
+            get => null;
+            set => SetExceptions(value);
+        }
         public void SetExceptions(Collider[] exceptions)
         {
             onSetExceptions.Invoke(exceptions);

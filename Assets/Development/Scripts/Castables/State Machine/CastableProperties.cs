@@ -119,7 +119,7 @@ namespace HotD.Castables
                 fieldEvents.onSetComboStep.AddListener(Coordinator.SetComboLevel);
                 if (active)
                 {
-                    Print($"Set Action Index on Coordinator: {fields.ActionType}");
+                    Print($"Set Action Index on Coordinator: {fields.ActionType}", debugProperties, this);
                     Coordinator.ActionIndex = fields.ActionType;
                 }
             }
@@ -155,6 +155,10 @@ namespace HotD.Castables
                 fields.damager.Ignore(owner.Body);
 
             Identity = owner.Identity;
+            if (owner.Body != null)
+            {
+                fields.CollisionExceptions = owner.Body.GetComponents<Collider>();
+            }
             owner?.WeaponDisplay?.DisplayWeapon(fields.weaponArt);
         }
     }
@@ -253,16 +257,29 @@ namespace HotD.Castables
             get => identity;
             set { identity = value; }
         }
+        public void SetMaxPowerLevel(int level) { MaxPowerLevel = level; }
+        public void SetCooldown(float length) { Cooldown = length; }
+        
+        // Collisions
+        public Collider[] CollisionExceptions
+        {
+            get => collisionExceptions;
+            set
+            {
+                collisionExceptions = value;
+                collisionExceptions ??= new Collider[0];
+                events.onSetCollisionExceptions.Invoke(collisionExceptions);
+                Print($"Collision Exceptions set: {collisionExceptions.Length}", debugFieldsEditor);
+            }
+        }
+        public void SetCollisionExceptions(Collider[] exceptions) { CollisionExceptions = exceptions; }
 
+        // Stats
         public CastableStats Stats
         {
             get => stats.stats;
             set { SetStats(value); }
         }
-
-        public void SetMaxPowerLevel(int level) { MaxPowerLevel = level; }
-        public void SetCooldown(float length) { Cooldown = length; }
-
         public void SetStats(CastableStats stats)
         {
             // Disconnect
@@ -285,7 +302,7 @@ namespace HotD.Castables
 
         public void ConnectFieldEvents(FieldEvents events)
         {
-            Debug.Log($"Connecting Field Events {events.name} -> {this.events.name}");
+            Print($"Connecting Field Events {events.name} -> {this.events.name}", debugFieldsEditor);
             
             // Power Level
             this.events.onSetPowerLevel.AddListener(events.onSetPowerLevel.Invoke);
@@ -305,6 +322,9 @@ namespace HotD.Castables
 
             // Cooldown
             this.events.onSetCooldown.AddListener(events.onSetCooldown.Invoke);
+
+            // Collision Exceptions
+            this.events.onSetCollisionExceptions.AddListener(events.onSetCollisionExceptions.Invoke);
         }
     }
 
@@ -348,6 +368,9 @@ namespace HotD.Castables
         public List<Transform> positionables;
         public List<CastedVFX> effects = new();
 
+        [Header("Collisions")]
+        public Collider[] collisionExceptions;
+
         [Header("Damage")]
         public Identity identity = Identity.Neutral;
         public Damager damager;
@@ -370,6 +393,7 @@ namespace HotD.Castables
             public UnityEvent<int> onSetMaxComboStep;
             public UnityEvent<Identity> onSetIdentity;
             public UnityEvent<float> onSetCooldown;
+            public UnityEvent<Collider[]> onSetCollisionExceptions;
 
             public FieldEvents(string name)
             {
@@ -380,6 +404,7 @@ namespace HotD.Castables
                 onSetMaxComboStep = new();
                 onSetIdentity = new();
                 onSetCooldown = new();
+                onSetCollisionExceptions = new();
             }
         }
 

@@ -121,7 +121,7 @@ public class Party : BaseMonoBehaviour
     {
         foreach (var character in members)
         {
-            Print($"Refresh {character.Name}.");
+            Print($"Refresh {character.Name}.", debug, this);
             character.Refresh();
         }
     }
@@ -131,7 +131,7 @@ public class Party : BaseMonoBehaviour
     {
         foreach (var character in members)
         {
-            Print($"Respawn {character.Name}.");
+            Print($"Respawn {character.Name}.", debug, this);
             character.Respawn();
         }
     }
@@ -141,7 +141,7 @@ public class Party : BaseMonoBehaviour
     {
         foreach (Character character in members)
         {
-            Print($"Despawn {character.Name}.");
+            Print($"Despawn {character.Name}.", debug, this);
             character.SetMode(LiveMode.Despawned);
         }
     }

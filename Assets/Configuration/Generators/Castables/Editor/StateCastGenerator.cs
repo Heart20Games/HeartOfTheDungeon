@@ -637,6 +637,7 @@ namespace HotD.Generators
 
                 ProjectileSpawner spawner = castedObject.AddComponent<ProjectileSpawner>();
                 UnityEventTools.AddPersistentListener(method.onEnable, spawner.Spawn);
+                UnityEventTools.AddPersistentListener(method.fieldEvents.onSetCollisionExceptions, spawner.SetExceptions);
                 method.positionables.Add(spawner);
                 spawner.pivot = castedPivot.transform;
                 spawner.lifeSpan = projectileLifeSpan;

@@ -83,7 +83,7 @@ namespace HotD
 
         public void RegisterPartyRemover(UnityAction<ASelectable> action)
         {
-            Print("Registering party member removal receiver...");
+            Print("Registering party member removal receiver...", debug);
             deregisterMember.AddListener(action);
         }
 

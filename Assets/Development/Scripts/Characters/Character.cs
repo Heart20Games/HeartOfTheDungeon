@@ -194,7 +194,7 @@ namespace HotD.Body
         public bool AutoRespawn { get => autoRespawn; set => autoRespawn = value; }
         public bool AutoDespawn { get => autoDespawn; set => autoDespawn = value; }
 
-        protected bool debug = false;
+        [SerializeField] protected bool debug = false;
 
         // Actions
         public void MoveCharacter(Vector2 input) { movement.MoveVector = input; caster.SetFallback(movement.MoveVector.FullY(), true); }
@@ -429,7 +429,7 @@ namespace HotD.Body
 
         public void Refresh()
         {
-            Print($"Refreshing {Name}.");
+            Print($"Refreshing {Name}.", debug);
             CurrentHealth = MaxHealth;
             Emotion = "neutral";
         }

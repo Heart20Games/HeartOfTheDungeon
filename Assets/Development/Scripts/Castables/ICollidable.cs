@@ -4,6 +4,7 @@ using UnityEngine;
 
 public interface ICollidables
 {
+    public Collider[] Exceptions { get; set; }
     public void SetExceptions(Collider[] exceptions);
 }
 
