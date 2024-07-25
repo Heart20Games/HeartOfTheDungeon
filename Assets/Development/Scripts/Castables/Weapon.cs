@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Body;
+using HotD.Body;
 
 namespace HotD.Castables
 {
@@ -13,8 +14,10 @@ namespace HotD.Castables
         public float speed = 3f; // speed of the animation
         public int damage = 1;
 
-        private readonly List<IDamageable> others = new();
-        private readonly List<IDamageable> ignored = new();
+        private readonly List<IDamageReceiver> others = new();
+        private readonly List<IDamageReceiver> ignored = new();
+
+        public override bool CanCast { get => !swinging; }
 
         private void Awake()
         {
@@ -22,16 +25,15 @@ namespace HotD.Castables
             {
                 animator.speed = speed;
             }
-            pivot.gameObject.SetActive(false);
+            fields.pivot.gameObject.SetActive(false);
         }
-
 
         // Castable
 
         public override void Initialize(Character source)
         {
             base.Initialize(source);
-            IDamageable damageable = source.body.GetComponent<IDamageable>();
+            IDamageReceiver damageable = source.Body.GetComponent<IDamageReceiver>();
             if (damageable != null)
             {
                 ignored.Add(damageable);
@@ -42,8 +44,6 @@ namespace HotD.Castables
         {
             Swing();
         }
-
-        public override bool CanCast() { return !swinging; }
 
 
         // Swinging
@@ -75,18 +75,18 @@ namespace HotD.Castables
 
         public void HitDamagable(Impact impactor)
         {
-            IDamageable other = impactor.other.gameObject.GetComponent<IDamageable>();
+            IDamageReceiver other = impactor.other.GetComponent<IDamageReceiver>();
             if (other != null && !ignored.Contains(other) && !others.Contains(other))
             {
                 others.Add(other);
-                other.SetDamagePosition(impactor.other.ImpactLocation);
+                other.SetDamagePosition(impactor.impactLocation);
                 other.TakeDamage(damage, Identity);
             }
         }
 
         public void LeftDamagable(Impact impactor)
         {
-            IDamageable other = impactor.other.gameObject.GetComponent<IDamageable>();
+            IDamageReceiver other = impactor.other.GetComponent<IDamageReceiver>();
             if (other != null && !ignored.Contains(other) && others.Contains(other))
             {
                 others.Remove(other);
@@ -96,13 +96,13 @@ namespace HotD.Castables
         public void StartSwinging()
         {
             swinging = true;
-            pivot.gameObject.SetActive(true);
+            fields.pivot.gameObject.SetActive(true);
         }
 
         public void DoneSwinging()
         {
             swinging = false;
-            pivot.gameObject.SetActive(false);
+            fields.pivot.gameObject.SetActive(false);
             others.Clear();
         }
 
@@ -111,10 +111,10 @@ namespace HotD.Castables
 
         private void OnDestroy()
         {
-            Destroy(pivot.gameObject);
-            if (weaponArt != null)
+            Destroy(fields.pivot.gameObject);
+            if (fields.weaponArt != null)
             {
-                Destroy(weaponArt.gameObject);
+                Destroy(fields.weaponArt.gameObject);
             }
         }
     }

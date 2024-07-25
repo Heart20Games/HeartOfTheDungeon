@@ -169,7 +169,7 @@ public class ProgressManager : BaseMonoBehaviour
                     Print($"Despawning {party.Name}", debug);
                     foreach (var member in party.members)
                     {
-                        member.autoRespawn = false;
+                        member.AutoRespawn = false;
                     }
                     party.Despawn();
                 }

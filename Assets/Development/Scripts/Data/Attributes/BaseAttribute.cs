@@ -1,3 +1,4 @@
+using MyBox;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,6 +42,7 @@ namespace Attributes
         [HideInInspector] public UnityEvent updated = new();
         [HideInInspector] public UnityEvent<float> updatedFinalFloat = new();
         [HideInInspector] public UnityEvent<int> updatedFinalInt = new();
+        [ButtonMethod]
         public void Updated()
         {
             if (debug) Debug.Log($"Updated {name}");

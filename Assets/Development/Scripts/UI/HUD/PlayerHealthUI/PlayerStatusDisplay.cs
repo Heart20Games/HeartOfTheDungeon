@@ -5,6 +5,7 @@ using UnityEngine.Assertions;
 using Modifiers;
 using UnityEngine.Events;
 using MyBox;
+using HotD.Body;
 
 public class PlayerStatusDisplay : BaseMonoBehaviour
 {

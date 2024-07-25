@@ -1,5 +1,5 @@
 
-public interface IHealth : IDamageable
+public interface IHealth : IDamageReceiver
 {
     public void SetHealthTotal(int amount);
     public void SetHealthBase(int total);

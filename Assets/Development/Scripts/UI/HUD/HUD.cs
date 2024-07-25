@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Body;
 using HotD.Castables;
+using HotD.Body;
 
 public class HUD : BaseMonoBehaviour
 {
@@ -75,7 +76,7 @@ public class HUD : BaseMonoBehaviour
         if (character != null)
         {
             controlledCharacter = character;
-            int idx = character.statBlock != null ? character.statBlock.portraitIndex : 0;
+            int idx = character.StatBlock != null ? character.StatBlock.portraitIndex : 0;
             partySelectPanel.Select(idx);
             abilityMenu.Select(false);
         }

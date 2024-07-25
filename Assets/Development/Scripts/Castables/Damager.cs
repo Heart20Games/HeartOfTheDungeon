@@ -3,10 +3,16 @@ using UnityEngine;
 using UnityEngine.VFX;
 using static Body.Behavior.ContextSteering.CSIdentity;
 
+public interface IDamager
+{
+    public void HitDamageable(Impact impactor);
+    public void LeftDamageable(Impact impactor);
+}
+
 public class Damager : BaseMonoBehaviour, IDamager
 {
-    private readonly List<IDamageable> others = new();
-    private readonly List<IDamageable> ignored = new();
+    private readonly List<IDamageReceiver> others = new();
+    private readonly List<IDamageReceiver> ignored = new();
     public int damage = 1;
     public Identity identity = Identity.Neutral;
     private Impact _impactor;
@@ -28,7 +34,7 @@ public class Damager : BaseMonoBehaviour, IDamager
 
     public void Ignore(Transform toIgnore)
     {
-        if (toIgnore.TryGetComponent<IDamageable>(out var damageable))
+        if (toIgnore.TryGetComponent<IDamageReceiver>(out var damageable))
         {
             ignored.Add(damageable);
             ignoredCount = ignored.Count;
@@ -39,7 +45,7 @@ public class Damager : BaseMonoBehaviour, IDamager
     {
         if (impactor != null)
         {
-            IDamageable other = impactor.other.gameObject.GetComponent<IDamageable>();
+            IDamageReceiver other = impactor.other.GetComponent<IDamageReceiver>();
             
             Print($"Hit Damageable: {other}", debug, this);
 
@@ -54,7 +60,7 @@ public class Damager : BaseMonoBehaviour, IDamager
 
                 others.Add(other);
                 otherCount = others.Count;
-                other.SetDamagePosition(impactor.other.ImpactLocation);
+                other.SetDamagePosition(impactor.impactLocation);
                 other.TakeDamage(damage, identity);
             }
         }
@@ -68,7 +74,7 @@ public class Damager : BaseMonoBehaviour, IDamager
     {
         if (impactor != null)
         {
-            IDamageable other = impactor.other.gameObject.GetComponent<IDamageable>();
+            IDamageReceiver other = impactor.other.GetComponent<IDamageReceiver>();
 
             Print($"Left Damageable: {other}", debug, this);
 
@@ -90,7 +96,7 @@ public class Damager : BaseMonoBehaviour, IDamager
     {
         if (_impactor == null) return;
 
-        IDamageable other = _impactor.GetComponent<IDamageable>();
+        IDamageReceiver other = _impactor.GetComponent<IDamageReceiver>();
 
         if (_impactor._Character != null)
         {
@@ -101,7 +107,7 @@ public class Damager : BaseMonoBehaviour, IDamager
         {
             others.Add(other);
             otherCount = others.Count;
-            other.SetDamagePosition(_impactor.other.ImpactLocation);
+            other.SetDamagePosition(_impactor.impactLocation);
             other.TakeDamage(damage, identity);
         }
     }

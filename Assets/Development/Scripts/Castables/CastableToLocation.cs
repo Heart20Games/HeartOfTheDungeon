@@ -1,21 +1,23 @@
 using System;
 using UnityEngine;
 using Body;
+using HotD.Body;
 
 namespace HotD.Castables
 {
     public class CastableToLocation
     {
-        public enum Location { Character, WeaponPoint, FiringPoint }
+        public enum Location { Character, Body, WeaponPoint, FiringPoint }
         static public Transform GetLocationTransform(Location location, Character character)
         {
             return location switch
             {
                 Location.Character => character.transform,
-                Location.WeaponPoint => character.weaponLocation,
-                Location.FiringPoint => character.firingLocation,
+                Location.Body => character.Body.transform,
+                Location.WeaponPoint => character.WeaponLocation,
+                Location.FiringPoint => character.FiringLocation,
                 _ => null
-            };
+            } ;
         }
 
         [Serializable]
