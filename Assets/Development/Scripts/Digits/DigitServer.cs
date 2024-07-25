@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,13 +20,15 @@ public class DigitServer : BaseMonoBehaviour
     public string evenProperty;
     public UnityEvent<string, bool> onEven;
 
+    public UnityEvent onPresent;
+
     public bool serveWithSign = false;
 
     public void ServeNumber(int number)
     {
         if (serveWithSign)
         {
-            ServeNumberWithSign(number);
+            ServeNumberWithSign(number, false);
         }
         else
         {
@@ -34,11 +37,13 @@ public class DigitServer : BaseMonoBehaviour
             if (hundreds > 0)
                 onDigit3.Invoke(digit3Property, library.GetNumber(hundreds).texture);
 
-            ServeTensAndOnes(Mathf.Abs(remainder), hundreds > 0);
+            ServeTensAndOnes(Mathf.Abs(remainder), hundreds > 0, false, false);
         }
+
+        onPresent.Invoke();
     }
 
-    public void ServeNumberWithSign(int number)
+    public void ServeNumberWithSign(int number, bool present = true)
     {
         if ((number / 100) > 0)
         {
@@ -56,9 +61,14 @@ public class DigitServer : BaseMonoBehaviour
 
             ServeTensAndOnes(Mathf.Abs(number), false, true);
         }
+        
+        if (present)
+        {
+            onPresent.Invoke();
+        }
     }
 
-    private void ServeTensAndOnes(int number, bool hasThirdDigit = false, bool hasSign = false)
+    private void ServeTensAndOnes(int number, bool hasThirdDigit = false, bool hasSign = false, bool present = true)
     {
         int tens = number / 10;
         if (tens > 0 || hasThirdDigit)
@@ -70,5 +80,18 @@ public class DigitServer : BaseMonoBehaviour
         onDigit1.Invoke(digit1Property, library.GetNumber(ones).texture);
 
         onEven.Invoke(evenProperty, !hasThirdDigit && tens > 0); //((tens == 0 && hasSign) || (tens > 0 && !hasSign)));
+
+        if (present)
+        {
+            onPresent.Invoke();
+        }
+    }
+
+    [Header("Test")]
+    [SerializeField] private int testNumber;
+    [ButtonMethod]
+    public void ServeTestNumber()
+    {
+        ServeNumber(testNumber);
     }
 }
