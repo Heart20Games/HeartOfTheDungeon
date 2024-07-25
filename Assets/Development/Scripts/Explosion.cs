@@ -11,6 +11,7 @@ public class Explosion: BaseMonoBehaviour
     public bool triggerExplosion = false;
 
     public bool debug;
+    public float debugRayDuration = 0.01f;
     
     private void Update()
     {
@@ -21,12 +22,16 @@ public class Explosion: BaseMonoBehaviour
         }
     }
 
+    public void OnDrawGizmos()
+    {
+        Debug.DrawRay(transform.position, Vector3.forward * radius, Color.yellow, debugRayDuration);
+        Debug.DrawRay(transform.position, Vector3.right * radius, Color.yellow, debugRayDuration);
+        Debug.DrawRay(transform.position, Vector3.back * radius, Color.yellow, debugRayDuration);
+        Debug.DrawRay(transform.position, Vector3.left * radius, Color.yellow, debugRayDuration);
+    }
+
     public void Explode()
     {
-        Debug.DrawRay(transform.position, Vector3.forward * radius, Color.yellow, 1);
-        Debug.DrawRay(transform.position, Vector3.right * radius, Color.yellow, 1);
-        Debug.DrawRay(transform.position, Vector3.back * radius, Color.yellow, 1);
-        Debug.DrawRay(transform.position, Vector3.left * radius, Color.yellow, 1);
         RaycastHit[] hits = Physics.SphereCastAll(new(transform.position, Vector3.forward), radius);
         for (int i = 0; i < hits.Length; i++)
         {
