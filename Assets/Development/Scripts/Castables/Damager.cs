@@ -45,7 +45,7 @@ public class Damager : BaseMonoBehaviour, IDamager
     {
         if (impactor != null)
         {
-            IDamageReceiver other = impactor.other.GetComponent<IDamageReceiver>();
+            IDamageReceiver other = impactor.other.gameObject.GetComponent<IDamageReceiver>();
             
             Print($"Hit Damageable: {other}", debug, this);
 
@@ -60,7 +60,7 @@ public class Damager : BaseMonoBehaviour, IDamager
 
                 others.Add(other);
                 otherCount = others.Count;
-                other.SetDamagePosition(impactor.impactLocation);
+                other.SetDamagePosition(impactor.other.ImpactLocation);
                 other.TakeDamage(damage, identity);
             }
         }
@@ -74,7 +74,7 @@ public class Damager : BaseMonoBehaviour, IDamager
     {
         if (impactor != null)
         {
-            IDamageReceiver other = impactor.other.GetComponent<IDamageReceiver>();
+            IDamageReceiver other = impactor.other.gameObject.GetComponent<IDamageReceiver>();
 
             Print($"Left Damageable: {other}", debug, this);
 
@@ -107,7 +107,7 @@ public class Damager : BaseMonoBehaviour, IDamager
         {
             others.Add(other);
             otherCount = others.Count;
-            other.SetDamagePosition(_impactor.impactLocation);
+            other.SetDamagePosition(_impactor.other.ImpactLocation);
             other.TakeDamage(damage, identity);
         }
     }
