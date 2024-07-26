@@ -1,5 +1,6 @@
 using Body.Behavior.ContextSteering;
 using CustomUnityEvents;
+using HotD.Body;
 using MyBox;
 using Sisus.ComponentNames;
 using System;
@@ -18,7 +19,7 @@ public class Impact : Validator
     [Header("Connections")]
     [SerializeField] private BinaryEvent onCollision;
     [SerializeField] private BinaryEvent onTrigger;
-    [SerializeField] private Body.Character character;
+    [SerializeField] private HotD.Body.Character character;
     [Foldout("Events")][SerializeField] private ImpactEvents onImpact;
 
     public Other other;
@@ -26,7 +27,7 @@ public class Impact : Validator
     // Tracking
     [ReadOnly][SerializeField] private List<GameObject> touching = new();
 
-    public Body.Character _Character => character;
+    public HotD.Body.Character _Character => character;
 
     // On Event Enter
 
@@ -48,7 +49,7 @@ public class Impact : Validator
     }
 
     private void OnEventEnter(Collision collision, UnityEvent onEvent)
-    { 
+    {
         Other other = new(collision.gameObject, collision, collision.collider, new());
         OnEventEnter(other, onEvent);
     }
@@ -118,7 +119,7 @@ public class Impact : Validator
     }
 
     // Signals
-    
+
     private void OnTriggerExit(Collider other)
     {
         Print("OnTriggerExit", debug, this);

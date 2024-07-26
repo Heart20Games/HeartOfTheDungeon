@@ -180,7 +180,7 @@ public class MagicShieldImpact : BaseMonoBehaviour
         }
     }
 
-    public void OnImpact(Impact.Other other)
+    public void OnImpact(Other other)
     {
         if (visualEffect != null && other.gameObject != null)
         {

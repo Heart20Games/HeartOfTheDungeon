@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 using Yarn.Unity;
 using Body;
 using UnityEngine.EventSystems;
+using HotD.Body;
 
 public class UserInterface : BaseMonoBehaviour
 {
@@ -81,7 +82,7 @@ public class UserInterface : BaseMonoBehaviour
     public void SetCharacter(Character character)
     {
         controlledCharacter = character;
-        characterSheet.SetCharacter(character.statBlock);
+        characterSheet.SetCharacter(character.StatBlock);
     }
 
     public void UpdateWeapon()

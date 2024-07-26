@@ -247,17 +247,13 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   statBlock: {fileID: 0}
-  body: {fileID: 5106106832475441759}
   pivot: {fileID: 4813447189290614994}
+  body: {fileID: 5106106832475441759}
   moveReticle: {fileID: 8706531923607348711}
   baseOffset: 0
   settings: {fileID: 11400000, guid: 6d7eeb5dfc435564f9376a9e58c901c4, type: 2}
   aimActive: 0
-  onControl:
-    m_PersistentCalls:
-      m_Calls: []
   artRenderer: {fileID: 4122626737896113915}
-  vfxController: {fileID: 0}
   cameraPivot: {fileID: 1293615231503594153}
   orbitalCamera: {fileID: 3832840258595731421}
   aimCamera: {fileID: 390952305994644025}
@@ -296,7 +292,7 @@ MonoBehaviour:
       name: Armor Max
       baseValue: 0
       value: 1
-  onDmg:
+  onDamage:
     m_PersistentCalls:
       m_Calls: []
   spawn: {fileID: 3190216237390131692}
@@ -337,7 +333,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  debug: 0
   mode:
     name: 
     controlMode: 0
@@ -359,12 +354,6 @@ MonoBehaviour:
   testDamageIdentity: 0
   testDamageAmount: 1
   castableItems:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  castables:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -555,7 +544,6 @@ GameObject:
   - component: {fileID: 1230430943143690019}
   - component: {fileID: 2659448263515444761}
   - component: {fileID: 2485834102352749627}
-  - component: {fileID: 1097701899209524747}
   m_Layer: 7
   m_Name: Body
   m_TagString: Character
@@ -1223,27 +1211,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!95 &1097701899209524747
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4520041833351946365}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4853287423911023049
 GameObject:
   m_ObjectHideFlags: 0
@@ -1332,7 +1299,7 @@ GameObject:
   m_Component:
   - component: {fileID: 844723266406932610}
   m_Layer: 7
-  m_Name: Weapon Offset
+  m_Name: Weapon Location
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

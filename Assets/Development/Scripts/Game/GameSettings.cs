@@ -60,7 +60,7 @@ namespace HotD
                     };
                 }
             }
-            public readonly TargetFinder Finder { get => main.CurCharacter.targetFinder; }
+            public readonly TargetFinder Finder { get => main.CurCharacter.TargetFinder; }
         }
     }
 

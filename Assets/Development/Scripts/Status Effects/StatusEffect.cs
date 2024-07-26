@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using Body;
+using HotD.Body;
+using System.Collections.Generic;
 
 [Serializable]
 public struct Status
@@ -17,6 +19,11 @@ public struct Status
     public StatusEffect effect;
     public int strength;
     public GameObject instance;
+}
+
+public interface IStatusEffectable
+{
+    public List<Status> Statuses { get; }
 }
 
 public abstract class StatusEffect: BaseScriptableObject
@@ -35,7 +42,7 @@ public abstract class StatusEffect: BaseScriptableObject
 
     public virtual void Apply(Character character, int strength)
     {
-        foreach (Status status in character.statuses)
+        foreach (Status status in character.Statuses)
         {
             if (status.effect == this)
             {
@@ -48,7 +55,7 @@ public abstract class StatusEffect: BaseScriptableObject
         {
             instance = Instantiate(prefab, character.transform);
         }
-        character.statuses.Add(new Status(this, strength, instance));
+        character.Statuses.Add(new Status(this, strength, instance));
     }
 
     public virtual void Proc(int strength, Character character)
@@ -58,7 +65,7 @@ public abstract class StatusEffect: BaseScriptableObject
         {
             instance = Instantiate(prefab, character.transform);
         }
-        character.statuses.Add(new Status(this, strength, instance));
+        character.Statuses.Add(new Status(this, strength, instance));
         onProc.Invoke();
     }
     
@@ -69,17 +76,17 @@ public abstract class StatusEffect: BaseScriptableObject
     
     public virtual void Remove(Character character)
     {
-        for (int i = 0; i < character.statuses.Count;)
+        for (int i = 0; i < character.Statuses.Count;)
         {
-            Status status = character.statuses[i];
+            Status status = character.Statuses[i];
             if (status.effect == this)
             {
-                GameObject instance = character.statuses[i].instance;
+                GameObject instance = character.Statuses[i].instance;
                 if (instance != null)
                 {
                     Destroy(instance);
                 }
-                character.statuses.RemoveAt(i);
+                character.Statuses.RemoveAt(i);
             }
             else i++;
         }

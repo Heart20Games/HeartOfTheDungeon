@@ -65,7 +65,11 @@ public class ProgressManager : BaseMonoBehaviour
     {
         ActivateDialogues();
         SpawnParties();
-        SpawnAtCheckpoint(Party.mainParty);
+
+        if(Party.mainParty != null)
+        {
+            SpawnAtCheckpoint(Party.mainParty);
+        }  
     }
 
     // Session Data Management
@@ -165,7 +169,7 @@ public class ProgressManager : BaseMonoBehaviour
                     Print($"Despawning {party.Name}", debug);
                     foreach (var member in party.members)
                     {
-                        member.autoRespawn = false;
+                        member.AutoRespawn = false;
                     }
                     party.Despawn();
                 }

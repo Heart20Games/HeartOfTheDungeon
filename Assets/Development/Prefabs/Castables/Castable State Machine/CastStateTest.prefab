@@ -1,0 +1,453 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2064162538980655438
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9057122764883080907}
+  - component: {fileID: 9023533805528778401}
+  - component: {fileID: 3436195197084661273}
+  m_Layer: 0
+  m_Name: Charge
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9057122764883080907
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2064162538980655438}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2919104870091448915}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9023533805528778401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2064162538980655438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b915fc48b630043a509ce34e1da8b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fields:
+    rOffset: 0
+    weaponArt: {fileID: 0}
+    pivot: {fileID: 0}
+    direction: {x: 0, y: 0, z: 0}
+    followBody: 0
+    actionIndex: 0
+    item: {fileID: 0}
+    maxPowerLevel: 0
+    curPowerLevel: 0
+    casting: 0
+    castOnTrigger: 1
+    castOnRelease: 0
+    unCastOnRelease: 0
+    castingMethods: []
+    toLocations: []
+    positionables: []
+    effects: []
+    identity: 0
+    damager: {fileID: 0}
+    triggerStatuses: []
+    castStatuses: []
+    hitStatuses: []
+    pivotDirection: {x: 0, y: 0, z: 0}
+  castOnTrigger: 1
+  castOnRelease: 0
+  unCastOnRelease: 0
+  onSetPowerLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetMaxPowerLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetIdentity:
+    m_PersistentCalls:
+      m_Calls: []
+  onTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onCasted:
+    m_PersistentCalls:
+      m_Calls: []
+  state: 3
+  onAction:
+    m_PersistentCalls:
+      m_Calls: []
+  supportedActions:
+  - name: Charge on Start
+    triggerAction: 4
+    sendToCoordinator: 1
+    waitForPerformance: 0
+    startAction:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3436195197084661273}
+          m_TargetAssemblyTypeName: Charger, Assembly-CSharp
+          m_MethodName: Begin
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - name: Cast on Release
+    triggerAction: 16
+    sendToCoordinator: 0
+    waitForPerformance: 1
+    startAction:
+      m_PersistentCalls:
+        m_Calls: []
+  actionsToPerform: []
+  debug: 0
+  testAction:
+    state: 0
+    action: 0
+--- !u!114 &3436195197084661273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2064162538980655438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c62583458018a94fb86c54296434b53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debug: 0
+  resetOnBegin: 1
+  interrupt: 0
+  level: 0
+  maxLevel: 0
+  chargeLimit:
+    name: 
+    owner: 
+    finalPreview: 0
+    baseValue: 4
+    baseMultiplier: 0
+    baseValueRange: {x: 0, y: 4}
+    baseMultiplierRange: {x: 0, y: 0}
+    debug: 0
+    updated:
+      m_PersistentCalls:
+        m_Calls: []
+    updatedFinalFloat:
+      m_PersistentCalls:
+        m_Calls: []
+    updatedFinalInt:
+      m_PersistentCalls:
+        m_Calls: []
+    otherAttributes: []
+  chargeTimes:
+  - 1
+  - 2
+  - 3
+  onBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  onCharge:
+    m_PersistentCalls:
+      m_Calls: []
+  onCharged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9023533805528778401}
+        m_TargetAssemblyTypeName: HotD.Castables.DelegatedExecutor, Assembly-CSharp
+        m_MethodName: End
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onInterrupt:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!1 &3921333796322629136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7894649960903874482}
+  - component: {fileID: 7440210251400779694}
+  m_Layer: 0
+  m_Name: Cast
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7894649960903874482
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3921333796322629136}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2919104870091448915}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7440210251400779694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3921333796322629136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b915fc48b630043a509ce34e1da8b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fields:
+    rOffset: 0
+    weaponArt: {fileID: 0}
+    pivot: {fileID: 0}
+    direction: {x: 0, y: 0, z: 0}
+    followBody: 0
+    actionIndex: 0
+    item: {fileID: 0}
+    maxPowerLevel: 0
+    curPowerLevel: 0
+    casting: 0
+    castOnTrigger: 1
+    castOnRelease: 0
+    unCastOnRelease: 0
+    castingMethods: []
+    toLocations: []
+    positionables: []
+    effects: []
+    identity: 0
+    damager: {fileID: 0}
+    triggerStatuses: []
+    castStatuses: []
+    hitStatuses: []
+    pivotDirection: {x: 0, y: 0, z: 0}
+  castOnTrigger: 1
+  castOnRelease: 0
+  unCastOnRelease: 0
+  onSetPowerLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetMaxPowerLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetIdentity:
+    m_PersistentCalls:
+      m_Calls: []
+  onTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onCasted:
+    m_PersistentCalls:
+      m_Calls: []
+  state: 4
+  onAction:
+    m_PersistentCalls:
+      m_Calls: []
+  supportedActions:
+  - name: Cast on Start
+    triggerAction: 4
+    sendToCoordinator: 2
+    waitForPerformance: 0
+    startAction:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: Finish
+    triggerAction: 32
+    sendToCoordinator: 0
+    waitForPerformance: 1
+    startAction:
+      m_PersistentCalls:
+        m_Calls: []
+  actionsToPerform: []
+  debug: 0
+  testAction:
+    state: 0
+    action: 0
+--- !u!1 &6669269691476346238
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2919104870091448915}
+  - component: {fileID: 1261136474130310848}
+  - component: {fileID: 2063330373022745201}
+  m_Layer: 0
+  m_Name: CastStateTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2919104870091448915
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6669269691476346238}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 9057122764883080907}
+  - {fileID: 7894649960903874482}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1261136474130310848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6669269691476346238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2482107b4b7d694499417bb62ca09cc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fields:
+    rOffset: 0
+    weaponArt: {fileID: 0}
+    pivot: {fileID: 0}
+    direction: {x: 0, y: 0, z: 0}
+    followBody: 0
+    actionIndex: 0
+    item: {fileID: 11400000, guid: f554b8dbbf9b65f4ca8f42e4de4349a4, type: 2}
+    maxPowerLevel: 0
+    curPowerLevel: 0
+    casting: 0
+    castOnTrigger: 1
+    castOnRelease: 0
+    unCastOnRelease: 0
+    castingMethods: []
+    toLocations: []
+    positionables: []
+    effects: []
+    identity: 0
+    damager: {fileID: 2063330373022745201}
+    triggerStatuses: []
+    castStatuses: []
+    hitStatuses: []
+    pivotDirection: {x: 0, y: 0, z: 0}
+  castOnTrigger: 1
+  castOnRelease: 0
+  unCastOnRelease: 0
+  onSetPowerLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetMaxPowerLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetIdentity:
+    m_PersistentCalls:
+      m_Calls: []
+  onTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onCasted:
+    m_PersistentCalls:
+      m_Calls: []
+  state: 0
+  executorCount: 0
+  transitions:
+  - source: 1
+    triggerActions: 1
+    destination: 2
+  - source: 2
+    triggerActions: 64
+    destination: 1
+  - source: 2
+    triggerActions: 8
+    destination: 3
+  - source: 3
+    triggerActions: 48
+    destination: 4
+  - source: 4
+    triggerActions: 32
+    destination: 2
+  queuedActions: []
+  dequeuedActions: []
+  debug: 0
+--- !u!114 &2063330373022745201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6669269691476346238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc6e98420917628498e843205b370fc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  identity: 0
+  otherCount: 0
+  ignoredCount: 0
+  debug: 0
