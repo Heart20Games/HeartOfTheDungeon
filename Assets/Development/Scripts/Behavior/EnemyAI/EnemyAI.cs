@@ -148,7 +148,7 @@ public class EnemyAI : Brain
 
         if (Target.GetComponent<CSController>().identity != CSIdentity.Identity.Friend) return;
 
-        if (Target.parent.GetComponent<Body.Character>().CurrentHealth <= 0)
+        if (Target.parent.GetComponent<Character>().CurrentHealth <= 0)
         {
             PatrolState();
 
