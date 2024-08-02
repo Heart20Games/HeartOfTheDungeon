@@ -242,6 +242,15 @@ namespace HotD.Generators
             return endCast;
         }
 
+        public void AddStartCastBehaviour(AnimatorState state)
+        {
+            var animEvent = state.AddStateMachineBehaviour<AnimatorEvent>();
+            animEvent.methodName = "OnStartCast";
+            animEvent.eventName = null;
+            animEvent.eventType = AnimatorEvent.Event.EnterState;
+            animEvent.targets = AnimatorEvent.Target.Parent;
+        }
+
         public AnimatorStateMachine AddChargeStateMachine(AnimatorStateMachine root, Charges blueprints, Vector2 position = new())
         {
             var sub = root.AddStateMachine(blueprints.name);
