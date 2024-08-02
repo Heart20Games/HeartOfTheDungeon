@@ -75,18 +75,18 @@ namespace HotD.Castables
 
         public void HitDamagable(Impact impactor)
         {
-            IDamageReceiver other = impactor.other.GetComponent<IDamageReceiver>();
+            IDamageReceiver other = impactor.other.gameObject.GetComponent<IDamageReceiver>();
             if (other != null && !ignored.Contains(other) && !others.Contains(other))
             {
                 others.Add(other);
-                other.SetDamagePosition(impactor.impactLocation);
+                other.SetDamagePosition(impactor.other.ImpactLocation);
                 other.TakeDamage(damage, Identity);
             }
         }
 
         public void LeftDamagable(Impact impactor)
         {
-            IDamageReceiver other = impactor.other.GetComponent<IDamageReceiver>();
+            IDamageReceiver other = impactor.other.gameObject.GetComponent<IDamageReceiver>();
             if (other != null && !ignored.Contains(other) && others.Contains(other))
             {
                 others.Remove(other);

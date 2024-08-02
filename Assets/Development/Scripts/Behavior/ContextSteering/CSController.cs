@@ -336,11 +336,11 @@ namespace Body.Behavior.ContextSteering
 
         public void AddObstacle(Impact impact)
         {
-            if (!impact.other.TryGetComponent<CSController>(out _))
+            if (!impact.other.gameObject.TryGetComponent<CSController>(out _))
             {
-                if (!obstacles.Contains(impact.other.transform))
+                if (!obstacles.Contains(impact.other.gameObject.transform))
                 {
-                    Transform other = impact.other.transform;
+                    Transform other = impact.other.gameObject.transform;
                     obstacles.Add(other);
                     Vector2 otherPos = new(other.position.x, other.position.z);
                     Vector2 curPos = new(transform.position.x, transform.position.z);
@@ -351,9 +351,9 @@ namespace Body.Behavior.ContextSteering
 
         public void RemoveObstacle(Impact impact)
         {
-            if (!impact.other.TryGetComponent<CSController>(out _))
+            if (!impact.other.gameObject.TryGetComponent<CSController>(out _))
             {
-                obstacles.Remove(impact.other.transform);
+                obstacles.Remove(impact.other.gameObject.transform);
             }
         }
 

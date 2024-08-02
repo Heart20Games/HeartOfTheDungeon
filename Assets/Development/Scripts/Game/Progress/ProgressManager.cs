@@ -146,7 +146,7 @@ public class ProgressManager : BaseMonoBehaviour
 
     private void SpawnAll()
     {
-        Print("Spawn All Enemies.");
+        Print("Spawn All Enemies.", true, this);
         foreach (Party party in parties)
         {
             if (party != Party.mainParty)

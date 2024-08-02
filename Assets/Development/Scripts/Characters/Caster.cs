@@ -37,6 +37,8 @@ namespace HotD.Castables
         [SerializeField] private UnityEvent<Vector3> OnSetCastVector = new();
         [SerializeField][ReadOnly] private Transform target;
 
+        public Transform WeaponLocation => weaponLocation;
+
         private void Awake()
         {
             if (TryGetComponent(out character))
