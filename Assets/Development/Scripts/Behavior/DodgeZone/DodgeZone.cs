@@ -10,6 +10,8 @@ public class DodgeZone : MonoBehaviour
 
     [SerializeField] private MagicShieldImpact magicShieldPrefab;
 
+    private MagicShieldImpact magicShieldImpactObject;
+
     [SerializeField] private int dodgeChance;
 
     private Coroutine sideStepRoutine;
@@ -64,6 +66,8 @@ public class DodgeZone : MonoBehaviour
     {
         var magicShield = Instantiate(magicShieldPrefab);
 
+        magicShieldImpactObject = magicShield;
+
         magicShield.transform.parent = characterTransform;
         magicShield.transform.localScale = new Vector3(-2.5f, 2.5f, 2.5f);
         magicShield.transform.localPosition = new Vector3(0, 3.157f, 0);
@@ -77,7 +81,26 @@ public class DodgeZone : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         magicShieldRoutine = null;
+        if(magicShieldImpactObject != null)
+        {
+            magicShieldImpactObject = null;
+        }
         Destroy(magicShield.gameObject);
+    }
+
+    public void RemoveShieldEffect()
+    {
+        if(magicShieldRoutine != null)
+        {
+            StopCoroutine(magicShieldRoutine);
+            magicShieldRoutine = null;
+        }
+
+        if (magicShieldImpactObject != null)
+        {
+            Destroy(magicShieldImpactObject.gameObject);
+            magicShieldImpactObject = null;
+        }
     }
 
     private IEnumerator SidestepDodge()

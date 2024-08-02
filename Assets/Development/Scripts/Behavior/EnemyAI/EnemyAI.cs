@@ -24,6 +24,8 @@ public class EnemyAI : Brain
 
     private int wayPointIndex;
 
+    public Action CurrentAction => currentAction;
+
     public bool DidAttack
     {
         get => didAttack;

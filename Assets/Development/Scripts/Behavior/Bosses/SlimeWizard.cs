@@ -19,7 +19,10 @@ public class SlimeWizard : EnemyAI
 
     [SerializeField] private VisualEffect magicBoltVfx;
 
+    [SerializeField] private DodgeZone dodgeZone;
+
     [SerializeField] private Animator magicBoltVfxAnimator;
+    [SerializeField] private Animator slimeWizardAnimator;
 
     [SerializeField] private float attackCoolDown;
 
@@ -32,7 +35,6 @@ public class SlimeWizard : EnemyAI
     private bool isShootingLaser;
     private bool chargingLevelOne;
     private bool chargingLevelTwo;
-    private bool chargingLevelThree;
 
     public bool IsShootingLaser => isShootingLaser;
 
@@ -46,6 +48,8 @@ public class SlimeWizard : EnemyAI
         if (character.CurrentHealth <= 0) return;
 
         base.Update();
+
+        WalkAnimation();
 
         if(DidAttack)
         {
@@ -66,6 +70,25 @@ public class SlimeWizard : EnemyAI
         }
     }
 
+    private void WalkAnimation()
+    {
+        if(CurrentAction == Body.Behavior.Action.Chase)
+        {
+            slimeWizardAnimator.SetBool("Run", true);
+        }
+        else
+        {
+            slimeWizardAnimator.SetBool("Run", false);
+        }
+    }
+
+    public void DeadAnimation()
+    {
+        slimeWizardAnimator.SetBool("Dead", true);
+
+        StopEffectsOnDeath();
+    }
+
     private IEnumerator CreateProjectile()
     {
         int randomAttack = Random.Range(0, actions.Length);
@@ -76,22 +99,31 @@ public class SlimeWizard : EnemyAI
         magicBoltVfx.Play();
 
         magicBoltVfxAnimator.SetBool("Sustain", true);
+        slimeWizardAnimator.SetTrigger("StartAction");
 
-        switch(randomAttack)
+        switch (randomAttack)
         {
             case 0:
                 magicBoltVfxAnimator.Play("Level 1 Charge");
+                slimeWizardAnimator.SetInteger("ChargeLevel", 1);
+                slimeWizardAnimator.SetInteger("ComboLevel", 1);
+                slimeWizardAnimator.SetFloat("Action", 1);
                 chargingLevelOne = true;
                 break;
             case 1:
                 magicBoltVfxAnimator.Play("Level 1 Charge");
                 magicBoltVfxAnimator.SetBool("Level 2 Available", true);
+                slimeWizardAnimator.SetInteger("ChargeLevel", 2);
+                slimeWizardAnimator.SetInteger("ComboLevel", 2);
+                slimeWizardAnimator.SetFloat("Action", 1);
                 chargingLevelTwo = true;
                 break;
             case 2:
                 magicBoltVfxAnimator.Play("Level 1 Charge");
                 magicBoltVfxAnimator.SetBool("Level 3 Available", true);
-                chargingLevelThree = true;
+                slimeWizardAnimator.SetInteger("ChargeLevel", 3);
+                slimeWizardAnimator.SetInteger("ComboLevel", 3);
+                slimeWizardAnimator.SetFloat("Action", 1);
                 break;
         }
 
@@ -142,7 +174,6 @@ public class SlimeWizard : EnemyAI
 
         chargingLevelOne = false;
         chargingLevelTwo = false;
-        chargingLevelThree = false;
 
         magicBoltVfx.Stop();
 
@@ -172,9 +203,37 @@ public class SlimeWizard : EnemyAI
         if(coolDownTimer >= attackCoolDown)
         {
             ResetAttackTime();
+
             DidAttack = false;
             attacked = false;
+
             coolDownTimer = 0;
+        }
+    }
+
+    public void StopEffectsOnDeath()
+    {
+        magicBoltVfx.Stop();
+
+        chargingLevelOne = false;
+        chargingLevelTwo = false;
+
+        magicBoltVfxAnimator.SetBool("Sustain", false);
+
+        dodgeZone.RemoveShieldEffect();
+
+        if (magicBoltRoutine != null)
+        {
+            StopCoroutine(magicBoltRoutine);
+            magicBoltRoutine = null;
+        }
+
+        if(laserRoutine != null)
+        {
+            StopCoroutine(laserRoutine);
+
+            isShootingLaser = false;
+            laserRoutine = null;
         }
     }
 }
