@@ -11,7 +11,7 @@ public class EnemyTriggerZone : MonoBehaviour
 
         if(other.GetComponent<CSController>().identity == CSIdentity.Identity.Friend)
         {
-            enemyAI.ChasePlayer(other.transform);
+            enemyAI.ChasePlayer(other.transform, true);
         }
     }
 

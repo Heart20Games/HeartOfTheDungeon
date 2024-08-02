@@ -81,6 +81,7 @@ namespace Body.Behavior
         {
             get => actions ??= new Dictionary<Action, Tick>() { { Action.Idle, Idle }, { Action.Patrol, Patrol }, { Action.Chase, Chase }, { Action.Duel, Duel } };
         }
+
         private BehaviorTree tree;
         private BehaviorNode root;
         private BehaviorNode Root { get => root ??= tree != null ? tree.GenerateTree(this) : new(); set => root = value; }
@@ -160,7 +161,7 @@ namespace Body.Behavior
         }
 
         // Target
-        private void SetTarget(Transform target)
+        public void SetTarget(Transform target)
         {
             this.target = target;
             if (this.target != null)

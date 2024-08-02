@@ -48,7 +48,6 @@ public class Damager : BaseMonoBehaviour, IDamager
             IDamageReceiver other = impactor.other.gameObject.GetComponent<IDamageReceiver>();
             
             Print($"Hit Damageable: {other}", debug, this);
-
             if(impactor._Character != null)
             {
                 if (!impactor._Character.Alive) return;
@@ -57,8 +56,7 @@ public class Damager : BaseMonoBehaviour, IDamager
             if (other != null && !ignored.Contains(other) && !others.Contains(other))
             {
                 Print("Doing stuff with damageable.", debug, this);
-
-                others.Add(other);
+                //others.Add(other);
                 otherCount = others.Count;
                 other.SetDamagePosition(impactor.other.ImpactLocation);
                 other.TakeDamage(damage, identity);

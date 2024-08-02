@@ -1,3 +1,4 @@
+using Body.Behavior.ContextSteering;
 using CustomUnityEvents;
 using HotD.Body;
 using MyBox;
@@ -57,8 +58,18 @@ public class Impact : Validator
     {
         if (isActiveAndEnabled)
         {
+            if (other.gameObject.layer == LayerMask.NameToLayer("DodgeZone")) return;
+            if (other.gameObject.GetComponent<MagicShieldImpact>()) return;
+
             this.other = other;
             this.other.gameObject = other.gameObject;
+            if(other.gameObject.tag == "Character")
+            {
+                touching.Add(other.gameObject);
+                hasCollided = true;
+                onEvent.Invoke();
+                onImpact.InvokeEnter(this);
+            }
             if ((!oneShot || !hasCollided) && Validate(other.gameObject) && !touching.Contains(other.gameObject))
             {
                 Print($"Valid Other: {other.gameObject.name} ({this.GetName()})", debug, this);
