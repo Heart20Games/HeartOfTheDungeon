@@ -24,6 +24,8 @@ public class SlimeWizard : EnemyAI
     [SerializeField] private Animator magicBoltVfxAnimator;
     [SerializeField] private Animator slimeWizardAnimator;
 
+    private CastedCollider magicLaserObject;
+
     [SerializeField] private float attackCoolDown;
 
     private Coroutine magicBoltRoutine;
@@ -146,6 +148,8 @@ public class SlimeWizard : EnemyAI
         {
             Projectile projectile = magicAttack.GetComponent<Projectile>();
 
+            projectile.AddException(character.AliveCollider);
+
             projectile.ShouldIgnoreDodgeLayer = true;
 
             magicAttack.transform.position = caster.WeaponLocation.position;
@@ -161,6 +165,8 @@ public class SlimeWizard : EnemyAI
             magicAttack.transform.position = new Vector3(magicAttack.transform.position.x, magicAttack.transform.position.y + 1f, magicAttack.transform.position.z);
 
             CastedCollider castedCollider = magicAttack.GetComponent<CastedCollider>();
+
+            magicLaserObject = castedCollider;
 
             castedCollider.onCast.Invoke(new Vector3(0, transform.position.y, 0));
 
@@ -231,6 +237,22 @@ public class SlimeWizard : EnemyAI
         if(laserRoutine != null)
         {
             StopCoroutine(laserRoutine);
+
+            if(magicLaserObject != null)
+            {
+                for(int i = 0; i < magicLaserObject.transform.childCount; i++)
+                {
+                    if (magicLaserObject.transform.GetChild(i).GetComponent<Level3BoltScaling>())
+                    {
+                        Level3BoltScaling boltScaling = magicLaserObject.transform.GetChild(i).GetComponent<Level3BoltScaling>();
+                        boltScaling.WindDown();
+
+                        break;
+                    }
+                }
+
+                magicLaserObject = null;
+            }
 
             isShootingLaser = false;
             laserRoutine = null;
