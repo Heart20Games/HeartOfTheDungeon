@@ -7,12 +7,11 @@ using UnityEngine.Events;
 
 namespace HotD.Castables
 {
-    public class ExecutionMethod : CastableProperties
+    public class ExecutionMethod : DependentCastProperties
     {
         public bool aimAtCrosshair = true;
         public List<Positionable> positionables = new();
         public UnityEvent onEnable = new();
-        public CastableProperties initializeOffOf;
         private ICollidables[] collidables;
 
         public override void InitializeEvents()
@@ -23,7 +22,6 @@ namespace HotD.Castables
 
         private void Awake()
         {
-            Initialize(initializeOffOf.fields);
             collidables = GetComponentsInChildren<ICollidables>();
         }
 

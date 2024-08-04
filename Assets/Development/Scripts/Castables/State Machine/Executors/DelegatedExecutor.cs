@@ -7,14 +7,17 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
-using static CastCoordinator;
+using UnityEngine.Serialization;
 
 namespace HotD.Castables
 {
+    using static Coordination;
+
     public class DelegatedExecutor : CastStateExecutor
     {
+
         [SerializeField] protected bool debugExecutor = false;
-        public List<ActionEvent> supportedActions = new();
+        [FormerlySerializedAs("supportedActions")] public List<TransitionEvent> supportedTransitions = new();
         public List<StateAction> actionsToPerform = new();
 
         public override void SetActive(bool active)
@@ -31,9 +34,9 @@ namespace HotD.Castables
 
         public void ResetSupportedActions()
         {
-            for (int i = 0; i < supportedActions.Count; i++)
+            for (int i = 0; i < supportedTransitions.Count; i++)
             {
-                supportedActions[i] = supportedActions[i].MarkFired(false);
+                supportedTransitions[i] = supportedTransitions[i].MarkFired(false);
             }
         }
 
@@ -60,20 +63,6 @@ namespace HotD.Castables
             return false;
         }
 
-        public bool TryFindActionEvent(CastAction action, out ActionEvent actionEvent, ActionEvent fallback=new())
-        {
-            actionEvent = fallback;
-            foreach (var supportedAction in supportedActions)
-            {
-                if (supportedAction.triggerAction == action)
-                {
-                    actionEvent = supportedAction;
-                    return true;
-                }
-            }
-            return false;
-        }
-
         private bool HasAction(CastAction actions, CastAction action)
         {
             return (actions & action) == action;
@@ -83,15 +72,15 @@ namespace HotD.Castables
         private CastAction StartAction(CastAction action)
         {
             Assert.IsFalse(action == CastAction.None);
-            for (int i = 0; i < supportedActions.Count; i++)
+            for (int i = 0; i < supportedTransitions.Count; i++)
             {
-                ActionEvent actionEvent = supportedActions[i];
+                TransitionEvent transition = supportedTransitions[i];
                 
-                if (HasAction(actionEvent.triggerAction, action))
+                if (HasAction(transition.triggerAction, action))
                 {
                     // Execute the event.
-                    var waitOn = ExecuteEvent(actionEvent, out var eventStatus);
-                    supportedActions[i] = eventStatus;
+                    var waitOn = ExecuteEvent(transition, out var eventStatus);
+                    supportedTransitions[i] = eventStatus;
                     return waitOn;
                 }
             }
@@ -99,27 +88,28 @@ namespace HotD.Castables
         }
 
         // Execute the given action event, and track whether the event has been fired. Returns the CastAction to wait for.
-        private CastAction ExecuteEvent(ActionEvent actionEvent, out ActionEvent eventStatus)
+        private CastAction ExecuteEvent(TransitionEvent transition, out TransitionEvent eventStatus)
         {
-            if (actionEvent.CanFire())
+            if (transition.CanFire())
             {
-                Print($"Firing action event {actionEvent.name}.", debugExecutor, this);
-                eventStatus = actionEvent.MarkFired(true);
-                actionEvent.startAction.Invoke();
-                Coordinator.Coordinate(actionEvent.sendToCoordinator);
-                return !actionEvent.waitForPerformance ? CastAction.None : actionEvent.waitAction;
+                Print($"Firing action event {transition.name}.", debugExecutor, this);
+                eventStatus = transition.MarkFired(true);
+                transition.startAction.Invoke();
+                Coordinator.Coordinate(transition.sendToCoordinator);
+                actionExecuted?.Invoke(transition.sendToListener);
+                return !transition.waitForCoordinator ? CastAction.None : transition.waitAction;
             }
             else
             {
-                Print($"Discarding one-shot {actionEvent.name}.", debugExecutor, this);
-                eventStatus = actionEvent;
+                Print($"Discarding one-shot {transition.name}.", debugExecutor, this);
+                eventStatus = transition;
                 return CastAction.None;
             }
         }
 
         private bool SupportsAction(CastAction action)
         {
-            foreach (ActionEvent actionEvent in supportedActions)
+            foreach (TransitionEvent actionEvent in supportedTransitions)
             {
                 if (HasAction(actionEvent.triggerAction, action))
                 {
@@ -179,52 +169,86 @@ namespace HotD.Castables
             ReportAction(testAction.action);
         }
 
+        // Structs
+
         [Serializable]
-        public struct ActionEvent
+        public struct TransitionEvent
         {
-            public ActionEvent(string name, CastAction triggerAction, Triggers sendToCoordinator, bool waitForPerformance, CastAction waitAction = CastAction.None, bool oneShot = true)
+            // Fields
+            public string name;
+            public CastAction triggerAction;
+            public Triggers sendToCoordinator;
+            public Triggers sendToListener;
+            [ConditionalField(true, "ShowWaitForCoordinator")]
+            [FormerlySerializedAs("waitForPerformance")] public bool waitForCoordinator;
+            [ConditionalField("waitForCoordinator")]
+            public CastAction waitAction;
+            public bool oneShot;
+            [ReadOnly][SerializeField] public readonly bool fired;
+            public UnityEvent startAction;
+
+            private readonly bool ShowWaitForCoordinator()
+            {
+                return sendToCoordinator != Triggers.None || waitForCoordinator == true || waitAction != CastAction.None;
+            }
+
+            private readonly bool ShowWaitAction()
+            {
+                return waitForCoordinator == true || waitAction != CastAction.None;
+            }
+
+            // Construction
+            public TransitionEvent(string name, CastAction triggerAction, Triggers sendToCoordinator, Triggers sendToListener, bool waitForCoordinator, CastAction waitAction = CastAction.None, bool oneShot = true)
             {
                 this.name = name;
                 this.triggerAction = triggerAction;
                 this.sendToCoordinator = sendToCoordinator;
-                this.waitForPerformance = waitForPerformance;
+                this.sendToListener = sendToListener;
+                this.waitForCoordinator = waitForCoordinator;
                 this.waitAction = waitAction;
                 this.oneShot = oneShot;
                 this.fired = false;
                 this.startAction = new();
             }
 
-            public ActionEvent(ActionEvent old, bool fired)
+            public TransitionEvent(TransitionEvent old, bool fired)
             {
                 this.name = old.name;
                 this.triggerAction = old.triggerAction;
                 this.sendToCoordinator = old.sendToCoordinator;
-                this.waitForPerformance = old.waitForPerformance;
+                this.sendToListener = old.sendToListener;
+                this.waitForCoordinator = old.waitForCoordinator;
                 this.waitAction = old.waitAction;
                 this.oneShot = old.oneShot;
                 this.fired = fired;
                 this.startAction = old.startAction;
             }
 
+            // Action Search
+            public static bool TryFindActionEvent(CastAction action, List<TransitionEvent> supportedActions, out TransitionEvent actionEvent, TransitionEvent fallback = new())
+            {
+                actionEvent = fallback;
+                foreach (var supportedAction in supportedActions)
+                {
+                    if (supportedAction.triggerAction == action)
+                    {
+                        actionEvent = supportedAction;
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            // Fired?
             public readonly bool CanFire()
             {
                 return (!oneShot) || (!fired);
             }
 
-            public readonly ActionEvent MarkFired(bool fired)
+            public readonly TransitionEvent MarkFired(bool fired)
             {
-                return this.fired == fired ? this : new ActionEvent(this, fired);
+                return this.fired == fired ? this : new TransitionEvent(this, fired);
             }
-
-            public string name;
-            public CastAction triggerAction;
-            public Triggers sendToCoordinator;
-            public bool waitForPerformance;
-            [ConditionalField("waitForPerformance")]
-            public CastAction waitAction;
-            public bool oneShot;
-            [ReadOnly][SerializeField] public readonly bool fired;
-            public UnityEvent startAction;
         }
     }
 }

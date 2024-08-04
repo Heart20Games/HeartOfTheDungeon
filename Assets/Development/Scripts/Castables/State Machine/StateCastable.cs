@@ -5,10 +5,11 @@ using System.Linq;
 using UnityEditor.Events;
 using UnityEngine;
 using UnityEngine.Events;
-using static CastCoordinator;
 
 namespace HotD.Castables
 {
+    using static Coordination;
+
     public enum CastState { None, Init, Equipped, Activating, Executing, Cooldown }
 
     [Serializable]
@@ -51,7 +52,7 @@ namespace HotD.Castables
     }
 
     [RequireComponent(typeof(Damager))]
-    public class StateCastable : CastableProperties, ICastable
+    public class StateCastable : CastProperties, ICastable
     {
         // State
         [Foldout("State", true)]
@@ -343,13 +344,13 @@ namespace HotD.Castables
 
             executor.State = CastState.Executing;
             
-            executor.supportedActions.Add(new(
+            executor.supportedTransitions.Add(new(
                 "Cast on Start", CastAction.Start,
-                Triggers.StartCast, false
+                Triggers.StartCast, Triggers.None, false
             ));
-            executor.supportedActions.Add(new(
+            executor.supportedTransitions.Add(new(
                 "Finish", CastAction.End, 
-                Triggers.None, true
+                Triggers.None, Triggers.None, true
             ));
         }
 
@@ -362,13 +363,13 @@ namespace HotD.Castables
 
             executor.State = CastState.Activating;
 
-            executor.supportedActions.Add(new(
+            executor.supportedTransitions.Add(new(
                 "Charge on Start", CastAction.Start,
-                Triggers.StartAction, false
+                Triggers.StartAction, Triggers.None, false
             ));
-            executor.supportedActions.Add(new(
+            executor.supportedTransitions.Add(new(
                 "Cast on Release", CastAction.Release,
-                Triggers.None, true
+                Triggers.None, Triggers.None, true
             ));
 
             var charger = parent.AddComponent<Charger>();
@@ -379,7 +380,7 @@ namespace HotD.Castables
             UnityEvent onCharged = charger.onCharged;
             UnityEventTools.AddPersistentListener(onCharged, executor.End);
 
-            UnityEvent startAction = executor.supportedActions[0].startAction;
+            UnityEvent startAction = executor.supportedTransitions[0].startAction;
             UnityEventTools.AddPersistentListener(startAction, charger.Begin);
 
             CreateCastExecutor();

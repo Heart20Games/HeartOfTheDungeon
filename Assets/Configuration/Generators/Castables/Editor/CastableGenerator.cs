@@ -10,7 +10,6 @@ using static HotD.Castables.CastableToLocation;
 using static HotD.Castables.DelegatedExecutor;
 using static HotD.Castables.Loadout;
 using Range = global::Body.Behavior.ContextSteering.CSContext.Range;
-using static CastCoordinator;
 
 namespace HotD.Generators
 {
@@ -235,7 +234,7 @@ namespace HotD.Generators
             else return null;
         }
 
-        private Damager GenerateDamager(CastableProperties castable, GameObject gameObject)
+        private Damager GenerateDamager(CastProperties castable, GameObject gameObject)
         {
             Assert.IsNotNull(castable);
             if (stats.dealDamage)
@@ -262,14 +261,14 @@ namespace HotD.Generators
             return item;
         }
 
-        private static Casted AddCastedComponent(GameObject castedObject, CastableProperties castable, CastableStats stats)
+        private static Casted AddCastedComponent(GameObject castedObject, CastProperties castable, CastableStats stats)
         {
             Casted casted = castedObject.AddComponent<Casted>();
             ConnectCastedComponent(casted, castable, stats);
             return casted;
         }
 
-        private static void ConnectCastedComponent(Casted casted, CastableProperties castable, CastableStats stats)
+        private static void ConnectCastedComponent(Casted casted, CastProperties castable, CastableStats stats)
         {
             //casted.gameObject.SetActive(false);
             //casted.enabled = false;
@@ -339,7 +338,7 @@ namespace HotD.Generators
             public Vector2 chargeLevels;
             public Vector2 comboSteps;
 
-            public readonly void GenerateEffect(CastableProperties castable, CastableStats stats)
+            public readonly void GenerateEffect(CastProperties castable, CastableStats stats)
             {
                 if (casted != null)
                 {

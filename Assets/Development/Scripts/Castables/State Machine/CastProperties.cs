@@ -13,7 +13,7 @@ using Debug = UnityEngine.Debug;
 
 namespace HotD.Castables
 {
-    public interface ICastableProperties
+    public interface ICastProperties
     {
         public void SetActive(bool active);
         public void Initialize(CastableFieldsEditor field);
@@ -30,7 +30,7 @@ namespace HotD.Castables
         //public Identity Identity { get; set; }
     }
 
-    public class CastableProperties : BaseMonoBehaviour, ICastableProperties
+    public class CastProperties : BaseMonoBehaviour, ICastProperties
     {
         public CastableFieldsEditor fields = new();
         [SerializeField] protected bool debugProperties = false;
