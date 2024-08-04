@@ -7,6 +7,7 @@ using UnityEngine;
 namespace HotD.Generators
 {
     using HotD.Castables;
+    using static YarnRooms;
 
     [CreateAssetMenu(fileName = "NewMecanimGenerator", menuName = "Mecanim Generator", order = 1)]
     public class MecanimGenerator : Generator
@@ -38,6 +39,7 @@ namespace HotD.Generators
         [Header("Settings")]
         public AnimatorController mecanim;
 
+        public bool useBehaviourBasedAnimatorEvents = true;
         public List<MotionSlot> slots = new();
         public List<Charges> chargeActions = new();
         public List<Combos> comboActions = new();
@@ -76,6 +78,7 @@ namespace HotD.Generators
             {
                 // Create a new controller.
                 mecanim = AnimatorController.CreateAnimatorControllerAtPath(mecanimPath);
+                mecanim.RemoveLayer(0);
             }
             else if (replace)
             {
@@ -91,7 +94,6 @@ namespace HotD.Generators
                 {
                     mecanim.RemoveLayer(i);
                 }
-                mecanim.AddLayer("Base Layer");
             }
 
             if (emptyTest) return;
@@ -105,16 +107,27 @@ namespace HotD.Generators
             mecanim.AddParameter("Hit", AnimatorControllerParameterType.Trigger);
             mecanim.AddParameter("Run", AnimatorControllerParameterType.Bool);
             mecanim.AddParameter("Dead", AnimatorControllerParameterType.Bool);
+            
+            // Generate Layers
+            int layerIdx = 0;
+            GenerateMoveLayer(layerIdx++);
+            GenerateActionLayer(layerIdx++);
 
-            // Add StateMachines
-            var root = mecanim.layers[0].stateMachine;
-            var actions = root.AddStateMachine("Actions", new(-275, -150));
+            // Dirty it up
+            EditorUtility.SetDirty(mecanim);
+            EditorUtility.SetDirty(this);
+        }
+
+        private void GenerateMoveLayer(int layer)
+        {
+            // Add Layer
+            mecanim.AddLayer("Move");
+            var root = mecanim.layers[layer].stateMachine;
 
             // Add States
             var idle = root.AddState("Idle", new());
             var hit = root.AddState("Hit", new(0, -75));
             var dead = root.AddState("Dead", new(-275, 0));
-            var actionSplit = actions.AddState("Action Split", new(250, 100));
 
             // Add Blend Trees
             var run = mecanim.CreateBlendTreeInController("Run", out var runTree);
@@ -139,6 +152,7 @@ namespace HotD.Generators
             SetChildPosition(root, "Run", new(0, 75));
 
             // Add Transitions
+            // Death
             var deathTransition = root.AddAnyStateTransition(dead);
             deathTransition.AddCondition(AnimatorConditionMode.If, 0, "Dead");
             deathTransition.duration = 0;
@@ -146,25 +160,52 @@ namespace HotD.Generators
             var unDeathTransition = dead.AddTransition(idle);
             unDeathTransition.AddCondition(AnimatorConditionMode.IfNot, 0, "Dead");
 
+            // Hit
             var hitTransition = root.AddAnyStateTransition(hit);
             hitTransition.AddCondition(AnimatorConditionMode.If, 0, "Hit");
             var unHitTransition = hit.AddTransition(idle);
             unHitTransition.duration = 0;
             unHitTransition.hasExitTime = true;
 
+            // Run
             var runTransition = idle.AddTransition(run);
             runTransition.AddCondition(AnimatorConditionMode.If, 0, "Run");
             runTransition.duration = 0;
             var unRunTransition = run.AddTransition(idle);
             unRunTransition.AddCondition(AnimatorConditionMode.IfNot, 0, "Run");
             unRunTransition.duration = 0;
+        }
 
+        private void GenerateActionLayer(int layer)
+        {
+            // Add Layer
+            mecanim.AddLayer("Action");
+            var actualLayer = mecanim.layers[layer];
+            actualLayer.defaultWeight = 1;
+            var root = mecanim.layers[layer].stateMachine;
+
+            // Add StateMachines
+            var actions = root.AddStateMachine("Actions", new(-275, -150));
+
+            // Add States
+            var idle = root.AddState("Idle", new());
+            var actionSplit = actions.AddState("Action Split", new(250, 100));
+
+            // Position Nodes
+            root.anyStatePosition = new(-275, -75);
+            root.entryPosition = new(275, 0);
+            root.exitPosition = new(275, 75);
+
+            // Add Transitions
+            // Actions
             var actionsTransition = root.AddAnyStateTransition(actions);
             actionsTransition.AddCondition(AnimatorConditionMode.Greater, 0, "Action");
             actionsTransition.AddCondition(AnimatorConditionMode.If, 0, "StartAction");
 
+            // Action Split
             var actionSplitTransition = actions.AddEntryTransition(actionSplit);
 
+            // Charges
             int actionCount = chargeActions.Count + comboActions.Count;
             int actionIndex = 0;
             foreach (var charges in chargeActions)
@@ -177,18 +218,16 @@ namespace HotD.Generators
                 actionIndex++;
             }
 
+            // Combos
             foreach (var combos in comboActions)
             {
-                var action = AddComboStateMachine(actions, combos, new Vector2(550, -(actionCount/2) + (100 * actionIndex)));
+                var action = AddComboStateMachine(actions, combos, new Vector2(550, -(actionCount / 2) + (100 * actionIndex)));
                 var actionTransition = actionSplit.AddTransition(action);
                 actionTransition.duration = 0;
                 actionTransition.AddCondition(AnimatorConditionMode.Equals, (int)combos.actionType, "Action");
                 var exitActionTransition = actions.AddStateMachineExitTransition(action);
                 actionIndex++;
             }
-
-            EditorUtility.SetDirty(mecanim);
-            EditorUtility.SetDirty(this);
         }
 
         // Clear
@@ -226,37 +265,42 @@ namespace HotD.Generators
             public Motion holdMotion;
         }
 
-        public AnimatorState AddEndCastState(AnimatorStateMachine root, Vector2 position = new())
+        // AnimatorEvent Behaviours
+        public AnimatorState AddAnimatorEventState(AnimatorStateMachine root, string name, bool exit, Vector2 position = new(), string eventName = null)
         {
-            AnimatorState endCast = root.AddState("EndCast", position);
-            var animEvent = endCast.AddStateMachineBehaviour<AnimatorEvent>();
-            animEvent.methodName = "OnEndCast";
-            animEvent.eventName = null;
-            animEvent.eventType = AnimatorEvent.Event.EnterState;
-            animEvent.targets = AnimatorEvent.Target.Parent;
+            AnimatorState state = root.AddState(name, position);
 
-            var exitTransition = endCast.AddExitTransition();
-            exitTransition.exitTime = 0;
-            exitTransition.hasExitTime = true;
+            if (useBehaviourBasedAnimatorEvents)
+            {
+                AddAnimatorEventBehaviour(state, "On" + (eventName ?? name), null, AnimatorEvent.Event.EnterState, AnimatorEvent.Target.Parent);
+            }
 
-            return endCast;
+            if (exit)
+            {
+                var exitTransition = state.AddExitTransition();
+                exitTransition.exitTime = 0;
+                exitTransition.hasExitTime = true;
+            }
+
+            return state;
         }
 
-        public void AddStartCastBehaviour(AnimatorState state)
+        public void AddAnimatorEventBehaviour(AnimatorState state, string methodName, string eventName, AnimatorEvent.Event eventType, AnimatorEvent.Target targets)
         {
             var animEvent = state.AddStateMachineBehaviour<AnimatorEvent>();
-            animEvent.methodName = "OnStartCast";
-            animEvent.eventName = null;
-            animEvent.eventType = AnimatorEvent.Event.EnterState;
-            animEvent.targets = AnimatorEvent.Target.Parent;
+            animEvent.methodName = methodName;
+            animEvent.eventName = eventName;
+            animEvent.eventType = eventType;
+            animEvent.targets = targets;
         }
 
+        // Charge Machine
         public AnimatorStateMachine AddChargeStateMachine(AnimatorStateMachine root, Charges blueprints, Vector2 position = new())
         {
             var sub = root.AddStateMachine(blueprints.name);
             sub.entryPosition = new();
 
-            AnimatorState endCast = AddEndCastState(sub, new(300, 0));
+            AnimatorState endCast = AddAnimatorEventState(sub, "EndCast", true, new(300, 0));
 
             List<AnimatorStateMachine> charges = new();
             int num = 0;
@@ -300,7 +344,7 @@ namespace HotD.Generators
 
             charge = sub.AddState("Charge", new());
             var sustain = sub.AddState("Sustain", new(0, 150));
-            cast = sub.AddState("Cast", new(225, 300));
+            cast = AddAnimatorEventState(sub, "Cast", false, new(225, 300), "StartCast");
 
             sub.parentStateMachinePosition = new(-225, 150);
 
