@@ -103,7 +103,7 @@ namespace HotD.Generators
             mecanim.AddParameter("ComboLevel", AnimatorControllerParameterType.Int);
             mecanim.AddParameter("StartCast", AnimatorControllerParameterType.Trigger);
             mecanim.AddParameter("StartAction", AnimatorControllerParameterType.Trigger);
-            mecanim.AddParameter("Action", AnimatorControllerParameterType.Int);
+            mecanim.AddParameter("Action", AnimatorControllerParameterType.Float);
             mecanim.AddParameter("Hit", AnimatorControllerParameterType.Trigger);
             mecanim.AddParameter("Run", AnimatorControllerParameterType.Bool);
             mecanim.AddParameter("Dead", AnimatorControllerParameterType.Bool);
@@ -213,7 +213,8 @@ namespace HotD.Generators
                 var action = AddChargeStateMachine(actions, charges, new Vector2(550, -(actionCount / 2) + (100 * actionIndex)));
                 var actionTransition = actionSplit.AddTransition(action);
                 actionTransition.duration = 0;
-                actionTransition.AddCondition(AnimatorConditionMode.Equals, (int)charges.actionType, "Action");
+                actionTransition.AddCondition(AnimatorConditionMode.Greater, (int)charges.actionType-1, "Action");
+                actionTransition.AddCondition(AnimatorConditionMode.Less, (int)charges.actionType+1, "Action");
                 var exitActionTransition = actions.AddStateMachineExitTransition(action);
                 actionIndex++;
             }
@@ -224,7 +225,8 @@ namespace HotD.Generators
                 var action = AddComboStateMachine(actions, combos, new Vector2(550, -(actionCount / 2) + (100 * actionIndex)));
                 var actionTransition = actionSplit.AddTransition(action);
                 actionTransition.duration = 0;
-                actionTransition.AddCondition(AnimatorConditionMode.Equals, (int)combos.actionType, "Action");
+                actionTransition.AddCondition(AnimatorConditionMode.Greater, (int)combos.actionType-1, "Action");
+                actionTransition.AddCondition(AnimatorConditionMode.Less, (int)combos.actionType+1, "Action");
                 var exitActionTransition = actions.AddStateMachineExitTransition(action);
                 actionIndex++;
             }
