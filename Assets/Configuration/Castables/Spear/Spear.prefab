@@ -1,0 +1,1079 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &235553462890570014
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7588859532834697253}
+  - component: {fileID: 380183913370145446}
+  - component: {fileID: 2329087078401715116}
+  - component: {fileID: 2853772158747176735}
+  m_Layer: 0
+  m_Name: Spear
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7588859532834697253
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235553462890570014}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8129745445528227834}
+  - {fileID: 611613057877868215}
+  - {fileID: 6423038895777936163}
+  - {fileID: 1981400033828630881}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &380183913370145446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235553462890570014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc6e98420917628498e843205b370fc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  identity: 0
+  otherCount: 0
+  ignoredCount: 0
+  debug: 0
+--- !u!114 &2329087078401715116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235553462890570014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2482107b4b7d694499417bb62ca09cc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fields:
+    debug: 0
+    events:
+      name: Events
+      onSetPowerLevel:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetMaxPowerLevel:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetComboStep:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetMaxComboStep:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetIdentity:
+        m_PersistentCalls:
+          m_Calls: []
+    stats:
+      name: Melee Stats
+      stats: {fileID: 11400000, guid: 7a518cd44e3cf7149897ec3258f7b2f5, type: 2}
+    rOffset: 0
+    weaponArt: {fileID: 0}
+    pivot: {fileID: 8129745445528227834}
+    direction: {x: 0, y: 0, z: 0}
+    followBody: 0
+    item: {fileID: 0}
+    maxPowerLevel: 0
+    curPowerLevel: 0
+    maxComboStep: 0
+    curComboStep: 0
+    usePowerLevelAsComboStep: 0
+    castingMethods: []
+    toLocations: []
+    positionables: []
+    effects: []
+    identity: 0
+    damager: {fileID: 0}
+    triggerStatuses: []
+    castStatuses: []
+    hitStatuses: []
+    pivotDirection: {x: 0, y: 0, z: 0}
+  debugProperties: 0
+  connectToFieldEvents: 1
+  fieldEvents:
+    name: Local Events
+    onSetPowerLevel:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetMaxPowerLevel:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetComboStep:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetMaxComboStep:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetIdentity:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2853772158747176735}
+          m_TargetAssemblyTypeName: Damager, Core
+          m_MethodName: SetIdentity
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  castEvents:
+    name: Cast Events
+    onTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+    onStartCast:
+      m_PersistentCalls:
+        m_Calls: []
+    onRelease:
+      m_PersistentCalls:
+        m_Calls: []
+    onEndCast:
+      m_PersistentCalls:
+        m_Calls: []
+    onCasted:
+      m_PersistentCalls:
+        m_Calls: []
+  state: 0
+  executorCount: 0
+  transitions:
+  - source: 1
+    triggerActions: 1
+    destination: 2
+  - source: 2
+    triggerActions: 64
+    destination: 1
+  - source: 2
+    triggerActions: 8
+    destination: 3
+  - source: 3
+    triggerActions: 32
+    destination: 4
+  - source: 4
+    triggerActions: 32
+    destination: 5
+  - source: 5
+    triggerActions: 32
+    destination: 2
+  queuedActions: []
+  dequeuedActions: []
+  debugCastable: 0
+--- !u!114 &2853772158747176735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235553462890570014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc6e98420917628498e843205b370fc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  identity: 0
+  otherCount: 0
+  ignoredCount: 0
+  debug: 0
+--- !u!1 &2648891773143733623
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8129745445528227834}
+  - component: {fileID: 7023115209209248550}
+  m_Layer: 0
+  m_Name: Pivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8129745445528227834
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2648891773143733623}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7588859532834697253}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7023115209209248550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2648891773143733623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43b97ecb1e3625c468a11ddcbd29b35f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 0}
+--- !u!1 &5977461115690209112
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8757414560886791285}
+  - component: {fileID: 563893650520032228}
+  m_Layer: 0
+  m_Name: Methods
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8757414560886791285
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5977461115690209112}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3890851614077515022}
+  m_Father: {fileID: 6423038895777936163}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &563893650520032228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5977461115690209112}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43b97ecb1e3625c468a11ddcbd29b35f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 0}
+--- !u!1 &6776678370600169036
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1981400033828630881}
+  - component: {fileID: 3750581170375566640}
+  - component: {fileID: 1790588930769473318}
+  m_Layer: 0
+  m_Name: Cooldown
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1981400033828630881
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6776678370600169036}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7588859532834697253}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3750581170375566640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6776678370600169036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b915fc48b630043a509ce34e1da8b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fields:
+    debug: 0
+    events:
+      name: Events
+      onSetPowerLevel:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetMaxPowerLevel:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetComboStep:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetMaxComboStep:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetIdentity:
+        m_PersistentCalls:
+          m_Calls: []
+    stats:
+      name: 
+      stats: {fileID: 0}
+    rOffset: 0
+    weaponArt: {fileID: 0}
+    pivot: {fileID: 0}
+    direction: {x: 0, y: 0, z: 0}
+    followBody: 0
+    item: {fileID: 0}
+    maxPowerLevel: 0
+    curPowerLevel: 0
+    maxComboStep: 0
+    curComboStep: 0
+    usePowerLevelAsComboStep: 0
+    castingMethods: []
+    toLocations: []
+    positionables: []
+    effects: []
+    identity: 0
+    damager: {fileID: 0}
+    triggerStatuses: []
+    castStatuses: []
+    hitStatuses: []
+    pivotDirection: {x: 0, y: 0, z: 0}
+  debugProperties: 0
+  connectToFieldEvents: 0
+  fieldEvents:
+    name: Local Events
+    onSetPowerLevel:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetMaxPowerLevel:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetComboStep:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetMaxComboStep:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetIdentity:
+      m_PersistentCalls:
+        m_Calls: []
+  castEvents:
+    name: Cast Events
+    onTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+    onStartCast:
+      m_PersistentCalls:
+        m_Calls: []
+    onRelease:
+      m_PersistentCalls:
+        m_Calls: []
+    onEndCast:
+      m_PersistentCalls:
+        m_Calls: []
+    onCasted:
+      m_PersistentCalls:
+        m_Calls: []
+  state: 5
+  onAction:
+    m_PersistentCalls:
+      m_Calls: []
+  debugExecutor: 0
+  supportedActions:
+  - name: Start
+    triggerAction: 4
+    sendToCoordinator: 0
+    waitForPerformance: 0
+    waitAction: 0
+    oneShot: 1
+    startAction:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1790588930769473318}
+          m_TargetAssemblyTypeName: Timer, Core
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  actionsToPerform: []
+  testAction:
+    name: 
+    state: 0
+    action: 0
+--- !u!114 &1790588930769473318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6776678370600169036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0c656f4854e7a4698ad4df13b973aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  length: 1
+  playOnStart: 0
+  interruptOnPlay: 0
+  debug: 0
+  onPlay:
+    m_PersistentCalls:
+      m_Calls: []
+  onComplete:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3750581170375566640}
+        m_TargetAssemblyTypeName: HotD.Castables.DelegatedExecutor, Core
+        m_MethodName: End
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!1 &7490947942074106489
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6423038895777936163}
+  - component: {fileID: 2300361940989266417}
+  - component: {fileID: 1991480203751490957}
+  m_Layer: 0
+  m_Name: Execution
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6423038895777936163
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7490947942074106489}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8757414560886791285}
+  m_Father: {fileID: 7588859532834697253}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2300361940989266417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7490947942074106489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b915fc48b630043a509ce34e1da8b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fields:
+    debug: 0
+    events:
+      name: Events
+      onSetPowerLevel:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetMaxPowerLevel:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetComboStep:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetMaxComboStep:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetIdentity:
+        m_PersistentCalls:
+          m_Calls: []
+    stats:
+      name: 
+      stats: {fileID: 0}
+    rOffset: 0
+    weaponArt: {fileID: 0}
+    pivot: {fileID: 0}
+    direction: {x: 0, y: 0, z: 0}
+    followBody: 0
+    item: {fileID: 0}
+    maxPowerLevel: 0
+    curPowerLevel: 0
+    maxComboStep: 0
+    curComboStep: 0
+    usePowerLevelAsComboStep: 0
+    castingMethods:
+    - {fileID: 3659075330450922147}
+    toLocations:
+    - name: Body/WeaponPoint
+      toMove: {fileID: 4171478662647713589}
+      source: 1
+      target: 2
+    positionables: []
+    effects: []
+    identity: 0
+    damager: {fileID: 0}
+    triggerStatuses: []
+    castStatuses: []
+    hitStatuses: []
+    pivotDirection: {x: 0, y: 0, z: 0}
+  debugProperties: 0
+  connectToFieldEvents: 1
+  fieldEvents:
+    name: Local Events
+    onSetPowerLevel:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4171478662647713589}
+          m_TargetAssemblyTypeName: HotD.Castables.Casted, Core
+          m_MethodName: SetPowerLevel
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onSetMaxPowerLevel:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetComboStep:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1991480203751490957}
+          m_TargetAssemblyTypeName: Comboer, Core
+          m_MethodName: SetStep
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onSetMaxComboStep:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetIdentity:
+      m_PersistentCalls:
+        m_Calls: []
+  castEvents:
+    name: Cast Events
+    onTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+    onStartCast:
+      m_PersistentCalls:
+        m_Calls: []
+    onRelease:
+      m_PersistentCalls:
+        m_Calls: []
+    onEndCast:
+      m_PersistentCalls:
+        m_Calls: []
+    onCasted:
+      m_PersistentCalls:
+        m_Calls: []
+  state: 4
+  onAction:
+    m_PersistentCalls:
+      m_Calls: []
+  debugExecutor: 0
+  supportedActions:
+  - name: Start
+    triggerAction: 4
+    sendToCoordinator: 0
+    waitForPerformance: 1
+    waitAction: 32
+    oneShot: 0
+    startAction:
+      m_PersistentCalls:
+        m_Calls: []
+  actionsToPerform: []
+  testAction:
+    name: 
+    state: 0
+    action: 0
+--- !u!114 &1991480203751490957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7490947942074106489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5496f9b472f93a7429292b202075a65e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  step: 0
+  comboSteps:
+  - name: '1: Magic Bolt Laser'
+    comboObject: {fileID: 3659075330450922147}
+    step: 1
+  debug: 0
+--- !u!1 &8717580297696375149
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 611613057877868215}
+  - component: {fileID: 5629281627041431783}
+  m_Layer: 0
+  m_Name: Activation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &611613057877868215
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8717580297696375149}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7588859532834697253}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5629281627041431783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8717580297696375149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b915fc48b630043a509ce34e1da8b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fields:
+    debug: 0
+    events:
+      name: Events
+      onSetPowerLevel:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetMaxPowerLevel:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetComboStep:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetMaxComboStep:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetIdentity:
+        m_PersistentCalls:
+          m_Calls: []
+    stats:
+      name: 
+      stats: {fileID: 0}
+    rOffset: 0
+    weaponArt: {fileID: 0}
+    pivot: {fileID: 0}
+    direction: {x: 0, y: 0, z: 0}
+    followBody: 0
+    item: {fileID: 0}
+    maxPowerLevel: 0
+    curPowerLevel: 0
+    maxComboStep: 0
+    curComboStep: 0
+    usePowerLevelAsComboStep: 0
+    castingMethods: []
+    toLocations: []
+    positionables: []
+    effects: []
+    identity: 0
+    damager: {fileID: 0}
+    triggerStatuses: []
+    castStatuses: []
+    hitStatuses: []
+    pivotDirection: {x: 0, y: 0, z: 0}
+  debugProperties: 0
+  connectToFieldEvents: 0
+  fieldEvents:
+    name: Local Events
+    onSetPowerLevel:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetMaxPowerLevel:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetComboStep:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetMaxComboStep:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetIdentity:
+      m_PersistentCalls:
+        m_Calls: []
+  castEvents:
+    name: Cast Events
+    onTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+    onStartCast:
+      m_PersistentCalls:
+        m_Calls: []
+    onRelease:
+      m_PersistentCalls:
+        m_Calls: []
+    onEndCast:
+      m_PersistentCalls:
+        m_Calls: []
+    onCasted:
+      m_PersistentCalls:
+        m_Calls: []
+  state: 3
+  onAction:
+    m_PersistentCalls:
+      m_Calls: []
+  debugExecutor: 0
+  supportedActions:
+  - name: Wind Up
+    triggerAction: 4
+    sendToCoordinator: 2
+    waitForPerformance: 1
+    waitAction: 32
+    oneShot: 1
+    startAction:
+      m_PersistentCalls:
+        m_Calls: []
+  actionsToPerform: []
+  testAction:
+    name: 
+    state: 0
+    action: 0
+--- !u!1001 &1473243431398153219
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8757414560886791285}
+    m_Modifications:
+    - target: {fileID: 2417614919474243853, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417614919474243853, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417614919474243853, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417614919474243853, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417614919474243853, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417614919474243853, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417614919474243853, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417614919474243853, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417614919474243853, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417614919474243853, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2789318854399362720, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: m_Name
+      value: Magic Bolt Laser
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: powerLimit.name
+      value: Charge Limit
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: powerLimit.owner
+      value: '[Unknown]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: powerLimit.baseValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: powerLimit.baseValueRange.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: powerLimit.baseMultiplierRange.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: powerLimit.otherAttributes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: powerLimit.otherAttributes.Array.data[0].name
+      value: Intelligence
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: powerLimit.otherAttributes.Array.data[0].weight
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: hitDamageable.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: leftDamageable.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: powerLimit.otherAttributes.Array.data[0].value.name
+      value: Intelligence
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: powerLimit.otherAttributes.Array.data[0].value.owner
+      value: Rotta
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: hitDamageable.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2853772158747176735}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: leftDamageable.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2853772158747176735}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: hitDamageable.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: hitDamageable.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HitDamageable
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: leftDamageable.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: leftDamageable.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LeftDamageable
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: hitDamageable.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Damager, Core
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: leftDamageable.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Damager, Core
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664578361662135062, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2789318854399362720, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2816691256858031732}
+  m_SourcePrefab: {fileID: 100100000, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+--- !u!1 &3659075330450922147 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2789318854399362720, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+  m_PrefabInstance: {fileID: 1473243431398153219}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2816691256858031732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3659075330450922147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08cdb792beeac4b48850175501fb5cb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fields:
+    debug: 0
+    events:
+      name: Events
+      onSetPowerLevel:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetMaxPowerLevel:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetComboStep:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetMaxComboStep:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetIdentity:
+        m_PersistentCalls:
+          m_Calls: []
+    stats:
+      name: 
+      stats: {fileID: 0}
+    rOffset: 0
+    weaponArt: {fileID: 0}
+    pivot: {fileID: 0}
+    direction: {x: 0, y: 0, z: 0}
+    followBody: 0
+    item: {fileID: 0}
+    maxPowerLevel: 0
+    curPowerLevel: 0
+    maxComboStep: 0
+    curComboStep: 0
+    usePowerLevelAsComboStep: 0
+    castingMethods: []
+    toLocations: []
+    positionables: []
+    effects: []
+    identity: 0
+    damager: {fileID: 0}
+    triggerStatuses: []
+    castStatuses: []
+    hitStatuses: []
+    pivotDirection: {x: 0, y: 0, z: 0}
+  debugProperties: 0
+  connectToFieldEvents: 0
+  fieldEvents:
+    name: Local Events
+    onSetPowerLevel:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetMaxPowerLevel:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetComboStep:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetMaxComboStep:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetIdentity:
+      m_PersistentCalls:
+        m_Calls: []
+  castEvents:
+    name: Cast Events
+    onTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+    onStartCast:
+      m_PersistentCalls:
+        m_Calls: []
+    onRelease:
+      m_PersistentCalls:
+        m_Calls: []
+    onEndCast:
+      m_PersistentCalls:
+        m_Calls: []
+    onCasted:
+      m_PersistentCalls:
+        m_Calls: []
+  aimAtCrosshair: 1
+  positionables: []
+  onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  initializeOffOf: {fileID: 2300361940989266417}
+--- !u!4 &3890851614077515022 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2417614919474243853, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+  m_PrefabInstance: {fileID: 1473243431398153219}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4171478662647713589 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3284833484116792118, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
+  m_PrefabInstance: {fileID: 1473243431398153219}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3659075330450922147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f8cb252bdcab0c4c8630cb96b7c25b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

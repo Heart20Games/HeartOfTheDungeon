@@ -1,5 +1,6 @@
 using Body.Behavior;
 using Body.Behavior.ContextSteering;
+using HotD.Body;
 using UnityEngine;
 
 public class EnemyAI : Brain
@@ -13,10 +14,21 @@ public class EnemyAI : Brain
     [SerializeField] private float wayPointWaitTime;
     [SerializeField] private float attackTime;
 
+    [SerializeField] private bool shouldPatrol;
+    [SerializeField] private bool isBoss;
+
+    private bool didAttack;
+
     private float wayPointTimeStep;
     private float attackTimeStep;
 
     private int wayPointIndex;
+
+    public bool DidAttack
+    {
+        get => didAttack;
+        set => didAttack = value;
+    }
 
     public override void Awake()
     {
@@ -25,7 +37,14 @@ public class EnemyAI : Brain
 
     private void Start()
     {
-        PatrolState();
+        if(shouldPatrol)
+        {
+            PatrolState();
+        }
+        else
+        {
+            ChasePlayer(Target, true);
+        }
     }
 
     public override void Update()
@@ -38,14 +57,24 @@ public class EnemyAI : Brain
             WaypointDestination(wayPoint);
         }
 
-        AttackState();
+        if(!isBoss)
+        {
+            AttackState();
+        }
+        else
+        {
+            BossAttack();
+        }
     }
 
-    public void ChasePlayer(Transform targetObject)
+    public void ChasePlayer(Transform targetObject, bool resetAttackTime)
     {
         currentAction = Action.Chase;
 
-        attackTimeStep = 0;
+        if(resetAttackTime)
+        {
+            attackTimeStep = 0;
+        }
 
         Target = targetObject;
     }
@@ -60,13 +89,13 @@ public class EnemyAI : Brain
             agent.destination = Target.position;
 
             agent.isStopped = false;
+            didAttack = false;
             
             Patrol();
         }
-
     }
 
-    private void AttackState()
+    public void AttackState()
     {
         if (Target == null) return;
 
@@ -74,7 +103,7 @@ public class EnemyAI : Brain
 
         if(Target.GetComponent<CSController>().identity != CSIdentity.Identity.Friend) return;
 
-        if(Target.parent.GetComponent<Body.Character>().CurrentHealth <= 0)
+        if(Target.parent.GetComponent<Character>().CurrentHealth <= 0)
         {
             PatrolState();
 
@@ -83,13 +112,15 @@ public class EnemyAI : Brain
             return;
         }
 
-        if (agent.remainingDistance <= agent.stoppingDistance)
+        SetTarget(Target);
+
+        if (agent.remainingDistance < agent.stoppingDistance)
         {
             currentAction = Action.Duel;
 
             if(character.castables[character.CastableID] != null)
             {
-                character.castables[character.CastableID].GetComponent<Damager>()._Impactor = Target.GetComponent<Impact>();
+                character.castables[character.CastableID].Damager._Impactor = Target.GetComponent<Impact>();
             }
 
             attackTimeStep += Time.deltaTime;
@@ -104,9 +135,59 @@ public class EnemyAI : Brain
         {
             if(currentAction == Action.Duel)
             {
-                ChasePlayer(Target);
+                ChasePlayer(Target, true);
             }
         }
+    }
+
+    public void BossAttack()
+    {
+        if (Target == null) return;
+
+        if (!Target.GetComponent<CSController>()) return;
+
+        if (Target.GetComponent<CSController>().identity != CSIdentity.Identity.Friend) return;
+
+        if (Target.parent.GetComponent<Character>().CurrentHealth <= 0)
+        {
+            PatrolState();
+
+            attackTimeStep = 0;
+
+            return;
+        }
+
+        SetTarget(Target);
+
+        attackTimeStep += Time.deltaTime;
+
+        if (IsAttacking())
+        {
+            if(!didAttack)
+            {
+                didAttack = true;
+
+                currentAction = Action.Duel;
+                agent.isStopped = true;
+            }
+        }
+        else
+        {
+            ChasePlayer(Target, false);
+            agent.isStopped = false;
+        }
+    }
+
+    public bool IsAttacking()
+    {
+        return attackTimeStep >= attackTime;
+    }
+
+    public float ResetAttackTime()
+    {
+        attackTimeStep = 0;
+
+        return attackTimeStep;
     }
 
     //Checks to see if the object is too far away from a waypoint. In which case they will stop pursuing the player.

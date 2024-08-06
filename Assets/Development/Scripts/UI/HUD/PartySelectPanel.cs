@@ -66,7 +66,7 @@ public class PartySelectPanel : BaseMonoBehaviour
         portraitAnimator.SetTrigger($"SelectCharacter{idx}");
 
         // Reset Shimmering
-        shimmerMat.SetFloat("_SheenPosition", 0f);
+        shimmerMat.SetFloat("_SheenPosition", -0.67f);
         isShimmering = true;
     }
 
@@ -92,7 +92,7 @@ public class PartySelectPanel : BaseMonoBehaviour
     // Shimmer
     public void Shimmer()
     {
-        float endingPos = -.9f;
+        float endingPos = -1.87f;
         float currentPos = shimmerMat.GetFloat("_SheenPosition");
         if (currentPos >= endingPos)
             shimmerMat.SetFloat("_SheenPosition", currentPos - shimmerSpeed);

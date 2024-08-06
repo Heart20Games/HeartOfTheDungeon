@@ -40,13 +40,13 @@ public class Interactable : BaseMonoBehaviour
 
     public void AddInteractor(Impact impact)
     {
-        if (impact.other.TryGetComponent<Interactor>(out var interactor))
+        if (impact.other.gameObject.TryGetComponent<Interactor>(out var interactor))
             AddInteractor(interactor);
     }
 
     public void RemoveInteractor(Impact impact)
     {
-        if (impact.other.TryGetComponent<Interactor>(out var interactor))
+        if (impact.other.gameObject.TryGetComponent<Interactor>(out var interactor))
             RemoveInteractor(interactor);
     }
 

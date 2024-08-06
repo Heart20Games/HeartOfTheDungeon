@@ -3,21 +3,24 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(MecanimGenerator))]
-public class MecanimGeneratorInspector : Editor
+namespace HotD.Generators
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(MecanimGenerator))]
+    public class MecanimGeneratorInspector : Editor
     {
-        MecanimGenerator generator = (MecanimGenerator)target;
-        base.OnInspectorGUI();
-
-        EditorGUILayout.Separator();
-
-        string buttonText = generator.mecanim != null ? "Regenerate Mecanim" : "Generate New Mecanim";
-
-        if (GUILayout.Button(buttonText))
+        public override void OnInspectorGUI()
         {
-            generator.GenerateMecanim();
+            MecanimGenerator generator = (MecanimGenerator)target;
+            base.OnInspectorGUI();
+
+            EditorGUILayout.Separator();
+
+            string buttonText = generator.mecanim != null ? "Regenerate Mecanim" : "Generate New Mecanim";
+
+            if (GUILayout.Button(buttonText))
+            {
+                generator.GenerateMecanim();
+            }
         }
     }
 }

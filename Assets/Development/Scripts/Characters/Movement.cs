@@ -62,9 +62,9 @@ namespace HotD.Body
         public void SetCharacter(Character character)
         {
             this.character = character;
-            body = character.body;
-            pivot = character.pivot;
-            artRenderer = character.artRenderer;
+            body = character.Body;
+            pivot = character.Pivot;
+            artRenderer = character.ArtRenderer;
         }
 
         private void Awake()

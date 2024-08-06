@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 using HotD.PostProcessing;
 using MyBox;
 using Yarn.Unity;
+using UnityEngine.Assertions;
+using HotD.Body;
 
 namespace HotD
 {
@@ -307,7 +309,7 @@ namespace HotD
             if (mode.inputMode == InputMode.Selection)
             {
                 if (curController != null && curCharacter != null)
-                    curController.transform.position = curCharacter.body.position;
+                    curController.transform.position = curCharacter.Body.position;
             }
         }
 

@@ -15,16 +15,42 @@ namespace HotD.Castables
 
         private List<CastableItem> allItems;
 
+        private bool changed = false;
+
+        public CastableItem this[int idx]
+        {
+            get => GetSlot((Slot)idx);
+            set => SetSlot((Slot)idx, value);
+        }
+
+        public CastableItem GetSlot(Slot slot)
+        {
+            return slot switch
+            {
+                Slot.Weapon1 => GetIndexOn(0, weapons ??= new()),
+                Slot.Weapon2 => GetIndexOn(1, weapons ??= new()),
+                Slot.Ability1 => GetIndexOn(0, abilities ??= new()),
+                Slot.Ability2 => GetIndexOn(1, abilities ??= new()),
+                Slot.Mobility => mobility,
+                _ => null,
+            };
+        }
+
         public void SetSlot(Slot slot, CastableItem item)
         {
             switch (slot)
             {
-                case Slot.Weapon1: SetIndexOn(0, item, weapons); break;
-                case Slot.Weapon2: SetIndexOn(1, item, weapons); break;
-                case Slot.Ability1: SetIndexOn(0, item, abilities); break;
-                case Slot.Ability2: SetIndexOn(1, item, abilities); break;
+                case Slot.Weapon1: SetIndexOn(0, item, weapons ??= new()); break;
+                case Slot.Weapon2: SetIndexOn(1, item, weapons ??= new()); break;
+                case Slot.Ability1: SetIndexOn(0, item, abilities ??= new()); break;
+                case Slot.Ability2: SetIndexOn(1, item, abilities ??= new()); break;
                 case Slot.Mobility: mobility = item; break;
             }
+        }
+
+        private CastableItem GetIndexOn(int index, List<CastableItem> items)
+        {
+            return (items.Count >= index) ? items[index] : null;
         }
 
         private void SetIndexOn(int index, CastableItem item, List<CastableItem> items)
@@ -34,22 +60,28 @@ namespace HotD.Castables
                 items.Add(null);
             }
             items[index] = item;
+            changed = true;
         }
 
         public List<CastableItem> All()
         {
             allItems ??= new();
-            allItems.Clear();
-            foreach(var item in weapons)
+            if (changed || allItems.Count == 0)
             {
-                allItems.Add(item);
+                allItems.Clear();
+                weapons ??= new();
+                foreach(var item in weapons)
+                {
+                    allItems.Add(item);
+                }
+                abilities ??= new();
+                foreach(var item in abilities)
+                {
+                    allItems.Add(item);
+                }
+                if (mobility != null)
+                    allItems.Add(mobility);
             }
-            foreach(var item in abilities)
-            {
-                allItems.Add(item);
-            }
-            if (mobility != null)
-                allItems.Add(mobility);
             return allItems;
         }
     }
