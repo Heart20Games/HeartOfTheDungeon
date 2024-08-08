@@ -26,13 +26,14 @@ public class Comboer : BaseMonoBehaviour
         public int step;
     }
 
+    public bool ignoreStep = false;
     [SerializeField] private int step;
     [SerializeField] private List<ComboStep> comboSteps;
     [SerializeField] private bool debug;
 
     private void OnEnable()
     {
-        SetStep(step);
+        Refresh();
     }
 
     public void AddStep(int step, GameObject comboObject)
@@ -52,9 +53,24 @@ public class Comboer : BaseMonoBehaviour
         }
     }
 
+    public void SetAll(bool active)
+    {
+        foreach (var comboStep in comboSteps)
+        {
+            comboStep.comboObject.SetActive(active);
+        }
+    }
+
     [ButtonMethod]
     public void Refresh()
     {
-        SetStep(step);
+        if (ignoreStep)
+        {
+            SetAll(true);
+        }
+        else
+        {
+            SetStep(step);
+        }
     }
 }

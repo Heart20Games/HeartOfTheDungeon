@@ -122,7 +122,10 @@ namespace HotD.Generators
                     {
                         DelegatedExecutor equippedExecutor = GenerateExecutor(castable, CastState.Equipped, "Equipped");
                         executors.Add(equippedExecutor);
-                        Timer coolDownTimer = GenerateComboIncrementation(equippedExecutor);
+                        if (settings.useComboSteps)
+                        {
+                            Timer coolDownTimer = GenerateComboIncrementation(equippedExecutor);
+                        }
                         if (stats.useChargeUp)
                         {
                             AddChargeReset(equippedExecutor);
@@ -322,14 +325,18 @@ namespace HotD.Generators
             TransitionEvent endTransition = new("End", CastAction.End, Triggers.None, Triggers.EndCast, false);
 
             Comboer comboer = executor.gameObject.AddComponent<Comboer>();
+            comboer.ignoreStep = !settings.useComboSteps;
 
             GameObject methods = new("Methods");
             methods.transform.SetParent(comboer.transform);
             Pivot methodPivot = methods.AddComponent<Pivot>();
             methodPivot.body = pivot.body;
 
-            // Keep Combo Step Updated
-            UnityEventTools.AddPersistentListener(executor.fieldEvents.onSetComboStep, comboer.SetStep);
+            if (settings.useComboSteps)
+            {
+                // Keep Combo Step Updated
+                UnityEventTools.AddPersistentListener(executor.fieldEvents.onSetComboStep, comboer.SetStep);
+            }
 
             for (int i = 0; i < executions.Count; i++)
             {
