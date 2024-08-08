@@ -328,6 +328,14 @@ namespace HotD.Castables
         }
 
         [ButtonMethod]
+        public void AddInstantCastOnTriggerTransitions()
+        {
+            AddBaseTransitions();
+            AddTransition(new(CastState.Equipped, CastAction.Trigger, CastState.Executing));
+            AddTransition(new(CastState.Executing, CastAction.Release | CastAction.End, CastState.Equipped));
+        }
+
+        [ButtonMethod]
         public void AddCooldownTransitions()
         {
             RemoveTransition(new(CastState.Executing, CastAction.End, CastState.Equipped));
@@ -346,11 +354,11 @@ namespace HotD.Castables
             
             executor.supportedTransitions.Add(new(
                 "Cast on Start", CastAction.Start,
-                Triggers.StartCast, Triggers.None, false
+                Triggers.StartCast, Triggers.None
             ));
             executor.supportedTransitions.Add(new(
                 "Finish", CastAction.End, 
-                Triggers.None, Triggers.None, true
+                Triggers.None, Triggers.None, CastAction.End
             ));
         }
 
@@ -365,11 +373,11 @@ namespace HotD.Castables
 
             executor.supportedTransitions.Add(new(
                 "Charge on Start", CastAction.Start,
-                Triggers.StartAction, Triggers.None, false
+                Triggers.StartAction, Triggers.None
             ));
             executor.supportedTransitions.Add(new(
                 "Cast on Release", CastAction.Release,
-                Triggers.None, Triggers.None, true
+                Triggers.None, Triggers.None, CastAction.End
             ));
 
             var charger = parent.AddComponent<Charger>();
