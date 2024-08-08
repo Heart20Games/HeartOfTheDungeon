@@ -14,12 +14,14 @@ using Range = global::Body.Behavior.ContextSteering.CSContext.Range;
 namespace HotD.Generators
 {
     using Castables;
+    using System.CodeDom.Compiler;
     using static Castables.Coordination;
+    using static HotD.Generators.StateCastGenerator.CastableSettings;
 
     [CreateAssetMenu(fileName = "NewStateCastGenerator", menuName = "Loadouts/State Cast Generator", order = 1)]
     public class StateCastGenerator : Generator
     {
-        public enum ExecutionMethod { ColliderBased, ProjectileBased, SelectionBased }
+        public enum ExecutionMethod { Passive, ColliderBased, ProjectileBased, SelectionBased}
 
         [Header("Parameters")]
         public CastableSettings settings = new();
@@ -133,17 +135,24 @@ namespace HotD.Generators
                     }
 
                     // Activation
-                    DelegatedExecutor activationExecutor = GenerateExecutor(castable, CastState.Activating, "Activation");
-                    executors.Add(activationExecutor);
-                    if (stats.useChargeUp)
+                    if (actionType == ActionType.Passive && settings.castOn.HasFlag(CastOn.Trigger)) // The default, bare-bones activation transitions.
                     {
-                        castable.AddChargeTransitions();
-                        Charger charger = GenerateCharger(activationExecutor);
+                        castable.AddInstantCastOnTriggerTransitions();
                     }
-                    else
+                    else // Should only do fancy stuff if we have anim coordination to wait on, or we're not casting on trigger.
                     {
-                        castable.AddComboTransitions();
-                        GenerateWindUp(activationExecutor);
+                        DelegatedExecutor activationExecutor = GenerateExecutor(castable, CastState.Activating, "Activation");
+                        executors.Add(activationExecutor);
+                        if (stats.useChargeUp)
+                        {
+                            castable.AddChargeTransitions();
+                            Charger charger = GenerateCharger(activationExecutor);
+                        }
+                        else
+                        {
+                            castable.AddComboTransitions();
+                            GenerateWindUp(activationExecutor);
+                        }
                     }
 
                     // Execution
@@ -267,7 +276,11 @@ namespace HotD.Generators
             Assert.IsNotNull(executor);
 
             // Wait For Wind Up Transition
-            TransitionEvent windUpTransition = new("Wind Up", CastAction.Start, Triggers.StartCast, Triggers.None, true, CastAction.End, true);
+            TransitionEvent windUpTransition = actionType switch
+            {
+                ActionType.Passive =>   new("Wind Up (Instantaneous)", CastAction.Start, Triggers.StartCast),
+                _ =>                    new("Wind Up", CastAction.Start, Triggers.StartCast, Triggers.None, CastAction.End),
+            };
             executor.supportedTransitions.Add(windUpTransition);
         }
 
@@ -282,12 +295,17 @@ namespace HotD.Generators
             charger.chargeTimes = chargeTimes;
 
             // Start Transition
-            TransitionEvent startTransition = new("Start", CastAction.Start, Triggers.StartAction, Triggers.None, false, CastAction.None, true);
+            TransitionEvent startTransition = new("Start", CastAction.Start, Triggers.StartAction);
             UnityEventTools.AddPersistentListener(startTransition.startAction, charger.Begin);
             executor.supportedTransitions.Add(startTransition);
 
             // Release Transition
-            TransitionEvent releaseTransition = new("Release / End", CastAction.Release | CastAction.End, Triggers.StartCast, Triggers.None, true, CastAction.End, true);
+            CastAction releaseTriggerAction = settings.castOn.HasFlag(CastOn.Release) ? CastAction.Release | CastAction.End : CastAction.End;
+            TransitionEvent releaseTransition = actionType switch
+            {
+                ActionType.Passive =>   new("Release", releaseTriggerAction, Triggers.StartCast),
+                _ =>                    new("Release", releaseTriggerAction, Triggers.StartCast, Triggers.None, CastAction.End, true),
+            };
             executor.supportedTransitions.Add(releaseTransition);
             //UnityEventTools.AddPersistentListener(releaseTransition.startAction, charger.Interrupt);
 
@@ -296,7 +314,7 @@ namespace HotD.Generators
             UnityEventTools.AddPersistentListener(executor.fieldEvents.onSetMaxPowerLevel, charger.SetMaxLevel);
                 
             // Executor On Full Charge?
-            if (settings.castOnChargeUp)
+            if (settings.castOn.HasFlag(CastOn.ChargeUp))
                 UnityEventTools.AddPersistentListener(charger.onCharged, executor.End);
                 
             return charger;
@@ -307,7 +325,11 @@ namespace HotD.Generators
             Assert.IsNotNull(executor);
 
             // Start Transition
-            TransitionEvent startTransition = new("Start", CastAction.Start, Triggers.None, Triggers.None, true, CastAction.End, false);
+            TransitionEvent startTransition = actionType switch
+            {
+                ActionType.Passive =>   new("Start", CastAction.Start, Triggers.None, Triggers.None, CastAction.None, false),
+                _ =>                    new("Start", CastAction.Start, Triggers.None, Triggers.None, CastAction.End, false),
+            };
             executor.supportedTransitions.Add(startTransition);
         }
 
@@ -318,11 +340,18 @@ namespace HotD.Generators
             executor.connectToFieldEvents = true;
 
             // Start Transition
-            TransitionEvent startTransition = new("Start", CastAction.Start, Triggers.None, Triggers.StartCast, true, CastAction.End, false);
+            TransitionEvent startTransition = actionType switch
+            {
+                ActionType.Passive =>   new("Start", CastAction.Start, Triggers.None, Triggers.StartCast, CastAction.None, false),
+                _ =>                    new("Start", CastAction.Start, Triggers.None, Triggers.StartCast, CastAction.End, false)
+            };
             executor.supportedTransitions.Add(startTransition);
 
             // End Transition
-            TransitionEvent endTransition = new("End", CastAction.End, Triggers.None, Triggers.EndCast, false);
+            string endName = settings.endOn.HasFlag(EndOn.Release) ? "Release / End" : "End";
+            CastAction endTriggerAction = settings.endOn.HasFlag(EndOn.Release) ? CastAction.Release | CastAction.End : CastAction.End;
+            TransitionEvent endTransition = new(endName, endTriggerAction, Triggers.None, Triggers.EndCast);
+            executor.supportedTransitions.Add(endTransition);
 
             Comboer comboer = executor.gameObject.AddComponent<Comboer>();
             comboer.ignoreStep = !settings.useComboSteps;
@@ -356,7 +385,7 @@ namespace HotD.Generators
             Assert.IsNotNull(executor);
 
             // Start Transition
-            TransitionEvent startTransition = new("Start", CastAction.Start, Triggers.None, Triggers.None, false);
+            TransitionEvent startTransition = new("Start", CastAction.Start, Triggers.None, Triggers.None);
             if (!TransitionEvent.TryFindActionEvent(CastAction.Start, executor.supportedTransitions, out startTransition, startTransition))
             {
                 executor.supportedTransitions.Add(startTransition);
@@ -371,7 +400,7 @@ namespace HotD.Generators
             if (!settings.usePowerLevelAsComboStep)
             {
                 // Trigger Transition
-                TransitionEvent triggerTransition = new("Trigger", CastAction.Trigger, Triggers.None, Triggers.None, false);
+                TransitionEvent triggerTransition = new("Trigger", CastAction.Trigger, Triggers.None, Triggers.None);
                 UnityEventTools.AddVoidPersistentListener(triggerTransition.startAction, executor.IncrementComboStep);
                 executor.supportedTransitions.Add(triggerTransition);
             }
@@ -383,7 +412,7 @@ namespace HotD.Generators
                 coolDownTimer.length = stats.ComboCooldown; // TODO: Account for bonuses
 
                 // Start Transition
-                TransitionEvent startTransition = new("Start", CastAction.Start, Triggers.None, Triggers.None, false);
+                TransitionEvent startTransition = new("Start", CastAction.Start);
                 UnityEventTools.AddVoidPersistentListener(startTransition.startAction, coolDownTimer.Play);
                 executor.supportedTransitions.Add(startTransition);
 
@@ -391,7 +420,7 @@ namespace HotD.Generators
                 UnityEventTools.AddPersistentListener(coolDownTimer.onComplete, executor.ResetComboStep);
 
                 // End Transition
-                TransitionEvent endTransition = new("End", CastAction.End, Triggers.None, Triggers.None, false);
+                TransitionEvent endTransition = new("End", CastAction.End);
                 UnityEventTools.AddVoidPersistentListener(endTransition.startAction, coolDownTimer.Interrupt);
                 executor.supportedTransitions.Add(endTransition);
                 
@@ -400,7 +429,7 @@ namespace HotD.Generators
             else
             {
                 // Start Transition
-                TransitionEvent startTransition = new("Start", CastAction.Start, Triggers.None, Triggers.None, false);
+                TransitionEvent startTransition = new("Start", CastAction.Start);
                 UnityEventTools.AddVoidPersistentListener(startTransition.startAction, executor.ResetComboStep);
                 executor.supportedTransitions.Add(startTransition);
 
@@ -419,7 +448,7 @@ namespace HotD.Generators
             coolDownTimer.length = stats.Cooldown; // TODO: Account for bonuses
 
             // Start Transition
-            TransitionEvent startTransition = new("Start", CastAction.Start, Triggers.None, Triggers.None, false);
+            TransitionEvent startTransition = new("Start", CastAction.Start);
             UnityEventTools.AddVoidPersistentListener(startTransition.startAction, coolDownTimer.Play);
             executor.supportedTransitions.Add(startTransition);
 
@@ -516,21 +545,37 @@ namespace HotD.Generators
         [Serializable]
         public struct CastableSettings
         {
-            public CastableSettings(bool followBody = true, bool castOnTrigger = true, bool castOnRelease = false, bool unCastOnRelease = false, bool castOnChargeUp = false, bool usePowerLevelAsComboStep = false, int actionIndex = 0)
+            [Flags]
+            public enum CastOn
+            {
+                None = 0,
+                Trigger = 1 << 0,
+                Release = 1 << 1,
+                ChargeUp = 1 << 2,
+            }
+
+            [Flags]
+            public enum EndOn
+            {
+                None = 0,
+                Release = 1 << 0,
+            }
+
+            public bool followBody;
+            public CastOn castOn;
+            public EndOn endOn;
+            public bool useComboSteps;
+            public bool usePowerLevelAsComboStep;
+
+            public CastableSettings(bool followBody = true, CastOn castOn = CastOn.None, EndOn endOn = EndOn.None, bool useComboSteps = false, bool usePowerLevelAsComboStep = false)
             {
                 this.followBody = followBody;
-                this.castOnTrigger = castOnTrigger;
-                this.castOnRelease = castOnRelease;
-                this.unCastOnRelease = unCastOnRelease;
-                this.castOnChargeUp = castOnChargeUp;
+                this.castOn = castOn;
+                this.endOn = endOn;
+                this.useComboSteps = useComboSteps;
                 this.usePowerLevelAsComboStep = usePowerLevelAsComboStep;
             }
-            public bool followBody;
-            public bool castOnTrigger;
-            public bool castOnRelease;
-            public bool unCastOnRelease;
-            public bool castOnChargeUp;
-            public bool usePowerLevelAsComboStep;
+            
             public readonly void ApplyToCastable(CastProperties castable)
             {
                 castable.InitializeEvents();
@@ -578,7 +623,7 @@ namespace HotD.Generators
         [Serializable]
         public struct Execution
         {
-            public Execution(ExecutionMethod method=ExecutionMethod.ColliderBased, Location source=Location.Character, Location target=Location.FiringPoint, Vector2 chargeLevels=new(), Vector2 comboSteps=new())
+            public Execution(ExecutionMethod method=ExecutionMethod.Passive, Location source=Location.Character, Location target=Location.FiringPoint, Vector2 chargeLevels=new(), Vector2 comboSteps=new())
             {
                 this.name = method.ToString();
                 this.method = method;
@@ -587,6 +632,7 @@ namespace HotD.Generators
 
                 this.chargeLevels = chargeLevels;
                 this.comboSteps = comboSteps;
+                this.passivePrefab = null;
                 this.colliderPrefab = null;
                 this.projectileLifeSpan = 1;
                 this.projectilePrefab = null;
@@ -599,6 +645,10 @@ namespace HotD.Generators
 
             public Vector2 chargeLevels;
             public Vector2 comboSteps;
+
+            // Execution: Passive
+            [ConditionalField("method", false, ExecutionMethod.Passive)]
+            public GameObject passivePrefab;
 
             // Execution: Collider
             [ConditionalField("method", false, ExecutionMethod.ColliderBased)]
@@ -617,8 +667,28 @@ namespace HotD.Generators
                     ExecutionMethod.ColliderBased => PrepareCollisionMethod(executor, stats, pivot, damager),
                     ExecutionMethod.ProjectileBased => PrepareProjectileMethod(executor, stats, pivot, damager),
                     ExecutionMethod.SelectionBased => null,
-                    _ => null,
+                    _ => PreparePassiveMethod(executor, stats, pivot, damager),
                 };
+            }
+
+            public readonly Castables.ExecutionMethod PreparePassiveMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
+            {
+                if (passivePrefab != null)
+                {
+                    // Object
+                    GameObject castedObject = AddCastedObject(executor, pivot);
+
+                    // Method
+                    Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
+                    method.InitializeEvents();
+
+                    // Prefab Instance
+                    GameObject instance = PrefabUtility.InstantiatePrefab(passivePrefab.gameObject) as GameObject;
+                    instance.transform.SetParent(castedObject.transform);
+
+                    return method;
+                }
+                return null;
             }
 
             public readonly Castables.ExecutionMethod PrepareCollisionMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
@@ -626,13 +696,14 @@ namespace HotD.Generators
                 pivot.enabled = false;
                 if (colliderPrefab != null)
                 {
-                    GameObject castedObject = new(name);
-                    castedObject.transform.parent = pivot.transform;
-                    executor.fields.castingMethods.Add(castedObject);
+                    // Object
+                    GameObject castedObject = AddCastedObject(executor, pivot);
 
+                    // Method
                     Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
                     method.InitializeEvents();
 
+                    // Collidable
                     CollidablePositioner positioner = (PrefabUtility.InstantiatePrefab(colliderPrefab.gameObject) as GameObject).GetComponent<CollidablePositioner>();
                     positioner.transform.SetParent(castedObject.transform);
                     method.positionables.Add(positioner);
@@ -647,6 +718,7 @@ namespace HotD.Generators
                     //executor.fields.toLocations.Add(new(collider, source, target));
                     //executor.fields.castingMethods.Add(collider.gameObject);
 
+                    // Damage
                     if (damager != null)
                     {
                         UnityEventTools.AddPersistentListener(positioner.hitDamageable, damager.HitDamageable);
@@ -660,17 +732,15 @@ namespace HotD.Generators
 
             public readonly Castables.ExecutionMethod PrepareProjectileMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
             {
-                GameObject castedObject = new(name);
-                castedObject.transform.parent = pivot.transform;
-                executor.fields.castingMethods.Add(castedObject);
-                
-                GameObject pivotObject = new($"{name} Pivot");
-                pivotObject.transform.parent = castedObject.transform;
-                Pivot castedPivot = pivotObject.AddComponent<Pivot>();
+                // Object
+                GameObject castedObject = AddCastedObject(executor, pivot);
+                Pivot castedPivot = AddCastedPivot(castedObject);
 
+                // Method
                 Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
                 method.InitializeEvents();
 
+                // Projectile Spawner
                 ProjectileSpawner spawner = castedObject.AddComponent<ProjectileSpawner>();
                 UnityEventTools.AddPersistentListener(method.onEnable, spawner.Spawn);
                 UnityEventTools.AddPersistentListener(method.fieldEvents.onSetCollisionExceptions, spawner.SetExceptions);
@@ -681,13 +751,17 @@ namespace HotD.Generators
                 //castedPivot.enabled = false;
                 //executor.fields.toLocations.Add(new(spawner, source, target));
 
+                // Projectiles
                 if (projectilePrefab != null)
                 {
+                    // Projectile
                     Projectile projectile = (PrefabUtility.InstantiatePrefab(projectilePrefab.gameObject) as GameObject).GetComponent<Projectile>(); //, castedPivot.transform);
                     projectile.transform.SetParent(castedPivot.transform);
                     spawner.projectile = projectile;
                     castedPivot.body = projectile.transform;
                     projectile.transform.localPosition = new();
+                    
+                    // Damage
                     if (damager != null)
                     {
                         projectile.hitDamageable = new();
@@ -698,6 +772,21 @@ namespace HotD.Generators
                 }
 
                 return method;
+            }
+
+            private readonly GameObject AddCastedObject(DelegatedExecutor executor, Pivot pivot)
+            {
+                GameObject castedObject = new(name);
+                castedObject.transform.parent = pivot.transform;
+                executor.fields.castingMethods.Add(castedObject);
+                return castedObject;
+            }
+
+            private readonly Pivot AddCastedPivot(GameObject castedObject)
+            {
+                GameObject pivotObject = new($"{name} Pivot");
+                pivotObject.transform.parent = castedObject.transform;
+                return pivotObject.AddComponent<Pivot>();
             }
         }
 

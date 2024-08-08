@@ -97,7 +97,7 @@ namespace HotD.Castables
                 transition.startAction.Invoke();
                 Coordinator.Coordinate(transition.sendToCoordinator);
                 actionExecuted?.Invoke(transition.sendToListener);
-                return !transition.waitForCoordinator ? CastAction.None : transition.waitAction;
+                return transition.waitAction;
             }
             else
             {
@@ -179,32 +179,18 @@ namespace HotD.Castables
             public CastAction triggerAction;
             public Triggers sendToCoordinator;
             public Triggers sendToListener;
-            [ConditionalField(true, "ShowWaitForCoordinator")]
-            [FormerlySerializedAs("waitForPerformance")] public bool waitForCoordinator;
-            [ConditionalField("waitForCoordinator")]
             public CastAction waitAction;
             public bool oneShot;
             [ReadOnly][SerializeField] public readonly bool fired;
             public UnityEvent startAction;
 
-            private readonly bool ShowWaitForCoordinator()
-            {
-                return sendToCoordinator != Triggers.None || waitForCoordinator == true || waitAction != CastAction.None;
-            }
-
-            private readonly bool ShowWaitAction()
-            {
-                return waitForCoordinator == true || waitAction != CastAction.None;
-            }
-
             // Construction
-            public TransitionEvent(string name, CastAction triggerAction, Triggers sendToCoordinator, Triggers sendToListener, bool waitForCoordinator, CastAction waitAction = CastAction.None, bool oneShot = true)
+            public TransitionEvent(string name, CastAction triggerAction = CastAction.None, Triggers sendToCoordinator = Triggers.None, Triggers sendToListener = Triggers.None, CastAction waitAction = CastAction.None, bool oneShot = true)
             {
                 this.name = name;
                 this.triggerAction = triggerAction;
                 this.sendToCoordinator = sendToCoordinator;
                 this.sendToListener = sendToListener;
-                this.waitForCoordinator = waitForCoordinator;
                 this.waitAction = waitAction;
                 this.oneShot = oneShot;
                 this.fired = false;
@@ -217,7 +203,6 @@ namespace HotD.Castables
                 this.triggerAction = old.triggerAction;
                 this.sendToCoordinator = old.sendToCoordinator;
                 this.sendToListener = old.sendToListener;
-                this.waitForCoordinator = old.waitForCoordinator;
                 this.waitAction = old.waitAction;
                 this.oneShot = old.oneShot;
                 this.fired = fired;
