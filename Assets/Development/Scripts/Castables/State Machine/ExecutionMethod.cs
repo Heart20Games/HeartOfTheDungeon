@@ -22,7 +22,14 @@ namespace HotD.Castables
 
         private void Awake()
         {
-            collidables = GetComponentsInChildren<ICollidables>();
+            collidables = GetComponentsInChildren<ICollidables>(true);
+            foreach (var collidable in collidables)
+            {
+                if (collidable == null)
+                {
+                    Debug.LogWarning("Found null collidable.");
+                }
+            }
         }
 
         private void OnEnable()
@@ -61,7 +68,7 @@ namespace HotD.Castables
             }
             foreach (var collidable in collidables)
             {
-                collidable.SetExceptions(fields.CollisionExceptions);
+                collidable?.SetExceptions(fields.CollisionExceptions);
             }
             onEnable.Invoke();
         }
