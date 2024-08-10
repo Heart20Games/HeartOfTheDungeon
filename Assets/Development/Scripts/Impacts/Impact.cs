@@ -34,16 +34,21 @@ public class Impact : Validator
     private void OnEventEnter(Collider collider, UnityEvent onEvent)
     {
         var normal = (collider.transform.position - transform.position).normalized;
-        var location = collider.ClosestPoint(collider.transform.position);
-        Other.ContactPoint point = new(normal, location);
-        //if (vector.magnitude != 0)
-        //    Ray ray = new(collider.transform.position, vector.normalized);
-        //    if (Collider.Raycast(ray, out var hitInfo, vector.magnitude))
-        //    {
-        //        Print($"Raycast collision found.", debug , this);
-        //        point = new(hitInfo.normal, hitInfo.point);
-        //    }
-        //}
+        Other.ContactPoint point = new(normal, new());
+        if (collider is SphereCollider || collider is BoxCollider || collider is CapsuleCollider)
+        {
+            var location = collider.ClosestPoint(collider.transform.position);
+            point = new(normal, location);
+        }
+        else if (normal.magnitude != 0)
+        {
+            Ray ray = new(collider.transform.position, -normal.normalized);
+            if (collider.Raycast(ray, out var hitInfo, normal.magnitude))
+            {
+                Print($"Raycast collision found.", debug, this);
+                point = new(hitInfo.normal, hitInfo.point);
+            }
+        }
         Other other = new(collider.gameObject, null, collider, point);
         OnEventEnter(other, onEvent);
     }
