@@ -1,4 +1,6 @@
 using MyBox;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Colliders;
@@ -17,9 +19,8 @@ namespace HotD.Castables
 
         [Foldout("Collision", true)]
         private new Rigidbody rigidbody;
-        private Collider[] colliders;
+        [SerializeField] private Collider[] colliders;
         private Collider[] Colliders { get { return colliders ?? InitializeColliders(); } }
-        [Foldout("Collision")] public List<GameObject> collidableObjects;
 
         [Foldout("Tracking", true)]
         public Transform trackingTarget;
@@ -38,33 +39,17 @@ namespace HotD.Castables
                 transform.LookToward(target, damping);
         }
 
-        public void Destroy()
-        {
-            Destroy(gameObject);
-        }
-
         private Collider[] InitializeColliders()
         {
-            List<Collider> colliderList = new();
-            collidableObjects.Add(gameObject);
-            for (int i = 0; i < collidableObjects.Count; i++)
-            {
-                if (collidableObjects[i] != null)
-                {
-                    Collider[] components = collidableObjects[i].GetComponents<Collider>();
-                    if (components != null)
-                    {
-                        colliderList.AddRange(components);
-                    }
-                }
-            }
-            colliders = colliderList.ToArray();
+            colliders = GetComponentsInChildren<Collider>();
+            Print($"Initialized Projectile Colliders ({colliders.Length})", debug, this);
             return colliders;
         }
 
         private void Awake()
         {
             rigidbody = GetComponent<Rigidbody>();
+            InitializeColliders();
         }
 
         private void Start()
@@ -92,21 +77,49 @@ namespace HotD.Castables
             }
         }
 
+        // Cleanup
+        public void Destroy()
+        {
+            Destroy(gameObject);
+        }
+
+        public void QueueCleanup(Transform pInstance, Projectile bInstance, float lifeSpan, List<Projectile> projectiles)
+        {
+            StartCoroutine(CleanupInstance(pInstance, bInstance, lifeSpan, projectiles));
+        }
+
+        private IEnumerator CleanupInstance(Transform pInstance, Projectile bInstance, float lifeSpan, List<Projectile> projectiles)
+        {
+            Print("Waiting to cleanup Projectile instance.", debug, this);
+            yield return new WaitForSeconds(lifeSpan);
+            Print("Deleting Projectile instance...", debug, this);
+            projectiles?.Remove(bInstance);
+            if (pInstance != null)
+            {
+                Destroy(pInstance.gameObject);
+            }
+            Print("Cleaned up Projectile instance", debug, this);
+        }
+
         // Collision Exceptions
         public void AddException(Collider exception)
         {
+            Print($"Adding Projectile Collision Exception", debug, this);
             ChangeException(Colliders, exception, true);
         }
         public void RemoveException(Collider exception)
         {
+            Print($"Removing Projectile Collision Exception", debug, this);
             ChangeException(Colliders, exception, false);
         }
         public void AddExceptions(Collider[] exceptions)
         {
+            Print($"Adding Projectile Collision Exceptions ({exceptions.Length})", debug, this);
             ChangeExceptions(Colliders, exceptions, true);
         }
         public void RemoveExceptions(Collider[] exceptions)
         {
+            Print($"Removing Projectile Collision Exceptions ({exceptions.Length})", debug, this);
             ChangeExceptions(Colliders, exceptions, false);
         }
     }
