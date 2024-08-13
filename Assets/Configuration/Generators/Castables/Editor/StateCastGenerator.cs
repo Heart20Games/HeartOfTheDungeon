@@ -181,9 +181,10 @@ namespace HotD.Generators
                         CastListenerDistributor effectManager = GenerateCastListenerDistributor(castable, "Effects");
                         foreach (var effect in effects)
                         {
-                            CastListener listener = effect.Generate(effectManager, stats, chargeTimes);
+                            CastListener listener = effect.Generate(effectManager, stats);
                             effectManager.AddListener(listener);
                         }
+                        effectManager.SetChargeTimes(chargeTimes);
                         foreach (var executor in executors)
                         {
                             executor.ActionExecutor ??= effectManager.SetTriggers;
@@ -606,14 +607,22 @@ namespace HotD.Generators
             public Vector2 chargeLevels;
             public Vector2 comboSteps;
 
-            public CastListener Generate(CastListenerDistributor distributor, CastableStats stats, float[] chargeTimes)
+            public CastListener Generate(CastListenerDistributor distributor, CastableStats stats, bool initializeValues=false, float[] chargeTimes=null)
             {
                 if (prefab != null)
                 {
                     GameObject listenerObject = PrefabUtility.InstantiatePrefab(prefab.gameObject) as GameObject;
                     listenerObject.transform.SetParent(distributor.transform);
 
-                    return listenerObject.GetComponent<CastListener>();
+                    if (listenerObject.TryGetComponent<CastListener>(out var listener))
+                    {
+                        if (initializeValues)
+                        {
+                            listener.ChargeTimes = chargeTimes;
+                        }
+                    }
+
+                    return listener;
                 }
                 return null;
             }
