@@ -10,10 +10,11 @@ using static HotD.Castables.CastableToLocation;
 using static UnityEngine.Rendering.DebugUI;
 using Object = UnityEngine.Object;
 using Debug = UnityEngine.Debug;
+using UnityEngine.Assertions;
 
 namespace HotD.Castables
 {
-    public interface ICastableProperties
+    public interface ICastProperties
     {
         public void SetActive(bool active);
         public void Initialize(CastableFieldsEditor field);
@@ -30,15 +31,25 @@ namespace HotD.Castables
         //public Identity Identity { get; set; }
     }
 
-    public class CastableProperties : BaseMonoBehaviour, ICastableProperties
+    public class CastProperties : BaseMonoBehaviour, ICastProperties
     {
         public CastableFieldsEditor fields = new();
         [SerializeField] protected bool debugProperties = false;
 
         // Properties
         public virtual Vector3 Direction { get => fields.direction; set => fields.direction = value; }
-        public ICastCompatible Owner { get => fields?.owner; set => fields.owner = value; }
-        public CastCoordinator Coordinator { get => fields?.owner?.Coordinator; }
+        public ICastCompatible Owner
+        {
+            get => fields?.Owner;
+            set
+            {
+                if (fields != null)
+                    fields.Owner = value;
+                else
+                    Debug.LogWarning("Trying to set Owner on null CastableFieldsEditor.");
+            } 
+        }
+        public CastCoordinator Coordinator { get => fields?.Owner?.Coordinator; }
         public CastableItem Item { get => fields?.item; set => fields.item = value; }
         public Damager Damager { get => GetComponent<Damager>(); }
         public int PowerLevel
@@ -190,6 +201,16 @@ namespace HotD.Castables
         [SerializeField] private bool debugFieldsEditor = false;
 
         // Properties
+        public ICastCompatible Owner
+        {
+            get => owner;
+            set
+            {
+                owner = value;
+                hasOwner = value != null;
+            }
+        }
+        
         public int PowerLevel
         {
             get => curPowerLevel;
@@ -349,6 +370,7 @@ namespace HotD.Castables
         public Vector3 direction;
         public bool followBody;
         public ICastCompatible owner;
+        [ReadOnly][SerializeField] protected bool hasOwner = false;
         public ActionType ActionType
         {
             get { return item != null ? item.actionType : ActionType.Passive; }

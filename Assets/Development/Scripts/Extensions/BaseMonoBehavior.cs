@@ -38,6 +38,8 @@ public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
         if (debug) Debug.Log(message, context == null ? this : context);
     }
 
+    protected void NULL() { }
+
     protected bool TryGetIComponent<I>(out I result) where I : class
     {
         result = GetIComponent<I>();

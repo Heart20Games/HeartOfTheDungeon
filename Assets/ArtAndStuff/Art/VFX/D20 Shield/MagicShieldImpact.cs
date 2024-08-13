@@ -68,7 +68,7 @@ public class MagicShieldImpact : BaseMonoBehaviour
             }
             else if (!shieldOn && !shieldTransitioning && !explode && dissolveAmount < 1f)
             {
-                //StartCoroutine(ShieldDeactivate());
+                StartCoroutine(ShieldDeactivate());
             }
 
             if(explode == true &&!shieldTransitioning)

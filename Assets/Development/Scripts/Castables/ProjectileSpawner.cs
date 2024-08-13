@@ -78,7 +78,7 @@ namespace HotD.Castables
 
             if (isActiveAndEnabled)
             {
-                if (debug) { Debug.Log($"{name} spawning projectile in {direction} direction."); }
+                if (debug) { Debug.Log($"{name} spawning projectile in {direction} direction.", this); }
                 pivot.localPosition = offset;
                 Transform pInstance = Instantiate(pivot, source);
                 pInstance.gameObject.SetActive(true);
