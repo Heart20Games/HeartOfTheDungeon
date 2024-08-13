@@ -20,25 +20,27 @@ namespace HotD.Castables
             onEnable ??= new();
         }
 
-        private void Awake()
+        protected new void Awake()
         {
+            base.Awake();
             collidables = GetComponentsInChildren<ICollidables>(true);
             foreach (var collidable in collidables)
             {
                 if (collidable == null)
                 {
-                    Debug.LogWarning("Found null collidable.");
+                    Debug.LogWarning("Found null collidable.", this);
                 }
             }
         }
 
-        private void OnEnable()
+        protected new void OnEnable()
         {
+            base.OnEnable();
             foreach (var positionable in positionables)
             {
                 if (Owner == null)
                 {
-                    Debug.LogWarning($"Owner Null");
+                    Debug.LogWarning($"Owner Null (Execution Method)", this);
                 }
                 
                 Assert.IsNotNull(Crosshair.main);
