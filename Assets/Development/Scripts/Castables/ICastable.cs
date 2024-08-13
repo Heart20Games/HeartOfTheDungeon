@@ -17,7 +17,7 @@ namespace HotD.Castables
         UnEquip = 1 << 6
     }
 
-    public interface ICastable : ICastableProperties
+    public interface ICastable : ICastProperties
     {
         /* Castables will be expected to:
          * 1. Position any models or effects they manage

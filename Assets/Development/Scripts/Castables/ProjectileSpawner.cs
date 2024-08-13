@@ -78,7 +78,7 @@ namespace HotD.Castables
 
             if (isActiveAndEnabled)
             {
-                if (debug) { Debug.Log($"{name} spawning projectile in {direction} direction."); }
+                if (debug) { Debug.Log($"{name} spawning projectile in {direction} direction.", this); }
                 pivot.localPosition = offset;
                 Transform pInstance = Instantiate(pivot, source);
                 pInstance.gameObject.SetActive(true);
@@ -90,7 +90,7 @@ namespace HotD.Castables
                         projectiles.Add(bInstance);
                         AddExceptionsOn(exceptions, bInstance);
                         LaunchInstance(direction, pInstance.transform, bInstance);
-                        StartCoroutine(CleanupInstance(pInstance.transform, bInstance));
+                        bInstance.QueueCleanup(pInstance.transform, bInstance, lifeSpan, projectiles);
                     }
                     else
                     {
@@ -128,9 +128,12 @@ namespace HotD.Castables
 
         private IEnumerator CleanupInstance(Transform pInstance, Projectile bInstance)
         {
+            Print("Waiting to cleanup Projectile instance.", debug, this);
             yield return new WaitForSeconds(lifeSpan);
+            Print("Deleting Projectile instance...", debug, this);
             projectiles.Remove(bInstance);
             Destroy(pInstance.gameObject);
+            Print("Cleaned up Projectile instance", debug, this);
         }
 
         // Collision Exceptions
@@ -144,21 +147,29 @@ namespace HotD.Castables
             for (int i = 0; i < projectiles.Count; i++)
             {
                 Projectile pea = projectiles[i];
+                RemoveExceptionsOn(this.exceptions, pea);
                 AddExceptionsOn(exceptions, pea);
             }
             this.exceptions = exceptions;
         }
 
-        public void AddExceptionsOn(Collider[] exceptions, Projectile pea)
+        private void AddExceptionsOn(Collider[] exceptions, Projectile pea)
         {
-            if (debug) print($"Setting Exceptions on Projectile. ({this.exceptions?.Length} -> {exceptions?.Length})");
-            if (this.exceptions != null)
-            {
-                pea.RemoveExceptions(this.exceptions);
-            }
+            if (debug) print($"Adding Exceptions on Projectile. ({this.exceptions?.Length} -> {exceptions?.Length})");
+            
             if (exceptions != null)
             {
+                if (debug) print("Actually adding it.");
                 pea.AddExceptions(exceptions);
+            }
+        }
+
+        private void RemoveExceptionsOn(Collider[] exceptions, Projectile pea)
+        {
+            if (debug) print($"Removing Exceptions on Projectile. ({this.exceptions?.Length} -> {exceptions?.Length})");
+            if (exceptions != null)
+            {
+                pea.RemoveExceptions(exceptions);
             }
         }
     }

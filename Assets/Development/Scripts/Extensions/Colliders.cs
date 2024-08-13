@@ -5,13 +5,19 @@ using UnityEngine;
 
 public class Colliders
 {
-    public static void ChangeExceptions(Collider[] colliders, Collider[] exceptions, bool ignore)
+    public static void ChangeExceptions(Collider[] colliders, Collider[] exceptions, bool ignore, bool debug = false)
     {
+        if (debug) Debug.Log($"Ignoring exceptions ({exceptions.Length}) on colliders ({colliders.Length}) -- {ignore}");
         for (int i = 0; i < colliders.Length; i++)
         {
             for (int j = 0; j < exceptions.Length; j++)
             {
-                Physics.IgnoreCollision(colliders[i], exceptions[j], ignore);
+                if (Physics.GetIgnoreCollision(colliders[i], exceptions[j]) != ignore)
+                {
+                    if (debug) Debug.Log($"Ignoring Collision? {ignore}");
+                    Physics.IgnoreCollision(colliders[i], exceptions[j], ignore);
+                }
+                else if (debug) Debug.Log("Nothing to do.");
             }
         }
     }

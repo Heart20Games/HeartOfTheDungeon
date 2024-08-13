@@ -2,19 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
+using HotD.Castables;
+using static HotD.Castables.Coordination;
 
-public interface IVFXCoordinator
+public class MagicBolt_ChargingVFXScript : CastListener
 {
-    public int Level { get; set; }
-    public void SetLevel(int level);
-    public void StartCast();
-    public void EndCast();
-    public float[] ChargeTimes { get; set; }
-}
-
-public class MagicBolt_ChargingVFXScript : MonoBehaviour, IVFXCoordinator
-{
-
     [SerializeField] private VisualEffect visualEffect;
     [SerializeField] private int level;
     [SerializeField] private float[] chargeTimes;
@@ -26,27 +18,30 @@ public class MagicBolt_ChargingVFXScript : MonoBehaviour, IVFXCoordinator
     [SerializeField] private bool isPlaying = false;
 
     // Interface Bits
-    public int Level
+    public override float[] ChargeTimes
+    {
+        get => chargeTimes;
+        set => SetChargeTimes(value);
+    }
+    public override int Level
     {
         get => level;
         set => SetLevel(value);
     }
-    public void SetLevel(int level)
+    public override void SetChargeTimes(float[] times)
+    {
+        chargeTimes = times;
+    }
+    public override void SetLevel(int level)
     {
         this.level = level;
     }
-    public void StartCast()
+    public override void SetTriggers(Triggers triggers)
     {
-        casting = true;
-    }
-    public void EndCast()
-    {
-        castingEnd = true;
-    }
-    public float[] ChargeTimes
-    {
-        get => chargeTimes;
-        set => chargeTimes = value;
+        if (HasTrigger(triggers, Triggers.StartCast))
+            casting = true;
+        if (HasTrigger(triggers, Triggers.EndCast))
+            castingEnd = true;
     }
 
     // Actually Doing Stuff
@@ -112,7 +107,6 @@ public class MagicBolt_ChargingVFXScript : MonoBehaviour, IVFXCoordinator
     {
         charges[2] += Time.deltaTime / chargeTimes[2];
         visualEffect.SetFloat("Level 3 Charge", charges[2]);
-        Level2();
     }
 
     void Level2()

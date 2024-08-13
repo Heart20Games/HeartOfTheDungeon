@@ -7,12 +7,11 @@ using UnityEngine.Events;
 
 namespace HotD.Castables
 {
-    public class ExecutionMethod : CastableProperties
+    public class ExecutionMethod : DependentCastProperties
     {
         public bool aimAtCrosshair = true;
         public List<Positionable> positionables = new();
         public UnityEvent onEnable = new();
-        public CastableProperties initializeOffOf;
         private ICollidables[] collidables;
 
         public override void InitializeEvents()
@@ -21,19 +20,27 @@ namespace HotD.Castables
             onEnable ??= new();
         }
 
-        private void Awake()
+        protected new void Awake()
         {
-            Initialize(initializeOffOf.fields);
-            collidables = GetComponentsInChildren<ICollidables>();
+            base.Awake();
+            collidables = GetComponentsInChildren<ICollidables>(true);
+            foreach (var collidable in collidables)
+            {
+                if (collidable == null)
+                {
+                    Debug.LogWarning("Found null collidable.", this);
+                }
+            }
         }
 
-        private void OnEnable()
+        protected new void OnEnable()
         {
+            base.OnEnable();
             foreach (var positionable in positionables)
             {
                 if (Owner == null)
                 {
-                    Debug.LogWarning($"Owner Null");
+                    Debug.LogWarning($"Owner Null (Execution Method)", this);
                 }
                 
                 Assert.IsNotNull(Crosshair.main);
@@ -63,7 +70,7 @@ namespace HotD.Castables
             }
             foreach (var collidable in collidables)
             {
-                collidable.SetExceptions(fields.CollisionExceptions);
+                collidable?.SetExceptions(fields.CollisionExceptions);
             }
             onEnable.Invoke();
         }

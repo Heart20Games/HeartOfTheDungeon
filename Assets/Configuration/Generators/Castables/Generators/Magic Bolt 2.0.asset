@@ -19,13 +19,12 @@ MonoBehaviour:
   replace: 1
   emptyTest: 0
   fullDirectory: Assets/Configuration/Castables/Magic Bolt 2.0
-  timeOfLastGeneration: 9.597518
+  timeOfLastGeneration: 4.595662
   settings:
     followBody: 0
-    castOnTrigger: 0
-    castOnRelease: 1
-    unCastOnRelease: 0
-    castOnChargeUp: 1
+    castOn: 0
+    endOn: 0
+    useComboSteps: 1
     usePowerLevelAsComboStep: 1
   stats: {fileID: 11400000, guid: acc746f74347cdb42bcab74a55a02b29, type: 2}
   chargeTimes:
@@ -34,7 +33,7 @@ MonoBehaviour:
   - 4
   effects:
   - name: MB Cast Point
-    casted: {fileID: 4832110597611120834, guid: 21c9eb078add5f144a14a139e317f2f6, type: 3}
+    prefab: {fileID: 7550764017926072541, guid: f57f6055dda8b4241859ace064821a48, type: 3}
     source: 2
     target: 2
     chargeLevels: {x: 0, y: 0}
@@ -44,30 +43,33 @@ MonoBehaviour:
   aimingMethod: 1
   executions:
   - name: Small Bolt
-    method: 1
+    method: 2
     source: 0
     target: 2
     chargeLevels: {x: 1, y: 2}
     comboSteps: {x: 0, y: 0}
+    passivePrefab: {fileID: 0}
     colliderPrefab: {fileID: 0}
     projectileLifeSpan: 3
     projectilePrefab: {fileID: 1265971933285588912, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
   - name: Follow Bolt
-    method: 1
+    method: 2
     source: 0
     target: 2
     chargeLevels: {x: 2, y: 3}
     comboSteps: {x: 0, y: 0}
+    passivePrefab: {fileID: 0}
     colliderPrefab: {fileID: 0}
     projectileLifeSpan: 3
     projectilePrefab: {fileID: 6905857983329156208, guid: 34118f11da5906c4da1b4afd206d1316, type: 3}
   - name: Super Laser
-    method: 0
+    method: 1
     source: 1
     target: 1
     chargeLevels: {x: 3, y: 10}
     comboSteps: {x: 0, y: 0}
-    colliderPrefab: {fileID: 0}
+    passivePrefab: {fileID: 0}
+    colliderPrefab: {fileID: 565097552035401571, guid: cbe4d7738182fa84ba8dd309ebd217b6, type: 3}
     projectileLifeSpan: 3
     projectilePrefab: {fileID: 1265971933285588912, guid: 92e6cf0ad2007b248846142e8d7c0240, type: 3}
   outputs:
@@ -75,6 +77,6 @@ MonoBehaviour:
     targets:
     - slot: 0
       loadout: {fileID: 11400000, guid: d48a3852097c5e447a1e86341c71ab53, type: 2}
-  prefab: {fileID: 181051914989909393, guid: b8508e747eb0ca44db0f042132d68a5b, type: 3}
+  prefab: {fileID: 2672671074774526966, guid: b8508e747eb0ca44db0f042132d68a5b, type: 3}
   items:
   - {fileID: 11400000, guid: 7aa51de013e45054c866838cd4265689, type: 2}
