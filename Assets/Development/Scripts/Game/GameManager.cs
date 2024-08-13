@@ -410,7 +410,7 @@ namespace HotD
 
         public void OnCharacterDied(Character character)
         {
-            Print($"Character died: {character.Name} ({character.mode.liveMode})");
+            Print($"Character died: {character.Name} ({character.mode.liveMode})", debug);
             if (character == playerParty.leader)
             {
                 SetMode(Menu.Death);

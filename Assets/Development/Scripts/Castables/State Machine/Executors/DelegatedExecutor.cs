@@ -24,7 +24,14 @@ namespace HotD.Castables
         {
             base.SetActive(active);
             if (Coordinator)
+            {
+                Print($"Found coordinator; {(active ? "" : "de")}register FinishAction. ({Name})", debugExecutor, this);
                 Coordinator.RegisterActionListener(FinishAction, active);
+            }
+            else
+            {
+                Print($"Cannot access coordinator. ({Name})", debugExecutor, this);
+            }
             if (!active)
             {
                 actionsToPerform.Clear();

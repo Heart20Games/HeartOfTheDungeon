@@ -67,14 +67,14 @@ namespace HotD.Castables
         [ButtonMethod]
         public void OnStartCast()
         {
-            Print("OnStartCast", debugTriggers, this);
+            Print($"OnStartCast ({onAction.GetPersistentEventCount()} listners)", debugTriggers, this);
             onAction.Invoke(CastAction.End);
         }
 
         [ButtonMethod]
         public void OnEndCast()
         {
-            Print("OnEndCast", debugTriggers, this);
+            Print($"OnEndCast ({onAction.GetPersistentEventCount()} listeners)", debugTriggers, this);
             onAction.Invoke(CastAction.End);
         }
 

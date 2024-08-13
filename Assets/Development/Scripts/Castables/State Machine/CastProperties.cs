@@ -10,6 +10,7 @@ using static HotD.Castables.CastableToLocation;
 using static UnityEngine.Rendering.DebugUI;
 using Object = UnityEngine.Object;
 using Debug = UnityEngine.Debug;
+using UnityEngine.Assertions;
 
 namespace HotD.Castables
 {
