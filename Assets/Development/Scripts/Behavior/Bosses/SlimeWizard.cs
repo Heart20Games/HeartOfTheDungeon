@@ -74,7 +74,7 @@ public class SlimeWizard : EnemyAI
 
     private void WalkAnimation()
     {
-        if(CurrentAction == Body.Behavior.Action.Chase)
+        if(agent.remainingDistance > agent.stoppingDistance && !agent.isStopped)
         {
             slimeWizardAnimator.SetBool("Run", true);
         }
@@ -101,30 +101,28 @@ public class SlimeWizard : EnemyAI
         magicBoltVfx.Play();
 
         magicBoltVfxAnimator.SetBool("Sustain", true);
+        slimeWizardAnimator.ResetTrigger("StartCast");
         slimeWizardAnimator.SetTrigger("StartAction");
 
         switch (randomAttack)
         {
-            case 0:
+            case 1:
                 magicBoltVfxAnimator.Play("Level 1 Charge");
                 slimeWizardAnimator.SetInteger("ChargeLevel", 1);
-                slimeWizardAnimator.SetInteger("ComboLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
                 chargingLevelOne = true;
                 break;
-            case 1:
+            case 2:
                 magicBoltVfxAnimator.Play("Level 1 Charge");
                 magicBoltVfxAnimator.SetBool("Level 2 Available", true);
-                slimeWizardAnimator.SetInteger("ChargeLevel", 2);
-                slimeWizardAnimator.SetInteger("ComboLevel", 2);
+                slimeWizardAnimator.SetInteger("ChargeLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
                 chargingLevelTwo = true;
                 break;
-            case 2:
+            case 0:
                 magicBoltVfxAnimator.Play("Level 1 Charge");
                 magicBoltVfxAnimator.SetBool("Level 3 Available", true);
-                slimeWizardAnimator.SetInteger("ChargeLevel", 3);
-                slimeWizardAnimator.SetInteger("ComboLevel", 3);
+                slimeWizardAnimator.SetInteger("ChargeLevel", 4);
                 slimeWizardAnimator.SetFloat("Action", 1);
                 break;
         }
@@ -141,6 +139,8 @@ public class SlimeWizard : EnemyAI
         {
             yield return new WaitForSeconds(6f);
         }
+
+        slimeWizardAnimator.SetTrigger("StartCast");
 
         var magicAttack = Instantiate(actions[randomAttack].ProjectileToShoot, transform);
 
@@ -165,6 +165,9 @@ public class SlimeWizard : EnemyAI
             magicAttack.transform.position = new Vector3(magicAttack.transform.position.x, magicAttack.transform.position.y + 1f, magicAttack.transform.position.z);
 
             CastedCollider castedCollider = magicAttack.GetComponent<CastedCollider>();
+            Level3BoltScaling boltScaling = castedCollider.transform.GetChild(0).GetComponent<Level3BoltScaling>();
+
+            boltScaling.ShouldFollowCrossHair = false;
 
             magicLaserObject = castedCollider;
 
