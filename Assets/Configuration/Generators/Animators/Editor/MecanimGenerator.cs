@@ -308,17 +308,21 @@ namespace HotD.Generators
             int num = 0;
             AnimatorStateMachine prev = null;
             AnimatorState prevCharge = null;
+            AnimatorState prevSustain = null;
             AnimatorState prevCast = null;
             foreach (Charge blueprint in blueprints.charges)
             {
                 num += 1;
-                var cur = AddChargeSubMachine(sub, blueprint, num, out var charge, out var cast, new(0, 150 * num));
+                var cur = AddChargeSubMachine(sub, blueprint, num, out var charge, out var sustain, out var cast, new(0, 150 * num));
                 charges.Add(cur);
 
                 if (prev != null)
                 {
                     var chargeTransition = prevCharge.AddTransition(charge);
-                    chargeTransition.AddCondition(AnimatorConditionMode.Greater, num, "ChargeLevel");
+                    chargeTransition.AddCondition(AnimatorConditionMode.Greater, num-1, "ChargeLevel");
+
+                    var chargeFromSustainTransition = prevSustain.AddTransition(charge);
+                    chargeFromSustainTransition.AddCondition(AnimatorConditionMode.Greater, num-1, "ChargeLevel");
 
                     var backtrackTransition = charge.AddTransition(prevCast);
                     backtrackTransition.AddCondition(AnimatorConditionMode.If, 0, "StartCast");
@@ -332,6 +336,7 @@ namespace HotD.Generators
 
                 prev = cur;
                 prevCharge = charge;
+                prevSustain = sustain;
                 prevCast = cast;
             }
 
@@ -340,12 +345,12 @@ namespace HotD.Generators
             return sub;
         }
 
-        public AnimatorStateMachine AddChargeSubMachine(AnimatorStateMachine root, Charge blueprint, int level, out AnimatorState charge, out AnimatorState cast, Vector2 position = new())
+        public AnimatorStateMachine AddChargeSubMachine(AnimatorStateMachine root, Charge blueprint, int level, out AnimatorState charge, out AnimatorState sustain, out AnimatorState cast, Vector2 position = new())
         {
             var sub = root.AddStateMachine($"Charge {level} ({blueprint.name})", position);
 
             charge = sub.AddState("Charge", new());
-            var sustain = sub.AddState("Sustain", new(0, 150));
+            sustain = sub.AddState("Sustain", new(0, 150));
             cast = AddAnimatorEventState(sub, "Cast", false, new(225, 300), "StartCast");
 
             sub.parentStateMachinePosition = new(-225, 150);
