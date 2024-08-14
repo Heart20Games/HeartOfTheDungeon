@@ -30,6 +30,14 @@ namespace HotD.Castables
             }
         }
 
+        public override void SetOwner(ICastCompatible owner)
+        {
+            foreach (var listener in listeners)
+            {
+                listener.Owner = owner;
+            }
+        }
+
         public override void SetTriggers(Coordination.Triggers triggers)
         {
             foreach (var listener in listeners)

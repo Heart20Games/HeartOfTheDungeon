@@ -1,15 +1,17 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 using HotD.Castables;
 using static HotD.Castables.Coordination;
+using static HotD.Castables.CastableToLocation;
 
 public class MagicBolt_ChargingVFXScript : CastListener
 {
     [SerializeField] private VisualEffect visualEffect;
     [SerializeField] private int level;
     [SerializeField] private float[] chargeTimes;
+    [SerializeField] private Location defaultLocation = Location.FiringPoint;
+    [SerializeField] private Location finalLocation = Location.WeaponPoint;
     [SerializeField] private float[] charges;
     [SerializeField] private float castingChargeTime;
     [SerializeField] private float castingCharge;
@@ -73,6 +75,21 @@ public class MagicBolt_ChargingVFXScript : CastListener
             }
         }
     }
+
+    private void FixedUpdate()
+    {
+        if (isPlaying)
+        {
+            if (Owner != null)
+            {
+                Transform target = level >= 3 ? GetLocationTransform(finalLocation, Owner) : GetLocationTransform(defaultLocation, Owner);
+                transform.position = target.position;
+            }
+            LookAtCamera.LookAt(transform, Camera.main.transform, Vector3.up);
+        }
+    }
+
+    // Casting
 
     IEnumerator CastingEnd()
     {

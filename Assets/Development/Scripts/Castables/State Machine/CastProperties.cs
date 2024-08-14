@@ -44,9 +44,14 @@ namespace HotD.Castables
             set
             {
                 if (fields != null)
+                {
                     fields.Owner = value;
+                    fieldEvents.onSetOwner.Invoke(value);
+                }
                 else
+                {
                     Debug.LogWarning("Trying to set Owner on null CastableFieldsEditor.");
+                }
             } 
         }
         public CastCoordinator Coordinator { get => fields?.Owner?.Coordinator; }
@@ -119,6 +124,11 @@ namespace HotD.Castables
         private void Awake()
         {
             fields.damager = GetComponent<Damager>();
+        }
+
+        private void Start()
+        {
+            fieldEvents.onSetOwner.Invoke(Owner);
         }
 
         public virtual void SetActive(bool active)
@@ -409,6 +419,7 @@ namespace HotD.Castables
         public struct FieldEvents
         {
             public string name;
+            public UnityEvent<ICastCompatible> onSetOwner;
             public UnityEvent<int> onSetPowerLevel;
             public UnityEvent<int> onSetMaxPowerLevel;
             public UnityEvent<int> onSetComboStep;
@@ -420,6 +431,7 @@ namespace HotD.Castables
             public FieldEvents(string name)
             {
                 this.name = name;
+                onSetOwner = new();
                 onSetPowerLevel = new();
                 onSetMaxPowerLevel = new();
                 onSetComboStep = new();

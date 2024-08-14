@@ -9,20 +9,26 @@ namespace HotD.Castables
 
     public interface ICastListener
     {
-        public float[] ChargeTimes { get; set; }
+        public ICastCompatible Owner { get; set; }
         public int Level { get; set; }
-        public void SetChargeTimes(float[] times);
+        public float[] ChargeTimes { get; set; }
+        public void SetOwner(ICastCompatible owner);
         public void SetLevel(int level);
+        public void SetChargeTimes(float[] times);
         public void SetTriggers(Triggers triggers);
     }
 
     public abstract class CastListener : BaseMonoBehaviour, ICastListener
     {
-        public virtual float[] ChargeTimes { get => null; set => SetChargeTimes(value); }
-        public virtual int Level { get => 0; set => NULL(); }
+        protected ICastCompatible owner;
 
-        public abstract void SetChargeTimes(float[] times);
+        public virtual ICastCompatible Owner { get => owner; set => SetOwner(value); }
+        public virtual int Level { get => 0; set => SetLevel(value); }
+        public virtual float[] ChargeTimes { get => null; set => SetChargeTimes(value); }
+
+        public virtual void SetOwner(ICastCompatible owner) { this.owner = owner; }
         public abstract void SetLevel(int level);
+        public abstract void SetChargeTimes(float[] times);
         public abstract void SetTriggers(Triggers triggers);
     }
 }

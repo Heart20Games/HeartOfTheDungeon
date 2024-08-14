@@ -509,6 +509,7 @@ namespace HotD.Generators
             distributor.properties = properties;
 
             properties.connectToFieldEvents = true;
+            UnityEventTools.AddPersistentListener(properties.fieldEvents.onSetOwner, distributor.SetOwner);
             UnityEventTools.AddPersistentListener(properties.fieldEvents.onSetPowerLevel, distributor.SetLevel);
 
             return distributor;

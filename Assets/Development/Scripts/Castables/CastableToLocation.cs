@@ -10,14 +10,18 @@ namespace HotD.Castables
         public enum Location { Character, Body, WeaponPoint, FiringPoint }
         static public Transform GetLocationTransform(Location location, Character character)
         {
+            return GetLocationTransform(location, character);
+        }
+        static public Transform GetLocationTransform(Location location, ICastCompatible compatible)
+        {
             return location switch
             {
-                Location.Character => character.transform,
-                Location.Body => character.Body.transform,
-                Location.WeaponPoint => character.WeaponLocation,
-                Location.FiringPoint => character.FiringLocation,
+                Location.Character => compatible.Transform,
+                Location.Body => compatible.Body.transform,
+                Location.WeaponPoint => compatible.WeaponLocation,
+                Location.FiringPoint => compatible.FiringLocation,
                 _ => null
-            } ;
+            };
         }
 
         [Serializable]
