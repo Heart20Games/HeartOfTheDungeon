@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.ProjectWindowCallback;
-using UnityEngine;
 
 namespace HotD.Castables
 {

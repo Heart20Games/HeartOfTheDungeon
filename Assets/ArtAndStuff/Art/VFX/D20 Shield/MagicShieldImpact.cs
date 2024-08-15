@@ -1,8 +1,6 @@
 using HotD.Castables;
 using MyBox;
-using PlasticGui.WebApi.Responses;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 using static Impact;

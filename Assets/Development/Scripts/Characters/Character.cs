@@ -18,7 +18,6 @@ namespace HotD.Body
     using global::Body.Behavior.ContextSteering;
     using global::Body.Behavior;
     using static global::Body.Behavior.ContextSteering.CSIdentity;
-    using Codice.CM.Triggers;
 
     public interface ICharacterInputs
     {
