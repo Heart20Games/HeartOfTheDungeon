@@ -220,6 +220,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9030935779675157936}
+  - component: {fileID: 4096828084708072785}
   m_Layer: 7
   m_Name: Firing Location
   m_TagString: Untagged
@@ -235,13 +236,35 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6782210380302351405}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.38268343, z: -0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalRotation: {x: 0.000000029802322, y: -0.000000029802322, z: -0.7146558, w: 0.69947636}
+  m_LocalPosition: {x: 0.80274105, y: 1.959135, z: -0.03500052}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7058373731214483547}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4096828084708072785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6782210380302351405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1fd8daaed7b64148a34acb96ba14ce1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skeletonRenderer: {fileID: 5745647828326491661}
+  boneName: staff hold
+  followXYPosition: 1
+  followZPosition: 1
+  followBoneRotation: 1
+  followSkeletonFlip: 1
+  followLocalScale: 0
+  followParentWorldScale: 0
+  maintainedAxisOrientation: 1
+  initializeOnAwake: 1
 --- !u!1 &8177667113544327990
 GameObject:
   m_ObjectHideFlags: 0
@@ -1166,7 +1189,7 @@ PrefabInstance:
     - target: {fileID: 8821639319113660216, guid: 048debae2a09fea4da163512b6086164, type: 3}
       propertyPath: weaponLocation
       value: 
-      objectReference: {fileID: 3211602870263171718}
+      objectReference: {fileID: 5190071973015555783}
     - target: {fileID: 9000978639404366388, guid: 048debae2a09fea4da163512b6086164, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 

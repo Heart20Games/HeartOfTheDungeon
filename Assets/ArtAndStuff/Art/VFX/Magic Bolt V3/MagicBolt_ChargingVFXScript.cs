@@ -36,6 +36,10 @@ public class MagicBolt_ChargingVFXScript : CastListener
     }
     public override void SetLevel(int level)
     {
+        if (this.level > 0 && level == 0)
+        {
+            castingEnd = true;
+        }
         this.level = level;
     }
     public override void SetTriggers(Triggers triggers)
