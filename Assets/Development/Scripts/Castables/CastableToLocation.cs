@@ -7,19 +7,20 @@ namespace HotD.Castables
 {
     public class CastableToLocation
     {
-        public enum Location { Character, Body, WeaponPoint, FiringPoint }
-        static public Transform GetLocationTransform(Location location, Character character)
+        public enum CastLocation { Character, Base, WeaponPoint, FiringPoint, Center}
+        static public Transform GetLocationTransform(CastLocation location, Character character)
         {
             return GetLocationTransform(location, character);
         }
-        static public Transform GetLocationTransform(Location location, ICastCompatible compatible)
+        static public Transform GetLocationTransform(CastLocation location, ICastCompatible compatible)
         {
             return location switch
             {
-                Location.Character => compatible.Transform,
-                Location.Body => compatible.Body.transform,
-                Location.WeaponPoint => compatible.WeaponLocation,
-                Location.FiringPoint => compatible.FiringLocation,
+                CastLocation.Character => compatible.Transform,
+                CastLocation.Base => compatible.Body,
+                CastLocation.WeaponPoint => compatible.WeaponLocation,
+                CastLocation.FiringPoint => compatible.FiringLocation,
+                CastLocation.Center => compatible.Body,
                 _ => null
             };
         }
@@ -27,7 +28,7 @@ namespace HotD.Castables
         [Serializable]
         public struct ToLocation<T>
         {
-            public ToLocation(T toMove, Location source, Location target)
+            public ToLocation(T toMove, CastLocation source, CastLocation target)
             {
                 name = $"{source}/{target}";
                 this.toMove = toMove;
@@ -36,8 +37,8 @@ namespace HotD.Castables
             }
             [SerializeField] private string name;
             public T toMove;
-            public Location source;
-            public Location target;
+            public CastLocation source;
+            public CastLocation target;
 
             public readonly Transform GetSourceTransform(Character character)
             {

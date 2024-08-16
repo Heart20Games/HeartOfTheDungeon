@@ -50,6 +50,9 @@ MonoBehaviour:
     debug: 0
     events:
       name: Events
+      onSetOwner:
+        m_PersistentCalls:
+          m_Calls: []
       onSetPowerLevel:
         m_PersistentCalls:
           m_Calls: []
@@ -79,6 +82,7 @@ MonoBehaviour:
     pivot: {fileID: 0}
     direction: {x: 0, y: 0, z: 0}
     followBody: 0
+    hasOwner: 0
     item: {fileID: 0}
     maxPowerLevel: 0
     curPowerLevel: 0
@@ -102,6 +106,9 @@ MonoBehaviour:
   connectToFieldEvents: 1
   fieldEvents:
     name: Local Events
+    onSetOwner:
+      m_PersistentCalls:
+        m_Calls: []
     onSetPowerLevel:
       m_PersistentCalls:
         m_Calls: []
@@ -328,6 +335,9 @@ MonoBehaviour:
     debug: 0
     events:
       name: Events
+      onSetOwner:
+        m_PersistentCalls:
+          m_Calls: []
       onSetPowerLevel:
         m_PersistentCalls:
           m_Calls: []
@@ -357,6 +367,7 @@ MonoBehaviour:
     pivot: {fileID: 0}
     direction: {x: 0, y: 0, z: 0}
     followBody: 0
+    hasOwner: 0
     item: {fileID: 0}
     maxPowerLevel: 0
     curPowerLevel: 0
@@ -379,6 +390,9 @@ MonoBehaviour:
   connectToFieldEvents: 1
   fieldEvents:
     name: Local Events
+    onSetOwner:
+      m_PersistentCalls:
+        m_Calls: []
     onSetPowerLevel:
       m_PersistentCalls:
         m_Calls:
@@ -494,6 +508,9 @@ MonoBehaviour:
     debug: 0
     events:
       name: Events
+      onSetOwner:
+        m_PersistentCalls:
+          m_Calls: []
       onSetPowerLevel:
         m_PersistentCalls:
           m_Calls: []
@@ -523,6 +540,7 @@ MonoBehaviour:
     pivot: {fileID: 0}
     direction: {x: 0, y: 0, z: 0}
     followBody: 0
+    hasOwner: 0
     item: {fileID: 0}
     maxPowerLevel: 0
     curPowerLevel: 0
@@ -545,6 +563,21 @@ MonoBehaviour:
   connectToFieldEvents: 1
   fieldEvents:
     name: Local Events
+    onSetOwner:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 5925745422948866963}
+          m_TargetAssemblyTypeName: HotD.Castables.ACastCompatibleFollower, Core
+          m_MethodName: set_Owner
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     onSetPowerLevel:
       m_PersistentCalls:
         m_Calls: []
@@ -658,6 +691,9 @@ MonoBehaviour:
     debug: 0
     events:
       name: Events
+      onSetOwner:
+        m_PersistentCalls:
+          m_Calls: []
       onSetPowerLevel:
         m_PersistentCalls:
           m_Calls: []
@@ -687,6 +723,7 @@ MonoBehaviour:
     pivot: {fileID: 682367346703146217}
     direction: {x: 0, y: 0, z: 0}
     followBody: 1
+    hasOwner: 0
     item: {fileID: 0}
     maxPowerLevel: 0
     curPowerLevel: 0
@@ -713,6 +750,9 @@ MonoBehaviour:
   connectToFieldEvents: 1
   fieldEvents:
     name: Local Events
+    onSetOwner:
+      m_PersistentCalls:
+        m_Calls: []
     onSetPowerLevel:
       m_PersistentCalls:
         m_Calls: []
@@ -782,34 +822,6 @@ PrefabInstance:
       value: D20 Shield
       objectReference: {fileID: 0}
     - target: {fileID: 726856205564614705, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 726856205564614705, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.197
-      objectReference: {fileID: 0}
-    - target: {fileID: 726856205564614705, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -13.302
-      objectReference: {fileID: 0}
-    - target: {fileID: 726856205564614705, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 726856205564614705, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 726856205564614705, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 726856205564614705, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 726856205564614705, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
@@ -831,3 +843,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 726856205564614705, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
   m_PrefabInstance: {fileID: 1630413444323754522}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5925745422948866963 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4943859971788102025, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
+  m_PrefabInstance: {fileID: 1630413444323754522}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cb5ff78941ff3d43a447f52fe5077f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

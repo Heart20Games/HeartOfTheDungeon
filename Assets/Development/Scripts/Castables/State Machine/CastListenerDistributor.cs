@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace HotD.Castables
 {
-    public class CastListenerDistributor : CastListener
+    public class CastListenerDistributor : ACastListener
     {
-        [SerializeField] private List<CastListener> listeners = new();
+        [SerializeField] private List<ACastListener> listeners = new();
         public CastProperties properties;
 
-        public void AddListener(CastListener listener)
+        public void AddListener(ACastListener listener)
         {
             listeners.Add(listener);
         }

@@ -181,7 +181,7 @@ namespace HotD.Generators
                         CastListenerDistributor effectManager = GenerateCastListenerDistributor(castable, "Effects");
                         foreach (var effect in effects)
                         {
-                            CastListener listener = effect.Generate(effectManager, stats);
+                            ACastListener listener = effect.Generate(effectManager, stats);
                             effectManager.AddListener(listener);
                         }
                         effectManager.SetChargeTimes(chargeTimes);
@@ -589,7 +589,7 @@ namespace HotD.Generators
         [Serializable]
         public struct Effect
         {
-            public Effect(Location source = Location.Character, Location target = Location.FiringPoint, Vector2 chargeLevels = new(), Vector2 comboSteps = new())
+            public Effect(CastLocation source = CastLocation.Character, CastLocation target = CastLocation.FiringPoint, Vector2 chargeLevels = new(), Vector2 comboSteps = new())
             {
                 this.name = $"{source} -> {target}";
                 prefab = null;
@@ -601,21 +601,21 @@ namespace HotD.Generators
             }
 
             public string name;
-            public CastListener prefab;
-            public Location source;
-            public Location target;
+            public ACastListener prefab;
+            public CastLocation source;
+            public CastLocation target;
 
             public Vector2 chargeLevels;
             public Vector2 comboSteps;
 
-            public CastListener Generate(CastListenerDistributor distributor, CastableStats stats, bool initializeValues=false, float[] chargeTimes=null)
+            public ACastListener Generate(CastListenerDistributor distributor, CastableStats stats, bool initializeValues=false, float[] chargeTimes=null)
             {
                 if (prefab != null)
                 {
                     GameObject listenerObject = PrefabUtility.InstantiatePrefab(prefab.gameObject) as GameObject;
                     listenerObject.transform.SetParent(distributor.transform);
 
-                    if (listenerObject.TryGetComponent<CastListener>(out var listener))
+                    if (listenerObject.TryGetComponent<ACastListener>(out var listener))
                     {
                         if (initializeValues)
                         {
@@ -632,7 +632,7 @@ namespace HotD.Generators
         [Serializable]
         public struct Execution
         {
-            public Execution(ExecutionMethod method=ExecutionMethod.Passive, Location source=Location.Character, Location target=Location.FiringPoint, Vector2 chargeLevels=new(), Vector2 comboSteps=new())
+            public Execution(ExecutionMethod method=ExecutionMethod.Passive, CastLocation source=CastLocation.Character, CastLocation target=CastLocation.FiringPoint, Vector2 chargeLevels=new(), Vector2 comboSteps=new())
             {
                 this.name = method.ToString();
                 this.method = method;
@@ -649,8 +649,8 @@ namespace HotD.Generators
 
             public string name;
             public ExecutionMethod method;
-            public Location source;
-            public Location target;
+            public CastLocation source;
+            public CastLocation target;
 
             public Vector2 chargeLevels;
             public Vector2 comboSteps;

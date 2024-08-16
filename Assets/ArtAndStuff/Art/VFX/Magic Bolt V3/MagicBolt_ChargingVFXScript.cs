@@ -5,13 +5,13 @@ using HotD.Castables;
 using static HotD.Castables.Coordination;
 using static HotD.Castables.CastableToLocation;
 
-public class MagicBolt_ChargingVFXScript : CastListener
+public class MagicBolt_ChargingVFXScript : ACastListener
 {
     [SerializeField] private VisualEffect visualEffect;
     [SerializeField] private int level;
     [SerializeField] private float[] chargeTimes;
-    [SerializeField] private Location defaultLocation = Location.FiringPoint;
-    [SerializeField] private Location finalLocation = Location.WeaponPoint;
+    [SerializeField] private CastLocation defaultLocation = CastLocation.FiringPoint;
+    [SerializeField] private CastLocation finalLocation = CastLocation.WeaponPoint;
     [SerializeField] private float[] charges;
     [SerializeField] private float castingChargeTime;
     [SerializeField] private float castingCharge;
