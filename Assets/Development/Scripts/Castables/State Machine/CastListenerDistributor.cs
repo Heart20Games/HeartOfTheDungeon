@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace HotD.Castables
 {
-    public class CastListenerDistributor : CastListener
+    public class CastListenerDistributor : ACastListener
     {
-        [SerializeField] private List<CastListener> listeners = new();
+        [SerializeField] private List<ACastListener> listeners = new();
         public CastProperties properties;
 
-        public void AddListener(CastListener listener)
+        public void AddListener(ACastListener listener)
         {
             listeners.Add(listener);
         }
@@ -27,6 +27,14 @@ namespace HotD.Castables
             foreach (var listener in listeners)
             {
                 listener.Level = level;
+            }
+        }
+
+        public override void SetOwner(ICastCompatible owner)
+        {
+            foreach (var listener in listeners)
+            {
+                listener.Owner = owner;
             }
         }
 

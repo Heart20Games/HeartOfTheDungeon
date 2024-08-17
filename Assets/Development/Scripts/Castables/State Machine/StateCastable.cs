@@ -2,7 +2,7 @@ using MyBox;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Events;
+//using UnityEditor.Events;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -360,38 +360,6 @@ namespace HotD.Castables
                 "Finish", CastAction.End, 
                 Triggers.None, Triggers.None, CastAction.End
             ));
-        }
-
-        [ButtonMethod]
-        public void CreateChargeThenCastExecutors()
-        {
-            GameObject parent = new("Charge");
-            parent.transform.SetParent(gameObject.transform);
-            var executor = parent.AddComponent<DelegatedExecutor>();
-
-            executor.State = CastState.Activating;
-
-            executor.supportedTransitions.Add(new(
-                "Charge on Start", CastAction.Start,
-                Triggers.StartAction, Triggers.None
-            ));
-            executor.supportedTransitions.Add(new(
-                "Cast on Release", CastAction.Release,
-                Triggers.None, Triggers.None, CastAction.End
-            ));
-
-            var charger = parent.AddComponent<Charger>();
-            
-            charger.resetOnBegin = true;
-
-            charger.onCharged = new();
-            UnityEvent onCharged = charger.onCharged;
-            UnityEventTools.AddPersistentListener(onCharged, executor.End);
-
-            UnityEvent startAction = executor.supportedTransitions[0].startAction;
-            UnityEventTools.AddPersistentListener(startAction, charger.Begin);
-
-            CreateCastExecutor();
         }
     }
 }

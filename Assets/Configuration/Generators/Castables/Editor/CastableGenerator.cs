@@ -319,7 +319,7 @@ namespace HotD.Generators
         [Serializable]
         public struct Effect
         {
-            public Effect(Location source = Location.Character, Location target = Location.FiringPoint, Vector2 chargeLevels = new(), Vector2 comboSteps = new())
+            public Effect(CastLocation source = CastLocation.Character, CastLocation target = CastLocation.FiringPoint, Vector2 chargeLevels = new(), Vector2 comboSteps = new())
             {
                 this.name = $"{source} -> {target}";
                 casted = null;
@@ -332,8 +332,8 @@ namespace HotD.Generators
 
             public string name;
             public CastedVFX casted;
-            public Location source;
-            public Location target;
+            public CastLocation source;
+            public CastLocation target;
 
             public Vector2 chargeLevels;
             public Vector2 comboSteps;
@@ -359,7 +359,7 @@ namespace HotD.Generators
         [Serializable]
         public struct Execution
         {
-            public Execution(ExecutionMethod method=ExecutionMethod.ColliderBased, Location source=Location.Character, Location target=Location.FiringPoint, Vector2 chargeLevels=new(), Vector2 comboSteps=new())
+            public Execution(ExecutionMethod method=ExecutionMethod.ColliderBased, CastLocation source=CastLocation.Character, CastLocation target=CastLocation.FiringPoint, Vector2 chargeLevels=new(), Vector2 comboSteps=new())
             {
                 this.name = method.ToString();
                 this.method = method;
@@ -375,8 +375,8 @@ namespace HotD.Generators
 
             public string name;
             public ExecutionMethod method;
-            public Location source;
-            public Location target;
+            public CastLocation source;
+            public CastLocation target;
 
             public Vector2 chargeLevels;
             public Vector2 comboSteps;

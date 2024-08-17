@@ -1,10 +1,11 @@
 using HotD.Body;
 using MyBox;
 using System.Collections;
-using System.Collections.Generic;
 using Unity.EditorCoroutines.Editor;
-using UnityEditor;
+using UnityEditor.Events;
 using UnityEngine;
+using static HotD.Castables.Coordination;
+using UnityEngine.Events;
 
 namespace HotD.Castables
 {
@@ -66,6 +67,38 @@ namespace HotD.Castables
             target.QueueAction(CastAction.Release);
             yield return new WaitForSeconds(delay);
             target.QueueAction(CastAction.End);
+        }
+
+        [ButtonMethod]
+        public void CreateChargeThenCastExecutors()
+        {
+            GameObject parent = new("Charge");
+            parent.transform.SetParent(target.transform);
+            var executor = parent.AddComponent<DelegatedExecutor>();
+
+            executor.State = CastState.Activating;
+
+            executor.supportedTransitions.Add(new(
+                "Charge on Start", CastAction.Start,
+                Triggers.StartAction, Triggers.None
+            ));
+            executor.supportedTransitions.Add(new(
+                "Cast on Release", CastAction.Release,
+                Triggers.None, Triggers.None, CastAction.End
+            ));
+
+            var charger = parent.AddComponent<Charger>();
+
+            charger.resetOnBegin = true;
+
+            charger.onCharged = new();
+            UnityEvent onCharged = charger.onCharged;
+            UnityEventTools.AddPersistentListener(onCharged, executor.End);
+
+            UnityEvent startAction = executor.supportedTransitions[0].startAction;
+            UnityEventTools.AddPersistentListener(startAction, charger.Begin);
+
+            target.CreateCastExecutor();
         }
     }
 }

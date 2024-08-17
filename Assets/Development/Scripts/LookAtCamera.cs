@@ -21,16 +21,21 @@ public class LookAtCamera : BaseMonoBehaviour
     {
         if (isActiveAndEnabled)
         {
-            if (up == Vector3.zero)
-            {
-                transform.TrueLookAt(target.position);
-            }
-            else
-            {
-                Vector3 direction = (target.position - transform.position).normalized;
-                Vector3 relativePosition = transform.position + new Vector3(direction.x, 0f, direction.z);
-                transform.LookAt(relativePosition, up);
-            }
+            LookAt(transform, target, up);
+        }
+    }
+
+    public static void LookAt(Transform transform, Transform target, Vector3 up)
+    {
+        if (up == Vector3.zero)
+        {
+            transform.TrueLookAt(target.position);
+        }
+        else
+        {
+            Vector3 direction = (target.position - transform.position).normalized;
+            Vector3 relativePosition = transform.position + new Vector3(direction.x, 0f, direction.z);
+            transform.LookAt(relativePosition, up);
         }
     }
 
