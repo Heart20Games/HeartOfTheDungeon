@@ -282,46 +282,69 @@ namespace HotD.Body
 
         // Character Mode
 
+        [SerializeField] private CharacterMode baseMode;
         public CharacterMode mode;
-        public ModField<bool> brainDead = new("Brain Dead", false);
-        public bool BrainDead
-        {
-            get => brainDead.Value;
-            set
-            {
-                brainDead.Value = value;
-                SetMode(mode);
-            }
-        }
+        public List<CharacterModifier> modifiers;
         public bool PlayerControlled
         {
             get => mode.PlayerControlled;
             set => SetMode(value ? ControlMode.Player : ControlMode.Brain); //!Controllable ? mode.controlMode : ControlMode.None);
         }
         public bool Alive { get => mode.liveMode == LiveMode.Alive; }
+        [ButtonMethod]
+        public void ReapplyMode()
+        {
+            SetMode(baseMode);
+        }
+        public void AddOrRemoveModifier<T>(T key, bool add)
+        {
+            if (settings.TryGetModifier(key, out var modifier))
+            {
+                if (add) modifiers.Add(modifier);
+                else modifiers.Remove(modifier);
+
+                SetMode(baseMode);
+            }
+        }
         public void SetMode<T>(T subMode) where T : Enum
         {
             if (settings.TryGetMode(subMode, out var mode))
                 SetMode(mode);
             else
-                Debug.LogWarning($"Can't find live mode for \"{subMode}\"");
+                Debug.LogWarning($"Can't find mode for \"{subMode}\"");
         }
         private void SetMode(CharacterMode new_mode)
         {
-            CharacterMode oldMode = this.mode;
-            this.mode = new_mode;
+            // Keep Track of Old Mode and Base Mode
+            CharacterMode oldMode = mode;
+            baseMode = new_mode;
 
+            // Apply Modifiers and Set Mode
+            foreach (var modifier in modifiers)
+            {
+                new_mode = modifier.ModifyMode(new_mode);
+            }
+            mode = new_mode;
+
+            // Apply the Chosen Mode
+
+            // Movement
             movement.StopMoving();
             movement.MoveVector = new();
-            movement.CanMove = new_mode.moveMode == MovementMode.Active && !BrainDead;
-            movement.UseGravity = new_mode.moveMode != MovementMode.Disabled;
-            SetNonNullEnabled(brain, !new_mode.PlayerControlled && !BrainDead);
-            SetNonNullEnabled(caster, new_mode.useCaster && !BrainDead);
+            movement.CanMove = new_mode.canMove;
+            movement.UseGravity = new_mode.useGravity;
+
+            // Behavior
+            SetNonNullEnabled(brain, new_mode.controlMode == ControlMode.Brain);
+            SetNonNullEnabled(caster, new_mode.useCaster);
+            SetNonNullEnabled(interactor, new_mode.useInteractor);
+            
+            // Displays
+            SetNonNullActive(moveReticle, new_mode.useMoveReticle);
             SetNonNullActive(artRenderer, new_mode.displayable);
-            SetNonNullActive(moveReticle, new_mode.useMoveReticle && !BrainDead);
-            SetNonNullEnabled(interactor, new_mode.useInteractor && !BrainDead);
             if (pips != null) pips.SetDisplayMode(new_mode.pipMode);
-                
+            
+            // Animation / Selection (Alive?)
             bool alive = new_mode.liveMode == LiveMode.Alive;
             brain.Alive = alive;
             if (artRenderer != null) artRenderer.Dead = !alive;
@@ -329,6 +352,7 @@ namespace HotD.Body
             SetNonNullEnabled(deadCollider, !alive);
             selectable.IsSelectable = alive;
             
+            // Death and Respawning
             if (new_mode.liveMode != oldMode.liveMode)
             {
                 switch (new_mode.liveMode)
@@ -346,7 +370,8 @@ namespace HotD.Body
                     case LiveMode.Despawned: Despawn(); break;
                 }
             }
-                
+            
+            // Control Mode
             if ((new_mode.PlayerControlled || oldMode.PlayerControlled) && oldMode.controlMode != new_mode.controlMode)
             {
                 controlChanged.Invoke(new_mode.PlayerControlled);

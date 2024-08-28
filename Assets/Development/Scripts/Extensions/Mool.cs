@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public struct Mool
 {
     // Static
@@ -19,6 +21,7 @@ public struct Mool
         this.value = value < 0 ? Value.Maybe : value > 0 ? Value.Yes : Value.No; 
     }
 
+    public bool IsAmbiguous { get { return value == Value.Maybe; } }
     public bool IsMaybe { get { return value == Value.Maybe || value == Value.Yes; } }
     public bool IsNo { get { return value == Value.No; } }
     public bool IsYes { get { return value == Value.Yes; } }

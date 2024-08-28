@@ -18,7 +18,10 @@ namespace HotD.Castables
         {
             foreach (var listener in listeners)
             {
-                listener.ChargeTimes = times;
+                if (listener != null)
+                    listener.ChargeTimes = times;
+                else
+                    Debug.LogWarning("Found null listener on CastListenerDistributor.");
             }
         }
 

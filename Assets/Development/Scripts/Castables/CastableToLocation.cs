@@ -14,15 +14,23 @@ namespace HotD.Castables
         }
         static public Transform GetLocationTransform(CastLocation location, ICastCompatible compatible)
         {
-            return location switch
+            if (compatible != null)
             {
-                CastLocation.Character => compatible.Transform,
-                CastLocation.Base => compatible.Body,
-                CastLocation.WeaponPoint => compatible.WeaponLocation,
-                CastLocation.FiringPoint => compatible.FiringLocation,
-                CastLocation.Center => compatible.Body,
-                _ => null
-            };
+                return location switch
+                {
+                    CastLocation.Character => compatible.Transform,
+                    CastLocation.Base => compatible.Body,
+                    CastLocation.WeaponPoint => compatible.WeaponLocation,
+                    CastLocation.FiringPoint => compatible.FiringLocation,
+                    CastLocation.Center => compatible.Body,
+                    _ => null
+                };
+            }
+            else
+            {
+                Debug.LogWarning("ICastCompatible is null in GetLocationTransform");
+                return null;
+            }
         }
 
         [Serializable]
