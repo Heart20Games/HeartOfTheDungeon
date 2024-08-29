@@ -193,7 +193,7 @@ public class MagicShieldImpact : CastLocationFollower
             objectPivot = gameObject.transform.position * -1;
             Quaternion quatRotation = Quaternion.FromToRotation(Vector3.forward, impactDirection);
             impactAxis = quatRotation.eulerAngles;
-            Print($"Impact! {impactLocation} / {impactAxis}");
+            Print($"Impact! {impactLocation} / {impactAxis}", debug, this);
             ImpactTrigger();
         }
     }

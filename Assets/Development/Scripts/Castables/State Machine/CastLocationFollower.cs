@@ -35,6 +35,10 @@ namespace HotD.Castables
                 {
                     transform.position = target.position + offset;
                 }
+                else
+                {
+                    Debug.LogWarning("Target is null.", this);
+                }
             }
         }
     }

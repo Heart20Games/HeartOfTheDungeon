@@ -97,7 +97,8 @@ namespace HotD.Generators
                         {
                             foreach (var oldItem in items)
                             {
-                                AssetDatabase.DeleteAsset($"{oldDirectory}/{oldItem.name}.asset");
+                                if (oldItem != null)
+                                    AssetDatabase.DeleteAsset($"{oldDirectory}/{oldItem.name}.asset");
                             }
                             items.Clear();
                         }
@@ -682,22 +683,27 @@ namespace HotD.Generators
 
             public readonly Castables.ExecutionMethod PreparePassiveMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
             {
+                // Object
+                GameObject castedObject = AddCastedObject(executor, pivot);
+
+                // Method
+                Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
+                method.InitializeEvents();
+                
                 if (passivePrefab != null)
                 {
-                    // Object
-                    GameObject castedObject = AddCastedObject(executor, pivot);
-
-                    // Method
-                    Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
-                    method.InitializeEvents();
-
                     // Prefab Instance
                     GameObject instance = PrefabUtility.InstantiatePrefab(passivePrefab.gameObject) as GameObject;
                     instance.transform.SetParent(castedObject.transform);
 
-                    return method;
+                    if (instance.TryGetComponent<ACastCompatibleFollower>(out var follower))
+                    {
+                        UnityEventTools.AddPersistentListener(method.fieldEvents.onSetOwner, follower.SetOwner);
+                    }
+
                 }
-                return null;
+                
+                return method;
             }
 
             public readonly Castables.ExecutionMethod PrepareCollisionMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
