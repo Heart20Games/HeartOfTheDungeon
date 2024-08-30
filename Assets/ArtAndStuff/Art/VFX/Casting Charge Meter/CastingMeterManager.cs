@@ -22,29 +22,33 @@ public class MeterProgressTester : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        castingMeterFill.SetFloat("Meter Progress", meterProgress);
-        castingMeterBackground.SetFloat("Meter Progress", meterProgress);
-        if (levelUp)
+        if(castingMeterFill != null && castingMeterBackground != null)
         {
-            castingMeterFill.SendEvent("Level Up 2");
-            levelUp = false;
-        }
-        if (level2Available && !level2Dissolved)
-        {
-            StartCoroutine(Level2Dissolve());
-        }
-        else if (!level2Available && level2Dissolved)
-        {
-            StartCoroutine(Level2Reform());
-        }
         
-        if (level3Available && !level3Dissolved)
-        {
-            StartCoroutine(Level3Dissolve());
-        }
-        else if (!level3Available && level3Dissolved)
-        {
-            StartCoroutine(Level3Reform());
+            castingMeterFill.SetFloat("Meter Progress", meterProgress);
+            castingMeterBackground.SetFloat("Meter Progress", meterProgress);
+            if (levelUp)
+            {
+                castingMeterFill.SendEvent("Level Up 2");
+                levelUp = false;
+            }
+            if (level2Available && !level2Dissolved)
+            {
+                StartCoroutine(Level2Dissolve());
+            }
+            else if (!level2Available && level2Dissolved)
+            {
+                StartCoroutine(Level2Reform());
+            }
+            
+            if (level3Available && !level3Dissolved)
+            {
+                StartCoroutine(Level3Dissolve());
+            }
+            else if (!level3Available && level3Dissolved)
+            {
+                StartCoroutine(Level3Reform());
+            }
         }
     }
 
