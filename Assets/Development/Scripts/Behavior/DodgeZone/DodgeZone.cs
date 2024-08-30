@@ -14,6 +14,8 @@ public class DodgeZone : MonoBehaviour
 
     [SerializeField] private int dodgeChance;
 
+    [SerializeField] private float sideStepSpeed;
+
     private Coroutine sideStepRoutine;
     private Coroutine magicShieldRoutine;
 
@@ -135,7 +137,7 @@ public class DodgeZone : MonoBehaviour
                 hitObstacle = true;
             }
 
-            characterTransform.position += randNum == 0 ? characterTransform.right * 10 * Time.deltaTime : -characterTransform.right * 10 * Time.deltaTime;
+            characterTransform.position += randNum == 0 ? characterTransform.right * sideStepSpeed * Time.deltaTime : -characterTransform.right * sideStepSpeed * Time.deltaTime;
 
             yield return null;
         }

@@ -106,23 +106,23 @@ public class SlimeWizard : EnemyAI
 
         switch (randomAttack)
         {
-            case 1:
+            case 0:
                 magicBoltVfxAnimator.Play("Level 1 Charge");
                 slimeWizardAnimator.SetInteger("ChargeLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
                 chargingLevelOne = true;
                 break;
-            case 2:
+            case 1:
                 magicBoltVfxAnimator.Play("Level 1 Charge");
                 magicBoltVfxAnimator.SetBool("Level 2 Available", true);
                 slimeWizardAnimator.SetInteger("ChargeLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
                 chargingLevelTwo = true;
                 break;
-            case 0:
+            case 2:
                 magicBoltVfxAnimator.Play("Level 1 Charge");
                 magicBoltVfxAnimator.SetBool("Level 3 Available", true);
-                slimeWizardAnimator.SetInteger("ChargeLevel", 4);
+                slimeWizardAnimator.SetInteger("ChargeLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
                 break;
         }
@@ -137,7 +137,11 @@ public class SlimeWizard : EnemyAI
         }
         else
         {
-            yield return new WaitForSeconds(6f);
+            yield return new WaitForSeconds(2f);
+            slimeWizardAnimator.SetInteger("ChargeLevel", 2);
+            yield return new WaitForSeconds(2f);
+            slimeWizardAnimator.SetInteger("ChargeLevel", 3);
+            yield return new WaitForSeconds(2f);
         }
 
         slimeWizardAnimator.SetTrigger("StartCast");
