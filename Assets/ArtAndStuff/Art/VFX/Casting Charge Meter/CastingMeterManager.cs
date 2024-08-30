@@ -17,16 +17,32 @@ public class MeterProgressTester : MonoBehaviour
     public bool level3Available;
     private bool level3Dissolved;
     [SerializeField] private float dissolveDuration = 1f;
+    public bool cooldown = false;
     
 
     // Update is called once per frame
     void Update()
     {
-        if(castingMeterFill != null && castingMeterBackground != null)
-        {
         
-            castingMeterFill.SetFloat("Meter Progress", meterProgress);
+        
+        if(castingMeterBackground != null)
+        {
             castingMeterBackground.SetFloat("Meter Progress", meterProgress);
+        }
+        
+        if(castingMeterFill != null)
+        {        
+            castingMeterFill.SetFloat("Meter Progress", meterProgress);
+            
+            if (cooldown)
+            {
+                castingMeterFill.SetBool("Cooldown", true);
+            }
+            else
+            {
+                castingMeterFill.SetBool("Cooldown", false);
+            }
+            
             if (levelUp)
             {
                 castingMeterFill.SendEvent("Level Up 2");
