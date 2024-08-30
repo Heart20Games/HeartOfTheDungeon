@@ -24,6 +24,8 @@ namespace HotD.Castables
         protected new void Awake()
         {
             base.Awake();
+
+            fieldEvents.onSetOwner.Invoke(Owner);
             collidables = GetComponentsInChildren<ICollidables>(true);
             foreach (var collidable in collidables)
             {
@@ -36,8 +38,11 @@ namespace HotD.Castables
 
         protected new void OnEnable()
         {
+            Print("Execution Method Enabled", true, this);
+
             base.OnEnable();
 
+            fieldEvents.onSetOwner.Invoke(Owner);
             UpdatePositionables();
             UpdateCollisionExceptions();
             ApplyOrRemoveStatuses(GetStatuses(statusType), true);
