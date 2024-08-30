@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,8 +16,14 @@ public class MeterProgressTester : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        castingMeterFill.SetFloat("Meter Progress", meterProgress);
-        castingMeterBackground.SetFloat("Meter Progress", meterProgress);
+        if (castingMeterFill.HasProperty("Meter Progress"))
+        {
+            castingMeterFill.SetFloat("Meter Progress", meterProgress);
+        }
+        if (castingMeterBackground.HasProperty("Meter Progress"))
+        {
+            castingMeterBackground.SetFloat("Meter Progress", meterProgress);
+        }
         if (levelUp)
         {
             castingMeterFill.SendEvent("Level Up 2");
