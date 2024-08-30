@@ -751,10 +751,16 @@ namespace HotD.Generators
                 // Object
                 GameObject castedObject = AddCastedObject(executor, pivot);
                 Pivot castedPivot = AddCastedPivot(castedObject);
+                castedPivot.body = castedPivot.transform;
 
                 // Method
                 Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
                 method.InitializeEvents();
+
+                // Cast Location Follower
+                CastLocationFollower follower = castedPivot.GetOrAddComponent<CastLocationFollower>();
+                follower.SetTarget(CastLocation.FiringPoint);
+                UnityEventTools.AddPersistentListener(method.fieldEvents.onSetOwner, follower.SetOwner);
 
                 // Projectile Spawner
                 ProjectileSpawner spawner = castedObject.AddComponent<ProjectileSpawner>();
@@ -762,11 +768,8 @@ namespace HotD.Generators
                 UnityEventTools.AddPersistentListener(method.fieldEvents.onSetCollisionExceptions, spawner.SetExceptions);
                 method.positionables.Add(spawner);
                 spawner.pivot = castedPivot.transform;
-                castedPivot.body = castedPivot.transform;
                 spawner.lifeSpan = projectileLifeSpan;
                 spawner.applyOnSet = false;
-                //castedPivot.enabled = false;
-                //executor.fields.toLocations.Add(new(spawner, source, target));
 
                 // Projectiles
                 if (projectilePrefabs != null)
