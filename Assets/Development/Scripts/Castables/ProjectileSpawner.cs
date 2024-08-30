@@ -84,7 +84,8 @@ namespace HotD.Castables
                 pInstance.gameObject.SetActive(true);
                 if (pInstance.TryGetComponent(out Pivot pivotType))
                 {
-                    if (pivotType.body.TryGetComponent(out Projectile bInstance))
+                    Projectile bInstance = pivotType.body.GetComponentInChildren<Projectile>(true);
+                    if (bInstance != null)
                     {
                         bInstance.SetActive(true);
                         projectiles.Add(bInstance);
@@ -94,7 +95,7 @@ namespace HotD.Castables
                     }
                     else
                     {
-                        Debug.LogWarning("Pivot body should be a Projectile.");
+                        Debug.LogWarning("Pivot body has no Projectile components.");
                     }
                 }
             }
