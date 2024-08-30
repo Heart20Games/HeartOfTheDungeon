@@ -770,6 +770,7 @@ namespace HotD.Generators
                 spawner.pivot = castedPivot.transform;
                 spawner.lifeSpan = projectileLifeSpan;
                 spawner.applyOnSet = false;
+                spawner.spawnOnEnable = false;
 
                 // Projectiles
                 if (projectilePrefabs != null)

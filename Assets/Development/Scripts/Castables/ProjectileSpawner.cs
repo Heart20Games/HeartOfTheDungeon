@@ -17,7 +17,7 @@ namespace HotD.Castables
         public Transform pivot;
         public Projectile projectile;
         [SerializeField] private bool followBody = false;
-        [SerializeField] private bool spawnOnEnable = true;
+        public bool spawnOnEnable = true;
         [SerializeField] private Collider[] exceptions;
         [SerializeField] private List<Projectile> projectiles = new();
         [SerializeField] private bool debug = false;
