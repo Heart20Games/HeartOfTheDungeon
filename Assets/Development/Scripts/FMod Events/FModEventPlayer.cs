@@ -23,11 +23,10 @@ public class FModEventPlayer : BaseMonoBehaviour
 
     public void PlayEvent(string key)
     {
-        Vector3 worldPos = source.position + offset;
-        PlayEvent(key, worldPos);
+        PlayEvent(key, source.gameObject);
     }
 
-    public void PlayEvent(string key, Vector3 worldPos)
+    public void PlayEvent(string key, GameObject obj)
     {
         if (libary == null)
         {
@@ -36,13 +35,13 @@ public class FModEventPlayer : BaseMonoBehaviour
         else
         {
             EventReference reference = libary.GetReference(key);
-            PlayOneShot(reference, worldPos);
+            PlayOneShot(reference, obj);
         }
     }
 
-    public void PlayOneShot(EventReference sound, Vector3 worldPos)
+    public void PlayOneShot(EventReference sound, GameObject obj)
     {
-        RuntimeManager.PlayOneShot(sound, worldPos);
+        RuntimeManager.PlayOneShotAttached(sound, obj);
     }
 
     public EventInstance CreateInstance(EventReference eventReference)

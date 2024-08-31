@@ -3,8 +3,6 @@ using FMODUnity;
 
 public class CallOutBarks : MonoBehaviour
 {
-    [SerializeField] private StudioEventEmitter callOutEmitter;
-
     [SerializeField] private EventReference[] callOutEvents;
 
     public void PlayBark(int callIndex)
@@ -12,24 +10,16 @@ public class CallOutBarks : MonoBehaviour
         switch(callIndex)
         {
             case 0:
-                Debug.Log(gameObject.name + ": Small missile incoming!");
-                //callOutEmitter.EventReference = callOutEvents[0];
-                //callOutEmitter.Play();
+                RuntimeManager.PlayOneShotAttached(callOutEvents[0], gameObject);
                 break;
             case 1:
-                Debug.Log(gameObject.name + ": Medium missile incoming!");
-                //callOutEmitter.EventReference = callOutEvents[1];
-                //callOutEmitter.Play();
+                RuntimeManager.PlayOneShotAttached(callOutEvents[1], gameObject);
                 break;
             case 2:
-                Debug.Log(gameObject.name + ": Large missile incoming!");
-                //callOutEmitter.EventReference = callOutEvents[2];
-                //callOutEmitter.Play();
+                RuntimeManager.PlayOneShotAttached(callOutEvents[2], gameObject);
                 break;
             default:
-                Debug.Log(gameObject.name + ": Small missile incoming!");
-                //callOutEmitter.EventReference = callOutEvents[0];
-                //callOutEmitter.Play();
+                RuntimeManager.PlayOneShotAttached(callOutEvents[0], gameObject);
                 break;
         }
     }
