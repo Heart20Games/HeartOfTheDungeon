@@ -38,7 +38,7 @@ namespace HotD.Castables
     {
         private CastableStats stats;
         public CastableStats Stats { get => stats; set => stats = value; }
-        [SerializeField] private bool debug;
+        [SerializeField] protected bool debug;
 
         private readonly bool castOnEnable = true;
 

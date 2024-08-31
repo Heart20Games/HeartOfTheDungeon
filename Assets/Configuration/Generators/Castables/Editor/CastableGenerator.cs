@@ -10,7 +10,6 @@ using static HotD.Castables.CastableToLocation;
 using static HotD.Castables.DelegatedExecutor;
 using static HotD.Castables.Loadout;
 using Range = global::Body.Behavior.ContextSteering.CSContext.Range;
-using static CastCoordinator;
 
 namespace HotD.Generators
 {
@@ -235,7 +234,7 @@ namespace HotD.Generators
             else return null;
         }
 
-        private Damager GenerateDamager(CastableProperties castable, GameObject gameObject)
+        private Damager GenerateDamager(CastProperties castable, GameObject gameObject)
         {
             Assert.IsNotNull(castable);
             if (stats.dealDamage)
@@ -262,14 +261,14 @@ namespace HotD.Generators
             return item;
         }
 
-        private static Casted AddCastedComponent(GameObject castedObject, CastableProperties castable, CastableStats stats)
+        private static Casted AddCastedComponent(GameObject castedObject, CastProperties castable, CastableStats stats)
         {
             Casted casted = castedObject.AddComponent<Casted>();
             ConnectCastedComponent(casted, castable, stats);
             return casted;
         }
 
-        private static void ConnectCastedComponent(Casted casted, CastableProperties castable, CastableStats stats)
+        private static void ConnectCastedComponent(Casted casted, CastProperties castable, CastableStats stats)
         {
             //casted.gameObject.SetActive(false);
             //casted.enabled = false;
@@ -320,7 +319,7 @@ namespace HotD.Generators
         [Serializable]
         public struct Effect
         {
-            public Effect(Location source = Location.Character, Location target = Location.FiringPoint, Vector2 chargeLevels = new(), Vector2 comboSteps = new())
+            public Effect(CastLocation source = CastLocation.Character, CastLocation target = CastLocation.FiringPoint, Vector2 chargeLevels = new(), Vector2 comboSteps = new())
             {
                 this.name = $"{source} -> {target}";
                 casted = null;
@@ -333,13 +332,13 @@ namespace HotD.Generators
 
             public string name;
             public CastedVFX casted;
-            public Location source;
-            public Location target;
+            public CastLocation source;
+            public CastLocation target;
 
             public Vector2 chargeLevels;
             public Vector2 comboSteps;
 
-            public readonly void GenerateEffect(CastableProperties castable, CastableStats stats)
+            public readonly void GenerateEffect(CastProperties castable, CastableStats stats)
             {
                 if (casted != null)
                 {
@@ -360,7 +359,7 @@ namespace HotD.Generators
         [Serializable]
         public struct Execution
         {
-            public Execution(ExecutionMethod method=ExecutionMethod.ColliderBased, Location source=Location.Character, Location target=Location.FiringPoint, Vector2 chargeLevels=new(), Vector2 comboSteps=new())
+            public Execution(ExecutionMethod method=ExecutionMethod.ColliderBased, CastLocation source=CastLocation.Character, CastLocation target=CastLocation.FiringPoint, Vector2 chargeLevels=new(), Vector2 comboSteps=new())
             {
                 this.name = method.ToString();
                 this.method = method;
@@ -376,8 +375,8 @@ namespace HotD.Generators
 
             public string name;
             public ExecutionMethod method;
-            public Location source;
-            public Location target;
+            public CastLocation source;
+            public CastLocation target;
 
             public Vector2 chargeLevels;
             public Vector2 comboSteps;

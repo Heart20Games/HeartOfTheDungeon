@@ -38,7 +38,7 @@ public static class Awarn
     }
 
     // Object Awarn
-    private static void ObjectAwarn(Action<object,string> action, object value, string message = null)
+    private static void ObjectAwarn(Action<object,string> action, object value, string message = null, UnityEngine.Object context=null)
     {
         try
         {
@@ -46,7 +46,7 @@ public static class Awarn
         }
         catch (AssertionException exception)
         {
-            Debug.LogWarning(exception.Message);
+            Debug.LogWarning(exception.Message, context);
         }
     }
 

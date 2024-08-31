@@ -15,11 +15,12 @@ Material:
   - _DOUBLE_SIDED_LIGHTING
   - _RECEIVE_SHADOWS
   - _STRAIGHT_ALPHA_INPUT
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _ZWRITE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_DoubleSidedGI: 1
+  m_CustomRenderQueue: 1900
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -30,9 +31,13 @@ Material:
         m_Texture: {fileID: 2800000, guid: 81bd997e94f07b24f9ad958d76f74c0b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MaskTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Cutoff: 0.1
+    - _Cutoff: 0.992
     - _DoubleSidedLighting: 1
     - _LightAffectsAdditive: 0
     - _ReceiveShadows: 1
@@ -40,7 +45,7 @@ Material:
     - _StencilRef: 1
     - _StraightAlphaInput: 1
     - _TintBlack: 0
-    - _ZWrite: 0
+    - _ZWrite: 1
     m_Colors:
     - _Black: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}

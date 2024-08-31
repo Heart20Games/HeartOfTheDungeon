@@ -9,7 +9,7 @@ namespace HotD.Castables
     using HotD.Body;
     using MyBox;
 
-    public class Castable : CastableProperties, ICastable
+    public class Castable : CastProperties, ICastable
     {
         // Events
         [Foldout("Casting", true)]

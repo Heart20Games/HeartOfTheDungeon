@@ -1,35 +1,39 @@
 using HotD.Castables;
 using MyBox;
-using PlasticGui.WebApi.Responses;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 using static Impact;
 
-public class MagicShieldImpact : BaseMonoBehaviour
+public class MagicShieldImpact : CastLocationFollower
 {
-    private Vector3 objectPivot;
-    public bool impact = false;
+    [Foldout("Impact VFX", true)]
+    [SerializeField] private bool impact = false;
     [SerializeField] private bool impact1Active;
     [SerializeField] private bool impact2Active;
     [SerializeField] private bool impact3Active;
     public Vector3 impactLocation;
     [ReadOnly][SerializeField] private Vector3 impactDirection;
     public Vector3 impactAxis;
-    private VisualEffect visualEffect;
-    private float vertexDistortDuration = 0f;
-    [SerializeField] private Vector3 vertexMovementAmount = new Vector3 (.12f, .12f, .12f);
+
+    [Foldout("Shield VFX", true)]
+    [SerializeField] private Vector3 vertexMovementAmount = new(.12f, .12f, .12f);
     [SerializeField] private float vertexDistortionAmount;
     [SerializeField] float impactDuration = .35f;
-    [SerializeField] private bool shieldOn = false;
     [SerializeField] private float dissolveAmount;
     [SerializeField] private float dissolveDuration;
     [SerializeField] private bool shieldTransitioning;
-    [SerializeField] private bool debug;
     [SerializeField] private float starSpherePower;
+    [Foldout("Shield VFX")]
     [SerializeField] private float starSphereExplode;
-    public bool explode;
+    
+    [SerializeField] private bool shieldOn = false;
+    [SerializeField] private bool debug;
+    [SerializeField] private bool explode;
+
+    private Vector3 objectPivot;
+    private VisualEffect visualEffect;
+    private float vertexDistortDuration = 0f;
     
     // Start is called before the first frame update
     void Start()
@@ -68,7 +72,7 @@ public class MagicShieldImpact : BaseMonoBehaviour
             }
             else if (!shieldOn && !shieldTransitioning && !explode && dissolveAmount < 1f)
             {
-                //StartCoroutine(ShieldDeactivate());
+                StartCoroutine(ShieldDeactivate());
             }
 
             if(explode == true &&!shieldTransitioning)
@@ -189,7 +193,7 @@ public class MagicShieldImpact : BaseMonoBehaviour
             objectPivot = gameObject.transform.position * -1;
             Quaternion quatRotation = Quaternion.FromToRotation(Vector3.forward, impactDirection);
             impactAxis = quatRotation.eulerAngles;
-            Print($"Impact! {impactLocation} / {impactAxis}");
+            Print($"Impact! {impactLocation} / {impactAxis}", debug, this);
             ImpactTrigger();
         }
     }
