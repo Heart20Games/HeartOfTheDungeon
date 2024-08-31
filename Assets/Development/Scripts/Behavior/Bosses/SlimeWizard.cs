@@ -111,6 +111,7 @@ public class SlimeWizard : EnemyAI
                 slimeWizardAnimator.SetInteger("ChargeLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
                 chargingLevelOne = true;
+                CallOutManager.instance.PlayPartyMemeberCallOut(0);
                 break;
             case 1:
                 magicBoltVfxAnimator.Play("Level 1 Charge");
@@ -118,12 +119,14 @@ public class SlimeWizard : EnemyAI
                 slimeWizardAnimator.SetInteger("ChargeLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
                 chargingLevelTwo = true;
+                CallOutManager.instance.PlayPartyMemeberCallOut(1);
                 break;
             case 2:
                 magicBoltVfxAnimator.Play("Level 1 Charge");
                 magicBoltVfxAnimator.SetBool("Level 3 Available", true);
                 slimeWizardAnimator.SetInteger("ChargeLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
+                CallOutManager.instance.PlayPartyMemeberCallOut(2);
                 break;
         }
 
