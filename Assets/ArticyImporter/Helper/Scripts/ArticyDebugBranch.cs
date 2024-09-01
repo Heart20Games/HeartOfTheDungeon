@@ -35,18 +35,20 @@ public class ArticyDebugBranch : MonoBehaviour
 		// now we figure out which text our button should have, and we just try to cast our target into different types, 
 		// creating some sort of priority naming  MenuText -> DisplayName -> TechnicalName -> ClassName/Null
 
-		var obj = target as IObjectWithMenuText;
-		if (obj != null)
+		if (target is IDialogueFragment)
 		{
-			dialogText.text = obj.MenuText;
+			if (target is IObjectWithMenuText objWithMenuText)
+				dialogText.text = objWithMenuText.MenuText;
+			else if (target is IObjectWithLocalizableMenuText objWithLocalizableMenuText)
+				dialogText.text = objWithLocalizableMenuText.MenuText;
 
 			// Empty? Usually it would have a menu text, but it was deliberately left empty, in a normal game this could mean a single branch to just continue the dialog, if the protagonist is talking for
 			// example, how you handle this is up to you, for this we just use the text normal text to show.
 			if (dialogText.text == "")
 			{
-				if(obj is IObjectWithText objectWithText)
+				if (target is IObjectWithText objectWithText)
 					dialogText.text = objectWithText.Text;
-				else if (obj is IObjectWithLocalizableText objectWithLocalizableText)
+				else if (target is IObjectWithLocalizableText objectWithLocalizableText)
 					dialogText.text = objectWithLocalizableText.Text;
 				else
 					dialogText.text = "...";
