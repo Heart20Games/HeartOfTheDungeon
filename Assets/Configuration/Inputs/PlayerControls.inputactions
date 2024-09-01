@@ -464,7 +464,7 @@
                     "type": "PassThrough",
                     "id": "a2fe85a6-d37c-45b4-ae4d-135093600209",
                     "expectedControlType": "Vector2",
-                    "processors": "ScaleVector2(x=0.0625,y=0.0625),NormalizeVector2",
+                    "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
@@ -484,6 +484,15 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Hold LockOn",
+                    "type": "Button",
+                    "id": "4fe38776-2f9d-494b-a085-fd8484a710b1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)",
                     "initialStateCheck": false
                 },
                 {
@@ -592,6 +601,15 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "FlipCamera",
+                    "type": "Button",
+                    "id": "1413b34c-dc37-4142-886f-f6e9f2850bed",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
                     "initialStateCheck": false
                 }
             ],
@@ -733,7 +751,7 @@
                     "id": "5e528783-b6b7-429f-8f51-6ecf431f6aaf",
                     "path": "2DVector(mode=2)",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "ScaleVector2(x=0.5,y=0.5)",
                     "groups": "",
                     "action": "Look",
                     "isComposite": true,
@@ -788,7 +806,7 @@
                     "id": "ee15e431-15bc-4584-b858-68b8403211cb",
                     "path": "2DVector(mode=2)",
                     "interactions": "",
-                    "processors": "NormalizeVector2,StickDeadzone",
+                    "processors": "ScaleVector2(x=0.125,y=0.125),StickDeadzone(min=0.25),ScaleVector2",
                     "groups": "",
                     "action": "Look",
                     "isComposite": true,
@@ -1148,17 +1166,6 @@
                 },
                 {
                     "name": "",
-                    "id": "9a87fc62-2b98-41ae-bcd2-3d6a73dd9426",
-                    "path": "<Gamepad>/rightStickPress",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Toggle LockOn",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "2830157a-312b-4075-a9a2-a19d6cb738c5",
                     "path": "<Keyboard>/l",
                     "interactions": "",
@@ -1231,6 +1238,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Control Sheet",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "351dadd5-9634-403d-8f7a-87fa9b4fafc8",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FlipCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0fd0e8e3-b8ef-4f14-8d63-00e6e29cf34a",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FlipCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "adc40cfe-9847-4708-8de5-a19cd0315498",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Hold LockOn",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1795,6 +1835,61 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "D-Pad",
+                    "id": "a10bd93c-a494-4b4d-9d93-29fef7c0970a",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change Selection",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "62f01731-2e97-4033-a78e-70b4f1f7ce7b",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change Selection",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "bf5182d3-475c-4bfe-b0c1-3bdb2afce13c",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change Selection",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "8a1ec095-e27a-41a8-beb4-761819485d01",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change Selection",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "e11655c7-3c00-477f-afd6-1d01c0feeb7a",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change Selection",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "Arrows",
                     "id": "9c0dd519-1e99-4b22-bba1-8f788cba3e16",
                     "path": "2DVector",
@@ -2047,6 +2142,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Hold LockOn",
+                    "type": "Button",
+                    "id": "fc41faf8-a1fc-4361-9418-dcd2de246d77",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Toggle LockOn",
@@ -2646,17 +2750,6 @@
                 },
                 {
                     "name": "",
-                    "id": "be29c964-0d26-4dbe-96f5-f6ea38f37e98",
-                    "path": "<Gamepad>/rightStickPress",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Toggle LockOn",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "a479b615-22c4-4f6e-964f-d8fac44addb9",
                     "path": "<Keyboard>/l",
                     "interactions": "",
@@ -2729,6 +2822,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Pause Screen",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "be29c964-0d26-4dbe-96f5-f6ea38f37e98",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Hold LockOn",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

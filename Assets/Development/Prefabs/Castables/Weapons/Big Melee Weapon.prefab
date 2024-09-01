@@ -26,6 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4862828896519845906}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -33,7 +34,6 @@ Transform:
   m_Children:
   - {fileID: 1240774482822434553}
   m_Father: {fileID: 7511646803769045369}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2804377999677393465
 MonoBehaviour:
@@ -47,12 +47,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6840b2cdeb66a094d99d595beb073591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  desireInteractors: 0
+  controlledCharactersOnly: 0
+  useTargetIdentity: 0
+  targetIdentity: 0
   desiredTags:
   - Character
   - Damageable
   selectableTypes: 
-  desireInteractors: 0
-  controlledCharactersOnly: 0
+  selectable: {fileID: 0}
+  debug: 0
+  oneShot: 0
+  hasCollided: 0
   onCollision:
     enter:
       m_PersistentCalls:
@@ -91,11 +97,31 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  oneShot: 0
-  hasCollided: 0
-  debug: 0
+  onImpact:
+    impact:
+      enter:
+        m_PersistentCalls:
+          m_Calls: []
+      exit:
+        m_PersistentCalls:
+          m_Calls: []
+    other:
+      enter:
+        m_PersistentCalls:
+          m_Calls: []
+      exit:
+        m_PersistentCalls:
+          m_Calls: []
+    selectable:
+      enter:
+        m_PersistentCalls:
+          m_Calls: []
+      exit:
+        m_PersistentCalls:
+          m_Calls: []
+  touching: []
   other: {fileID: 0}
-  selectable: {fileID: 0}
+  impactLocation: {x: 0, y: 0, z: 0}
 --- !u!114 &3815405840428037528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,7 +141,7 @@ MonoBehaviour:
       Data2: 1230227664
       Data3: 768917642
       Data4: 161759417
-    Path: event:/Player SFX/DaggerSwing
+    Path: event:/NPC SFX/Gobkin/DaggerSwing
   Event: 
   PlayEvent: 11
   StopEvent: 0
@@ -173,6 +199,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6685085340563195316}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 3.14, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -180,7 +207,6 @@ Transform:
   m_Children:
   - {fileID: 6975279941231171404}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &134416806595529731
 MonoBehaviour:
@@ -197,9 +223,23 @@ MonoBehaviour:
   item: {fileID: 0}
   weaponArt: {fileID: 0}
   pivot: {fileID: 6975279941231171404}
+  pivotDirection: {x: 0, y: 0, z: 0}
   rOffset: 0
   followBody: 1
   source: {fileID: 0}
+  debug: 0
+  powerLevel: 0
+  onSetPowerLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  maxPowerLevel: 1
+  onSetMaxPowerLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  toLocations: []
+  positionables: []
+  effects: []
+  triggerStatuses: []
   castStatuses: []
   hitStatuses: []
   onSetIdentity:
@@ -217,60 +257,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  positionables: []
+  castingMethods: []
   casting: 0
-  doCast:
+  castOnTrigger: 1
+  castOnRelease: 0
+  unCastOnRelease: 0
+  onTrigger:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6198877529759635688}
-        m_TargetAssemblyTypeName: Timer, Assembly-CSharp
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 4862828896519845906}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 3815405840428037528}
-        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 7537115469472387411}
-        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
   onCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onRelease:
     m_PersistentCalls:
       m_Calls: []
   onUnCast:
@@ -305,6 +303,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 3
   identity: 0
+  otherCount: 0
+  ignoredCount: 0
 --- !u!114 &6198877529759635688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,10 +405,5 @@ PrefabInstance:
 --- !u!4 &1240774482822434553 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8901713786374416122, guid: 4e5bde2767a168d4a9e29e4f15dc9514, type: 3}
-  m_PrefabInstance: {fileID: 7687961601060333571}
-  m_PrefabAsset: {fileID: 0}
---- !u!2083052967 &7537115469472387411 stripped
-VisualEffect:
-  m_CorrespondingSourceObject: {fileID: 155399209540630864, guid: 4e5bde2767a168d4a9e29e4f15dc9514, type: 3}
   m_PrefabInstance: {fileID: 7687961601060333571}
   m_PrefabAsset: {fileID: 0}
