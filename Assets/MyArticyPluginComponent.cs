@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+public class MyArticyPluginComponent : MonoBehaviour
+using UnityEngine;
 using Articy.Unity;
 
 public class MyArticyPluginComponent : MonoBehaviour
