@@ -15,6 +15,10 @@ public class NumberPopup : BaseMonoBehaviour
     [Space]
     [SerializeField] private int testNumber;
 
+    private bool shouldShowEffectOnInitialization;
+
+    private Coroutine shouldShowEffectRoutine;
+
     public enum SignRule { AsGiven, AsPositive, AsNegative, ZeroPositive, ZeroNegative }
     public SignRule signRule = SignRule.AsGiven;
 
@@ -39,29 +43,41 @@ public class NumberPopup : BaseMonoBehaviour
     {
         if (isActiveAndEnabled)
         {
-            Print($"Popping up {number}.", debug);
-
-            DigitServer serverPrefab;
-            switch (signRule)
+            if(shouldShowEffectOnInitialization)
             {
-                case SignRule.AsPositive:
-                    serverPrefab = positivePrefab; break;
-                case SignRule.AsNegative:
-                    serverPrefab = negativePrefab; break;
-                case SignRule.ZeroPositive:
-                    serverPrefab = number < 0 ? negativePrefab : positivePrefab; break;
-                case SignRule.ZeroNegative:
-                    serverPrefab = number > 0 ? positivePrefab : negativePrefab; break;
-                default: // AsGiven
-                    serverPrefab = number == 0 ? neutralPrefab : number < 0 ? negativePrefab : positivePrefab; break;
-            }
+                Print($"Popping up {number}.", debug);
 
-            DigitServer server = Instantiate(serverPrefab, serverParent, true);
-            server.gameObject.SetActive(false);
-            server.transform.position = serverTarget.position;
-            server.ServeNumber(number);
-            server.gameObject.SetActive(true);
-            StartCoroutine(DestroyOldPopup(server));
+                DigitServer serverPrefab;
+                switch (signRule)
+                {
+                    case SignRule.AsPositive:
+                        serverPrefab = positivePrefab; break;
+                    case SignRule.AsNegative:
+                        serverPrefab = negativePrefab; break;
+                    case SignRule.ZeroPositive:
+                        serverPrefab = number < 0 ? negativePrefab : positivePrefab; break;
+                    case SignRule.ZeroNegative:
+                        serverPrefab = number > 0 ? positivePrefab : negativePrefab; break;
+                    default: // AsGiven
+                        serverPrefab = number == 0 ? neutralPrefab : number < 0 ? negativePrefab : positivePrefab; break;
+                }
+
+                DigitServer server = Instantiate(serverPrefab, serverParent, true);
+                server.gameObject.SetActive(false);
+                server.transform.position = serverTarget.position;
+
+                server.ServeNumber(number);
+                server.gameObject.SetActive(true);
+
+                StartCoroutine(DestroyOldPopup(server));
+            }
+            else
+            {
+                if(shouldShowEffectRoutine == null)
+                {
+                    shouldShowEffectRoutine = StartCoroutine(SetShouldShowEffect());
+                }
+            }
         }
     }
 
@@ -75,5 +91,13 @@ public class NumberPopup : BaseMonoBehaviour
     {
         yield return new WaitForSeconds(5);
         Destroy(server.gameObject);
+    }
+
+    public IEnumerator SetShouldShowEffect()
+    {
+        yield return new WaitForSeconds(1);
+        shouldShowEffectOnInitialization = true;
+
+        shouldShowEffectRoutine = null;
     }
 }
