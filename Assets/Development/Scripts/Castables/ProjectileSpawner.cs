@@ -17,7 +17,7 @@ namespace HotD.Castables
         public Transform pivot;
         public Projectile projectile;
         [SerializeField] private bool followBody = false;
-        [SerializeField] private bool spawnOnEnable = true;
+        public bool spawnOnEnable = true;
         [SerializeField] private Collider[] exceptions;
         [SerializeField] private List<Projectile> projectiles = new();
         [SerializeField] private bool debug = false;
@@ -76,34 +76,31 @@ namespace HotD.Castables
         public void Spawn(Vector3 direction = new Vector3())
         {
 
-            if (isActiveAndEnabled)
+            if (debug) { Debug.Log($"{name} spawning projectile in {direction} direction.", this); }
+            pivot.localPosition = offset;
+            Transform pInstance = Instantiate(pivot, source);
+            pInstance.gameObject.SetActive(true);
+            if (pInstance.TryGetComponent(out Pivot pivotType))
             {
-                if (debug) { Debug.Log($"{name} spawning projectile in {direction} direction.", this); }
-                pivot.localPosition = offset;
-                Transform pInstance = Instantiate(pivot, source);
-                pInstance.gameObject.SetActive(true);
-                if (pInstance.TryGetComponent(out Pivot pivotType))
+                Projectile bInstance = pivotType.body.GetComponentInChildren<Projectile>(true);
+                if (bInstance != null)
                 {
-                    if (pivotType.body.TryGetComponent(out Projectile bInstance))
-                    {
-                        bInstance.SetActive(true);
-                        projectiles.Add(bInstance);
-                        AddExceptionsOn(exceptions, bInstance);
-                        LaunchInstance(direction, pInstance.transform, bInstance);
-                        bInstance.QueueCleanup(pInstance.transform, bInstance, lifeSpan, projectiles);
-                    }
-                    else
-                    {
-                        Debug.LogWarning("Pivot body should be a Projectile.");
-                    }
+                    bInstance.SetActive(true);
+                    projectiles.Add(bInstance);
+                    AddExceptionsOn(exceptions, bInstance);
+                    LaunchInstance(direction, pInstance.transform, bInstance);
+                    bInstance.QueueCleanup(pInstance.transform, bInstance, lifeSpan, projectiles);
+                }
+                else
+                {
+                    Debug.LogWarning("Pivot body has no Projectile components.");
                 }
             }
         }
 
         public void Activate(Vector3 direction)
         {
-            if (isActiveAndEnabled)
-                LaunchInstance(direction, pivot.transform, projectile);
+            LaunchInstance(direction, pivot.transform, projectile);
         }
 
         private void LaunchInstance(Vector3 direction, Transform pInstance, Projectile projectile)

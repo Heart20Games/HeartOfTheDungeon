@@ -1,9 +1,10 @@
+using HotD.Castables;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class MagicBoltCastingPointVFX : MonoBehaviour
+public class MagicBoltCastingPointVFX : BaseMonoBehaviour
 {
     public VisualEffect boltCastingPoint;
     public ParticleSystem boltExplosion;

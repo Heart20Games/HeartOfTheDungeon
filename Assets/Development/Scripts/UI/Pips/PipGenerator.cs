@@ -11,12 +11,13 @@ namespace UIPips
 {
     public class PipGenerator : BaseMonoBehaviour
     {
-        public enum DisplayMode { Dynamic, Off, On }
+        public enum DisplayMode { Default, Off, On, Dynamic }
+        public const DisplayMode defaultDisplayMode = DisplayMode.Dynamic;
 
         [Header("Configuration")]
         public Transform pipTarget;
         public AutoPip basePrefab;
-        public DisplayMode displayMode = DisplayMode.Dynamic;
+        public DisplayMode displayMode = defaultDisplayMode;
         public bool usedInWorldSpace;
         [ConditionalField("usedInWorldSpace")] [SerializeField] private Vector3 worldSpaceOffset = new();
         [ConditionalField("usedInWorldSpace")][SerializeField] private Vector3 worldSpaceScale = new();
@@ -81,6 +82,10 @@ namespace UIPips
 
         private void Awake()
         {
+            if (displayMode == DisplayMode.Default)
+            {
+                displayMode = defaultDisplayMode;
+            }
             if (TryGetComponent<Canvas>(out var canvas))
             {
                 canvas.renderMode = usedInWorldSpace ? RenderMode.WorldSpace : RenderMode.ScreenSpaceOverlay;

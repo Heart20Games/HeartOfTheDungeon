@@ -18,7 +18,8 @@ MonoBehaviour:
   attributes: {fileID: 0}
   dealDamage: 0
   damage:
-    name: '[New Dependent Attribute]'
+    name: Damage
+    owner: '[Unknown]'
     finalPreview: 0
     baseValue: 1
     baseMultiplier: 0
@@ -35,9 +36,10 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
     otherAttributes: []
-  useCooldown: 0
+  useCooldown: 1
   cooldown:
-    name: '[New Dependent Attribute]'
+    name: Cooldown
+    owner: '[Unknown]'
     finalPreview: 0
     baseValue: 1
     baseMultiplier: 0
@@ -56,7 +58,8 @@ MonoBehaviour:
     otherAttributes: []
   useChargeUp: 0
   chargeRate:
-    name: '[New Dependent Attribute]'
+    name: Charge Rate
+    owner: '[Unknown]'
     finalPreview: 0
     baseValue: 1
     baseMultiplier: 0
@@ -74,7 +77,29 @@ MonoBehaviour:
         m_Calls: []
     otherAttributes: []
   chargeLimit:
-    name: '[New Dependent Attribute]'
+    name: Charge Limit
+    owner: '[Unknown]'
+    finalPreview: 0
+    baseValue: 1
+    baseMultiplier: 0
+    baseValueRange: {x: 0, y: 5}
+    baseMultiplierRange: {x: 0, y: 5}
+    debug: 0
+    updated:
+      m_PersistentCalls:
+        m_Calls: []
+    updatedFinalFloat:
+      m_PersistentCalls:
+        m_Calls: []
+    updatedFinalInt:
+      m_PersistentCalls:
+        m_Calls: []
+    otherAttributes: []
+  useComboCooldown: 0
+  useComboCooldownTime: 0
+  comboCooldown:
+    name: Combo Cooldown
+    owner: '[Unknown]'
     finalPreview: 0
     baseValue: 1
     baseMultiplier: 0
@@ -92,7 +117,8 @@ MonoBehaviour:
         m_Calls: []
     otherAttributes: []
   knockback:
-    name: '[New Dependent Attribute]'
+    name: Knockback
+    owner: '[Unknown]'
     finalPreview: 0
     baseValue: 1
     baseMultiplier: 0
@@ -110,7 +136,8 @@ MonoBehaviour:
         m_Calls: []
     otherAttributes: []
   range:
-    name: '[New Dependent Attribute]'
+    name: Range
+    owner: '[Unknown]'
     finalPreview: 0
     baseValue: 1
     baseMultiplier: 0
@@ -128,7 +155,8 @@ MonoBehaviour:
         m_Calls: []
     otherAttributes: []
   castStatusPower:
-    name: 
+    name: Cast Status Power
+    owner: 
     finalPreview: 0
     baseValue: 0
     baseMultiplier: 0
@@ -149,8 +177,10 @@ MonoBehaviour:
   - name: Shield
     effect: {fileID: 11400000, guid: 33cc3ac5086c359489e77991f45991d8, type: 2}
     strength: 10
+    instance: {fileID: 0}
   hitStatusPower:
-    name: 
+    name: Hit Status Power
+    owner: 
     finalPreview: 0
     baseValue: 0
     baseMultiplier: 0

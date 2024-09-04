@@ -97,7 +97,8 @@ namespace HotD.Generators
                         {
                             foreach (var oldItem in items)
                             {
-                                AssetDatabase.DeleteAsset($"{oldDirectory}/{oldItem.name}.asset");
+                                if (oldItem != null)
+                                    AssetDatabase.DeleteAsset($"{oldDirectory}/{oldItem.name}.asset");
                             }
                             items.Clear();
                         }
@@ -644,7 +645,7 @@ namespace HotD.Generators
                 this.passivePrefab = null;
                 this.colliderPrefab = null;
                 this.projectileLifeSpan = 1;
-                this.projectilePrefab = null;
+                this.projectilePrefabs = new();
             }
 
             public string name;
@@ -667,7 +668,8 @@ namespace HotD.Generators
             [ConditionalField("method", false, ExecutionMethod.ProjectileBased)]
             public float projectileLifeSpan;
             [ConditionalField("method", false, ExecutionMethod.ProjectileBased)]
-            public Projectile projectilePrefab;
+            public List<GameObject> projectilePrefabs;
+            //public Projectile projectilePrefab;
 
             public readonly Castables.ExecutionMethod PrepareExecutionMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, GameObject gameObject, Damager damager = null)
             {
@@ -682,22 +684,27 @@ namespace HotD.Generators
 
             public readonly Castables.ExecutionMethod PreparePassiveMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
             {
+                // Object
+                GameObject castedObject = AddCastedObject(executor, pivot);
+
+                // Method
+                Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
+                method.InitializeEvents();
+                
                 if (passivePrefab != null)
                 {
-                    // Object
-                    GameObject castedObject = AddCastedObject(executor, pivot);
-
-                    // Method
-                    Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
-                    method.InitializeEvents();
-
                     // Prefab Instance
                     GameObject instance = PrefabUtility.InstantiatePrefab(passivePrefab.gameObject) as GameObject;
                     instance.transform.SetParent(castedObject.transform);
 
-                    return method;
+                    if (instance.TryGetComponent<ACastCompatibleFollower>(out var follower))
+                    {
+                        UnityEventTools.AddPersistentListener(method.fieldEvents.onSetOwner, follower.SetOwner);
+                    }
+
                 }
-                return null;
+                
+                return method;
             }
 
             public readonly Castables.ExecutionMethod PrepareCollisionMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
@@ -744,10 +751,16 @@ namespace HotD.Generators
                 // Object
                 GameObject castedObject = AddCastedObject(executor, pivot);
                 Pivot castedPivot = AddCastedPivot(castedObject);
+                castedPivot.body = castedPivot.transform;
 
                 // Method
                 Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
                 method.InitializeEvents();
+
+                // Cast Location Follower
+                CastLocationFollower follower = castedPivot.GetOrAddComponent<CastLocationFollower>();
+                follower.SetTarget(CastLocation.FiringPoint);
+                UnityEventTools.AddPersistentListener(method.fieldEvents.onSetOwner, follower.SetOwner);
 
                 // Projectile Spawner
                 ProjectileSpawner spawner = castedObject.AddComponent<ProjectileSpawner>();
@@ -757,26 +770,31 @@ namespace HotD.Generators
                 spawner.pivot = castedPivot.transform;
                 spawner.lifeSpan = projectileLifeSpan;
                 spawner.applyOnSet = false;
-                //castedPivot.enabled = false;
-                //executor.fields.toLocations.Add(new(spawner, source, target));
+                spawner.spawnOnEnable = false;
 
                 // Projectiles
-                if (projectilePrefab != null)
+                if (projectilePrefabs != null)
                 {
-                    // Projectile
-                    Projectile projectile = (PrefabUtility.InstantiatePrefab(projectilePrefab.gameObject) as GameObject).GetComponent<Projectile>(); //, castedPivot.transform);
-                    projectile.transform.SetParent(castedPivot.transform);
-                    spawner.projectile = projectile;
-                    castedPivot.body = projectile.transform;
-                    projectile.transform.localPosition = new();
-                    
-                    // Damage
-                    if (damager != null)
+                    foreach (var prefab in projectilePrefabs)
                     {
-                        projectile.hitDamageable = new();
-                        projectile.leftDamageable = new();
-                        UnityEventTools.AddPersistentListener(projectile.hitDamageable, damager.HitDamageable);
-                        UnityEventTools.AddPersistentListener(projectile.leftDamageable, damager.LeftDamageable);
+                        // Prefab
+                        GameObject instance = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+                        instance.transform.SetParent(castedPivot.transform);
+                        instance.transform.localPosition = new();
+                    
+                        // Projectile
+                        if (instance.TryGetComponent<Projectile>(out var projectile))
+                        {
+                            spawner.projectile = projectile;
+                            projectile.hitDamageable = new();
+                            projectile.leftDamageable = new();
+
+                            if (damager != null)
+                            {
+                                UnityEventTools.AddPersistentListener(projectile.hitDamageable, damager.HitDamageable);
+                                UnityEventTools.AddPersistentListener(projectile.leftDamageable, damager.LeftDamageable);
+                            }
+                        }
                     }
                 }
 

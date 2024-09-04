@@ -15,51 +15,69 @@ MonoBehaviour:
   modes:
   - name: Non-Player Controlled
     controlMode: 1
-    moveMode: 2
     collisionMode: 1
     pipMode: 0
-    liveMode: 0
+    liveMode: 3
+    canMove: 1
+    useGravity: 1
     displayable: 1
     useCaster: 1
     useMoveReticle: 0
     useInteractor: 0
   - name: Brain Dead
     controlMode: 2
-    moveMode: 1
     collisionMode: 1
-    pipMode: 0
-    liveMode: 0
+    pipMode: 3
+    liveMode: 3
+    canMove: 0
+    useGravity: 1
     displayable: 1
     useCaster: 0
     useMoveReticle: 0
     useInteractor: 0
   - name: Player Controlled
-    controlMode: 0
-    moveMode: 2
+    controlMode: 3
     collisionMode: 1
     pipMode: 1
-    liveMode: 0
+    liveMode: 3
+    canMove: 1
+    useGravity: 1
     displayable: 1
     useCaster: 1
     useMoveReticle: 1
     useInteractor: 1
   - name: Dead
     controlMode: 2
-    moveMode: 1
     collisionMode: 2
     pipMode: 1
     liveMode: 2
+    canMove: 0
+    useGravity: 1
     displayable: 1
     useCaster: 0
     useMoveReticle: 0
     useInteractor: 0
   - name: Despawned
     controlMode: 2
-    moveMode: 0
-    collisionMode: 0
+    collisionMode: 3
     pipMode: 1
     liveMode: 1
-    displayable: 1
+    canMove: 0
+    useGravity: 0
+    displayable: 0
     useCaster: 0
     useMoveReticle: 0
     useInteractor: 0
+  modifiers:
+  - name: Brain Dead
+    modifierType: 0
+    controlMode: 2
+    collisionMode: 0
+    pipMode: 0
+    liveMode: 0
+    canMove: 1
+    useGravity: 0
+    displayable: 0
+    useCaster: 1
+    useMoveReticle: 1
+    useInteractor: 1
