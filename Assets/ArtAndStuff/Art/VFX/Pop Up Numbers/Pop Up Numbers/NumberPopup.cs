@@ -31,6 +31,8 @@ public class NumberPopup : BaseMonoBehaviour
         {
             serverParent = transform;
         }
+
+        CheckShouldShowEffects();
     }
 
     public void PopupChange(int newNumber)
@@ -71,12 +73,16 @@ public class NumberPopup : BaseMonoBehaviour
 
                 StartCoroutine(DestroyOldPopup(server));
             }
-            else
+        }
+    }
+
+    private void CheckShouldShowEffects()
+    {
+        if(!shouldShowEffectOnInitialization)
+        {
+            if (shouldShowEffectRoutine == null)
             {
-                if(shouldShowEffectRoutine == null)
-                {
-                    shouldShowEffectRoutine = StartCoroutine(SetShouldShowEffect());
-                }
+                shouldShowEffectRoutine = StartCoroutine(SetShouldShowEffect());
             }
         }
     }
