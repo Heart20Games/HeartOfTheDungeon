@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Body;
 using HotD.Body;
+using UnityEngine.Assertions;
 
 namespace HotD.Castables
 {
@@ -10,27 +11,21 @@ namespace HotD.Castables
         public enum CastLocation { Character, Base, WeaponPoint, FiringPoint, Center}
         static public Transform GetLocationTransform(CastLocation location, Character character)
         {
-            return GetLocationTransform(location, character);
+            Assert.IsNotNull(character);
+            return GetLocationTransform(location, character as ICastCompatible);
         }
         static public Transform GetLocationTransform(CastLocation location, ICastCompatible compatible)
         {
-            if (compatible != null)
+            Assert.IsNotNull(compatible);
+            return location switch
             {
-                return location switch
-                {
-                    CastLocation.Character => compatible.Transform,
-                    CastLocation.Base => compatible.Body,
-                    CastLocation.WeaponPoint => compatible.WeaponLocation,
-                    CastLocation.FiringPoint => compatible.FiringLocation,
-                    CastLocation.Center => compatible.Body,
-                    _ => null
-                };
-            }
-            else
-            {
-                Debug.LogWarning("ICastCompatible is null in GetLocationTransform");
-                return null;
-            }
+                CastLocation.Character => compatible.Transform,
+                CastLocation.Base => compatible.Body,
+                CastLocation.WeaponPoint => compatible.WeaponLocation,
+                CastLocation.FiringPoint => compatible.FiringLocation,
+                CastLocation.Center => compatible.Body,
+                _ => null
+            };
         }
 
         [Serializable]
