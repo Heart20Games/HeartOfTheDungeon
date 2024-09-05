@@ -28,6 +28,7 @@ namespace HotD.Castables
         [SerializeField] protected Vector3 offset;
         [SerializeField][ReadOnly] protected bool hasOwner = false;
         [SerializeField][ReadOnly] protected Character character;
+        [SerializeField] private bool debugOwner = false;
 
         public override void SetOwner(ICastCompatible owner)
         {
@@ -59,7 +60,7 @@ namespace HotD.Castables
                 {
                     Transform target = null;
 
-                    Print($"Owner null? {owner == null} / {character == null}", true, this);
+                    Print($"Owner null? {owner == null} / {character == null}", debugOwner, this);
                     if (owner != null)
                     {
                         target = GetLocationTransform(location, owner);

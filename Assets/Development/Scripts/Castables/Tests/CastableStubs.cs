@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static HotD.Castables.CastableFields;
+
 public class CastableStub : BaseMonoBehaviour, ICastable
 {
     private CastableItem item;
@@ -17,4 +19,6 @@ public class CastableStub : BaseMonoBehaviour, ICastable
     public void Initialize(ICastCompatible owner, CastableItem item) { }
     public void QueueAction(CastAction action) { }
     public void SetActive(bool active) { }
+
+    public FieldEvents FieldEvents { get => new(); }
 }

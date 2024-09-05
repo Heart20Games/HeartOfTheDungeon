@@ -22,6 +22,7 @@ namespace HotD.Castables
 
         public CastableItem Item { get; set; }
         public Damager Damager { get; }
+        public FieldEvents FieldEvents { get; }
 
         //public Vector3 Direction { get; set; }
         //public ICastCompatible Owner { get; }
@@ -119,7 +120,9 @@ namespace HotD.Castables
         public bool connectToFieldEvents = false;
         public FieldEvents fieldEvents = new("Local Events");
         [Foldout("Events")] public CastEvents castEvents = new("Cast Events");
-        
+
+        public FieldEvents FieldEvents { get => fieldEvents; }
+
 
         private void Awake()
         {

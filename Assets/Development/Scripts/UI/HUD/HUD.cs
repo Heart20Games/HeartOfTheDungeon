@@ -12,6 +12,7 @@ public class HUD : BaseMonoBehaviour
     public PartySelectPanel partySelectPanel;
     public TargetStatusDisplay targetCharacterPanel;
     public Transform crosshair;
+    public MeterProgressManager castMeter;
     private GameObject mainCamera;
     private Canvas hudCanvas;
 
@@ -79,6 +80,10 @@ public class HUD : BaseMonoBehaviour
             int idx = character.StatBlock != null ? character.StatBlock.portraitIndex : 0;
             partySelectPanel.Select(idx);
             abilityMenu.Select(false);
+            if (character.castables.Length > 1 && character.castables[0] != null)
+            {
+                castMeter.Castable = character.castables[0];
+            }
         }
     }
 

@@ -4,6 +4,7 @@ using UnityEngine.VFX;
 using HotD.Castables;
 using static HotD.Castables.Coordination;
 using static HotD.Castables.CastableToLocation;
+using MyBox;
 
 public class MagicBolt_ChargingVFXScript : ACastListener
 {
@@ -97,7 +98,7 @@ public class MagicBolt_ChargingVFXScript : ACastListener
 
     IEnumerator CastingEnd()
     {
-        visualEffect.SetBool("CastingEnd", true);
+        SetBool("CastingEnd", true);
         yield return new WaitForSeconds(2);
         level = 1;
         casting = false;
@@ -107,10 +108,10 @@ public class MagicBolt_ChargingVFXScript : ACastListener
             charges[i] = 0f;
         }
         castingCharge = 0f;
-        visualEffect.SetFloat("Level 2 Charge", 0f);
-        visualEffect.SetFloat("Level 3 Charge", 0f);
-        visualEffect.SetFloat("Casting", 0f);
-        visualEffect.SetBool("CastingEnd", false);
+        SetFloat("Level 2 Charge", 0f);
+        SetFloat("Level 3 Charge", 0f);
+        SetFloat("Casting", 0f);
+        SetBool("CastingEnd", false);
         visualEffect.Stop();
         isPlaying = false;
     }
@@ -118,7 +119,7 @@ public class MagicBolt_ChargingVFXScript : ACastListener
     void Casting()
     {
         castingCharge += Time.deltaTime / castingChargeTime;
-        visualEffect.SetFloat("Casting", castingCharge);
+        SetFloat("Casting", castingCharge);
         Level3();
         Level2();
 
@@ -127,7 +128,7 @@ public class MagicBolt_ChargingVFXScript : ACastListener
     void Level3()
     {
         charges[2] += Time.deltaTime / chargeTimes[2];
-        visualEffect.SetFloat("Level 3 Charge", charges[2]);
+        SetFloat("Level 3 Charge", charges[2]);
     }
 
     void Level2()
@@ -138,6 +139,23 @@ public class MagicBolt_ChargingVFXScript : ACastListener
             visualEffect.Play();
         }
         charges[1] += Time.deltaTime / chargeTimes[1];
-        visualEffect.SetFloat("Level 2 Charge", charges[1]);
+        SetFloat("Level 2 Charge", charges[1]);
+    }
+
+    // Property Setters
+    private void SetBool(string property, bool value)
+    {
+        if (visualEffect.HasBool(property))
+            visualEffect.SetBool(property, value);
+        else
+            Debug.LogWarning("Cannot find Bool property on Visual Effect");
+    }
+
+    private void SetFloat(string property, float value)
+    {
+        if (visualEffect.HasFloat(property))
+            visualEffect.SetFloat(property, value);
+        else
+            Debug.LogWarning("Cannot find Float property on Visual Effect");
     }
 }
