@@ -375,11 +375,14 @@ namespace HotD
             List<Character> members = playerParty.members;
             if (members.Count > 0)
             {
-                idx = idx < 0 ? members.Count + idx : idx;
-                curCharIdx = idx % (members.Count);
-                Character character = members[curCharIdx];
-                SetCharacter(character);
-                hud.CharacterSelect(character);
+                if (members[idx % (members.Count)].mode.Alive)
+                {
+                    idx = idx < 0 ? members.Count + idx : idx;
+                    curCharIdx = idx % (members.Count);
+                    Character character = members[curCharIdx];
+                    SetCharacter(character);
+                    hud.CharacterSelect(character);
+                }
             }
         }
 
