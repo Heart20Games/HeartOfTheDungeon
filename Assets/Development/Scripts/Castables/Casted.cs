@@ -31,7 +31,7 @@ namespace HotD.Castables
         public Vector2 PowerRange { get; set; }
         public DependentAttribute PowerLimit { get; set; }
         public Vector2 ComboRange { get; set; }
-        public void SetPowerLevel(int powerLevel);
+        public void SetPowerLevel(float powerLevel);
     }
 
     public class Casted : Positionable, ICasted
@@ -168,11 +168,7 @@ namespace HotD.Castables
         }
 
         // Power Level
-        public void SetPowerLevel(int powerLevel)
-        {
-            SetPowerLevel((float)powerLevel);
-        }
-        private void SetPowerLevel(float powerLevel)
+        public void SetPowerLevel(float powerLevel)
         {
             if (debug) print($"Set Power Level {powerLevel}");
             this.powerLevel = powerLevel;

@@ -109,7 +109,7 @@ namespace HotD.Castables
             base.Initialize(owner, item);
             foreach (var executor in executorList)
             {
-                executor.Initialize(fields);
+                executor.InitializeFields(fields);
             }
             SetState(CastState.Init);
         }

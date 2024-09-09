@@ -8,38 +8,55 @@ using UnityEngine.VFX;
 public class MeterProgressManager : BaseMonoBehaviour
 {
     
-    public VisualEffect meterFill;
-    public VisualEffect meterBackground;
-    [Range(0, 1)] public float meterProgress;
-    [Range(1, 3)] public int currentLevel;
-    [Range(1, 3)] public int maxLevel;
-    public bool levelUp;
-    [Range(0f, 1.2f)]private float level2LockDissolveAmount;
-    [Range(0f, 1.2f)]private float level3LockDissolveAmount;
-    private bool level2Dissolved;
-    private bool level3Dissolved;
-    [SerializeField] private float dissolveDuration = 1f;
-    private ICastProperties castPorperties;
+    [SerializeField] private VisualEffect meterFill;
+    [SerializeField] private VisualEffect meterBackground;
+    [SerializeField][Range(0, 1)] private int baseProgress = 0;
+    [SerializeField][Range(-1, 1)] private int progressOffset = -1;
+    [SerializeField][Range(0, 1)] private float meterProgress;
+    [SerializeField][Range(1, 3)] private int currentLevel;
+    [SerializeField][Range(1, 3)] private int maxLevel;
+    [SerializeField] private bool levelUp;
+
+    private ICastProperties castProperties;
+    [SerializeField][ReadOnly] private bool hasCastProperties;
+    [SerializeField][ReadOnly] private CastProperties rawCastProperties;
+    [SerializeField] private bool debug;
     
-    public ICastProperties Castable { get => castPorperties; set => SetCastable(value); }
+    [Foldout("Dissolve Parameters", true)]
+    [SerializeField][Range(0f, 1.2f)] private float level2LockDissolveAmount;
+    [SerializeField][Range(0f, 1.2f)] private float level3LockDissolveAmount;
+    [SerializeField][ReadOnly] private bool level2Dissolved;
+    [SerializeField][ReadOnly] private bool level3Dissolved;
+    [Foldout("Dissolve Parameters")]
+    [SerializeField] private float dissolveDuration = 1f;
+    
+    public ICastProperties Castable { get => castProperties; set => SetCastable(value); }
 
     public void SetCastable(ICastProperties castProperties)
     {
-        castPorperties = castProperties;
+        this.castProperties = castProperties;
+        this.rawCastProperties = castProperties is CastProperties ? castProperties as CastProperties : null;
+        hasCastProperties = this.castProperties != null;
+        
         castProperties.FieldEvents.onSetPowerLevel.AddListener(SetCastProgress);
-        castProperties.FieldEvents.onSetMaxPowerLevel.AddListener(SetMaxLevel);
         castProperties.FieldEvents.onSetMaxPowerLevel.AddListener(SetCurrentLevel);
+
+        SetCastProgress(castProperties.PowerLevel);
+        SetCurrentLevel(castProperties.MaxPowerLevel);
     }
-    private void SetCastProgress(int castProgress)
+    private void SetCastProgress(float castProgress)
     {
-        meterProgress = castProgress / maxLevel;
+        Print($"Set Meter Progress {castProgress}.", debug, this);
+        meterProgress = Mathf.Max(baseProgress, (progressOffset + castProgress) / maxLevel);
     }
     private void SetCurrentLevel(int currentLevel)
     {
-        this.currentLevel = currentLevel;
+        Print($"Set Meter Level {currentLevel}.", debug, this);
+        this.currentLevel = Mathf.Min(currentLevel, maxLevel);
     }
     private void SetMaxLevel(int maxLevel)
     {
+        Print($"Set Meter Max Level {maxLevel}.", debug, this);
         this.maxLevel = maxLevel;
     }
     

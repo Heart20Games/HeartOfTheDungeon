@@ -13,8 +13,9 @@ public class Charger : BaseMonoBehaviour
 
     [Header("Status")]
     [SerializeField] private bool interrupt = false;
-    [SerializeField] private int level;
+    [SerializeField] private float level;
     [SerializeField] private int maxLevel;
+    [SerializeField] private bool discreteUpdates = false;
     public float[] chargeTimes = new float[0];
 
     [Foldout("Events", true)]
@@ -67,15 +68,26 @@ public class Charger : BaseMonoBehaviour
             if (debug) print($"Charged to level {level}");
             onCharge.Invoke(level);
             onChargeInt.Invoke(Mathf.FloorToInt(level));
-            float waitTime = level >= chargeTimes.Length ? 1 : chargeTimes[level];
-            yield return new WaitForSeconds(waitTime);
+
+            float waitTime = level >= chargeTimes.Length ? 0 : chargeTimes[(int)level];
+            float levelIncrement;
+            if (discreteUpdates)
+            {
+                yield return new WaitForSeconds(waitTime);
+                levelIncrement = 1;
+            }
+            else
+            {
+                yield return null;
+                levelIncrement = Mathf.Min(((int)level + 1) - level, Time.deltaTime / waitTime);
+            }
             if (interrupt) break;
             if (level >= maxLevel)
             {
                 if (debug) print($"Fully Charged at {level} / {maxLevel}");
                 onCharged.Invoke(); break;
             }
-            level++;
+            level += levelIncrement;
         }
         interrupt = false;
     }

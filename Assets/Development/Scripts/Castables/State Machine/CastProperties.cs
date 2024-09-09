@@ -17,11 +17,15 @@ namespace HotD.Castables
     public interface ICastProperties
     {
         public void SetActive(bool active);
-        public void Initialize(CastableFieldsEditor field);
+        public void InitializeFields(CastableFieldsEditor field);
         public void Initialize(ICastCompatible owner, CastableItem item);
 
         public CastableItem Item { get; set; }
         public Damager Damager { get; }
+        public float PowerLevel { get; set; }
+        public int MaxPowerLevel { get; set; }
+        public int ComboStep { get; set; }
+        public int MaxComboStep { get; set; }
         public FieldEvents FieldEvents { get; }
 
         //public Vector3 Direction { get; set; }
@@ -58,7 +62,7 @@ namespace HotD.Castables
         public CastCoordinator Coordinator { get => fields?.Owner?.Coordinator; }
         public CastableItem Item { get => fields?.item; set => fields.item = value; }
         public Damager Damager { get => GetComponent<Damager>(); }
-        public int PowerLevel
+        public float PowerLevel
         {
             get => fields.PowerLevel;
             set => fields.PowerLevel = value; //onSetPowerLevel.Invoke(value); }
@@ -85,11 +89,11 @@ namespace HotD.Castables
         }
 
         // Setters
-        public void SetPowerLevel(float value)
-        {
-            SetPowerLevel((int)value);
-        }
         public void SetPowerLevel(int value)
+        {
+            SetPowerLevel((float)value);
+        }
+        public void SetPowerLevel(float value)
         {
             Print($"Setting Power Level on {name}", debugProperties, this);
             PowerLevel = value;
@@ -139,7 +143,7 @@ namespace HotD.Castables
             gameObject.SetActive(active);
             if (Coordinator)
             {
-                fieldEvents.onSetPowerLevel.AddListener(Coordinator.SetPowerLevel);
+                fieldEvents.onSetPowerLevelInt.AddListener(Coordinator.SetPowerLevel);
                 fieldEvents.onSetComboStep.AddListener(Coordinator.SetComboLevel);
                 if (active)
                 {
@@ -149,28 +153,44 @@ namespace HotD.Castables
             }
         }
 
-        public virtual void Initialize(CastableFieldsEditor fields)
+        public virtual void InitializeFields(CastableFieldsEditor fields)
         {
+            if (this.fields != null)
+            {
+                fieldEvents = this.fields.DisconnectFieldEvents(fieldEvents);
+            }
+
             this.fields = fields;
             this.fields ??= new();
-            if (connectToFieldEvents)
+            this.fields.InitializeConnections();
+            
+            if (connectToFieldEvents && fieldEvents.initialized)
             {
                 Print($"Connecting Field Events on {name}.", debugProperties, this);
-                this.fields.ConnectFieldEvents(fieldEvents);
+                fieldEvents = this.fields.ConnectFieldEvents(fieldEvents);
             }
-            this.fields.InitializeConnections();
         }
 
         public virtual void InitializeEvents()
         {
+            if (fields != null && fieldEvents.connected)
+            {
+                fieldEvents = fields.DisconnectFieldEvents(fieldEvents);
+            }
+            
             fieldEvents = new("Local Events");
             castEvents = new("Cast Events");
             connectToFieldEvents = true;
+            
+            if (fields != null)
+            {
+                fieldEvents = fields.ConnectFieldEvents(fieldEvents);
+            }
         }
 
         public virtual void Initialize(ICastCompatible owner, CastableItem item)
         {
-            fields ??= new();
+            InitializeFields(null);
 
             Owner = owner;
             Item = item;
@@ -224,13 +244,14 @@ namespace HotD.Castables
             }
         }
         
-        public int PowerLevel
+        public float PowerLevel
         {
             get => curPowerLevel;
             set
             { 
                 curPowerLevel = value; 
                 events.onSetPowerLevel.Invoke(value);
+                events.onSetPowerLevelInt.Invoke((int)value);
                 Print($"Power Level set: {value}", debugFieldsEditor);
             }
         }
@@ -246,7 +267,7 @@ namespace HotD.Castables
         }
         public int ComboStep
         {
-            get { return usePowerLevelAsComboStep ? PowerLevel : curComboStep; }
+            get { return usePowerLevelAsComboStep ? (int)PowerLevel : curComboStep; }
             set 
             {
                 if (usePowerLevelAsComboStep)
@@ -334,31 +355,73 @@ namespace HotD.Castables
             }
         }
 
-        public void ConnectFieldEvents(FieldEvents events)
+        public FieldEvents ConnectFieldEvents(FieldEvents events)
         {
             Print($"Connecting Field Events {events.name} -> {this.events.name}", debugFieldsEditor);
-            
-            // Power Level
-            this.events.onSetPowerLevel.AddListener(events.onSetPowerLevel.Invoke);
-            this.events.onSetMaxPowerLevel.AddListener(events.onSetMaxPowerLevel.Invoke);
 
-            // Combo Steps
-            this.events.onSetComboStep.AddListener(events.onSetComboStep.Invoke);
-            this.events.onSetMaxComboStep.AddListener(events.onSetMaxComboStep.Invoke);
-            if (usePowerLevelAsComboStep)
+            if (events.initialized)
             {
-                this.events.onSetPowerLevel.AddListener(events.onSetComboStep.Invoke);
-                this.events.onSetMaxPowerLevel.AddListener(events.onSetMaxComboStep.Invoke);
+                // Power Level
+                this.events.onSetPowerLevel.AddListener(events.onSetPowerLevel.Invoke);
+                this.events.onSetMaxPowerLevel.AddListener(events.onSetMaxPowerLevel.Invoke);
+
+                // Combo Steps
+                this.events.onSetComboStep.AddListener(events.onSetComboStep.Invoke);
+                this.events.onSetMaxComboStep.AddListener(events.onSetMaxComboStep.Invoke);
+                if (usePowerLevelAsComboStep)
+                {
+                    this.events.onSetPowerLevelInt.AddListener(events.onSetComboStep.Invoke);
+                    this.events.onSetMaxPowerLevel.AddListener(events.onSetMaxComboStep.Invoke);
+                }
+
+                // Identity
+                this.events.onSetIdentity.AddListener(events.onSetIdentity.Invoke);
+
+                // Cooldown
+                this.events.onSetCooldown.AddListener(events.onSetCooldown.Invoke);
+
+                // Collision Exceptions
+                this.events.onSetCollisionExceptions.AddListener(events.onSetCollisionExceptions.Invoke);
+
+                return new(events, true);
             }
-            
-            // Identity
-            this.events.onSetIdentity.AddListener(events.onSetIdentity.Invoke);
+            else
+            {
+                return new(events, false);
+            }
 
-            // Cooldown
-            this.events.onSetCooldown.AddListener(events.onSetCooldown.Invoke);
+        }
 
-            // Collision Exceptions
-            this.events.onSetCollisionExceptions.AddListener(events.onSetCollisionExceptions.Invoke);
+        public FieldEvents DisconnectFieldEvents(FieldEvents events)
+        {
+            Print($"DisConnecting Field Events {events.name} -> {this.events.name}", debugFieldsEditor);
+
+            if (events.initialized && events.connected)
+            {
+                // Power Level
+                this.events.onSetPowerLevel.RemoveListener(events.onSetPowerLevel.Invoke);
+                this.events.onSetMaxPowerLevel.RemoveListener(events.onSetMaxPowerLevel.Invoke);
+
+                // Combo Steps
+                this.events.onSetComboStep.RemoveListener(events.onSetComboStep.Invoke);
+                this.events.onSetMaxComboStep.RemoveListener(events.onSetMaxComboStep.Invoke);
+                if (usePowerLevelAsComboStep)
+                {
+                    this.events.onSetPowerLevelInt.RemoveListener(events.onSetComboStep.Invoke);
+                    this.events.onSetMaxPowerLevel.RemoveListener(events.onSetMaxComboStep.Invoke);
+                }
+
+                // Identity
+                this.events.onSetIdentity.RemoveListener(events.onSetIdentity.Invoke);
+
+                // Cooldown
+                this.events.onSetCooldown.RemoveListener(events.onSetCooldown.Invoke);
+
+                // Collision Exceptions
+                this.events.onSetCollisionExceptions.RemoveListener(events.onSetCollisionExceptions.Invoke);
+            }
+
+            return new(events, false);
         }
     }
 
@@ -392,7 +455,7 @@ namespace HotD.Castables
         [Header("Settings")]
         public CastableItem item;
         public int maxPowerLevel;
-        public int curPowerLevel;
+        public float curPowerLevel;
         public int maxComboStep;
         public int curComboStep;
         public bool usePowerLevelAsComboStep = false;
@@ -423,25 +486,47 @@ namespace HotD.Castables
         {
             public string name;
             public UnityEvent<ICastCompatible> onSetOwner;
-            public UnityEvent<int> onSetPowerLevel;
+            public UnityEvent<float> onSetPowerLevel;
+            public UnityEvent<int> onSetPowerLevelInt;
             public UnityEvent<int> onSetMaxPowerLevel;
             public UnityEvent<int> onSetComboStep;
             public UnityEvent<int> onSetMaxComboStep;
             public UnityEvent<Identity> onSetIdentity;
             public UnityEvent<float> onSetCooldown;
             public UnityEvent<Collider[]> onSetCollisionExceptions;
+            public bool connected;
+            public bool initialized;
 
-            public FieldEvents(string name)
+            public FieldEvents(string name, bool connected = false)
             {
                 this.name = name;
                 onSetOwner = new();
                 onSetPowerLevel = new();
+                onSetPowerLevelInt = new();
                 onSetMaxPowerLevel = new();
                 onSetComboStep = new();
                 onSetMaxComboStep = new();
                 onSetIdentity = new();
                 onSetCooldown = new();
                 onSetCollisionExceptions = new();
+                this.connected = connected;
+                this.initialized = true;
+            }
+
+            public FieldEvents(FieldEvents old, bool connected = false)
+            {
+                name = old.name;
+                onSetOwner = old.onSetOwner;
+                onSetPowerLevel = old.onSetPowerLevel;
+                onSetPowerLevelInt = old.onSetPowerLevelInt;
+                onSetMaxPowerLevel = old.onSetMaxPowerLevel;
+                onSetComboStep = old.onSetComboStep;
+                onSetMaxComboStep = old.onSetMaxComboStep;
+                onSetIdentity = old.onSetIdentity;
+                onSetCooldown = old.onSetCooldown;
+                onSetCollisionExceptions = old.onSetCollisionExceptions;
+                this.connected = connected;
+                initialized = old.initialized;
             }
         }
 

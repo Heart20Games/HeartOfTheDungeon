@@ -311,7 +311,7 @@ namespace HotD.Generators
             //UnityEventTools.AddPersistentListener(releaseTransition.startAction, charger.Interrupt);
 
             // Keep Power Level Updated
-            UnityEventTools.AddPersistentListener(charger.onChargeInt, executor.SetPowerLevel);
+            UnityEventTools.AddPersistentListener(charger.onCharge, executor.SetPowerLevel);
             UnityEventTools.AddPersistentListener(executor.fieldEvents.onSetMaxPowerLevel, charger.SetMaxLevel);
                 
             // Executor On Full Charge?
@@ -511,7 +511,7 @@ namespace HotD.Generators
 
             properties.connectToFieldEvents = true;
             UnityEventTools.AddPersistentListener(properties.fieldEvents.onSetOwner, distributor.SetOwner);
-            UnityEventTools.AddPersistentListener(properties.fieldEvents.onSetPowerLevel, distributor.SetLevel);
+            UnityEventTools.AddPersistentListener(properties.fieldEvents.onSetPowerLevelInt, distributor.SetLevel);
 
             return distributor;
         }

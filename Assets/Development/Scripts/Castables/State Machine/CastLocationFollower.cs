@@ -32,14 +32,14 @@ namespace HotD.Castables
 
         public override void SetOwner(ICastCompatible owner)
         {
-            Print($"Set owner to {owner}", true, this);
+            Print($"Set owner to {owner}", debugOwner, this);
             this.owner = owner;
             if (owner is Character)
             {
                 character = owner as Character;
             }
             hasOwner = this.owner != null;
-            Print($"Owner has been set to {this.owner}", true, this);
+            Print($"Owner has been set to {this.owner}", debugOwner, this);
         }
 
         public void SetTarget(CastLocation location, Vector3 offset=new())
