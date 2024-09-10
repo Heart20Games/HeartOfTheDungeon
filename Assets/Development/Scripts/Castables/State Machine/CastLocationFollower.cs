@@ -75,7 +75,7 @@ namespace HotD.Castables
         {
             Transform target = null;
 
-            Print($"Owner null? {owner == null} / {character == null}", true, this);
+            Print($"Owner null? {owner == null} / {character == null}", debugOwner, this);
             if (owner != null)
             {
                 target = GetLocationTransform(location, owner);

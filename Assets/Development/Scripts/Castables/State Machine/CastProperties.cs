@@ -143,10 +143,11 @@ namespace HotD.Castables
             gameObject.SetActive(active);
             if (Coordinator)
             {
-                fieldEvents.onSetPowerLevelInt.AddListener(Coordinator.SetPowerLevel);
-                fieldEvents.onSetComboStep.AddListener(Coordinator.SetComboLevel);
                 if (active)
                 {
+                    Print("Connecting Coordinator", debugProperties, this);
+                    fieldEvents.onSetPowerLevelInt.AddListener(Coordinator.SetPowerLevel);
+                    fieldEvents.onSetComboStep.AddListener(Coordinator.SetComboLevel);
                     Print($"Set Action Index on Coordinator: {fields.ActionType}", debugProperties, this);
                     Coordinator.ActionIndex = fields.ActionType;
                 }
@@ -252,7 +253,7 @@ namespace HotD.Castables
                 curPowerLevel = value; 
                 events.onSetPowerLevel.Invoke(value);
                 events.onSetPowerLevelInt.Invoke((int)value);
-                Print($"Power Level set: {value}", debugFieldsEditor);
+                Print($"Power Level set: {value} / {(int)value}", debugFieldsEditor);
             }
         }
         public int MaxPowerLevel
@@ -359,6 +360,7 @@ namespace HotD.Castables
             {
                 // Power Level
                 this.events.onSetPowerLevel.AddListener(events.onSetPowerLevel.Invoke);
+                this.events.onSetPowerLevelInt.AddListener(events.onSetPowerLevelInt.Invoke);
                 this.events.onSetMaxPowerLevel.AddListener(events.onSetMaxPowerLevel.Invoke);
 
                 // Combo Steps
@@ -396,6 +398,7 @@ namespace HotD.Castables
             {
                 // Power Level
                 this.events.onSetPowerLevel.RemoveListener(events.onSetPowerLevel.Invoke);
+                this.events.onSetPowerLevelInt.RemoveListener(events.onSetPowerLevelInt.Invoke);
                 this.events.onSetMaxPowerLevel.RemoveListener(events.onSetMaxPowerLevel.Invoke);
 
                 // Combo Steps
