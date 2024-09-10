@@ -1,18 +1,54 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 using static Body.Behavior.ContextSteering.CSIdentity;
 
 public class Explosion: BaseMonoBehaviour
 {
+    public enum CollisionMode { SphereCast, Collider }
+
     public Identity identity = Identity.Neutral;
     public float radius = 5f;
     public float force = 10f;
     public int damage = 10;
+    public CollisionMode collisionMode = CollisionMode.SphereCast;
 
     public bool triggerExplosion = false;
 
     public bool debug;
     public float debugRayDuration = 0.01f;
-    
+
+    [Serializable]
+    public struct Other
+    {
+        public Collider collider;
+        public IDamageReceiver damageReceiver;
+
+        public Other(Collider collider, IDamageReceiver damageReceiver)
+        {
+            this.collider = collider;
+            this.damageReceiver = damageReceiver;
+        }
+    }
+
+    [SerializeField] private List<Other> others = new();
+    [SerializeField] private Collider collider;
+
+    private void Awake()
+    {
+        if (this.collider == null)
+        {
+            foreach (Collider collider in GetComponents<Collider>())
+            {
+                if (collider.isTrigger)
+                {
+                    this.collider = collider;
+                }
+            }
+        }
+    }
+
     private void Update()
     {
         if (triggerExplosion)
@@ -32,21 +68,68 @@ public class Explosion: BaseMonoBehaviour
 
     public void Explode()
     {
-        RaycastHit[] hits = Physics.SphereCastAll(new(transform.position, Vector3.forward), radius);
-        for (int i = 0; i < hits.Length; i++)
+        if (collisionMode == CollisionMode.SphereCast)
         {
-            RaycastHit hit = hits[i];
-            if (hit.collider.TryGetComponent(out Rigidbody rigidbody))
+            RaycastHit[] hits = Physics.SphereCastAll(new(transform.position, Vector3.forward), radius);
+            for (int i = 0; i < hits.Length; i++)
             {
-                Print($"Push them! {hit.collider.gameObject.name}", debug);
-                rigidbody.AddExplosionForce(force, transform.position, radius);
+                RaycastHit hit = hits[i];
+                PushThem(hit.collider);
+                if (hit.collider.TryGetComponent(out IDamageReceiver damageable))
+                {
+                    DamageThem(new(hit.collider, damageable), hit.point);
+                }
             }
-            if (hit.collider.TryGetComponent(out IDamageReceiver damageable))
+        }
+        else if (collisionMode == CollisionMode.Collider)
+        {
+            foreach (var other in others)
             {
-                Print($"Damage them! {hit.collider.gameObject.name}", debug);
-                damageable.SetDamagePosition(hit.point);
-                damageable.TakeDamage(damage, identity);
+                Ray ray = new(transform.position, other.collider.transform.position - transform.position);
+                Vector3 hitPosition = other.collider.transform.position;
+                if (other.collider.Raycast(ray, out var hit, 1000))
+                {
+                    hitPosition = hit.point;
+                }
+                PushThem(collider);
+                DamageThem(other, hitPosition);
             }
+        }
+    }
+
+    private void PushThem(Collider collider)
+    {
+        if (collider.TryGetComponent(out Rigidbody rigidbody))
+        {
+            Print($"Push them! {collider.gameObject.name}", debug);
+            rigidbody.AddExplosionForce(force, transform.position, radius);
+        }
+    }
+
+    private void DamageThem(Other other, Vector3 hitPosition)
+    {
+        Print($"Damage them! {other.collider.gameObject.name}", debug);
+        other.damageReceiver.SetDamagePosition(hitPosition);
+        other.damageReceiver.TakeDamage(damage, identity);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.isTrigger && other.gameObject.TryGetComponent<IDamageReceiver>(out var damageReceiver))
+        {
+            foreach (var item in others)
+            {
+                if (item.damageReceiver == damageReceiver) return;
+            }
+            others.Add(new(other, damageReceiver));
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.isTrigger && other.gameObject.TryGetComponent<IDamageReceiver>(out var damageReceiver))
+        {
+            others.Remove(new(other, damageReceiver));
         }
     }
 }
