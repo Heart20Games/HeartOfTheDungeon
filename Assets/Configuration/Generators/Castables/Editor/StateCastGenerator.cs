@@ -701,7 +701,6 @@ namespace HotD.Generators
                     {
                         UnityEventTools.AddPersistentListener(method.fieldEvents.onSetOwner, follower.SetOwner);
                     }
-
                 }
                 
                 return method;

@@ -91,9 +91,8 @@ namespace HotD.Castables
             }
             Assert.IsNotNull(Crosshair.main);
 
-            Transform source = (Owner == null ? transform :
-                (Owner.Body != null ? Owner.Body : Owner.Transform
-            ));
+            Transform source = Owner == null ? transform : Owner.Transform;
+            Transform body = Owner != null ? Owner.Body : transform;
             Transform location = (Owner == null ? transform :
                 (Owner.FiringLocation != null ? Owner.FiringLocation :
                     (Owner.WeaponLocation != null ? Owner.WeaponLocation :
