@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 1020265554586159412}
   - component: {fileID: 2077496534949635378}
   - component: {fileID: 6890455352099923611}
+  - component: {fileID: -673804390639514262}
   m_Layer: 0
   m_Name: StunBone_Projectile
   m_TagString: Untagged
@@ -160,10 +161,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   applyOnSet: 1
   source: {fileID: 0}
+  location: {fileID: 0}
   target: {fileID: 0}
+  locationOverride: {x: 0, y: 0, z: 0}
+  targetOverride: {x: 0, y: 0, z: 0}
   offset: {x: 0, y: 0, z: 0}
+  useLocationOverride: 0
+  useTargetOverride: 0
   rOffset: 0
-  stats: {fileID: 0}
   debug: 0
   onStart:
     m_PersistentCalls:
@@ -186,8 +191,6 @@ MonoBehaviour:
   onEndCast:
     m_PersistentCalls:
       m_Calls: []
-  canUpdatePowerLevel: 0
-  powerRange: {x: 0, y: 0}
   onHasCharge:
     m_PersistentCalls:
       m_Calls: []
@@ -216,7 +219,6 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
     otherAttributes: []
-  finalPowerLimit: 0
   powerLevel: 0
   actualLevel: 0
   clampedPower: 0
@@ -241,7 +243,7 @@ MonoBehaviour:
   localPosition: {x: 0, y: 0, z: 0}
   direction: {x: 0, y: 0, z: 0}
   speed: 0
-  collidableObjects: []
+  colliders: []
   trackingTarget: {fileID: 0}
   damping: 0
 --- !u!135 &2077496534949635378
@@ -292,3 +294,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!210 &-673804390639514262
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5486392033447869101}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 32767
+  m_SortAtRoot: 0

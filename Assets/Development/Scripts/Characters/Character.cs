@@ -125,6 +125,8 @@ namespace HotD.Body
         public IBrain Brain { get => brain; }
         public CSController Controller { get => brain.Controller; }
 
+        public Collider AliveCollider => aliveCollider;
+
         // Casting
         [Foldout("Casting", true)]
         [Header("Casting")]

@@ -16,9 +16,30 @@ public class PartySelectPanel : BaseMonoBehaviour
 
     [SerializeField] private bool debug;
 
+    private int currentIndex;
+
+    private bool wasDisabled;
+
     private void Awake()
     {
         Initialize(initialIndex);
+    }
+
+    private void OnEnable()
+    {
+        if (!wasDisabled) return;
+
+        Initialize(currentIndex);
+
+        wasDisabled = false;
+    }
+
+    private void OnDisable()
+    {
+        wasDisabled = true;
+
+        portraitAnimator.Rebind();
+        portraitAnimator.Update(0);
     }
 
     private void FixedUpdate()
@@ -72,6 +93,8 @@ public class PartySelectPanel : BaseMonoBehaviour
 
     public void UnSelectAllBut(int idx)
     {
+        currentIndex = idx;
+
         for (int i = 0; i < displays.Count; i++)
         {
             if (i != idx)

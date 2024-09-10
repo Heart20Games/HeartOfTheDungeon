@@ -29,6 +29,7 @@ public class MeterProgressManager : BaseMonoBehaviour
     [SerializeField][ReadOnly] private bool level3Dissolved;
     [Foldout("Dissolve Parameters")]
     [SerializeField] private float dissolveDuration = 1f;
+    public bool cooldown = false;
     
     public ICastProperties Castable { get => castProperties; set => SetCastable(value); }
 
