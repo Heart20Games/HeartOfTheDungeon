@@ -251,6 +251,7 @@ GameObject:
   - component: {fileID: 7532699260776525699}
   - component: {fileID: 6764396960747244615}
   - component: {fileID: 8958776985789712049}
+  - component: {fileID: 2182839613267686845}
   m_Layer: 0
   m_Name: Exploding Barrel
   m_TagString: Damageable
@@ -387,6 +388,7 @@ MonoBehaviour:
   damage: 10
   triggerExplosion: 0
   debug: 0
+  debugRayDuration: 0.01
 --- !u!114 &6893100958757639248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,6 +498,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   length: 5
   playOnStart: 0
+  interruptOnPlay: 0
+  debug: 0
   onPlay:
     m_PersistentCalls:
       m_Calls: []
@@ -540,6 +544,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   length: 2
   playOnStart: 0
+  interruptOnPlay: 0
+  debug: 0
   onPlay:
     m_PersistentCalls:
       m_Calls: []
@@ -920,6 +926,18 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!210 &2182839613267686845
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4326658211653343975}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 32767
+  m_SortAtRoot: 0
 --- !u!1 &5828609398805429908
 GameObject:
   m_ObjectHideFlags: 0
