@@ -177,8 +177,10 @@ namespace HotD.Castables
             {
                 float pMag = Mathf.Abs(pivot.localScale.x);
                 float sign = castVector.x < 0 ? -1 : 1;
-                sign *= character.Movement.ShouldFlip ? 1 : -1;
-                pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
+
+                // If we wanted it to flip the character based on their movement or something.
+                //sign *= character.Movement.ShouldFlip ? 1 : -1;
+                //pivot.localScale = new Vector3(pMag * sign, pivot.localScale.y, pivot.localScale.z);
 
                 //if (Mathf.Abs(castVector.x) > 0.5f || Mathf.Abs(castVector.y) > 0.5f || Mathf.Abs(castVector.z) > 0.5f)
                 weapRotation = castDirection; // Vector3.right * -castVector.x + Vector3.up * -castVector.y + Vector3.forward * -castVector.z;
