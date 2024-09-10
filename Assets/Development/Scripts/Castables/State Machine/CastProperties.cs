@@ -162,7 +162,6 @@ namespace HotD.Castables
 
             this.fields = fields;
             this.fields ??= new();
-            this.fields.InitializeConnections();
             
             if (connectToFieldEvents && fieldEvents.initialized)
             {
@@ -190,10 +189,11 @@ namespace HotD.Castables
 
         public virtual void Initialize(ICastCompatible owner, CastableItem item)
         {
-            InitializeFields(null);
+            InitializeFields(fields);
 
             Owner = owner;
             Item = item;
+            fields.Stats = item.stats;
 
             if (fields.damager != null)
                 fields.damager.Ignore(owner.Body);
@@ -335,7 +335,7 @@ namespace HotD.Castables
             get => stats.stats;
             set { SetStats(value); }
         }
-        public void SetStats(CastableStats stats)
+        private void SetStats(CastableStats stats)
         {
             // Disconnect
             if (this.stats.stats != null)
@@ -344,10 +344,6 @@ namespace HotD.Castables
                 this.stats.stats.cooldown.updatedFinalFloat.RemoveListener(SetCooldown);
             }
             this.stats = new(stats);
-        }
-
-        public void InitializeConnections()
-        {
             if (this.stats.stats != null)
             {
                 this.stats.stats.chargeLimit.updatedFinalInt.AddListener(SetMaxPowerLevel);
@@ -431,7 +427,7 @@ namespace HotD.Castables
         // Events
         [SerializeField] protected bool debug = false;
         [HideInInspector] public FieldEvents events = new("Events");
-        [HideInInspector] public FieldStats stats;
+        public FieldStats stats;
 
         [Conditional("DEVELOPMENT_BUILD"), Conditional("UNITY_EDITOR")]
         protected void Print(object message, bool debug = true)
