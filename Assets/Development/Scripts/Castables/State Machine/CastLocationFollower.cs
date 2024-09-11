@@ -23,10 +23,12 @@ namespace HotD.Castables
 
     public class CastLocationFollower : ACastCompatibleFollower
     {
-        protected enum Mode { OnlyOnStart, AlsoOnUpdate }
+        public enum Mode { OnlyOnStart, AlsoOnUpdate }
 
         [Foldout("Cast Location", true)]
         [SerializeField] protected CastLocation location;
+        [SerializeField] protected bool shouldReparent;
+        [ConditionalField("shouldReparent")]
         [SerializeField] protected CastLocation parent;
         [SerializeField] protected Vector3 offset;
         [SerializeField] protected Mode mode = Mode.OnlyOnStart;
@@ -52,8 +54,20 @@ namespace HotD.Castables
             this.offset = offset;
         }
 
+        public void SetParent(bool shouldReparent, CastLocation parent=CastLocation.Character)
+        {
+            this.parent = parent;
+            this.shouldReparent = shouldReparent;
+        }
+
+        public void SetMode(Mode mode)
+        {
+            this.mode = mode;
+        }
+
         private void Start()
         {
+            Reparent();
             MatchToTarget();
         }
 
@@ -67,7 +81,30 @@ namespace HotD.Castables
                 }
                 else
                 {
+                    Reparent();
                     MatchToTarget();
+                }
+            }
+        }
+
+        private void Reparent()
+        {
+            if (shouldReparent)
+            {
+                Transform parent = null;
+
+                if (owner != null)
+                {
+                    parent = GetLocationTransform(this.parent, owner);
+                }
+                else if (character != null)
+                {
+                    parent = GetLocationTransform(this.parent, character);
+                }
+
+                if (parent != null && parent != transform.parent)
+                {
+                    transform.SetParent(parent);
                 }
             }
         }

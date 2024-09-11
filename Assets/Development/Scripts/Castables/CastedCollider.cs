@@ -80,8 +80,6 @@ namespace HotD.Castables
             {
                 AddException(exception);
             }
-            //ChangeExceptions(Colliders, exceptions, true);
-            //this.exceptions.AddRange(exceptions);
         }
         public void RemoveExceptions(Collider[] exceptions)
         {
@@ -90,11 +88,6 @@ namespace HotD.Castables
             {
                 RemoveException(exception);
             }
-            //ChangeExceptions(Colliders, exceptions, false);
-            //foreach (var exception in exceptions)
-            //{
-            //    this.exceptions.Remove(exception);
-            //}
         }
     }
 }

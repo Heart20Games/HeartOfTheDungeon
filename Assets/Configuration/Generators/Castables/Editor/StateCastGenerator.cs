@@ -722,7 +722,9 @@ namespace HotD.Generators
 
                     // Cast Location Follower
                     CastLocationFollower follower = castedPivot.GetOrAddComponent<CastLocationFollower>();
-                    follower.SetTarget(CastLocation.FiringPoint);
+                    follower.SetTarget(CastLocation.WeaponPoint);
+                    follower.SetMode(CastLocationFollower.Mode.AlsoOnUpdate);
+                    follower.SetParent(true, CastLocation.Character);
                     UnityEventTools.AddPersistentListener(method.fieldEvents.onSetOwner, follower.SetOwner);
 
                     // Casted Collider
@@ -772,6 +774,8 @@ namespace HotD.Generators
                 // Cast Location Follower
                 CastLocationFollower follower = castedPivot.GetOrAddComponent<CastLocationFollower>();
                 follower.SetTarget(CastLocation.FiringPoint);
+                follower.SetMode(CastLocationFollower.Mode.OnlyOnStart);
+                follower.SetParent(false);
                 UnityEventTools.AddPersistentListener(method.fieldEvents.onSetOwner, follower.SetOwner);
 
                 // Projectile Spawner
