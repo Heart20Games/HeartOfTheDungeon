@@ -13,7 +13,7 @@ namespace HotD.Castables
         public bool aimAtCrosshair = true;
         public List<Positionable> positionables = new();
         public UnityEvent onEnable = new();
-        private ICollidables[] collidables;
+        private ISetCollisionExceptions[] collidables;
 
         public override void InitializeEvents()
         {
@@ -26,7 +26,7 @@ namespace HotD.Castables
             base.Awake();
 
             fieldEvents.onSetOwner.Invoke(Owner);
-            collidables = GetComponentsInChildren<ICollidables>(true);
+            collidables = GetComponentsInChildren<ISetCollisionExceptions>(true);
             foreach (var collidable in collidables)
             {
                 if (collidable == null)

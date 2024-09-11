@@ -27,6 +27,7 @@ namespace HotD.Castables
 
         [Foldout("Cast Location", true)]
         [SerializeField] protected CastLocation location;
+        [SerializeField] protected CastLocation parent;
         [SerializeField] protected Vector3 offset;
         [SerializeField] protected Mode mode = Mode.OnlyOnStart;
         [SerializeField][ReadOnly] protected bool hasOwner = false;

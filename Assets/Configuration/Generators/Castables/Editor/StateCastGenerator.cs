@@ -662,7 +662,7 @@ namespace HotD.Generators
 
             // Execution: Collider
             [ConditionalField("method", false, ExecutionMethod.ColliderBased)]
-            public CollidablePositioner colliderPrefab;
+            public CastedCollider colliderPrefab;
 
             // Execution: Projectile
             [ConditionalField("method", false, ExecutionMethod.ProjectileBased)]
@@ -713,16 +713,29 @@ namespace HotD.Generators
                 {
                     // Object
                     GameObject castedObject = AddCastedObject(executor, pivot);
+                    Pivot castedPivot = AddCastedPivot(castedObject);
+                    castedPivot.body = castedPivot.transform;
 
                     // Method
                     Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
                     method.InitializeEvents();
 
+                    // Cast Location Follower
+                    CastLocationFollower follower = castedPivot.GetOrAddComponent<CastLocationFollower>();
+                    follower.SetTarget(CastLocation.FiringPoint);
+                    UnityEventTools.AddPersistentListener(method.fieldEvents.onSetOwner, follower.SetOwner);
+
+                    // Casted Collider
+                    CastedCollider casted = (PrefabUtility.InstantiatePrefab(colliderPrefab.gameObject) as GameObject).GetComponent<CastedCollider>();
+                    casted.transform.SetParent(castedPivot.transform);
+                    UnityEventTools.AddPersistentListener(method.fieldEvents.onSetCollisionExceptions, casted.SetExceptions);
+                    //method.positionables.Add(casted);
+
                     // Collidable
-                    CollidablePositioner positioner = (PrefabUtility.InstantiatePrefab(colliderPrefab.gameObject) as GameObject).GetComponent<CollidablePositioner>();
-                    positioner.transform.SetParent(castedObject.transform);
-                    method.positionables.Add(positioner);
-                    positioner.InitializeEvents();
+                    //CollidablePositioner positioner = (PrefabUtility.InstantiatePrefab(colliderPrefab.gameObject) as GameObject).GetComponent<CollidablePositioner>();
+                    //positioner.transform.SetParent(castedObject.transform);
+                    //method.positionables.Add(positioner);
+                    //positioner.InitializeEvents();
 
                     ////CastedCollider collider = (PrefabUtility.InstantiatePrefab(colliderPrefab.gameObject) as GameObject).GetComponent<CastedCollider>(); // , pivot.transform);
                     //collider.transform.SetParent(pivot.transform);
@@ -736,8 +749,8 @@ namespace HotD.Generators
                     // Damage
                     if (damager != null)
                     {
-                        UnityEventTools.AddPersistentListener(positioner.hitDamageable, damager.HitDamageable);
-                        UnityEventTools.AddPersistentListener(positioner.leftDamageable, damager.LeftDamageable);
+                        UnityEventTools.AddPersistentListener(casted.hitDamageable, damager.HitDamageable);
+                        UnityEventTools.AddPersistentListener(casted.leftDamageable, damager.LeftDamageable);
                     }
 
                     return method;

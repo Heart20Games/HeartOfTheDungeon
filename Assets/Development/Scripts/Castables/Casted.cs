@@ -13,7 +13,7 @@ namespace HotD.Castables
         public bool disableMovementWhileCasting;
     }
 
-    public interface ICasted : ICollidables, IPositionable
+    public interface ICasted : IPositionable
     {
         // Triggers / Events
         public void Release();
@@ -36,49 +36,50 @@ namespace HotD.Castables
 
     public class Casted : Positionable, ICasted
     {
-        private CastableStats stats;
-        public CastableStats Stats { get => stats; set => stats = value; }
+        protected CastableStats stats;
         [SerializeField] protected bool debug;
-
+        [SerializeField] protected bool equipped = false;
+        [SerializeField] protected bool forceUpdate = false;
         private readonly bool castOnEnable = true;
+        public CastableStats Stats { get => stats; set => stats = value; }
+        public bool Equipped { get => equipped; set => equipped = value; }
+
 
         [Foldout("Base Events", true)]
-        [SerializeField] private UnityEvent onStart = new();
-        [SerializeField] private UnityEvent onEnable = new();
-        [SerializeField] private UnityEvent onDisable = new();
+        [SerializeField] protected UnityEvent onStart = new();
+        [SerializeField] protected UnityEvent onEnable = new();
+        [SerializeField] protected UnityEvent onDisable = new();
 
         [Foldout("Cast Events", true)]
-        [SerializeField] private UnityEvent onTrigger = new();
-        [SerializeField] private UnityEvent onRelease = new();
+        [SerializeField] protected UnityEvent onTrigger = new();
+        [SerializeField] protected UnityEvent onRelease = new();
         public UnityEvent<Vector3> onCast = new();
-        [SerializeField] private UnityEvent onEndCast = new();
+        [SerializeField] protected UnityEvent onEndCast = new();
         public void Release() { onRelease.Invoke(); }
         private void StartCast(Vector3 vector) { onCast.Invoke(vector); }
 
         [Foldout("Power Level", true)]
-        private Vector2 powerRange;
+        [ReadOnly][SerializeField] protected Vector2 powerRange;
+        [SerializeField] protected UnityEvent<bool> onHasCharge = new();
+        [SerializeField] protected UnityEvent<float> onSetPowerLevel = new();
+        [SerializeField] protected UnityEvent<int> onSetPowerLimit = new();
+        [SerializeField] protected DependentAttribute powerLimit;
+        [ReadOnly][SerializeField] protected float powerLevel = 0f;
+        [ReadOnly][SerializeField] protected float actualLevel = 0f;
+        [ReadOnly][SerializeField] protected float clampedPower = 0f;
         public Vector2 PowerRange { get => powerRange; set => powerRange = value; }
-        [SerializeField] private UnityEvent<bool> onHasCharge = new();
-        [SerializeField] private UnityEvent<float> onSetPowerLevel = new();
-        [SerializeField] private UnityEvent<int> onSetPowerLimit = new();
-        [SerializeField] private DependentAttribute powerLimit;
         public DependentAttribute PowerLimit { get => powerLimit; set => powerLimit = value; }
-        [ReadOnly][SerializeField] private float powerLevel = 0f;
-        [ReadOnly][SerializeField] private float actualLevel = 0f;
-        [ReadOnly][SerializeField] private float clampedPower = 0f;
 
         [Foldout("Combo Step", true)]
-        [SerializeField] private Vector2 comboRange;
+        [SerializeField] protected Vector2 comboRange;
+        [SerializeField] protected UnityEvent<int> onSetComboStep = new();
+        [ReadOnly][SerializeField] protected int comboStep = 0;
+        [ReadOnly][SerializeField] protected float clampedCombo = 0f;
         public Vector2 ComboRange { get => comboRange; set => comboRange = value; }
-        [Foldout("Combo Step")] [SerializeField] private UnityEvent<int> onSetComboStep = new();
-        [ReadOnly][SerializeField] private int comboStep = 0;
-        [ReadOnly][SerializeField] private float clampedCombo = 0f;
 
-        [Foldout("Collision")] [SerializeField] private UnityEvent<Collider[]> onSetExceptions = new();
+        [Foldout("Collision")]
+        [SerializeField] protected UnityEvent<Collider[]> onSetExceptions = new();
 
-        [SerializeField] private bool equipped = false;
-        public bool Equipped { get => equipped; set => equipped = value; }
-        [SerializeField] private bool forceUpdate = false;
 
         [Serializable] private struct CastStatEvent
         {
@@ -88,9 +89,10 @@ namespace HotD.Castables
             public float multiplier;
             public UnityEvent<float> finalValue;
         }
+        [Header("Reporting")]
         [SerializeField] private List<CastStatEvent> castStatEvents = new();
 
-        private void Awake()
+        protected virtual void Awake()
         {
             if (stats != null)
             {
@@ -145,16 +147,6 @@ namespace HotD.Castables
             {
                 e.finalValue.Invoke((stats.GetAttribute(e.stat).FinalValue + e.modifier) * e.multiplier);
             }
-        }
-
-        public Collider[] Exceptions
-        {
-            get => null;
-            set => SetExceptions(value);
-        }
-        public void SetExceptions(Collider[] exceptions)
-        {
-            onSetExceptions.Invoke(exceptions);
         }
 
         protected void AddListenerController(bool active = false, UnityAction<int> powerLimitListener = null, UnityAction triggerListener = null, UnityAction releaseListener = null, UnityAction<Vector3> startCastListener = null, UnityAction endCastListener = null)
