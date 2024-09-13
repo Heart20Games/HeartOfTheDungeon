@@ -37157,7 +37157,13 @@ VisualEffect:
     m_NamedObject:
       m_Array: []
     m_Bool:
-      m_Array: []
+      m_Array:
+      - m_Value: 1
+        m_Name: Shield Break
+        m_Overridden: 1
+      - m_Value: 0
+        m_Name: ShieldBreak
+        m_Overridden: 1
 --- !u!1 &1165587174
 GameObject:
   m_ObjectHideFlags: 0
@@ -57587,6 +57593,7 @@ GameObject:
   - component: {fileID: 1503848780}
   - component: {fileID: 1503848782}
   - component: {fileID: 1503848781}
+  - component: {fileID: 1503848783}
   m_Layer: 5
   m_Name: Magic Shield Charge Meter
   m_TagString: Untagged
@@ -57652,6 +57659,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1503848779}
   m_CullTransparentMesh: 1
+--- !u!114 &1503848783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503848779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc638c66b8e757c40a812caf2ab0d624, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meterVFX: {fileID: 1153407634}
+  meterPosition: -0.1
+  shieldBreak: 0
+  shieldRestore: 0
 --- !u!1 &1506381627 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2691753556395033680, guid: a7c78ef60695fa14489e9e75a5d37f03, type: 3}
