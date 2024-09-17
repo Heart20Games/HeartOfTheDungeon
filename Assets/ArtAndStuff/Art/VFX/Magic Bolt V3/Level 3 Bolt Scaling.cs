@@ -20,6 +20,12 @@ public class Level3BoltScaling : BaseMonoBehaviour
     [SerializeField] private bool shouldFollowCrossHair;
     private Coroutine windDownCoroutine;
 
+    public bool ShouldFollowCrossHair
+    {
+        get => shouldFollowCrossHair;
+        set => shouldFollowCrossHair = value;
+    }
+
     // Start is called before the first frame update
     private void Start()
     {
