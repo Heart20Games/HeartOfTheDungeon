@@ -6,9 +6,9 @@ using UnityEngine.VFX;
 public static class ExtensionMethods
 {
     // Animator
-    public static bool HasParameter(this Animator _animator, string parameterName)
+    public static bool HasParameter(this Animator _animator, string parameterName, Object context=null)
     {
-        Awarn.IsNotNull(_animator, "Animator.HasParameter: Animator is null for some dumb reason.");
+        Awarn.IsNotNull(_animator, "Animator.HasParameter: Animator is null for some dumb reason.", context);
         if (_animator != null)
         {
             foreach (AnimatorControllerParameter param in _animator.parameters)
