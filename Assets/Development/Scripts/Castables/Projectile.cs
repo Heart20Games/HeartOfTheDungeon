@@ -56,18 +56,6 @@ namespace HotD.Castables
         }
 
         // Cleanup
-
-        // Cleanup
-        public virtual void QueueCleanup(Transform pInstance, CastedCollider bInstance, float lifeSpan, List<Projectile> projectiles)
-        {
-            List<CastedCollider> castObjects = new();
-            foreach (var projectile in projectiles)
-            {
-                castObjects.Add(projectile);
-            }
-            StartCoroutine(CleanupInstance(pInstance, bInstance, lifeSpan, castObjects));
-        }
-
         public void Destroy()
         {
             Destroy(gameObject);

@@ -47,12 +47,12 @@ namespace HotD.Castables
         }
 
         // Cleanup
-        public virtual void QueueCleanup(Transform pInstance, CastedCollider bInstance, float lifeSpan, List<CastedCollider> projectiles)
+        public virtual void QueueCleanup<T>(Transform pInstance, T bInstance, float lifeSpan, List<T> projectiles) where T : CastedCollider
         {
             StartCoroutine(CleanupInstance(pInstance, bInstance, lifeSpan, projectiles));
         }
 
-        protected virtual IEnumerator CleanupInstance(Transform pInstance, CastedCollider bInstance, float lifeSpan, List<CastedCollider> projectiles)
+        protected virtual IEnumerator CleanupInstance<T>(Transform pInstance, T bInstance, float lifeSpan, List<T> projectiles) where T : CastedCollider
         {
             Print("Waiting to cleanup Projectile instance.", debug, this);
             yield return new WaitForSeconds(lifeSpan);
