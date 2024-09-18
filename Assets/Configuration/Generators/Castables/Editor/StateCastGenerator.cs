@@ -726,7 +726,7 @@ namespace HotD.Generators
                 CastLocationFollower follower = castedPivot.GetOrAddComponent<CastLocationFollower>();
                 follower.SetTarget(CastLocation.WeaponPoint);
                 follower.SetMode(CastLocationFollower.Mode.AlsoOnUpdate);
-                follower.SetParent(true, CastLocation.Character);
+                follower.SetParent(false);
                 UnityEventTools.AddPersistentListener(method.fieldEvents.onSetOwner, follower.SetOwner);
 
                 // Cast Object Spawner
