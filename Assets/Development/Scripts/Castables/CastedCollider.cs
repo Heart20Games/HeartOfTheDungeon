@@ -1,5 +1,6 @@
 using MyBox;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,6 +10,10 @@ namespace HotD.Castables
 {
     public class CastedCollider : Casted, IDamager, ICollisionExceptions
     {
+        [Foldout("Orientation", true)]
+        [ReadOnly][SerializeField] protected Vector3 localPosition;
+        public Vector3 direction = new();
+
         [Foldout("Damage", true)]
         [SerializeField] protected bool debugDamage;
         public UnityEvent<Impact> hitDamageable;
@@ -32,6 +37,35 @@ namespace HotD.Castables
             InitializeColliders();
         }
 
+        public void SetActive(bool active)
+        {
+            gameObject.SetActive(active);
+            for (int i = 0; i < Colliders.Length; i++)
+            {
+                Colliders[i].enabled = active;
+            }
+        }
+
+        // Cleanup
+        public virtual void QueueCleanup(Transform pInstance, CastedCollider bInstance, float lifeSpan, List<CastedCollider> projectiles)
+        {
+            StartCoroutine(CleanupInstance(pInstance, bInstance, lifeSpan, projectiles));
+        }
+
+        protected virtual IEnumerator CleanupInstance(Transform pInstance, CastedCollider bInstance, float lifeSpan, List<CastedCollider> projectiles)
+        {
+            Print("Waiting to cleanup Projectile instance.", debug, this);
+            yield return new WaitForSeconds(lifeSpan);
+            Print("Deleting Projectile instance...", debug, this);
+            projectiles?.Remove(bInstance);
+            if (pInstance != null)
+            {
+                Destroy(pInstance.gameObject);
+            }
+            Print("Cleaned up Projectile instance", debug, this);
+        }
+
+        // Collision
         private Collider[] InitializeColliders()
         {
             colliders = GetComponentsInChildren<Collider>();

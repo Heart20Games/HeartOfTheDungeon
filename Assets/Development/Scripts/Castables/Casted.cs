@@ -55,8 +55,9 @@ namespace HotD.Castables
         [SerializeField] protected UnityEvent onRelease = new();
         public UnityEvent<Vector3> onCast = new();
         [SerializeField] protected UnityEvent onEndCast = new();
+        [SerializeField] protected bool debugCastEvents = false;
         public void Release() { onRelease.Invoke(); }
-        private void StartCast(Vector3 vector) { onCast.Invoke(vector); }
+        private void StartCast(Vector3 vector) { Print("Start Cast.", debugCastEvents, this);  onCast.Invoke(vector); }
 
         [Foldout("Power Level", true)]
         [ReadOnly][SerializeField] protected Vector2 powerRange;

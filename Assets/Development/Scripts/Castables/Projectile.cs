@@ -1,3 +1,4 @@
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using MyBox;
 using System;
 using System.Collections;
@@ -10,8 +11,6 @@ namespace HotD.Castables
     public class Projectile : CastedCollider, ICollisionExceptions
     {
         [Foldout("Projectile", true)]
-        [ReadOnly][SerializeField] private Vector3 localPosition;
-        public Vector3 direction = new();
         public float speed = 0;
 
         protected new Rigidbody rigidbody;
@@ -56,37 +55,22 @@ namespace HotD.Castables
             speed = val;
         }
 
-        public void SetActive(bool active)
-        {
-            gameObject.SetActive(active);
-            for (int i = 0; i < Colliders.Length; i++)
-            {
-                Colliders[i].enabled = active;
-            }
-        }
+        // Cleanup
 
         // Cleanup
+        public virtual void QueueCleanup(Transform pInstance, CastedCollider bInstance, float lifeSpan, List<Projectile> projectiles)
+        {
+            List<CastedCollider> castObjects = new();
+            foreach (var projectile in projectiles)
+            {
+                castObjects.Add(projectile);
+            }
+            StartCoroutine(CleanupInstance(pInstance, bInstance, lifeSpan, castObjects));
+        }
+
         public void Destroy()
         {
             Destroy(gameObject);
-        }
-
-        public void QueueCleanup(Transform pInstance, Projectile bInstance, float lifeSpan, List<Projectile> projectiles)
-        {
-            StartCoroutine(CleanupInstance(pInstance, bInstance, lifeSpan, projectiles));
-        }
-
-        private IEnumerator CleanupInstance(Transform pInstance, Projectile bInstance, float lifeSpan, List<Projectile> projectiles)
-        {
-            Print("Waiting to cleanup Projectile instance.", debug, this);
-            yield return new WaitForSeconds(lifeSpan);
-            Print("Deleting Projectile instance...", debug, this);
-            projectiles?.Remove(bInstance);
-            if (pInstance != null)
-            {
-                Destroy(pInstance.gameObject);
-            }
-            Print("Cleaned up Projectile instance", debug, this);
         }
     }
 }
