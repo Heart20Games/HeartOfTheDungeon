@@ -7,7 +7,7 @@ public class MagicShieldChargeMeterController : MonoBehaviour
 {
 
     [SerializeField] private VisualEffect meterVFX;
-    [Range(-0.1f, 1.1f)]public float meterPosition;
+    [Range(0f, 1f)]public float meterPosition;
     public bool shieldBreak = false;
     private bool shieldBroken = false;
     public bool shieldRestore = false;
@@ -68,6 +68,7 @@ public class MagicShieldChargeMeterController : MonoBehaviour
         shieldBroken = false;
         shieldBreak = false;
         shieldRestore = false;
+        meterVFX.SendEvent("ShieldRestore");
         while (crackAlpha > 0 && !shieldBroken)
         {
             crackAlpha -= .05f;
