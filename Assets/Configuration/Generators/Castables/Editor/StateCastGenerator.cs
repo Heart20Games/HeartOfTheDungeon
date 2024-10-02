@@ -305,7 +305,7 @@ namespace HotD.Generators
             TransitionEvent releaseTransition = actionType switch
             {
                 ActionType.Passive =>   new("Release", releaseTriggerAction, Triggers.StartCast),
-                _ =>                    new("Release", releaseTriggerAction, Triggers.StartCast, Triggers.None, CastAction.End, true),
+                _ =>                    new("Release", releaseTriggerAction, Triggers.StartCast, Triggers.None, CastAction.Continue, true),
             };
             executor.supportedTransitions.Add(releaseTransition);
             //UnityEventTools.AddPersistentListener(releaseTransition.startAction, charger.Interrupt);
@@ -313,7 +313,7 @@ namespace HotD.Generators
             // Keep Power Level Updated
             UnityEventTools.AddPersistentListener(charger.onCharge, executor.SetPowerLevel);
             UnityEventTools.AddPersistentListener(executor.fieldEvents.onSetMaxPowerLevel, charger.SetMaxLevel);
-                
+            
             // Executor On Full Charge?
             if (settings.castOn.HasFlag(CastOn.ChargeUp))
                 UnityEventTools.AddPersistentListener(charger.onCharged, executor.End);
@@ -344,7 +344,7 @@ namespace HotD.Generators
             TransitionEvent startTransition = actionType switch
             {
                 ActionType.Passive =>   new("Start", CastAction.Start, Triggers.None, Triggers.StartCast, CastAction.None, false),
-                _ =>                    new("Start", CastAction.Start, Triggers.None, Triggers.StartCast, CastAction.End, false)
+                _ =>                    new("Start", CastAction.Start, Triggers.None, Triggers.StartCast, CastAction.End, true)
             };
             executor.supportedTransitions.Add(startTransition);
 
