@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using static Colliders;
 
-public class CollidablePositioner : Positionable, ICollidable, IDamager
+public class CollidablePositioner : Positionable, IChangeCollisionExceptions, IDamager
 {
     [Foldout("Collision", true)]
     private Collider[] colliders;

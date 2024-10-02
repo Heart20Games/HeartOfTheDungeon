@@ -14,7 +14,8 @@ namespace HotD.Castables
         Trigger = 1 << 3,
         Release = 1 << 4,
         End = 1 << 5,
-        UnEquip = 1 << 6
+        UnEquip = 1 << 6,
+        Continue = 1 << 7
     }
 
     public interface ICastable : ICastProperties

@@ -92,7 +92,7 @@ namespace HotD.Body
 
         private bool HasParameter(string parameter)
         {
-            return animator.HasParameter(parameter);
+            return animator.HasParameter(parameter, this);
         }
 
         private void AnimTrigger(string parameter)

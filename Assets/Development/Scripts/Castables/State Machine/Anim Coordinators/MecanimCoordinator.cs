@@ -19,7 +19,7 @@ public class MecanimCoordinator : AnimationCoordinator
     {
         Assert.IsNotNull(animator);
 
-        if (animator.HasParameter(parameter))
+        if (animator.HasParameter(parameter, this))
         {
             return true;
         }

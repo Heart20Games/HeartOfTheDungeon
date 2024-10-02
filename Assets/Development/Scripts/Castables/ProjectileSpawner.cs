@@ -11,7 +11,7 @@ namespace HotD.Castables
         public void Activate(Vector3 direction);
     }
 
-    public class ProjectileSpawner : Positionable, IProjectileSpawner, ICollidables
+    public class ProjectileSpawner : Positionable, IProjectileSpawner, ISetCollisionExceptions
     {
         public float lifeSpan;
         public Transform pivot;

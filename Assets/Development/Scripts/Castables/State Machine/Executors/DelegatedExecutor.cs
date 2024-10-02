@@ -97,6 +97,7 @@ namespace HotD.Castables
         // Execute the given action event, and track whether the event has been fired. Returns the CastAction to wait for.
         private CastAction ExecuteEvent(TransitionEvent transition, out TransitionEvent eventStatus)
         {
+            FinishAction(transition.triggerAction, false);
             if (transition.CanFire())
             {
                 Print($"Firing action event {transition.name}.", debugExecutor, this);
@@ -127,25 +128,33 @@ namespace HotD.Castables
         }
 
         // Finishes the given action, if it's being waited on.
-        public void FinishAction(StateAction stateAction)
+        public void FinishAction(StateAction stateAction, bool report = true)
         {
             if (actionsToPerform.Contains(stateAction))
             {
                 actionsToPerform.Remove(stateAction);
-                actionPerformed.Invoke(stateAction);
+                if (report)
+                    actionPerformed.Invoke(stateAction);
             }
         }
 
         // Finishes the given action, if it's being waited on (finds the action from the actionsToPerform list).
         public void FinishAction(CastAction action)
         {
+            FinishAction(action, true);
+        }
+        private void FinishAction(CastAction action, bool report)
+        {
             Print($"Finish Cast Action: {action}", debugExecutor, this);
+            Break(debugExecutor, this);
+            
             StateAction[] actions = actionsToPerform.ToArray();
             foreach (StateAction stateAction in actions)
             {
                 if (stateAction.action == action)
                 {
-                    FinishAction(stateAction);
+                    FinishAction(stateAction, report);
+                    break;
                 }
             }
         }
@@ -155,6 +164,13 @@ namespace HotD.Castables
         public void End()
         {
             ReportAction(CastAction.End);
+        }
+
+        [ButtonMethod]
+        public void Continue()
+        {
+            ReportAction(CastAction.Continue);
+            //FinishAction(CastAction.Continue);
         }
 
         // Testing

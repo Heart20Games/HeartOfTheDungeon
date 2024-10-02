@@ -1,12 +1,14 @@
+using MyBox;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.VFX;
 
 public static class ExtensionMethods
 {
     // Animator
-    public static bool HasParameter(this Animator _animator, string parameterName)
+    public static bool HasParameter(this Animator _animator, string parameterName, Object context=null)
     {
-        Awarn.IsNotNull(_animator, "Animator.HasParameter: Animator is null for some dumb reason.");
+        Awarn.IsNotNull(_animator, "Animator.HasParameter: Animator is null for some dumb reason.", context);
         if (_animator != null)
         {
             foreach (AnimatorControllerParameter param in _animator.parameters)
@@ -15,6 +17,24 @@ public static class ExtensionMethods
             }
         }
         return false;
+    }
+
+    // VisualEffect
+    // Property Setters
+    private static void SetBoolWarn(this VisualEffect _visualEffect, string property, bool value)
+    {
+        if (_visualEffect.HasProperty(property))
+            _visualEffect.SetBool(property, value);
+        else
+            Debug.LogWarning("Cannot find Bool property on Visual Effect");
+    }
+
+    private static void SetFloatWarn(this VisualEffect _visualEffect, string property, float value)
+    {
+        if (_visualEffect.HasProperty(property))
+            _visualEffect.SetFloat(property, value);
+        else
+            Debug.LogWarning("Cannot find Float property on Visual Effect");
     }
 
     // Vector3
