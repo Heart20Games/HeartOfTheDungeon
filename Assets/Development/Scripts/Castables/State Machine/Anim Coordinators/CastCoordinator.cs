@@ -1,8 +1,4 @@
-using HotD.Castables;
 using MyBox;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -68,7 +64,7 @@ namespace HotD.Castables
         public void OnStartCast()
         {
             Print($"OnStartCast ({onAction.GetPersistentEventCount()} listners)", debugTriggers, this);
-            onAction.Invoke(CastAction.End);
+            onAction.Invoke(CastAction.Continue);
         }
 
         [ButtonMethod]

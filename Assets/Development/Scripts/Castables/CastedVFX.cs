@@ -16,11 +16,12 @@ public class CastedVFX : Casted
     public void SetFirepoint(int firepointIdx) { toSetFirepoint.Invoke(firepointIdx); }
     [HideInInspector] public UnityEvent<int> toSetFirepoint;
 
-    private void Awake()
+    protected override void Awake()
     {
         animator = GetComponent<Animator>();
         visuals = GetComponentsInChildren<VisualEffect>();
         meshes = GetComponentsInChildren<MeshRenderer>();
+        base.Awake();
     }
 
     public bool animatorReset = false;
