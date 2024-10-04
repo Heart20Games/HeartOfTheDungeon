@@ -4,15 +4,23 @@ using UnityEngine;
 
 namespace HotD.Castables
 {
-    public class ProjectileSpawner : Positionable, ICollidables
+    public interface IProjectileSpawner
+    {
+        public void Spawn();
+        public void Spawn(Vector3 direction = new Vector3());
+        public void Activate(Vector3 direction);
+    }
+
+    public class ProjectileSpawner : Positionable, IProjectileSpawner, ISetCollisionExceptions
     {
         public float lifeSpan;
         public Transform pivot;
         public Projectile projectile;
-        public bool followBody = false;
-        public Collider[] exceptions;
+        [SerializeField] private bool followBody = false;
+        public bool spawnOnEnable = true;
+        [SerializeField] private Collider[] exceptions;
         [SerializeField] private List<Projectile> projectiles = new();
-        public bool debug = false;
+        [SerializeField] private bool debug = false;
 
         private void Awake()
         {
@@ -34,54 +42,72 @@ namespace HotD.Castables
             }
         }
 
-        public override void SetOrigin(Transform source, Transform target)
+        private void OnEnable()
         {
-            base.SetOrigin(source, target);
+            if (spawnOnEnable)
+            {
+                Spawn();
+            }
+        }
+
+        public override void SetOrigin(Transform source, Transform location)
+        {
+            base.SetOrigin(source, location);
         }
 
         public void Spawn()
         {
-            Spawn(new Vector3());
+            Spawn(false);
+        }
+
+        private void Spawn(bool noDirection)
+        {
+            if (noDirection)
+            {
+                Spawn(new Vector3());
+            }
+            else
+            {
+                Vector3 direction = (TargetPosition - OriginPosition).normalized;
+                Spawn(direction);
+            }
         }
 
         public void Spawn(Vector3 direction = new Vector3())
         {
 
-            if (isActiveAndEnabled)
+            if (debug) { Debug.Log($"{name} spawning projectile in {direction} direction.", this); }
+            pivot.localPosition = offset;
+            Transform pInstance = Instantiate(pivot, source);
+            pInstance.gameObject.SetActive(true);
+            if (pInstance.TryGetComponent(out Pivot pivotType))
             {
-                if (debug) { Debug.Log($"{name} spawning projectile in {direction} direction."); }
-                pivot.localPosition = offset;
-                Transform pInstance = Instantiate(pivot, source);
-                pInstance.gameObject.SetActive(true);
-                if (pInstance.TryGetComponent(out Pivot pivotType))
+                Projectile bInstance = pivotType.body.GetComponentInChildren<Projectile>(true);
+                if (bInstance != null)
                 {
-                    if (pivotType.body.TryGetComponent(out Projectile bInstance))
-                    {
-                        bInstance.SetActive(true);
-                        projectiles.Add(bInstance);
-                        AddExceptionsOn(exceptions, bInstance);
-                        LaunchInstance(direction, pInstance.transform, bInstance);
-                        StartCoroutine(CleanupInstance(pInstance.transform, bInstance));
-                    }
-                    else
-                    {
-                        Debug.LogWarning("Pivot body should be a Projectile.");
-                    }
+                    bInstance.SetActive(true);
+                    projectiles.Add(bInstance);
+                    AddExceptionsOn(exceptions, bInstance);
+                    LaunchInstance(direction, pInstance.transform, bInstance);
+                    bInstance.QueueCleanup(pInstance.transform, bInstance, lifeSpan, projectiles);
+                }
+                else
+                {
+                    Debug.LogWarning("Pivot body has no Projectile components.");
                 }
             }
         }
 
         public void Activate(Vector3 direction)
         {
-            if (isActiveAndEnabled)
-                LaunchInstance(direction, pivot.transform, projectile);
+            LaunchInstance(direction, pivot.transform, projectile);
         }
 
-        public void LaunchInstance(Vector3 direction, Transform pInstance, Projectile projectile)
+        private void LaunchInstance(Vector3 direction, Transform pInstance, Projectile projectile)
         {
             if (!followBody)
             {
-                pInstance.position = target.position + offset;
+                pInstance.position = OriginPosition + offset;
             }
             else
             {
@@ -97,34 +123,50 @@ namespace HotD.Castables
             projectile.transform.localRotation = bRotation;
         }
 
-        public IEnumerator CleanupInstance(Transform pInstance, Projectile bInstance)
+        private IEnumerator CleanupInstance(Transform pInstance, Projectile bInstance)
         {
+            Print("Waiting to cleanup Projectile instance.", debug, this);
             yield return new WaitForSeconds(lifeSpan);
+            Print("Deleting Projectile instance...", debug, this);
             projectiles.Remove(bInstance);
             Destroy(pInstance.gameObject);
+            Print("Cleaned up Projectile instance", debug, this);
         }
 
         // Collision Exceptions
+        public Collider[] Exceptions
+        {
+            get => exceptions;
+            set => SetExceptions(value);
+        }
         public void SetExceptions(Collider[] exceptions)
         {
             for (int i = 0; i < projectiles.Count; i++)
             {
                 Projectile pea = projectiles[i];
+                RemoveExceptionsOn(this.exceptions, pea);
                 AddExceptionsOn(exceptions, pea);
             }
             this.exceptions = exceptions;
         }
 
-        public void AddExceptionsOn(Collider[] exceptions, Projectile pea)
+        private void AddExceptionsOn(Collider[] exceptions, Projectile pea)
         {
-            if (debug) print($"Setting Exceptions on Projectile. ({this.exceptions?.Length} -> {exceptions?.Length})");
-            if (this.exceptions != null)
-            {
-                pea.RemoveExceptions(this.exceptions);
-            }
+            if (debug) print($"Adding Exceptions on Projectile. ({this.exceptions?.Length} -> {exceptions?.Length})");
+            
             if (exceptions != null)
             {
+                if (debug) print("Actually adding it.");
                 pea.AddExceptions(exceptions);
+            }
+        }
+
+        private void RemoveExceptionsOn(Collider[] exceptions, Projectile pea)
+        {
+            if (debug) print($"Removing Exceptions on Projectile. ({this.exceptions?.Length} -> {exceptions?.Length})");
+            if (exceptions != null)
+            {
+                pea.RemoveExceptions(exceptions);
             }
         }
     }

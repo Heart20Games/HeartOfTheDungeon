@@ -2,22 +2,31 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using Body;
+using HotD.Body;
+using System.Collections.Generic;
 
 [Serializable]
 public struct Status
 {
-    public Status(StatusEffect _effect, int _strength)
+    public Status(StatusEffect effect, int strength, GameObject instance)
     {
-        name = _effect.name;
-        effect = _effect;
-        strength = _strength;
+        name = effect.name;
+        this.effect = effect;
+        this.strength = strength;
+        this.instance = instance;
     }
     public string name;
     public StatusEffect effect;
     public int strength;
+    public GameObject instance;
 }
 
-public abstract class StatusEffect: ScriptableObject
+public interface IStatusEffectable
+{
+    public List<Status> Statuses { get; }
+}
+
+public abstract class StatusEffect: BaseScriptableObject
 {
     /* Statuses will likely be expected to:
      * 1. Apply modifiers or effects to characters
@@ -27,24 +36,36 @@ public abstract class StatusEffect: ScriptableObject
      */
 
     public new string name;
+    [SerializeField] private GameObject prefab;
     private UnityEvent onProc = new();
     private UnityEvent onTick = new();
 
     public virtual void Apply(Character character, int strength)
     {
-        foreach (Status status in character.statuses)
+        foreach (Status status in character.Statuses)
         {
             if (status.effect == this)
             {
                 return;
             }
         }
-        character.statuses.Add(new Status(this, strength));
+
+        GameObject instance = null;
+        if (prefab != null)
+        {
+            instance = Instantiate(prefab, character.transform);
+        }
+        character.Statuses.Add(new Status(this, strength, instance));
     }
 
     public virtual void Proc(int strength, Character character)
     {
-        character.statuses.Add(new Status(this, strength));
+        GameObject instance = null;
+        if (prefab != null)
+        {
+            instance = Instantiate(prefab, character.transform);
+        }
+        character.Statuses.Add(new Status(this, strength, instance));
         onProc.Invoke();
     }
     
@@ -55,12 +76,17 @@ public abstract class StatusEffect: ScriptableObject
     
     public virtual void Remove(Character character)
     {
-        for (int i = 0; i < character.statuses.Count;)
+        for (int i = 0; i < character.Statuses.Count;)
         {
-            Status status = character.statuses[i];
+            Status status = character.Statuses[i];
             if (status.effect == this)
             {
-                character.statuses.RemoveAt(i);
+                GameObject instance = character.Statuses[i].instance;
+                if (instance != null)
+                {
+                    Destroy(instance);
+                }
+                character.Statuses.RemoveAt(i);
             }
             else i++;
         }

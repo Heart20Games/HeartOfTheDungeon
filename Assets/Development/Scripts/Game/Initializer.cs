@@ -4,6 +4,7 @@ using UnityEngine;
 using Yarn.Unity;
 using Body;
 using HotD.PostProcessing;
+using HotD.Body;
 
 namespace HotD
 {
@@ -72,9 +73,6 @@ namespace HotD
 
             volumeManager = FindObjectOfType<VolumeManager>();
             game.volumeManager = volumeManager;
-
-            timeScalables = new List<ITimeScalable>(FindObjectsOfType<BaseMonoBehaviour>().OfType<ITimeScalable>());
-            game.timeScalables = timeScalables;
 
             interactables = new List<Interactable>(FindObjectsOfType<Interactable>());
             game.interactables = interactables;

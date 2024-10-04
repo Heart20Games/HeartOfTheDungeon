@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 using HotD.PostProcessing;
 using MyBox;
 using Yarn.Unity;
+using UnityEngine.Assertions;
+using HotD.Body;
 
 namespace HotD
 {
@@ -31,7 +33,6 @@ namespace HotD
         [HideInInspector] public VolumeManager volumeManager;
         [HideInInspector] public ProgressManager progressManager;
         [HideInInspector] public HUD hud;
-        [HideInInspector] public List<ITimeScalable> timeScalables;
         [HideInInspector] public List<Interactable> interactables;
         [Foldout("Parts")][HideInInspector] public List<Character> allCharacters;
         private PlayerInput input;
@@ -71,11 +72,6 @@ namespace HotD
         public UnityEvent onRestartScene;
         public UnityEvent onRestartLife;
         [Foldout("Events")] public UnityEvent onRestartGame;
-
-        // TimeScale
-        [Header("TimeScale")]
-        public float timeScale = 1.0f;
-        public float TimeScale { get { return timeScale; } set { SetTimeScale(value); } }
 
         // Cheats / Shortcuts
         [Header("Cheats and Shortcuts")]
@@ -177,19 +173,6 @@ namespace HotD
 
 
         // Setters
-
-        // Time Scale
-        public void SetTimeScale(float timeScale)
-        {
-            this.timeScale = timeScale;
-            foreach (ITimeScalable timeScalable in timeScalables)
-            {
-                if (timeScalable != null)
-                    timeScalable.SetTimeScale(this.timeScale);
-                else
-                    print("Invalid Object");
-            }
-        }
 
         // Game Mode
 
@@ -304,7 +287,7 @@ namespace HotD
             Cursor.visible = false;
 
             // Set Time Scale
-            TimeScale = mode.timeScale;
+            TimeScaler.TimeScale = mode.timeScale;
 
             // Swap Target Finders
             if (targeter != null)
@@ -326,7 +309,7 @@ namespace HotD
             if (mode.inputMode == InputMode.Selection)
             {
                 if (curController != null && curCharacter != null)
-                    curController.transform.position = curCharacter.body.position;
+                    curController.transform.position = curCharacter.Body.position;
             }
         }
 
@@ -392,11 +375,14 @@ namespace HotD
             List<Character> members = playerParty.members;
             if (members.Count > 0)
             {
-                idx = idx < 0 ? members.Count + idx : idx;
-                curCharIdx = idx % (members.Count);
-                Character character = members[curCharIdx];
-                SetCharacter(character);
-                hud.CharacterSelect(character);
+                if (members[idx % (members.Count)].mode.Alive)
+                {
+                    idx = idx < 0 ? members.Count + idx : idx;
+                    curCharIdx = idx % (members.Count);
+                    Character character = members[curCharIdx];
+                    SetCharacter(character);
+                    hud.CharacterSelect(character);
+                }
             }
         }
 
@@ -427,7 +413,7 @@ namespace HotD
 
         public void OnCharacterDied(Character character)
         {
-            Print($"Character died: {character.Name} ({character.mode.liveMode})");
+            Print($"Character died: {character.Name} ({character.mode.liveMode})", debug);
             if (character == playerParty.leader)
             {
                 SetMode(Menu.Death);

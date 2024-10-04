@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Body;
+using HotD;
+using HotD.Body;
 
 [CreateAssetMenu(fileName = "NewHasteStatus", menuName = "Statuses/HasteStatus", order = 1)]
 public class HasteStatus : StatusEffect, ITimeScalable
@@ -15,10 +16,10 @@ public class HasteStatus : StatusEffect, ITimeScalable
         {
             base.Apply(character, strength);
             float newTimeScale = 1 + strength * factor;
-            oldMovementTimeScales[character] = character.movement.TimeScale;
-            oldBrainTimeScales[character] = character.brain.TimeScale;
-            character.movement.TimeScale = newTimeScale;
-            character.brain.TimeScale = newTimeScale;
+            oldMovementTimeScales[character] = character.Movement.TimeScale;
+            oldBrainTimeScales[character] = character.Brain.TimeScale;
+            character.Movement.TimeScale = newTimeScale;
+            character.Brain.TimeScale = newTimeScale;
         }
         else Debug.LogWarning($"Tried to apply {name} haste status effect to Character \"{character}\".");
     }
@@ -28,12 +29,12 @@ public class HasteStatus : StatusEffect, ITimeScalable
         base.Remove(character);
         if (oldMovementTimeScales.TryGetValue(character, out var timeScale))
         {
-            character.movement.TimeScale = timeScale;
+            character.Movement.TimeScale = timeScale;
             oldMovementTimeScales.Remove(character);
         }
         if (oldBrainTimeScales.TryGetValue(character, out timeScale))
         {
-            character.brain.TimeScale = timeScale;
+            character.Brain.TimeScale = timeScale;
             oldBrainTimeScales.Remove(character);
         }
     }

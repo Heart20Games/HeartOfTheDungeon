@@ -1,20 +1,19 @@
-using Attributes;
 using MyBox;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Events;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Assertions;
-using Body;
-using static Body.Behavior.ContextSteering.CSContext;
-using Range = Body.Behavior.ContextSteering.CSContext.Range;
+using static global::Body.Behavior.ContextSteering.CSContext;
+using static HotD.Castables.CastableToLocation;
+using static HotD.Castables.DelegatedExecutor;
+using static HotD.Castables.Loadout;
+using Range = global::Body.Behavior.ContextSteering.CSContext.Range;
 
-namespace HotD.Castables
+namespace HotD.Generators
 {
-    using static HotD.Castables.CastableToLocation;
-    using static Loadout;
+    using HotD.Castables;
 
     [CreateAssetMenu(fileName = "NewCastableGenerator", menuName = "Loadouts/Castable Generator", order = 1)]
     public class CastableGenerator : ScriptableObject
@@ -60,17 +59,17 @@ namespace HotD.Castables
             public Loadout loadout;
         }
 
-        // Generate All Castables
-        static public List<CastableGenerator> generators = new();
-        [MenuItem("Tools / Generate Castables")]
-        static public void GenerateAllCastables()
-        {
-            Debug.Log($"Generating {generators.Count} Castables");
-            foreach (var generator in generators)
-            {
-                generator.GenerateCastable();
-            }
-        }
+        //// Generate All Castables
+        //static public List<CastableGenerator> generators = new();
+        //[MenuItem("Tools / Generate Castables")]
+        //static public void GenerateAllCastables()
+        //{
+        //    Debug.Log($"Generating {generators.Count} Castables");
+        //    foreach (var generator in generators)
+        //    {
+        //        generator.GenerateCastable();
+        //    }
+        //}
 
         // Generate Castable
         public void GenerateCastable()
@@ -81,8 +80,8 @@ namespace HotD.Castables
             }
             else
             {
-                if (!generators.Contains(this))
-                    generators.Add(this);
+                //if (!generators.Contains(this))
+                //    generators.Add(this);
                 string oldDirectory = fullDirectory;
                 PrepareResultDirectory();
                 bool sameDirectory = oldDirectory.Equals(fullDirectory);
@@ -127,8 +126,8 @@ namespace HotD.Castables
 
                     // Fields
                     Context context = new(stats.targetIdentity, Range.InAttackRange, new(), new(), new(0, stats.Range), 50);
-                    castable.castStatuses = stats.castStatuses;
-                    castable.hitStatuses = stats.hitStatuses;
+                    castable.fields.castStatuses = stats.castStatuses;
+                    castable.fields.hitStatuses = stats.hitStatuses;
 
                     // Targeting Methods
                     switch (targetingMethod)
@@ -191,15 +190,9 @@ namespace HotD.Castables
         private Castable GenerateCastableBase(GameObject gameObject, Pivot pivot)
         {
             Castable castable = gameObject.AddComponent<Castable>();
-            castable.onSetPowerLevel ??= new();
-            castable.onSetIdentity ??= new();
-            castable.onCast ??= new();
-            castable.onTrigger ??= new();
-            castable.onRelease ??= new();
-            castable.onUnCast ??= new();
-            castable.onCasted ??= new();
             settings.ApplyToCastable(castable);
-            castable.pivot = pivot.transform;
+            castable.fields.pivot = pivot.transform;
+            castable.fields.Stats = stats;
             return castable;
         }
 
@@ -214,12 +207,13 @@ namespace HotD.Castables
                 charger.onCharged = new();
                 charger.onInterrupt = new();
                 charger.chargeTimes = chargeTimes;
-                charger.chargeLimit = stats.chargeLimit;
-                UnityEventTools.AddPersistentListener(castable.onTrigger, charger.Begin);
-                UnityEventTools.AddPersistentListener(castable.onRelease, charger.Interrupt);
+                
+                // Start Transition
+                UnityEventTools.AddPersistentListener(castable.castEvents.onTrigger, charger.Begin);
+                UnityEventTools.AddPersistentListener(castable.castEvents.onRelease, charger.Interrupt);
                 UnityEventTools.AddPersistentListener(charger.onCharge, castable.SetPowerLevel);
                 if (settings.castOnChargeUp)
-                    UnityEventTools.AddPersistentListener(charger.onCharged, castable.Cast);
+                    UnityEventTools.AddPersistentListener(charger.onCharged, () => { castable.Cast(); });
                 return charger;
             }
             else return null;
@@ -233,21 +227,21 @@ namespace HotD.Castables
                 Timer coolDownTimer = gameObject.AddComponent<Timer>();
                 coolDownTimer.onComplete = new();
                 coolDownTimer.length = stats.Cooldown; // TODO: Account for bonuses
-                UnityEventTools.AddVoidPersistentListener(castable.onCast, coolDownTimer.Play);
+                UnityEventTools.AddVoidPersistentListener(castable.castEvents.onStartCast, coolDownTimer.Play);
                 UnityEventTools.AddPersistentListener(coolDownTimer.onComplete, castable.UnCast);
                 return coolDownTimer;
             }
             else return null;
         }
 
-        private Damager GenerateDamager(Castable castable, GameObject gameObject)
+        private Damager GenerateDamager(CastProperties castable, GameObject gameObject)
         {
             Assert.IsNotNull(castable);
             if (stats.dealDamage)
             {
                 Damager damager = gameObject.AddComponent<Damager>();
                 damager.damage = stats.Damage; // TODO: Account for bonuses
-                UnityEventTools.AddPersistentListener(castable.onSetIdentity, damager.SetIdentity);
+                UnityEventTools.AddPersistentListener(castable.fieldEvents.onSetIdentity, damager.SetIdentity);
                 return damager;
             }
             else return null;
@@ -258,7 +252,7 @@ namespace HotD.Castables
             CastableItem item = (CastableItem)CreateInstance(typeof(CastableItem));
             AssetDatabase.CreateAsset(item, $"{fullDirectory}/{outputName}.asset");
             EditorUtility.SetDirty(item);
-            item.prefab = prefab.GetComponent<Castable>();
+            item.prefab = prefab;
             item.targetingMethod = targetingMethod;
             item.aimingMethod = aimingMethod;
             item.stats = stats;
@@ -267,34 +261,29 @@ namespace HotD.Castables
             return item;
         }
 
-        private static Casted AddCastedComponent(GameObject castedObject, Castable castable, CastableStats stats)
+        private static Casted AddCastedComponent(GameObject castedObject, CastProperties castable, CastableStats stats)
         {
             Casted casted = castedObject.AddComponent<Casted>();
             ConnectCastedComponent(casted, castable, stats);
             return casted;
         }
 
-        private static void ConnectCastedComponent(Casted casted, Castable castable, CastableStats stats)
+        private static void ConnectCastedComponent(Casted casted, CastProperties castable, CastableStats stats)
         {
             //casted.gameObject.SetActive(false);
             //casted.enabled = false;
 
-            casted.stats = stats;
-            casted.powerLimit = stats.chargeLimit;
+            casted.InitializeUnityEvents();
+            casted.Stats = stats;
+            casted.PowerLimit = stats.chargeLimit;
 
-            casted.onSetPowerLimit ??= new();
             //UnityEventTools.AddPersistentListener(stats.chargeLimit.updatedFinal, casted.OnSetPowerLimit);
 
-            casted.onTrigger ??= new();
-            casted.onRelease ??= new();
-            casted.onCast ??= new();
-            casted.onEndCast ??= new();
-            casted.onSetPowerLevel ??= new();
-            UnityEventTools.AddPersistentListener(castable.onTrigger, casted.OnTrigger);
-            UnityEventTools.AddPersistentListener(castable.onRelease, casted.OnRelease);
-            UnityEventTools.AddPersistentListener(castable.onCast, casted.OnCast);
-            UnityEventTools.AddPersistentListener(castable.onUnCast, casted.OnUnCast);
-            UnityEventTools.AddPersistentListener(castable.onSetPowerLevel, casted.SetPowerLevel);
+            UnityEventTools.AddPersistentListener(castable.castEvents.onTrigger, casted.OnTrigger);
+            UnityEventTools.AddPersistentListener(castable.castEvents.onRelease, casted.OnRelease);
+            UnityEventTools.AddPersistentListener(castable.castEvents.onStartCast, casted.OnStartCast);
+            UnityEventTools.AddPersistentListener(castable.castEvents.onEndCast, casted.OnEndCast);
+            UnityEventTools.AddPersistentListener(castable.fieldEvents.onSetPowerLevel, casted.SetPowerLevel);
         }
 
 
@@ -318,17 +307,9 @@ namespace HotD.Castables
             public bool castOnChargeUp;
             public readonly void ApplyToCastable(Castable castable)
             {
-                castable.onTrigger ??= new();
-                castable.onRelease ??= new();
-                castable.onCast ??= new();
-                castable.onUnCast ??= new();
+                castable.InitializeEvents();
 
-                castable.onSetPowerLevel ??= new();
-                castable.onSetMaxPowerLevel ??= new();
-
-                castable.onSetIdentity ??= new();
-
-                castable.followBody = followBody;
+                castable.fields.followBody = followBody;
                 castable.castOnTrigger = castOnTrigger;
                 castable.castOnRelease = castOnRelease;
                 castable.unCastOnRelease = unCastOnRelease;
@@ -338,7 +319,7 @@ namespace HotD.Castables
         [Serializable]
         public struct Effect
         {
-            public Effect(Location source = Location.Character, Location target = Location.FiringPoint, Vector2 chargeLevels = new(), Vector2 comboSteps = new())
+            public Effect(CastLocation source = CastLocation.Character, CastLocation target = CastLocation.FiringPoint, Vector2 chargeLevels = new(), Vector2 comboSteps = new())
             {
                 this.name = $"{source} -> {target}";
                 casted = null;
@@ -351,13 +332,13 @@ namespace HotD.Castables
 
             public string name;
             public CastedVFX casted;
-            public Location source;
-            public Location target;
+            public CastLocation source;
+            public CastLocation target;
 
             public Vector2 chargeLevels;
             public Vector2 comboSteps;
 
-            public readonly void GenerateEffect(Castable castable, CastableStats stats)
+            public readonly void GenerateEffect(CastProperties castable, CastableStats stats)
             {
                 if (casted != null)
                 {
@@ -365,12 +346,12 @@ namespace HotD.Castables
                     body.transform.SetParent(castable.transform);
                     ConnectCastedComponent(body, castable, stats);
 
-                    body.powerRange = chargeLevels;
-                    body.comboRange = comboSteps;
+                    body.PowerRange = chargeLevels;
+                    body.ComboRange = comboSteps;
                     body.applyOnSet = true;
 
-                    castable.toLocations.Add(new(body, source, target));
-                    castable.castingMethods.Add(body.gameObject);
+                    castable.fields.toLocations.Add(new(body, source, target));
+                    castable.fields.castingMethods.Add(body.gameObject);
                 }
             }
         }
@@ -378,7 +359,7 @@ namespace HotD.Castables
         [Serializable]
         public struct Execution
         {
-            public Execution(ExecutionMethod method=ExecutionMethod.ColliderBased, Location source=Location.Character, Location target=Location.FiringPoint, Vector2 chargeLevels=new(), Vector2 comboSteps=new())
+            public Execution(ExecutionMethod method=ExecutionMethod.ColliderBased, CastLocation source=CastLocation.Character, CastLocation target=CastLocation.FiringPoint, Vector2 chargeLevels=new(), Vector2 comboSteps=new())
             {
                 this.name = method.ToString();
                 this.method = method;
@@ -394,8 +375,8 @@ namespace HotD.Castables
 
             public string name;
             public ExecutionMethod method;
-            public Location source;
-            public Location target;
+            public CastLocation source;
+            public CastLocation target;
 
             public Vector2 chargeLevels;
             public Vector2 comboSteps;
@@ -428,10 +409,10 @@ namespace HotD.Castables
                     CastedCollider collider = (PrefabUtility.InstantiatePrefab(colliderPrefab.gameObject) as GameObject).GetComponent<CastedCollider>(); // , pivot.transform);
                     collider.transform.SetParent(pivot.transform);
                     ConnectCastedComponent(collider, castable, stats);
-                    collider.powerRange = chargeLevels;
-                    collider.comboRange = comboSteps;
+                    collider.PowerRange = chargeLevels;
+                    collider.ComboRange = comboSteps;
 
-                    castable.toLocations.Add(new(collider, source, target));
+                    castable.fields.toLocations.Add(new(collider, source, target));
                     castable.castingMethods.Add(collider.gameObject);
                     
                     if (damager != null)
@@ -455,8 +436,8 @@ namespace HotD.Castables
                 Pivot castedPivot = pivotObject.AddComponent<Pivot>();
 
                 Casted casted = AddCastedComponent(castedObject, castable, stats);
-                casted.powerRange = chargeLevels;
-                casted.comboRange = comboSteps;
+                casted.PowerRange = chargeLevels;
+                casted.ComboRange = comboSteps;
 
                 ProjectileSpawner spawner = castedObject.AddComponent<ProjectileSpawner>();
                 UnityEventTools.AddPersistentListener(casted.onCast, spawner.Spawn);
@@ -464,7 +445,7 @@ namespace HotD.Castables
                 spawner.lifeSpan = projectileLifeSpan;
                 spawner.applyOnSet = false;
                 castedPivot.enabled = false;
-                castable.toLocations.Add(new(spawner, source, target));
+                castable.fields.toLocations.Add(new(spawner, source, target));
 
                 if (projectilePrefab != null)
                 {

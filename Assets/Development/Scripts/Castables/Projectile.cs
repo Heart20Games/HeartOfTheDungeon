@@ -1,28 +1,31 @@
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using MyBox;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Colliders;
 
 namespace HotD.Castables
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class Projectile : CastedCollider, ICollidable
+    public class Projectile : CastedCollider, ICollisionExceptions
     {
         [Foldout("Projectile", true)]
-        [ReadOnly][SerializeField] private Vector3 localPosition;
-        public Vector3 direction = new();
         public float speed = 0;
 
-        [Foldout("Collision", true)]
-        private new Rigidbody rigidbody;
-        private Collider[] colliders;
-        private Collider[] Colliders { get { return colliders ?? InitializeColliders(); } }
-        [Foldout("Collision")] public List<GameObject> collidableObjects;
+        protected new Rigidbody rigidbody;
+        private bool shouldIgnoreDodgeLayer;
 
         [Foldout("Tracking", true)]
         public Transform trackingTarget;
         public Transform TrackingTarget { get => trackingTarget; set => trackingTarget = value; }
         [Foldout("Tracking")] public float damping;
+
+        public bool ShouldIgnoreDodgeLayer
+        {
+            get => shouldIgnoreDodgeLayer;
+            set => shouldIgnoreDodgeLayer = value;
+        }
 
         private void LateUpdate()
         {
@@ -30,32 +33,9 @@ namespace HotD.Castables
                 transform.LookToward(target, damping);
         }
 
-        public void Destroy()
+        protected override void Awake()
         {
-            Destroy(gameObject);
-        }
-
-        private Collider[] InitializeColliders()
-        {
-            List<Collider> colliderList = new();
-            collidableObjects.Add(gameObject);
-            for (int i = 0; i < collidableObjects.Count; i++)
-            {
-                if (collidableObjects[i] != null)
-                {
-                    Collider[] components = collidableObjects[i].GetComponents<Collider>();
-                    if (components != null)
-                    {
-                        colliderList.AddRange(components);
-                    }
-                }
-            }
-            colliders = colliderList.ToArray();
-            return colliders;
-        }
-
-        private void Awake()
-        {
+            base.Awake();
             rigidbody = GetComponent<Rigidbody>();
         }
 
@@ -70,31 +50,15 @@ namespace HotD.Castables
             rigidbody.velocity = speed * Time.fixedDeltaTime * direction;
         }
 
-        public void SetActive(bool active)
+        public void SetSpeed(float val)
         {
-            gameObject.SetActive(active);
-            for (int i = 0; i < Colliders.Length; i++)
-            {
-                Colliders[i].enabled = active;
-            }
+            speed = val;
         }
 
-        // Collision Exceptions
-        public void AddException(Collider exception)
+        // Cleanup
+        public void Destroy()
         {
-            ChangeException(Colliders, exception, true);
-        }
-        public void RemoveException(Collider exception)
-        {
-            ChangeException(Colliders, exception, false);
-        }
-        public void AddExceptions(Collider[] exceptions)
-        {
-            ChangeExceptions(Colliders, exceptions, true);
-        }
-        public void RemoveExceptions(Collider[] exceptions)
-        {
-            ChangeExceptions(Colliders, exceptions, false);
+            Destroy(gameObject);
         }
     }
 }

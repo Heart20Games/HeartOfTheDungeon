@@ -29,7 +29,7 @@ public class AbilityMenu : MonoBehaviour
     {
         if (abilityMenuActive != activate)
         {
-            if (animator.HasParameter("AbilityMenuActive"))
+            if (animator.HasParameter("AbilityMenuActive", this))
             {
                 animator.SetBool("AbilityMenuActive", activate);
                 abilityMenuActive = activate;

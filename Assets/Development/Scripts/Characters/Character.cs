@@ -4,84 +4,137 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
 
-namespace Body
+namespace HotD.Body
 {
-    using Behavior;
-    using Body.Behavior.ContextSteering;
     using HotD.Castables;
     using Modifiers;
     using MyBox;
     using Selection;
     using HotD;
     using UIPips;
-    using static Body.Behavior.ContextSteering.CSIdentity;
     using System.Collections;
     using static HotD.CharacterModes;
     using System;
-    using HotD.Body;
+    using global::Body.Behavior.ContextSteering;
+    using global::Body.Behavior;
+    using static global::Body.Behavior.ContextSteering.CSIdentity;
+
+    public interface ICharacterInputs
+    {
+        public void MoveCharacter(Vector2 input);
+        public void Aim(Vector2 input, bool aim = false);
+        public void TriggerCastable(int idx);
+        public void ReleaseCastable(int idx);
+        public void Interact();
+        public void FlipCamera();
+    }
+    public interface ICharacterStatus
+    {
+        public List<Status> Statuses { get; }
+        public MaxModField<int> Armor { get; }
+        public int CurrentHealth { get; set; }
+        public bool AutoRespawn { get; set; }
+        public bool AutoDespawn { get; set; }
+    }
+    public interface ICharacter : ICharacterStatus, ICharacterInputs, IIdentifiable, IDamageReceiver, IControllable, ICastCompatible
+    {
+        public CharacterBlock StatBlock { get; set; }
+        public Transform Pivot { get; }
+        public IMovement Movement { get; }
+        public ArtRenderer ArtRenderer { get; }
+        public TargetFinder TargetFinder { get; }
+        public IBrain Brain { get; }
+        public CSController Controller { get; }
+        public void ListenForControlChanged(UnityAction<bool> action);
+        public void ListenForDamage(UnityAction action);
+        public void ListenForDeath(UnityAction<Character> action);
+    }
 
     //[RequireComponent(typeof(Brain))]
     //[RequireComponent(typeof(Movement))]
     //[RequireComponent(typeof(Talker))]
     //[RequireComponent(typeof(Caster))]
-    public class Character : AIdentifiable, IDamageable, IControllable
+    public class Character : AIdentifiable, ICharacter
     {
         [Foldout("Identity")]
-        public CharacterBlock statBlock;
+        [SerializeField] private CharacterBlock statBlock;
 
         // Movement and Positioning
         [Foldout("Parts", true)]
         [Header("Movement and Positioning")]
-        public Transform body;
-        public Transform pivot;
-        public Pivot moveReticle;
-        [HideInInspector] public IMovement movement;
-        [HideInInspector] public float baseOffset;
+        [SerializeField] private Transform pivot;
+        [SerializeField] private Transform body;
+        [SerializeField] private Pivot moveReticle;
+        private float baseOffset;
+        private IMovement movement;
+
+
+        // Properties
+        public CharacterBlock StatBlock { get => statBlock; set => statBlock = value; }
+        public Transform Pivot { get => pivot; }
+        public IMovement Movement { get => movement; }
+        public Transform Body { get => body; }
+        //public new Transform Transform { get => transform; } // Contained in BaseMonoBehaviour
+        public Transform WeaponLocation { get => weaponLocation; }
+        public IWeaponDisplay WeaponDisplay { get => artRenderer; }
+        public CastCoordinator Coordinator { get => artRenderer; }
 
         // State
         [Foldout("State", true)]
         [Header("State")]
-        public CharacterSettings settings;
+        [SerializeField] private CharacterSettings settings;
         //public bool controllable = true;
-        public bool aimActive = false;
+        [ReadOnly][SerializeField] private bool aimActive = false;
         [Space]
-        public UnityEvent<bool> onControl;
+        private readonly UnityEvent<bool> controlChanged = new();
+        public void ListenForControlChanged(UnityAction<bool> action)
+        {
+            controlChanged.AddListener(action);
+        }
 
         // Appearance
         [Foldout("Appearance", true)]
         [Header("Appearance")]
-        public ArtRenderer artRenderer;
-        public VFXEventController vfxController;
-        public LookAtCamera cameraPivot;
-        public CinemachineVirtualCamera orbitalCamera;
-        public CinemachineVirtualCamera aimCamera;
+        [SerializeField] private ArtRenderer artRenderer;
+        //public VFXEventController vfxController;
+        [SerializeField] private LookAtCamera cameraPivot;
+        [SerializeField] private CinemachineVirtualCamera orbitalCamera;
+        [SerializeField] private CinemachineVirtualCamera aimCamera;
+
+        public ArtRenderer ArtRenderer { get => artRenderer; }
 
         // Collision
         [Foldout("Parts", true)]
         [Header("Collision")]
-        public Collider aliveCollider;
-        public Collider deadCollider;
+        [SerializeField] private Collider aliveCollider;
+        [SerializeField] private Collider deadCollider;
 
         // Interaction, Selection, and Targeting
         [Foldout("Parts", true)]
         [Header("Interaction, Selection, and Targeting")]
-        public Interactor interactor;
-        public TargetFinder targetFinder;
-        public Selectable selectable;
-        [HideInInspector] public ITalker talker;
+        [SerializeField] private Interactor interactor;
+        [SerializeField] private TargetFinder targetFinder;
+        [SerializeField] private Selectable selectable;
+        private ITalker talker;
+
+        public TargetFinder TargetFinder { get => targetFinder; }
 
         // Behaviour
         [Header("Parts")]
-        [HideInInspector] public IBrain brain;
+        [HideInInspector] private IBrain brain;
+        public IBrain Brain { get => brain; }
         public CSController Controller { get => brain.Controller; }
+
+        public Collider AliveCollider => aliveCollider;
 
         // Casting
         [Foldout("Casting", true)]
         [Header("Casting")]
-        [HideInInspector] public ICaster caster;
-        public Transform weaponLocation;
-        public Transform firingLocation;
-        public Loadout Loadout { get => statBlock == null ? null : statBlock.loadout; }
+        [SerializeField] private Transform weaponLocation;
+        [SerializeField] private Transform firingLocation;
+        private ICaster caster;
+        [SerializeField] private Loadout Loadout { get => statBlock == null ? null : statBlock.loadout; }
+        public Transform FiringLocation { get => firingLocation; }
 
         // Identifiable
         public override Identity Identity
@@ -94,44 +147,55 @@ namespace Body
         public override MaxModField<int> Armor { get => armor; }
 
         private int castableID;
+        public int CastableID => castableID;
 
         // Status Effects
         [Foldout("Status Effects", true)]
         [Header("Status Effects")]
-        public List<Status> statuses;
+        [SerializeField] private List<Status> statuses;
+        public List<Status> Statuses { get => statuses; }
 
         // Health and Damage
         [Foldout("Health and Damage", true)]
-        public PipGenerator pips;
-        public NumberPopup healthPopup;
-        public Transform damagePosition;
-        public MaxModField<int> health = new("Health", 5, 5);
-        public MaxModField<int> armor = new("Armor", 1, 1);
+        [SerializeField] private PipGenerator pips;
+        [SerializeField] private NumberPopup healthPopup;
+        [SerializeField] private Transform damagePosition;
+        [SerializeField] private MaxModField<int> health = new("Health", 5, 5);
+        [SerializeField] private MaxModField<int> armor = new("Armor", 1, 1);
         [Space]
-        public UnityEvent onDmg;
+        [SerializeField] private UnityEvent onDamage;
+        public void ListenForDamage(UnityAction action)
+        {
+            onDamage.AddListener(action);
+        }
         public int CurrentHealth { get => health.current.Value; set => health.current.Value = value; }
-        public int MaxHealth { get => health.max.Value; set => Health.max.Value = value; }
+        private int MaxHealth { get => health.max.Value; set => Health.max.Value = value; }
 
         // Death and Respawning
         [Foldout("Death and Respawning", true)]
         [Header("Death and Respawning")]
-        public Transform spawn;
+        [SerializeField] private Transform spawn;
         [Space]
         // Respawn / Despawn
-        public bool autoRespawn;
+        [SerializeField] private bool autoRespawn;
         [ConditionalField("autoRespawn")] public float autoRespawnDelay;
-        public bool autoDespawn;
+        [SerializeField] private bool autoDespawn;
         [ConditionalField("autoDespawn")] public float autoDespawnDelay;
         [Space]
         // Events
-        public UnityAction<Character> onDeath;
-        public UnityEvent onRespawn;
-        public UnityEvent onDespawn;
-        [Foldout("Death and Respawning")] public UnityEvent<bool> onAlive;
+        [SerializeField] private UnityEvent onRespawn;
+        [SerializeField] private UnityEvent onDespawn;
+        [Foldout("Death and Respawning")]
+        [SerializeField] private UnityEvent<bool> onAlive;
+        private UnityAction<Character> onDeath;
+        public void ListenForDeath(UnityAction<Character> action)
+        {
+            onDeath += action;
+        }
+        public bool AutoRespawn { get => autoRespawn; set => autoRespawn = value; }
+        public bool AutoDespawn { get => autoDespawn; set => autoDespawn = value; }
 
-        public bool debug = false;
-
-        public int CastableID => castableID;
+        [SerializeField] protected bool debug = false;
 
         // Actions
         public void MoveCharacter(Vector2 input) { movement.MoveVector = input; caster.SetFallback(movement.MoveVector.FullY(), true); }
@@ -149,7 +213,7 @@ namespace Body
             // Body Initialization
             transform.rotation = new(0, 0, 0, 0);
             if (!firingLocation) firingLocation = transform;
-            Awarn.IsNotNull(body, "Character has no Character (no body)");
+            Awarn.IsNotNull(body, "Character has no Character (no body)", this);
             InitBody();
 
             // Components
@@ -220,46 +284,69 @@ namespace Body
 
         // Character Mode
 
+        [SerializeField] private CharacterMode baseMode;
         public CharacterMode mode;
-        public ModField<bool> brainDead = new("Brain Dead", false);
-        public bool BrainDead
-        {
-            get => brainDead.Value;
-            set
-            {
-                brainDead.Value = value;
-                SetMode(mode);
-            }
-        }
+        public List<CharacterModifier> modifiers;
         public bool PlayerControlled
         {
             get => mode.PlayerControlled;
             set => SetMode(value ? ControlMode.Player : ControlMode.Brain); //!Controllable ? mode.controlMode : ControlMode.None);
         }
         public bool Alive { get => mode.liveMode == LiveMode.Alive; }
+        [ButtonMethod]
+        public void ReapplyMode()
+        {
+            SetMode(baseMode);
+        }
+        public void AddOrRemoveModifier<T>(T key, bool add)
+        {
+            if (settings.TryGetModifier(key, out var modifier))
+            {
+                if (add) modifiers.Add(modifier);
+                else modifiers.Remove(modifier);
+
+                SetMode(baseMode);
+            }
+        }
         public void SetMode<T>(T subMode) where T : Enum
         {
             if (settings.TryGetMode(subMode, out var mode))
                 SetMode(mode);
             else
-                Debug.LogWarning($"Can't find live mode for \"{subMode}\"");
+                Debug.LogWarning($"Can't find mode for \"{subMode}\"");
         }
         private void SetMode(CharacterMode new_mode)
         {
-            CharacterMode oldMode = this.mode;
-            this.mode = new_mode;
+            // Keep Track of Old Mode and Base Mode
+            CharacterMode oldMode = mode;
+            baseMode = new_mode;
 
+            // Apply Modifiers and Set Mode
+            foreach (var modifier in modifiers)
+            {
+                new_mode = modifier.ModifyMode(new_mode);
+            }
+            mode = new_mode;
+
+            // Apply the Chosen Mode
+
+            // Movement
             movement.StopMoving();
             movement.MoveVector = new();
-            movement.CanMove = new_mode.moveMode == MovementMode.Active && !BrainDead;
-            movement.UseGravity = new_mode.moveMode != MovementMode.Disabled;
-            SetNonNullEnabled(brain, !new_mode.PlayerControlled && !BrainDead);
-            SetNonNullEnabled(caster, new_mode.useCaster && !BrainDead);
+            movement.CanMove = new_mode.canMove;
+            movement.UseGravity = new_mode.useGravity;
+
+            // Behavior
+            SetNonNullEnabled(brain, new_mode.controlMode == ControlMode.Brain);
+            SetNonNullEnabled(caster, new_mode.useCaster);
+            SetNonNullEnabled(interactor, new_mode.useInteractor);
+            
+            // Displays
+            SetNonNullActive(moveReticle, new_mode.useMoveReticle);
             SetNonNullActive(artRenderer, new_mode.displayable);
-            SetNonNullActive(moveReticle, new_mode.useMoveReticle && !BrainDead);
-            SetNonNullEnabled(interactor, new_mode.useInteractor && !BrainDead);
             if (pips != null) pips.SetDisplayMode(new_mode.pipMode);
-                
+            
+            // Animation / Selection (Alive?)
             bool alive = new_mode.liveMode == LiveMode.Alive;
             brain.Alive = alive;
             if (artRenderer != null) artRenderer.Dead = !alive;
@@ -267,6 +354,7 @@ namespace Body
             SetNonNullEnabled(deadCollider, !alive);
             selectable.IsSelectable = alive;
             
+            // Death and Respawning
             if (new_mode.liveMode != oldMode.liveMode)
             {
                 switch (new_mode.liveMode)
@@ -284,10 +372,11 @@ namespace Body
                     case LiveMode.Despawned: Despawn(); break;
                 }
             }
-                
+            
+            // Control Mode
             if ((new_mode.PlayerControlled || oldMode.PlayerControlled) && oldMode.controlMode != new_mode.controlMode)
             {
-                onControl.Invoke(new_mode.PlayerControlled);
+                controlChanged.Invoke(new_mode.PlayerControlled);
             }   
         }
 
@@ -347,9 +436,10 @@ namespace Body
 
         public void Die(bool autoDespawn, bool autoRespawn)
         {
-            Print($"{Name} died -- {mode.liveMode}");
+            Print($"{Name} died -- {mode.liveMode}", debug, this);
             Emotion = "dead";
             onDeath?.Invoke(this);
+            onAlive?.Invoke(false);
             
             // Timers
             void respawnAfterDelay() => autoRespawnCoroutine ??= CallAfterDelay(TriggerRespawn, autoRespawnDelay);
@@ -365,7 +455,7 @@ namespace Body
 
         public void Refresh()
         {
-            Print($"Refreshing {Name}.");
+            Print($"Refreshing {Name}.", debug);
             CurrentHealth = MaxHealth;
             Emotion = "neutral";
         }
@@ -380,14 +470,15 @@ namespace Body
         }
         public void Respawn()
         {
-            Print($"Respawing {Name}.");
+            Print($"Respawing {Name}.", debug);
             SetMode(LiveMode.Alive);
             Print($"Respawn {Name}", debug);
             body.SetPositionAndRotation(spawn.position, spawn.rotation);
             body.localScale = spawn.localScale;
             //SetDisplayable(true);
             Refresh();
-            onRespawn.Invoke();
+            onAlive?.Invoke(true);
+            onRespawn?.Invoke();
         }
 
         public void TriggerDespawn(bool finishCoroutine = false, UnityAction afterAction = null)
@@ -401,7 +492,7 @@ namespace Body
         {
             Print($"Despawning {Name}");
             //SetDisplayable(false);
-            onDespawn.Invoke();
+            onDespawn?.Invoke();
         }
         
         // Time Helpers
@@ -434,7 +525,7 @@ namespace Body
             if (amount < CurrentHealth)
             {
                 artRenderer.Hit();
-                onDmg.Invoke();
+                onDamage.Invoke();
             }
             if (amount <= 0f && Alive) SetMode(LiveMode.Dead);
         }
@@ -482,7 +573,7 @@ namespace Body
 
         [Foldout("Casting", true)]
         [ReadOnly] public CastableItem[] castableItems = new CastableItem[5];
-        [Foldout("Casting")][ReadOnly] public Castable[] castables = new Castable[5];
+        [Foldout("Casting")][ReadOnly] public ICastable[] castables = new ICastable[5];
         public void InitializeCastables()
         {
             if (Loadout != null)
@@ -497,8 +588,7 @@ namespace Body
                 }
                 SetCastable(4, Loadout.mobility);
             }
-            if (brain != null)
-                brain.RegisterCastables(castableItems);
+            brain?.RegisterCastables(castableItems);
         }
 
         public bool PrimaryTargetingMethod(out AimingMethod method)
@@ -506,7 +596,7 @@ namespace Body
             if (castableItems?.Length > 0)
             {
                 CastableItem item = castableItems[(int)Loadout.Slot.Weapon1];
-                Awarn.IsNotNull(item, $"Weapon 1 Slot on {Name} is null.");
+                Awarn.IsNotNull(item, $"Weapon 1 Slot on {Name} is null.", this);
                 if (item != null)
                 {
                     method = item.aimingMethod;
@@ -528,20 +618,20 @@ namespace Body
         public void SetCastable(int idx, CastableItem item)
         {
             if (castableItems[idx] != null)
-                castables[idx]?.UnEquip();
+                castables[idx]?.QueueAction(CastAction.UnEquip);
             castableItems[idx] = null;
             castables[idx] = null;
 
             if (Loadout != null && item != null)
             {
                 if (item == null)
-                    Debug.LogWarning($"Loadout {Loadout.name} has null item at index {idx}.");
+                    Debug.LogWarning($"Loadout {Loadout.name} has null item at index {idx}.", this);
                 else if (item.prefab == null)
-                    Debug.LogWarning($"Castable Item {item.name} has null prefab.");
+                    Debug.LogWarning($"Castable Item {item.name} has null prefab.", this);
                 else
                 {
                     castableItems[idx] = item;
-                    castables[idx] = Instantiate(item.prefab, transform);
+                    castables[idx] = Instantiate(item.prefab, transform).GetComponent<ICastable>();
                     castables[idx].Initialize(this, item);
                     item.Equip(statBlock);
                 }

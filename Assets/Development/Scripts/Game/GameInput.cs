@@ -6,6 +6,7 @@ using System.Collections;
 using MyBox;
 using HotD.PostProcessing;
 using HotD.Castables;
+using HotD.Body;
 
 namespace HotD
 {
@@ -62,7 +63,7 @@ namespace HotD
         public void OnMove(InputValue inputValue)
         {
             Vector2 inputVector = inputValue.Get<Vector2>();
-            if (debugLook) print($"OnMove: {inputVector} in {Game.MoveMode}");
+            Print($"OnMove: {inputVector} in {Game.MoveMode}", debugLook, this);
             switch (Game.MoveMode)
             {
                 case MoveMode.Character:
@@ -80,7 +81,7 @@ namespace HotD
         public void OnLook(InputValue inputValue)
         {
             Vector2 inputVector = inputValue.Get<Vector2>();
-            if (debugLook) print($"OnLook: {inputVector} in {Game.LookMode}");
+            Print($"OnLook: {inputVector} in {Game.LookMode}", debugLook, this);
             switch (Game.LookMode)
             {
                 case LookMode.Targeter:
@@ -94,8 +95,10 @@ namespace HotD
         //public void OnToggleAiming(InputValue inputValue) { if (CurCharacter != null) CurCharacter.SetAimModeActive(inputValue.isPressed); }
 
         // Castables
+        public bool debugCasting = false;
         public void UseCastable(InputValue inputValue, Loadout.Slot idx)
         {
+            Print($"Using castable slot {idx} (Pressed? {(inputValue.isPressed ? "Yes" : "No")})", debugCasting, this);
             if (CurCharacter != null)
             {
                 IsPressed(inputValue,
@@ -142,11 +145,11 @@ namespace HotD
                         {
                             if (VolumeManager.IsTransitioning(PType.Death, true, true))
                                 VolumeManager.SpeedUp(PType.Death);
-                            else    
-                                Game.RestartLife();
                         }
                         else
-                            UserInterface.Select(); 
+                        {
+                            UserInterface.Select();
+                        }
                         break;
                 }
             }
@@ -221,7 +224,7 @@ namespace HotD
         public void SwitchTargets(float value)
         {
             switchTargetValue = value;
-            if (debugTS) print($"OnSwitchTargets ({switchTargetValue})");
+            Print($"OnSwitchTargets ({switchTargetValue})", debugTS, this);
             if (switchTargetValue != 0 && reachedZero)
             {
                 reachedZero = false;
@@ -256,7 +259,7 @@ namespace HotD
         private IEnumerator ScrollPoll()
         {
             scrollerStarted = true;
-            if (debugSP) print("Starting Scroll Polling");
+            Print("Starting Scroll Polling", debugSP, this);
             while (polling)
             {
                 //float time = Mathf.Min(holdTime / scrollPollPerHold, holdTime - Mathf.Clamp(pollTime, 0, holdTime));
@@ -264,7 +267,7 @@ namespace HotD
                 yield return new WaitForSeconds(time);
                 scrollHold += scroll;
                 pollTime += time;
-                if (debugSP) print($"Zero? {scroll == 0}");
+                Print($"Zero? {scroll == 0}", debugSP, this);
                 if (scroll == 0f)
                 {
                     if (scrollHold != 0)
@@ -320,7 +323,7 @@ namespace HotD
         public void OnTest(InputValue inputValue)
         {
             float testFloat = inputValue.Get<float>();
-            print($"Test float: {testFloat}");
+            Print($"Test float: {testFloat}", true);
         }
 
         // Mouse
@@ -364,8 +367,27 @@ namespace HotD
         }
 
         // Menus
-        public void OnControlSheet(InputValue inputValue) { IsPressed(inputValue, () => { Menu = Menu == Menu.ControlSheet ? Menu.None : Menu.ControlSheet; }); }
-        public void OnCharacterSheet(InputValue inputValue) { IsPressed(inputValue, () => { Menu = Menu == Menu.CharacterSheet ? Menu.None : Menu.CharacterSheet; }); }
+        public void ToggleMenu(Menu menu)
+        {
+            if (Menu == menu || Menu == Menu.None)
+            {
+                Menu = Menu == menu ? Menu.None : menu;
+            }
+        }
+        public void OnCancel(InputValue inputValue)
+        {
+            IsPressed(inputValue, () =>
+            {
+                switch (Menu)
+                {
+                    case Menu.ControlSheet: ToggleMenu(Menu.ControlSheet); break;
+                    case Menu.CharacterSheet: ToggleMenu(Menu.CharacterSheet); break;
+                    default: break;
+                }
+            });
+        }
+        public void OnControlSheet(InputValue inputValue) { IsPressed(inputValue, () => { ToggleMenu(Menu.ControlSheet); }); }
+        public void OnCharacterSheet(InputValue inputValue) { IsPressed(inputValue, () => { ToggleMenu(Menu.CharacterSheet); }); }
         public void OnPauseMenu(InputValue inputValue) { IsPressed(inputValue, () => { return; }); }
         public void OnDismiss(InputValue inputValue) { IsPressed(inputValue, () => { Input = InputMode.Character; }); }
     }

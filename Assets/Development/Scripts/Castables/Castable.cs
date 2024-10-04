@@ -8,145 +8,90 @@ namespace HotD.Castables
 {
     using HotD.Body;
     using MyBox;
-    using System;
-    using static HotD.Castables.CastableToLocation;
 
-    public class Castable : BaseMonoBehaviour, ICastable
+    public class Castable : CastProperties, ICastable
     {
-        // Positioning
-        [Foldout("Positioning and Following", true)]
-        [Header("Positioning and Following")]
-        public CastableItem item;
-        public CastableItem GetItem() { return item; }
-        public Transform weaponArt;
-        public Transform pivot;
-        [ReadOnly][SerializeField] Vector3 pivotDirection;
-        public float rOffset = 0;
-        [Foldout("Positioning and Following")]
-        public bool followBody = true;
-        [HideInInspector] public Character source;
-
-        [SerializeField] private bool debug;
-        private Vector3 direction;
-        public virtual Vector3 Direction { get => direction; set => direction = value; }
-
-        [Foldout("Power Level", true)]
-        [Header("Power Level")]
-        [ReadOnly][SerializeField] private float powerLevel;
-        public float PowerLevel { get => powerLevel; set => SetPowerLevel(value); }
-        public void SetPowerLevel(float powerLevel) { this.powerLevel = powerLevel; onSetPowerLevel.Invoke(this.powerLevel); }
-        public UnityEvent<float> onSetPowerLevel;
-
-        [ReadOnly][SerializeField] private int maxPowerLevel = 1;
-        public int MaxPowerLevel { get => maxPowerLevel; set => maxPowerLevel = value; }
-        public void SetMaxPowerLevel(int maxPowerLevel) { this.maxPowerLevel = maxPowerLevel; onSetMaxPowerLevel.Invoke(this.maxPowerLevel); }
-        public UnityEvent<int> onSetMaxPowerLevel;
-
-        [Foldout("Positionables", true)]
-        [Header("Things to Position")]
-        public List<ToLocation<Positionable>> toLocations = new();
-        public List<Transform> positionables;
-        public List<CastedVFX> effects = new();
-
-        // Statuses
-        [Foldout("Statuses", true)]
-        [Header("Statuses")]
-        public List<Status> triggerStatuses;
-        public List<Status> castStatuses;
-        public List<Status> hitStatuses;
-
-        // Damage
-        [Foldout("Identity and Damage", true)]
-        [Header("Identity and Damage")]
-        private Identity identity = Identity.Neutral;
-        public Identity Identity
-        {
-            get => identity;
-            set
-            {
-                identity = value;
-                onSetIdentity.Invoke(identity);
-            }
-        }
-        public UnityEvent<Identity> onSetIdentity;
-        private Damager damager;
-
         // Events
         [Foldout("Casting", true)]
         [Header("Casting")]
         public List<GameObject> castingMethods = new();
         public bool casting = false;
+        [Foldout("Events", true)]
         public bool castOnTrigger = true;
         public bool castOnRelease = false;
-        public bool unCastOnRelease = false;
-        public UnityEvent onTrigger;
-        public UnityEvent<Vector3> onCast;
-        public UnityEvent onRelease;
-        public UnityEvent onUnCast;
-        public UnityEvent onCasted;
+        [Foldout("Events")] public bool unCastOnRelease = false;
+        public virtual bool CanCast { get => !casting; }
+        [SerializeField] protected bool debugCastable = false;
 
-
-        // Initialization
-        private void Awake()
+        public virtual void Initialize(Character owner)
         {
-            damager = GetComponent<Damager>();
+            Initialize(owner, null);
         }
-
-        public virtual void Initialize(Character source)
+        public override void Initialize(ICastCompatible owner, CastableItem item = null)
         {
-            Initialize(source, null);
-        }
-        public virtual void Initialize(Character source, CastableItem item = null)
-        {
-            this.item = item;
-            this.source = source;
-            Identity = source.Identity;
-            if (damager != null) { damager.Ignore(source.body); }
+            base.Initialize(owner, item);
 
             // Positioning
             //ReportOriginToPositionables();
-            if (source.body != null)
+            if (owner.Body != null)
             {
-                ReportExceptionsToCollidables(source.body.GetComponents<Collider>());
+                ReportExceptionsToCollidables(owner.Body.GetComponents<Collider>());
                 PositionCastable();
             }
             foreach (GameObject method in castingMethods)
             {
                 method.SetActive(false);
             }
-            source.artRenderer.DisplayWeapon(weaponArt);
-            foreach (var toLocation in toLocations)
+            foreach (var toLocation in fields.toLocations)
             {
-                Transform toSource = toLocation.GetSourceTransform(source);
-                Transform toTarget = toLocation.GetTargetTransform(source);
-                toLocation.toMove.SetOrigin(toSource, toTarget);
+                if (owner is Character)
+                {
+                    Transform toSource = toLocation.GetSourceTransform(owner as Character);
+                    Transform toTarget = toLocation.GetTargetTransform(owner as Character);
+                    toLocation.toMove.SetOrigin(toSource, toTarget);
+                }
                 if (toLocation.toMove.TryGetComponent<CastedVFX>(out var vfx))
                 {
-                    effects.Add(vfx);
-                    source.vfxController.AddVFX(vfx);
+                    fields.effects.Add(vfx);
+                    //owner.vfxController.AddVFX(vfx);
                 }
             }
             MaxPowerLevel = 3;
         }
 
-
-        // Equipping
-        public virtual void Disable() { }
-        public virtual void Enable() { }
-        public virtual void Equip()
+        // ICastable (State-Based)
+        public void QueueAction(CastAction action)
         {
-            foreach (var effect in effects)
+            switch (action)
             {
-                effect.equipped = true;
+                case CastAction.Equip: Equip(); break;
+                case CastAction.UnEquip: UnEquip(); break;
+                case CastAction.Trigger: Trigger(); break;
+                case CastAction.Release: Release(); break;
+                case CastAction.Start: Cast(); break;
+                case CastAction.End: UnCast(); break;
             }
         }
-        public virtual void UnEquip()
+
+        public virtual UnityEvent OnCasted() { return castEvents.onCasted; }
+
+        // Equipping
+        //public virtual void Disable() { }
+        //public virtual void Enable() { }
+        private void Equip()
         {
-            foreach (var effect in effects)
+            foreach (var effect in fields.effects)
             {
-                effect.equipped = false;
+                effect.Equipped = true;
             }
-            item.UnEquip(); Destroy(gameObject);
+        }
+        private void UnEquip()
+        {
+            foreach (var effect in fields.effects)
+            {
+                effect.Equipped = false;
+            }
+            Item.UnEquip(); Destroy(gameObject);
         }
 
 
@@ -154,80 +99,77 @@ namespace HotD.Castables
 
         public virtual void Trigger()
         {
-            foreach (Status status in triggerStatuses)
+            foreach (Status status in fields.triggerStatuses)
             {
-                status.effect.Apply(source, status.strength);
+                status.effect.Apply(Owner as Character, status.strength);
             }
-            onTrigger.Invoke();
+            castEvents.onTrigger.Invoke();
             if (castOnTrigger) Cast();
         }
 
         public virtual void Release()
         {
-            foreach (Status status in triggerStatuses)
+            foreach (Status status in fields.triggerStatuses)
             {
-                status.effect.Remove(source);
+                status.effect.Remove(Owner as Character);
             }
-            onRelease.Invoke();
+            castEvents.onRelease.Invoke();
             if (castOnRelease) Cast();
             if (unCastOnRelease) UnCast();
         }
 
         // Casting
 
-        public virtual bool CanCast() { return !casting; }
-
         public virtual void Cast()
         {
             casting = true;
-            if (pivot != null)
+            if (fields.pivot != null)
             {
                 //pivot.SetRotationWithVector(Direction); //.XZVector());
-                pivot.forward = Direction == Vector3.zero ? Vector3.forward : Direction;
-                pivotDirection = pivot.forward;
+                fields.pivot.forward = Direction == Vector3.zero ? Vector3.forward : Direction;
+                fields.pivotDirection = fields.pivot.forward;
             }
-            foreach (Status status in castStatuses)
+            foreach (Status status in fields.castStatuses)
             {
-                status.effect.Apply(source, status.strength);
+                status.effect.Apply(Owner as Character, status.strength);
             }
-            if (debug) { Debug.Log($"{name} casting in {direction} direction."); }
-            onCast.Invoke(direction);
+            Print($"{name} casting in {fields.direction} direction.", debugCastable, this);
+            castEvents.onStartCast.Invoke(fields.direction);
         }
 
         public virtual void UnCast()
         {
             casting = false;
-            foreach (Status status in castStatuses)
+            foreach (Status status in fields.castStatuses)
             {
-                status.effect.Remove(source);
+                status.effect.Remove(Owner as Character);
             }
-            onUnCast.Invoke();
-            onCasted.Invoke();
+            castEvents.onEndCast.Invoke();
+            castEvents.onCasted.Invoke();
         }
 
-        public virtual UnityEvent OnCasted() { return onCasted; }
 
 
         // Extras
 
         private void PositionCastable()
         {
-            if (pivot != null)
+            if (fields.pivot != null)
             {
-                Transform origin = followBody ? source.body : transform;
-                Vector3 pivotLocalPosition = pivot.localPosition;
-                pivot.SetParent(origin, false);
-                pivot.localPosition = pivotLocalPosition;
+                Transform origin = fields.followBody ? Owner.Body : transform;
+                Vector3 pivotLocalPosition = fields.pivot.localPosition;
+                fields.pivot.SetParent(origin, false);
+                fields.pivot.localPosition = pivotLocalPosition;
             }
         }
 
         private void ReportOriginToPositionables()
         {
-            Transform effectParent = followBody ? source.body : source.transform;
-            ReportOriginAmong(onTrigger, effectParent);
-            ReportOriginAmong(onCast, effectParent);
-            ReportOriginAmong(onUnCast, effectParent);
-            ReportOriginAmong(onRelease, effectParent);
+            Transform effectParent = fields.followBody ? Owner.Body : Owner.Transform;
+            ReportOriginAmong(castEvents.onTrigger, effectParent);
+            ReportOriginAmong(castEvents.onStartCast, effectParent);
+            ReportOriginAmong(castEvents.onEndCast, effectParent);
+            ReportOriginAmong(castEvents.onRelease, effectParent);
         }
 
         private void ReportOriginAmong(UnityEventBase uEvent, Transform effectParent)
@@ -237,17 +179,17 @@ namespace HotD.Castables
                 object target = uEvent.GetPersistentTarget(l);
                 if (target is IPositionable positionable)
                 {
-                    positionable.SetOrigin(effectParent, source.body);
-                    if (source.weaponLocation != null)
-                        positionable.SetOffset(source.weaponLocation.localPosition, rOffset);
+                    positionable.SetOrigin(effectParent, Owner.Body);
+                    if (Owner.WeaponLocation != null)
+                        positionable.SetOffset(Owner.WeaponLocation.localPosition, fields.rOffset);
                 }
             }
         }
 
         private void ReportExceptionsToCollidables(Collider[] exceptions)
         {
-            ReportExceptionsAmong(onTrigger, exceptions);
-            ReportExceptionsAmong(onCast, exceptions);
+            ReportExceptionsAmong(castEvents.onTrigger, exceptions);
+            ReportExceptionsAmong(castEvents.onStartCast, exceptions);
         }
 
         private void ReportExceptionsAmong(UnityEventBase uEvent, Collider[] exceptions)
@@ -255,7 +197,7 @@ namespace HotD.Castables
             for (int l = 0; l < uEvent.GetPersistentEventCount(); l++)
             {
                 object target = uEvent.GetPersistentTarget(l);
-                if (target is ICollidables collidable)
+                if (target is ISetCollisionExceptions collidable)
                 {
                     collidable.SetExceptions(exceptions);
                 }

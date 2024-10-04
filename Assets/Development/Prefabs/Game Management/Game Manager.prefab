@@ -211,7 +211,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -358,8 +358,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4674986688963994434}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.068013184, y: 0.9002046, z: -0.15317841, w: 0.4019232}
-  m_LocalPosition: {x: -34.986813, y: 35.752846, z: -34.741478}
+  m_LocalRotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
+  m_LocalPosition: {x: -16.945347, y: 35.809692, z: 38.335857}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -627,7 +627,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 1
+  m_RenderPostProcessing: 0
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -742,6 +742,9 @@ GameObject:
   - component: {fileID: 2746437236491300203}
   - component: {fileID: 4035807996893773721}
   - component: {fileID: 938213873989446527}
+  - component: {fileID: 3623303477363658634}
+  - component: {fileID: 6014394982080331156}
+  - component: {fileID: 7938462949171305758}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -802,6 +805,7 @@ MonoBehaviour:
     lookMode: 0
     activeMenu: 0
     activeShader: 0
+    playerRespawn: 0
     showMouse: 0
     hudActive: 0
     dialogueActive: 0
@@ -817,10 +821,37 @@ MonoBehaviour:
   selectedTarget: {fileID: 0}
   onPlayerDied:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3623303477363658634}
+        m_TargetAssemblyTypeName: FMODUnity.StudioGlobalParameterTrigger, FMODUnity
+        m_MethodName: TriggerParameters
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onRestartScene:
     m_PersistentCalls:
       m_Calls: []
+  onRestartLife:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6014394982080331156}
+        m_TargetAssemblyTypeName: FMODUnity.StudioGlobalParameterTrigger, FMODUnity
+        m_MethodName: TriggerParameters
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onRestartGame:
     m_PersistentCalls:
       m_Calls:
@@ -836,7 +867,6 @@ MonoBehaviour:
           m_StringArgument: $MainMenu
           m_BoolArgument: 0
         m_CallState: 2
-  timeScale: 1
   restartable: 1
   debug: 0
 --- !u!114 &8198051129787963149
@@ -854,6 +884,7 @@ MonoBehaviour:
   debugMove: 0
   debugLook: 0
   debugAim: 0
+  debugCasting: 0
   holdTime: 0.8
   reachedZero: 1
   triggerCount: 0
@@ -1155,12 +1186,59 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   session: {fileID: 11400000, guid: 73480b7f9fe59ec45ac170a991173323, type: 2}
   story: {fileID: 11400000, guid: 0559e157294009040a2b647b71fcd1a2, type: 2}
+  initialSpawnpoint: {fileID: 0}
   checkpoints: []
   parties: []
   dialogueTriggers: []
   alwaysSpawnAll: 1
   alwaysResetDialogues: 0
   debug: 0
+--- !u!114 &3623303477363658634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8636156924694284204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b0e04e2572f9a940a47465f6f3c2f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  Parameter: DeathMusicSwitch
+  TriggerEvent: 0
+  Value: 2
+--- !u!114 &6014394982080331156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8636156924694284204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b0e04e2572f9a940a47465f6f3c2f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  Parameter: DeathMusicSwitch
+  TriggerEvent: 0
+  Value: 0
+--- !u!114 &7938462949171305758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8636156924694284204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e454deecd39c1dc4595a6d8d25d06701, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeScale: 1
+  debugTimeScale: 0
 --- !u!1001 &2759224181694214667
 PrefabInstance:
   m_ObjectHideFlags: 0

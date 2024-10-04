@@ -10,7 +10,7 @@ public class CastableStats : ScriptableObject
 {
     // Details
     public enum CastableType { Melee, Ranged, Magic }
-    public enum CastableStat { Damage, Cooldown, ChargeRate, ChargeLimit, Knockback, Range, CastStatusPower, HitStatusPower}
+    public enum CastableStat { Damage, Cooldown, ChargeRate, ChargeLimit, Knockback, Range, CastStatusPower, HitStatusPower, ComboCooldown}
     public string usabilityTag = "None"; // Currently Does Absolutely Nothing
     public CastableType type = CastableType.Melee;
     public Identity targetIdentity = Identity.Neutral;
@@ -39,6 +39,14 @@ public class CastableStats : ScriptableObject
     public float ChargeRate { get => chargeRate.FinalValue; }
     public float ChargeLimit { get => chargeLimit.FinalValue; }
 
+    [Header("Combos")]
+    public bool useComboCooldown = false;
+    [ConditionalField("useComboCooldown", false, true)]
+    public bool useComboCooldownTime = false;
+    [ConditionalField(new string[] { "useComboCooldown", "useComboCooldownTime" })]
+    public DependentAttribute comboCooldown = new(1);
+    public float ComboCooldown { get => comboCooldown.FinalValue; }
+
     [Header("Knockback")]
     public DependentAttribute knockback = new(1);
     public float Knockback { get => knockback.FinalValue; }
@@ -65,6 +73,7 @@ public class CastableStats : ScriptableObject
         range.name = "Range";
         chargeRate.name = "Charge Rate";
         chargeLimit.name = "Charge Limit";
+        comboCooldown.name = "Combo Cooldown";
         knockback.name = "Knockback";
         castStatusPower.name = "Cast Status Power";
         hitStatusPower.name = "Hit Status Power";
@@ -81,11 +90,27 @@ public class CastableStats : ScriptableObject
             CastableStat.Range => range,
             CastableStat.ChargeRate => chargeRate,
             CastableStat.ChargeLimit => chargeLimit,
+            CastableStat.ComboCooldown => comboCooldown,
             CastableStat.Knockback => knockback,
             CastableStat.CastStatusPower => castStatusPower,
             CastableStat.HitStatusPower => hitStatusPower,
             _ => null
         };
+    }
+
+    // Updating
+
+    public void SendUpdateOnAll()
+    {
+        damage.Updated();
+        cooldown.Updated();
+        range.Updated();
+        chargeRate.Updated();
+        chargeLimit.Updated();
+        comboCooldown.Updated();
+        knockback.Updated();
+        castStatusPower.Updated();
+        hitStatusPower.Updated();
     }
 
     // Equipping
@@ -107,11 +132,13 @@ public class CastableStats : ScriptableObject
             AssignBonuses(cooldown, attributes.cooldown, statBlock);
             AssignBonuses(chargeRate, attributes.chargeRate, statBlock);
             AssignBonuses(chargeLimit, attributes.chargeLimit, statBlock);
+            AssignBonuses(comboCooldown, attributes.comboCooldown, statBlock);
             AssignBonuses(knockback, attributes.knockback, statBlock);
             AssignBonuses(range, attributes.range, statBlock);
             AssignBonuses(castStatusPower, attributes.castStatusPower, statBlock);
             AssignBonuses(hitStatusPower, attributes.hitStatusPower, statBlock);
         }
+        SendUpdateOnAll();
     }
 
     public void UnEquip()
@@ -120,6 +147,7 @@ public class CastableStats : ScriptableObject
         cooldown.Clear();
         chargeRate.Clear();
         chargeLimit.Clear();
+        comboCooldown.Clear();
         knockback.Clear();
         range.Clear();
         castStatusPower.Clear();

@@ -1,4 +1,5 @@
 using Body;
+using HotD.Body;
 using MyBox;
 using System;
 using System.Collections;
@@ -82,7 +83,7 @@ namespace HotD
 
         public void RegisterPartyRemover(UnityAction<ASelectable> action)
         {
-            Print("Registering party member removal receiver...");
+            Print("Registering party member removal receiver...", debug);
             deregisterMember.AddListener(action);
         }
 
@@ -90,7 +91,7 @@ namespace HotD
         {
             foreach (Character member in party.members)
             {
-                onMemberSpawned.Invoke(member.body.GetComponent<Selectable>());
+                onMemberSpawned.Invoke(member.Body.GetComponent<Selectable>());
             }
         }
 
@@ -113,10 +114,13 @@ namespace HotD
 
                 if (parties.Count == 0)
                 {
-                    Party.mainParty.LevelUp();
-                    Game.main.SetMode(GameModes.Menu.CharacterSheet);
-                    Print("Counting down till next wave arrives.", debug);
-                    coroutine ??= StartCoroutine(CountdownToWave());
+                    if (Game.main.ActiveMenu != GameModes.Menu.Death)
+                    {
+                        Game.main.SetMode(GameModes.Menu.CharacterSheet);
+                        Party.mainParty.LevelUp();
+                        Print("Counting down till next wave arrives.", debug);
+                        coroutine ??= StartCoroutine(CountdownToWave());
+                    }
                 }
             }
         }
@@ -127,7 +131,7 @@ namespace HotD
 
             foreach (Character member in party.members)
             {
-                deregisterMember.Invoke(member.body.GetComponent<ASelectable>());
+                deregisterMember.Invoke(member.Body.GetComponent<ASelectable>());
             }
 
             Destroy(party.gameObject);
@@ -154,6 +158,7 @@ namespace HotD
 
                 AddWayPoints(party.transform.GetChild(0).GetComponent<EnemyAI>());
             }
+            TimeScaler.UpdateScalables();
 
             if (!patientWaves)
                 coroutine ??= StartCoroutine(CountdownToWave());

@@ -38,7 +38,7 @@ public static class Awarn
     }
 
     // Object Awarn
-    private static void ObjectAwarn(Action<object,string> action, object value, string message = null)
+    private static void ObjectAwarn(Action<object,string> action, object value, string message = null, UnityEngine.Object context=null)
     {
         try
         {
@@ -46,19 +46,19 @@ public static class Awarn
         }
         catch (AssertionException exception)
         {
-            Debug.LogWarning(exception.Message);
+            Debug.LogWarning(exception.Message, context);
         }
     }
 
     [Conditional("UNITY_ASSERTIONS")]
-    public static void IsNotNull(object obj, string msg)
+    public static void IsNotNull(object obj, string msg, UnityEngine.Object context=null)
     {
-        ObjectAwarn(AssertIsNotNull, obj, msg);
+        ObjectAwarn(AssertIsNotNull, obj, msg, context);
     }
 
     [Conditional("UNITY_ASSERTIONS")]
-    public static void IsNull(object obj, string msg)
+    public static void IsNull(object obj, string msg, UnityEngine.Object context=null)
     {
-        ObjectAwarn(AssertIsNull, obj, msg);
+        ObjectAwarn(AssertIsNull, obj, msg, context);
     }
 }

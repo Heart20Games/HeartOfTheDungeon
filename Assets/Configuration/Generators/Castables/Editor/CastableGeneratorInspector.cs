@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace HotD.Castables
+namespace HotD.Generators
 {
     [CustomEditor(typeof(CastableGenerator))]
     public class CastableGeneratorInspector : Editor

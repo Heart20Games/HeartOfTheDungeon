@@ -251,6 +251,7 @@ GameObject:
   - component: {fileID: 7532699260776525699}
   - component: {fileID: 6764396960747244615}
   - component: {fileID: 8958776985789712049}
+  - component: {fileID: 3747905428011039189}
   m_Layer: 0
   m_Name: Exploding Barrel
   m_TagString: Damageable
@@ -276,6 +277,8 @@ Transform:
   - {fileID: 2565163089202787027}
   - {fileID: 4975229402847224804}
   - {fileID: 68475330154627299}
+  - {fileID: 8437887584916732015}
+  - {fileID: 4719395190212905146}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1558954319164951560
@@ -385,7 +388,12 @@ MonoBehaviour:
   radius: 5
   force: 500
   damage: 10
+  collisionMode: 1
   triggerExplosion: 0
+  debug: 0
+  debugRayDuration: 0.01
+  others: []
+  collider: {fileID: 0}
 --- !u!114 &6893100958757639248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -400,15 +408,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthTotal: 1
   health: 1
-  onTakeDamage:
-    m_PersistentCalls:
-      m_Calls: []
-  onTakeDamageFrom:
+  onSetHealth:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3130800377718977550}
-        m_TargetAssemblyTypeName: HealthPips, Assembly-CSharp
-        m_MethodName: TakeDamage
+        m_TargetAssemblyTypeName: UIPips.PipGenerator, Core
+        m_MethodName: SetHealth
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -418,6 +423,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  onTakeDamageFrom:
+    m_PersistentCalls:
+      m_Calls: []
   onNoHealth:
     m_PersistentCalls:
       m_Calls:
@@ -495,6 +506,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   length: 5
   playOnStart: 0
+  interruptOnPlay: 0
+  debug: 0
   onPlay:
     m_PersistentCalls:
       m_Calls: []
@@ -539,6 +552,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   length: 2
   playOnStart: 0
+  interruptOnPlay: 0
+  debug: 0
   onPlay:
     m_PersistentCalls:
       m_Calls: []
@@ -919,6 +934,27 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!135 &3747905428011039189
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4326658211653343975}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 3.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5828609398805429908
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,6 +991,100 @@ Transform:
   - {fileID: 1544535310061135755}
   m_Father: {fileID: 3935100993953963276}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6816100808591375518
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8437887584916732015}
+  - component: {fileID: 1939762804665501617}
+  m_Layer: 0
+  m_Name: NameContainer(EditorOnly)
+  m_TagString: EditorOnly
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8437887584916732015
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6816100808591375518}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3935100993953963276}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1939762804665501617
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6816100808591375518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 190d9e9918d0aaf48a103a2bb6995059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameOverride: Explosion Timer
+  tooltipOverride: 
+  target: {fileID: 6102927142165400107}
+--- !u!1 &7353652107948038031
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4719395190212905146}
+  - component: {fileID: 5084249598883902115}
+  m_Layer: 0
+  m_Name: NameContainer(EditorOnly)
+  m_TagString: EditorOnly
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4719395190212905146
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7353652107948038031}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3935100993953963276}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5084249598883902115
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7353652107948038031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 190d9e9918d0aaf48a103a2bb6995059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameOverride: Respawn Timer
+  tooltipOverride: 
+  target: {fileID: 3768621718914703536}
 --- !u!1001 &601522931003589523
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1373,7 +1503,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7618201873694074052, guid: 78fbd008506afe64a82c892f5d0a739e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 7618201873694074052, guid: 78fbd008506afe64a82c892f5d0a739e, type: 3}
       propertyPath: m_LocalPosition.z

@@ -16,11 +16,12 @@ public class CastedVFX : Casted
     public void SetFirepoint(int firepointIdx) { toSetFirepoint.Invoke(firepointIdx); }
     [HideInInspector] public UnityEvent<int> toSetFirepoint;
 
-    private void Awake()
+    protected override void Awake()
     {
         animator = GetComponent<Animator>();
         visuals = GetComponentsInChildren<VisualEffect>();
         meshes = GetComponentsInChildren<MeshRenderer>();
+        base.Awake();
     }
 
     public bool animatorReset = false;
@@ -60,5 +61,12 @@ public class CastedVFX : Casted
             foreach (var mesh in meshes)
                 mesh.enabled = value;
         }
+    }
+
+    public void AddListenerController(bool enableVisuals = false, bool active = false, UnityAction<int> firePointListener = null, UnityAction<int> powerLimitListener = null, UnityAction triggerListener = null, UnityAction releaseListener = null, UnityAction<Vector3> startCastListener = null, UnityAction endCastListener = null)
+    {
+        VisualsEnabled = false;
+        toSetFirepoint.AddListener(firePointListener);
+        base.AddListenerController(active, powerLimitListener, triggerListener, releaseListener, startCastListener, endCastListener);
     }
 }

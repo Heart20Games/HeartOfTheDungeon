@@ -6,26 +6,47 @@ using UnityEngine;
 using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 using System.Linq;
+using Sisus.ComponentNames;
 
 public interface IEnableable
 {
     public bool enabled { get; set; }
 }
 
-public interface IBaseMonoBehaviour
+public interface IBaseMonoBehaviour : INamed
 {
     public Transform Transform { get; }
+}
+
+public interface INamed
+{
+    public string Name { get; }
 }
 
 public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
 {
     public Transform Transform => transform;
+    public string Name 
+    {
+        get => $"{this.GetName()} ({gameObject.name})";
+        set => this.SetName(value);
+    }
 
     [Conditional("DEVELOPMENT_BUILD"), Conditional("UNITY_EDITOR")]
     protected void Print(object message, bool debug = true, Object context = null)
     {
         if (debug) Debug.Log(message, context == null ? this : context);
     }
+
+    [Conditional("UNITY_EDITOR")]
+
+    protected void Break(bool debug = true, Object context = null)
+    {
+        Print("Break!", debug, context);
+        if (debug) Debug.Break();
+    }
+
+    protected void NULL() { /* Do Nothing */ }
 
     protected bool TryGetIComponent<I>(out I result) where I : class
     {

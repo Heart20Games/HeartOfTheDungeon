@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +9,12 @@ public class Health : BaseMonoBehaviour, IHealth
 {
     public int healthTotal = 0;
     public int health = 0;
+
+    [Foldout("Events", true)]
+    public UnityEvent<int> onSetHealth;
     public UnityEvent<int> onTakeDamage;
     public UnityEvent<int, Identity> onTakeDamageFrom;
+    [Foldout("Events")]
     public UnityEvent onNoHealth;
 
     public virtual void HealDamage(int amount)
@@ -39,6 +44,7 @@ public class Health : BaseMonoBehaviour, IHealth
     public virtual void TakeDamage(int amount, Identity id = Identity.Neutral)
     {
         health -= amount;
+        onSetHealth.Invoke(health);
         onTakeDamage.Invoke(amount);
         onTakeDamageFrom.Invoke(amount, id);
         if (health <= 0)

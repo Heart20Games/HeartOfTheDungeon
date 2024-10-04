@@ -21,7 +21,7 @@ public class AttributeField : BaseMonoBehaviour
 
     [SerializeField] private bool debug = false;
 
-    public string Name { get => label.Name; set => label.Name = value; }
+    public new string Name { get => label.Name; set => label.Name = value; }
 
     private void Awake()
     {

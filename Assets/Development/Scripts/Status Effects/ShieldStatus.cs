@@ -1,5 +1,6 @@
 using UnityEngine;
 using Body;
+using HotD.Body;
 
 [CreateAssetMenu(fileName = "NewShieldStatus", menuName = "Statuses/ShieldStatus", order = 1)]
 public class ShieldStatus : StatusEffect

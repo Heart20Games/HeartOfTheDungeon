@@ -10,10 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2800773081770691007}
   - component: {fileID: 5640558220743154003}
-  - component: {fileID: 4832110597611120834}
   - component: {fileID: 334410026118029802}
-  - component: {fileID: 1852809689126143736}
   - component: {fileID: 202607290327246180}
+  - component: {fileID: 8113108045976034563}
   m_Layer: 0
   m_Name: MagicBolt_CastingVFX
   m_TagString: Untagged
@@ -98,97 +97,6 @@ VisualEffect:
       - m_Value: 0
         m_Name: Cast
         m_Overridden: 1
---- !u!114 &4832110597611120834
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4490809449938186106}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f83c99b26049f40479de280376f43aec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  applyOnSet: 1
-  source: {fileID: 0}
-  target: {fileID: 0}
-  offset: {x: 0, y: 0, z: 0}
-  rOffset: 0
-  stats: {fileID: 0}
-  debug: 0
-  onStart:
-    m_PersistentCalls:
-      m_Calls: []
-  onEnable:
-    m_PersistentCalls:
-      m_Calls: []
-  onDisable:
-    m_PersistentCalls:
-      m_Calls: []
-  onTrigger:
-    m_PersistentCalls:
-      m_Calls: []
-  onRelease:
-    m_PersistentCalls:
-      m_Calls: []
-  onCast:
-    m_PersistentCalls:
-      m_Calls: []
-  onEndCast:
-    m_PersistentCalls:
-      m_Calls: []
-  canUpdatePowerLevel: 0
-  powerRange: {x: 0, y: 0}
-  onHasCharge:
-    m_PersistentCalls:
-      m_Calls: []
-  onSetPowerLevel:
-    m_PersistentCalls:
-      m_Calls: []
-  onSetPowerLimit:
-    m_PersistentCalls:
-      m_Calls: []
-  powerLimit:
-    name: 
-    finalPreview: 0
-    baseValue: 0
-    baseMultiplier: 0
-    baseValueRange: {x: 0, y: 0}
-    baseMultiplierRange: {x: 0, y: 0}
-    debug: 0
-    updated:
-      m_PersistentCalls:
-        m_Calls: []
-    updatedFinalFloat:
-      m_PersistentCalls:
-        m_Calls: []
-    updatedFinalInt:
-      m_PersistentCalls:
-        m_Calls: []
-    otherAttributes: []
-  finalPowerLimit: 0
-  powerLevel: 0
-  actualLevel: 0
-  clampedPower: 0
-  comboRange: {x: 0, y: 0}
-  onSetComboStep:
-    m_PersistentCalls:
-      m_Calls: []
-  comboStep: 0
-  clampedCombo: 0
-  onSetExceptions:
-    m_PersistentCalls:
-      m_Calls: []
-  equipped: 0
-  forceUpdate: 0
-  castStatEvents: []
-  animator: {fileID: 0}
-  visuals: []
-  meshes: []
-  triggerParameter: MagicBolt
-  castParameter: Cast
-  castKey: MagicBolt
 --- !u!95 &334410026118029802
 Animator:
   serializedVersion: 5
@@ -210,18 +118,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1852809689126143736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4490809449938186106}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aad4e6e4d966ebb409cc336bbeb22644, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!73398921 &202607290327246180
 VFXRenderer:
   serializedVersion: 1
@@ -262,3 +158,15 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!210 &8113108045976034563
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4490809449938186106}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 32767
+  m_SortAtRoot: 0

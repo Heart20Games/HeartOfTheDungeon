@@ -22,7 +22,7 @@ public class Checkpoint : BaseMonoBehaviour
     [Foldout("Events")]
     public UnityEvent onSpawn;
 
-    public string Name
+    public new string Name
     {
         get { return useGameObjectName ? gameObject.name : name; }
         set

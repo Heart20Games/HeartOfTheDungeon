@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1540705684840225085}
   - component: {fileID: 5366014936525054128}
   - component: {fileID: 7371395576643302278}
+  - component: {fileID: -6455753316112473313}
   m_Layer: 0
   m_Name: VFX Healing Pop Up Numbers
   m_TagString: Untagged
@@ -241,7 +242,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onPresent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3872480575225119937}
+        m_TargetAssemblyTypeName: UnityEngine.VFX.VisualEffect, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   serveWithSign: 1
+  testNumber: 0
 --- !u!114 &7371395576643302278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,5 +272,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  flipOverX: 0
   up: {x: 0, y: 1, z: 0}
+--- !u!210 &-6455753316112473313
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304519997750746069}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 32767
+  m_SortAtRoot: 0

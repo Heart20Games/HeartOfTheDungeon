@@ -16,9 +16,30 @@ public class PartySelectPanel : BaseMonoBehaviour
 
     [SerializeField] private bool debug;
 
+    private int currentIndex;
+
+    private bool wasDisabled;
+
     private void Awake()
     {
         Initialize(initialIndex);
+    }
+
+    private void OnEnable()
+    {
+        if (!wasDisabled) return;
+
+        Initialize(currentIndex);
+
+        wasDisabled = false;
+    }
+
+    private void OnDisable()
+    {
+        wasDisabled = true;
+
+        portraitAnimator.Rebind();
+        portraitAnimator.Update(0);
     }
 
     private void FixedUpdate()
@@ -54,11 +75,7 @@ public class PartySelectPanel : BaseMonoBehaviour
         Print($"Select portrait display {idx}", debug);
         // Swap Images
         idx %= displays.Count;
-        for (int i = 0; i < displays.Count; i++)
-        {
-            if (i != idx)
-                UnSelectImage(i);
-        }
+        //UnSelectAllBut(idx);
         SelectImage(idx);
     }
 
@@ -70,8 +87,21 @@ public class PartySelectPanel : BaseMonoBehaviour
         portraitAnimator.SetTrigger($"SelectCharacter{idx}");
 
         // Reset Shimmering
-        shimmerMat.SetFloat("_SheenPosition", 0f);
+        shimmerMat.SetFloat("_SheenPosition", -0.67f);
         isShimmering = true;
+    }
+
+    public void UnSelectAllBut(int idx)
+    {
+        currentIndex = idx;
+
+        for (int i = 0; i < displays.Count; i++)
+        {
+            if (i != idx)
+            {
+                UnSelectImage(i);
+            }
+        }
     }
 
     public void UnSelectImage(int idx)
@@ -85,7 +115,7 @@ public class PartySelectPanel : BaseMonoBehaviour
     // Shimmer
     public void Shimmer()
     {
-        float endingPos = -.9f;
+        float endingPos = -1.87f;
         float currentPos = shimmerMat.GetFloat("_SheenPosition");
         if (currentPos >= endingPos)
             shimmerMat.SetFloat("_SheenPosition", currentPos - shimmerSpeed);
