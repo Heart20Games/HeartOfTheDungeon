@@ -23,25 +23,29 @@ namespace HotD.Castables
 
     public class CastLocationFollower : ACastCompatibleFollower
     {
-        protected enum Mode { OnlyOnStart, AlsoOnUpdate }
+        public enum Mode { OnlyOnStart, AlsoOnUpdate }
 
         [Foldout("Cast Location", true)]
         [SerializeField] protected CastLocation location;
+        [SerializeField] protected bool shouldReparent;
+        [ConditionalField("shouldReparent")]
+        [SerializeField] protected CastLocation parent;
         [SerializeField] protected Vector3 offset;
         [SerializeField] protected Mode mode = Mode.OnlyOnStart;
         [SerializeField][ReadOnly] protected bool hasOwner = false;
         [SerializeField][ReadOnly] protected Character character;
+        [SerializeField] private bool debugOwner = false;
 
         public override void SetOwner(ICastCompatible owner)
         {
-            Print($"Set owner to {owner}", true, this);
+            Print($"Set owner to {owner}", debugOwner, this);
             this.owner = owner;
             if (owner is Character)
             {
                 character = owner as Character;
             }
             hasOwner = this.owner != null;
-            Print($"Owner has been set to {this.owner}", true, this);
+            Print($"Owner has been set to {this.owner}", debugOwner, this);
         }
 
         public void SetTarget(CastLocation location, Vector3 offset=new())
@@ -50,8 +54,20 @@ namespace HotD.Castables
             this.offset = offset;
         }
 
+        public void SetParent(bool shouldReparent, CastLocation parent=CastLocation.Character)
+        {
+            this.parent = parent;
+            this.shouldReparent = shouldReparent;
+        }
+
+        public void SetMode(Mode mode)
+        {
+            this.mode = mode;
+        }
+
         private void Start()
         {
+            Reparent();
             MatchToTarget();
         }
 
@@ -65,7 +81,30 @@ namespace HotD.Castables
                 }
                 else
                 {
+                    Reparent();
                     MatchToTarget();
+                }
+            }
+        }
+
+        private void Reparent()
+        {
+            if (shouldReparent)
+            {
+                Transform parent = null;
+
+                if (owner != null)
+                {
+                    parent = GetLocationTransform(this.parent, owner);
+                }
+                else if (character != null)
+                {
+                    parent = GetLocationTransform(this.parent, character);
+                }
+
+                if (parent != null && parent != transform.parent)
+                {
+                    transform.SetParent(parent);
                 }
             }
         }
@@ -74,7 +113,7 @@ namespace HotD.Castables
         {
             Transform target = null;
 
-            Print($"Owner null? {owner == null} / {character == null}", true, this);
+            Print($"Owner null? {owner == null} / {character == null}", debugOwner, this);
             if (owner != null)
             {
                 target = GetLocationTransform(location, owner);

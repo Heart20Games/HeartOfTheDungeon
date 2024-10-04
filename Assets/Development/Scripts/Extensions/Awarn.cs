@@ -51,14 +51,14 @@ public static class Awarn
     }
 
     [Conditional("UNITY_ASSERTIONS")]
-    public static void IsNotNull(object obj, string msg)
+    public static void IsNotNull(object obj, string msg, UnityEngine.Object context=null)
     {
-        ObjectAwarn(AssertIsNotNull, obj, msg);
+        ObjectAwarn(AssertIsNotNull, obj, msg, context);
     }
 
     [Conditional("UNITY_ASSERTIONS")]
-    public static void IsNull(object obj, string msg)
+    public static void IsNull(object obj, string msg, UnityEngine.Object context=null)
     {
-        ObjectAwarn(AssertIsNull, obj, msg);
+        ObjectAwarn(AssertIsNull, obj, msg, context);
     }
 }

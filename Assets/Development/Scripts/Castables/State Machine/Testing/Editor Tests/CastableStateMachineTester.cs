@@ -29,7 +29,7 @@ namespace HotD.Castables
         [ButtonMethod]
         public void TestSetState()
         {
-            target.SetState(testValues.state);
+            target.TransitionTo(testValues.state);
         }
         [ButtonMethod]
         public void TestInitialize()

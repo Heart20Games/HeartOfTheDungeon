@@ -101,7 +101,7 @@ namespace HotD.Castables
                     }
                 }
             }
-            SetState(CastState.None);
+            TransitionTo(CastState.None);
         }
 
         public override void Initialize(ICastCompatible owner, CastableItem item)
@@ -109,9 +109,9 @@ namespace HotD.Castables
             base.Initialize(owner, item);
             foreach (var executor in executorList)
             {
-                executor.Initialize(fields);
+                executor.InitializeFields(fields);
             }
-            SetState(CastState.Init);
+            TransitionTo(CastState.Init);
         }
 
         // Helpers
@@ -123,8 +123,10 @@ namespace HotD.Castables
 
         // State
 
-        public void SetState(CastState state)
+        public void TransitionTo(CastState state)
         {
+            bool stillWaiting = false;
+
             // End the ones we don't want.
             foreach (var keyState in executorBank.Keys)
             {
@@ -137,39 +139,47 @@ namespace HotD.Castables
                         // End it first
                         if (executor.State == this.state)
                         {
-                            PerformAndWait(executor, new(this.state, CastAction.End));
+                            if (!PerformAndWait(executor, new(this.state, CastAction.End)))
+                            {
+                                // Then deactivate
+                                executor.SetActive(false);
+                            }
+                            else
+                            {
+                                stillWaiting = true;
+                            }
                         }
-
-                        // Then deactivate
-                        executor.SetActive(false);
                     }
                 }
             }
 
-            // Now Activate the one(s) we want.
-            foreach (var keyState in executorBank.Keys)
+            if (!stillWaiting)
             {
-                foreach (var executor in executorBank[keyState])
+                // Now Activate the one(s) we want.
+                foreach (var keyState in executorBank.Keys)
                 {
-                    if (executor.State == state)
+                    foreach (var executor in executorBank[keyState])
                     {
-                        Print($"+ Add {keyState} executor. (Seeking {state})", debugCastable);
+                        if (executor.State == state)
+                        {
+                            Print($"+ Add {keyState} executor. (Seeking {state})", debugCastable);
 
-                        // Activate first
-                        executor.SetActive(true);
+                            // Activate first
+                            executor.SetActive(true);
 
-                        // Then start
-                        PerformAndWait(executor, new(state, CastAction.Start));
-                        //QueueAction(CastAction.End, false, state);
+                            // Then start
+                            PerformAndWait(executor, new(state, CastAction.Start));
+                            //QueueAction(CastAction.End, false, state);
+                        }
                     }
                 }
-            }
 
-            // Remove actions queued for the state we just entered (give us a fresh start).
-            queuedActions.RemoveAll(
-                (StateAction stateAction) => { return stateAction.state != state; }
-            );
-            this.state = state;
+                // Remove actions queued for the state we just entered (give us a fresh start).
+                queuedActions.RemoveAll(
+                    (StateAction stateAction) => { return stateAction.state != state; }
+                );
+                this.state = state;
+            }
         }
 
         // Action Queue
@@ -204,8 +214,15 @@ namespace HotD.Castables
                 // We're all done here if we're not waiting on anything.
                 if (!waitingOnExecutor && transitionIfNotWaiting)
                 {
-                    Print($"No executors to wait on, setting state to {transition.destination}.", debugCastable);
-                    SetState(transition.destination);
+                    if (transition.destination != this.state)
+                    {
+                        Print($"No executors to wait on, setting state to {transition.destination}.", debugCastable);
+                        TransitionTo(transition.destination);
+                    }
+                    else
+                    {
+                        Print($"No executor to wait on, leaving state as {transition.destination}.", debugCastable);
+                    }
                 }
             }
         }
@@ -244,7 +261,7 @@ namespace HotD.Castables
                     queuedActions.RemoveAt(0);
                     if (transitionBank.TryGetValue(stateAction, out StateTransition transition))
                     {
-                        SetState(transition.destination);
+                        TransitionTo(transition.destination);
                     }
                     DequeueFirst();
                 }
@@ -315,6 +332,7 @@ namespace HotD.Castables
             AddBaseTransitions();
             AddTransition(new(CastState.Equipped, CastAction.Trigger, CastState.Activating));
             AddTransition(new(CastState.Activating, CastAction.Release | CastAction.End, CastState.Executing));
+            AddTransition(new(CastState.Activating, CastAction.Continue, CastState.Executing));
             AddTransition(new(CastState.Executing, CastAction.End, CastState.Equipped));
         }
 

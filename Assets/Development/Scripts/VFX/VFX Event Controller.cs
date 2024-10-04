@@ -63,7 +63,7 @@ namespace HotD.Body
             Print($"VFX Triggered ({vfx.name})", debug);
             SetVFXEnabled(vfx, true);
             SetVFXBool(vfx, "Sustain", true);
-            if (animator.HasParameter(vfx.triggerParameter))
+            if (animator.HasParameter(vfx.triggerParameter, this))
                 animator.SetTrigger(vfx.triggerParameter);
         }
 

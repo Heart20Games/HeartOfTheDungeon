@@ -305,15 +305,15 @@ namespace HotD.Generators
             TransitionEvent releaseTransition = actionType switch
             {
                 ActionType.Passive =>   new("Release", releaseTriggerAction, Triggers.StartCast),
-                _ =>                    new("Release", releaseTriggerAction, Triggers.StartCast, Triggers.None, CastAction.End, true),
+                _ =>                    new("Release", releaseTriggerAction, Triggers.StartCast, Triggers.None, CastAction.Continue, true),
             };
             executor.supportedTransitions.Add(releaseTransition);
             //UnityEventTools.AddPersistentListener(releaseTransition.startAction, charger.Interrupt);
 
             // Keep Power Level Updated
-            UnityEventTools.AddPersistentListener(charger.onChargeInt, executor.SetPowerLevel);
+            UnityEventTools.AddPersistentListener(charger.onCharge, executor.SetPowerLevel);
             UnityEventTools.AddPersistentListener(executor.fieldEvents.onSetMaxPowerLevel, charger.SetMaxLevel);
-                
+            
             // Executor On Full Charge?
             if (settings.castOn.HasFlag(CastOn.ChargeUp))
                 UnityEventTools.AddPersistentListener(charger.onCharged, executor.End);
@@ -344,7 +344,7 @@ namespace HotD.Generators
             TransitionEvent startTransition = actionType switch
             {
                 ActionType.Passive =>   new("Start", CastAction.Start, Triggers.None, Triggers.StartCast, CastAction.None, false),
-                _ =>                    new("Start", CastAction.Start, Triggers.None, Triggers.StartCast, CastAction.End, false)
+                _ =>                    new("Start", CastAction.Start, Triggers.None, Triggers.StartCast, CastAction.End, true)
             };
             executor.supportedTransitions.Add(startTransition);
 
@@ -511,7 +511,7 @@ namespace HotD.Generators
 
             properties.connectToFieldEvents = true;
             UnityEventTools.AddPersistentListener(properties.fieldEvents.onSetOwner, distributor.SetOwner);
-            UnityEventTools.AddPersistentListener(properties.fieldEvents.onSetPowerLevel, distributor.SetLevel);
+            UnityEventTools.AddPersistentListener(properties.fieldEvents.onSetPowerLevelInt, distributor.SetLevel);
 
             return distributor;
         }
@@ -643,7 +643,8 @@ namespace HotD.Generators
                 this.chargeLevels = chargeLevels;
                 this.comboSteps = comboSteps;
                 this.passivePrefab = null;
-                this.colliderPrefab = null;
+                this.colliderLifeSpan = 1;
+                this.colliderPrefabs = new();
                 this.projectileLifeSpan = 1;
                 this.projectilePrefabs = new();
             }
@@ -662,7 +663,9 @@ namespace HotD.Generators
 
             // Execution: Collider
             [ConditionalField("method", false, ExecutionMethod.ColliderBased)]
-            public CollidablePositioner colliderPrefab;
+            public float colliderLifeSpan;
+            [ConditionalField("method", false, ExecutionMethod.ColliderBased)]
+            public List<GameObject> colliderPrefabs;
 
             // Execution: Projectile
             [ConditionalField("method", false, ExecutionMethod.ProjectileBased)]
@@ -709,40 +712,74 @@ namespace HotD.Generators
             public readonly Castables.ExecutionMethod PrepareCollisionMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
             {
                 pivot.enabled = false;
-                if (colliderPrefab != null)
+
+                // Object
+                GameObject castedObject = AddCastedObject(executor, pivot);
+                Pivot castedPivot = AddCastedPivot(castedObject);
+                castedPivot.body = castedPivot.transform;
+
+                // Method
+                Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
+                method.InitializeEvents();
+
+                // Cast Location Follower
+                CastLocationFollower follower = castedPivot.GetOrAddComponent<CastLocationFollower>();
+                follower.SetTarget(CastLocation.WeaponPoint);
+                follower.SetMode(CastLocationFollower.Mode.AlsoOnUpdate);
+                follower.SetParent(false);
+                UnityEventTools.AddPersistentListener(method.fieldEvents.onSetOwner, follower.SetOwner);
+
+                // Cast Object Spawner
+                CastObjectSpawner spawner = castedObject.AddComponent<CastObjectSpawner>();
+                UnityEventTools.AddPersistentListener(method.onEnable, spawner.Spawn);
+                UnityEventTools.AddPersistentListener(method.fieldEvents.onSetCollisionExceptions, spawner.SetExceptions);
+                method.positionables.Add(spawner);
+                spawner.pivot = castedPivot.transform;
+                spawner.lifeSpan = colliderLifeSpan;
+                spawner.applyOnSet = false;
+                spawner.spawnOnEnable = false;
+                    
+                //// Casted Collider
+                //CastedCollider casted = (PrefabUtility.InstantiatePrefab(colliderPrefab.gameObject) as GameObject).GetComponent<CastedCollider>();
+                //casted.transform.SetParent(castedPivot.transform);
+                //UnityEventTools.AddPersistentListener(method.fieldEvents.onSetCollisionExceptions, casted.SetExceptions);
+                ////method.positionables.Add(casted);
+
+                //// Damage
+                //if (damager != null)
+                //{
+                //    UnityEventTools.AddPersistentListener(casted.hitDamageable, damager.HitDamageable);
+                //    UnityEventTools.AddPersistentListener(casted.leftDamageable, damager.LeftDamageable);
+                //}
+
+                // Projectiles
+                if (colliderPrefabs != null)
                 {
-                    // Object
-                    GameObject castedObject = AddCastedObject(executor, pivot);
-
-                    // Method
-                    Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
-                    method.InitializeEvents();
-
-                    // Collidable
-                    CollidablePositioner positioner = (PrefabUtility.InstantiatePrefab(colliderPrefab.gameObject) as GameObject).GetComponent<CollidablePositioner>();
-                    positioner.transform.SetParent(castedObject.transform);
-                    method.positionables.Add(positioner);
-                    positioner.InitializeEvents();
-
-                    ////CastedCollider collider = (PrefabUtility.InstantiatePrefab(colliderPrefab.gameObject) as GameObject).GetComponent<CastedCollider>(); // , pivot.transform);
-                    //collider.transform.SetParent(pivot.transform);
-                    //ConnectCastedComponent(collider, executor, stats);
-                    //collider.PowerRange = chargeLevels;
-                    //collider.ComboRange = comboSteps;
-
-                    //executor.fields.toLocations.Add(new(collider, source, target));
-                    //executor.fields.castingMethods.Add(collider.gameObject);
-
-                    // Damage
-                    if (damager != null)
+                    foreach (var prefab in colliderPrefabs)
                     {
-                        UnityEventTools.AddPersistentListener(positioner.hitDamageable, damager.HitDamageable);
-                        UnityEventTools.AddPersistentListener(positioner.leftDamageable, damager.LeftDamageable);
-                    }
+                        // Prefab
+                        GameObject instance = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+                        instance.transform.SetParent(castedPivot.transform);
+                        instance.transform.localPosition = new();
 
-                    return method;
+                        // Projectile
+                        if (instance.TryGetComponent<CastedCollider>(out var castObject))
+                        {
+                            spawner.castObject = castObject;
+                            castObject.hitDamageable = new();
+                            castObject.leftDamageable = new();
+
+                            // Damage
+                            if (damager != null)
+                            {
+                                UnityEventTools.AddPersistentListener(castObject.hitDamageable, damager.HitDamageable);
+                                UnityEventTools.AddPersistentListener(castObject.leftDamageable, damager.LeftDamageable);
+                            }
+                        }
+                    }
                 }
-                return null;
+
+                return method;
             }
 
             public readonly Castables.ExecutionMethod PrepareProjectileMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
@@ -759,6 +796,8 @@ namespace HotD.Generators
                 // Cast Location Follower
                 CastLocationFollower follower = castedPivot.GetOrAddComponent<CastLocationFollower>();
                 follower.SetTarget(CastLocation.FiringPoint);
+                follower.SetMode(CastLocationFollower.Mode.OnlyOnStart);
+                follower.SetParent(false);
                 UnityEventTools.AddPersistentListener(method.fieldEvents.onSetOwner, follower.SetOwner);
 
                 // Projectile Spawner

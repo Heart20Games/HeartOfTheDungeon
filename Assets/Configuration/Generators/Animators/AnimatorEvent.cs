@@ -1,6 +1,7 @@
 using MyBox;
 using Spine;
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class AnimatorEvent : StateMachineBehaviour
@@ -12,6 +13,9 @@ public class AnimatorEvent : StateMachineBehaviour
     public string eventName;
     public Event eventType;
     public Target targets = Target.Owner;
+    [Range(0, 10)] public float waitForTime = 0;
+
+    private Coroutine waitCoroutine;
 
     private bool HasFlag<T>(T flag, T flags) where T : Enum
     {
@@ -30,11 +34,34 @@ public class AnimatorEvent : StateMachineBehaviour
         }
     }
 
+    private void WaitAndSendMessage(Animator animator)
+    {
+        if (waitForTime == 0)
+        {
+            SendMessage(animator);
+        }
+        else
+        {
+            // May fail to behave as expected should the arbitrary MonoBehaviour not be enabled, or if the object is set inactive.
+            waitCoroutine ??= animator.GetComponent<MonoBehaviour>().StartCoroutine(WaitForTime(waitForTime, animator));
+        }
+    }
+
+    private IEnumerator WaitForTime(float time, Animator animator)
+    {
+        yield return new WaitForSeconds(time);
+        if (waitCoroutine != null)
+        {
+            SendMessage(animator);
+        }
+        waitCoroutine = null;
+    }
+
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (HasFlag(Event.EnterState, eventType))
         {
-            SendMessage(animator);
+            WaitAndSendMessage(animator);
         }
     }
 
@@ -42,7 +69,7 @@ public class AnimatorEvent : StateMachineBehaviour
     {
         if (HasFlag(Event.ExitState, eventType))
         {
-            SendMessage(animator);
+            WaitAndSendMessage(animator);
         }
     }
 }

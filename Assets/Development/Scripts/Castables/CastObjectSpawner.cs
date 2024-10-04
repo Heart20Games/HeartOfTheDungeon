@@ -4,41 +4,41 @@ using UnityEngine;
 
 namespace HotD.Castables
 {
-    public interface IProjectileSpawner
+    public interface ISpawner
     {
         public void Spawn();
         public void Spawn(Vector3 direction = new Vector3());
         public void Activate(Vector3 direction);
     }
 
-    public class ProjectileSpawner : Positionable, IProjectileSpawner, ISetCollisionExceptions
+    public class CastObjectSpawner : Positionable, ISpawner, ISetCollisionExceptions
     {
         public float lifeSpan;
         public Transform pivot;
-        public Projectile projectile;
+        public CastedCollider castObject;
         [SerializeField] private bool followBody = false;
         public bool spawnOnEnable = true;
         [SerializeField] private Collider[] exceptions;
-        [SerializeField] private List<Projectile> projectiles = new();
+        [SerializeField] private List<CastedCollider> castObjects = new();
         [SerializeField] private bool debug = false;
 
         private void Awake()
         {
             if (pivot != null)
             {
-                if (projectile == null)
+                if (castObject == null)
                 {
                     if (pivot.TryGetComponent<Pivot>(out var pivotType))
                     {
-                        projectile = pivotType.body.GetComponent<Projectile>();
+                        castObject = pivotType.body.GetComponent<CastedCollider>();
                     }
                 }
                 // Projectile is a prefab
-                if (projectile.gameObject.scene.name == null)
+                if (castObject.gameObject.scene.name == null)
                 {
-                    projectile = Instantiate(projectile, pivot);
+                    castObject = Instantiate(castObject, pivot);
                 }
-                projectile.SetActive(false);
+                castObject.SetActive(false);
             }
         }
 
@@ -82,14 +82,14 @@ namespace HotD.Castables
             pInstance.gameObject.SetActive(true);
             if (pInstance.TryGetComponent(out Pivot pivotType))
             {
-                Projectile bInstance = pivotType.body.GetComponentInChildren<Projectile>(true);
+                CastedCollider bInstance = pivotType.body.GetComponentInChildren<CastedCollider>(true);
                 if (bInstance != null)
                 {
                     bInstance.SetActive(true);
-                    projectiles.Add(bInstance);
+                    castObjects.Add(bInstance);
                     AddExceptionsOn(exceptions, bInstance);
                     LaunchInstance(direction, pInstance.transform, bInstance);
-                    bInstance.QueueCleanup(pInstance.transform, bInstance, lifeSpan, projectiles);
+                    bInstance.QueueCleanup(pInstance.transform, bInstance, lifeSpan, castObjects);
                 }
                 else
                 {
@@ -100,10 +100,10 @@ namespace HotD.Castables
 
         public void Activate(Vector3 direction)
         {
-            LaunchInstance(direction, pivot.transform, projectile);
+            LaunchInstance(direction, pivot.transform, castObject);
         }
 
-        private void LaunchInstance(Vector3 direction, Transform pInstance, Projectile projectile)
+        private void LaunchInstance(Vector3 direction, Transform pInstance, CastedCollider projectile)
         {
             if (!followBody)
             {
@@ -128,7 +128,7 @@ namespace HotD.Castables
             Print("Waiting to cleanup Projectile instance.", debug, this);
             yield return new WaitForSeconds(lifeSpan);
             Print("Deleting Projectile instance...", debug, this);
-            projectiles.Remove(bInstance);
+            castObjects.Remove(bInstance);
             Destroy(pInstance.gameObject);
             Print("Cleaned up Projectile instance", debug, this);
         }
@@ -141,16 +141,16 @@ namespace HotD.Castables
         }
         public void SetExceptions(Collider[] exceptions)
         {
-            for (int i = 0; i < projectiles.Count; i++)
+            for (int i = 0; i < castObjects.Count; i++)
             {
-                Projectile pea = projectiles[i];
+                CastedCollider pea = castObjects[i];
                 RemoveExceptionsOn(this.exceptions, pea);
                 AddExceptionsOn(exceptions, pea);
             }
             this.exceptions = exceptions;
         }
 
-        private void AddExceptionsOn(Collider[] exceptions, Projectile pea)
+        private void AddExceptionsOn(Collider[] exceptions, CastedCollider pea)
         {
             if (debug) print($"Adding Exceptions on Projectile. ({this.exceptions?.Length} -> {exceptions?.Length})");
             
@@ -161,7 +161,7 @@ namespace HotD.Castables
             }
         }
 
-        private void RemoveExceptionsOn(Collider[] exceptions, Projectile pea)
+        private void RemoveExceptionsOn(Collider[] exceptions, CastedCollider pea)
         {
             if (debug) print($"Removing Exceptions on Projectile. ({this.exceptions?.Length} -> {exceptions?.Length})");
             if (exceptions != null)
