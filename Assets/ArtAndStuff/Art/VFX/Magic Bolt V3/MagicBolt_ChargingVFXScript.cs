@@ -16,6 +16,7 @@ public class MagicBolt_ChargingVFXScript : ACastListener
     [SerializeField] private float[] charges;
     [SerializeField] private float castingChargeTime;
     [SerializeField] private float castingCharge;
+    [Range(-4, 4)][SerializeField] private int levelOffset;
     [SerializeField] private bool casting;
     [SerializeField] private bool castingEnd;
     [SerializeField] private bool isPlaying = false;
@@ -28,7 +29,7 @@ public class MagicBolt_ChargingVFXScript : ACastListener
     }
     public override int Level
     {
-        get => level;
+        get => level + levelOffset;
         set => SetLevel(value);
     }
     public override void SetChargeTimes(float[] times)
@@ -73,7 +74,7 @@ public class MagicBolt_ChargingVFXScript : ACastListener
         }
         else
         {
-            switch (level)
+            switch (Level)
             {
                 case 2: Level2(); break;
                 case 3: Level3(); break;
@@ -87,7 +88,7 @@ public class MagicBolt_ChargingVFXScript : ACastListener
         {
             if (Owner != null)
             {
-                Transform target = level >= 3 ? GetLocationTransform(finalLocation, Owner) : GetLocationTransform(defaultLocation, Owner);
+                Transform target = Level >= 3 ? GetLocationTransform(finalLocation, Owner) : GetLocationTransform(defaultLocation, Owner);
                 transform.position = target.position;
             }
             LookAtCamera.LookAt(transform, Camera.main.transform, Vector3.up);
