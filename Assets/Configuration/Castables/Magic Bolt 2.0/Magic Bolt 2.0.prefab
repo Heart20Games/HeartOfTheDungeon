@@ -226,6 +226,9 @@ MonoBehaviour:
   level: 0
   maxLevel: 0
   discreteUpdates: 0
+  discharge: 0
+  distributeChargeTimes: 0
+  chargeTimeScale: 1
   chargeTimes:
   - 0.05
   - 3
@@ -269,6 +272,12 @@ MonoBehaviour:
   onInterrupt:
     m_PersistentCalls:
       m_Calls: []
+  active: 0
+  chargeLevel: 0
+  waitTime: 0
+  chargeLevels:
+    levels: []
+    startValue: 0
 --- !u!1 &1351641455847526813
 GameObject:
   m_ObjectHideFlags: 0
@@ -1129,7 +1138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5701077197490165297}
   - component: {fileID: 1205958572102030855}
-  - component: {fileID: 3640463457532167365}
+  - component: {fileID: 1128734924692859021}
   m_Layer: 0
   m_Name: Cooldown
   m_TagString: Untagged
@@ -1233,7 +1242,19 @@ MonoBehaviour:
         m_Calls: []
     onSetPowerLevel:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 1128734924692859021}
+          m_TargetAssemblyTypeName: Charger, Core
+          m_MethodName: SetMaxLevel
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     onSetPowerLevelInt:
       m_PersistentCalls:
         m_Calls: []
@@ -1252,7 +1273,7 @@ MonoBehaviour:
     onSetCooldown:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3640463457532167365}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Timer, Core
           m_MethodName: SetLength
           m_Mode: 0
@@ -1301,7 +1322,7 @@ MonoBehaviour:
     startAction:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3640463457532167365}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Timer, Core
           m_MethodName: Play
           m_Mode: 1
@@ -1313,12 +1334,24 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1128734924692859021}
+          m_TargetAssemblyTypeName: Charger, Core
+          m_MethodName: Begin
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   actionsToPerform: []
   testAction:
     name: 
     state: 0
     action: 0
---- !u!114 &3640463457532167365
+--- !u!114 &1128734924692859021
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1327,31 +1360,65 @@ MonoBehaviour:
   m_GameObject: {fileID: 7292314855377455439}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d0c656f4854e7a4698ad4df13b973aa, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c62583458018a94fb86c54296434b53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  length: 1
-  playOnStart: 0
-  interruptOnPlay: 0
   debug: 0
-  onPlay:
+  resetOnBegin: 0
+  interrupt: 0
+  level: 0
+  maxLevel: 0
+  discreteUpdates: 0
+  discharge: 1
+  distributeChargeTimes: 1
+  chargeTimeScale: 1
+  chargeTimes:
+  - 1
+  onBegin:
     m_PersistentCalls:
       m_Calls: []
-  onComplete:
+  onCharge:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1205958572102030855}
-        m_TargetAssemblyTypeName: HotD.Castables.DelegatedExecutor, Core
-        m_MethodName: End
+        m_TargetAssemblyTypeName: HotD.Castables.CastProperties, Core
+        m_MethodName: SetPowerLevel
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onChargeInt:
+    m_PersistentCalls:
+      m_Calls: []
+  onCharged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1205958572102030855}
+        m_TargetAssemblyTypeName: HotD.Castables.DelegatedExecutor, Core
+        m_MethodName: End
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onInterrupt:
+    m_PersistentCalls:
+      m_Calls: []
+  active: 0
+  chargeLevel: 0
+  waitTime: 0
+  chargeLevels:
+    levels: []
+    startValue: 0
 --- !u!1 &7474245870742095964
 GameObject:
   m_ObjectHideFlags: 0
