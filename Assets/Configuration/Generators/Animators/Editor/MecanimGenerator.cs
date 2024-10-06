@@ -386,15 +386,18 @@ namespace HotD.Generators
 
                 var holdTransition = cast.AddTransition(hold);
                 holdTransition.hasExitTime = true;
+                holdTransition.exitTime = 1.0f;
 
                 var exitTransition = hold.AddExitTransition();
                 exitTransition.hasExitTime = true;
+                holdTransition.exitTime = 1.0f;
 
             }
             else
             {
                 var exitTransition = cast.AddExitTransition();
                 exitTransition.hasExitTime = true;
+                exitTransition.exitTime = 1.0f;
             }
 
             return sub;

@@ -250,7 +250,6 @@ MonoBehaviour:
   pivot: {fileID: 4813447189290614994}
   body: {fileID: 5106106832475441759}
   moveReticle: {fileID: 8706531923607348711}
-  baseOffset: 0
   settings: {fileID: 11400000, guid: 6d7eeb5dfc435564f9376a9e58c901c4, type: 2}
   aimActive: 0
   artRenderer: {fileID: 4122626737896113915}
@@ -333,24 +332,32 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  mode:
+  debug: 0
+  baseMode:
     name: 
     controlMode: 0
-    moveMode: 0
     collisionMode: 0
     pipMode: 0
     liveMode: 0
+    canMove: 0
+    useGravity: 0
     displayable: 0
     useCaster: 0
     useMoveReticle: 0
     useInteractor: 0
-  brainDead:
-    name: Brain Dead
-    current:
-      debug: 0
-      name: Brain Dead Current
-      baseValue: 0
-      value: 0
+  mode:
+    name: 
+    controlMode: 0
+    collisionMode: 0
+    pipMode: 0
+    liveMode: 0
+    canMove: 0
+    useGravity: 0
+    displayable: 0
+    useCaster: 0
+    useMoveReticle: 0
+    useInteractor: 0
+  modifiers: []
   testDamageIdentity: 0
   testDamageAmount: 1
   castableItems:
@@ -907,9 +914,17 @@ MonoBehaviour:
       exit:
         m_PersistentCalls:
           m_Calls: []
+    otherFull:
+      enter:
+        m_PersistentCalls:
+          m_Calls: []
+      exit:
+        m_PersistentCalls:
+          m_Calls: []
+  other:
+    gameObject: {fileID: 0}
+    collider: {fileID: 0}
   touching: []
-  other: {fileID: 0}
-  impactLocation: {x: 0, y: 0, z: 0}
 --- !u!114 &1823199978716685285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -993,9 +1008,17 @@ MonoBehaviour:
       exit:
         m_PersistentCalls:
           m_Calls: []
+    otherFull:
+      enter:
+        m_PersistentCalls:
+          m_Calls: []
+      exit:
+        m_PersistentCalls:
+          m_Calls: []
+  other:
+    gameObject: {fileID: 0}
+    collider: {fileID: 0}
   touching: []
-  other: {fileID: 0}
-  impactLocation: {x: 0, y: 0, z: 0}
 --- !u!195 &608404790986451179
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1539,8 +1562,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   applyOnSet: 1
   source: {fileID: 850644614561672070}
+  location: {fileID: 0}
   target: {fileID: 4813447189290614994}
+  locationOverride: {x: 0, y: 0, z: 0}
+  targetOverride: {x: 0, y: 0, z: 0}
   offset: {x: 0, y: 0, z: 0}
+  useLocationOverride: 0
+  useTargetOverride: 0
   rOffset: 0
   deathPoof: {fileID: 0}
   effects:
@@ -1741,11 +1769,11 @@ PrefabInstance:
     - target: {fileID: 2206954000367361876, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
       propertyPath: m_Follow
       value: 
-      objectReference: {fileID: 4641084667339728293}
+      objectReference: {fileID: 4813447189290614994}
     - target: {fileID: 2206954000367361876, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
       propertyPath: m_LookAt
       value: 
-      objectReference: {fileID: 3021082883175624020}
+      objectReference: {fileID: 4813447189290614994}
     - target: {fileID: 5981726259459339073, guid: 5feed37cc0258214bab9f2c2693fa2a4, type: 3}
       propertyPath: m_Name
       value: ThirdPersonAimCamera
