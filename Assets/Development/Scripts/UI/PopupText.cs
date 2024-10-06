@@ -17,6 +17,8 @@ public class PopupText : MonoBehaviour
     [Header("Testing")]
     [SerializeField] int testNumber = 0;
 
+    private bool shouldDisplayNumber;
+
     private void Start()
     {
         CreateText();
@@ -53,12 +55,17 @@ public class PopupText : MonoBehaviour
     {
         if (textObject == null) return;
 
-        textObject.gameObject.SetActive(true);
+        if(shouldDisplayNumber)
+        {
+            textObject.gameObject.SetActive(true);
 
-        textAnimator.SetTrigger("FadeIn"); // textAnimator.Play("FadeIn");
+            textAnimator.SetTrigger("FadeIn"); // textAnimator.Play("FadeIn");
 
-        textObject.text = text;
-        textObject.color = color;
+            textObject.text = text;
+            textObject.color = color;
+        }
+
+        shouldDisplayNumber = true;
     }
 
     // Testing

@@ -197,7 +197,7 @@ namespace HotD.Castables
             for (int l = 0; l < uEvent.GetPersistentEventCount(); l++)
             {
                 object target = uEvent.GetPersistentTarget(l);
-                if (target is ICollidables collidable)
+                if (target is ISetCollisionExceptions collidable)
                 {
                     collidable.SetExceptions(exceptions);
                 }

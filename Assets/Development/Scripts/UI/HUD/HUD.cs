@@ -4,31 +4,38 @@ using UnityEngine.UI;
 using Body;
 using HotD.Castables;
 using HotD.Body;
+using MyBox;
 
 public class HUD : BaseMonoBehaviour
 {
-    [Header("Components")]
+    [Foldout("Components", true)]
     public AbilityMenu abilityMenu;
     public PartySelectPanel partySelectPanel;
     public TargetStatusDisplay targetCharacterPanel;
     public Transform crosshair;
+    public MeterProgressManager castMeter;
     private GameObject mainCamera;
+    [Foldout("Components")]
     private Canvas hudCanvas;
 
     [Space]
-    [Header("Main Character")]
+    [Foldout("Main Character", true)]
     [SerializeField] private PlayerStatusDisplay mainStatusPanel;
     [SerializeField] private AllyStatusPanel allyStatusPanel;
     [SerializeField] private SpellSlots spellSlots;
     [SerializeField] private bool useSpellSlots = false;
+    [Foldout("Main Character")]
     [ReadOnly][SerializeField] private Character mainCharacter;
 
     [Space]
-    [Header("Identifiables")]
+    [Foldout("Identifiables", true)]
     [ReadOnly][SerializeField] private Character controlledCharacter;
     [ReadOnly][SerializeField] private Character selectedCharacter;
     [ReadOnly][SerializeField] private IIdentifiable target;
+    [Foldout("Identifiables")]
     [ReadOnly][SerializeField] private bool hasTarget = false;
+
+    [SerializeField] private bool debug;
 
     enum CHAR { GOBKIN, ROTTA, OSSEUS }
 
@@ -79,6 +86,11 @@ public class HUD : BaseMonoBehaviour
             int idx = character.StatBlock != null ? character.StatBlock.portraitIndex : 0;
             partySelectPanel.Select(idx);
             abilityMenu.Select(false);
+            if (character.castables.Length > 1 && character.castables[0] != null)
+            {
+                Print("Attach Cast Meter", debug, this);
+                castMeter.Castable = character.castables[0];
+            }
         }
     }
 

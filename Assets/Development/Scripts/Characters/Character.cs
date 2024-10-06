@@ -125,6 +125,8 @@ namespace HotD.Body
         public IBrain Brain { get => brain; }
         public CSController Controller { get => brain.Controller; }
 
+        public Collider AliveCollider => aliveCollider;
+
         // Casting
         [Foldout("Casting", true)]
         [Header("Casting")]
@@ -211,7 +213,7 @@ namespace HotD.Body
             // Body Initialization
             transform.rotation = new(0, 0, 0, 0);
             if (!firingLocation) firingLocation = transform;
-            Awarn.IsNotNull(body, "Character has no Character (no body)");
+            Awarn.IsNotNull(body, "Character has no Character (no body)", this);
             InitBody();
 
             // Components
@@ -594,7 +596,7 @@ namespace HotD.Body
             if (castableItems?.Length > 0)
             {
                 CastableItem item = castableItems[(int)Loadout.Slot.Weapon1];
-                Awarn.IsNotNull(item, $"Weapon 1 Slot on {Name} is null.");
+                Awarn.IsNotNull(item, $"Weapon 1 Slot on {Name} is null.", this);
                 if (item != null)
                 {
                     method = item.aimingMethod;
@@ -623,9 +625,9 @@ namespace HotD.Body
             if (Loadout != null && item != null)
             {
                 if (item == null)
-                    Debug.LogWarning($"Loadout {Loadout.name} has null item at index {idx}.");
+                    Debug.LogWarning($"Loadout {Loadout.name} has null item at index {idx}.", this);
                 else if (item.prefab == null)
-                    Debug.LogWarning($"Castable Item {item.name} has null prefab.");
+                    Debug.LogWarning($"Castable Item {item.name} has null prefab.", this);
                 else
                 {
                     castableItems[idx] = item;

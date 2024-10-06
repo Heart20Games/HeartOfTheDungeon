@@ -12,12 +12,13 @@ public class Colliders
         {
             for (int j = 0; j < exceptions.Length; j++)
             {
-                if (Physics.GetIgnoreCollision(colliders[i], exceptions[j]) != ignore)
-                {
-                    if (debug) Debug.Log($"Ignoring Collision? {ignore}");
-                    Physics.IgnoreCollision(colliders[i], exceptions[j], ignore);
-                }
-                else if (debug) Debug.Log("Nothing to do.");
+                Physics.IgnoreCollision(colliders[i], exceptions[j], ignore);
+                //if (Physics.GetIgnoreCollision(colliders[i], exceptions[j]) != ignore)
+                //{
+                //    if (debug) Debug.Log($"Ignoring Collision? {ignore}");
+                //    Physics.IgnoreCollision(colliders[i], exceptions[j], ignore);
+                //}
+                //else if (debug) Debug.Log("Nothing to do.");
             }
         }
     }
