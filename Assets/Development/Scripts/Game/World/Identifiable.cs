@@ -58,8 +58,6 @@ public abstract class AIdentifiable : BaseMonoBehaviour, IIdentifiable
     public abstract MaxModField<int> Health { get; }
     public abstract MaxModField<int> Armor { get; }
 
-    protected void NULL() { /* Do Nothing */ }
-
     // Initialization
     public virtual void Awake()
     {

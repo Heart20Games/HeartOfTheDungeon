@@ -25,6 +25,6 @@ public class DependentCastProperties : CastProperties
     public void InitializeFields()
     {
         Print($"Initializing Fields on {Name}", debugProperties);
-        Initialize(initializeOffOf.fields);
+        InitializeFields(initializeOffOf.fields);
     }
 }

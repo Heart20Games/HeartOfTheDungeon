@@ -38,7 +38,15 @@ public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
         if (debug) Debug.Log(message, context == null ? this : context);
     }
 
-    protected void NULL() { }
+    [Conditional("UNITY_EDITOR")]
+
+    protected void Break(bool debug = true, Object context = null)
+    {
+        Print("Break!", debug, context);
+        if (debug) Debug.Break();
+    }
+
+    protected void NULL() { /* Do Nothing */ }
 
     protected bool TryGetIComponent<I>(out I result) where I : class
     {

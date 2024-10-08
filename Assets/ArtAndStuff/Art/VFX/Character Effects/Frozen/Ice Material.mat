@@ -22,7 +22,8 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap:
     RenderType: Transparent
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - DepthOnly
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -65,18 +66,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AlphaClip: 0
+    - _AlphaClip: 0.1
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _CastShadows: 1
     - _Cull: 2
     - _DstBlend: 10
-    - _NormalStrength: 2
+    - _NormalStrength: 10
     - _POLayer1Depth: 50
     - _POLayer2Depth: 200
     - _POPower: 3.5
-    - _ParallaxNormalStrength: 0.1
+    - _ParallaxNormalStrength: 0.3
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 0
@@ -86,11 +87,11 @@ Material:
     - _TextureResolution: 512
     - _WorkflowMode: 1
     - _ZTest: 4
-    - _ZWrite: 1
-    - _ZWriteControl: 1
+    - _ZWrite: 0
+    - _ZWriteControl: 0
     m_Colors:
-    - _FresnelColor: {r: 0, g: 85.42621, b: 116.0763, a: 0}
-    - _IceColor: {r: 0.0207352, g: 2.799525, b: 3.296962, a: 0}
+    - _FresnelColor: {r: 0, g: 31.486774, b: 67.66486, a: 0}
+    - _IceColor: {r: 0, g: 7.5063353, b: 8.722528, a: 0}
     - _NormalTiling: {r: 5, g: 5, b: 0, a: 0}
     - _POLayer1Tiling: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _POLayer2Tiling: {r: 1.5, g: 1.5, b: 0, a: 0}
