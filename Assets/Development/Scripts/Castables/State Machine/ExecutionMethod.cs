@@ -57,6 +57,7 @@ namespace HotD.Castables
 
         public enum StatusType { None, Trigger, Cast, Hit }
         public StatusType statusType;
+        [SerializeField] private bool debugStatuses = false;
         private List<Status> GetStatuses(StatusType type)
         {
             return type switch
@@ -70,7 +71,10 @@ namespace HotD.Castables
 
         private void ApplyOrRemoveStatuses(List<Status> statuses, bool apply)
         {
-            if (statuses != null && Owner != null && Owner is Character)
+            if (statuses == null) { Print("Status list is null. skipping add or remove statuses.", debugStatuses, this); return; }
+            if (Owner != null) { Debug.LogWarning("Owner is Null; can't add or remove statuses.", this); return; }
+
+            if (Owner is Character)
             {
                 foreach (var status in statuses)
                 {
