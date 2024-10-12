@@ -1,3 +1,4 @@
+using Codice.Client.BaseCommands;
 using HotD.Castables;
 using MyBox;
 using System.Collections;
@@ -15,9 +16,10 @@ public class CastMeter : BaseMonoBehaviour
     [SerializeField][Range(0, 1)] private int baseProgress = 0;
     [SerializeField][Range(-1, 1)] private int progressOffset = -1;
     [SerializeField][Range(0, 3)] private int progressCap;
+    [SerializeField][Range(0, 3)] private int sparksTrigggerLevel = 2;
     [SerializeField][Range(0, 3)] private int maxLevel;
     [SerializeField][Range(0, 3)] private int minLevel;
-    [SerializeField] private bool levelUp;
+    [SerializeField] private bool shootSparks;
 
     [Header("Meter Progress")]
     [SerializeField][Range(0, 1)][ReadOnly] private float rawProgress;
@@ -43,13 +45,26 @@ public class CastMeter : BaseMonoBehaviour
     private void SetProgress(float rawProgress) { Progress = rawProgress; }
     private float Progress
     {
-        get
+        get => UpdateProgress();
+        set
         {
-            offsetProgress = progressOffset + rawProgress;
-            meterProgress = Mathf.Clamp(offsetProgress, baseProgress, ProgressCap) / maxLevel;
-            return meterProgress;
+            rawProgress = value;
+            UpdateProgress();
         }
-        set => rawProgress = value;
+    }
+    private float UpdateProgress()
+    {
+        float oldProgress = meterProgress;
+        offsetProgress = progressOffset + rawProgress;
+        meterProgress = Mathf.Clamp(offsetProgress, baseProgress, ProgressCap) / maxLevel;
+
+        float sparksThreshold = (float)sparksTrigggerLevel / maxLevel;
+        if (oldProgress < sparksThreshold && meterProgress >= sparksThreshold)
+        {
+            Print($"CastMeter Leveled Up! ({oldProgress} -> {meterProgress}; {sparksThreshold})", debug, this);
+            shootSparks = true;
+        }
+        return meterProgress;
     }
 
     private void SetProgressCap(int cap) { ProgressCap = cap; }
@@ -83,18 +98,14 @@ public class CastMeter : BaseMonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //maxLevel = Mathf.Max(maxLevel, 1);
-        //progressCap = Mathf.Min(Mathf.Max(progressCap, 1), maxLevel);
-        //meterProgress = Mathf.Min(meterProgress, progressCap/(float)maxLevel);
-
         if (meterFill != null)
         {
             SetFloat(meterFill, "Meter Progress", Progress);
 
-            if (levelUp)
+            if (shootSparks)
             {
                 meterFill.SendEvent("Level Up 2");
-                levelUp = false;
+                shootSparks = false;
             }
         }
 
