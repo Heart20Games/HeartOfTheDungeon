@@ -88,6 +88,8 @@ public class Charger : BaseMonoBehaviour
         {
             this.level = discharge ? 0 : 1;
         }
+
+        this.level = Mathf.Min(this.level, maxLevel);
         
         onCharge.Invoke(this.level);
         onChargeInt.Invoke(Mathf.FloorToInt(this.level));
@@ -98,6 +100,7 @@ public class Charger : BaseMonoBehaviour
     [SerializeField] private float chargeLevel;
     [ReadOnly][SerializeField] private float waitTime;
     [SerializeField] private ChargeLevels chargeLevels;
+
     public IEnumerator ChargeTimer()
     {
         active = true;
@@ -138,7 +141,7 @@ public class Charger : BaseMonoBehaviour
                 Break(debug, this);
                 onCharged.Invoke(); break;
             }
-            chargeLevel += levelIncrement;
+            chargeLevel = Mathf.Min(chargeLevel + levelIncrement, chargeLevels.Count);
         }
         interrupt = false;
 
