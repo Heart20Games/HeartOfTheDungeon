@@ -16,7 +16,6 @@ public class CastMeter : BaseMonoBehaviour
     [SerializeField][Range(0, 1)] private int baseProgress = 0;
     [SerializeField][Range(-1, 1)] private int progressOffset = -1;
     [SerializeField][Range(0, 3)] private int progressCap;
-    [SerializeField][Range(0, 3)] private int sparksTrigggerLevel = 2;
     [SerializeField][Range(0, 3)] private int maxLevel;
     [SerializeField][Range(0, 3)] private int minLevel;
     [SerializeField] private bool shootSparks;
@@ -58,8 +57,8 @@ public class CastMeter : BaseMonoBehaviour
         offsetProgress = progressOffset + rawProgress;
         meterProgress = Mathf.Clamp(offsetProgress, baseProgress, ProgressCap) / maxLevel;
 
-        float sparksThreshold = (float)sparksTrigggerLevel / maxLevel;
-        if (oldProgress < sparksThreshold && meterProgress >= sparksThreshold)
+        float sparksThreshold = (float)((int)Mathf.Lerp(0, maxLevel, oldProgress) + 1) / maxLevel;
+        if (meterProgress >= sparksThreshold)
         {
             Print($"CastMeter Leveled Up! ({oldProgress} -> {meterProgress}; {sparksThreshold})", debug, this);
             shootSparks = true;
