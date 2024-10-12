@@ -33,7 +33,7 @@ public class MagicShieldImpact : CastLocationFollower
 
     private Vector3 objectPivot;
     private VisualEffect visualEffect;
-    private float vertexDistortDuration = 0f;
+    private float vertexDistortDuration = .5f;
     
     // Start is called before the first frame update
     void Start()
