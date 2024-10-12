@@ -1,3 +1,4 @@
+using Selection;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -68,7 +69,8 @@ namespace HotD.Castables
             }
             else
             {
-                Vector3 direction = (TargetPosition - OriginPosition).normalized;
+                Vector3 direction = Targeter.main.targetGroup.m_Targets[1].target != null ? 
+                                    (new Vector3(Targeter.main.targetGroup.m_Targets[1].target.transform.position.x, OriginPosition.y - 1f, Targeter.main.targetGroup.m_Targets[1].target.transform.position.z) - OriginPosition).normalized : (TargetPosition - OriginPosition).normalized;
                 Spawn(direction);
             }
         }
