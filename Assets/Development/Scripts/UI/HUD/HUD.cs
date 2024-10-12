@@ -13,7 +13,7 @@ public class HUD : BaseMonoBehaviour
     public PartySelectPanel partySelectPanel;
     public TargetStatusDisplay targetCharacterPanel;
     public Transform crosshair;
-    public MeterProgressManager castMeter;
+    public CastMeter castMeter;
     private GameObject mainCamera;
     [Foldout("Components")]
     private Canvas hudCanvas;
