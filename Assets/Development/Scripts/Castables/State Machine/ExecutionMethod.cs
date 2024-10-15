@@ -102,7 +102,7 @@ namespace HotD.Castables
                     (Owner.WeaponLocation != null ? Owner.WeaponLocation :
                         (Owner.Body != null ? Owner.Body : Owner.Transform
             ))));
-            Vector3 target = (aimAtCrosshair ? Crosshair.main.TargetedPosition() : location.position);
+            Vector3 target = (aimAtCrosshair ? Crosshair.main.TargetedPosition(location) : location.position);
             
             foreach (var positionable in positionables)
             {
