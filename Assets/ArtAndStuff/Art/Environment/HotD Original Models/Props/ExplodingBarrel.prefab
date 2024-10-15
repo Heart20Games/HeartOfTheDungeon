@@ -276,7 +276,7 @@ MonoBehaviour:
   nameOverride: Respawn Timer
   tooltipOverride: 
   target: {fileID: 3768621718914703536}
---- !u!1 &4324018463650229179
+--- !u!1 &4013800054867551516
 GameObject:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -284,8 +284,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7325907246603722826}
-  - component: {fileID: 2309048291256292198}
+  - component: {fileID: 5861921042581541620}
+  - component: {fileID: 5503842299312436732}
   m_Layer: 0
   m_Name: NameContainer(EditorOnly)
   m_TagString: EditorOnly
@@ -293,13 +293,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7325907246603722826
+--- !u!4 &5861921042581541620
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4324018463650229179}
+  m_GameObject: {fileID: 4013800054867551516}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -308,13 +308,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3935100993953963276}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2309048291256292198
+--- !u!114 &5503842299312436732
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4324018463650229179}
+  m_GameObject: {fileID: 4013800054867551516}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 190d9e9918d0aaf48a103a2bb6995059, type: 3}
@@ -322,7 +322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameOverride: Body Collider
   tooltipOverride: 
-  target: {fileID: 6148482581922819521}
+  target: {fileID: 8727325506791625605}
 --- !u!1 &4326658211653343975
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,7 +339,7 @@ GameObject:
   - component: {fileID: 3768621718914703536}
   - component: {fileID: 6102927142165400107}
   - component: {fileID: 8350877443523919289}
-  - component: {fileID: 6148482581922819521}
+  - component: {fileID: 8727325506791625605}
   - component: {fileID: 8378299814908420306}
   - component: {fileID: 1214725975187450451}
   - component: {fileID: 7209211314057976780}
@@ -372,9 +372,9 @@ Transform:
   - {fileID: 4975229402847224804}
   - {fileID: 4554226873366508507}
   - {fileID: 2079643356376472749}
-  - {fileID: 7325907246603722826}
   - {fileID: 673151356140156728}
   - {fileID: 9157571871907589825}
+  - {fileID: 5861921042581541620}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1558954319164951560
@@ -707,7 +707,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 6148482581922819521}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6
@@ -779,6 +779,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8727325506791625605}
+        m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &8350877443523919289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -806,7 +818,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 6148482581922819521}
+      - m_Target: {fileID: 8727325506791625605}
         m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6
@@ -818,8 +830,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
---- !u!65 &6148482581922819521
-BoxCollider:
+--- !u!136 &8727325506791625605
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -836,9 +848,11 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1.3757323, z: 1}
-  m_Center: {x: 0, y: 0.6770509, z: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.75, z: 0}
 --- !u!135 &8378299814908420306
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -852,7 +866,7 @@ SphereCollider:
     m_Bits: 128
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
