@@ -37,6 +37,10 @@ public class StateCastableTests
         parent2 = new GameObject("Character Parent");
         character = parent2.AddComponent<CharacterStub>();
 
+        if (testItem == null)
+        {
+            testItem = new();
+        }
         state.Initialize(character, testItem);
     }
 
@@ -65,6 +69,8 @@ public class StateCastableTests
 
     public void CreateChargeThenCastExecutors(StateCastable target)
     {
+        Assert.IsNotNull(target);
+
         GameObject parent = new("Charge");
         parent.transform.SetParent(target.transform);
         var executor = parent.AddComponent<DelegatedExecutor>();
