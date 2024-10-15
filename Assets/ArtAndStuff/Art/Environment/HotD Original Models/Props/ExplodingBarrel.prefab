@@ -507,24 +507,15 @@ MonoBehaviour:
   onSetHealth:
     m_PersistentCalls:
       m_Calls: []
+  onSetHealthTotal:
+    m_PersistentCalls:
+      m_Calls: []
   onTakeDamage:
     m_PersistentCalls:
       m_Calls: []
   onTakeDamageFrom:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3130800377718977550}
-        m_TargetAssemblyTypeName: HealthPips, Assembly-CSharp
-        m_MethodName: TakeDamage
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onNoHealth:
     m_PersistentCalls:
       m_Calls:
@@ -626,6 +617,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.Rigidbody, UnityEngine
         m_MethodName: set_useGravity
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 6893100958757639248}
+        m_TargetAssemblyTypeName: Health, Core
+        m_MethodName: Refresh
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1694,6 +1697,14 @@ PrefabInstance:
       value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 8112225771601935244, guid: 1fc1fbf98ab71f24c98a2333ec93a060, type: 3}
+      propertyPath: basePrefab
+      value: 
+      objectReference: {fileID: 6407481343780548936, guid: add3e4eac06ee074cae6d4c6f826f4de, type: 3}
+    - target: {fileID: 8112225771601935244, guid: 1fc1fbf98ab71f24c98a2333ec93a060, type: 3}
+      propertyPath: healthTarget
+      value: 
+      objectReference: {fileID: 6893100958757639248}
+    - target: {fileID: 8112225771601935244, guid: 1fc1fbf98ab71f24c98a2333ec93a060, type: 3}
       propertyPath: pips.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -1789,7 +1800,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 22613851833658388, guid: 1fc1fbf98ab71f24c98a2333ec93a060, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1799,17 +1811,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8682929352278752593, guid: 1fc1fbf98ab71f24c98a2333ec93a060, type: 3}
   m_PrefabInstance: {fileID: 6622187013611392898}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3130800377718977550 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8112225771601935244, guid: 1fc1fbf98ab71f24c98a2333ec93a060, type: 3}
-  m_PrefabInstance: {fileID: 6622187013611392898}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff61dc48762d3334b98a463b27516b50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &6926087754511665503
 PrefabInstance:
   m_ObjectHideFlags: 0

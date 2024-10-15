@@ -14,6 +14,7 @@ namespace UIPips
         public enum DisplayMode { Default, Off, On, Dynamic }
         public const DisplayMode defaultDisplayMode = DisplayMode.Dynamic;
 
+        [Foldout("Configuration", true)]
         [Header("Configuration")]
         public Transform pipTarget;
         public AutoPip basePrefab;
@@ -23,7 +24,8 @@ namespace UIPips
         [ConditionalField("usedInWorldSpace")][SerializeField] private Vector3 worldSpaceScale = new();
         [ConditionalField("usedInWorldSpace")] [SerializeField] private bool lookAtCamera;
         public bool debug = false;
-        [SerializeField] private bool updatePips = false;
+        [Foldout("Configuration")]
+        [SerializeField] protected bool updatePips = false;
 
         [Header("Partitions")]
         public List<PipPartitionSettings> partitionSettings;
