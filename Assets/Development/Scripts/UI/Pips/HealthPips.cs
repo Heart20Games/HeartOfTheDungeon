@@ -1,16 +1,23 @@
-using Body.Behavior.ContextSteering;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static Body.Behavior.ContextSteering.CSIdentity;
-using UnityEngine.Events;
-using MyBox;
-using static UnityEngine.Rendering.DebugUI;
 using UIPips;
 
 [ExecuteAlways]
 public class HealthPips : PipGenerator//, IHealth
 {
+    [Header("Health")]
+    [SerializeField] private Health healthTarget;
+
+    private void Start()
+    {
+        if (healthTarget != null)
+        {
+            SetHealthTotal(healthTarget.healthTotal);
+            SetHealth(healthTarget.health);
+            healthTarget.onSetHealthTotal.AddListener(SetHealthTotal);
+            healthTarget.onSetHealth.AddListener(SetHealth);
+        }
+    }
+
     //// Pips
     //public int TotalPips { set => SetTotal(value); }
     //public int FilledPips { set => SetFilled(value); }
