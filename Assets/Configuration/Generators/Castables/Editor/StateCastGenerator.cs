@@ -173,7 +173,14 @@ namespace HotD.Generators
                         DelegatedExecutor cooldownExecutor = GenerateExecutor(castable, CastState.Cooldown, "Cooldown");
                         executors.Add(cooldownExecutor);
                         castable.AddCooldownTransitions();
-                        Timer coolDownTimer = GenerateCooldownTimer(cooldownExecutor);
+                        if (stats.useChargeUp)
+                        {
+                            Charger discharger = GenerateDischarger(cooldownExecutor);
+                        }
+                        else
+                        {
+                            Timer coolDownTimer = GenerateCooldownTimer(cooldownExecutor);
+                        }
                     }
 
                     // Effects
@@ -308,7 +315,7 @@ namespace HotD.Generators
                 _ =>                    new("Release", releaseTriggerAction, Triggers.StartCast, Triggers.None, CastAction.Continue, true),
             };
             executor.supportedTransitions.Add(releaseTransition);
-            //UnityEventTools.AddPersistentListener(releaseTransition.startAction, charger.Interrupt);
+            UnityEventTools.AddPersistentListener(releaseTransition.startAction, charger.Interrupt);
 
             // Keep Power Level Updated
             UnityEventTools.AddPersistentListener(charger.onCharge, executor.SetPowerLevel);
@@ -460,6 +467,36 @@ namespace HotD.Generators
             UnityEventTools.AddPersistentListener(executor.fieldEvents.onSetCooldown, coolDownTimer.SetLength);
 
             return coolDownTimer;
+        }
+
+        public Charger GenerateDischarger(DelegatedExecutor executor)
+        {
+            Assert.IsNotNull(executor);
+            executor.connectToFieldEvents = true;
+
+            Charger discharger = executor.gameObject.AddComponent<Charger>();
+            discharger.onCharge = new();
+            discharger.onCharged = new();
+            discharger.discharge = true;
+            discharger.distributeChargeTimes = true;
+            discharger.chargeTimes = new float[1] { 1 };
+
+            // Keep Charger Settings Updated
+            UnityEventTools.AddPersistentListener(executor.fieldEvents.onSetPowerLevel, discharger.SetMaxLevel);
+            UnityEventTools.AddPersistentListener(executor.fieldEvents.onSetCooldown, discharger.SetChargeTimeScale);
+
+            // Start Transition
+            TransitionEvent startTransition = new("Start", CastAction.Start);
+            UnityEventTools.AddVoidPersistentListener(startTransition.startAction, discharger.Begin);
+            executor.supportedTransitions.Add(startTransition);
+
+            // Finish on Charged
+            UnityEventTools.AddVoidPersistentListener(discharger.onCharged, executor.End);
+
+            // Keep Charge Level Updated
+            UnityEventTools.AddPersistentListener(discharger.onCharge, executor.SetPowerLevel);
+
+            return discharger;
         }
 
         private Damager GenerateDamager(CastProperties castable, GameObject gameObject)

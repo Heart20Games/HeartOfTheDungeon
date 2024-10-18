@@ -181,15 +181,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  controller: {fileID: 3920419301028268776}
   agent: {fileID: 0}
-  pathFinder: {fileID: 5885684141737888567}
   navUpdate: 1
   followingDistance: 0
   baseOffset: 0
   useAgent: 0
   modifiers: {fileID: 11400000, guid: e747a79b96270f8488105465899547d7, type: 2}
-  tree: {fileID: 11400000, guid: 5140f609f0a38fb48865e6fb826fc149, type: 2}
   debug: 0
 --- !u!114 &3920419301028268776
 MonoBehaviour:
@@ -232,6 +229,11 @@ MonoBehaviour:
         m_CallState: 2
   noise: {fileID: 0}
   useNoise: 1
+  context:
+    currentIdentity: 0
+    currentContexts: []
+    initialized: 0
+    debug: 0
   activeContexts: []
   onFoeContextActive:
     m_PersistentCalls:
@@ -265,18 +267,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: 954c3b6bf2f9fb04fbe24ce394bf9e94, type: 2}
-  applyGravity: 1
+  useGravity: 1
   canMove: 1
+  debug: 0
   npcModifier: 1
   moveVector: {x: 0, y: 0}
-  character: {fileID: 0}
   body: {fileID: 0}
-  pivot: {fileID: 0}
-  artRenderer: {fileID: 0}
-  OnSetMoveVector:
+  onSetMoveVector:
     m_PersistentCalls:
       m_Calls: []
-  flipBuffer: 0.01
   startWalking:
     m_PersistentCalls:
       m_Calls: []
