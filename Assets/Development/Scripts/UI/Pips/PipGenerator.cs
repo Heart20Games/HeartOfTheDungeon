@@ -28,8 +28,8 @@ namespace UIPips
         [SerializeField] protected bool updatePips = false;
 
         [Header("Partitions")]
-        public List<PipPartitionSettings> partitionSettings;
-        public List<PipPartition> partitions;
+        public List<PipPartitionSettings> partitionSettings = new();
+        public List<PipPartition> partitions = new();
 
         public void SetFilled(int filled, PipType type = PipType.None)
         {

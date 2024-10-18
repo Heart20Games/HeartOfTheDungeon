@@ -352,13 +352,31 @@ namespace HotD
         }
         public void StartDialogue(string nodeName, UnityAction<string> startListener = null, UnityAction completeListener = null)
         {
+            DialogueRunner dialogueRunner = userInterface.dialogueRunner;
+
             prevMode = main.Mode;
             main.InputMode = InputMode.Dialogue;
             userInterface.dialogueRunner.Stop();
             if (startListener != null)
-                userInterface.dialogueRunner.onNodeStart.AddListener(startListener);
+                dialogueRunner.onNodeStart.AddListener(startListener);
             if (completeListener != null)
-                userInterface.dialogueRunner.onDialogueComplete.AddListener(completeListener);
+                dialogueRunner.onDialogueComplete.AddListener(completeListener);
+
+            YarnProject yarnProject = dialogueRunner.yarnProject;
+            if (yarnProject.NodeNames.Length <= 0)
+            {
+                Debug.LogWarning($"{yarnProject.name} has no node names listed.", this);
+            }
+            else
+            {
+                string nameLog = $"{yarnProject.name} has node names:";
+                foreach (string name in userInterface.dialogueRunner.yarnProject.NodeNames)
+                {
+                    nameLog += $"\n{name}";
+                }
+                Debug.Log(nameLog, this);
+            }
+
             userInterface.dialogueRunner.StartDialogue(nodeName);
         }
 

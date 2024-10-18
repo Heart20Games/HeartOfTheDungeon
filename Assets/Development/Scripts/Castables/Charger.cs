@@ -19,10 +19,10 @@ public class Charger : BaseMonoBehaviour
     [SerializeField] private bool interrupt = false;
     [SerializeField] private float level;
     [SerializeField] private float maxLevel;
-    [SerializeField] private bool discreteUpdates = false;
-    [SerializeField] private bool discharge = false;
-    [SerializeField] private bool distributeChargeTimes = false;
-    [SerializeField] private float chargeTimeScale = 1;
+    public bool discreteUpdates = false;
+    public bool discharge = false;
+    public bool distributeChargeTimes = false;
+    private float chargeTimeScale = 1;
     public float[] chargeTimes = new float[0];
 
     [Foldout("Events", true)]
@@ -34,6 +34,11 @@ public class Charger : BaseMonoBehaviour
     public UnityEvent onInterrupt;
 
     // How to Give it Directions
+
+    public void SetChargeTimeScale(float value)
+    {
+        chargeTimeScale = value;
+    }
 
     public void SetMaxLevel(int level) => SetMaxLevel((float)level);
     public void SetMaxLevel(float level)

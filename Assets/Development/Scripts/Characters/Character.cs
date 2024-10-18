@@ -168,8 +168,8 @@ namespace HotD.Body
         {
             onDamage.AddListener(action);
         }
-        public int CurrentHealth { get => health.current.Value; set => health.current.Value = value; }
-        private int MaxHealth { get => health.max.Value; set => Health.max.Value = value; }
+        public int CurrentHealth { get => Health?.current?.Value ?? -1; set { if (Health?.current != null) { Health.current.Value = value; } } }
+        private int MaxHealth { get => Health?.max?.Value ?? -1; set { if (Health?.max != null) { Health.max.Value = value; } } }
 
         // Death and Respawning
         [Foldout("Death and Respawning", true)]
