@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.VFX;
 using static Impact;
 
-public class MagicShieldImpact : CastLocationFollower
+public class MagicShieldImpact : CastLocationFollower, ICastListener
 {
     [Foldout("Impact VFX", true)]
     [SerializeField] private bool impact = false;
@@ -34,7 +34,7 @@ public class MagicShieldImpact : CastLocationFollower
     private Vector3 objectPivot;
     private VisualEffect visualEffect;
     private float vertexDistortDuration = .5f;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -219,4 +219,23 @@ public class MagicShieldImpact : CastLocationFollower
             ImpactTrigger();
         }
     }
+
+    // ICastListener
+
+    public int Level { get => 0; set => SetLevel(value); }
+    public float[] ChargeTimes { get => null; set => SetChargeTimes(value); }
+
+    public void SetTriggers(Coordination.Triggers triggers)
+    {
+        if (Coordination.HasTrigger(triggers, Coordination.Triggers.StartCast))
+        {
+            ToggleShield(true);
+        }
+        else if (Coordination.HasTrigger(triggers, Coordination.Triggers.EndCast))
+        {
+            ToggleShield(false);
+        }
+    }
+    public void SetLevel(int level) { return; }
+    public void SetChargeTimes(float[] times) { return; }
 }

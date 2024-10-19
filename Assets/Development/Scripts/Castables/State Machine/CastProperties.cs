@@ -190,6 +190,8 @@ namespace HotD.Castables
 
         public virtual void Initialize(ICastCompatible owner, CastableItem item)
         {
+            Assert.IsNotNull(item);
+
             InitializeFields(fields);
 
             Owner = owner;

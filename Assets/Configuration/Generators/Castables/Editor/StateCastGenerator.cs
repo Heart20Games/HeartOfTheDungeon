@@ -173,7 +173,14 @@ namespace HotD.Generators
                         DelegatedExecutor cooldownExecutor = GenerateExecutor(castable, CastState.Cooldown, "Cooldown");
                         executors.Add(cooldownExecutor);
                         castable.AddCooldownTransitions();
-                        Timer coolDownTimer = GenerateCooldownTimer(cooldownExecutor);
+                        if (stats.useChargeUp)
+                        {
+                            Charger discharger = GenerateDischarger(cooldownExecutor);
+                        }
+                        else
+                        {
+                            Timer coolDownTimer = GenerateCooldownTimer(cooldownExecutor);
+                        }
                     }
 
                     // Effects
@@ -182,13 +189,16 @@ namespace HotD.Generators
                         CastListenerDistributor effectManager = GenerateCastListenerDistributor(castable, "Effects");
                         foreach (var effect in effects)
                         {
-                            ACastListener listener = effect.Generate(effectManager, stats);
+                            ICastListener listener = effect.Generate(effectManager, stats);
                             effectManager.AddListener(listener);
                         }
                         effectManager.SetChargeTimes(chargeTimes);
                         foreach (var executor in executors)
                         {
-                            executor.ActionExecutor ??= effectManager.SetTriggers;
+                            executor.ToTriggerListeners = effectManager.SetTriggers;
+                            executor.onTriggers ??= new();
+                            UnityEventTools.AddPersistentListener(executor.onTriggers, effectManager.SetTriggers);
+                            Assert.IsNotNull(executor.ToTriggerListeners);
                         }
                     }
 
@@ -308,7 +318,7 @@ namespace HotD.Generators
                 _ =>                    new("Release", releaseTriggerAction, Triggers.StartCast, Triggers.None, CastAction.Continue, true),
             };
             executor.supportedTransitions.Add(releaseTransition);
-            //UnityEventTools.AddPersistentListener(releaseTransition.startAction, charger.Interrupt);
+            UnityEventTools.AddPersistentListener(releaseTransition.startAction, charger.Interrupt);
 
             // Keep Power Level Updated
             UnityEventTools.AddPersistentListener(charger.onCharge, executor.SetPowerLevel);
@@ -462,6 +472,36 @@ namespace HotD.Generators
             return coolDownTimer;
         }
 
+        public Charger GenerateDischarger(DelegatedExecutor executor)
+        {
+            Assert.IsNotNull(executor);
+            executor.connectToFieldEvents = true;
+
+            Charger discharger = executor.gameObject.AddComponent<Charger>();
+            discharger.onCharge = new();
+            discharger.onCharged = new();
+            discharger.discharge = true;
+            discharger.distributeChargeTimes = true;
+            discharger.chargeTimes = new float[1] { 1 };
+
+            // Keep Charger Settings Updated
+            UnityEventTools.AddPersistentListener(executor.fieldEvents.onSetPowerLevel, discharger.SetMaxLevel);
+            UnityEventTools.AddPersistentListener(executor.fieldEvents.onSetCooldown, discharger.SetChargeTimeScale);
+
+            // Start Transition
+            TransitionEvent startTransition = new("Start", CastAction.Start);
+            UnityEventTools.AddVoidPersistentListener(startTransition.startAction, discharger.Begin);
+            executor.supportedTransitions.Add(startTransition);
+
+            // Finish on Charged
+            UnityEventTools.AddVoidPersistentListener(discharger.onCharged, executor.End);
+
+            // Keep Charge Level Updated
+            UnityEventTools.AddPersistentListener(discharger.onCharge, executor.SetPowerLevel);
+
+            return discharger;
+        }
+
         private Damager GenerateDamager(CastProperties castable, GameObject gameObject)
         {
             Assert.IsNotNull(castable);
@@ -602,26 +642,31 @@ namespace HotD.Generators
             }
 
             public string name;
-            public ACastListener prefab;
+            public GameObject prefab;
             public CastLocation source;
             public CastLocation target;
 
             public Vector2 chargeLevels;
             public Vector2 comboSteps;
 
-            public ACastListener Generate(CastListenerDistributor distributor, CastableStats stats, bool initializeValues=false, float[] chargeTimes=null)
+            public readonly ICastListener Generate(CastListenerDistributor distributor, CastableStats stats, bool initializeValues = false, float[] chargeTimes = null)
             {
                 if (prefab != null)
                 {
-                    GameObject listenerObject = PrefabUtility.InstantiatePrefab(prefab.gameObject) as GameObject;
+                    GameObject listenerObject = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
                     listenerObject.transform.SetParent(distributor.transform);
 
-                    if (listenerObject.TryGetComponent<ACastListener>(out var listener))
+                    if (listenerObject.TryGetComponent<ICastListener>(out var listener))
                     {
+                        Debug.Log("Has ICastListener component.");
                         if (initializeValues)
                         {
                             listener.ChargeTimes = chargeTimes;
                         }
+                    }
+                    else
+                    {
+                        Debug.Log("Does not have ICastListener component.");
                     }
 
                     return listener;
