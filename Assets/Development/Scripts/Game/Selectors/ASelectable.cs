@@ -20,7 +20,7 @@ public abstract class ASelectable : BaseMonoBehaviour, ISelectable
     [ReadOnly] public ASelectable last;
     [ReadOnly] public bool visible = false;
 
-    [ReadOnly] private bool isSelectable = false;
+    [SerializeField] private bool isSelectable = false;
     public UnityEvent<bool> onIsSelectable;
     public bool IsSelectable
     {

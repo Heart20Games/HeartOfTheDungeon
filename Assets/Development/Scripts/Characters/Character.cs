@@ -101,6 +101,8 @@ namespace HotD.Body
         [SerializeField] private CinemachineVirtualCamera orbitalCamera;
         [SerializeField] private CinemachineVirtualCamera aimCamera;
 
+        public CinemachineVirtualCamera AimCamera => aimCamera;
+
         public ArtRenderer ArtRenderer { get => artRenderer; }
 
         // Collision

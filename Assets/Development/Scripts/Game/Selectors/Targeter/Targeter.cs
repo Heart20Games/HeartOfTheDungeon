@@ -1,7 +1,10 @@
+using Body.Behavior.ContextSteering;
 using Cinemachine;
 using CustomUnityEvents;
+using PlasticGui.Configuration.Saml;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,7 +13,6 @@ namespace Selection
     public class Targeter : Selector, ILooker
     {
         public static Targeter main;
-
 
         [ReadOnly] public List<ASelectable> selectableBank = new();
         [ReadOnly] public List<IPartySpawner> partySpawners = new();
@@ -27,11 +29,9 @@ namespace Selection
         {
             get => finder;
             set {
-                if (finder != null)
-                    finder.enabled = false;
                 finder = value;
                 if (finder != null)
-                    finder.enabled = !targetLock;
+                    finder.enabled = true;
             }
         }
         public UnityEvent<ASelectable> onTargetSet;
@@ -76,6 +76,11 @@ namespace Selection
         [SerializeField] private float maxDistance = 10f;
         [SerializeField] private float rotationSpeed = 1f;
         [ReadOnly][SerializeField] private Vector2 lookVector = Vector2.zero;
+
+        [Header("Distances")]
+        [SerializeField] private float far;
+        [SerializeField] private float mid;
+        [SerializeField] private float near;
         public void Look(Vector2 vector)
         {
             Print($"Targeter Looking ({vector})", debug);
@@ -104,6 +109,15 @@ namespace Selection
                     targetGroup.transform.rotation = Quaternion.Slerp(targetGroup.transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
                     //targetGroup.transform.LookAt(targetGroup.m_Targets[0].target);
                 }
+
+                if(targetGroup.m_Targets[1].target == null)
+                {
+                    HotD.Game.main.CurCharacter.AimCamera.gameObject.SetActive(true);
+                    SetTargetLock(false);
+                    targetLock = false;
+                }
+
+                CheckDistance();
             }
         }
 
@@ -112,9 +126,9 @@ namespace Selection
         private int zoomLevel = 0;
         public void SetZoom(int level)
         {
-            zoomLevels[level].gameObject.SetActive(true);
             zoomLevels[zoomLevel].gameObject.SetActive(false);
             zoomLevel = level;
+            zoomLevels[level].gameObject.SetActive(true);
             virtualCamera = zoomLevels[zoomLevel];
         }
         public void Zoom(bool zoomIn)
@@ -122,6 +136,30 @@ namespace Selection
             int dir = zoomIn ? -1 : 1;
             if (zoomLevel + dir == Mathf.Clamp(zoomLevel + dir, 0, zoomLevels.Count-1))
                 SetZoom(zoomLevel + dir);
+        }
+
+        private void CheckDistance()
+        {
+            if(selected != null)
+            {
+                float distance = Vector3.Distance(targetGroup.m_Targets[0].target.transform.position, targetGroup.m_Targets[1].target.transform.position);
+
+                if(distance >= far)
+                {
+                    if(zoomLevel != 2)
+                        SetZoom(2);
+                }
+                if(distance >= mid && distance < far)
+                {
+                    if(zoomLevel != 1)
+                        SetZoom(1);
+                }
+                if(distance >= near && distance < mid)
+                {
+                    if(zoomLevel != 0)
+                        SetZoom(0);
+                }
+            }
         }
 
         public bool HasTarget()
@@ -132,8 +170,8 @@ namespace Selection
         public void SetTargetLock(bool targetLock)
         {
             this.targetLock = targetLock;
-            Finder.enabled = !targetLock;
             Finder.SetLockOn(targetLock);
+            ResetCameras();
             virtualCamera.gameObject.SetActive(targetLock);
             if (targetLock)
             {
@@ -146,7 +184,18 @@ namespace Selection
             {
                 onTargetSet.Invoke(null);
                 DeSelect();
-            } 
+            }
+        }
+
+        private void ResetCameras()
+        {
+            foreach(CinemachineVirtualCamera cams in zoomLevels)
+            {
+                cams.gameObject.SetActive(false);
+            }
+
+            zoomLevel = 0;
+            SetZoom(zoomLevel);
         }
 
         public void SwitchTargets(int newIdx)
@@ -160,9 +209,9 @@ namespace Selection
         public void SwitchTargets(bool left)
         {
             Print($"Switch targets {(left ? "left" : "right")}.", debug);
-            int newIdx = finder.TargetIdx + (left ? -1 : 1);
-            if (newIdx > 0 && finder.selectables.Count > newIdx)
+            if(finder.selectables.Count > 1)
             {
+                int newIdx = finder.TargetIdx + (left ? -1 : 1);
                 SwitchTargets(newIdx);
             }
         }
@@ -179,13 +228,11 @@ namespace Selection
             }
         }
 
-
         // Validation
         public bool Validate(ASelectable selectable)
         {
             return selectable.visible && SelectableTypes.Contains(selectable.Type);
         }
-
 
         // Overrides
         public override void Select()
