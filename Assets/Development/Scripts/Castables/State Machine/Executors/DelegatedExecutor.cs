@@ -104,7 +104,8 @@ namespace HotD.Castables
                 eventStatus = transition.MarkFired(true);
                 transition.startAction.Invoke();
                 Coordinator.Coordinate(transition.sendToCoordinator);
-                actionExecuted?.Invoke(transition.sendToListener);
+                toTriggerListeners?.Invoke(transition.sendToListener);
+                onTriggers?.Invoke(transition.sendToListener);
                 return transition.waitAction;
             }
             else

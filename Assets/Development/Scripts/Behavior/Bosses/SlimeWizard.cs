@@ -61,13 +61,13 @@ public class SlimeWizard : EnemyAI
 
                 if(magicBoltRoutine == null)
                 {
-                    magicBoltRoutine = StartCoroutine(CreateProjectile());
+                    //magicBoltRoutine = StartCoroutine(CreateProjectile());
                 }
             }
             
             if(!isShootingLaser && magicBoltRoutine == null)
             {
-                IncrementAttackCoolDown();
+                //IncrementAttackCoolDown();
             }
         }
     }

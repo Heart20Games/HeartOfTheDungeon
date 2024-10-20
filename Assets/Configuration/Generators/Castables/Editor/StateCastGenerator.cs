@@ -189,13 +189,16 @@ namespace HotD.Generators
                         CastListenerDistributor effectManager = GenerateCastListenerDistributor(castable, "Effects");
                         foreach (var effect in effects)
                         {
-                            ACastListener listener = effect.Generate(effectManager, stats);
+                            ICastListener listener = effect.Generate(effectManager, stats);
                             effectManager.AddListener(listener);
                         }
                         effectManager.SetChargeTimes(chargeTimes);
                         foreach (var executor in executors)
                         {
-                            executor.ActionExecutor ??= effectManager.SetTriggers;
+                            executor.ToTriggerListeners = effectManager.SetTriggers;
+                            executor.onTriggers ??= new();
+                            UnityEventTools.AddPersistentListener(executor.onTriggers, effectManager.SetTriggers);
+                            Assert.IsNotNull(executor.ToTriggerListeners);
                         }
                     }
 
@@ -639,26 +642,31 @@ namespace HotD.Generators
             }
 
             public string name;
-            public ACastListener prefab;
+            public GameObject prefab;
             public CastLocation source;
             public CastLocation target;
 
             public Vector2 chargeLevels;
             public Vector2 comboSteps;
 
-            public ACastListener Generate(CastListenerDistributor distributor, CastableStats stats, bool initializeValues=false, float[] chargeTimes=null)
+            public readonly ICastListener Generate(CastListenerDistributor distributor, CastableStats stats, bool initializeValues = false, float[] chargeTimes = null)
             {
                 if (prefab != null)
                 {
-                    GameObject listenerObject = PrefabUtility.InstantiatePrefab(prefab.gameObject) as GameObject;
+                    GameObject listenerObject = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
                     listenerObject.transform.SetParent(distributor.transform);
 
-                    if (listenerObject.TryGetComponent<ACastListener>(out var listener))
+                    if (listenerObject.TryGetComponent<ICastListener>(out var listener))
                     {
+                        Debug.Log("Has ICastListener component.");
                         if (initializeValues)
                         {
                             listener.ChargeTimes = chargeTimes;
                         }
+                    }
+                    else
+                    {
+                        Debug.Log("Does not have ICastListener component.");
                     }
 
                     return listener;

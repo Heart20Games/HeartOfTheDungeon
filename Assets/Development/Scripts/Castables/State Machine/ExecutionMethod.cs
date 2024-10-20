@@ -15,6 +15,8 @@ namespace HotD.Castables
         public UnityEvent onEnable = new();
         private ISetCollisionExceptions[] collidables;
 
+        [SerializeField] private bool debugExecution;
+
         public override void InitializeEvents()
         {
             base.InitializeEvents();
@@ -38,7 +40,7 @@ namespace HotD.Castables
 
         protected new void OnEnable()
         {
-            Print("Execution Method Enabled", true, this);
+            Print("Execution Method Enabled", debugExecution, this);
 
             base.OnEnable();
 

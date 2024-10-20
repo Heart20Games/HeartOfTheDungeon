@@ -77,6 +77,7 @@ namespace HotD
         [Header("Cheats and Shortcuts")]
         public bool restartable = true;
         public bool debug = false;
+        [SerializeField] private bool canSwitchCharacters;
 
 
         // Initialization
@@ -420,6 +421,8 @@ namespace HotD
 
         public void SwitchToCompanion(int idx)
         {
+            if (!canSwitchCharacters) return;
+
             if (curCharIdx == idx)
                 SetCharacterIdx(0);
             else

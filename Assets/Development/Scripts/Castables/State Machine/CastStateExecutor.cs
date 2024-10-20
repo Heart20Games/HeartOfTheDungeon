@@ -15,7 +15,7 @@ namespace HotD.Castables
 
         public UnityAction<StateAction> ActionPerformer { get; set; }
         public UnityAction<CastAction> ActionReporter { get; set; }
-        public UnityAction<Triggers> ActionExecutor { get; set; }
+        public UnityAction<Triggers> ToTriggerListeners { get; set; }
 
     }
 
@@ -26,13 +26,14 @@ namespace HotD.Castables
         public CastState State { get => state; set => state = value; }
         public UnityAction<StateAction> ActionPerformer { get => actionPerformed; set => actionPerformed = value; }
         public UnityAction<CastAction> ActionReporter { get => actionReported; set => actionReported = value; }
-        public UnityAction<Triggers> ActionExecutor { get => actionExecuted; set => actionExecuted = value; }
+        public UnityAction<Triggers> ToTriggerListeners { get => toTriggerListeners; set => toTriggerListeners = value; }
 
         [Foldout("Events")]
         public UnityEvent<CastAction> onAction;
+        public UnityEvent<Triggers> onTriggers;
         protected UnityAction<StateAction> actionPerformed;
         protected UnityAction<CastAction> actionReported;
-        protected UnityAction<Triggers> actionExecuted;
+        protected UnityAction<Triggers> toTriggerListeners;
 
         public virtual bool PerformAction(StateAction stateAction, out CastAction waitOn)
         {

@@ -36,9 +36,11 @@ namespace HotD
         [SerializeField] private bool patientWaves = false;
 
         [SerializeField] private List<Wave> waves;
+        [SerializeField] private Transform spawnParent;
         [SerializeField] private List<Transform> spawnpoints;
 
-        [SerializeField] private Transform[] wayPoints;
+        [SerializeField] private Transform wayParent;
+        [SerializeField] private List<Transform> waypoints;
 
         [SerializeField] private bool debug;
 
@@ -56,9 +58,14 @@ namespace HotD
         public UnityEvent<Party> onPartyDied;
         [Foldout("Events")] public UnityEvent<ASelectable> deregisterMember;
 
-
         private bool initialized = false;
         public Coroutine coroutine;
+
+        private void Awake()
+        {
+            LoadSpawnPoints();
+            LoadWayPoints();
+        }
 
         public void Start()
         {
@@ -166,7 +173,7 @@ namespace HotD
 
         private void AddWayPoints(EnemyAI ai)
         {
-            ai.SetWayPoints(wayPoints[UnityEngine.Random.Range(0, wayPoints.Length)], wayPoints[UnityEngine.Random.Range(0, wayPoints.Length)]);
+            ai.SetWayPoints(waypoints[UnityEngine.Random.Range(0, waypoints.Count)], waypoints[UnityEngine.Random.Range(0, waypoints.Count)]);
         }
 
         public IEnumerator CountdownToWave()
@@ -174,6 +181,29 @@ namespace HotD
             yield return new WaitForSeconds(minutesBetweenWaves * 60);
             coroutine = null;
             SpawnNewWave();
+        }
+
+        // Tools
+        [ButtonMethod]
+        public void LoadSpawnPoints()
+        {
+            spawnpoints ??= new();
+            spawnpoints.Clear();
+            for (int i = 0; i < spawnParent.childCount; i++)
+            {
+                spawnpoints.Add(spawnParent.GetChild(i));
+            }
+        }
+
+        [ButtonMethod]
+        public void LoadWayPoints()
+        {
+            waypoints ??= new();
+            waypoints.Clear();
+            for (int i = 0; i < wayParent.childCount; i++)
+            {
+                waypoints.Add(wayParent.GetChild(i));
+            }
         }
 
         // Testing
