@@ -8,6 +8,11 @@ public class Crosshair : BaseMonoBehaviour
 
     public float maxDistance = 1000;
 
+    [Header("Debugging")]
+    [SerializeField] private bool debug = true;
+    [SerializeField] private bool drawCameraToOriginRay = false;
+    [SerializeField] private float drawRayLifetime = 2.5f;
+
     private void Awake()
     {
         if (main == null)
@@ -38,12 +43,17 @@ public class Crosshair : BaseMonoBehaviour
         float originDistance = referenceObject == null ? 0 : (referenceObject.position - camera.position).magnitude;
         Vector3 origin = camera.position + (originDistance * direction);
         Ray ray = new(origin, direction);
+        if (debug && drawCameraToOriginRay) Debug.DrawRay(camera.position, ray.direction * originDistance, Color.red, drawRayLifetime);
         if (Physics.Raycast(ray, out RaycastHit hitInfo, maxDistance, ~0, QueryTriggerInteraction.Ignore))
         {
+            Vector3 hitDirection = (hitInfo.point - ray.origin).normalized;
+            Color color = Vector3.Dot(ray.direction, hitDirection) >= 0 ? Color.green : Color.magenta;
+            if (debug) Debug.DrawRay(ray.origin, ray.direction * hitInfo.distance, color, drawRayLifetime);
             return hitInfo.point;
         }
         else
         {
+            if (debug) Debug.DrawRay(ray.origin, direction * maxDistance, Color.yellow, drawRayLifetime);
             return camera.position + (direction * maxDistance);
         }
     }

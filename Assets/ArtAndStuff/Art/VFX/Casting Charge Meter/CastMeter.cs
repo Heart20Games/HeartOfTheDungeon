@@ -1,99 +1,126 @@
 using HotD.Castables;
 using MyBox;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class MeterProgressManager : BaseMonoBehaviour
+public class CastMeter : BaseMonoBehaviour
 {
-    
+    // Fields
+    [SerializeField] private bool debug;
+
+    [Header("Meter Parameters")]
     [SerializeField] private VisualEffect meterFill;
     [SerializeField] private VisualEffect meterBackground;
     [SerializeField][Range(0, 1)] private int baseProgress = 0;
     [SerializeField][Range(-1, 1)] private int progressOffset = -1;
-    [SerializeField][Range(0, 1)] private float meterProgress;
-    [SerializeField][Range(1, 3)] private int currentLevel;
-    [SerializeField][Range(1, 3)] private int maxLevel;
-    [SerializeField] private bool levelUp;
+    [SerializeField][Range(0, 3)] private int progressCap;
+    [SerializeField][Range(0, 3)] private int maxLevel;
+    [SerializeField][Range(0, 3)] private int minLevel;
+    [SerializeField] private bool shootSparks;
 
-    private ICastProperties castProperties;
+    [Header("Meter Progress")]
+    [SerializeField][Range(0, 1)][ReadOnly] private float rawProgress;
+    [SerializeField][Range(0, 1)][ReadOnly] private float offsetProgress;
+    [SerializeField][Range(0, 1)] private float meterProgress;
+
+    [Header("Cast Properties")]
     [SerializeField][ReadOnly] private bool hasCastProperties;
     [SerializeField][ReadOnly] private CastProperties rawCastProperties;
-    [SerializeField] private bool debug;
+    private ICastProperties castProperties;
     
     [Foldout("Dissolve Parameters", true)]
     [SerializeField][Range(0f, 1.2f)] private float level2LockDissolveAmount;
     [SerializeField][Range(0f, 1.2f)] private float level3LockDissolveAmount;
     [SerializeField][ReadOnly] private bool level2Dissolved;
     [SerializeField][ReadOnly] private bool level3Dissolved;
-    [Foldout("Dissolve Parameters")]
     [SerializeField] private float dissolveDuration = 1f;
-    public bool cooldown = false;
-    
-    public ICastProperties Castable { get => castProperties; set => SetCastable(value); }
+    [Foldout("Dissolve Parameters")]
+    private bool cooldown = false;
 
+
+    // Setters / Getters
+    private void SetProgress(float rawProgress) { Progress = rawProgress; }
+    private float Progress
+    {
+        get => UpdateProgress();
+        set
+        {
+            rawProgress = value;
+            UpdateProgress();
+        }
+    }
+    private float UpdateProgress()
+    {
+        float oldProgress = meterProgress;
+        offsetProgress = progressOffset + rawProgress;
+        meterProgress = Mathf.Clamp(offsetProgress, baseProgress, ProgressCap) / maxLevel;
+
+        float sparksThreshold = (float)((int)Mathf.Lerp(0, maxLevel, oldProgress) + 1) / maxLevel;
+        if (meterProgress >= sparksThreshold)
+        {
+            Print($"CastMeter Leveled Up! ({oldProgress} -> {meterProgress}; {sparksThreshold})", debug, this);
+            shootSparks = true;
+        }
+        return meterProgress;
+    }
+
+    private void SetProgressCap(int cap) { ProgressCap = cap; }
+    private int ProgressCap
+    {
+        get => Mathf.Clamp(progressCap, minLevel, maxLevel);
+        set => progressCap = Mathf.Max(value, 0);
+    }
+
+    public ICastProperties Castable { get => castProperties; set => SetCastable(value); }
     public void SetCastable(ICastProperties castProperties)
     {
+        if (this.castProperties != null)
+        {
+            this.castProperties.FieldEvents.onSetPowerLevel.RemoveListener(SetProgress);
+            this.castProperties.FieldEvents.onSetMaxPowerLevel.RemoveListener(SetProgressCap);
+        }
+
         this.castProperties = castProperties;
         this.rawCastProperties = castProperties is CastProperties ? castProperties as CastProperties : null;
         hasCastProperties = this.castProperties != null;
         
-        castProperties.FieldEvents.onSetPowerLevel.AddListener(SetCastProgress);
-        castProperties.FieldEvents.onSetMaxPowerLevel.AddListener(SetCurrentLevel);
+        castProperties.FieldEvents.onSetPowerLevel.AddListener(SetProgress);
+        castProperties.FieldEvents.onSetMaxPowerLevel.AddListener(SetProgressCap);
 
-        SetCastProgress(castProperties.PowerLevel);
-        SetCurrentLevel(castProperties.MaxPowerLevel);
-    }
-    private void SetCastProgress(float castProgress)
-    {
-        Print($"Set Meter Progress {castProgress}.", debug, this);
-        meterProgress = Mathf.Max(baseProgress, (progressOffset + castProgress) / maxLevel);
-    }
-    private void SetCurrentLevel(int currentLevel)
-    {
-        Print($"Set Meter Level {currentLevel}.", debug, this);
-        this.currentLevel = Mathf.Min(currentLevel, maxLevel);
-    }
-    private void SetMaxLevel(int maxLevel)
-    {
-        Print($"Set Meter Max Level {maxLevel}.", debug, this);
-        this.maxLevel = maxLevel;
+        Progress = castProperties.PowerLevel;
+        ProgressCap = castProperties.MaxPowerLevel;
     }
     
 
     // Update is called once per frame
     void Update()
     {
-        maxLevel = Mathf.Max(maxLevel, 1);
-        currentLevel = Mathf.Min(Mathf.Max(currentLevel, 1), maxLevel);
-        meterProgress = Mathf.Min(meterProgress, currentLevel/(float)maxLevel);
-
         if (meterFill != null)
         {
-            SetFloat(meterFill, "Meter Progress", meterProgress);
+            SetFloat(meterFill, "Meter Progress", Progress);
 
-            if (levelUp)
+            if (shootSparks)
             {
                 meterFill.SendEvent("Level Up 2");
-                levelUp = false;
+                shootSparks = false;
             }
         }
 
         if (meterBackground != null)
         {
-            SetFloat(meterBackground, "Meter Progress", meterProgress);
+            SetFloat(meterBackground, "Meter Progress", Progress);
         }
 
         // Dissolving and Reforming
-        if (currentLevel >= 2 && !level2Dissolved)
+        if (progressCap >= 2 && !level2Dissolved)
             StartCoroutine(Level2Dissolve());
-        else if (currentLevel < 2 && level2Dissolved)
+        else if (progressCap < 2 && level2Dissolved)
             StartCoroutine(Level2Reform());
 
-        if (currentLevel >= 3 && !level3Dissolved)
+        if (progressCap >= 3 && !level3Dissolved)
             StartCoroutine(Level3Dissolve());
-        else if (currentLevel < 3 && level3Dissolved)
+        else if (progressCap < 3 && level3Dissolved)
             StartCoroutine(Level3Reform());
     }
 

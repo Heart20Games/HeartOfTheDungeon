@@ -1,4 +1,5 @@
 using Body.Behavior;
+using Body.Behavior.ContextSteering;
 using CustomUnityEvents;
 using Sorting;
 using System.Collections.Generic;
@@ -135,7 +136,19 @@ namespace Selection
             if (Validate(selectable.gameObject, attachedSelectable.Identity))
             {
                 if (debug) print("Found a valid selectable!");
-                selectables.Add(selectable);
+                if (selectable.GetComponent<CSController>())
+                {
+                    CSController csController = selectable.GetComponent<CSController>();
+
+                    if(csController.identity != CSIdentity.Identity.Friend)
+                    {
+                        selectables.Add(selectable);
+                    }
+                }
+                else
+                {
+                    selectables.Add(selectable);
+                }
             }
         }
 

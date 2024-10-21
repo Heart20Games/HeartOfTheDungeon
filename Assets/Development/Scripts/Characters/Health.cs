@@ -5,6 +5,15 @@ using UnityEngine;
 using UnityEngine.Events;
 using static Body.Behavior.ContextSteering.CSIdentity;
 
+public interface IHealth : IDamageReceiver
+{
+    public void SetHealthTotal(int amount);
+    public void SetHealthBase(int total);
+    public void SetHealthBase(int amount, int total);
+    public void SetHealth(int amount);
+    public void HealDamage(int amount);
+}
+
 public class Health : BaseMonoBehaviour, IHealth
 {
     public int healthTotal = 0;
@@ -12,18 +21,26 @@ public class Health : BaseMonoBehaviour, IHealth
 
     [Foldout("Events", true)]
     public UnityEvent<int> onSetHealth;
+    public UnityEvent<int> onSetHealthTotal;
     public UnityEvent<int> onTakeDamage;
     public UnityEvent<int, Identity> onTakeDamageFrom;
     [Foldout("Events")]
     public UnityEvent onNoHealth;
 
+    public void Refresh()
+    {
+        SetHealth(healthTotal);
+    }
+
     public virtual void HealDamage(int amount)
     {
         health += amount;
+        onSetHealth.Invoke(health);
     }
     public virtual void SetHealth(int amount)
     {
         health = amount;
+        onSetHealth.Invoke(health);
     }
     public virtual void SetHealthBase(int total) { SetHealthBase(total, total); }
     public virtual void SetHealthBase(int amount, int total)
@@ -34,6 +51,7 @@ public class Health : BaseMonoBehaviour, IHealth
     public virtual void SetHealthTotal(int amount)
     {
         healthTotal = amount;
+        onSetHealthTotal.Invoke(healthTotal);
     }
 
     public void TakeDamage(int amount)
@@ -43,14 +61,16 @@ public class Health : BaseMonoBehaviour, IHealth
 
     public virtual void TakeDamage(int amount, Identity id = Identity.Neutral)
     {
+        int initial = health;
         health -= amount;
         onSetHealth.Invoke(health);
         onTakeDamage.Invoke(amount);
         onTakeDamageFrom.Invoke(amount, id);
         if (health <= 0)
         {
-            health = Mathf.Max(health, 0);
-            onNoHealth.Invoke();
+            health = 0;
+            if (initial > 0)
+                onNoHealth.Invoke();
         }
     }
 
