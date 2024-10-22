@@ -77,6 +77,19 @@ public class Charger : BaseMonoBehaviour
 
     // The Stuff that Makes it Actually Happen
 
+    public void SkipToLevel(float level)
+    {
+        SetLevel(Mathf.Max(level, this.level));
+    }
+
+    private void SetLevel(float level)
+    {
+        this.level = Mathf.Min(level, maxLevel);
+
+        onCharge.Invoke(this.level);
+        onChargeInt.Invoke(Mathf.FloorToInt(this.level));
+    }
+
     private void SetRealLevel(ChargeLevels chargeLevels, float level)
     {
         if (chargeLevels.Count > 0)
@@ -86,18 +99,13 @@ public class Charger : BaseMonoBehaviour
             float prev = baseLevel < 1 ? chargeLevels.startValue : chargeLevels[baseLevel-1].level;
             float cur = baseLevel >= chargeLevels.Count ? chargeLevels[^1].level : chargeLevels[baseLevel].level;
             float progress = level - baseLevel;
-        
-            this.level = Mathf.Lerp(prev, cur, progress);
+
+            SetLevel(Mathf.Lerp(prev, cur, progress));
         }
         else
         {
-            this.level = discharge ? 0 : 1;
+            SetLevel(discharge ? 0 : 1);
         }
-
-        this.level = Mathf.Min(this.level, maxLevel);
-        
-        onCharge.Invoke(this.level);
-        onChargeInt.Invoke(Mathf.FloorToInt(this.level));
     }
 
     [Header("Status")]
