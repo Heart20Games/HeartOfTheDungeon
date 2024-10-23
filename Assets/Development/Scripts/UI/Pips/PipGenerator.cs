@@ -33,7 +33,8 @@ namespace UIPips
 
         public void SetFilled(int filled, PipType type = PipType.None)
         {
-            Print($"Filling {filled} pips on partition {type}.", debug);
+            Print($"Filling {filled} pips on partition {type}.", debug, this);
+            partitions ??= new();
             foreach (var partition in partitions)
             {
                 if (partition.Type == type)

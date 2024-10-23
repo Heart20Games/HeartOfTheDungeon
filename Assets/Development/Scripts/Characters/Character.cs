@@ -262,7 +262,14 @@ namespace HotD.Body
             }
 
             SetMode(ControlMode.Brain);
+        }
 
+        private void OnDestroy()
+        {
+            DisconnectHealth();
+            DisconnectPips(pips);
+            if (healthPopup != null)
+                health.current.UnSubscribe(healthPopup.PopupChange);
         }
 
         private void InitBody()
@@ -333,6 +340,7 @@ namespace HotD.Body
             // Apply the Chosen Mode
 
             // Movement
+            Assert.IsNotNull(movement);
             movement.StopMoving();
             movement.MoveVector = new();
             movement.CanMove = new_mode.canMove;
@@ -510,16 +518,24 @@ namespace HotD.Body
 
         // Health and Damage
 
-        private void ConnectHealth()
+        private int ApplyArmor(int oldValue, int newValue)
+        {
+            int change = newValue - oldValue;
+            if (change< 0)
+                change = Mathf.Min(change + armor.current.Value, 0);
+            return oldValue + change;
+        }
+
+    private void ConnectHealth()
         {
             health.current.Subscribe(HealthChanged);
-            health.current.Subscribe((int oldValue, int newValue) =>
-            {
-                int change = newValue - oldValue;
-                if (change < 0)
-                    change = (int)Mathf.Min(change + armor.current.Value, 0);
-                return oldValue + change;
-            });
+            health.current.Subscribe(ApplyArmor);
+        }
+
+        private void DisconnectHealth()
+        {
+            health.current.UnSubscribe(HealthChanged);
+            health.current.UnSubscribe(ApplyArmor);
         }
 
         public void HealthChanged(int amount)
