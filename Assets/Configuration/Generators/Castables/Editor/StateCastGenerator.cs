@@ -155,6 +155,13 @@ namespace HotD.Generators
                         }
                     }
 
+                    // Action Buffering
+                    if (settings.useTriggerBuffer)
+                    {
+                        StateBuffer buffer = castable.gameObject.AddComponent<StateBuffer>();
+                        buffer.AddTriggerBuffer(settings.triggerBufferTime);
+                    }
+
                     // Execution
                     DelegatedExecutor executionExecutor = GenerateExecutor(castable, CastState.Executing, "Execution");
                     executors.Add(executionExecutor);
@@ -319,6 +326,7 @@ namespace HotD.Generators
             };
             executor.supportedTransitions.Add(releaseTransition);
             UnityEventTools.AddPersistentListener(releaseTransition.startAction, charger.Interrupt);
+            UnityEventTools.AddFloatPersistentListener(releaseTransition.startAction, charger.SkipToLevel, 1);
 
             // Keep Power Level Updated
             UnityEventTools.AddPersistentListener(charger.onCharge, executor.SetPowerLevel);
@@ -606,17 +614,11 @@ namespace HotD.Generators
             public bool followBody;
             public CastOn castOn;
             public EndOn endOn;
+            public bool useTriggerBuffer;
+            [ConditionalField("useTriggerBuffer")]
+            public float triggerBufferTime;
             public bool useComboSteps;
             public bool usePowerLevelAsComboStep;
-
-            public CastableSettings(bool followBody = true, CastOn castOn = CastOn.None, EndOn endOn = EndOn.None, bool useComboSteps = false, bool usePowerLevelAsComboStep = false)
-            {
-                this.followBody = followBody;
-                this.castOn = castOn;
-                this.endOn = endOn;
-                this.useComboSteps = useComboSteps;
-                this.usePowerLevelAsComboStep = usePowerLevelAsComboStep;
-            }
             
             public readonly void ApplyToCastable(CastProperties castable)
             {
