@@ -46,14 +46,33 @@ namespace HotD.Body
             set
             {
                 moveVector = value;
-                myRigidbody.drag = moveVector.magnitude == 0 ? settings.stopDrag : settings.moveDrag;
+                MyRigidbody.drag = moveVector.magnitude == 0 ? settings.stopDrag : settings.moveDrag;
                 onSetMoveVector.Invoke(moveVector);
             }
         }
 
         protected Rigidbody myRigidbody;
+        protected Rigidbody MyRigidbody
+        {
+            get
+            {
+                if (myRigidbody == null && !Body.TryGetComponent(out myRigidbody))
+                    Debug.LogError("Movement expects it's body to have a Rigidbody. None found.", this);
+                return myRigidbody;
+            }
+        }
+
         private Character character;
         [SerializeField] private Transform body;
+        protected Transform Body
+        {
+            get
+            {
+                if (body == null) body = transform;
+                return body;
+            }
+        }
+
         private Transform pivot;
         private ArtRenderer artRenderer;
 
@@ -69,18 +88,7 @@ namespace HotD.Body
 
         private void Awake()
         {
-            if (body == null) body = transform;
-            if (body != null)
-            {
-                if (!body.TryGetComponent(out myRigidbody))
-                {
-                    Debug.LogError("Movement expects it's body to have a Rigidbody. None found.", this);
-                }
-                else
-                {
-                    myRigidbody.useGravity = false;
-                }
-            }
+            MyRigidbody.useGravity = false;
             if (settings != null)
             {
                 useGravity = settings.useGravity;
@@ -93,7 +101,7 @@ namespace HotD.Body
 
         public void StopMoving()
         {
-            myRigidbody.velocity = Vector3.zero;
+            MyRigidbody.velocity = Vector3.zero;
         }
 
 
@@ -126,7 +134,7 @@ namespace HotD.Body
             {
                 if (canMove)
                 {
-                    Vector3 cameraDirection = body.position;
+                    Vector3 cameraDirection = Body.position;
                     if (Camera.main != null)
                     {
                         cameraDirection -= Camera.main.transform.position;
@@ -142,12 +150,12 @@ namespace HotD.Body
                         ApplyNPCMovement(ref modifier, moveVector);
                     }
 
-                    if (myRigidbody.velocity.magnitude > settings.maxVelocity * modifier)
-                        myRigidbody.velocity = settings.maxVelocity * modifier * myRigidbody.velocity.normalized;
+                    if (MyRigidbody.velocity.magnitude > settings.maxVelocity * modifier)
+                        MyRigidbody.velocity = settings.maxVelocity * modifier * MyRigidbody.velocity.normalized;
 
                     if (artRenderer != null && pivot != null)
                     {
-                        Vector2 hVelocity = myRigidbody.velocity.XZVector();
+                        Vector2 hVelocity = MyRigidbody.velocity.XZVector();
                         Vector2 hCamera = cameraDirection.XZVector().normalized;
                         Vector2 right = Vector2.Perpendicular(hCamera);
                         if (hVelocity.magnitude > settings.footstepVelocity)
@@ -185,18 +193,18 @@ namespace HotD.Body
             float power = settings.gravityForce;
             if (checkForGround)
             {
-                onGround = Physics.Raycast(body.transform.position, Vector3.down, settings.groundDistance);
+                onGround = Physics.Raycast(Body.transform.position, Vector3.down, settings.groundDistance);
                 power = onGround ? settings.normalForce : settings.gravityForce;
             }
-            myRigidbody.AddForce(power * scale * settings.speed * Time.fixedDeltaTime * timeScale * Vector3.down, ForceMode.Force);
+            MyRigidbody.AddForce(power * scale * settings.speed * Time.fixedDeltaTime * timeScale * Vector3.down, ForceMode.Force);
         }
 
         protected void ApplyPlayerMovement(Vector3 cameraDirection, Vector2 moveVector, float scale=1)
         {
             Print("Character Controlled Movement", debug);
             Vector3 direction = moveVector.Orient(cameraDirection).FullY();
-            Debug.DrawRay(body.position, direction * 3, Color.green, Time.fixedDeltaTime);
-            myRigidbody.AddRelativeForce(scale * settings.speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
+            Debug.DrawRay(Body.position, direction * 3, Color.green, Time.fixedDeltaTime);
+            MyRigidbody.AddRelativeForce(scale * settings.speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
         }
 
         protected void ApplyNPCMovement(ref float modifier, Vector2 moveVector, float scale=1)
@@ -205,8 +213,8 @@ namespace HotD.Body
             modifier = npcModifier;
             Vector3 direction = moveVector.FullY();
             Assert.IsFalse(float.IsNaN(direction.x) || float.IsNaN(direction.y) || float.IsNaN(direction.z));
-            Debug.DrawRay(body.position, direction, Color.green, Time.fixedDeltaTime);
-            myRigidbody.AddForce(modifier * timeScale * scale * settings.speed * Time.fixedDeltaTime * direction, ForceMode.Force);
+            Debug.DrawRay(Body.position, direction, Color.green, Time.fixedDeltaTime);
+            MyRigidbody.AddForce(modifier * timeScale * scale * settings.speed * Time.fixedDeltaTime * direction, ForceMode.Force);
         }
 
 
@@ -220,21 +228,21 @@ namespace HotD.Body
         private Vector3 tempVelocity;
         public float SetTimeScale(float timeScale)
         {
-            if (myRigidbody != null && this.timeScale != timeScale)
+            if (MyRigidbody != null && this.timeScale != timeScale)
             {
                 if (timeScale == 0)
                 {
-                    tempVelocity = myRigidbody.velocity;
-                    myRigidbody.velocity = new Vector3();
+                    tempVelocity = MyRigidbody.velocity;
+                    MyRigidbody.velocity = new Vector3();
                 }
                 else if (this.timeScale == 0)
                 {
-                    myRigidbody.velocity = tempVelocity;
+                    MyRigidbody.velocity = tempVelocity;
                 }
                 else
                 {
                     float ratio = timeScale / this.timeScale;
-                    myRigidbody.velocity *= ratio;
+                    MyRigidbody.velocity *= ratio;
                 }
             }
             this.timeScale = timeScale;
