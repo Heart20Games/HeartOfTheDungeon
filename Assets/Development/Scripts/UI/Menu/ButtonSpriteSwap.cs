@@ -16,17 +16,32 @@ public class ButtonSpriteSwap : BaseMonoBehaviour
 
     private void Awake()
     {
-        button ??= GetComponent<Button>();
-        image ??= GetComponent<Image>();
+        button = button != null ? button : GetComponent<Button>();
+        image = image != null ? image : GetComponent<Image>();
+    }
+
+    private void OnEnable()
+    {
+        UpdateSelection(true);
     }
 
     private void Update()
     {
+        UpdateSelection();
+    }
+
+    private void UpdateSelection(bool alwaysSet = false)
+    {
         var selected = (EventSystem.current.currentSelectedGameObject == button.gameObject);
-        if (this.selected != selected)
+        if (alwaysSet || this.selected != selected)
         {
-            this.selected = selected;
-            image.sprite = selected ? selectSprite : baseSprite;
+            SetSelected(selected);
         }
+    }
+
+    private void SetSelected(bool selected)
+    {
+        this.selected = selected;
+        image.sprite = selected ? selectSprite : baseSprite;
     }
 }
