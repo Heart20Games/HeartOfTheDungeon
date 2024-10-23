@@ -13,84 +13,6 @@ namespace HotD.Castables
     public enum CastState { None, Init, Equipped, Activating, Executing, Cooldown }
 
     [Serializable]
-    public struct ActionBuffer
-    {
-        public CastAction action;
-        public float timeInBuffer;
-        [ReadOnly] public float timeBuffered;
-        public CastAction keepUntil;
-        public bool keepReached;
-        public List<CastState> clearStates;
-
-        public override readonly string ToString()
-        {
-            float endTime = timeBuffered + timeInBuffer;
-            return $"{action} ({timeBuffered} -> {Time.time} / {endTime}) [t: {BufferTimeReached()}, k: {keepReached}]";
-        }
-
-        public readonly string ClearStatesString()
-        {
-            string result = "[";
-            foreach (CastState state in clearStates)
-            {
-                result += $"{state} ";
-            }
-            result += "]";
-            return result;
-        }
-
-        public ActionBuffer(CastAction action, float timeInBuffer, CastAction keepUntil, List<CastState> clearStates)
-        {
-            this.action = action;
-            this.timeInBuffer = timeInBuffer;
-            this.timeBuffered = -1;
-            this.keepUntil = keepUntil;
-            this.keepReached = false;
-            this.clearStates = clearStates;
-        }
-
-        public ActionBuffer(ActionBuffer actionBuffer, float timeBuffered)
-        {
-            this.action = actionBuffer.action;
-            this.timeInBuffer = actionBuffer.timeInBuffer;
-            this.timeBuffered = timeBuffered;
-            this.keepUntil = actionBuffer.keepUntil;
-            this.keepReached = actionBuffer.keepReached;
-            this.clearStates = actionBuffer.clearStates;
-        }
-
-        public ActionBuffer(ActionBuffer actionBuffer, bool keepReached)
-        {
-            this.action = actionBuffer.action;
-            this.timeInBuffer = actionBuffer.timeInBuffer;
-            this.timeBuffered = actionBuffer.timeBuffered;
-            this.keepUntil = actionBuffer.keepUntil;
-            this.keepReached = keepReached;
-            this.clearStates = actionBuffer.clearStates;
-        }
-
-        public readonly ActionBuffer MarkKeepReached(CastAction keepUntil)
-        {
-            return new(this, keepUntil.HasFlag(this.keepUntil));
-        }
-
-        public readonly bool ShouldClear(CastState state)
-        {
-            return IsClearState(state) || (BufferTimeReached() && keepReached);
-        }
-
-        public readonly bool BufferTimeReached()
-        {
-            return Time.time > (timeBuffered + timeInBuffer);
-        }
-
-        public readonly bool IsClearState(CastState state)
-        {
-            return clearStates.Contains(state);
-        }
-    }
-
-    [Serializable]
     public struct StateTransition
     {
         public StateTransition(CastState source, CastAction actions, CastState destination)
@@ -139,26 +61,29 @@ namespace HotD.Castables
         [ReadOnly][SerializeField] private int executorCount;
         [Header("Settings")]
         public List<StateTransition> transitions = new();
-        public List<ActionBuffer> actionBuffers = new();
         [Header("Queues and Buffers")]
         public List<StateAction> queuedActions = new();
         public List<StateAction> dequeuedActions = new();
-        public List<ActionBuffer> bufferedActions = new();
         public Dictionary<StateAction, StateTransition> transitionBank = new();
         public List<ICastStateExecutor> executorList = new();
+        private IStateBuffer csmBuffer;
         [Foldout("State")] public Dictionary<CastState, List<ICastStateExecutor>> executorBank = new();
+        
         [SerializeField] protected bool debugCastable = false;
-        [SerializeField] protected bool debugBuffering = false;
-        [SerializeField] protected bool debugWithBreaks = false;
-
+        
         public bool CanCast { get => state == CastState.Equipped; }
 
         public void Awake()
         {
+            // Find the Action Buffer, if there is one.
+            csmBuffer = GetComponent<IStateBuffer>();
+
+            // Initialize Executor Bank
             foreach (CastState state in Enum.GetValues(typeof(CastState)))
             {
                 executorBank.Add(state, new());
             }
+
             // Finds Executors Among Children At Runtime
             executorCount = 0;
             foreach (Transform child in transform)
@@ -173,6 +98,8 @@ namespace HotD.Castables
                     executor.SetActive(executor.State == CastState.None);
                 }
             }
+
+            // Initialize Transition Bank
             transitionBank.Clear();
             foreach (var transition in transitions)
             {
@@ -185,6 +112,8 @@ namespace HotD.Castables
                     }
                 }
             }
+
+            // Perform the first state transition.
             TransitionTo(CastState.None);
         }
 
@@ -207,36 +136,11 @@ namespace HotD.Castables
 
         // State
 
-        private void Update()
-        {
-            // Update the buffer's keep flags
-            for (int b = 0; b < bufferedActions.Count; b++)
-            {
-                SetBufferKeepFlags(bufferedActions[b].action);
-            }
-
-            // Remove actions from the buffer, requeue them if they haven't been in the buffer too long.
-            for (int i = bufferedActions.Count-1; i >= 0; i--)
-            {
-                ActionBuffer buffered = bufferedActions[i];
-                bufferedActions.RemoveAt(i);
-
-                if (!buffered.ShouldClear(state))
-                {
-                    if (debugBuffering) Debug.LogWarning($"Requeue Buffer: {buffered} {{{state} ? {buffered.ClearStatesString()}}}");
-                    QueueAction(buffered.action, buffered.timeBuffered);
-                }
-                else if (debugBuffering)
-                {
-                    Debug.LogWarning($"Dropped Buffer: {buffered} {{{state} ? {buffered.ClearStatesString()}}}");
-                    if (debugWithBreaks) Debug.Break();
-                }
-            }
-        }
-
         public void TransitionTo(CastState state)
         {
             bool stillWaiting = false;
+
+            csmBuffer?.SetBufferClearFlags(state);
 
             // End the ones we don't want.
             foreach (var keyState in executorBank.Keys)
@@ -299,17 +203,22 @@ namespace HotD.Castables
         {
             QueueAction(action, true, CastState.None);
         }
-        public void QueueAction(CastAction action, float timeBuffered = -1)
+        public void QueueAction(CastAction action, ActionBuffer requeued = new())
         {
-            QueueAction(action, true, CastState.None, timeBuffered);
+            QueueAction(action, true, CastState.None, requeued);
         }
-        public void QueueAction(CastAction action, bool transitionIfNotWaiting = true, CastState state = CastState.None, float timeBuffered = -1)
+        public void QueueAction(CastAction action, bool transitionIfNotWaiting = true, CastState state = CastState.None, ActionBuffer requeued = new())
         {
-            SetBufferKeepFlags(action);
+            requeued = requeued.action == CastAction.None ? new(action) : requeued;
+            if (requeued.timeBuffered < 0) // A default value of -1 indicates something we didn't receive from the Buffer.
+            {
+                csmBuffer?.SetBufferKeepFlags(action);
+                csmBuffer?.SetBufferClearFlags(action);
+            }
 
             state = state == CastState.None ? this.state : state;
             StateAction stateAction = new(state, action);
-            
+
             // Find the first relevant transition found in the transition bank.
             if (transitionBank.TryGetValue(stateAction, out StateTransition transition))
             {
@@ -344,51 +253,10 @@ namespace HotD.Castables
             }
             else // Buffer the action if there isn't any relevant transitions
             {
-                BufferAction(action, timeBuffered);
+                csmBuffer?.BufferAction(action, requeued);
             }
         }
-
-        private void SetBufferKeepFlags(CastAction action)
-        {
-            for (int i = 0; i < bufferedActions.Count; i++)
-            {
-                bufferedActions[i] = bufferedActions[i].MarkKeepReached(action);
-            }
-        }
-
-        private void BufferAction(CastAction action, float timeBuffered = -1)
-        {
-            timeBuffered = timeBuffered == -1 ? Time.time : timeBuffered;
-
-            int templateIndex = actionBuffers.FindIndex((ActionBuffer option) => { return option.action == action; });
-            if (templateIndex >= 0)
-            {
-                ActionBuffer template = actionBuffers[templateIndex];
-                ActionBuffer finalBuffer = template;
-
-                int bufferIndex = bufferedActions.FindIndex((ActionBuffer buffered) => { return buffered.action == action; });
-                if (bufferIndex < 0)
-                {
-                    finalBuffer = new(template, timeBuffered);
-                    bufferedActions.Add(finalBuffer);
-                }
-                else
-                {
-                    bufferedActions[bufferIndex] = new(bufferedActions[bufferIndex], timeBuffered);
-                    finalBuffer = bufferedActions[bufferIndex];
-                }
-
-                if (debugBuffering)
-                {
-                    Debug.LogWarning($"Buffering: {finalBuffer.action}");
-                    if (debugWithBreaks) Debug.Break();
-                }
-            }
-            else if (debugBuffering)
-            {
-                Debug.LogWarning($"Not Buffering: {action}");
-            }
-        }
+        
 
         // Perform the state transition, add any actions it needs to wait for onto the queue. Returns whether we're waiting for something.
         private bool PerformAndWait(ICastStateExecutor executor, StateAction stateAction)
