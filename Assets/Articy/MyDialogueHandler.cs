@@ -52,9 +52,9 @@ public class MyDialogueHandler : MonoBehaviour, IArticyFlowPlayerCallbacks
     {
         if (useHandlerNodes)
         {
-            Callouts.main?.TriggerCallout(3);
-            flowPlayer.StartOn = startOn.GetObject<ArticyObject>();
-            StartCoroutine(ChangeToAfterSeconds(2));
+            //Callouts.main?.TriggerCallout(3);
+            //flowPlayer.StartOn = startOn.GetObject<ArticyObject>();
+            //StartCoroutine(ChangeToAfterSeconds(2));
         }
     }
 
@@ -77,17 +77,6 @@ public class MyDialogueHandler : MonoBehaviour, IArticyFlowPlayerCallbacks
 
     public void OnBranchesUpdated(IList<Branch> aBranches)
     {
-        Debug.Log($"Branches? {aBranches.Count}");
-        if (aBranches.Count > 0)
-        {
-            StartCoroutine(ContinueAfter(0.5f));
-        }
-    }
-
-    public IEnumerator ContinueAfter(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        flowPlayer.Play();
     }
 
     public void OnFlowPlayerPaused(IFlowObject aObject)
