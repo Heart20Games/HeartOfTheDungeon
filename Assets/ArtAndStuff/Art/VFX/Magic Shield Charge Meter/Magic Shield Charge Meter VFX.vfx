@@ -726,7 +726,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616166}
   - {fileID: 8926484042661616645}
   m_OutputSlots: []
-  m_Label: 
+  m_Label: Shield Fill
   m_Data: {fileID: 8926484042661614568}
   m_InputFlowSlot:
   - link:
@@ -3733,10 +3733,11 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 2641, y: 589}
+  m_UIPosition: {x: 2647, y: 589}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
+  - {fileID: 8926484042661616668}
   - {fileID: 8926484042661615110}
   - {fileID: 8926484042661615111}
   - {fileID: 8926484042661615112}
@@ -3785,10 +3786,10 @@ MonoBehaviour:
   useSoftParticle: 0
   vfxSystemSortPriority: 0
   sort: 0
-  sortMode: 0
+  sortMode: 3
   revertSorting: 0
-  indirectDraw: 1
-  computeCulling: 1
+  indirectDraw: 0
+  computeCulling: 0
   frustumCulling: 0
   castShadows: 0
   useExposureWeight: 0
@@ -3796,12 +3797,10 @@ MonoBehaviour:
   shaderGraph: {fileID: 4333940904281232215, guid: 0a2a13353b0ed3c4cb330af8d23e96b8, type: 3}
   materialSettings:
     m_PropertyNames:
-    - _WorkflowMode
     - _CastShadows
-    - _ReceiveShadows
     - _Surface
     - _Blend
-    - _BlendModePreserveSpecular
+    - _AlphaClip
     - _SrcBlend
     - _DstBlend
     - _ZWrite
@@ -3811,24 +3810,20 @@ MonoBehaviour:
     - _AlphaToMask
     - _QueueOffset
     - _QueueControl
-    - _AlphaClip
     m_PropertyValues:
     - 0
+    - 1
     - 0
-    - 0
+    - 1
+    - 5
+    - 10
     - 0
     - 2
-    - 0
-    - 1
-    - 0
-    - 1
-    - 0
     - 4
     - 2
-    - 1
     - 0
     - 0
-    - 1
+    - 0
   primitiveType: 1
   useGeometryShader: 0
 --- !u!114 &8926484042661615037
@@ -4975,7 +4970,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 2333, y: 1185}
+  m_UIPosition: {x: 2391, y: 1115}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -5016,7 +5011,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 1.2
+      m_SerializableObject: 1.1
     m_Space: 2147483647
   m_Property:
     name: x
@@ -5050,7 +5045,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 1.9
+      m_SerializableObject: 1.4
     m_Space: 2147483647
   m_Property:
     name: y
@@ -5408,7 +5403,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 2297, y: 1375}
+  m_UIPosition: {x: 2397, y: 1241}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -5449,7 +5444,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 1
+      m_SerializableObject: 1.2
     m_Space: 2147483647
   m_Property:
     name: x
@@ -5483,7 +5478,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 1.2
+      m_SerializableObject: 1.6
     m_Space: 2147483647
   m_Property:
     name: y
@@ -5841,7 +5836,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 2319, y: 1047}
+  m_UIPosition: {x: 2391, y: 993}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -5882,7 +5877,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 1.2
+      m_SerializableObject: 0.8
     m_Space: 2147483647
   m_Property:
     name: x
@@ -5916,7 +5911,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 2
+      m_SerializableObject: 1.1
     m_Space: 2147483647
   m_Property:
     name: y
@@ -6430,7 +6425,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Color, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"r":3.9805376529693605,"g":0.0,"b":27.905132293701173,"a":0.0}'
+      m_SerializableObject: '{"r":3.9805376529693605,"g":0.0,"b":27.905132293701173,"a":1.0}'
     m_Space: 2147483647
   m_Property:
     name: _Layer1Color
@@ -6600,7 +6595,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Color, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"r":0.0,"g":3.0365183353424074,"b":44.613494873046878,"a":0.0}'
+      m_SerializableObject: '{"r":0.0,"g":3.0365183353424074,"b":44.613494873046878,"a":1.0}'
     m_Space: 2147483647
   m_Property:
     name: _Layer2Color
@@ -6770,7 +6765,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Color, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"r":0.0,"g":0.0,"b":7.446537017822266,"a":0.0}'
+      m_SerializableObject: '{"r":0.0,"g":0.0,"b":7.446537017822266,"a":1.0}'
     m_Space: 2147483647
   m_Property:
     name: _Layer3Color
@@ -25829,7 +25824,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0.5
+      m_SerializableObject: 1
     m_Space: 2147483647
   m_Property:
     name: _AlphaFade
@@ -36961,3 +36956,37 @@ MonoBehaviour:
   m_LinkedSlots:
   - {fileID: 8926484042661616577}
   - {fileID: 8926484042661616582}
+--- !u!114 &8926484042661616668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f780aa281814f9842a7c076d436932e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UIIgnoredErrors: []
+  m_Parent: {fileID: 0}
+  m_Children: []
+  m_UIPosition: {x: 0, y: 0}
+  m_UICollapsed: 1
+  m_UISuperCollapsed: 0
+  m_MasterSlot: {fileID: 8926484042661616668}
+  m_MasterData:
+    m_Owner: {fileID: 8926484042661614979}
+    m_Value:
+      m_Type:
+        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      m_SerializableObject: 0
+    m_Space: 2147483647
+  m_Property:
+    name: sortKey
+    m_serializedType:
+      m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+  m_Direction: 0
+  m_LinkedSlots: []
