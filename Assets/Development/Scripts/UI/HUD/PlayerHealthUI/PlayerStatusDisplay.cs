@@ -33,6 +33,11 @@ public class PlayerStatusDisplay : BaseMonoBehaviour
         initialized = true;
     }
 
+    private void OnDestroy()
+    {
+        
+    }
+
     private void Update()
     {
         if (!healthConnected && Health != null) ConnectHealth();
@@ -60,6 +65,11 @@ public class PlayerStatusDisplay : BaseMonoBehaviour
             healthConnected = true;
             InitializeHealth();
         }
+    }
+
+    public void DisconnectHealth()
+    {
+        Health?.UnSubscribe(SetCurrentHealth, SetMaxHealth);
     }
 
     public void InitializeHealth()
@@ -97,6 +107,12 @@ public class PlayerStatusDisplay : BaseMonoBehaviour
 
     public void UpdateHealth(float currentHealth, float totalHealth)
     {
+        if (healthAnimator == null || healthFill == null || healthNumber == null)
+        {
+            Print("Player Status Display not fully initialized. Cannot update health values.");
+            return;
+        }
+        
         Assert.IsNotNull(healthAnimator);
         Assert.IsNotNull(healthFill);
         Assert.IsNotNull(healthNumber);

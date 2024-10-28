@@ -19,6 +19,16 @@ namespace HotD
     public class Game : BaseMonoBehaviour
     {
         public static Game main;
+        public static Game Main
+        {
+            get
+            {
+                if (main == null)
+                    main = FindObjectOfType<Game>();
+                return main;
+            }
+            set => main = value;
+        }
 
         // Properties
         [Foldout("Parts", true)]
