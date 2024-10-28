@@ -299,7 +299,14 @@ namespace HotD.Body
         public bool PlayerControlled
         {
             get => mode.PlayerControlled;
-            set => SetMode(value ? ControlMode.Player : ControlMode.Brain); //!Controllable ? mode.controlMode : ControlMode.None);
+            set => SetPlayerControlled(value);
+        }
+        public void SetPlayerControlled(bool playerControlled, bool ignoreDeath=false)
+        {
+            if (ignoreDeath || mode.Alive)
+            {
+                SetMode(playerControlled ? ControlMode.Player : ControlMode.Brain); //!Controllable ? mode.controlMode : ControlMode.None);
+            }
         }
         public bool Alive { get => mode.liveMode == LiveMode.Alive; }
         [ButtonMethod]
@@ -317,12 +324,20 @@ namespace HotD.Body
                 SetMode(baseMode);
             }
         }
+
+        [SerializeField] private bool debugMode = false;
         public void SetMode<T>(T subMode) where T : Enum
         {
-            if (settings.TryGetMode(subMode, out var mode))
+            if (settings.TryGetMode(subMode, out var mode, debugMode))
+            {
+                Print($"Switching to {mode.name}.", debugMode, this);
                 SetMode(mode);
+            }
             else
                 Debug.LogWarning($"Can't find mode for \"{subMode}\"");
+
+            Print($"{subMode}:{this.mode.name}", debugMode, this);
+            Break(debugMode, this);
         }
         private void SetMode(CharacterMode new_mode)
         {
@@ -481,7 +496,7 @@ namespace HotD.Body
         public void Respawn()
         {
             Print($"Respawing {Name}.", debug);
-            SetMode(LiveMode.Alive);
+            if (mode.liveMode != LiveMode.Alive) SetMode(LiveMode.Alive);
             Print($"Respawn {Name}", debug);
             body.SetPositionAndRotation(spawn.position, spawn.rotation);
             body.localScale = spawn.localScale;

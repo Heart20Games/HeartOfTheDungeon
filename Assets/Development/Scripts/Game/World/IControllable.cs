@@ -7,4 +7,5 @@ public interface ISpectatable
 public interface IControllable: ISpectatable
 {
     public bool PlayerControlled { get; set; }
+    public void SetPlayerControlled(bool playerControlled, bool ignoreDeath=false);
 }

@@ -81,7 +81,7 @@ public class CharacterStub : AIdentifiableStub, ICharacter
     public bool AutoDespawn { get => autoDespawn; set => autoDespawn = value; }
 
     private bool playerControlled = false;
-    public bool PlayerControlled { get => playerControlled; set => playerControlled = value; }
+    public bool PlayerControlled { get => playerControlled; set => SetPlayerControlled(value); }
     public IWeaponDisplay WeaponDisplay => null;
     public Transform Body => null;
     public Transform WeaponLocation => null;
@@ -102,6 +102,7 @@ public class CharacterStub : AIdentifiableStub, ICharacter
 
     public void SetDamagePosition(Vector3 damagePosition) { }
     public void TakeDamage(int amount, CSIdentity.Identity id = CSIdentity.Identity.Neutral) { }
+    public void SetPlayerControlled(bool playerControlled, bool ignoreDeath=false) { }
     public void SetSpectatable(bool spectable) { }
 }
 
