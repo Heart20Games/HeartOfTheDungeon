@@ -152,9 +152,12 @@ namespace HotD
             if (restartable)
                 onRestartGame.Invoke();
         }
+
+        private bool restartingLife = false;
         [ButtonMethod]
         public void RestartLife()
         {
+            restartingLife = true;
             Print("Restart Life", debug);
             if (playerParty != null)
             {
@@ -164,6 +167,7 @@ namespace HotD
             if (mode.inputMode != InputMode.Character)
                 SetMode(InputMode.Character);
             onRestartLife.Invoke();
+            restartingLife = false;
         }
 
         // Updates
@@ -276,9 +280,9 @@ namespace HotD
             IControllable newControllable = mode.Controllable;
             IControllable oldControllable = lastMode.Controllable;
             if (newControllable != null)
-                SetControllable(newControllable, true, canSpectate);
+                SetControllable(newControllable, true, canSpectate, restartingLife);
             if (oldControllable != null && oldControllable != newControllable)
-                SetControllable(oldControllable, false, newControllable == null && canSpectate);
+                SetControllable(oldControllable, false, newControllable == null && canSpectate, restartingLife);
 
             foreach (Character character in allCharacters)
             {
@@ -326,10 +330,9 @@ namespace HotD
 
         // Controllables
 
-        public void SetControllable(IControllable controllable, bool shouldControl, bool shouldSpectate)
+        public void SetControllable(IControllable controllable, bool shouldControl, bool shouldSpectate, bool ignoreDeath = false)
         {
-            if (controllable != null)
-                controllable.PlayerControlled = shouldControl;
+            controllable?.SetPlayerControlled(shouldControl, ignoreDeath);
             controllable?.SetSpectatable(shouldSpectate);
         }
 
