@@ -163,7 +163,10 @@ namespace HotD
                 party.TargetParty = Party.mainParty;
                 OnPartySpawned(party);
 
-                AddWayPoints(party.transform.GetChild(0).GetComponent<EnemyAI>());
+                for(int j = 0; j < party.members.Count; j++)
+                {
+                    AddWayPoints(party.members[j].GetComponent<EnemyAI>());
+                }
             }
             TimeScaler.UpdateScalables();
 

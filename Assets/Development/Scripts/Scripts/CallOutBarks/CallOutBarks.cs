@@ -15,8 +15,8 @@ public class CallOutBarks : MonoBehaviour
 
     private void Start()
     {
-        availableDialogue = articyReference.reference.GetObject();
-        playerDamaged.AddListener(() => DialogueManager.Instance.StartDialogue(availableDialogue));
+        //availableDialogue = articyReference.reference.GetObject();
+        //playerDamaged.AddListener(() => DialogueManager.Instance.StartDialogue(availableDialogue));
     }
 
     public void PlayBark(int callIndex)

@@ -229,17 +229,16 @@ namespace HotD
             {
                 reachedZero = false;
                 triggerCount += 1;
-                StartCoroutine(SwitchTarget(triggerCount));
+                SwitchTarget(triggerCount);
             }
             else if (switchTargetValue == 0 && !reachedZero)
             {
                 reachedZero = true;
             }
         }
-        private IEnumerator SwitchTarget(int triggerIdx)
+        private void SwitchTarget(int triggerIdx)
         {
             Targeter.SwitchTargets(switchTargetValue < 0);
-            yield return new WaitForSeconds(holdTime);
             if (triggerIdx == triggerCount)
                 reachedZero = true;
         }

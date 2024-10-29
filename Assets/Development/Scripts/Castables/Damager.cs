@@ -48,6 +48,11 @@ public class Damager : BaseMonoBehaviour, IDamager
             IDamageReceiver other = impactor.other.gameObject.GetComponent<IDamageReceiver>();
             
             Print($"Hit Damageable: {other}", debug, this);
+            if(other == null)
+            {
+                other = impactor.gameObject.GetComponent<IDamageReceiver>();
+            }
+
             if(impactor._Character != null)
             {
                 if (!impactor._Character.Alive) return;
