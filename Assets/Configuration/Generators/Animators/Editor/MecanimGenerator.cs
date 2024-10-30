@@ -12,7 +12,7 @@ namespace HotD.Generators
     [CreateAssetMenu(fileName = "NewMecanimGenerator", menuName = "Mecanim Generator", order = 1)]
     public class MecanimGenerator : Generator
     {
-        public enum Slot { None, Idle, Hit, Dead, Run }
+        public enum Slot { None, Idle, Hit, Dead, Run, GetUp, Hop, Knock, Knocked }
 
         [Serializable]
         public struct MotionSlot
