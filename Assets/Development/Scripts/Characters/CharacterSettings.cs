@@ -90,16 +90,23 @@ namespace HotD
         public List<CharacterMode> modes;
         public List<CharacterModifier> modifiers;
 
-        public bool TryGetMode<T>(T key, out CharacterMode mode)
+        public bool TryGetMode<T>(T key, out CharacterMode mode, bool debug=false)
         {
             //if (typeof(string) == typeof(string))
             //    return ModeBank.TryGetValue((string)(object)key, out mode);
             if (typeof(T) == typeof(ControlMode))
+            {
+                if (debug) Debug.Log("Seeking mode on Control");
                 return ControlBank.TryGetValue((ControlMode)(object)key, out mode);
+            }
             else if (typeof(T) == typeof(LiveMode))
+            {
+                if (debug) Debug.Log("Seeking mode on Live");
                 return LiveBank.TryGetValue((LiveMode)(object)key, out mode);
+            }
             else
             {
+                if (debug) Debug.Log("Return default mode.");
                 mode = new();
                 return false;
             }

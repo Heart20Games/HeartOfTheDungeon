@@ -13,7 +13,7 @@ public class SimpleController : MonoBehaviour, IControllable
 
     [Header("Control")]
     private bool controllable = false;
-    public bool PlayerControlled { get { return controllable; } set { SetControllable(value); } }
+    public bool PlayerControlled { get { return controllable; } set { SetPlayerControlled(value); } }
     public UnityEvent<bool> onControl;
 
     public Vector2 MoveVector { get => movement.MoveVector; set => movement.MoveVector = value; }
@@ -35,7 +35,7 @@ public class SimpleController : MonoBehaviour, IControllable
             virtualCamera.gameObject.SetActive(spectatable);
     }
 
-    public void SetControllable(bool controllable = true)
+    public void SetPlayerControlled(bool controllable = true, bool _=false)
     {
         this.controllable = controllable;
         gameObject.SetActive(controllable);
