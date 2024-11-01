@@ -1,6 +1,7 @@
 
 namespace HotD.Castables
 {
+    using FMODUnity;
     using UnityEngine;
     using static Coordination;
 
@@ -38,6 +39,7 @@ namespace HotD.Castables
         [SerializeField] private int level;
         [SerializeField] private float[] chargeTimes;
 
+        private StudioEventEmitter eventEmitter;
         //public override void SetActive(bool active) { /* We don't actually want to do anything. */ }
 
         public override void SetChargeTimes(float[] times)
@@ -48,6 +50,8 @@ namespace HotD.Castables
         public override void SetLevel(int level)
         {
             this.level = level;
+            eventEmitter = GetComponent<StudioEventEmitter>();
+            eventEmitter.SetParameter("MagicBoltLevel", level);
         }
 
         public override void SetTriggers(Triggers triggers)
