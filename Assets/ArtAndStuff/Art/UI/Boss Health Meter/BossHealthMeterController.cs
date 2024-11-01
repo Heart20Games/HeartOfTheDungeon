@@ -13,6 +13,7 @@ public class BossHealthMeterController : MonoBehaviour
     [SerializeField] private float healthMax;
     private float previousHealthMax;
     [SerializeField] private VisualEffect bossHealthMeter;
+    [SerializeField] private VisualEffect bloodRainVFX;
     [SerializeField] private float pipResizeSpeed = 1f;
     [SerializeField] private float bannerMoveSpeed = 1f;
     private float bannerPosition = 0f;
@@ -37,6 +38,7 @@ public class BossHealthMeterController : MonoBehaviour
     void Start()
     {
         bossHealthMeter.SetFloat("Banner Wipe Position", 0f);
+        bloodRainVFX.SetFloat("Banner Wipe Position", 0f);
         bossHealthMeter.SetFloat("Text Wipe Position", 0f);
         bossHealthMeter.SetFloat("Number of Health Pips", 0f);
         bossHealthMeter.SetFloat("Portrait Wipe Position", 0f);
@@ -45,12 +47,14 @@ public class BossHealthMeterController : MonoBehaviour
         previousHealthMax = healthMax;
         bossHealthMeter.SetFloat("Current Health", currentHealth);
         bossHealthMeter.SetFloat("Banner X Pos", bannerPosition);
+        bloodRainVFX.SetFloat("Banner X Pos", bannerPosition);
         bossHealthMeter.SetFloat("Text X Pos", bannerPosition);
         bossHealthMeter.SetFloat("Text Y Pos", bannerPosition);
         bossHealthMeter.SetFloat("Text Size", bannerPosition);
         bossHealthMeter.SetFloat("Text Angle", bannerPosition);
         bossHealthMeter.SetBool("No Subtext", false);
         bossHealthMeter.SetBool("No Description", false);
+        bossHealthMeter.SetBool("KillthePips", false);
     }
 
     // Update is called once per frame
@@ -134,6 +138,7 @@ public class BossHealthMeterController : MonoBehaviour
             while (bannerPosition < 1f)
             {
                 bossHealthMeter.SetFloat("Banner X Pos", bannerPosition);
+                bloodRainVFX.SetFloat("Banner X Pos", bannerPosition);
                 bossHealthMeter.SetFloat("Text X Pos", bannerPosition);
                 bossHealthMeter.SetFloat("Text Y Pos", bannerPosition);
                 bossHealthMeter.SetFloat("Text Size", bannerPosition);
@@ -155,6 +160,7 @@ public class BossHealthMeterController : MonoBehaviour
             while (bannerPosition > 0f)
             {
                 bossHealthMeter.SetFloat("Banner X Pos", bannerPosition);
+                bloodRainVFX.SetFloat("Banner X Pos", bannerPosition);
                 bossHealthMeter.SetFloat("Text X Pos", bannerPosition);
                 bossHealthMeter.SetFloat("Text Y Pos", bannerPosition);
                 bossHealthMeter.SetFloat("Text Size", bannerPosition);
@@ -184,6 +190,7 @@ public class BossHealthMeterController : MonoBehaviour
         bannerFadePosition = 0f;
         textFadePosition = 0f;
         bossHealthMeter.SetFloat("Banner Wipe Position", bannerFadePosition);
+        bloodRainVFX.SetFloat("Banner Wipe Position", bannerFadePosition);
         bossHealthMeter.SetFloat("Text Wipe Position", textFadePosition);
         bossHealthMeter.SetFloat("Number of Health Pips", 0f);
 
@@ -196,10 +203,12 @@ public class BossHealthMeterController : MonoBehaviour
         {
             bannerFadePosition += .05f;
             bossHealthMeter.SetFloat("Banner Wipe Position", bannerFadePosition);
+            bloodRainVFX.SetFloat("Banner Wipe Position", bannerFadePosition);
             yield return new WaitForSeconds(bannerFadeInSpeed/50f);
         }
         bannerFadePosition = 1f;
         bossHealthMeter.SetFloat("Banner Wipe Position", bannerFadePosition);
+        bloodRainVFX.SetFloat("Banner Wipe Position", bannerFadePosition);
         yield return new WaitForSeconds(pauseBetweenBannerAndText);
         StartCoroutine(TextFadeIn());
     }
@@ -271,6 +280,7 @@ public class BossHealthMeterController : MonoBehaviour
         textFadePosition = 0f;
         portraitFadePosition = 0f;
         bossHealthMeter.SetFloat("Banner Wipe Position", bannerFadePosition);
+        bloodRainVFX.SetFloat("Banner Wipe Position", bannerFadePosition);
         bossHealthMeter.SetFloat("Text Wipe Position", textFadePosition);
         bossHealthMeter.SetFloat("Portrait Wipe Position", portraitFadePosition);
         
@@ -279,6 +289,7 @@ public class BossHealthMeterController : MonoBehaviour
         GetComponent<SortingGroup>().sortingOrder = 2;
         bannerPosition = 0f;  
         bossHealthMeter.SetFloat("Banner X Pos", bannerPosition);
+        bloodRainVFX.SetFloat("Banner X Pos", bannerPosition);
         bossHealthMeter.SetFloat("Text X Pos", bannerPosition);
         bossHealthMeter.SetFloat("Text Y Pos", bannerPosition);
         bossHealthMeter.SetFloat("Text Size", bannerPosition);
