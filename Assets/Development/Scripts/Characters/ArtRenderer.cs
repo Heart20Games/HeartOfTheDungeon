@@ -28,6 +28,7 @@ namespace HotD.Body
 
         [Header("Camera Shader Layers")]
         public bool useCameraShaderLayers;
+        [SerializeField] private bool keepActive;
         public Transform renderMask;
         public MeshRenderer renderSurface;
 
@@ -37,6 +38,8 @@ namespace HotD.Body
 
         public string renderLayer = "CharacterRender";
         public string maskLayer = "CharacterMask";
+
+        public bool KeepActive => keepActive;
 
         // Initialization
 

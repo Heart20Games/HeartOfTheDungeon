@@ -169,15 +169,21 @@ namespace HotD
                     TurnOnLockOn(); break;
             }
         }
-        private void TurnOffLockOn()
+        public void TurnOffLockOn()
         {
             if (Input == InputMode.LockOn)
+            {
+                Crosshair.main.GetComponent<SpriteRenderer>().enabled = true;
                 Input = InputMode.Character;
+            }  
         }
         private void TurnOnLockOn()
         {
             if (Targeter.HasTarget())
+            {
+                Crosshair.main.GetComponent<SpriteRenderer>().enabled = false;
                 Input = InputMode.LockOn;
+            }
         }
         public void OnHoldLockOn(InputValue inputValue)
         {

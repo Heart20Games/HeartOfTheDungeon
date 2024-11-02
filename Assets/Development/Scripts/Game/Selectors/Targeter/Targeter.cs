@@ -1,4 +1,5 @@
 using Cinemachine;
+using HotD;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -110,6 +111,7 @@ namespace Selection
                 {
                     HotD.Game.main.CurCharacter.AimCamera.gameObject.SetActive(true);
                     SetTargetLock(false);
+                    Game.main.GetComponent<GameInput>().TurnOffLockOn();
                     targetLock = false;
                 }
 

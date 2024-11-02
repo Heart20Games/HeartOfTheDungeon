@@ -368,7 +368,7 @@ namespace HotD.Body
             
             // Displays
             SetNonNullActive(moveReticle, new_mode.useMoveReticle);
-            SetNonNullActive(artRenderer, new_mode.displayable);
+            if(!artRenderer.KeepActive) SetNonNullActive(artRenderer, new_mode.displayable);
             if (pips != null) pips.SetDisplayMode(new_mode.pipMode);
             
             // Animation / Selection (Alive?)

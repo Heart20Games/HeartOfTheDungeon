@@ -8,7 +8,11 @@ public class Actions
 {
     [SerializeField] private GameObject projectileToShoot;
 
+    [SerializeField] private int castChance;
+
     public GameObject ProjectileToShoot => projectileToShoot;
+
+    public int CastChance => castChance;
 }
 
 public class SlimeWizard : EnemyAI
@@ -61,13 +65,13 @@ public class SlimeWizard : EnemyAI
 
                 if(magicBoltRoutine == null)
                 {
-                    //magicBoltRoutine = StartCoroutine(CreateProjectile());
+                    magicBoltRoutine = StartCoroutine(CreateProjectile());
                 }
             }
             
             if(!isShootingLaser && magicBoltRoutine == null)
             {
-                //IncrementAttackCoolDown();
+                IncrementAttackCoolDown();
             }
         }
     }
@@ -93,7 +97,17 @@ public class SlimeWizard : EnemyAI
 
     private IEnumerator CreateProjectile()
     {
-        int randomAttack = Random.Range(0, actions.Length);
+        int weightedAttack = Random.Range(0, 100);
+        int attackIndex = 0;
+
+        for(int i = 0; i < actions.Length; i++)
+        {
+            if(weightedAttack >= actions[i].CastChance)
+            {
+                attackIndex = i;
+                break;
+            }
+        }
 
         Caster caster = GetComponent<Caster>();
 
@@ -104,14 +118,14 @@ public class SlimeWizard : EnemyAI
         slimeWizardAnimator.ResetTrigger("StartCast");
         slimeWizardAnimator.SetTrigger("StartAction");
 
-        switch (randomAttack)
+        switch (attackIndex)
         {
             case 0:
                 magicBoltVfxAnimator.Play("Level 1 Charge");
                 slimeWizardAnimator.SetInteger("ChargeLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
                 chargingLevelOne = true;
-                CallOutManager.instance.PlayPartyMemeberCallOut(0);
+                //CallOutManager.instance.PlayPartyMemeberCallOut(0);
                 break;
             case 1:
                 magicBoltVfxAnimator.Play("Level 1 Charge");
@@ -119,14 +133,14 @@ public class SlimeWizard : EnemyAI
                 slimeWizardAnimator.SetInteger("ChargeLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
                 chargingLevelTwo = true;
-                CallOutManager.instance.PlayPartyMemeberCallOut(1);
+                //CallOutManager.instance.PlayPartyMemeberCallOut(1);
                 break;
             case 2:
                 magicBoltVfxAnimator.Play("Level 1 Charge");
                 magicBoltVfxAnimator.SetBool("Level 3 Available", true);
                 slimeWizardAnimator.SetInteger("ChargeLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
-                CallOutManager.instance.PlayPartyMemeberCallOut(2);
+                //CallOutManager.instance.PlayPartyMemeberCallOut(2);
                 break;
         }
 
@@ -149,7 +163,7 @@ public class SlimeWizard : EnemyAI
 
         slimeWizardAnimator.SetTrigger("StartCast");
 
-        var magicAttack = Instantiate(actions[randomAttack].ProjectileToShoot, transform);
+        var magicAttack = Instantiate(actions[attackIndex].ProjectileToShoot, transform);
 
         if(magicAttack.GetComponent<Projectile>())
         {
