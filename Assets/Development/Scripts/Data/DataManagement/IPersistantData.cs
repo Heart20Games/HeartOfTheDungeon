@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace DataManagement
 {
+    /* 
+     * These interfaces define the structure of our save system's data structures.
+     */
+
     public interface IPersistent
     {
         public List<IData> GetData();

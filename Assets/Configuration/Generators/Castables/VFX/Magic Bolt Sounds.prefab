@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4930366668418261102}
-  - component: {fileID: 5669473896527185341}
+  - component: {fileID: 3803977996063509671}
   - component: {fileID: 300664213149694034}
   m_Layer: 0
   m_Name: Magic Bolt Sounds
@@ -33,7 +33,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5669473896527185341
+--- !u!114 &3803977996063509671
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,11 +42,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 5706954215520565112}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 095afc1b825c9fb47804d5ccc5ce7717, type: 3}
+  m_Script: {fileID: 11500000, guid: f08bb5ecf88046545b23d42e02d6386a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   level: 0
   chargeTimes: []
+  levelSetParams:
+  - name: MagicBoltLevel
+    minLevel: 0
+    maxLevel: 3
+    overrideLevel: 0
+    levelOverride: 0
+    waitForTrigger: 0
+  - name: SlimeBeamBlast
+    minLevel: 3
+    maxLevel: 3
+    overrideLevel: 1
+    levelOverride: 1
+    waitForTrigger: 2
+  - name: SlimeBeamBlast
+    minLevel: 0
+    maxLevel: 3
+    overrideLevel: 1
+    levelOverride: 0
+    waitForTrigger: 8
+  playOn: 1
+  endOn: 0
+  eventEmitter: {fileID: 300664213149694034}
+  debug: 0
 --- !u!114 &300664213149694034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,7 +96,11 @@ MonoBehaviour:
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
-  Params: []
+  Params:
+  - Name: MagicBoltLevel
+    Value: 1
+  - Name: SlimeBeamBlast
+    Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20

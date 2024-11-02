@@ -2,15 +2,19 @@
 namespace HotD.Castables
 {
     using FMODUnity;
+    using MyBox;
     using UnityEngine;
+    using UnityEngine.Events;
     using static Coordination;
+
+    // Interfaces
 
     public interface ICastChargeListener
     {
         public int Level { get; set; }
         public float[] ChargeTimes { get; set; }
-        public void SetLevel(int level);
-        public void SetChargeTimes(float[] times);
+        public void LevelSet(int level);
+        public void ChargeTimesSet(float[] times);
     }
 
     public interface ICastTriggerListener
@@ -18,40 +22,39 @@ namespace HotD.Castables
         public void SetTriggers(Triggers triggers);
     }
 
-    public interface ICastListener: ICastCompatibleFollower, ICastChargeListener, ICastTriggerListener
-    {
-        //public void SetActive(bool active);
-    }
+    /*
+     * Cast Listeners are intended to be persistently enabled objects that need to receive information about the status of the Cast State Machine (CSM).
+     * 
+     * What do they receive? See the Interfaces above.
+     * 
+     * When would you use this? VFX, Sound Effects, anything that needs to change and persist between Cast States.
+     */
+
+    public interface ICastListener: ICastCompatibleFollower, ICastChargeListener, ICastTriggerListener { }
 
     public abstract class ACastListener : ACastCompatibleFollower, ICastListener
     {
-        //public virtual void SetActive(bool active) { Debug.LogWarning("SetActive not overridden."); }
-        public virtual int Level { get => 0; set => SetLevel(value); }
-        public virtual float[] ChargeTimes { get => null; set => SetChargeTimes(value); }
+        public virtual int Level { get => 0; set => LevelSet(value); }
+        public virtual float[] ChargeTimes { get => null; set => ChargeTimesSet(value); }
 
-        public abstract void SetLevel(int level);
-        public abstract void SetChargeTimes(float[] times);
+        public abstract void LevelSet(int level);
+        public abstract void ChargeTimesSet(float[] times);
         public abstract void SetTriggers(Triggers triggers);
     }
 
     public class CastListener : ACastListener
     {
-        [SerializeField] private int level;
-        [SerializeField] private float[] chargeTimes;
+        [SerializeField] protected int level;
+        [SerializeField] protected float[] chargeTimes;
 
-        private StudioEventEmitter eventEmitter;
-        //public override void SetActive(bool active) { /* We don't actually want to do anything. */ }
-
-        public override void SetChargeTimes(float[] times)
+        public override void ChargeTimesSet(float[] times)
         {
             chargeTimes = times;
         }
 
-        public override void SetLevel(int level)
+        public override void LevelSet(int level)
         {
             this.level = level;
-            eventEmitter = GetComponent<StudioEventEmitter>();
-            eventEmitter.SetParameter("MagicBoltLevel", level);
         }
 
         public override void SetTriggers(Triggers triggers)

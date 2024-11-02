@@ -4,6 +4,12 @@ using UnityEngine;
 
 namespace HotD.Castables
 {
+    /*
+     * The Cast Listener Distributor simply receives the typical Cast Listener calls then passes them along to a list of child listeners.
+     * 
+     * It's function is primarily organizational; this allows us to configure all of our Cast Listener event connections once, then pass them along to an arbitrarily long list of children.
+     */
+
     public class CastListenerDistributor : ACastListener
     {
         [SerializeField] private List<ICastListener> listeners = new();
@@ -32,7 +38,7 @@ namespace HotD.Castables
             Print($"Adding listener (now has {ListenerCount}).", true, this);
         }
 
-        public override void SetChargeTimes(float[] times)
+        public override void ChargeTimesSet(float[] times)
         {
             Print($"Setting charge times on {ListenerCount} listeners.", debugDistribution, this);
             foreach (var listener in listeners)
@@ -44,7 +50,7 @@ namespace HotD.Castables
             }
         }
 
-        public override void SetLevel(int level)
+        public override void LevelSet(int level)
         {
             Print($"Setting level on {ListenerCount} listeners.", debugDistribution, this);
             foreach (var listener in listeners)

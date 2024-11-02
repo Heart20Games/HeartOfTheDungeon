@@ -11,6 +11,10 @@ namespace HotD
     using static HotD.GameModes;
     using static PipGenerator;
 
+    /*
+     * This script defines the structure and available settings for the Character Modes used by the main Character script.
+     */
+
     public class CharacterModes
     {
         public enum ControlMode { Default, Brain, None, Player };

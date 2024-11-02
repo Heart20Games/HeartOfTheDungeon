@@ -36,6 +36,11 @@ namespace HotD.Body
         public bool AutoRespawn { get; set; }
         public bool AutoDespawn { get; set; }
     }
+
+    /*
+     * The Character is perhaps the most important script in the game. It uses Character Modes to clearly define different states that characters can be in.
+     */
+
     public interface ICharacter : ICharacterStatus, ICharacterInputs, IIdentifiable, IDamageReceiver, IControllable, ICastCompatible
     {
         public CharacterBlock StatBlock { get; set; }
