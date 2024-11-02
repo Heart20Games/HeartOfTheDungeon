@@ -5,6 +5,12 @@ using UnityEngine;
 using UnityEngine.VFX;
 using static Impact;
 
+/*
+ * This script is intended to handle all of the Magic shield's VFX transitions.
+ * 
+ * It is also a Cast Listener. See CastListener.cs for more information.
+ */
+
 public class MagicShieldImpact : CastLocationFollower, ICastListener
 {
     [Foldout("Impact VFX", true)]
@@ -222,8 +228,8 @@ public class MagicShieldImpact : CastLocationFollower, ICastListener
 
     // ICastListener
 
-    public int Level { get => 0; set => SetLevel(value); }
-    public float[] ChargeTimes { get => null; set => SetChargeTimes(value); }
+    public int Level { get => 0; set => LevelSet(value); }
+    public float[] ChargeTimes { get => null; set => ChargeTimesSet(value); }
 
     public void SetTriggers(Coordination.Triggers triggers)
     {
@@ -236,6 +242,6 @@ public class MagicShieldImpact : CastLocationFollower, ICastListener
             ToggleShield(false);
         }
     }
-    public void SetLevel(int level) { return; }
-    public void SetChargeTimes(float[] times) { return; }
+    public void LevelSet(int level) { return; }
+    public void ChargeTimesSet(float[] times) { return; }
 }
