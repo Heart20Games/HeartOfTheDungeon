@@ -90,7 +90,7 @@ public class SlimeWizard : EnemyAI
 
     public void DeadAnimation()
     {
-        slimeWizardAnimator.SetBool("Dead", true);
+        slimeWizardAnimator.SetBool("Slime_Dead", true);
 
         StopEffectsOnDeath();
     }
