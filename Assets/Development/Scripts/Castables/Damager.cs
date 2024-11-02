@@ -3,6 +3,15 @@ using UnityEngine;
 using UnityEngine.VFX;
 using static Body.Behavior.ContextSteering.CSIdentity;
 
+
+/*
+ * The Damager is responsible for deciding how to deal damage to a Damage Receiver.
+ * 
+ * It uses object Identity and Impact data to ignore duplicates and decide whether or not it should actually deal damage at all.
+ * 
+ * Intended for use on weapons, projectiles, traps, etc. Anything that needs to deal damage with some level of intelligence.
+ */
+
 public interface IDamager
 {
     public void HitDamageable(Impact impactor);

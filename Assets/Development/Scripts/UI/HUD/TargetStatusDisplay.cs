@@ -5,6 +5,10 @@ using UnityEngine;
 using UIPips;
 using MyBox;
 
+/*
+ * The Target Status Display simply loads up and displays various details about an Identifiable object passed to it.
+ */
+
 public class TargetStatusDisplay : BaseMonoBehaviour
 {
     [ReadOnly] [SerializeField] private IIdentifiable target;

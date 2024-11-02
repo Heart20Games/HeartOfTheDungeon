@@ -16,6 +16,12 @@ namespace HotD
     using static GameModes;
     using static HotD.CharacterModes;
 
+    /*
+     * The Game Manager is responsible for all of the high-level game behaviours.
+     * 
+     * It does this by coordinating different parts of the game using Game Modes.
+     */
+
     public class Game : BaseMonoBehaviour
     {
         public static Game main;

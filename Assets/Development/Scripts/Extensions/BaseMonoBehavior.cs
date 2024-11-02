@@ -36,10 +36,10 @@ public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
     protected void Print(object message, bool debug = true, Object context = null)
     {
         if (debug) Debug.Log(message, context == null ? this : context);
+
     }
 
     [Conditional("UNITY_EDITOR")]
-
     protected void Break(bool debug = true, Object context = null)
     {
         Print("Break!", debug, context);
