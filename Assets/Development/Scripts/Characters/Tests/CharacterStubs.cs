@@ -12,6 +12,7 @@ using Modifiers;
 using UnityEngine.Events;
 using UIPips;
 using static Body.Behavior.ContextSteering.CSIdentity;
+using static Codice.Client.BaseCommands.Import.Commit;
 
 public abstract class AIdentifiableStub : BaseMonoBehaviour, IIdentifiable
 {
@@ -108,14 +109,31 @@ public class CharacterStub : AIdentifiableStub, ICharacter
 
 public class MovementStub : BaseMonoBehaviour, IMovement
 {
-    private MovementSettings settings;
+    private readonly MovementTemplate settingsTemplate;
+    private MoveSettings settings;
+    private protected List<MoveModifier> modifiers;
     private bool useGravity;
     private bool canMove;
     private Vector2 moveVector;
     private bool shouldFlip;
     private float timeScale;
+    protected bool settingsInitialized = false;
 
-    public MovementSettings Settings { get => settings; set => settings = value; }
+    public MoveSettings Settings
+    {
+        get
+        {
+            if (!settingsInitialized)
+            {
+                modifiers.AddRange(settingsTemplate.modifiers);
+                settings = settingsTemplate.settings.Modified(modifiers);
+                settingsInitialized = true;
+            }
+            return settings;
+        }
+        set => settings = value.Modified(modifiers);
+    }
+    public List<MoveModifier> Modifiers { get => modifiers; set => modifiers = value; }
     public bool UseGravity { get => useGravity; set => useGravity = value; }
     public bool CanMove { get => canMove; set => canMove = value; }
     public Vector2 MoveVector { get => moveVector; set => moveVector = value; }

@@ -45,4 +45,12 @@ public class ModifierStatus : StatusEffect
         base.Remove(character);
         AddOrRemoveModifier(character, false);
     }
+
+    // Helper Buttons
+
+    [ButtonMethod]
+    public void SpeedModifier()
+    {
+        modifier.modsUsed = Mods.MovementSettings;
+    }
 }
