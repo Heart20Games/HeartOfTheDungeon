@@ -36,7 +36,7 @@ namespace HotD.Castables
             this.action = action;
         }
         
-        public string Name()
+        public readonly string Name()
         {
             return $"[{state} -> {action}]";
         }
@@ -59,22 +59,31 @@ namespace HotD.Castables
         public CastState state;
         [Tooltip("Executors are found among child objects on Awake.")]
         [ReadOnly][SerializeField] private int executorCount;
+        [Header("Settings")]
         public List<StateTransition> transitions = new();
+        [Header("Queues and Buffers")]
         public List<StateAction> queuedActions = new();
         public List<StateAction> dequeuedActions = new();
         public Dictionary<StateAction, StateTransition> transitionBank = new();
         public List<ICastStateExecutor> executorList = new();
+        private IStateBuffer csmBuffer;
         [Foldout("State")] public Dictionary<CastState, List<ICastStateExecutor>> executorBank = new();
+        
         [SerializeField] protected bool debugCastable = false;
-
+        
         public bool CanCast { get => state == CastState.Equipped; }
 
         public void Awake()
         {
+            // Find the Action Buffer, if there is one.
+            csmBuffer = GetComponent<IStateBuffer>();
+
+            // Initialize Executor Bank
             foreach (CastState state in Enum.GetValues(typeof(CastState)))
             {
                 executorBank.Add(state, new());
             }
+
             // Finds Executors Among Children At Runtime
             executorCount = 0;
             foreach (Transform child in transform)
@@ -89,6 +98,8 @@ namespace HotD.Castables
                     executor.SetActive(executor.State == CastState.None);
                 }
             }
+
+            // Initialize Transition Bank
             transitionBank.Clear();
             foreach (var transition in transitions)
             {
@@ -101,6 +112,8 @@ namespace HotD.Castables
                     }
                 }
             }
+
+            // Perform the first state transition.
             TransitionTo(CastState.None);
         }
 
@@ -126,6 +139,8 @@ namespace HotD.Castables
         public void TransitionTo(CastState state)
         {
             bool stillWaiting = false;
+
+            csmBuffer?.SetBufferClearFlags(state);
 
             // End the ones we don't want.
             foreach (var keyState in executorBank.Keys)
@@ -188,11 +203,22 @@ namespace HotD.Castables
         {
             QueueAction(action, true, CastState.None);
         }
-        public void QueueAction(CastAction action, bool transitionIfNotWaiting = true, CastState state = CastState.None)
+        public void QueueAction(CastAction action, ActionBuffer requeued = new())
         {
+            QueueAction(action, true, CastState.None, requeued);
+        }
+        public void QueueAction(CastAction action, bool transitionIfNotWaiting = true, CastState state = CastState.None, ActionBuffer requeued = new())
+        {
+            requeued = requeued.action == CastAction.None ? new(action) : requeued;
+            if (requeued.timeBuffered < 0) // A default value of -1 indicates something we didn't receive from the Buffer.
+            {
+                csmBuffer?.SetBufferKeepFlags(action);
+                csmBuffer?.SetBufferClearFlags(action);
+            }
+
             state = state == CastState.None ? this.state : state;
             StateAction stateAction = new(state, action);
-            
+
             // Find the first relevant transition found in the transition bank.
             if (transitionBank.TryGetValue(stateAction, out StateTransition transition))
             {
@@ -225,7 +251,12 @@ namespace HotD.Castables
                     }
                 }
             }
+            else // Buffer the action if there isn't any relevant transitions
+            {
+                csmBuffer?.BufferAction(action, requeued);
+            }
         }
+        
 
         // Perform the state transition, add any actions it needs to wait for onto the queue. Returns whether we're waiting for something.
         private bool PerformAndWait(ICastStateExecutor executor, StateAction stateAction)

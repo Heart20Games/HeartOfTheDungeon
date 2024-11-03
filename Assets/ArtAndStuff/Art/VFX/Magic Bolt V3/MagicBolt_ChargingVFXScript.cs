@@ -6,6 +6,10 @@ using static HotD.Castables.Coordination;
 using static HotD.Castables.CastableToLocation;
 using MyBox;
 
+/*
+ * This class is used to manage all of the VFX transitions for the Magic Bolt's Casting Point VFX.
+ */
+
 public class MagicBolt_ChargingVFXScript : ACastListener
 {
     [Foldout("Settings", true)]
@@ -28,18 +32,18 @@ public class MagicBolt_ChargingVFXScript : ACastListener
     public override float[] ChargeTimes
     {
         get => chargeTimes;
-        set => SetChargeTimes(value);
+        set => ChargeTimesSet(value);
     }
     public override int Level
     {
         get => level + levelOffset;
-        set => SetLevel(value);
+        set => LevelSet(value);
     }
-    public override void SetChargeTimes(float[] times)
+    public override void ChargeTimesSet(float[] times)
     {
         chargeTimes = times;
     }
-    public override void SetLevel(int level)
+    public override void LevelSet(int level)
     {
         if (this.level > 0 && level == 0)
         {

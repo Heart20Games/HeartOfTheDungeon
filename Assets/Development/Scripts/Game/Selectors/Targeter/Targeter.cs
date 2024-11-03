@@ -1,4 +1,5 @@
 using Cinemachine;
+using HotD;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -110,6 +111,7 @@ namespace Selection
                 {
                     HotD.Game.main.CurCharacter.AimCamera.gameObject.SetActive(true);
                     SetTargetLock(false);
+                    Game.main.GetComponent<GameInput>().TurnOffLockOn();
                     targetLock = false;
                 }
 
@@ -166,6 +168,13 @@ namespace Selection
         public void SetTargetLock(bool targetLock)
         {
             this.targetLock = targetLock;
+
+            if (Finder == null)
+            {
+                Debug.LogWarning("No Target Finder found. Can't set Target Lock.", this);
+                return;
+            }
+
             Finder.SetLockOn(targetLock);
             ResetCameras();
             virtualCamera.gameObject.SetActive(targetLock);

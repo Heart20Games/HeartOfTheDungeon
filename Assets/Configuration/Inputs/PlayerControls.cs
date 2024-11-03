@@ -2741,7 +2741,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""Gamepad"",
                     ""id"": ""dd8df68f-59ae-46a1-9a7a-c22c5b1be888"",
                     ""path"": ""1DAxis"",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Switch Targets"",

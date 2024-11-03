@@ -36,6 +36,11 @@ namespace HotD.Body
         public bool AutoRespawn { get; set; }
         public bool AutoDespawn { get; set; }
     }
+
+    /*
+     * The Character is perhaps the most important script in the game. It uses Character Modes to clearly define different states that characters can be in.
+     */
+
     public interface ICharacter : ICharacterStatus, ICharacterInputs, IIdentifiable, IDamageReceiver, IControllable, ICastCompatible
     {
         public CharacterBlock StatBlock { get; set; }
@@ -262,7 +267,14 @@ namespace HotD.Body
             }
 
             SetMode(ControlMode.Brain);
+        }
 
+        private void OnDestroy()
+        {
+            DisconnectHealth();
+            DisconnectPips(pips);
+            if (healthPopup != null)
+                health.current.UnSubscribe(healthPopup.PopupChange);
         }
 
         private void InitBody()
@@ -292,7 +304,14 @@ namespace HotD.Body
         public bool PlayerControlled
         {
             get => mode.PlayerControlled;
-            set => SetMode(value ? ControlMode.Player : ControlMode.Brain); //!Controllable ? mode.controlMode : ControlMode.None);
+            set => SetPlayerControlled(value);
+        }
+        public void SetPlayerControlled(bool playerControlled, bool ignoreDeath=false)
+        {
+            if (ignoreDeath || mode.Alive)
+            {
+                SetMode(playerControlled ? ControlMode.Player : ControlMode.Brain); //!Controllable ? mode.controlMode : ControlMode.None);
+            }
         }
         public bool Alive { get => mode.liveMode == LiveMode.Alive; }
         [ButtonMethod]
@@ -310,12 +329,20 @@ namespace HotD.Body
                 SetMode(baseMode);
             }
         }
+
+        [SerializeField] private bool debugMode = false;
         public void SetMode<T>(T subMode) where T : Enum
         {
-            if (settings.TryGetMode(subMode, out var mode))
+            if (settings.TryGetMode(subMode, out var mode, debugMode))
+            {
+                Print($"Switching to {mode.name}.", debugMode, this);
                 SetMode(mode);
+            }
             else
                 Debug.LogWarning($"Can't find mode for \"{subMode}\"");
+
+            Print($"{subMode}:{this.mode.name}", debugMode, this);
+            Break(debugMode, this);
         }
         private void SetMode(CharacterMode new_mode)
         {
@@ -333,6 +360,7 @@ namespace HotD.Body
             // Apply the Chosen Mode
 
             // Movement
+            Assert.IsNotNull(movement);
             movement.StopMoving();
             movement.MoveVector = new();
             movement.CanMove = new_mode.canMove;
@@ -345,7 +373,7 @@ namespace HotD.Body
             
             // Displays
             SetNonNullActive(moveReticle, new_mode.useMoveReticle);
-            SetNonNullActive(artRenderer, new_mode.displayable);
+            if(!artRenderer.KeepActive) SetNonNullActive(artRenderer, new_mode.displayable);
             if (pips != null) pips.SetDisplayMode(new_mode.pipMode);
             
             // Animation / Selection (Alive?)
@@ -473,7 +501,7 @@ namespace HotD.Body
         public void Respawn()
         {
             Print($"Respawing {Name}.", debug);
-            SetMode(LiveMode.Alive);
+            if (mode.liveMode != LiveMode.Alive) SetMode(LiveMode.Alive);
             Print($"Respawn {Name}", debug);
             body.SetPositionAndRotation(spawn.position, spawn.rotation);
             body.localScale = spawn.localScale;
@@ -510,16 +538,24 @@ namespace HotD.Body
 
         // Health and Damage
 
-        private void ConnectHealth()
+        private int ApplyArmor(int oldValue, int newValue)
+        {
+            int change = newValue - oldValue;
+            if (change< 0)
+                change = Mathf.Min(change + armor.current.Value, 0);
+            return oldValue + change;
+        }
+
+    private void ConnectHealth()
         {
             health.current.Subscribe(HealthChanged);
-            health.current.Subscribe((int oldValue, int newValue) =>
-            {
-                int change = newValue - oldValue;
-                if (change < 0)
-                    change = (int)Mathf.Min(change + armor.current.Value, 0);
-                return oldValue + change;
-            });
+            health.current.Subscribe(ApplyArmor);
+        }
+
+        private void DisconnectHealth()
+        {
+            health.current.UnSubscribe(HealthChanged);
+            health.current.UnSubscribe(ApplyArmor);
         }
 
         public void HealthChanged(int amount)

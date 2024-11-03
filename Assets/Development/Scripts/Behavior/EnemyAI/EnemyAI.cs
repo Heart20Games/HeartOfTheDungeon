@@ -1,6 +1,7 @@
 using Body.Behavior;
 using Body.Behavior.ContextSteering;
 using HotD.Body;
+using System.Collections;
 using UnityEngine;
 
 public class EnemyAI : Brain
@@ -8,6 +9,8 @@ public class EnemyAI : Brain
     [SerializeField] private Action currentAction;
 
     [SerializeField] private Transform[] wayPoints;
+
+    [SerializeField] private Animator animator;
 
     [SerializeField] private float distanceToReturnHome;
     [SerializeField] private float distanceToChangeWaypoints;
@@ -73,7 +76,9 @@ public class EnemyAI : Brain
     {
         currentAction = Action.Chase;
 
-        if(resetAttackTime)
+        animator.SetBool("Run", true);
+
+        if (resetAttackTime)
         {
             attackTimeStep = 0;
         }
@@ -120,14 +125,27 @@ public class EnemyAI : Brain
         {
             currentAction = Action.Duel;
 
-            if(character.castables[character.CastableID] != null)
+            animator.SetBool("Run", false);
+
+            if (character.castables[character.CastableID] != null)
             {
                 character.castables[character.CastableID].Damager._Impactor = Target.GetComponent<Impact>();
             }
 
-            attackTimeStep += Time.deltaTime;
+            if(!didAttack)
+            {
+                attackTimeStep += Time.deltaTime;
+            }
+            
             if(attackTimeStep >= attackTime)
             {
+                didAttack = true;
+
+                animator.SetTrigger("StartAction");
+                animator.SetInteger("Action", 1);
+
+                StartCoroutine(ResetActions());
+
                 Duel();
 
                 attackTimeStep = 0;
@@ -140,6 +158,20 @@ public class EnemyAI : Brain
                 ChasePlayer(Target, true);
             }
         }
+    }
+
+    public Impact GetImpactor()
+    {
+        return character.castables[character.CastableID].Damager._Impactor;
+    }
+
+    private IEnumerator ResetActions()
+    {
+        yield return new WaitForSeconds(attackTime);
+        animator.ResetTrigger("StartAction");
+        animator.SetInteger("Action", 0);
+
+        didAttack = false;
     }
 
     public void BossAttack()
@@ -219,6 +251,8 @@ public class EnemyAI : Brain
                 {
                     wayPointTimeStep += Time.deltaTime;
 
+                    animator.SetBool("Run", false);
+
                     if (wayPointTimeStep >= wayPointWaitTime)
                     {
                         wayPointIndex++;
@@ -231,6 +265,10 @@ public class EnemyAI : Brain
 
                         wayPointTimeStep = 0;
                     }
+                }
+                else
+                {
+                    animator.SetBool("Run", true);
                 }
             }
         }

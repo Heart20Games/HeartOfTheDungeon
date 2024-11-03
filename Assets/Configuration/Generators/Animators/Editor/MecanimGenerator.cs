@@ -9,10 +9,16 @@ namespace HotD.Generators
     using HotD.Castables;
     using static YarnRooms;
 
+    /*
+     * The Mecanim Generator generates a valid AnimatorController compatible with the rest of the game's systems.
+     * 
+     * You need only pass in and specify the various motions and how they should be used.
+     */
+
     [CreateAssetMenu(fileName = "NewMecanimGenerator", menuName = "Mecanim Generator", order = 1)]
     public class MecanimGenerator : Generator
     {
-        public enum Slot { None, Idle, Hit, Dead, Run }
+        public enum Slot { None, Idle, Hit, Dead, Run, GetUp, Hop, Knock, Knocked }
 
         [Serializable]
         public struct MotionSlot
