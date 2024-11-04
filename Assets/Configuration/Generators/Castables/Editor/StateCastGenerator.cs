@@ -16,6 +16,7 @@ namespace HotD.Generators
     using Castables;
     using static Castables.Coordination;
     using static HotD.Generators.StateCastGenerator.CastableSettings;
+    using static Castables.ExecutionMethod;
 
     [CreateAssetMenu(fileName = "NewStateCastGenerator", menuName = "Loadouts/State Cast Generator", order = 1)]
     public class StateCastGenerator : Generator
@@ -538,11 +539,12 @@ namespace HotD.Generators
             return item;
         }
 
-        private static Castables.ExecutionMethod AddExecutionMethod(GameObject castedObject, CastProperties castable)
+        private static Castables.ExecutionMethod AddExecutionMethod(GameObject castedObject, CastProperties castable, StatusType statusType=StatusType.None)
         {
             Castables.ExecutionMethod executionMethod = castedObject.AddComponent<Castables.ExecutionMethod>();
             executionMethod.aimAtCrosshair = true;
             executionMethod.initializeOffOf = castable;
+            executionMethod.statusType = statusType;
             return executionMethod;
         }
 
@@ -749,7 +751,7 @@ namespace HotD.Generators
                 GameObject castedObject = AddCastedObject(executor, pivot);
 
                 // Method
-                Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
+                Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor, StatusType.Cast);
                 method.InitializeEvents();
                 
                 if (passivePrefab != null)
@@ -777,7 +779,7 @@ namespace HotD.Generators
                 castedPivot.body = castedPivot.transform;
 
                 // Method
-                Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
+                Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor, StatusType.Cast);
                 method.InitializeEvents();
 
                 // Cast Location Follower
@@ -848,7 +850,7 @@ namespace HotD.Generators
                 castedPivot.body = castedPivot.transform;
 
                 // Method
-                Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
+                Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor, StatusType.Cast);
                 method.InitializeEvents();
 
                 // Cast Location Follower

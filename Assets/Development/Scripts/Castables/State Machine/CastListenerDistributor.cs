@@ -35,7 +35,7 @@ namespace HotD.Castables
         public void AddListener(ICastListener listener)
         {
             listeners.Add(listener);
-            Print($"Adding listener (now has {ListenerCount}).", true, this);
+            Print($"Adding listener (now has {ListenerCount}).", debugDistribution, this);
         }
 
         public override void ChargeTimesSet(float[] times)
