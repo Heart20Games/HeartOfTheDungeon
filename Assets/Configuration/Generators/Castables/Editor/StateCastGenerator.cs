@@ -199,7 +199,7 @@ namespace HotD.Generators
                             ICastListener listener = effect.Generate(effectManager, stats);
                             effectManager.AddListener(listener);
                         }
-                        effectManager.SetChargeTimes(chargeTimes);
+                        effectManager.ChargeTimesSet(chargeTimes);
                         foreach (var executor in executors)
                         {
                             executor.ToTriggerListeners = effectManager.SetTriggers;
@@ -296,8 +296,8 @@ namespace HotD.Generators
             // Wait For Wind Up Transition
             TransitionEvent windUpTransition = actionType switch
             {
-                ActionType.Passive =>   new("Wind Up (Instantaneous)", CastAction.Start, Triggers.StartCast),
-                _ =>                    new("Wind Up", CastAction.Start, Triggers.StartCast, Triggers.None, CastAction.End),
+                ActionType.Passive =>   new("Wind Up (Instantaneous)", CastAction.Start, Triggers.StartCast, Triggers.StartAction),
+                _ =>                    new("Wind Up", CastAction.Start, Triggers.StartCast, Triggers.StartAction, CastAction.End),
             };
             executor.supportedTransitions.Add(windUpTransition);
         }
@@ -313,7 +313,7 @@ namespace HotD.Generators
             charger.chargeTimes = chargeTimes;
 
             // Start Transition
-            TransitionEvent startTransition = new("Start", CastAction.Start, Triggers.StartAction);
+            TransitionEvent startTransition = new("Start", CastAction.Start, Triggers.StartAction, Triggers.StartAction);
             UnityEventTools.AddPersistentListener(startTransition.startAction, charger.Begin);
             executor.supportedTransitions.Add(startTransition);
 
@@ -369,7 +369,7 @@ namespace HotD.Generators
             // End Transition
             string endName = settings.endOn.HasFlag(EndOn.Release) ? "Release / End" : "End";
             CastAction endTriggerAction = settings.endOn.HasFlag(EndOn.Release) ? CastAction.Release | CastAction.End : CastAction.End;
-            TransitionEvent endTransition = new(endName, endTriggerAction, Triggers.None, Triggers.EndCast);
+            TransitionEvent endTransition = new(endName, endTriggerAction, Triggers.None, Triggers.EndCast | Triggers.EndAction);
             executor.supportedTransitions.Add(endTransition);
 
             Comboer comboer = executor.gameObject.AddComponent<Comboer>();
@@ -559,7 +559,7 @@ namespace HotD.Generators
 
             properties.connectToFieldEvents = true;
             UnityEventTools.AddPersistentListener(properties.fieldEvents.onSetOwner, distributor.SetOwner);
-            UnityEventTools.AddPersistentListener(properties.fieldEvents.onSetPowerLevelInt, distributor.SetLevel);
+            UnityEventTools.AddPersistentListener(properties.fieldEvents.onSetPowerLevelInt, distributor.LevelSet);
 
             return distributor;
         }
@@ -680,6 +680,14 @@ namespace HotD.Generators
         [Serializable]
         public struct Execution
         {
+            [Serializable]
+            public struct StatusesToApply
+            {
+                public List<StatusEffect> chargeEffects;
+                public List<StatusEffect> activeEffects;
+                public List<StatusEffect> lingeringEffects;
+            }
+
             public Execution(ExecutionMethod method=ExecutionMethod.Passive, CastLocation source=CastLocation.Character, CastLocation target=CastLocation.FiringPoint, Vector2 chargeLevels=new(), Vector2 comboSteps=new())
             {
                 this.name = method.ToString();
@@ -689,6 +697,8 @@ namespace HotD.Generators
 
                 this.chargeLevels = chargeLevels;
                 this.comboSteps = comboSteps;
+                this.statuses = new();
+
                 this.passivePrefab = null;
                 this.colliderLifeSpan = 1;
                 this.colliderPrefabs = new();
@@ -703,6 +713,7 @@ namespace HotD.Generators
 
             public Vector2 chargeLevels;
             public Vector2 comboSteps;
+            public StatusesToApply statuses;
 
             // Execution: Passive
             [ConditionalField("method", false, ExecutionMethod.Passive)]

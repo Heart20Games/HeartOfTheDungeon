@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+/*
+ * The simple controller is meant to be a stripped down implementation of a controllable, moveable character with a camera and cursor.
+ */
+
 [RequireComponent(typeof(SimpleMovement))]
 public class SimpleController : MonoBehaviour, IControllable
 {

@@ -1,3 +1,5 @@
+using HotD.Body;
+using MyBox;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +12,10 @@ namespace HotD
     using static HotD.CharacterModes.CharacterModifier;
     using static HotD.GameModes;
     using static PipGenerator;
+
+    /*
+     * This script defines the structure and available settings for the Character Modes used by the main Character script.
+     */
 
     public class CharacterModes
     {
@@ -44,40 +50,65 @@ namespace HotD
         {
             public enum DBool { Default, No, Yes }
             public enum ModifierType { None, BrainDead, KnockedDown, Stunned }
+            [Flags] public enum Mods {  None=0,             ControlMode=1,          CollisionMode=2,    PipMode=4,      LiveMode=8, 
+                                        CanMove=16,         UseGravity=32,          Displayable=64,     UseCaster=128,  UseMoveReticle=256, 
+                                        UseInteractor=512,  MovementSettings=1024 };
 
             public string name;
             public ModifierType modifierType;
+            public Mods modsUsed;
 
-            public ControlMode controlMode;
-            public CollisionMode collisionMode;
-            public DisplayMode pipMode;
-            public LiveMode liveMode;
+            [Space]
+            [ConditionalField("modsUsed", false, Mods.ControlMode)]     public ControlMode controlMode;
+            [ConditionalField("modsUsed", false, Mods.CollisionMode)]   public CollisionMode collisionMode;
+            [ConditionalField("modsUsed", false, Mods.PipMode)]         public DisplayMode pipMode;
+            [ConditionalField("modsUsed", false, Mods.LiveMode)]        public LiveMode liveMode;
 
-            public DBool canMove;
-            public DBool useGravity;
-            public DBool displayable;
-            public DBool useCaster;
-            public DBool useMoveReticle;
-            public DBool useInteractor;
+            [Space]
+            [ConditionalField("modsUsed", false, Mods.CanMove)]         public DBool canMove;
+            [ConditionalField("modsUsed", false, Mods.UseGravity)]      public DBool useGravity;
+            [ConditionalField("modsUsed", false, Mods.Displayable)]     public DBool displayable;
+            [ConditionalField("modsUsed", false, Mods.UseCaster)]       public DBool useCaster;
+            [ConditionalField("modsUsed", false, Mods.UseMoveReticle)]  public DBool useMoveReticle;
+            [ConditionalField("modsUsed", false, Mods.UseInteractor)]   public DBool useInteractor;
+
+            [Space]
+            public MoveModifier[] movementModifiers;
 
             public readonly bool PlayerControlled { get => controlMode == ControlMode.Player; }
             public readonly bool Alive { get => liveMode == LiveMode.Alive; }
 
-            public CharacterMode ModifyMode(CharacterMode mode)
+            public readonly bool UsesMod(Mods modsUsed)
+            {
+                return (this.modsUsed & modsUsed) != 0;
+            }
+
+            public readonly bool IsDefault<T>(T dBool)
+            {
+                return dBool.Equals(default(T));
+            }
+            
+            public readonly bool UsesMod<T>(Mods modsUsed, T dBool)
+            {
+                return UsesMod(modsUsed) && !IsDefault(dBool);
+            }
+
+
+            public readonly CharacterMode ModifyMode(CharacterMode mode)
             {
                 mode.name = $"{mode.name}/{name}";
 
-                mode.controlMode = controlMode == ControlMode.Default ? mode.controlMode : controlMode;
-                mode.collisionMode = collisionMode == CollisionMode.Default ? mode.collisionMode : collisionMode;
-                mode.pipMode = pipMode == DisplayMode.Default ? mode.pipMode : pipMode;
-                mode.liveMode = liveMode == LiveMode.Default ? mode.liveMode : liveMode;
+                mode.controlMode    = !UsesMod(Mods.ControlMode, controlMode)       ? mode.controlMode      : controlMode;
+                mode.collisionMode  = !UsesMod(Mods.CollisionMode, collisionMode)   ? mode.collisionMode    : collisionMode;
+                mode.pipMode        = !UsesMod(Mods.PipMode, pipMode)               ? mode.pipMode          : pipMode;
+                mode.liveMode       = !UsesMod(Mods.LiveMode, liveMode)             ? mode.liveMode         : liveMode;
 
-                mode.canMove = canMove == DBool.Default ? mode.canMove : canMove == DBool.Yes;
-                mode.useGravity = useGravity == DBool.Default ? mode.useGravity : useGravity == DBool.Yes;
-                mode.displayable = displayable == DBool.Default ? mode.displayable : displayable == DBool.Yes;
-                mode.useCaster = useCaster == DBool.Default ? mode.useCaster : useCaster == DBool.Yes;
-                mode.useMoveReticle = useMoveReticle == DBool.Default ? mode.useMoveReticle : useMoveReticle == DBool.Yes;
-                mode.useInteractor = useInteractor == DBool.Default ? mode.useInteractor : useInteractor == DBool.Yes;
+                mode.canMove        = UsesMod(Mods.CanMove, canMove)                ? mode.canMove          : canMove == DBool.Yes;
+                mode.useGravity     = UsesMod(Mods.UseGravity, useGravity)          ? mode.useGravity       : useGravity == DBool.Yes;
+                mode.displayable    = UsesMod(Mods.Displayable, displayable)        ? mode.displayable      : displayable == DBool.Yes;
+                mode.useCaster      = UsesMod(Mods.UseCaster, useCaster)            ? mode.useCaster        : useCaster == DBool.Yes;
+                mode.useMoveReticle = UsesMod(Mods.UseMoveReticle, useMoveReticle)  ? mode.useMoveReticle   : useMoveReticle == DBool.Yes;
+                mode.useInteractor  = UsesMod(Mods.UseInteractor, useInteractor)    ? mode.useInteractor    : useInteractor == DBool.Yes;
 
                 return mode;
             }

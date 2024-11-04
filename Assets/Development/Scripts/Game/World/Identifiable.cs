@@ -5,6 +5,12 @@ using UnityEngine;
 using UnityEngine.Events;
 using static Body.Behavior.ContextSteering.CSIdentity;
 
+/*
+ * An Identifiable object is one that has all the basic information required to distinguish it from other objects around it.
+ * 
+ * This could include destructable objects, characters, interactables, etc. Basically anything worth giving a portrait.
+ */
+
 public interface IIdentifiable
 {
     public Identity Identity { get; set; }

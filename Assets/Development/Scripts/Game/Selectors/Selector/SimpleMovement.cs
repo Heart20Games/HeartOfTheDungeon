@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using HotD;
+using HotD.Body;
 
 public class SimpleMovement : BaseMonoBehaviour, ITimeScalable
 {
@@ -8,7 +9,7 @@ public class SimpleMovement : BaseMonoBehaviour, ITimeScalable
     public Rigidbody myRigidbody;
 
     [Header("Settings")]
-    public MovementSettings settings;
+    public MovementTemplate settings;
     [ReadOnly] public bool canMove = true;
 
     [Header("Scale")]
@@ -26,7 +27,7 @@ public class SimpleMovement : BaseMonoBehaviour, ITimeScalable
 
     private void Awake()
     {
-        if (settings == null) settings = ScriptableObject.CreateInstance<MovementSettings>();
+        if (settings == null) settings = ScriptableObject.CreateInstance<MovementTemplate>();
         if (myRigidbody == null) myRigidbody = GetComponent<Rigidbody>();
     }
 
