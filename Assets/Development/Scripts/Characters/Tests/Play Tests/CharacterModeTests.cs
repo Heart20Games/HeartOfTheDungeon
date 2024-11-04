@@ -24,7 +24,7 @@ public class CharacterModeTests
         
         // Movement
         movement = parent.AddComponent<MovementStub>();
-        movement.Settings = ScriptableObject.CreateInstance<MovementSettings>();
+        movement.Settings = new(); // ScriptableObject.CreateInstance<MovementTemplate>();
 
         // Stubs
         brain = parent.AddComponent<BrainStub>();

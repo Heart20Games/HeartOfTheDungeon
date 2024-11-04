@@ -3,13 +3,16 @@ using UnityEngine.Events;
 using Body;
 using UnityEngine.Assertions;
 using MyBox;
+using System.Collections.Generic;
+using Codice.Client.Commands;
 
 namespace HotD.Body
 {
     public interface IMovement : ITimeScalable
     {
         // Settings
-        public MovementSettings Settings { get; set; }
+        public MoveSettings Settings { get; set; }
+        public List<MoveModifier> Modifiers { get; set; }
         public bool UseGravity { get; set; }
         public bool CanMove { get; set; }
         
@@ -25,11 +28,28 @@ namespace HotD.Body
     public class Movement : BaseMonoBehaviour, IMovement
     {
         [Header("Settings")]
-        [SerializeField] protected MovementSettings settings;
+        [SerializeField] protected MovementTemplate settingsTemplate;
+        [SerializeField] protected MoveSettings settings;
+        [SerializeField] protected List<MoveModifier> modifiers = new();
         [SerializeField] protected bool useGravity = true;
         [SerializeField] protected bool canMove = true;
         [SerializeField] protected bool debug;
-        public MovementSettings Settings { get => settings; set => settings = value; }
+        protected bool settingsInitialized = false;
+        public MoveSettings Settings
+        {
+            get
+            {
+                if (!settingsInitialized && settingsTemplate != null)
+                {
+                    modifiers?.AddRange(settingsTemplate.modifiers);
+                    settings = settingsTemplate.settings.Modified(modifiers);
+                    settingsInitialized = true;
+                }
+                return settings;
+            }
+            set => settings = value.Modified(modifiers);
+        }
+        public List<MoveModifier> Modifiers { get => modifiers; set => modifiers = value; }
         public bool UseGravity { get => useGravity; set => useGravity = value; }
         public bool CanMove { get => canMove; set => canMove = value; }
 
@@ -46,7 +66,7 @@ namespace HotD.Body
             set
             {
                 moveVector = value;
-                MyRigidbody.drag = moveVector.magnitude == 0 ? settings.stopDrag : settings.moveDrag;
+                MyRigidbody.drag = moveVector.magnitude == 0 ? Settings.stopDrag : Settings.moveDrag;
                 onSetMoveVector.Invoke(moveVector);
             }
         }
@@ -89,10 +109,7 @@ namespace HotD.Body
         private void Awake()
         {
             MyRigidbody.useGravity = false;
-            if (settings != null)
-            {
-                useGravity = settings.useGravity;
-            }
+            useGravity = Settings.useGravity;
             onSetMoveVector ??= new();
         }
 
@@ -150,15 +167,15 @@ namespace HotD.Body
                         ApplyNPCMovement(ref modifier, moveVector);
                     }
 
-                    if (MyRigidbody.velocity.magnitude > settings.maxVelocity * modifier)
-                        MyRigidbody.velocity = settings.maxVelocity * modifier * MyRigidbody.velocity.normalized;
+                    if (MyRigidbody.velocity.magnitude > Settings.maxVelocity * modifier)
+                        MyRigidbody.velocity = Settings.maxVelocity * modifier * MyRigidbody.velocity.normalized;
 
                     if (artRenderer != null && pivot != null)
                     {
                         Vector2 hVelocity = MyRigidbody.velocity.XZVector();
                         Vector2 hCamera = cameraDirection.XZVector().normalized;
                         Vector2 right = Vector2.Perpendicular(hCamera);
-                        if (hVelocity.magnitude > settings.footstepVelocity)
+                        if (hVelocity.magnitude > Settings.footstepVelocity)
                         {
                             float angle = Vector2.Dot(right, hVelocity);
 
@@ -190,13 +207,13 @@ namespace HotD.Body
 
         protected void ApplyGravityForce(float scale=1, bool checkForGround=true)
         {
-            float power = settings.gravityForce;
+            float power = Settings.gravityForce;
             if (checkForGround)
             {
-                onGround = Physics.Raycast(Body.transform.position, Vector3.down, settings.groundDistance);
-                power = onGround ? settings.normalForce : settings.gravityForce;
+                onGround = Physics.Raycast(Body.transform.position, Vector3.down, Settings.groundDistance);
+                power = onGround ? Settings.normalForce : Settings.gravityForce;
             }
-            MyRigidbody.AddForce(power * scale * settings.speed * Time.fixedDeltaTime * timeScale * Vector3.down, ForceMode.Force);
+            MyRigidbody.AddForce(power * scale * Settings.speed * Time.fixedDeltaTime * timeScale * Vector3.down, ForceMode.Force);
         }
 
         protected void ApplyPlayerMovement(Vector3 cameraDirection, Vector2 moveVector, float scale=1)
@@ -204,7 +221,7 @@ namespace HotD.Body
             Print("Character Controlled Movement", debug);
             Vector3 direction = moveVector.Orient(cameraDirection).FullY();
             Debug.DrawRay(Body.position, direction * 3, Color.green, Time.fixedDeltaTime);
-            MyRigidbody.AddRelativeForce(scale * settings.speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
+            MyRigidbody.AddRelativeForce(scale * Settings.speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
         }
 
         protected void ApplyNPCMovement(ref float modifier, Vector2 moveVector, float scale=1)
@@ -214,7 +231,7 @@ namespace HotD.Body
             Vector3 direction = moveVector.FullY();
             Assert.IsFalse(float.IsNaN(direction.x) || float.IsNaN(direction.y) || float.IsNaN(direction.z));
             Debug.DrawRay(Body.position, direction, Color.green, Time.fixedDeltaTime);
-            MyRigidbody.AddForce(modifier * timeScale * scale * settings.speed * Time.fixedDeltaTime * direction, ForceMode.Force);
+            MyRigidbody.AddForce(modifier * timeScale * scale * Settings.speed * Time.fixedDeltaTime * direction, ForceMode.Force);
         }
 
 

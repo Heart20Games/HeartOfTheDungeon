@@ -680,6 +680,14 @@ namespace HotD.Generators
         [Serializable]
         public struct Execution
         {
+            [Serializable]
+            public struct StatusesToApply
+            {
+                public List<StatusEffect> chargeEffects;
+                public List<StatusEffect> activeEffects;
+                public List<StatusEffect> lingeringEffects;
+            }
+
             public Execution(ExecutionMethod method=ExecutionMethod.Passive, CastLocation source=CastLocation.Character, CastLocation target=CastLocation.FiringPoint, Vector2 chargeLevels=new(), Vector2 comboSteps=new())
             {
                 this.name = method.ToString();
@@ -689,6 +697,8 @@ namespace HotD.Generators
 
                 this.chargeLevels = chargeLevels;
                 this.comboSteps = comboSteps;
+                this.statuses = new();
+
                 this.passivePrefab = null;
                 this.colliderLifeSpan = 1;
                 this.colliderPrefabs = new();
@@ -703,6 +713,7 @@ namespace HotD.Generators
 
             public Vector2 chargeLevels;
             public Vector2 comboSteps;
+            public StatusesToApply statuses;
 
             // Execution: Passive
             [ConditionalField("method", false, ExecutionMethod.Passive)]

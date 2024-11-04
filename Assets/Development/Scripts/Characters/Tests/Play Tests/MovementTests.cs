@@ -10,17 +10,19 @@ public class MovementTests
     private Rigidbody rigidbody;
     private TestMovement movement;
 
+    private MoveSettings DefaultSettings
+    {
+        get => new() { speed = 1, normalForce = 1, gravityForce = 1 };
+    }
+
     [OneTimeSetUp]
     public void InitialSetUp()
     {
         parent = new GameObject("Movement Tests Parent");
         rigidbody = parent.AddComponent<Rigidbody>();
         movement = parent.AddComponent<TestMovement>();
-        movement.Settings = ScriptableObject.CreateInstance<MovementSettings>();
-        movement.Settings.speed = 1;
+        movement.Settings = DefaultSettings; // ScriptableObject.CreateInstance<MovementTemplate>();
         movement.npcModifier = 1;
-        movement.Settings.normalForce = 1;
-        movement.Settings.gravityForce = 1;
     }
 
     [OneTimeTearDown]
@@ -36,7 +38,9 @@ public class MovementTests
     public void StopDragTest()
     {
         // Use the Assert class to test conditions
-        movement.Settings.stopDrag = 200;
+        var newSettings = DefaultSettings;
+        newSettings.stopDrag = 200;
+        movement.Settings = newSettings;
         movement.MoveVector = Vector2.zero;
         Assert.AreEqual(200, rigidbody.drag);
     }
@@ -44,7 +48,9 @@ public class MovementTests
     [Test]
     public void MoveDragTest()
     {
-        movement.Settings.moveDrag = 100;
+        var newSettings = DefaultSettings;
+        newSettings.moveDrag = 100;
+        movement.Settings = newSettings;
         movement.MoveVector = Vector2.right;
         Assert.AreEqual(100, rigidbody.drag);
     }
