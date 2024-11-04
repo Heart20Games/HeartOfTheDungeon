@@ -3,6 +3,7 @@ using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using static HotD.CharacterModes;
 using static HotD.CharacterModes.CharacterModifier;
 
@@ -20,18 +21,22 @@ public class ModifierStatus : StatusEffect
     [ConditionalField(true, "ApplyByType")]
     [SerializeField] private ModifierType modifierType;
 
+    [SerializeField] private List<MoveModifier> moveModifiers = new();
+
     private bool ApplyByModifier() { return applyBy == ApplyBy.Modifier; }
     private bool ApplyByName() { return applyBy == ApplyBy.Name; }
     private bool ApplyByType() { return applyBy == ApplyBy.Type; }
 
     private void AddOrRemoveModifier(Character character, bool add)
     {
+        Assert.IsNotNull(character);
         switch (applyBy)
         {
             case ApplyBy.Modifier: character.AddOrRemoveModifier(modifier, add); break;
             case ApplyBy.Name: character.AddOrRemoveModifier(modifierName, add); break;
             case ApplyBy.Type: character.AddOrRemoveModifier(modifierType, add); break;
         }
+        character.Movement?.AddOrRemoveModifiers(moveModifiers, add);
     }
 
     public override void Apply(Character character, int strength)
@@ -47,10 +52,4 @@ public class ModifierStatus : StatusEffect
     }
 
     // Helper Buttons
-
-    [ButtonMethod]
-    public void SpeedModifier()
-    {
-        modifier.modsUsed = Mods.MovementSettings;
-    }
 }
