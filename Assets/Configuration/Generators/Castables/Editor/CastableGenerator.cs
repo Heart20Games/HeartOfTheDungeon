@@ -126,8 +126,9 @@ namespace HotD.Generators
 
                     // Fields
                     Context context = new(stats.targetIdentity, Range.InAttackRange, new(), new(), new(0, stats.Range), 50);
-                    castable.fields.castStatuses = stats.castStatuses;
-                    castable.fields.hitStatuses = stats.hitStatuses;
+                    castable.fields.hitStatusClass = stats.GetStatusClass(StatusType.Activation);
+                    castable.fields.hitStatusClass = stats.GetStatusClass(StatusType.Execution);
+                    castable.fields.hitStatusClass = stats.GetStatusClass(StatusType.Hit);
 
                     // Targeting Methods
                     switch (targetingMethod)

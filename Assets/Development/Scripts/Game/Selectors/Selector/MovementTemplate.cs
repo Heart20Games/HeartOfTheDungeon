@@ -94,8 +94,8 @@ namespace HotD.Body
         [ConditionalField(true, "IsBoolField")]
         public bool boolValue;
 
-        private bool IsBoolField() { return field >= Field.UseGravity; }
-        private bool IsFloatField() { return field < Field.UseGravity; }
+        public bool IsBoolField() { return field >= Field.UseGravity; }
+        public bool IsFloatField() { return field < Field.UseGravity; }
 
         public readonly void Modify(ref MoveSettings settings)
         {

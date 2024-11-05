@@ -1,9 +1,11 @@
 using HotD.Body;
 using MyBox;
+using Spine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Serialization;
 using static HotD.CharacterModes;
 using static HotD.CharacterModes.CharacterModifier;
 
@@ -14,8 +16,9 @@ public class ModifierStatus : StatusEffect
     public enum ApplyBy { Modifier, Name, Type }
     [SerializeField] private ApplyBy applyBy;
 
+    [FormerlySerializedAs("modifier")]
     [ConditionalField(true, "ApplyByModifier")]
-    [SerializeField] private CharacterModifier modifier;
+    [SerializeField] private CharacterModifier characterModifier;
     [ConditionalField(true, "ApplyByName")]
     [SerializeField] private string modifierName;
     [ConditionalField(true, "ApplyByType")]
@@ -30,11 +33,14 @@ public class ModifierStatus : StatusEffect
     private void AddOrRemoveModifier(Character character, bool add)
     {
         Assert.IsNotNull(character);
-        switch (applyBy)
+        if (characterModifier.modifierType != ModifierType.None)
         {
-            case ApplyBy.Modifier: character.AddOrRemoveModifier(modifier, add); break;
-            case ApplyBy.Name: character.AddOrRemoveModifier(modifierName, add); break;
-            case ApplyBy.Type: character.AddOrRemoveModifier(modifierType, add); break;
+            switch (applyBy)
+            {
+                case ApplyBy.Modifier: character.AddOrRemoveModifier(characterModifier, add); break;
+                case ApplyBy.Name: character.AddOrRemoveModifier(modifierName, add); break;
+                case ApplyBy.Type: character.AddOrRemoveModifier(modifierType, add); break;
+            }
         }
         character.Movement?.AddOrRemoveModifiers(moveModifiers, add);
     }
@@ -49,6 +55,25 @@ public class ModifierStatus : StatusEffect
     {
         base.Remove(character);
         AddOrRemoveModifier(character, false);
+    }
+
+    protected override void OnValidate()
+    {
+        base.OnValidate();
+        characterModifier.name = name;
+        for (int i = 0; i < moveModifiers.Count; i++)
+        {
+            MoveModifier modifier = moveModifiers[i];
+            string operation = modifier.type switch
+            {
+                MoveModifier.ModType.Override => "=",
+                MoveModifier.ModType.Multiplicative => "x",
+                MoveModifier.ModType.Additive => "+",
+            };
+            string value = modifier.IsBoolField() ? $"{modifier.boolValue}" : $"{modifier.floatValue}";
+            modifier.name = $"{name}: {modifier.field} {operation} {value}";
+            moveModifiers[i] = modifier;
+        }
     }
 
     // Helper Buttons
