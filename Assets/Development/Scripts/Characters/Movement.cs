@@ -15,6 +15,7 @@ namespace HotD.Body
         public List<MoveModifier> Modifiers { get; set; }
         public bool UseGravity { get; set; }
         public bool CanMove { get; set; }
+        public void AddOrRemoveModifiers(List<MoveModifier> modifiers, bool add);
         
         // Initialization
         public void SetCharacter(Character character);
@@ -35,6 +36,7 @@ namespace HotD.Body
         [SerializeField] protected bool canMove = true;
         [SerializeField] protected bool debug;
         protected bool settingsInitialized = false;
+        protected bool settingsModified = false;
         public MoveSettings Settings
         {
             get
@@ -42,8 +44,13 @@ namespace HotD.Body
                 if (!settingsInitialized && settingsTemplate != null)
                 {
                     modifiers?.AddRange(settingsTemplate.modifiers);
-                    settings = settingsTemplate.settings.Modified(modifiers);
+                    settingsModified = false;
                     settingsInitialized = true;
+                }
+                if (!settingsModified)
+                {
+                    settings = settingsTemplate.settings.Modified(modifiers);
+                    settingsModified = true;
                 }
                 return settings;
             }
@@ -105,6 +112,36 @@ namespace HotD.Body
             pivot = character.Pivot;
             artRenderer = character.ArtRenderer;
         }
+
+        public void AddOrRemoveModifiers(List<MoveModifier> modifiers, bool add)
+        {
+            if (add)
+            {
+                Modifiers.AddRange(modifiers);
+                settingsModified = modifiers.Count > 0;
+            }
+            else
+            {
+                foreach (var modifier in modifiers)
+                {
+                    for (int i = Modifiers.Count-1; i >= 0; i--)
+                    {
+                        if (Modifiers[i].Equals(modifier))
+                        {
+                            Modifiers.RemoveAt(i);
+                            settingsModified = false;
+                        } 
+                    }
+                }
+            }
+        }
+
+        [ButtonMethod]
+        public void ReapplyModifiers()
+        {
+            settingsModified = false;
+        }
+
 
         private void Awake()
         {

@@ -16,7 +16,7 @@ namespace HotD.Body
         public float footstepVelocity { get => settings.footstepVelocity; set => settings.footstepVelocity = value; }
         public float moveDrag { get => settings.moveDrag; set => settings.moveDrag = value; }
         public float stopDrag { get => settings.stopDrag; set => settings.stopDrag = value; }
-        public bool useGravity { get => settings.useGravity; set => settings.useGravity = value; }
+        public bool  useGravity { get => settings.useGravity; set => settings.useGravity = value; }
         public float normalForce { get => settings.normalForce; set => settings.normalForce = value; }
         public float gravityForce { get => settings.gravityForce; set => settings.gravityForce = value; }
         public float groundDistance { get => settings.groundDistance; set => settings.groundDistance = value; }
@@ -46,10 +46,10 @@ namespace HotD.Body
         {
             this.name = name;
 
-            speed = 700f; maxVelocity = 10f; footstepVelocity = 1f;
+            speed = 15000f; maxVelocity = 3f; footstepVelocity = 1f;
             moveDrag = 0.5f; stopDrag = 7.5f;
             useGravity = true;
-            normalForce = 0.1f; gravityForce = 1f; groundDistance = 0.01f;
+            normalForce = 0f; gravityForce = 1f; groundDistance = 0.25f;
         }
 
         public MoveSettings(MoveSettings old)
@@ -94,8 +94,8 @@ namespace HotD.Body
         [ConditionalField(true, "IsBoolField")]
         public bool boolValue;
 
-        private bool IsBoolField() { return field >= Field.UseGravity; }
-        private bool IsFloatField() { return field < Field.UseGravity; }
+        public bool IsBoolField() { return field >= Field.UseGravity; }
+        public bool IsFloatField() { return field < Field.UseGravity; }
 
         public readonly void Modify(ref MoveSettings settings)
         {
