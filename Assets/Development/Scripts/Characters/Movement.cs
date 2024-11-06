@@ -118,7 +118,6 @@ namespace HotD.Body
             if (add)
             {
                 Modifiers.AddRange(modifiers);
-                settingsModified = modifiers.Count > 0;
             }
             else
             {
@@ -129,11 +128,11 @@ namespace HotD.Body
                         if (Modifiers[i].Equals(modifier))
                         {
                             Modifiers.RemoveAt(i);
-                            settingsModified = false;
                         } 
                     }
                 }
             }
+            settingsModified = false;
         }
 
         [ButtonMethod]
