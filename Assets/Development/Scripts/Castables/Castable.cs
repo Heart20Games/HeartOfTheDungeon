@@ -99,7 +99,7 @@ namespace HotD.Castables
 
         public virtual void Trigger()
         {
-            foreach (Status status in fields.triggerStatuses)
+            foreach (Status status in fields.activationStatusClass.statuses)
             {
                 status.effect.Apply(Owner as Character, status.strength);
             }
@@ -109,7 +109,7 @@ namespace HotD.Castables
 
         public virtual void Release()
         {
-            foreach (Status status in fields.triggerStatuses)
+            foreach (Status status in fields.activationStatusClass.statuses)
             {
                 status.effect.Remove(Owner as Character);
             }
@@ -129,7 +129,7 @@ namespace HotD.Castables
                 fields.pivot.forward = Direction == Vector3.zero ? Vector3.forward : Direction;
                 fields.pivotDirection = fields.pivot.forward;
             }
-            foreach (Status status in fields.castStatuses)
+            foreach (Status status in fields.executionStatusClass.statuses)
             {
                 status.effect.Apply(Owner as Character, status.strength);
             }
@@ -140,7 +140,7 @@ namespace HotD.Castables
         public virtual void UnCast()
         {
             casting = false;
-            foreach (Status status in fields.castStatuses)
+            foreach (Status status in fields.executionStatusClass.statuses)
             {
                 status.effect.Remove(Owner as Character);
             }

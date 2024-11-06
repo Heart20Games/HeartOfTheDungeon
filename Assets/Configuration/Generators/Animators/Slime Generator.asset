@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Slime Generator
   m_EditorClassIdentifier: 
   outputName: Slime Controller
-  castablesDirectory: Assets/Configuration/Generators/Animators/
+  baseDirectory: Assets/Configuration/Animators/
   createSubFolder: 0
   overwrite: 1
   replace: 1
@@ -21,6 +21,7 @@ MonoBehaviour:
   fullDirectory: Assets/Configuration/Generators/Animators/
   timeOfLastGeneration: 0
   mecanim: {fileID: 9100000, guid: 3087a9cd7f70c234d91a9d9a82afca6f, type: 2}
+  useBehaviourBasedAnimatorEvents: 1
   slots:
   - name: Idle
     slot: 1
@@ -37,8 +38,10 @@ MonoBehaviour:
   chargeActions: []
   comboActions:
   - name: Sword
+    actionType: 0
     motions:
     - {fileID: 7400000, guid: a63946d743c29ee499c71b8e5030acbb, type: 2}
   - name: Gun
+    actionType: 0
     motions:
     - {fileID: 7400000, guid: c710204b4fa39fe46afd734340d236cd, type: 2}

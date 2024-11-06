@@ -16,11 +16,16 @@ namespace HotD.Generators
     using Castables;
     using static Castables.Coordination;
     using static HotD.Generators.StateCastGenerator.CastableSettings;
+    using static Castables.ExecutionMethod;
+    using static HotD.Castables.CastableFields;
+    using static CastableStats;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using UnityEngine.Events;
 
     [CreateAssetMenu(fileName = "NewStateCastGenerator", menuName = "Loadouts/State Cast Generator", order = 1)]
     public class StateCastGenerator : Generator
     {
-        public enum ExecutionMethod { Passive, ColliderBased, ProjectileBased, SelectionBased}
+        public enum ExecutionType { Passive, ColliderBased, ProjectileBased, SelectionBased}
 
         [Header("Parameters")]
         public CastableSettings settings = new();
@@ -211,8 +216,9 @@ namespace HotD.Generators
 
                     // Fields
                     Context context = new(stats.targetIdentity, Range.InAttackRange, new(), new(), new(0, stats.Range), 50);
-                    castable.fields.castStatuses = stats.castStatuses;
-                    castable.fields.hitStatuses = stats.hitStatuses;
+                    castable.fields.activationStatusClass = stats.GetStatusClass(StatusType.Activation);
+                    castable.fields.executionStatusClass = stats.GetStatusClass(StatusType.Execution);
+                    castable.fields.hitStatusClass = stats.GetStatusClass(StatusType.Hit);
 
                     // Targeting Methods
                     switch (targetingMethod)
@@ -683,12 +689,24 @@ namespace HotD.Generators
             [Serializable]
             public struct StatusesToApply
             {
-                public List<StatusEffect> chargeEffects;
-                public List<StatusEffect> activeEffects;
-                public List<StatusEffect> lingeringEffects;
+                public List<Status> chargeEffects;
+                public List<Status> activeEffects;
+                public List<Status> hitEffects;
+                public List<Status> lingeringEffects;
+
+                public readonly List<Status> this[StatusType type]
+                {
+                    get => type switch
+                    {
+                        StatusType.Activation => chargeEffects,
+                        StatusType.Execution => activeEffects,
+                        StatusType.Hit => hitEffects,
+                        StatusType.Lingering => lingeringEffects,
+                    };
+                }
             }
 
-            public Execution(ExecutionMethod method=ExecutionMethod.Passive, CastLocation source=CastLocation.Character, CastLocation target=CastLocation.FiringPoint, Vector2 chargeLevels=new(), Vector2 comboSteps=new())
+            public Execution(ExecutionType method=ExecutionType.Passive, CastLocation source=CastLocation.Character, CastLocation target=CastLocation.FiringPoint, Vector2 chargeLevels=new(), Vector2 comboSteps=new())
             {
                 this.name = method.ToString();
                 this.method = method;
@@ -707,7 +725,7 @@ namespace HotD.Generators
             }
 
             public string name;
-            public ExecutionMethod method;
+            public ExecutionType method;
             public CastLocation source;
             public CastLocation target;
 
@@ -716,40 +734,75 @@ namespace HotD.Generators
             public StatusesToApply statuses;
 
             // Execution: Passive
-            [ConditionalField("method", false, ExecutionMethod.Passive)]
+            [ConditionalField("method", false, ExecutionType.Passive)]
             public GameObject passivePrefab;
 
             // Execution: Collider
-            [ConditionalField("method", false, ExecutionMethod.ColliderBased)]
+            [ConditionalField("method", false, ExecutionType.ColliderBased)]
             public float colliderLifeSpan;
-            [ConditionalField("method", false, ExecutionMethod.ColliderBased)]
+            [ConditionalField("method", false, ExecutionType.ColliderBased)]
             public List<GameObject> colliderPrefabs;
 
             // Execution: Projectile
-            [ConditionalField("method", false, ExecutionMethod.ProjectileBased)]
+            [ConditionalField("method", false, ExecutionType.ProjectileBased)]
             public float projectileLifeSpan;
-            [ConditionalField("method", false, ExecutionMethod.ProjectileBased)]
+            [ConditionalField("method", false, ExecutionType.ProjectileBased)]
             public List<GameObject> projectilePrefabs;
             //public Projectile projectilePrefab;
 
             public readonly Castables.ExecutionMethod PrepareExecutionMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, GameObject gameObject, Damager damager = null)
             {
-                return method switch
+                ExecutionMethod preparedMethod = method switch
                 {
-                    ExecutionMethod.ColliderBased => PrepareCollisionMethod(executor, stats, pivot, damager),
-                    ExecutionMethod.ProjectileBased => PrepareProjectileMethod(executor, stats, pivot, damager),
-                    ExecutionMethod.SelectionBased => null,
+                    ExecutionType.ColliderBased => PrepareCollisionMethod(executor, stats, pivot, damager),
+                    ExecutionType.ProjectileBased => PrepareProjectileMethod(executor, stats, pivot, damager),
+                    ExecutionType.SelectionBased => null,
                     _ => PreparePassiveMethod(executor, stats, pivot, damager),
                 };
+
+                AddStatusListener(preparedMethod, stats, StatusType.Execution, executor.fieldEvents.onSetOwner);
+
+                return preparedMethod;
             }
 
-            public readonly Castables.ExecutionMethod PreparePassiveMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
+            private readonly void AddStatusListener(ExecutionMethod method, CastableStats stats, StatusType statusType, UnityEvent<ICastCompatible> ownerHook)
+            {
+                Assert.IsNotNull(method);
+                GameObject parent = method.gameObject;
+
+                if (stats.TryGetStatusClass(statusType, out StatusClass statusClass) || this.statuses[statusType].Count > 0)
+                {
+                    var statusListener = parent.AddComponent<StatusCastListener>();
+
+                    // Connect Owner
+                    UnityEventTools.AddPersistentListener(ownerHook, statusListener.SetOwner);
+                    //UnityEventTools.AddPersistentListener(method.fieldEvents.onSetOwner, statusListener.SetOwner);
+
+                    List<Status> statuses = new();
+                    statuses.AddRange(this.statuses[statusType]);
+                    if (statusClass.statuses != null)
+                    {
+
+                        statuses.AddRange(statusClass.statuses);
+                    }
+                    else
+                    {
+                        statusClass.name = parent.name;
+                        statusClass.power = new(1, $"{parent.name} Starting Power", $"{parent.name}");
+                    }
+                    statusClass.statuses = statuses;
+
+                    statusListener.statusClass = statusClass;
+                }
+            }
+
+            public readonly ExecutionMethod PreparePassiveMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
             {
                 // Object
                 GameObject castedObject = AddCastedObject(executor, pivot);
 
                 // Method
-                Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
+                ExecutionMethod method = AddExecutionMethod(castedObject, executor);
                 method.InitializeEvents();
                 
                 if (passivePrefab != null)
@@ -767,7 +820,7 @@ namespace HotD.Generators
                 return method;
             }
 
-            public readonly Castables.ExecutionMethod PrepareCollisionMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
+            public readonly ExecutionMethod PrepareCollisionMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
             {
                 pivot.enabled = false;
 
@@ -777,7 +830,7 @@ namespace HotD.Generators
                 castedPivot.body = castedPivot.transform;
 
                 // Method
-                Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
+                ExecutionMethod method = AddExecutionMethod(castedObject, executor);
                 method.InitializeEvents();
 
                 // Cast Location Follower
@@ -840,7 +893,7 @@ namespace HotD.Generators
                 return method;
             }
 
-            public readonly Castables.ExecutionMethod PrepareProjectileMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
+            public readonly ExecutionMethod PrepareProjectileMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
             {
                 // Object
                 GameObject castedObject = AddCastedObject(executor, pivot);
@@ -848,7 +901,7 @@ namespace HotD.Generators
                 castedPivot.body = castedPivot.transform;
 
                 // Method
-                Castables.ExecutionMethod method = AddExecutionMethod(castedObject, executor);
+                ExecutionMethod method = AddExecutionMethod(castedObject, executor);
                 method.InitializeEvents();
 
                 // Cast Location Follower

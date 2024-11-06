@@ -4,6 +4,9 @@ using UnityEngine.Events;
 using Body;
 using HotD.Body;
 using System.Collections.Generic;
+using Attributes;
+using UnityEngine.Serialization;
+using MyBox;
 
 [Serializable]
 public struct Status
@@ -21,12 +24,31 @@ public struct Status
     public GameObject instance;
 }
 
+public enum StatusType { None, Activation, Execution, Hit, Lingering }
+[Serializable]
+public struct StatusClass
+{
+    public string name;
+    public StatusType type;
+    public DependentAttribute power;
+    public List<Status> statuses;
+    public readonly int Power { get => (int)power.FinalValue; }
+}
+
+public interface IStatusEffect
+{
+    public void Apply(Character character, int strength);
+    public void Proc(int strength, Character character);
+    public void Tick(int strength, Character character);
+    public void Remove(Character character);
+}
+
 public interface IStatusEffectable
 {
     public List<Status> Statuses { get; }
 }
 
-public abstract class StatusEffect: BaseScriptableObject
+public abstract class StatusEffect: BaseScriptableObject, IStatusEffect
 {
     /* Statuses will likely be expected to:
      * 1. Apply modifiers or effects to characters
@@ -35,10 +57,12 @@ public abstract class StatusEffect: BaseScriptableObject
      * 4. Clean up after themselves
      */
 
+    [SerializeField] private bool overrideName;
+    [ConditionalField("overrideName")]
     public new string name;
     [SerializeField] private GameObject prefab;
-    private UnityEvent onProc = new();
-    private UnityEvent onTick = new();
+    private readonly UnityEvent onProc = new();
+    private readonly UnityEvent onTick = new();
 
     public virtual void Apply(Character character, int strength)
     {
@@ -90,5 +114,10 @@ public abstract class StatusEffect: BaseScriptableObject
             }
             else i++;
         }
+    }
+
+    protected virtual void OnValidate()
+    {
+        if (!overrideName) name = Name;
     }
 }
