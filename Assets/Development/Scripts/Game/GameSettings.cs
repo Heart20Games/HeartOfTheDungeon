@@ -37,6 +37,7 @@ namespace HotD
             public float timeScale;
             public bool shouldBrain;
             public bool cardboardMode;
+            public bool active;
             public readonly IControllable Controllable
             {
                 get
