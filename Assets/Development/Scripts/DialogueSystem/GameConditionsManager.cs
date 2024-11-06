@@ -1,9 +1,5 @@
 using Articy.Unity;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Articy.Unity.Interfaces;
-using Articy.Heart_Of_The_Dungeon_Prologue;
 
 public class GameConditionsManager : MonoBehaviour
 {

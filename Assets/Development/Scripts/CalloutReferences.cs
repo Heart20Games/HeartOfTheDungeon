@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using Articy.Unity;
-using Articy.Unity.Interfaces;
-using Articy.Heart_Of_The_Dungeon_Prologue;
 using UnityEngine;
 
 public class CalloutReferences : MonoBehaviour
