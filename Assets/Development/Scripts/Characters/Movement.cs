@@ -155,6 +155,7 @@ namespace HotD.Body
         public void StopMoving()
         {
             MyRigidbody.velocity = Vector3.zero;
+            artRenderer.RunVelocity = MyRigidbody.velocity.magnitude;
         }
 
 
@@ -238,6 +239,11 @@ namespace HotD.Body
                 {
                     ApplyGravityForce();
                 }
+            }
+
+            if (artRenderer != null && MyRigidbody != null)
+            {
+                artRenderer.RunVelocity = MyRigidbody.velocity.magnitude;
             }
         }
 

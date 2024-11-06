@@ -7,7 +7,6 @@ using UnityEngine;
 namespace HotD.Generators
 {
     using HotD.Castables;
-    using static YarnRooms;
 
     /*
      * The Mecanim Generator generates a valid AnimatorController compatible with the rest of the game's systems.
@@ -112,6 +111,7 @@ namespace HotD.Generators
             mecanim.AddParameter("Action", AnimatorControllerParameterType.Float);
             mecanim.AddParameter("Hit", AnimatorControllerParameterType.Trigger);
             mecanim.AddParameter("Run", AnimatorControllerParameterType.Bool);
+            mecanim.AddParameter("RunVelocity", AnimatorControllerParameterType.Float);
             mecanim.AddParameter("Dead", AnimatorControllerParameterType.Bool);
             
             // Generate Layers
@@ -137,6 +137,9 @@ namespace HotD.Generators
 
             // Add Blend Trees
             var run = mecanim.CreateBlendTreeInController("Run", out var runTree);
+            run.speed = 1;
+            run.speedParameter = "RunVelocity";
+            run.speedParameterActive = true;
             runTree.useAutomaticThresholds = false;
 
             // Add Motions

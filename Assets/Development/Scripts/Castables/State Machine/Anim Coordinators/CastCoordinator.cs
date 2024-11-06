@@ -75,7 +75,6 @@ namespace HotD.Castables
         }
 
         [Header("Tests")]
-        public bool debug = false;
         [SerializeField] protected bool debugValues = false;
         [SerializeField] protected bool debugTriggers = false;
         public int testIdx = 0;
