@@ -144,7 +144,8 @@ namespace HotD.Body
 
         private void Awake()
         {
-            MyRigidbody.useGravity = false;
+            if(MyRigidbody) MyRigidbody.useGravity = false;
+
             useGravity = Settings.useGravity;
             onSetMoveVector ??= new();
         }
