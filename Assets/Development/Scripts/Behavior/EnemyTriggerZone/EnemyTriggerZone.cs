@@ -21,7 +21,10 @@ public class EnemyTriggerZone : MonoBehaviour
     {
         if (!other.GetComponent<CSController>()) return;
 
-        if(other.GetComponent<CSController>().identity == CSIdentity.Identity.Friend)
+        Party party = HotD.Game.main.playerParty;
+        CSController controller = party.leader.transform.GetChild(0).GetComponent<CSController>();
+
+        if(other.GetComponent<CSController>() == controller)
         {
             enemyAI.ChasePlayer(other.transform, true);
         }
@@ -31,7 +34,10 @@ public class EnemyTriggerZone : MonoBehaviour
     {
         if (!other.GetComponent<CSController>()) return;
 
-        if (other.GetComponent<CSController>().identity == CSIdentity.Identity.Friend)
+        Party party = HotD.Game.main.playerParty;
+        CSController controller = party.leader.transform.GetChild(0).GetComponent<CSController>();
+
+        if (other.GetComponent<CSController>() == controller)
         {
             enemyAI.PatrolState();
         }
