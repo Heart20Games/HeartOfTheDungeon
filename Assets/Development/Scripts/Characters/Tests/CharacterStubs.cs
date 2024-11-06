@@ -118,16 +118,22 @@ public class MovementStub : BaseMonoBehaviour, IMovement
     private bool shouldFlip;
     private float timeScale;
     protected bool settingsInitialized = false;
+    protected bool settingsModified = false;
 
     public MoveSettings Settings
     {
         get
         {
-            if (!settingsInitialized)
+            if (!settingsInitialized && settingsTemplate != null)
             {
-                modifiers.AddRange(settingsTemplate.modifiers);
-                settings = settingsTemplate.settings.Modified(modifiers);
+                modifiers?.AddRange(settingsTemplate.modifiers);
+                settingsModified = false;
                 settingsInitialized = true;
+            }
+            if (!settingsModified)
+            {
+                settings = settingsTemplate.settings.Modified(modifiers);
+                settingsModified = true;
             }
             return settings;
         }
@@ -139,6 +145,29 @@ public class MovementStub : BaseMonoBehaviour, IMovement
     public Vector2 MoveVector { get => moveVector; set => moveVector = value; }
     public bool ShouldFlip { get => shouldFlip; set => shouldFlip = value; }
     public float TimeScale { get => timeScale; set => SetTimeScale(value); }
+
+    public void AddOrRemoveModifiers(List<MoveModifier> modifiers, bool add)
+    {
+        if (add)
+        {
+            Modifiers.AddRange(modifiers);
+            settingsModified = modifiers.Count > 0;
+        }
+        else
+        {
+            foreach (var modifier in modifiers)
+            {
+                for (int i = Modifiers.Count - 1; i >= 0; i--)
+                {
+                    if (Modifiers[i].Equals(modifier))
+                    {
+                        Modifiers.RemoveAt(i);
+                        settingsModified = false;
+                    }
+                }
+            }
+        }
+    }
 
     public void SetCharacter(Character character) { }
     public float SetTimeScale(float timeScale)

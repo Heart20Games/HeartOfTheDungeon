@@ -125,7 +125,7 @@ namespace HotD.Castables
             for (int i = 0; i < bufferedActions.Count; i++)
             {
                 if (!bufferedActions[i].keepReached)
-                    bufferedActions[i] = bufferedActions[i].MarkKeepReached(action);
+                    bufferedActions[i] = bufferedActions[i].MarkKeepReached(action, debugBuffering);
             }
         }
 
@@ -256,22 +256,22 @@ namespace HotD.Castables
 
 
         // Marks whether the KeepUntil CastAction is being passed.
-        public readonly ActionBuffer MarkKeepReached(CastAction keepUntil)
+        public readonly ActionBuffer MarkKeepReached(CastAction keepUntil, bool debug=false)
         {
             if (this.keepReached)
             {
-                Debug.Log($"Marked already; Keep {action}? {(this.keepReached ? "Yes" : "No")}");
+                if (debug) Debug.Log($"Marked already; Keep {action}? {(this.keepReached ? "Yes" : "No")}");
                 return this;
             }
             else if (this.keepUntil == CastAction.None)
             {
-                Debug.Log($"Keep Auto Marked on {this.action}. ({this.keepUntil} vs {keepUntil})");
+                if (debug) Debug.Log($"Keep Auto Marked on {this.action}. ({this.keepUntil} vs {keepUntil})");
                 return new(this, timeBuffered, true);
             }
             else
             {
                 bool keepReached = this.keepUntil.HasFlag(keepUntil);
-                Debug.Log($"Keep Marked on {this.action}? {(keepReached ? "Yes" : "No")} ({this.keepUntil} vs {keepUntil})");
+                if (debug) Debug.Log($"Keep Marked on {this.action}? {(keepReached ? "Yes" : "No")} ({this.keepUntil} vs {keepUntil})");
                 return new(this, keepReached ? Time.time : timeBuffered, keepReached);
             }
         }
@@ -292,41 +292,41 @@ namespace HotD.Castables
 
 
         // Marks whether the ClearOn CastAction is being passed.
-        public readonly ActionBuffer MarkClearReached(CastState clearState)
+        public readonly ActionBuffer MarkClearReached(CastState clearState, bool debug=false)
         {
             if (this.clearReached)
             {
-                Debug.Log($"Marked already; Clear {action}? {(this.clearReached ? "Yes" : "No")}");
+                if (debug) Debug.Log($"Marked already; Clear {action}? {(this.clearReached ? "Yes" : "No")}");
                 return this;
             }
             else if (this.clearStates.Count == 0)
             {
-                Debug.Log($"Clear Auto Marked on {this.action}. ({clearState} in {ClearStatesString()})");
+                if (debug) Debug.Log($"Clear Auto Marked on {this.action}. ({clearState} in {ClearStatesString()})");
                 return new(this, false);
             }
             else
             {
                 bool clearReached = this.clearStates.Contains(clearState);
-                Debug.Log($"Clear Marked on {action}? {(clearReached ? "Yes" : "No")} ({clearState} in {ClearStatesString()})");
+                if (debug) Debug.Log($"Clear Marked on {action}? {(clearReached ? "Yes" : "No")} ({clearState} in {ClearStatesString()})");
                 return new(this, clearReached);
             }
         }
-        public readonly ActionBuffer MarkClearReached(CastAction clearOn)
+        public readonly ActionBuffer MarkClearReached(CastAction clearOn, bool debug = false)
         {
             if (this.clearReached)
             {
-                Debug.Log($"Marked already; Clear {action}? {(this.clearReached ? "Yes" : "No")}");
+                if (debug) Debug.Log($"Marked already; Clear {action}? {(this.clearReached ? "Yes" : "No")}");
                 return this;
             }
             else if (this.clearOn == CastAction.None)
             {
-                Debug.Log($"Clear Auto Marked on {this.action}. ({this.clearOn} vs {clearOn})");
+                if (debug) Debug.Log($"Clear Auto Marked on {this.action}. ({this.clearOn} vs {clearOn})");
                 return new(this, false);
             }
             else
             {
                 bool clearReached = this.clearOn.HasFlag(clearOn);
-                Debug.Log($"Clear Marked on {action}? {(clearReached ? "Yes" : "No")} ({this.clearOn} vs {clearOn})");
+                if (debug) Debug.Log($"Clear Marked on {action}? {(clearReached ? "Yes" : "No")} ({this.clearOn} vs {clearOn})");
                 return new(this, clearReached);
             }
         }

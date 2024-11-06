@@ -52,7 +52,7 @@ namespace HotD
             public enum ModifierType { None, BrainDead, KnockedDown, Stunned }
             [Flags] public enum Mods {  None=0,             ControlMode=1,          CollisionMode=2,    PipMode=4,      LiveMode=8, 
                                         CanMove=16,         UseGravity=32,          Displayable=64,     UseCaster=128,  UseMoveReticle=256, 
-                                        UseInteractor=512,  MovementSettings=1024 };
+                                        UseInteractor=512 };
 
             public string name;
             public ModifierType modifierType;
@@ -71,9 +71,6 @@ namespace HotD
             [ConditionalField("modsUsed", false, Mods.UseCaster)]       public DBool useCaster;
             [ConditionalField("modsUsed", false, Mods.UseMoveReticle)]  public DBool useMoveReticle;
             [ConditionalField("modsUsed", false, Mods.UseInteractor)]   public DBool useInteractor;
-
-            [Space]
-            public MoveModifier[] movementModifiers;
 
             public readonly bool PlayerControlled { get => controlMode == ControlMode.Player; }
             public readonly bool Alive { get => liveMode == LiveMode.Alive; }
