@@ -47,46 +47,8 @@ namespace HotD.Castables
             fieldEvents.onSetOwner.Invoke(Owner);
             UpdatePositionables();
             UpdateCollisionExceptions();
-            ApplyOrRemoveStatuses(GetStatuses(statusType), true);
             
             onEnable.Invoke();
-        }
-
-        private void OnDisable()
-        {
-            ApplyOrRemoveStatuses(GetStatuses(statusType), false);
-        }
-
-        public enum StatusType { None, Trigger, Cast, Hit }
-        public StatusType statusType;
-        [SerializeField] private bool debugStatuses = false;
-        private List<Status> GetStatuses(StatusType type)
-        {
-            return type switch
-            {
-                StatusType.Trigger => fields.triggerStatuses,
-                StatusType.Cast => fields.castStatuses,
-                StatusType.Hit => fields.hitStatuses,
-                _ => null
-            };
-        }
-
-        private void ApplyOrRemoveStatuses(List<Status> statuses, bool apply)
-        {
-            if (statuses == null) { Print("Status list is null. skipping add or remove statuses.", debugStatuses, this); return; }
-            if (Owner != null) { Debug.LogWarning("Owner is Null; can't add or remove statuses.", this); return; }
-
-            if (Owner is Character)
-            {
-                foreach (var status in statuses)
-                {
-                    if (status.effect != null)
-                    {
-                        if (apply) status.effect.Apply(Owner as Character, status.strength);
-                        else status.effect.Remove(Owner as Character);
-                    }
-                }
-            }
         }
 
         private void UpdatePositionables()

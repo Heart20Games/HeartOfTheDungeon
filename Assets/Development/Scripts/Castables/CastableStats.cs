@@ -3,6 +3,8 @@ using MyBox;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.Serialization;
 using static Body.Behavior.ContextSteering.CSIdentity;
 
 [CreateAssetMenu(fileName = "NewCastableStats", menuName = "Loadouts/Castable Stats", order = 1)]
@@ -10,7 +12,7 @@ public class CastableStats : ScriptableObject
 {
     // Details
     public enum CastableType { Melee, Ranged, Magic }
-    public enum CastableStat { Damage, Cooldown, ChargeRate, ChargeLimit, Knockback, Range, CastStatusPower, HitStatusPower, ComboCooldown}
+    public enum CastableStat { Damage, Cooldown, ChargeRate, ChargeLimit, Knockback, Range, ExecutionStatusPower, HitStatusPower, ComboCooldown, ActivationStatusPower}
     public string usabilityTag = "None"; // Currently Does Absolutely Nothing
     public CastableType type = CastableType.Melee;
     public Identity targetIdentity = Identity.Neutral;
@@ -55,13 +57,33 @@ public class CastableStats : ScriptableObject
     public DependentAttribute range = new(1);
     public float Range { get => range.FinalValue; }
 
+    // Statuses
     [Header("Statuses")]
-    public DependentAttribute castStatusPower;
-    public int CastStatusPower { get => (int)castStatusPower.FinalValue; }
-    public List<Status> castStatuses;
-    public DependentAttribute hitStatusPower;
-    public int HitStatusPower { get => (int)hitStatusPower.FinalValue; }
-    public List<Status> hitStatuses;
+    public List<StatusClass> statusClasses = new();
+    public bool TryGetStatusClass(StatusType type, out StatusClass result)
+    {
+        foreach (var statusClass in statusClasses)
+        {
+            if (statusClass.type == type)
+            {
+                result = statusClass;
+                return true;
+            }
+        }
+        result = new();
+        return false;
+    }
+    public StatusClass GetStatusClass(StatusType type)
+    {
+        foreach (var statusClass in statusClasses)
+        {
+            if (statusClass.type == type)
+            {
+                return statusClass;
+            }
+        }
+        return new();
+    }
 
     [Header("Bonuses")]
     public List<StatBonus> bonuses;
@@ -75,8 +97,10 @@ public class CastableStats : ScriptableObject
         chargeLimit.name = "Charge Limit";
         comboCooldown.name = "Combo Cooldown";
         knockback.name = "Knockback";
-        castStatusPower.name = "Cast Status Power";
-        hitStatusPower.name = "Hit Status Power";
+        foreach (var statusClass in statusClasses)
+        {
+            statusClass.power.name = $"{statusClass.type} Power";
+        }
     }
 
     // Accessors
@@ -92,8 +116,9 @@ public class CastableStats : ScriptableObject
             CastableStat.ChargeLimit => chargeLimit,
             CastableStat.ComboCooldown => comboCooldown,
             CastableStat.Knockback => knockback,
-            CastableStat.CastStatusPower => castStatusPower,
-            CastableStat.HitStatusPower => hitStatusPower,
+            CastableStat.ActivationStatusPower => GetStatusClass(StatusType.Activation).power,
+            CastableStat.ExecutionStatusPower => GetStatusClass(StatusType.Execution).power,
+            CastableStat.HitStatusPower => GetStatusClass(StatusType.Hit).power,
             _ => null
         };
     }
@@ -109,14 +134,20 @@ public class CastableStats : ScriptableObject
         chargeLimit.Updated();
         comboCooldown.Updated();
         knockback.Updated();
-        castStatusPower.Updated();
-        hitStatusPower.Updated();
+        foreach (var statusClass in statusClasses)
+        {
+            statusClass.power.Updated();
+        }
     }
 
     // Equipping
 
     public void AssignBonuses(DependentAttribute dependent, StatAttribute[] attributes, StatBlock statBlock)
     {
+        Assert.IsNotNull(dependent);
+        Assert.IsNotNull(attributes);
+        Assert.IsNotNull(statBlock);
+
         foreach (var attribute in attributes)
         {
             dependent.AddAttribute(statBlock.GetAttribute(attribute.stat), attribute.weight);
@@ -135,8 +166,20 @@ public class CastableStats : ScriptableObject
             AssignBonuses(comboCooldown, attributes.comboCooldown, statBlock);
             AssignBonuses(knockback, attributes.knockback, statBlock);
             AssignBonuses(range, attributes.range, statBlock);
-            AssignBonuses(castStatusPower, attributes.castStatusPower, statBlock);
-            AssignBonuses(hitStatusPower, attributes.hitStatusPower, statBlock);
+            foreach (StatusClass statusClass in statusClasses)
+            {
+                StatAttribute[] powerAttributes = statusClass.type switch
+                {
+                    StatusType.Activation => attributes.activationStatusPower,
+                    StatusType.Execution => attributes.executionStatusPower,
+                    StatusType.Hit => attributes.hitStatusPower,
+                    _ => null
+                };
+                if (powerAttributes != null)
+                {
+                    AssignBonuses(statusClass.power, powerAttributes, statBlock);
+                }
+            }
         }
         SendUpdateOnAll();
     }
@@ -150,7 +193,9 @@ public class CastableStats : ScriptableObject
         comboCooldown.Clear();
         knockback.Clear();
         range.Clear();
-        castStatusPower.Clear();
-        hitStatusPower.Clear();
+        foreach (var statusClass in statusClasses)
+        {
+            statusClass.power.Clear();
+        }
     }
 }

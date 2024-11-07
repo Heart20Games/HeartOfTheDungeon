@@ -19,7 +19,7 @@ MonoBehaviour:
   replace: 1
   emptyTest: 0
   fullDirectory: Assets/Configuration/Castables/Magic Bolt 2.0
-  timeOfLastGeneration: 10.033986
+  timeOfLastGeneration: 2.467427
   settings:
     followBody: 0
     castOn: 6
@@ -56,6 +56,11 @@ MonoBehaviour:
     target: 2
     chargeLevels: {x: 1, y: 2}
     comboSteps: {x: 0, y: 0}
+    statuses:
+      chargeEffects: []
+      activeEffects: []
+      hitEffects: []
+      lingeringEffects: []
     passivePrefab: {fileID: 0}
     colliderLifeSpan: 0
     colliderPrefabs: []
@@ -69,6 +74,15 @@ MonoBehaviour:
     target: 2
     chargeLevels: {x: 2, y: 3}
     comboSteps: {x: 0, y: 0}
+    statuses:
+      chargeEffects:
+      - name: Slowed 1
+        effect: {fileID: 11400000, guid: 7f88effa99dbe7c43b27abef0b7fefef, type: 2}
+        strength: 1
+        instance: {fileID: 0}
+      activeEffects: []
+      hitEffects: []
+      lingeringEffects: []
     passivePrefab: {fileID: 0}
     colliderLifeSpan: 0
     colliderPrefabs: []
@@ -82,6 +96,19 @@ MonoBehaviour:
     target: 1
     chargeLevels: {x: 3, y: 10}
     comboSteps: {x: 0, y: 0}
+    statuses:
+      chargeEffects:
+      - name: Slowed 2
+        effect: {fileID: 11400000, guid: f73aa1c39f592f64bba15bf6a67ed589, type: 2}
+        strength: 1
+        instance: {fileID: 0}
+      activeEffects:
+      - name: Planted
+        effect: {fileID: 11400000, guid: 42e494b8778c4074db440e7c724060e8, type: 2}
+        strength: 1
+        instance: {fileID: 0}
+      hitEffects: []
+      lingeringEffects: []
     passivePrefab: {fileID: 0}
     colliderLifeSpan: 10
     colliderPrefabs:
@@ -93,6 +120,6 @@ MonoBehaviour:
     targets:
     - slot: 0
       loadout: {fileID: 11400000, guid: d48a3852097c5e447a1e86341c71ab53, type: 2}
-  prefab: {fileID: 1188242518134222337, guid: b8508e747eb0ca44db0f042132d68a5b, type: 3}
+  prefab: {fileID: 5477585856246898625, guid: b8508e747eb0ca44db0f042132d68a5b, type: 3}
   items:
   - {fileID: 11400000, guid: 7aa51de013e45054c866838cd4265689, type: 2}

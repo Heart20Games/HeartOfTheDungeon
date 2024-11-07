@@ -8,9 +8,9 @@ using UnityEngine.Events;
 public abstract class AnimationCoordinator : BaseMonoBehaviour
 {
     // Warnings
-    protected void InvalidParameterWarning(string kind, string property)
+    protected void InvalidParameterWarning(string kind, string property, bool debug=false)
     {
-        Debug.LogWarning($"No valid {kind} parameter named {property} found.", this);
+        if (debug) Debug.LogWarning($"No valid {kind} parameter named {property} found.", this);
     }
 
     // Parameter Helpers

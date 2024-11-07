@@ -12,16 +12,61 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d743acb76daf3f48850fcc36d1aa048, type: 3}
   m_Name: Slimelor Generator
   m_EditorClassIdentifier: 
-  outputName: New Object
-  baseDirectory: Assets/Configuration/TEMP/
-  createSubFolder: 1
+  outputName: Slimelor Controller
+  baseDirectory: Assets/Configuration/Animators/
+  createSubFolder: 0
   overwrite: 1
   replace: 1
   emptyTest: 0
-  fullDirectory: 
+  fullDirectory: Assets/Configuration/Animators/
   timeOfLastGeneration: 0
-  mecanim: {fileID: 0}
-  useBehaviourBasedAnimatorEvents: 1
-  slots: []
-  chargeActions: []
+  mecanim: {fileID: 9100000, guid: 97b500c6c555d894b9cce08e951b8306, type: 2}
+  useBehaviourBasedAnimatorEvents: 0
+  slots:
+  - name: Idle
+    slot: 1
+    motion: {fileID: -7032445349945966966, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
+  - name: Hit
+    slot: 2
+    motion: {fileID: 1500588487114437231, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
+  - name: Death
+    slot: 3
+    motion: {fileID: 2752264597433033509, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
+  - name: Run
+    slot: 4
+    motion: {fileID: 8036224753094179369, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
+  - name: Run Legs
+    slot: 4
+    motion: {fileID: 4001691198132154535, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
+  - name: Get Up
+    slot: 5
+    motion: {fileID: 7967608136741755599, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
+  - name: Knock
+    slot: 7
+    motion: {fileID: -3915962161203808756, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
+  - name: Hop
+    slot: 6
+    motion: {fileID: -4231085838151311927, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
+  chargeActions:
+  - name: Magic Bolt
+    actionType: 1
+    charges:
+    - name: Bolt
+      shortCircuit: 1
+      chargeMotion: {fileID: -8739790452344308241, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
+      sustainMotion: {fileID: -8739790452344308241, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
+      castMotion: {fileID: -3972747522537848651, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
+      holdMotion: {fileID: 0}
+    - name: Ball
+      shortCircuit: 0
+      chargeMotion: {fileID: 2573332123812168064, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
+      sustainMotion: {fileID: 2573332123812168064, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
+      castMotion: {fileID: -9003643423676695058, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
+      holdMotion: {fileID: 0}
+    - name: Laser
+      shortCircuit: 0
+      chargeMotion: {fileID: -8748175108625372592, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
+      sustainMotion: {fileID: -8748175108625372592, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
+      castMotion: {fileID: -1169156635292233617, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
+      holdMotion: {fileID: -1828973574838820584, guid: c8c61b14ab9699f43bee92edf989a7fb, type: 2}
   comboActions: []

@@ -11,6 +11,8 @@ using static UnityEngine.Rendering.DebugUI;
 using Object = UnityEngine.Object;
 using Debug = UnityEngine.Debug;
 using UnityEngine.Assertions;
+using UnityEngine.Serialization;
+using static CastableStats;
 
 namespace HotD.Castables
 {
@@ -475,9 +477,19 @@ namespace HotD.Castables
         public Damager damager;
 
         [Header("Status Effects")]
-        public List<Status> triggerStatuses;
-        public List<Status> castStatuses;
-        public List<Status> hitStatuses;
+        public StatusClass activationStatusClass;
+        public StatusClass executionStatusClass;
+        public StatusClass hitStatusClass;
+        private StatusClass GetStatusClass(StatusType type)
+        {
+            return type switch
+            {
+                StatusType.Activation => activationStatusClass,
+                StatusType.Execution => executionStatusClass,
+                StatusType.Hit => hitStatusClass,
+                _ => new()
+            };
+        }
 
         [Header("Diagnostics")]
         [ReadOnly] public Vector3 pivotDirection;
