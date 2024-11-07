@@ -17,6 +17,7 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private TextMeshProUGUI dialogueSpeaker;
     [SerializeField] public StudioEventEmitter calloutsAudio;
+    [SerializeField] private EventReference calloutsEvent;
 
     public bool DialogueActive { get; set; }
     private bool lookForStop = false;
@@ -24,8 +25,8 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
     private ArticyString articyStageDirection;
     private IObjectWithStageDirections stageDirectionObject;
     private string stageDirectionString;
-
     private ArticyFlowPlayer flowPlayer;
+    private float calloutLineNumber = 67;
 
     private void Awake()
     {
@@ -57,14 +58,15 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
         }
     }
 
-    public void StartDialogue(IArticyObject aObject)
+    public void StartDialogue(IArticyObject aObject, float lineNumber)
     {
         DialogueActive = true;
         dialogueWidget.SetActive(DialogueActive);
         flowPlayer.StartOn = aObject;
         stageDirectionObject = aObject as IObjectWithStageDirections;
+        calloutLineNumber = lineNumber;
     }
-
+     
     public void CloseDialogueBox()
     {
         DialogueActive = false;
@@ -74,10 +76,10 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
     // This is called every time the flow player reaches an object of interest
     public void OnFlowPlayerPaused(IFlowObject aObject)
     {
+        ///RuntimeManager.StudioSystem.setParameterByName("WizardDuelCallouts", calloutLineNumber);
         //Clear data
         dialogueText.text = string.Empty;
         dialogueSpeaker.text = string.Empty;
-
         // If we paused on an object that has a "Text" property fetch this text and present it        
         var objectWithText = aObject as IObjectWithLocalizableText;
         if (objectWithText != null)
@@ -103,25 +105,22 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
             }
         }
 
-        Debug.Log(stageDirectionObject);
+        ////Debug.Log(stageDirectionObject);
 
-        if (stageDirectionObject != null)
-        {
+        if (calloutLineNumber != 67)
+        {   
+            calloutInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             articyStageDirection = stageDirectionObject.StageDirections;
             stageDirectionString = articyStageDirection.ToString();
-            //string letter = "#";
-            /*if (stageDirectionString.Contains(letter))
-            {
-                stageDirectionString.Replace(letter, "");
-                
-            }*/
-            Debug.Log(stageDirectionString);
-            PlayCalloutAudio(stageDirectionString);
+            //Debug.Log(stageDirectionString);
+            PlayCalloutAudio(stageDirectionString, calloutLineNumber);
         }
         else
         {
+            calloutInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             //PlayCalloutAudio("DBO1");
-            StartCoroutine(WaitToCloseDialogue());
+            //StartCoroutine(WaitToCloseDialogue());
+            PlayCalloutAudio(stageDirectionString, calloutLineNumber);
         } 
     }
 
@@ -136,15 +135,13 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
 
     }
 
-    private void PlayCalloutAudio(string articyId)
+    private void PlayCalloutAudio(string articyId, float lineNumber)
     {
-        string clean = articyId.Remove(0, 1);
-        Debug.Log(clean);
+        ///string clean = articyId.Remove(0, 1);
+        //Debug.Log(clean);
+        Debug.Log(lineNumber);
+        calloutsAudio.Play();
         calloutInstance = calloutsAudio.EventInstance;
-        //calloutsAudio.Stop();
-        ///RuntimeManager.StudioSystem.setParameterByNameWithLabel("WizardDuelCallouts", articyId);
-        calloutInstance.setParameterByNameWithLabel("WizardDuelCallouts", clean, false);
-        calloutInstance.start();
         lookForStop = true;
     }
 }

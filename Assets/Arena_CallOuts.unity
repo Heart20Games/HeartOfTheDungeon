@@ -753,6 +753,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3069357}
   m_SourcePrefab: {fileID: 100100000, guid: 2fc07c3f6b397b447a507a1aba1a483e, type: 3}
+--- !u!1 &68167753 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5026153778932137467, guid: c2d49873384aa584791b001a27d4a338, type: 3}
+  m_PrefabInstance: {fileID: 188428027}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &69413105 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4019255724392083620, guid: c2d49873384aa584791b001a27d4a338, type: 3}
@@ -4536,6 +4541,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2310074202460732721, guid: c2d49873384aa584791b001a27d4a338, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 5026153778932137467, guid: c2d49873384aa584791b001a27d4a338, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 405135809}
     - targetCorrespondingSourceObject: {fileID: 4019255724392083620, guid: c2d49873384aa584791b001a27d4a338, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1708489124}
@@ -7034,12 +7042,42 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4620518115960977095, guid: c2d49873384aa584791b001a27d4a338, type: 3}
   m_PrefabInstance: {fileID: 188428027}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 68167753}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 398e3879a49b3434fb40b8d40289c18a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &405135809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 68167753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -154181575
+      Data2: 1331114100
+      Data3: -1398446169
+      Data4: -485143735
+    Path: event:/VO/Wizard_Duel/Callouts/Arena_WizardsDuelCallout_VO
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &416373253 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 894096793177409401, guid: 2fc07c3f6b397b447a507a1aba1a483e, type: 3}
@@ -10266,33 +10304,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 342925791073981133, guid: 1019231494102cb46ad74df47f6aa10f, type: 3}
-      propertyPath: AllowFadeout
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 342925791073981133, guid: 1019231494102cb46ad74df47f6aa10f, type: 3}
-      propertyPath: Params.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1405388514449828269, guid: 1019231494102cb46ad74df47f6aa10f, type: 3}
-      propertyPath: ignoreInvalidBranches
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1405388514449828269, guid: 1019231494102cb46ad74df47f6aa10f, type: 3}
-      propertyPath: useDefaultGlobalVariables
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2665716239467737773, guid: 1019231494102cb46ad74df47f6aa10f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 25.111336
+      value: -0.811
       objectReference: {fileID: 0}
     - target: {fileID: 2665716239467737773, guid: 1019231494102cb46ad74df47f6aa10f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.4814086
+      value: 3.062
       objectReference: {fileID: 0}
     - target: {fileID: 2665716239467737773, guid: 1019231494102cb46ad74df47f6aa10f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 86.72932
+      value: 6.75
       objectReference: {fileID: 0}
     - target: {fileID: 2665716239467737773, guid: 1019231494102cb46ad74df47f6aa10f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -16797,9 +16819,10 @@ MonoBehaviour:
   articyRef:
     instanceId: 0
     referencingMode: 0
-    lowId: 1878
+    lowId: 3768
     highId: 16777216
   calloutID: DBO3
+  calloutLineNumber: 45
 --- !u!1001 &1721288045
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20057,14 +20080,6 @@ PrefabInstance:
     - target: {fileID: 702146778591997544, guid: 5862e4fa2f089c748bc4abcada4500b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6076740856449935193, guid: 5862e4fa2f089c748bc4abcada4500b7, type: 3}
-      propertyPath: reference.lowId
-      value: 1339
-      objectReference: {fileID: 0}
-    - target: {fileID: 6076740856449935193, guid: 5862e4fa2f089c748bc4abcada4500b7, type: 3}
-      propertyPath: reference.highId
-      value: 16777216
       objectReference: {fileID: 0}
     - target: {fileID: 6397629946223541319, guid: 5862e4fa2f089c748bc4abcada4500b7, type: 3}
       propertyPath: m_Name
