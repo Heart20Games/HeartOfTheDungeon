@@ -30,13 +30,13 @@ public class GameConditionsManager : MonoBehaviour
     public void CalloutCondition(int condition, ArticyRef articyRef)
     {
         articyReference = GetComponent<ArticyReference>();
-        if (condition <= 7)
-        {
+        //if (condition <= 7)
+        //{
             articyReference.reference = articyRef;
             Debug.Log(articyRef);
             DialogueManager.Instance.StartDialogue(articyReference.GetObject<ArticyObject>());
             condition++;
             Debug.Log(condition);
-        }  
+        //}  
     }
 }

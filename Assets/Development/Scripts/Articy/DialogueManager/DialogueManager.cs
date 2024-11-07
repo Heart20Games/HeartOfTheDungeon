@@ -4,6 +4,9 @@ using Articy.Unity;
 using Articy.Unity.Interfaces;
 using Articy.Heart_Of_The_Dungeon_Prologue;
 using TMPro;
+using FMODUnity;
+using FMOD.Studio;
+using System.Collections;
 
 public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
 {
@@ -13,8 +16,14 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
     [SerializeField] private GameObject dialogueWidget;
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private TextMeshProUGUI dialogueSpeaker;
+    [SerializeField] public StudioEventEmitter calloutsAudio;
 
     public bool DialogueActive { get; set; }
+    private bool lookForStop = false;
+    private EventInstance calloutInstance;
+    private ArticyString articyStageDirection;
+    private IObjectWithStageDirections stageDirectionObject;
+    private string stageDirectionString;
 
     private ArticyFlowPlayer flowPlayer;
 
@@ -35,11 +44,25 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
         flowPlayer = GetComponent<ArticyFlowPlayer>();
     }
 
+    void Update()
+    {
+        if (lookForStop)
+        {
+            calloutInstance.getPlaybackState(out PLAYBACK_STATE state);
+            if (state == PLAYBACK_STATE.STOPPED)
+            {
+                CloseDialogueBox();
+                lookForStop = false;
+            }
+        }
+    }
+
     public void StartDialogue(IArticyObject aObject)
     {
         DialogueActive = true;
         dialogueWidget.SetActive(DialogueActive);
         flowPlayer.StartOn = aObject;
+        stageDirectionObject = aObject as IObjectWithStageDirections;
     }
 
     public void CloseDialogueBox()
@@ -79,10 +102,49 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
                 dialogueSpeaker.text = speakerEntity.DisplayName;
             }
         }
+
+        Debug.Log(stageDirectionObject);
+
+        if (stageDirectionObject != null)
+        {
+            articyStageDirection = stageDirectionObject.StageDirections;
+            stageDirectionString = articyStageDirection.ToString();
+            //string letter = "#";
+            /*if (stageDirectionString.Contains(letter))
+            {
+                stageDirectionString.Replace(letter, "");
+                
+            }*/
+            Debug.Log(stageDirectionString);
+            PlayCalloutAudio(stageDirectionString);
+        }
+        else
+        {
+            //PlayCalloutAudio("DBO1");
+            StartCoroutine(WaitToCloseDialogue());
+        } 
+    }
+
+    private IEnumerator WaitToCloseDialogue()
+    {
+        yield return new WaitForSeconds(5);
+        CloseDialogueBox();
     }
 
     public void OnBranchesUpdated(IList<Branch> aBranches)
     {
 
+    }
+
+    private void PlayCalloutAudio(string articyId)
+    {
+        string clean = articyId.Remove(0, 1);
+        Debug.Log(clean);
+        calloutInstance = calloutsAudio.EventInstance;
+        //calloutsAudio.Stop();
+        ///RuntimeManager.StudioSystem.setParameterByNameWithLabel("WizardDuelCallouts", articyId);
+        calloutInstance.setParameterByNameWithLabel("WizardDuelCallouts", clean, false);
+        calloutInstance.start();
+        lookForStop = true;
     }
 }

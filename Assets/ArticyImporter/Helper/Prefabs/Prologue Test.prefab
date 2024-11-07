@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1405388514449828269}
   - component: {fileID: 8182317507080671832}
   - component: {fileID: -5193983402063203668}
+  - component: {fileID: 342925791073981133}
   m_Layer: 0
   m_Name: Prologue Test
   m_TagString: Untagged
@@ -47,17 +48,17 @@ MonoBehaviour:
   m_Script: {fileID: 149237616, guid: df2ec02f61e861546b9427c26ccacb8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useDefaultGlobalVariables: 1
+  useDefaultGlobalVariables: 0
   globalVariables: {fileID: 0}
   overwriteMethodProvider: 0
   overwrittenMethodProvider: {fileID: 0}
   startOn:
     instanceId: 0
     referencingMode: 0
-    lowId: 2701
+    lowId: 3858
     highId: 16777216
   pauseOn: 7
-  ignoreInvalidBranches: 1
+  ignoreInvalidBranches: 0
   continuouslyRecalculateBranches: 0
   continouslyRecalculateInterval: 1
 --- !u!114 &8182317507080671832
@@ -75,6 +76,8 @@ MonoBehaviour:
   dialogueWidget: {fileID: 4834386013432012317}
   dialogueText: {fileID: 8773418598951397990}
   dialogueSpeaker: {fileID: 4741612889879249513}
+  calloutsAudio: {fileID: 342925791073981133}
+  calloutsParamTrigger: {fileID: 0}
 --- !u!114 &-5193983402063203668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,6 +95,38 @@ MonoBehaviour:
     referencingMode: 0
     lowId: 1339
     highId: 16777216
+--- !u!114 &342925791073981133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3710607389337535545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -154181575
+      Data2: 1331114100
+      Data3: -1398446169
+      Data4: -485143735
+    Path: event:/VO/Wizard_Duel/Callouts/Arena_WizardsDuelCallout_VO
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params:
+  - Name: WizardDuelCallouts
+    Value: 67
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &4177152231533420104
 GameObject:
   m_ObjectHideFlags: 0
