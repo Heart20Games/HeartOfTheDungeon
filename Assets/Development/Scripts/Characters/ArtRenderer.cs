@@ -16,13 +16,14 @@ namespace HotD.Body
         //public List<string> animationParameters = new() { "run", "hit", "attack", "dead", "die" };
         //private readonly Dictionary<string, bool> parameterExists = new();
         //public List<string> existingParameters = new();
-        public bool Running { get => GetAnimBool("Run"); set => SetAnimBool("Run", value); }
-        public void Trigger(int idx) { AnimTrigger($"trigger{idx}"); }
-        public void Release(int idx) { AnimTrigger($"release{idx}"); }
-        public void Cast(int idx) { AnimTrigger($"Action{idx}"); }
-        public void UnCast(int idx) { AnimTrigger($"EndCast{idx}"); }
-        public void Hit() { AnimTrigger("Hit"); }
-        public bool Dead { get => GetAnimBool("Dead"); set => SetAnimBool("Dead", value); }
+        public bool Running { get => GetBool("Run"); set => SetBool("Run", value); }
+        public float RunVelocity { get => GetFloat("RunVelocity"); set => SetFloat("RunVelocity", value); }
+        public void Trigger(int idx) { SetTrigger($"trigger{idx}"); }
+        public void Release(int idx) { SetTrigger($"release{idx}"); }
+        public void Cast(int idx) { SetTrigger($"Action{idx}"); }
+        public void UnCast(int idx) { SetTrigger($"EndCast{idx}"); }
+        public void Hit() { SetTrigger("Hit"); }
+        public bool Dead { get => GetBool("Dead"); set => SetBool("Dead", value); }
 
         public bool toggleDead = false;
 
@@ -93,37 +94,18 @@ namespace HotD.Body
 
         // Animation
 
-        private bool HasParameter(string parameter)
-        {
-            return animator.HasParameter(parameter, this);
-        }
+        //private bool HasParameter(string parameter)
+        //{
+        //    return animator.HasParameter(parameter, this);
+        //}
 
-        private void AnimTrigger(string parameter)
-        {
-            if (HasParameter(parameter))
-                animator.SetTrigger(parameter);
-        }
-
-        private bool GetAnimBool(string parameter)
-        {
-            if (HasParameter(parameter))
-                return animator.GetBool(parameter);
-            return false;
-        }
-
-        private void SetAnimBoolTrigger(string boolParameter, bool value, string triggerParameter)
-        {
-            if (debug) print($"Set Anim BoolTrigger: {boolParameter} / {triggerParameter} ({value})");
-            SetAnimBool(boolParameter, value);
-            if (value)
-                AnimTrigger(triggerParameter);
-        }
-
-        private void SetAnimBool(string parameter, bool value)
-        {
-            if (HasParameter(parameter))
-                animator.SetBool(parameter, value);
-        }
+        //private void SetAnimBoolTrigger(string boolParameter, bool value, string triggerParameter)
+        //{
+        //    if (debug) print($"Set Anim BoolTrigger: {boolParameter} / {triggerParameter} ({value})");
+        //    SetBool(boolParameter, value);
+        //    if (value)
+        //        SetTrigger(triggerParameter);
+        //}
 
 
         // Recursive Initializers

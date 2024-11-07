@@ -1,10 +1,8 @@
 using UnityEngine;
 using UnityEngine.Events;
-using Body;
 using UnityEngine.Assertions;
 using MyBox;
 using System.Collections.Generic;
-using Codice.Client.Commands;
 
 namespace HotD.Body
 {
@@ -84,7 +82,7 @@ namespace HotD.Body
             get
             {
                 if (myRigidbody == null && !Body.TryGetComponent(out myRigidbody))
-                    Debug.LogError("Movement expects it's body to have a Rigidbody. None found.", this);
+                    Debug.LogWarning("Movement expects it's body to have a Rigidbody. None found.", this);
                 return myRigidbody;
             }
         }
@@ -144,8 +142,10 @@ namespace HotD.Body
 
         private void Awake()
         {
-            if(MyRigidbody) MyRigidbody.useGravity = false;
-
+            if (MyRigidbody != null)
+            {
+                MyRigidbody.useGravity = false;
+            }
             useGravity = Settings.useGravity;
             onSetMoveVector ??= new();
         }
@@ -156,6 +156,7 @@ namespace HotD.Body
         public void StopMoving()
         {
             MyRigidbody.velocity = Vector3.zero;
+            artRenderer.RunVelocity = MyRigidbody.velocity.magnitude;
         }
 
 
@@ -239,6 +240,11 @@ namespace HotD.Body
                 {
                     ApplyGravityForce();
                 }
+            }
+
+            if (artRenderer != null && MyRigidbody != null)
+            {
+                artRenderer.RunVelocity = MyRigidbody.velocity.magnitude;
             }
         }
 

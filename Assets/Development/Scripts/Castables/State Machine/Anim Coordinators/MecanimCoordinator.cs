@@ -7,6 +7,7 @@ using UnityEngine.Assertions;
 public class MecanimCoordinator : AnimationCoordinator
 {
     [ReadOnly][SerializeField] protected Animator animator;
+    [SerializeField] protected bool debug = false;
 
     private void Awake()
     {
@@ -25,7 +26,7 @@ public class MecanimCoordinator : AnimationCoordinator
         }
         else
         {
-            InvalidParameterWarning(kind, parameter);
+            InvalidParameterWarning(kind, parameter, debug);
             return false;
         }
     }
