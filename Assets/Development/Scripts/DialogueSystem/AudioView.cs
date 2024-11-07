@@ -10,6 +10,7 @@ public class AudioView : DialogueViewBase, IViewable
     public string skipTag = "no-va";
     public string paramTag = "param";
     public string defaultParamTag = "Prologue-VO";
+    public string prologueDialogSwitch = "Prologue_YS_param";
     public readonly ViewType viewType = ViewType.Audio;
     public FModEventLibary fmodEventLibrary;
     public EventReference fmodEvent;
@@ -58,8 +59,7 @@ public class AudioView : DialogueViewBase, IViewable
             
             //string paramName = fmodParamEvent.Path[(fmodParamEvent.Path.LastIndexOf('/') + 1)..];
             string clean = dialogueLine.TextID.Remove(4, 1);
-            instance.setParameterByNameWithLabel("Prologue_YS_param", clean);//paramName, clean);
-
+            instance.setParameterByNameWithLabel(prologueDialogSwitch, clean);//paramName, clean);
             other.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             instance.start();
