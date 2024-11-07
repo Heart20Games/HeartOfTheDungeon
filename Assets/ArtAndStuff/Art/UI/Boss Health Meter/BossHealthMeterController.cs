@@ -127,6 +127,21 @@ public class BossHealthMeterController : MonoBehaviour
         }
     }
 
+    public void BannerBegin()
+    {
+        revealHealthBar = true;
+    }
+
+    public void BannerSlide()
+    {
+        bannerMove = true;
+    }
+
+    public void BannerRemove()
+    {
+        bannerFadeOut = true;
+    }
+
     IEnumerator BannerMove()
     {
         bannerMove = false;
