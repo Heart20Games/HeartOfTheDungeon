@@ -472,6 +472,8 @@ namespace HotD.Generators
             coolDownTimer.onComplete = new();
             coolDownTimer.length = stats.Cooldown; // TODO: Account for bonuses
 
+            Debug.Log($"Cooldown time: {coolDownTimer.length}; {stats.Cooldown}");
+
             // Start Transition
             TransitionEvent startTransition = new("Start", CastAction.Start);
             UnityEventTools.AddVoidPersistentListener(startTransition.startAction, coolDownTimer.Play);
@@ -496,7 +498,9 @@ namespace HotD.Generators
             discharger.onCharged = new();
             discharger.discharge = true;
             discharger.distributeChargeTimes = true;
-            discharger.chargeTimes = new float[1] { 1 };
+            discharger.chargeTimes = new float[1] { stats.Cooldown };
+
+            Debug.Log($"Discharge time: {chargeTimes[0]}; {stats.Cooldown}");
 
             // Keep Charger Settings Updated
             UnityEventTools.AddPersistentListener(executor.fieldEvents.onSetPowerLevel, discharger.SetMaxLevel);

@@ -20,15 +20,21 @@ namespace DataManagement
         public List<IPersistent> persistents = new();
         [ReadOnly] public bool initialLoadComplete = false;
         public UnityEvent onInitialLoadComplete;
+
         public static DataManager Instance { get; private set; }
 
         private void Awake()
         {
             if (Instance != null)
             {
-                Debug.LogError("Expected only on Data Persistence Manager in the scene, but found multiple.");
+                Debug.LogError("Expected only one Data Persistence Manager in the scene, but found multiple.");
             }
             Instance = this;
+        }
+
+        private void OnDestroy()
+        {
+            Instance = null;
         }
 
         private void Start()

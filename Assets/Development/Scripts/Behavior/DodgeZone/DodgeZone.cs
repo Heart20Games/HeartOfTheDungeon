@@ -7,6 +7,7 @@ public class DodgeZone : MonoBehaviour
     [SerializeField] private SlimeWizard slimeWizard;
 
     [SerializeField] private Transform characterTransform;
+    [SerializeField] private Transform magicShieldParent;
 
     [SerializeField] private MagicShieldImpact magicShieldPrefab;
 
@@ -66,13 +67,12 @@ public class DodgeZone : MonoBehaviour
 
     private IEnumerator MagicShieldDodge()
     {
-        var magicShield = Instantiate(magicShieldPrefab);
+        var magicShield = Instantiate(magicShieldPrefab, magicShieldParent);
 
         magicShieldImpactObject = magicShield;
 
-        magicShield.transform.parent = characterTransform;
-        magicShield.transform.localScale = new Vector3(-2.5f, 2.5f, 2.5f);
-        magicShield.transform.localPosition = new Vector3(0, 3.157f, 0);
+        magicShield.transform.localScale = new Vector3(-6f, 6f, 6f);
+        magicShield.transform.localPosition = new Vector3(0, 6.0f, 0);
 
         magicShield.ToggleShield(true);
 

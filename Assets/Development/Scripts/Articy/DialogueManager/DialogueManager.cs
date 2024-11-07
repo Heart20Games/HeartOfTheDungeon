@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Articy.Unity;
 using Articy.Unity.Interfaces;
-using Articy.Heart_Of_The_Dungeon_Prologue;
+//using Articy.Heart_Of_The_Dungeon_Prologue;
 using TMPro;
 using FMODUnity;
 using FMOD.Studio;
@@ -98,7 +98,7 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
         {
             // If the object has a "Speaker" property, fetch the reference
             // and ensure it is really set to an "Entity" object to get its "DisplayName"
-            var speakerEntity = objectWithSpeaker.Speaker as Entity;
+            var speakerEntity = objectWithSpeaker.Speaker as IObjectWithDisplayName;
             if (speakerEntity != null)
             {
                 dialogueSpeaker.text = speakerEntity.DisplayName;

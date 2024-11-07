@@ -31,6 +31,7 @@ public class SlimeWizard : EnemyAI
     private CastedCollider magicLaserObject;
 
     [SerializeField] private float attackCoolDown;
+    [SerializeField] private float laserTrackingSpeed;
 
     private Coroutine magicBoltRoutine;
     private Coroutine laserRoutine;
@@ -90,8 +91,6 @@ public class SlimeWizard : EnemyAI
 
     public void DeadAnimation()
     {
-        slimeWizardAnimator.SetBool("Slime_Dead", true);
-
         StopEffectsOnDeath();
     }
 
@@ -196,7 +195,7 @@ public class SlimeWizard : EnemyAI
 
             if(laserRoutine == null)
             {
-                laserRoutine = StartCoroutine(LaserRoutine());
+                laserRoutine = StartCoroutine(LaserRoutine(Target));
             }
         }
 
@@ -210,7 +209,7 @@ public class SlimeWizard : EnemyAI
         magicBoltRoutine = null;
     }
 
-    private IEnumerator LaserRoutine()
+    private IEnumerator LaserRoutine(Transform targetToFollow)
     {
         float t = 0;
 
@@ -218,7 +217,10 @@ public class SlimeWizard : EnemyAI
         {
             t += Time.deltaTime;
 
-            slimeTransform.Rotate(0, 0.3f, 0, Space.World);
+            Vector3 dir = targetToFollow.position - slimeTransform.position;
+            dir.y = 0;
+            Quaternion rot = Quaternion.LookRotation(dir);
+            slimeTransform.rotation = Quaternion.Slerp(slimeTransform.rotation, rot, laserTrackingSpeed * Time.deltaTime);
 
             yield return null;
         }
@@ -247,6 +249,9 @@ public class SlimeWizard : EnemyAI
 
         chargingLevelOne = false;
         chargingLevelTwo = false;
+
+        slimeWizardAnimator.SetFloat("Action", 0);
+        slimeWizardAnimator.SetInteger("ChargeLevel", 0);
 
         magicBoltVfxAnimator.SetBool("Sustain", false);
 
@@ -281,5 +286,7 @@ public class SlimeWizard : EnemyAI
             isShootingLaser = false;
             laserRoutine = null;
         }
+
+        slimeWizardAnimator.SetBool("Slime_Dead", true);
     }
 }

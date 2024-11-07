@@ -258,8 +258,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slimeWizard: {fileID: 3838733345641873263}
   characterTransform: {fileID: 7553069593951812659}
+  magicShieldParent: {fileID: 7836722311954495166}
   magicShieldPrefab: {fileID: 4943859971788102025, guid: 4593640964cfbc14a9de1bf5f28f032e, type: 3}
-  dodgeChance: 0
+  dodgeChance: 65
   sideStepSpeed: 15
 --- !u!1 &6120449053151012203
 GameObject:
@@ -993,7 +994,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 608404790986451179, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: m_StoppingDistance
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 715258891913686905, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1017,7 +1018,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 850644614561672070, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.9
+      value: -1.88
       objectReference: {fileID: 0}
     - target: {fileID: 850644614561672070, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1205,7 +1206,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1517212409398845865, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 3325.3914
+      value: 3342.4001
       objectReference: {fileID: 0}
     - target: {fileID: 1517212409398845865, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1537,7 +1538,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4520041833351946365, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: m_Name
-      value: Green Slime
+      value: SlimeWizard
       objectReference: {fileID: 0}
     - target: {fileID: 4777641290605035741, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: rawDistance
@@ -1549,7 +1550,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4777641290605035741, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: rawPosition.x
-      value: 7.9
+      value: -1.88
       objectReference: {fileID: 0}
     - target: {fileID: 4777641290605035741, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: rawPosition.y
@@ -1565,7 +1566,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4777641290605035741, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: finalPosition.x
-      value: 7.9
+      value: -1.88
       objectReference: {fileID: 0}
     - target: {fileID: 4777641290605035741, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: finalPosition.y
@@ -1581,7 +1582,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4777641290605035741, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: lookAtPosition.x
-      value: 7.9
+      value: -1.88
       objectReference: {fileID: 0}
     - target: {fileID: 4777641290605035741, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: lookAtPosition.y
@@ -1621,7 +1622,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4777641290605035741, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: correctedPosition.x
-      value: 7.9
+      value: -1.88
       objectReference: {fileID: 0}
     - target: {fileID: 4777641290605035741, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: correctedPosition.y
@@ -1781,7 +1782,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8219524061194390841, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: rawPosition.x
-      value: 7.9
+      value: -1.88
       objectReference: {fileID: 0}
     - target: {fileID: 8219524061194390841, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: rawPosition.y
@@ -1797,7 +1798,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8219524061194390841, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: finalPosition.x
-      value: 7.9
+      value: -1.88
       objectReference: {fileID: 0}
     - target: {fileID: 8219524061194390841, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: finalPosition.y
@@ -1813,7 +1814,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8219524061194390841, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: lookAtPosition.x
-      value: 7.9
+      value: -1.88
       objectReference: {fileID: 0}
     - target: {fileID: 8219524061194390841, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: lookAtPosition.y
@@ -1853,7 +1854,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8219524061194390841, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: correctedPosition.x
-      value: 7.9
+      value: -1.88
       objectReference: {fileID: 0}
     - target: {fileID: 8219524061194390841, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
       propertyPath: correctedPosition.y
@@ -1954,7 +1955,7 @@ MonoBehaviour:
   distanceToReturnHome: 0
   distanceToChangeWaypoints: 0
   wayPointWaitTime: 0
-  attackTime: 2
+  attackTime: 1
   shouldPatrol: 0
   isBoss: 1
   actions:
@@ -1969,7 +1970,8 @@ MonoBehaviour:
   dodgeZone: {fileID: 7342282897969122059}
   magicBoltVfxAnimator: {fileID: 7089076269871250618}
   slimeWizardAnimator: {fileID: 2292039984232623578}
-  attackCoolDown: 1
+  attackCoolDown: 0.5
+  laserTrackingSpeed: 3
 --- !u!136 &785086219057356917 stripped
 CapsuleCollider:
   m_CorrespondingSourceObject: {fileID: 2659448263515444761, guid: a7ad3e875bb24dd449f4eb65002e7291, type: 3}
