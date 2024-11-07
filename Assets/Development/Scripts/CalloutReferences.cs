@@ -30,5 +30,5 @@ public class CalloutReferences : MonoBehaviour
         {
             instance = this;
         }
-    }
+    } 
 }
