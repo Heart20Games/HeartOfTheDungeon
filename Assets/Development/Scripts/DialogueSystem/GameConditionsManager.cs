@@ -34,5 +34,5 @@ public class GameConditionsManager : MonoBehaviour
             condition++;
             Debug.Log(condition);
         //}  
-    }
+    } 
 }

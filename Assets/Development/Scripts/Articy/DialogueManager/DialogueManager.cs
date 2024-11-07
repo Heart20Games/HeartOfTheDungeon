@@ -16,7 +16,7 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
     [SerializeField] private GameObject dialogueWidget;
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private TextMeshProUGUI dialogueSpeaker;
-    [SerializeField] public StudioEventEmitter calloutsAudio;
+    [SerializeField] public StudioEventEmitter calloutsAudio; 
     [SerializeField] private EventReference calloutsEvent;
 
     public bool DialogueActive { get; set; }
@@ -76,7 +76,6 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
     // This is called every time the flow player reaches an object of interest
     public void OnFlowPlayerPaused(IFlowObject aObject)
     {
-        ///RuntimeManager.StudioSystem.setParameterByName("WizardDuelCallouts", calloutLineNumber);
         //Clear data
         dialogueText.text = string.Empty;
         dialogueSpeaker.text = string.Empty;
@@ -112,14 +111,11 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
             calloutInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             articyStageDirection = stageDirectionObject.StageDirections;
             stageDirectionString = articyStageDirection.ToString();
-            //Debug.Log(stageDirectionString);
             PlayCalloutAudio(stageDirectionString, calloutLineNumber);
         }
         else
         {
             calloutInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            //PlayCalloutAudio("DBO1");
-            //StartCoroutine(WaitToCloseDialogue());
             PlayCalloutAudio(stageDirectionString, calloutLineNumber);
         } 
     }
@@ -137,8 +133,6 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
 
     private void PlayCalloutAudio(string articyId, float lineNumber)
     {
-        ///string clean = articyId.Remove(0, 1);
-        //Debug.Log(clean);
         Debug.Log(lineNumber);
         calloutsAudio.Play();
         calloutInstance = calloutsAudio.EventInstance;
