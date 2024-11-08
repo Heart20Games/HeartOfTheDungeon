@@ -1,3 +1,4 @@
+using HotD.Body;
 using HotD.Castables;
 using System.Collections;
 using UnityEngine;
@@ -24,6 +25,10 @@ public class SlimeWizard : EnemyAI
     [SerializeField] private VisualEffect magicBoltVfx;
 
     [SerializeField] private DodgeZone dodgeZone;
+
+    [SerializeField] private ArtRenderer artRenderer;
+
+    [SerializeField] private Rigidbody myRigidBody;
 
     [SerializeField] private Animator magicBoltVfxAnimator;
     [SerializeField] private Animator slimeWizardAnimator;
@@ -56,8 +61,6 @@ public class SlimeWizard : EnemyAI
 
         base.Update();
 
-        WalkAnimation();
-
         if(DidAttack)
         {
             if(!attacked)
@@ -77,15 +80,29 @@ public class SlimeWizard : EnemyAI
         }
     }
 
+    private void FixedUpdate()
+    {
+        WalkAnimation();
+    }
+
     private void WalkAnimation()
     {
         if(agent.remainingDistance > agent.stoppingDistance && !agent.isStopped)
         {
             slimeWizardAnimator.SetBool("Run", true);
+
+            artRenderer.RunVelocity = 3;
+
+            artRenderer.Running = true;
         }
         else
         {
             slimeWizardAnimator.SetBool("Run", false);
+
+            myRigidBody.velocity = Vector3.zero;
+            artRenderer.RunVelocity = 0;
+
+            artRenderer.Running = false;
         }
     }
 
@@ -287,6 +304,6 @@ public class SlimeWizard : EnemyAI
             laserRoutine = null;
         }
 
-        slimeWizardAnimator.SetBool("Slime_Dead", true);
+        slimeWizardAnimator.SetBool("Dead", true);
     }
 }
