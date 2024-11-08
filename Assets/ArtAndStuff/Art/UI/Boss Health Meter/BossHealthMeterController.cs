@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -151,6 +152,7 @@ public class BossHealthMeterController : MonoBehaviour
         bannerFadeOut = true;
     }
 
+    [ButtonMethod]
     public void TriggerBannerMove()
     {
         if (isActiveAndEnabled && !bannerMoveFired)
