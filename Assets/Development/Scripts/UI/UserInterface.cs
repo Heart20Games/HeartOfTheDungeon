@@ -14,11 +14,15 @@ public class UserInterface : BaseMonoBehaviour
     public Character controlledCharacter;
     public DialogueRunner dialogueRunner;
     public HUD hud;
+    public BossHealthMeterController bossHealthMeter;
     public GameObject controlScreen;
     public CharacterSheet characterSheet;
     public GameObject simpleDialogue;
     public EventSystem menuInputSystem;
     public Transform deathScreen;
+
+    bool canDismissBossHUD = true;
+    public bool CanDismissBossHUD { get => canDismissBossHUD; set => canDismissBossHUD = value; }
 
     private readonly List<GameObject> panels = new();
 
@@ -50,6 +54,12 @@ public class UserInterface : BaseMonoBehaviour
     public void SetHudActive(bool active)
     {
         hud.gameObject.SetActive(active);
+    }
+
+    public void SetBossHudActive(bool active)
+    {
+        if (canDismissBossHUD || active)
+            bossHealthMeter.gameObject.SetActive(active);
     }
 
     public void SetControlScreenActive(bool active)
