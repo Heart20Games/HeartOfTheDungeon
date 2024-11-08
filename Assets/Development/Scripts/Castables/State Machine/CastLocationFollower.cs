@@ -77,7 +77,7 @@ namespace HotD.Castables
             {
                 if (owner == null && character == null)
                 {
-                    Debug.LogWarning("Both owner and charater are null.");
+                    Debug.LogWarning("Both owner and charater are null.", this);
                 }
                 else
                 {
