@@ -156,7 +156,7 @@ public class BossHealthMeterController : MonoBehaviour
     [ButtonMethod]
     public void TriggerBannerMove()
     {
-        if (isActiveAndEnabled && (canMoveBannerBeforeRevealed || !healthBarRevealed))
+        if (isActiveAndEnabled && (canMoveBannerBeforeRevealed || healthBarRevealed))
         {
             if (!bannerMoveFired)
             {
