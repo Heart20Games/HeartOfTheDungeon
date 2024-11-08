@@ -25,7 +25,7 @@ public class BossHealthMeterController : MonoBehaviour
     [SerializeField] private float bannerFadeInSpeed = 1f;
     [SerializeField] private float textFadeInSpeed = 1f;
     [SerializeField] private float pipRevealSpeed = 1f;
-    [SerializeField] private float pipInitialRevealResizeSpeed = .01f;
+    [SerializeField] private float pipInitialRevealTime = .01f;
     private float bannerFadePosition = 0f;
     private float textFadePosition = 0f;
     private float portraitFadePosition = 0f;
@@ -280,12 +280,15 @@ public class BossHealthMeterController : MonoBehaviour
             bossHealthMeter.SetFloat("Old Health", i - 1);
             bossHealthMeter.SetFloat("New Health", i);
             bossHealthMeter.Reinit();
+
+            float startTime = Time.time;
             while (resizePosition < 1f)
-            {                                               
-                bossHealthMeter.SetFloat("Pip Resize Position", resizePosition);               
-                resizePosition += .05f;
-                yield return new WaitForSeconds(pipInitialRevealResizeSpeed*Time.deltaTime);        
+            {
+                resizePosition = Mathf.Lerp(0f, 1f, (Time.time - startTime) / pipInitialRevealTime);
+                bossHealthMeter.SetFloat("Pip Resize Position", resizePosition);
+                yield return null;
             }
+
             yield return new WaitForSeconds(pipRevealSpeed);
         }
         bossHealthMeter.SetFloat("Number of Health Pips", healthMax);
