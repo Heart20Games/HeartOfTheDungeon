@@ -57,6 +57,8 @@ namespace HotD
         // Game InputMode
         [Foldout("Game Mode", true)]
         [Header("Game Mode")]
+        public string dialogueMode = "Dialogue";
+        public string cutSceneMode = "Cutscene";
         [SerializeField] private InputMode initialInputMode = InputMode.None;
         [SerializeField] private Menu initialMenu = Menu.None;
         [SerializeField] private GameMode mode = new();

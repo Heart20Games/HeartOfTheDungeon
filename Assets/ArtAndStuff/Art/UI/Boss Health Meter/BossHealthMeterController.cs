@@ -52,7 +52,6 @@ public class BossHealthMeterController : MonoBehaviour
         bossHealthMeter.SetFloat("Text Angle", bannerPosition);
         bossHealthMeter.SetBool("No Subtext", false);
         bossHealthMeter.SetBool("No Description", false);
-        bossHealthMeter.SetBool("KillthePips", false);
     }
 
     // Update is called once per frame
