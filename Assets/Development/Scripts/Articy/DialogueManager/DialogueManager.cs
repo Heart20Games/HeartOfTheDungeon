@@ -4,6 +4,9 @@ using Articy.Unity;
 using Articy.Unity.Interfaces;
 //using Articy.Heart_Of_The_Dungeon_Prologue;
 using TMPro;
+using FMODUnity;
+using FMOD.Studio;
+using System.Collections;
 
 public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
 {
@@ -13,10 +16,17 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
     [SerializeField] private GameObject dialogueWidget;
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private TextMeshProUGUI dialogueSpeaker;
+    [SerializeField] public StudioEventEmitter calloutsAudio; 
+    [SerializeField] private EventReference calloutsEvent;
 
     public bool DialogueActive { get; set; }
-
+    private bool lookForStop = false;
+    private EventInstance calloutInstance;
+    private ArticyString articyStageDirection;
+    private IObjectWithStageDirections stageDirectionObject;
+    private string stageDirectionString;
     private ArticyFlowPlayer flowPlayer;
+    private float calloutLineNumber = 67;
 
     private void Awake()
     {
@@ -35,13 +45,28 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
         flowPlayer = GetComponent<ArticyFlowPlayer>();
     }
 
-    public void StartDialogue(IArticyObject aObject)
+    void Update()
+    {
+        if (lookForStop)
+        {
+            calloutInstance.getPlaybackState(out PLAYBACK_STATE state);
+            if (state == PLAYBACK_STATE.STOPPED)
+            {
+                CloseDialogueBox();
+                lookForStop = false;
+            }
+        }
+    }
+
+    public void StartDialogue(IArticyObject aObject, float lineNumber)
     {
         DialogueActive = true;
         dialogueWidget.SetActive(DialogueActive);
         flowPlayer.StartOn = aObject;
+        stageDirectionObject = aObject as IObjectWithStageDirections;
+        calloutLineNumber = lineNumber;
     }
-
+     
     public void CloseDialogueBox()
     {
         DialogueActive = false;
@@ -54,7 +79,6 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
         //Clear data
         dialogueText.text = string.Empty;
         dialogueSpeaker.text = string.Empty;
-
         // If we paused on an object that has a "Text" property fetch this text and present it        
         var objectWithText = aObject as IObjectWithLocalizableText;
         if (objectWithText != null)
@@ -79,10 +103,39 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
                 dialogueSpeaker.text = speakerEntity.DisplayName;
             }
         }
+
+        ////Debug.Log(stageDirectionObject);
+
+        if (calloutLineNumber != 67)
+        {   
+            calloutInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            articyStageDirection = stageDirectionObject.StageDirections;
+            stageDirectionString = articyStageDirection.ToString();
+            PlayCalloutAudio(stageDirectionString, calloutLineNumber);
+        }
+        else
+        {
+            calloutInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            PlayCalloutAudio(stageDirectionString, calloutLineNumber);
+        } 
+    }
+
+    private IEnumerator WaitToCloseDialogue()
+    {
+        yield return new WaitForSeconds(5);
+        CloseDialogueBox();
     }
 
     public void OnBranchesUpdated(IList<Branch> aBranches)
     {
 
+    }
+
+    private void PlayCalloutAudio(string articyId, float lineNumber)
+    {
+        Debug.Log(lineNumber);
+        calloutsAudio.Play();
+        calloutInstance = calloutsAudio.EventInstance;
+        lookForStop = true;
     }
 }
