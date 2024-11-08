@@ -9,6 +9,8 @@ public class DodgeZone : MonoBehaviour
     [SerializeField] private Transform characterTransform;
     [SerializeField] private Transform magicShieldParent;
 
+    [SerializeField] private Animator slimeAnimator;
+
     [SerializeField] private MagicShieldImpact magicShieldPrefab;
 
     private MagicShieldImpact magicShieldImpactObject;
@@ -115,6 +117,8 @@ public class DodgeZone : MonoBehaviour
 
         RaycastHit hit;
 
+        slimeAnimator.SetBool("Dodge", true);
+
         while (t < 0.5f)
         {
             t += Time.deltaTime;
@@ -141,6 +145,8 @@ public class DodgeZone : MonoBehaviour
 
             yield return null;
         }
+
+        slimeAnimator.SetBool("Dodge", false);
 
         sideStepRoutine = null;
     }
