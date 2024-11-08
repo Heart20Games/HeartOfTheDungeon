@@ -110,7 +110,7 @@ public class EnemyAI : Brain
 
         if(Target.GetComponent<CSController>().identity != CSIdentity.Identity.Friend) return;
 
-        if(Target.parent.GetComponent<Character>().CurrentHealth <= 0)
+        if (Target.parent.GetComponent<Character>().CurrentHealth <= 0)
         {
             PatrolState();
 
@@ -182,14 +182,14 @@ public class EnemyAI : Brain
 
         if (Target.GetComponent<CSController>().identity != CSIdentity.Identity.Friend) return;
 
-        if (Target.parent.GetComponent<Character>().CurrentHealth <= 0)
-        {
-            PatrolState();
+        //if (Target.parent.GetComponent<Character>().CurrentHealth <= 0)
+        //{
+        //    PatrolState();
 
-            attackTimeStep = 0;
+        //    attackTimeStep = 0;
 
-            return;
-        }
+        //    return;
+        //}
 
         SetTarget(Target);
 

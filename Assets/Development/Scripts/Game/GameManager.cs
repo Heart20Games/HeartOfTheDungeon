@@ -112,7 +112,8 @@ namespace HotD
         {
             //if (session) session.Initialize();
             InitializePlayableCharacters();
-            progressManager.RespawnToLastCheckpoint();
+            bool spawnedMainParty = progressManager.RespawnToLastCheckpoint();
+            if (!spawnedMainParty) Party.mainParty.Respawn();
             if (initialMenu != Menu.None)
             {
                 SetMode(initialMenu);
@@ -179,9 +180,14 @@ namespace HotD
             {
                 SetCharacter(playerParty.Leader);
             }
-            progressManager.RespawnToLastCheckpoint();
+            if (!progressManager.RespawnToLastCheckpoint())
+            {
+                playerParty.Respawn();
+            }
             if (mode.inputMode != InputMode.Character)
+            {
                 SetMode(InputMode.Character);
+            }
             onRestartLife.Invoke();
             restartingLife = false;
         }
@@ -224,6 +230,7 @@ namespace HotD
 
         [Foldout("Events")]
         [SerializeField] protected UnityEvent onStartGame = new();
+        [ButtonMethod]
         public void StartGame()
         {
             SetMode("Character");
