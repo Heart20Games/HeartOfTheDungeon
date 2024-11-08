@@ -52,7 +52,6 @@ public class BossHealthMeterController : MonoBehaviour
         bossHealthMeter.SetFloat("Text Angle", bannerPosition);
         bossHealthMeter.SetBool("No Subtext", false);
         bossHealthMeter.SetBool("No Description", false);
-        bossHealthMeter.SetBool("KillthePips", false);
     }
 
     // Update is called once per frame
@@ -108,7 +107,7 @@ public class BossHealthMeterController : MonoBehaviour
             }               
                                        
             resizePosition += .05f;
-            yield return new WaitForSeconds(pipResizeSpeed/50f);
+            yield return new WaitForSeconds(pipResizeSpeed*Time.deltaTime);
         }
 
         while (resizePosition < 1f && current > old)
@@ -121,7 +120,7 @@ public class BossHealthMeterController : MonoBehaviour
             }               
                                        
             resizePosition += .05f;
-            yield return new WaitForSeconds(pipResizeSpeed/50f);        
+            yield return new WaitForSeconds(pipResizeSpeed*Time.deltaTime);        
         }
     }
 
@@ -162,7 +161,7 @@ public class BossHealthMeterController : MonoBehaviour
                     portraitFadePosition -= .05f;
                     bossHealthMeter.SetFloat("Portrait Wipe Position", portraitFadePosition);
                 }
-                yield return new WaitForSeconds(bannerMoveSpeed/50f);
+                yield return new WaitForSeconds(bannerMoveSpeed*Time.deltaTime);
             }
             bannerSmall = true;
             GetComponent<SortingGroup>().sortingOrder = -2;
@@ -184,7 +183,7 @@ public class BossHealthMeterController : MonoBehaviour
                     portraitFadePosition += .05f;
                     bossHealthMeter.SetFloat("Portrait Wipe Position", portraitFadePosition);
                 }
-                yield return new WaitForSeconds(bannerMoveSpeed/50f);
+                yield return new WaitForSeconds(bannerMoveSpeed*Time.deltaTime);
             }
             bannerSmall = false;
             bossHealthMeter.SetBool("No Subtext", false);
@@ -217,7 +216,7 @@ public class BossHealthMeterController : MonoBehaviour
             bannerFadePosition += .05f;
             bossHealthMeter.SetFloat("Banner Wipe Position", bannerFadePosition);
             bloodRainVFX.SetFloat("Banner Wipe Position", bannerFadePosition);
-            yield return new WaitForSeconds(bannerFadeInSpeed/50f);
+            yield return new WaitForSeconds(bannerFadeInSpeed*Time.deltaTime);
         }
         bannerFadePosition = 1f;
         bossHealthMeter.SetFloat("Banner Wipe Position", bannerFadePosition);
@@ -234,7 +233,7 @@ public class BossHealthMeterController : MonoBehaviour
             portraitFadePosition += .05f;
             bossHealthMeter.SetFloat("Text Wipe Position", textFadePosition);
             bossHealthMeter.SetFloat("Portrait Wipe Position", portraitFadePosition);
-            yield return new WaitForSeconds(textFadeInSpeed/50f);
+            yield return new WaitForSeconds(textFadeInSpeed*Time.deltaTime);
         }
         textFadePosition = 1f;
         portraitFadePosition = 1f;
@@ -260,7 +259,7 @@ public class BossHealthMeterController : MonoBehaviour
             {                                               
                 bossHealthMeter.SetFloat("Pip Resize Position", resizePosition);               
                 resizePosition += .05f;
-                yield return new WaitForSeconds(pipInitialRevealResizeSpeed/50f);        
+                yield return new WaitForSeconds(pipInitialRevealResizeSpeed*Time.deltaTime);        
             }
             yield return new WaitForSeconds(pipRevealSpeed);
         }
@@ -287,7 +286,7 @@ public class BossHealthMeterController : MonoBehaviour
                     portraitFadePosition -= .05f;
                     bossHealthMeter.SetFloat("Portrait Wipe Position", portraitFadePosition);
                 }
-            yield return new WaitForSeconds(textFadeInSpeed/50f);
+            yield return new WaitForSeconds(textFadeInSpeed*Time.deltaTime);
         }
         bannerFadePosition = 0f;
         textFadePosition = 0f;
