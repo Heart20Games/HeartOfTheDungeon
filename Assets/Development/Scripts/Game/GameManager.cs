@@ -68,6 +68,7 @@ namespace HotD
         public MoveMode MoveMode { get => mode.moveMode; }
         public LookMode LookMode { get => mode.lookMode; }
         public Menu ActiveMenu { get => mode.activeMenu; set => SetMode(value); }
+        [SerializeField] private string swapToMode = "";
         public bool swapModes = false;
         [Foldout("Game Mode")] public bool reactivateMode = false;
 
@@ -87,6 +88,7 @@ namespace HotD
         [Foldout("Events", true)]
         [Header("Events")]
         public UnityEvent onPlayerDied;
+        [SerializeField] protected bool reloadScene = false;
         public UnityEvent onRestartScene;
         public UnityEvent onRestartLife;
         [Foldout("Events")] public UnityEvent onRestartGame;
@@ -152,8 +154,14 @@ namespace HotD
         [ButtonMethod]
         public void RestartScene()
         {
-            if (restartable)
+            if (restartable && reloadScene)
+            {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+            else
+            {
+                onRestartScene.Invoke();
+            }
         }
         [ButtonMethod]
         public void RestartGame()
@@ -191,7 +199,10 @@ namespace HotD
             if (swapModes)
             {
                 swapModes = false;
-                InputMode = InputMode;
+                if (swapToMode == "")
+                    InputMode = InputMode;
+                else
+                    SetMode(swapToMode);
             }
         }
 
@@ -208,6 +219,16 @@ namespace HotD
         {
             userInterface.CanDismissBossHUD = true;
             userInterface.SetBossHudActive(false);
+        }
+
+        // Start Game
+
+        [Foldout("Events")]
+        [SerializeField] protected UnityEvent onStartGame = new();
+        public void StartGame()
+        {
+            SetMode(InputMode.Character);
+            onStartGame.Invoke();
         }
 
 
