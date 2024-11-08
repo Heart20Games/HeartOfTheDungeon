@@ -1,6 +1,7 @@
 using Body.Behavior.ContextSteering;
 using CustomUnityEvents;
 using HotD.Body;
+using HotD.Castables;
 using MyBox;
 using Sisus.ComponentNames;
 using System;
@@ -64,7 +65,11 @@ public class Impact : Validator
         if (isActiveAndEnabled)
         {
             if (other.gameObject.layer == LayerMask.NameToLayer("DodgeZone")) return;
-            if (other.gameObject.GetComponent<MagicShieldImpact>()) return;
+
+            if (other.gameObject.GetComponent<MagicShieldImpact>())
+            {
+                if (other.gameObject.transform.parent.GetComponent<CastListenerDistributor>()) return;
+            }
 
             this.other = other;
             this.other.gameObject = other.gameObject;
