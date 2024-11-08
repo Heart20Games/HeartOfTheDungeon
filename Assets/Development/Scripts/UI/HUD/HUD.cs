@@ -8,6 +8,8 @@ using MyBox;
 
 public class HUD : BaseMonoBehaviour
 {
+    static public HUD main;
+
     [Foldout("Components", true)]
     public AbilityMenu abilityMenu;
     public PartySelectPanel partySelectPanel;
@@ -43,6 +45,8 @@ public class HUD : BaseMonoBehaviour
 
     private void Awake()
     {
+        HUD.main = this;
+
         if (crosshair != null)
             crosshair.gameObject.SetActive(false);
 

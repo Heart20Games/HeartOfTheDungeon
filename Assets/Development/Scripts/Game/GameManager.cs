@@ -48,7 +48,6 @@ namespace HotD
         [HideInInspector] public UserInterface userInterface;
         [HideInInspector] public VolumeManager volumeManager;
         [HideInInspector] public ProgressManager progressManager;
-        [HideInInspector] public HUD hud;
         [HideInInspector] public List<Interactable> interactables;
         [Foldout("Parts")][HideInInspector] public List<Character> allCharacters;
         private PlayerInput input;
@@ -133,15 +132,15 @@ namespace HotD
             if (playerParty != null)
             {
                 Character leader = playerParty.leader;
-                hud.MainCharacterSelect(leader);
+                HUD.main.MainCharacterSelect(leader);
                 foreach (var character in playerParty.members)
                 {
                     if (character != playerParty.leader)
-                        hud.AddAlly(character);
+                        HUD.main.AddAlly(character);
                 }
                 playerParty.onMemberDeath = OnCharacterDied;
             }
-            hud.SetParty(playerParty);
+            HUD.main.SetParty(playerParty);
 
             SetCharacterIdx(0);
             if (curCharacter == null)
@@ -227,7 +226,7 @@ namespace HotD
         [SerializeField] protected UnityEvent onStartGame = new();
         public void StartGame()
         {
-            SetMode(InputMode.Character);
+            SetMode("Character");
             onStartGame.Invoke();
         }
 
@@ -390,14 +389,14 @@ namespace HotD
             if (selectable == null)
             {
                 Print($"Target deselected: {selectedTarget}", debug);
-                hud.SetTarget(null);
+                HUD.main.SetTarget(null);
             }
             else
             {
                 Print($"Target selected: {selectable}", debug);
                 if (selectable.source.TryGetComponent<AIdentifiable>(out var identifiable))
                 {
-                    hud.SetTarget(identifiable);
+                    HUD.main.SetTarget(identifiable);
                 }
             }
             selectedTarget = selectable;
@@ -459,7 +458,7 @@ namespace HotD
                     curCharIdx = idx % (members.Count);
                     Character character = members[curCharIdx];
                     SetCharacter(character);
-                    hud.CharacterSelect(character);
+                    HUD.main.CharacterSelect(character);
                 }
             }
         }

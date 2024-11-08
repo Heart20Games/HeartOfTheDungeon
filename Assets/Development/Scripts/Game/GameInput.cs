@@ -22,7 +22,7 @@ namespace HotD
         // Systems
         public UserInterface UserInterface { get => Game.userInterface; }
         public VolumeManager VolumeManager { get => Game.volumeManager; }
-        public HUD Hud { get => Game.hud; }
+        public HUD Hud { get => HUD.main; }
 
         // Fields
         public Character CurCharacter { get => Game.CurCharacter; }
