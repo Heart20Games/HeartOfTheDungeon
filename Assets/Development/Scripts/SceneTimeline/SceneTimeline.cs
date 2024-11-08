@@ -25,6 +25,8 @@ public class SceneTimeline : BaseMonoBehaviour
     public UnityEvent onCutsceneCompleted;
 
     [SerializeField] private int paused = 0;
+    [SerializeField] private float shortcutTo = 0f;
+    [SerializeField] private bool shortcutOnStart = false;
 
     private void Awake()
     {
@@ -35,6 +37,7 @@ public class SceneTimeline : BaseMonoBehaviour
     {
         director = GetComponent<PlayableDirector>();
         UpdateCutsceneBank();
+        if (shortcutOnStart) Shortcut();
     }
 
     public void OnCutsceneCompleted(PlayableDirector director)
@@ -42,6 +45,12 @@ public class SceneTimeline : BaseMonoBehaviour
         if (this.director == director)
             director.stopped -= OnCutsceneCompleted;
         onCutsceneCompleted.Invoke();
+    }
+
+    [ButtonMethod]
+    public void Shortcut()
+    {
+        director.time = shortcutTo;
     }
 
     [ButtonMethod]
