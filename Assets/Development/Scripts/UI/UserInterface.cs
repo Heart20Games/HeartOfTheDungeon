@@ -26,6 +26,7 @@ public class UserInterface : BaseMonoBehaviour
 
     private readonly List<GameObject> panels = new();
 
+    [SerializeField] private bool debugContinue = false;
     public UnityEvent onContinue;
 
     private void Awake()
@@ -103,6 +104,7 @@ public class UserInterface : BaseMonoBehaviour
 
     public void Continue()
     {
+        Print("Continue called on UserInterface!", debugContinue, this);
         onContinue.Invoke();
     }
 

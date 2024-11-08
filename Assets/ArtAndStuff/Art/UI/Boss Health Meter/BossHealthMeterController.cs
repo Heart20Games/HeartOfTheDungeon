@@ -18,6 +18,7 @@ public class BossHealthMeterController : MonoBehaviour
     private float bannerPosition = 0f;
     [SerializeField] bool bannerMove = false;
     [SerializeField][ReadOnly] bool bannerMoveFired = false;
+    [SerializeField] bool canMoveBannerBeforeRevealed = false;
     [SerializeField] bool unpauseSceneTimelineOnBannerMove = false;
     private bool bannerSmall = false;
     [SerializeField] bool revealHealthBar = false;
@@ -155,15 +156,24 @@ public class BossHealthMeterController : MonoBehaviour
     [ButtonMethod]
     public void TriggerBannerMove()
     {
-        if (isActiveAndEnabled && !bannerMoveFired)
+        if (isActiveAndEnabled && (canMoveBannerBeforeRevealed || !healthBarRevealed))
         {
-            bannerMove = true;
-            bannerMoveFired = true;
-            if (unpauseSceneTimelineOnBannerMove && SceneTimeline.main)
+            if (!bannerMoveFired)
             {
-                SceneTimeline.main.UnPause();
+                print("Triggered Banner Move!");
+                bannerMove = true;
+                bannerMoveFired = true;
+                if (unpauseSceneTimelineOnBannerMove && SceneTimeline.main)
+                {
+                    SceneTimeline.main.UnPause();
+                }
+            }
+            else
+            {
+                print("Banner Move not Triggered-- already fired!");
             }
         }
+        else print("Ignoring, because not active/revealed.");
     }
 
     IEnumerator BannerMove()

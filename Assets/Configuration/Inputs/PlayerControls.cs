@@ -1666,6 +1666,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ""id"": ""1228cef1-8522-4fec-bbb1-e70928a9b061"",
             ""actions"": [
                 {
+                    ""name"": ""Continue"",
+                    ""type"": ""Button"",
+                    ""id"": ""7af8e1be-5a21-4d71-88a5-0547056b9e77"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Select"",
                     ""type"": ""Button"",
                     ""id"": ""d4bc3486-1711-4e2d-a402-a1c535c6c9d7"",
@@ -1757,28 +1766,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""42116508-a709-49ee-b5ce-7d38cb1745fe"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Select"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""99063820-c583-42a2-9226-27ddd365af2c"",
-                    ""path"": ""<Keyboard>/enter"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Select"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""1b419ab3-2d8d-468a-a6a8-bbc64a346dfb"",
@@ -2084,6 +2071,50 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""MouseDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eedbcb15-5195-4663-98f5-98000058f140"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad882697-9d76-4d50-8198-8ad2bf86239c"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""42116508-a709-49ee-b5ce-7d38cb1745fe"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""99063820-c583-42a2-9226-27ddd365af2c"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -3052,6 +3083,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Dismiss_Dismiss = m_Dismiss.FindAction("Dismiss", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
+        m_Menu_Continue = m_Menu.FindAction("Continue", throwIfNotFound: true);
         m_Menu_Select = m_Menu.FindAction("Select", throwIfNotFound: true);
         m_Menu_Cancel = m_Menu.FindAction("Cancel", throwIfNotFound: true);
         m_Menu_ChangeSelection = m_Menu.FindAction("Change Selection", throwIfNotFound: true);
@@ -3639,6 +3671,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     // Menu
     private readonly InputActionMap m_Menu;
     private List<IMenuActions> m_MenuActionsCallbackInterfaces = new List<IMenuActions>();
+    private readonly InputAction m_Menu_Continue;
     private readonly InputAction m_Menu_Select;
     private readonly InputAction m_Menu_Cancel;
     private readonly InputAction m_Menu_ChangeSelection;
@@ -3653,6 +3686,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         private @PlayerControls m_Wrapper;
         public MenuActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Continue => m_Wrapper.m_Menu_Continue;
         public InputAction @Select => m_Wrapper.m_Menu_Select;
         public InputAction @Cancel => m_Wrapper.m_Menu_Cancel;
         public InputAction @ChangeSelection => m_Wrapper.m_Menu_ChangeSelection;
@@ -3672,6 +3706,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_MenuActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_MenuActionsCallbackInterfaces.Add(instance);
+            @Continue.started += instance.OnContinue;
+            @Continue.performed += instance.OnContinue;
+            @Continue.canceled += instance.OnContinue;
             @Select.started += instance.OnSelect;
             @Select.performed += instance.OnSelect;
             @Select.canceled += instance.OnSelect;
@@ -3706,6 +3743,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IMenuActions instance)
         {
+            @Continue.started -= instance.OnContinue;
+            @Continue.performed -= instance.OnContinue;
+            @Continue.canceled -= instance.OnContinue;
             @Select.started -= instance.OnSelect;
             @Select.performed -= instance.OnSelect;
             @Select.canceled -= instance.OnSelect;
@@ -4113,6 +4153,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     }
     public interface IMenuActions
     {
+        void OnContinue(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
         void OnChangeSelection(InputAction.CallbackContext context);
