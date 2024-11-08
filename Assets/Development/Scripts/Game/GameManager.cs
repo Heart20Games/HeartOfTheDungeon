@@ -57,6 +57,8 @@ namespace HotD
         // Game InputMode
         [Foldout("Game Mode", true)]
         [Header("Game Mode")]
+        public string dialogueMode = "Dialogue";
+        public string cutSceneMode = "Cutscene";
         [SerializeField] private InputMode initialInputMode = InputMode.None;
         [SerializeField] private Menu initialMenu = Menu.None;
         [SerializeField] private GameMode mode = new();
@@ -128,7 +130,8 @@ namespace HotD
         {
             if (playerParty != null)
             {
-                hud.MainCharacterSelect(playerParty.leader);
+                Character leader = playerParty.leader;
+                hud.MainCharacterSelect(leader);
                 foreach (var character in playerParty.members)
                 {
                     if (character != playerParty.leader)
@@ -190,6 +193,21 @@ namespace HotD
                 swapModes = false;
                 InputMode = InputMode;
             }
+        }
+
+
+        // Boss Stuff
+
+        public void ShowBossHud()
+        {
+            userInterface.CanDismissBossHUD = false;
+            SetMode(Menu.BossHud);
+        }
+
+        public void HideBossHud()
+        {
+            userInterface.CanDismissBossHUD = true;
+            userInterface.SetBossHudActive(false);
         }
 
 
@@ -257,6 +275,7 @@ namespace HotD
             {
                 userInterface.SetHudActive(mode.hudActive);
                 userInterface.SetDialogueActive(mode.dialogueActive);
+                userInterface.SetBossHudActive(mode.activeMenu == Menu.BossHud);
                 userInterface.SetControlScreenActive(mode.activeMenu == Menu.ControlSheet);
                 userInterface.SetCharacterSheetActive(mode.activeMenu == Menu.CharacterSheet);
                 userInterface.SetMenuInputsActive(mode.activeMenu != Menu.None);

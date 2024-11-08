@@ -16,6 +16,8 @@ public class BossHealthMeterController : MonoBehaviour
     [SerializeField] private float bannerMoveSpeed = 1f;
     private float bannerPosition = 0f;
     [SerializeField] bool bannerMove = false;
+    [SerializeField][ReadOnly] bool bannerMoveFired = false;
+    [SerializeField] bool unpauseSceneTimelineOnBannerMove = false;
     private bool bannerSmall = false;
     [SerializeField] bool revealHealthBar = false;
     private bool healthBarRevealed = false;
@@ -31,7 +33,17 @@ public class BossHealthMeterController : MonoBehaviour
     [SerializeField] private float pauseBetweenTextAndPips = 1f;
     [SerializeField] private bool bannerFadeOut = false;
 
-    
+    private void OnEnable()
+    {
+        revealHealthBar = true;
+    }
+
+    private void OnDisable()
+    {
+        bannerMoveFired = false;
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -137,6 +149,19 @@ public class BossHealthMeterController : MonoBehaviour
     public void BannerRemove()
     {
         bannerFadeOut = true;
+    }
+
+    public void TriggerBannerMove()
+    {
+        if (isActiveAndEnabled && !bannerMoveFired)
+        {
+            bannerMove = true;
+            bannerMoveFired = true;
+            if (unpauseSceneTimelineOnBannerMove && SceneTimeline.main)
+            {
+                SceneTimeline.main.UnPause();
+            }
+        }
     }
 
     IEnumerator BannerMove()

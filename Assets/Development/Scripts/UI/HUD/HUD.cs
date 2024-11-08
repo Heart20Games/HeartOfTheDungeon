@@ -13,10 +13,8 @@ public class HUD : BaseMonoBehaviour
     public PartySelectPanel partySelectPanel;
     public TargetStatusDisplay targetCharacterPanel;
     public Transform crosshair;
-    public CastMeter castMeter;
-    private GameObject mainCamera;
     [Foldout("Components")]
-    private Canvas hudCanvas;
+    public CastMeter castMeter;
 
     [Space]
     [Foldout("Main Character", true)]
@@ -43,16 +41,6 @@ public class HUD : BaseMonoBehaviour
 
     // Builtin
 
-    [ButtonMethod]
-    public void SetCameraProperly()
-    {
-        hudCanvas = GetComponent<Canvas>();
-        hudCanvas.renderMode = RenderMode.ScreenSpaceCamera;
-
-        mainCamera = Camera.main.gameObject;
-        hudCanvas.worldCamera = Camera.main; //mainCamera.GetComponent<Camera>();
-    }
-
     private void Awake()
     {
         if (crosshair != null)
@@ -61,15 +49,8 @@ public class HUD : BaseMonoBehaviour
         if (targetCharacterPanel != null)
             SetTarget(null);
 
-        SetCameraProperly();
-
         if (spellSlots != null)
             spellSlots.gameObject.SetActive(useSpellSlots);
-    }
-
-    private void Start()
-    {
-        SetCameraProperly();
     }
 
     public void SetParty(Party party)
