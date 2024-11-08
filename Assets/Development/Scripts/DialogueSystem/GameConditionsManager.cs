@@ -29,10 +29,10 @@ public class GameConditionsManager : MonoBehaviour
         //if (condition <= 7)
         //{
             articyReference.reference = articyRef;
-            Debug.Log(articyRef);
+            Debug.Log(articyRef, this);
             DialogueManager.Instance.StartDialogue(articyReference.GetObject<ArticyObject>(), lineNumber);
             condition++;
-            Debug.Log(condition);
+            Debug.Log(condition, this);
         //}  
     } 
 }

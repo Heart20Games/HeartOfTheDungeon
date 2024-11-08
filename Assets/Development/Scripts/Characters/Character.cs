@@ -71,6 +71,7 @@ namespace HotD.Body
         [SerializeField] private Transform body;
         [SerializeField] private Pivot moveReticle;
         private float baseOffset;
+        [SerializeField][ReadOnly] private Movement movementDebug;
         private IMovement movement;
 
 
@@ -226,6 +227,7 @@ namespace HotD.Body
             // Components
             brain = GetIComponent<IBrain>();
             movement = GetIComponent<IMovement>();
+            movementDebug = movement as Movement;
             talker = GetIComponent<ITalker>();
             caster = GetIComponent<ICaster>();
 
@@ -329,6 +331,11 @@ namespace HotD.Body
                 SetMode(baseMode);
             }
         }
+        public void ClearModifiers()
+        {
+            modifiers.Clear();
+            SetMode(baseMode);
+        }
 
         [SerializeField] private bool debugMode = false;
         public void SetMode<T>(T subMode) where T : Enum
@@ -350,6 +357,8 @@ namespace HotD.Body
             CharacterMode oldMode = mode;
             baseMode = new_mode;
 
+            if (!isActiveAndEnabled) return;
+
             // Apply Modifiers and Set Mode
             foreach (var modifier in modifiers)
             {
@@ -360,7 +369,7 @@ namespace HotD.Body
             // Apply the Chosen Mode
 
             // Movement
-            Assert.IsNotNull(movement);
+            Assert.IsNotNull(movement, "Movement was null when applying mode?");
             movement.StopMoving();
             movement.MoveVector = new();
             movement.CanMove = new_mode.canMove;
@@ -373,7 +382,7 @@ namespace HotD.Body
             
             // Displays
             SetNonNullActive(moveReticle, new_mode.useMoveReticle);
-            if(!artRenderer.KeepActive) SetNonNullActive(artRenderer, new_mode.displayable);
+            SetNonNullActive(artRenderer, new_mode.displayable || artRenderer.KeepActive);
             if (pips != null) pips.SetDisplayMode(new_mode.pipMode);
             
             // Animation / Selection (Alive?)
@@ -464,15 +473,22 @@ namespace HotD.Body
         private Coroutine autoRespawnCoroutine;
         private Coroutine autoDespawnCoroutine;
 
+        [ButtonMethod]
+        public void RespawnAfterDelay()
+        {
+            autoRespawnCoroutine ??= CallAfterDelay(TriggerRespawn, autoRespawnDelay);
+        }
+
+        [ButtonMethod]
         public void Die(bool autoDespawn, bool autoRespawn)
         {
             Print($"{Name} died -- {mode.liveMode}", debug, this);
             Emotion = "dead";
             onDeath?.Invoke(this);
             onAlive?.Invoke(false);
-            
+
             // Timers
-            void respawnAfterDelay() => autoRespawnCoroutine ??= CallAfterDelay(TriggerRespawn, autoRespawnDelay);
+            void respawnAfterDelay() => RespawnAfterDelay();
             if (autoDespawn)
             {
                 autoDespawnCoroutine ??= CallAfterDelay(TriggerDespawn, autoDespawnDelay, autoRespawn ? respawnAfterDelay : null);
@@ -483,6 +499,7 @@ namespace HotD.Body
             }
         }
 
+        [ButtonMethod]
         public void Refresh()
         {
             Print($"Refreshing {Name}.", debug);
@@ -498,6 +515,7 @@ namespace HotD.Body
             afterAction?.Invoke();
             Respawn();
         }
+        [ButtonMethod]
         public void Respawn()
         {
             Print($"Respawing {Name}.", debug);
