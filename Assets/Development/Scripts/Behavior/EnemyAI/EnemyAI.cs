@@ -1,24 +1,26 @@
 using Body.Behavior;
 using Body.Behavior.ContextSteering;
 using HotD.Body;
+using MyBox;
 using System.Collections;
 using UnityEngine;
 
 public class EnemyAI : Brain
 {
-    [SerializeField] private Action currentAction;
+    [Foldout("Enemy AI", true)]
+    [SerializeField] protected Action currentAction;
 
-    [SerializeField] private Transform[] wayPoints;
+    [SerializeField] protected Transform[] wayPoints;
 
-    [SerializeField] private Animator animator;
+    [SerializeField] protected Animator animator;
 
-    [SerializeField] private float distanceToReturnHome;
-    [SerializeField] private float distanceToChangeWaypoints;
-    [SerializeField] private float wayPointWaitTime;
-    [SerializeField] private float attackTime;
+    [SerializeField] protected float distanceToReturnHome;
+    [SerializeField] protected float distanceToChangeWaypoints;
+    [SerializeField] protected float wayPointWaitTime;
+    [SerializeField] protected float attackTime;
 
-    [SerializeField] private bool shouldPatrol;
-    [SerializeField] private bool isBoss;
+    [SerializeField] protected bool shouldPatrol;
+    [SerializeField] protected bool isBoss;
 
     private bool didAttack;
 

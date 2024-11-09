@@ -12,6 +12,7 @@ namespace Body.Behavior
     using HotD.Castables;
     using HotD.Body;
     using HotD;
+    using MyBox;
 
     public enum Action { Idle, Patrol, Chase, Duel }
 
@@ -53,7 +54,8 @@ namespace Body.Behavior
             set => controller.identity=value;
         }
 
-        [SerializeField] private Transform target = null;
+        [Foldout("Brain", true)]
+        [SerializeField] protected Transform target = null;
         public Transform Target
         {
             get => target;
