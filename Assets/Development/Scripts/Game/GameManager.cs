@@ -225,6 +225,13 @@ namespace HotD
             userInterface.SetBossHudActive(false);
         }
 
+        // End Demo
+        
+        public void ShowEndDemoScreen()
+        {
+            SetMode(Menu.EndDemo);
+        }
+
         // Start Game
 
         [Foldout("Events")]
@@ -309,6 +316,7 @@ namespace HotD
                 userInterface.SetBossHudActive(mode.activeMenu == Menu.BossHud);
                 userInterface.SetControlScreenActive(mode.activeMenu == Menu.ControlSheet);
                 userInterface.SetCharacterSheetActive(mode.activeMenu == Menu.CharacterSheet);
+                userInterface.SetSimpleDialogueActive(mode.activeMenu == Menu.EndDemo);
                 userInterface.SetMenuInputsActive(mode.activeMenu != Menu.None);
                 userInterface.SetDeathScreenActive(mode.activeMenu == Menu.Death);
             }
