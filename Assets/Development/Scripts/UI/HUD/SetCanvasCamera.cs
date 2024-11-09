@@ -11,14 +11,25 @@ public class SetCanvasCamera : MonoBehaviour
     [ButtonMethod]
     public void SetCameraProperly()
     {
-        canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        if (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceCamera)
+        {
+            canvas.renderMode = RenderMode.ScreenSpaceCamera;
+            mainCamera = Camera.main.gameObject;
+            canvas.worldCamera = Camera.main; //mainCamera.GetComponent<Camera>();
+        }
+    }
 
-        mainCamera = Camera.main.gameObject;
-        canvas.worldCamera = Camera.main; //mainCamera.GetComponent<Camera>();
+    private void Awake()
+    {
+        canvas = GetComponent<Canvas>();
     }
 
     private void Start()
+    {
+        SetCameraProperly();
+    }
+
+    private void Update()
     {
         SetCameraProperly();
     }
