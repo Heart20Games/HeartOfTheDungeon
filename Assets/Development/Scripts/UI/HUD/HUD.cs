@@ -8,10 +8,13 @@ using MyBox;
 
 public class HUD : BaseMonoBehaviour
 {
+    static public HUD main;
+
     [Foldout("Components", true)]
     public AbilityMenu abilityMenu;
     public PartySelectPanel partySelectPanel;
     public TargetStatusDisplay targetCharacterPanel;
+    public bool useTargetPanel = true;
     public Transform crosshair;
     [Foldout("Components")]
     public CastMeter castMeter;
@@ -41,8 +44,15 @@ public class HUD : BaseMonoBehaviour
 
     // Builtin
 
+    private void OnDestroy()
+    {
+        if (HUD.main == this) HUD.main = null;
+    }
+
     private void Awake()
     {
+        HUD.main = this;
+
         if (crosshair != null)
             crosshair.gameObject.SetActive(false);
 
@@ -88,9 +98,18 @@ public class HUD : BaseMonoBehaviour
 
     public void SetTarget(IIdentifiable target)
     {
-        this.target = target;
-        hasTarget = target != null;
-        targetCharacterPanel.Target = target;
+        if (useTargetPanel)
+        {
+            this.target = target;
+            hasTarget = target != null;
+            targetCharacterPanel.Target = target;
+        }
+        else
+        {
+            this.target = null;
+            hasTarget = target != null;
+            targetCharacterPanel.Target = null;
+        }
     }
 
     public void AddAlly(IIdentifiable ally)

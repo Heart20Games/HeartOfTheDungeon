@@ -64,5 +64,7 @@ namespace Attributes
 
         public int BaseValue { get => baseValue; set { baseValue = (int)Mathf.Clamp(value, baseValueRange.x, baseValueRange.y); Updated(); } }
         public float BaseMultiplier { get => baseMultiplier; set { baseMultiplier = (int)Mathf.Clamp(value, baseMultiplierRange.x, baseMultiplierRange.y); Updated(); } }
+        public Vector2 BaseValueRange { get => baseValueRange; set => baseValueRange = value; }
+        public Vector2 BaseMultiplierRange { get => baseMultiplierRange; set => baseMultiplierRange = value; }
     }
 }

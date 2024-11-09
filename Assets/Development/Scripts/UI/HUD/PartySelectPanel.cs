@@ -39,7 +39,8 @@ public class PartySelectPanel : BaseMonoBehaviour
         wasDisabled = true;
 
         portraitAnimator.Rebind();
-        portraitAnimator.Update(0);
+        if (portraitAnimator.isActiveAndEnabled)
+            portraitAnimator.Update(0);
     }
 
     private void FixedUpdate()

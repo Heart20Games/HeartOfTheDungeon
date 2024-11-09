@@ -7,6 +7,7 @@ using MyBox;
 using HotD.PostProcessing;
 using HotD.Castables;
 using HotD.Body;
+using HotD.UI;
 
 namespace HotD
 {
@@ -22,7 +23,7 @@ namespace HotD
         // Systems
         public UserInterface UserInterface { get => Game.userInterface; }
         public VolumeManager VolumeManager { get => Game.volumeManager; }
-        public HUD Hud { get => Game.hud; }
+        public HUD Hud { get => HUD.main; }
 
         // Fields
         public Character CurCharacter { get => Game.CurCharacter; }
@@ -90,7 +91,7 @@ namespace HotD
         }
 
         // Aiming
-        public void OnFlipCamera(InputValue inputValue) { IsPressed(inputValue, CurCharacter.FlipCamera); }
+        public void OnFlipCamera(InputValue inputValue) { if (CurCharacter != null) IsPressed(inputValue, CurCharacter.FlipCamera); }
         public void OnAim(InputValue inputValue) { if (CurCharacter != null) CurCharacter.Aim(inputValue.Get<Vector2>()); }
         //public void OnToggleAiming(InputValue inputValue) { if (CurCharacter != null) CurCharacter.SetAimModeActive(inputValue.isPressed); }
 
