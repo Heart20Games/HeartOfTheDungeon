@@ -30,7 +30,8 @@ public class GameConditionsManager : MonoBehaviour
         //{
             articyReference.reference = articyRef;
             Debug.Log(articyRef, this);
-            DialogueManager.Instance.StartDialogue(articyReference.GetObject<ArticyObject>(), lineNumber);
+            if (DialogueManager.Instance != null)
+                DialogueManager.Instance.StartDialogue(articyReference.GetObject<ArticyObject>(), lineNumber);
             condition++;
             Debug.Log(condition, this);
         //}  
