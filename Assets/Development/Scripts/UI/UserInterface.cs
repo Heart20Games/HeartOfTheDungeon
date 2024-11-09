@@ -9,107 +9,110 @@ using Body;
 using UnityEngine.EventSystems;
 using HotD.Body;
 
-public class UserInterface : BaseMonoBehaviour
+namespace HotD.UI
 {
-    public Character controlledCharacter;
-    public DialogueRunner dialogueRunner;
-    public HUD hud;
-    public BossHealthMeterController bossHealthMeter;
-    public GameObject controlScreen;
-    public CharacterSheet characterSheet;
-    public GameObject simpleDialogue;
-    public EventSystem menuInputSystem;
-    public Transform deathScreen;
-
-    bool canDismissBossHUD = true;
-    public bool CanDismissBossHUD { get => canDismissBossHUD; set => canDismissBossHUD = value; }
-
-    private readonly List<GameObject> panels = new();
-
-    [SerializeField] private bool debugContinue = false;
-    public UnityEvent onContinue;
-
-    private void Awake()
+    public class UserInterface : BaseMonoBehaviour
     {
-        panels.Add(dialogueRunner.gameObject);
-        panels.Add(hud.gameObject);
-        panels.Add(controlScreen);
-        Portraits.main.Initialize();
-    }
+        public Character controlledCharacter;
+        public DialogueRunner dialogueRunner;
+        public HUD hud;
+        public BossHealthMeterController bossHealthMeter;
+        public GameObject controlScreen;
+        public CharacterSheet characterSheet;
+        public GameObject simpleDialogue;
+        public EventSystem menuInputSystem;
+        public Transform deathScreen;
 
-    public void Start()
-    {
-        SetDialogueActive(false);
-        SetHudActive(true);
-        SetControlScreenActive(false);
-        SetCharacterSheetActive(false);
-    }
+        bool canDismissBossHUD = true;
+        public bool CanDismissBossHUD { get => canDismissBossHUD; set => canDismissBossHUD = value; }
 
-    // Setters
+        private readonly List<GameObject> panels = new();
 
-    public void SetDialogueActive(bool active)
-    {
-        dialogueRunner.gameObject.SetActive(active);
-    }
+        [SerializeField] private bool debugContinue = false;
+        public UnityEvent onContinue;
 
-    public void SetHudActive(bool active)
-    {
-        hud.gameObject.SetActive(active);
-    }
+        private void Awake()
+        {
+            panels.Add(dialogueRunner.gameObject);
+            panels.Add(hud.gameObject);
+            panels.Add(controlScreen);
+            Portraits.main.Initialize();
+        }
 
-    public void SetBossHudActive(bool active)
-    {
-        if (canDismissBossHUD || active)
-            bossHealthMeter.gameObject.SetActive(active);
-    }
+        public void Start()
+        {
+            SetDialogueActive(false);
+            SetHudActive(true);
+            SetControlScreenActive(false);
+            SetCharacterSheetActive(false);
+        }
 
-    public void SetControlScreenActive(bool active)
-    {
-        controlScreen.SetActive(active);
-    }
+        // Setters
 
-    public void SetCharacterSheetActive(bool active)
-    {
-        characterSheet.gameObject.SetActive(active);
-    }
+        public void SetDialogueActive(bool active)
+        {
+            dialogueRunner.gameObject.SetActive(active);
+        }
 
-    public void SetSimpleDialogueActive(bool active)
-    {
-        simpleDialogue.SetActive(active);
-    }
+        public void SetHudActive(bool active)
+        {
+            hud.gameObject.SetActive(active);
+        }
 
-    public void SetMenuInputsActive(bool active)
-    {
-        menuInputSystem.gameObject.SetActive(active);
-    }
+        public void SetBossHudActive(bool active)
+        {
+            if (canDismissBossHUD || active)
+                bossHealthMeter.gameObject.SetActive(active);
+        }
 
-    public void SetDeathScreenActive(bool active)
-    {
-        deathScreen.gameObject.SetActive(active);
-    }
+        public void SetControlScreenActive(bool active)
+        {
+            controlScreen.SetActive(active);
+        }
 
-    // Set Character
+        public void SetCharacterSheetActive(bool active)
+        {
+            characterSheet.gameObject.SetActive(active);
+        }
 
-    public void SetCharacter(Character character)
-    {
-        controlledCharacter = character;
-        characterSheet.SetCharacter(character.StatBlock);
-    }
+        public void SetSimpleDialogueActive(bool active)
+        {
+            simpleDialogue.SetActive(active);
+        }
 
-    public void UpdateWeapon()
-    {
-    }
+        public void SetMenuInputsActive(bool active)
+        {
+            menuInputSystem.gameObject.SetActive(active);
+        }
 
-    // Continue
+        public void SetDeathScreenActive(bool active)
+        {
+            deathScreen.gameObject.SetActive(active);
+        }
 
-    public void Continue()
-    {
-        Print("Continue called on UserInterface!", debugContinue, this);
-        onContinue.Invoke();
-    }
+        // Set Character
 
-    public void Select()
-    {
+        public void SetCharacter(Character character)
+        {
+            controlledCharacter = character;
+            characterSheet.SetCharacter(character.StatBlock);
+        }
 
+        public void UpdateWeapon()
+        {
+        }
+
+        // Continue
+
+        public void Continue()
+        {
+            Print("Continue called on UserInterface!", debugContinue, this);
+            onContinue.Invoke();
+        }
+
+        public void Select()
+        {
+
+        }
     }
 }

@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Body;
 using UnityEngine.Events;
 using Selection;
 using UnityEngine.SceneManagement;
 using HotD.PostProcessing;
 using MyBox;
 using Yarn.Unity;
-using UnityEngine.Assertions;
 using HotD.Body;
+using HotD.UI;
 
 namespace HotD
 {
@@ -246,7 +245,10 @@ namespace HotD
         {
             if (debug) print($"Change InputMode to {name} (in bank? {(ModeBank.ContainsKey(name) ? "yes" : "no")})");
             if (ModeBank.TryGetValue(name, out GameMode mode))
-                SetMode(mode);
+            {
+                if (mode.active)
+                    SetMode(mode);
+            }
             else
             {
                 Debug.LogWarning($"Can't find game mode for \"{name}\"");
@@ -259,7 +261,7 @@ namespace HotD
             if (debug) print($"Change InputMode to {menu} (in bank? {(MenuBank.ContainsKey(menu) ? "yes" : "no")})");
             if (MenuBank.TryGetValue(menu, out GameMode mode))
             {
-                SetMode(mode);
+                if (mode.active) SetMode(mode);
             }
             else
             {
@@ -278,7 +280,9 @@ namespace HotD
             {
                 if (debug) print($"Change InputMode to {inputMode} (in bank? {(InputBank.ContainsKey(inputMode) ? "yes" : "no")})");
                 if (InputBank.TryGetValue(inputMode, out GameMode mode))
-                    SetMode(mode);
+                {
+                    if (mode.active) SetMode(mode);
+                }
                 else
                 {
                     Debug.LogWarning($"Can't find game mode for \"{inputMode}\"");
