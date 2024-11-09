@@ -34,6 +34,10 @@ namespace HotD
             }
             set => main = value;
         }
+        private void OnDestroy()
+        {
+            if (Game.main == this) Game.main = null;
+        }
 
         // Properties
         [Foldout("Parts", true)]
@@ -239,7 +243,9 @@ namespace HotD
         [ButtonMethod]
         public void StartGame()
         {
+            SetCharacter(Party.mainParty.Leader);
             SetMode("Character");
+            //SetMode(InputMode.Character);
             onStartGame.Invoke();
         }
 
