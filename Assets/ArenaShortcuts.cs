@@ -27,11 +27,13 @@ namespace HotD.Cheats
         [ReadOnly] public bool restartHeld;
         [ReadOnly] public bool cheatHeld;
 
+        [SerializeField] private bool jumpToCombatOnAwake;
+
         private BaseAttribute IntScore { get => mainCharacter.StatBlock.intelligence; }
 
         private void Awake()
         {
-            if (jumpToCombat) StartCoroutine(JumpToCombat());
+            if (jumpToCombat || jumpToCombatOnAwake) StartCoroutine(JumpToCombat());
         }
 
         private bool Pressed(InputValue inputValue)
