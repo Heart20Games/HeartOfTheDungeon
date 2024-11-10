@@ -133,7 +133,7 @@ namespace HotD
 
         public void InitializePlayableCharacters()
         {
-            Warning("No HUD found!", HUD.main, this);
+            Warning("No HUD found!", !HUD.main, this);
 
             if (playerParty != null)
             {
