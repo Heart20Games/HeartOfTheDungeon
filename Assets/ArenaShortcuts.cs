@@ -19,6 +19,8 @@ namespace HotD.Cheats
         public SceneTimeline timeline;
         [Space]
         public BossHealthMeterController bossHUD;
+        public float pipRevealSpeed = 0.00001f;
+        public float pipInitialRevealTime = 0.025f;
         [Space]
         public Character mainCharacter;
         public Respawn explodingBarrel;
@@ -74,8 +76,8 @@ namespace HotD.Cheats
             yield return null;
             mainCharacter.AimCamera.gameObject.SetActive(true);
 
-            bossHUD.pipRevealSpeed = 0.00001f;
-            bossHUD.pipInitialRevealTime = 0.1f;
+            bossHUD.pipRevealSpeed = pipRevealSpeed;
+            bossHUD.pipInitialRevealTime = pipInitialRevealTime;
             UserInterface.main.CanDismissBossHUD = false;
             Game.main.ShowBossHud();
             Print("Showing the Boss Hud");
