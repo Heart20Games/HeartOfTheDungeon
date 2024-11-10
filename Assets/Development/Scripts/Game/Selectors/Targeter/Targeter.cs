@@ -33,8 +33,15 @@ namespace Selection
         }
         public UnityEvent<ASelectable> onTargetSet;
 
+        private void OnDestroy()
+        {
+            if (Targeter.main == this) Targeter.main = null;
+        }
+
         private void Awake()
         {
+            Targeter.main = this;
+
             if (virtualCamera != null)
                 cmCollider = virtualCamera.GetComponent<CinemachineCollider>();
             main = this;
@@ -169,13 +176,11 @@ namespace Selection
         {
             this.targetLock = targetLock;
 
-            if (Finder == null)
+            if (Finder != null)
             {
-                Debug.LogWarning("No Target Finder found. Can't set Target Lock.", this);
-                return;
+                Finder.SetLockOn(targetLock);
             }
 
-            Finder.SetLockOn(targetLock);
             ResetCameras();
             virtualCamera.gameObject.SetActive(targetLock);
             if (targetLock)
