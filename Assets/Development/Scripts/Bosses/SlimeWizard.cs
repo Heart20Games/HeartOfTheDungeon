@@ -46,10 +46,10 @@ public class SlimeWizard : EnemyAI
 
     private float coolDownTimer;
 
-    private bool attacked;
-    private bool isShootingLaser;
-    private bool chargingLevelOne;
-    private bool chargingLevelTwo;
+    [SerializeField][ReadOnly] private bool attacked;
+    [SerializeField][ReadOnly] private bool isShootingLaser;
+    [SerializeField][ReadOnly] private bool chargingLevelOne;
+    [SerializeField][ReadOnly] private bool chargingLevelTwo;
 
     public bool IsShootingLaser => isShootingLaser;
 
