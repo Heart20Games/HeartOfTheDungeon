@@ -133,18 +133,23 @@ namespace HotD
 
         public void InitializePlayableCharacters()
         {
+            Warning("No HUD found!", HUD.main, this);
+
             if (playerParty != null)
             {
                 Character leader = playerParty.leader;
-                HUD.main.MainCharacterSelect(leader);
-                foreach (var character in playerParty.members)
+                if (HUD.main)
                 {
-                    if (character != playerParty.leader)
-                        HUD.main.AddAlly(character);
+                    HUD.main.MainCharacterSelect(leader);
+                    foreach (var character in playerParty.members)
+                    {
+                        if (character != playerParty.leader)
+                            HUD.main.AddAlly(character);
+                    }
                 }
                 playerParty.onMemberDeath = OnCharacterDied;
             }
-            HUD.main.SetParty(playerParty);
+            if (HUD.main) HUD.main.SetParty(playerParty);
 
             SetCharacterIdx(0);
             if (curCharacter == null)
