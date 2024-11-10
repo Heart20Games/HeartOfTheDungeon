@@ -15,6 +15,8 @@ public class DodgeZone : MonoBehaviour
 
     private MagicShieldImpact magicShieldImpactObject;
 
+    [Tooltip("Percent Chance of Dodging.")]
+    [Range(0f, 100f)]
     [SerializeField] private int dodgeChance;
 
     [SerializeField] private float sideStepSpeed;
@@ -53,17 +55,11 @@ public class DodgeZone : MonoBehaviour
 
         if (randomChance == 0)
         {
-            if (sideStepRoutine == null)
-            {
-                sideStepRoutine = StartCoroutine(SidestepDodge());
-            }
+            sideStepRoutine ??= StartCoroutine(SidestepDodge());
         }
         else
         {
-            if (magicShieldRoutine == null)
-            {
-                magicShieldRoutine = StartCoroutine(MagicShieldDodge());
-            }
+            magicShieldRoutine ??= StartCoroutine(MagicShieldDodge());
         }
     }
 
