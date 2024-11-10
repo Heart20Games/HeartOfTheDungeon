@@ -40,6 +40,11 @@ public class SceneTimeline : BaseMonoBehaviour
         if (shortcutOnStart) Shortcut();
     }
 
+    private void OnDestroy()
+    {
+        if (SceneTimeline.main == this) SceneTimeline.main = null;
+    }
+
     public void OnCutsceneCompleted(PlayableDirector director)
     {
         if (this.director == director)
@@ -50,6 +55,11 @@ public class SceneTimeline : BaseMonoBehaviour
     [ButtonMethod]
     public void Shortcut()
     {
+        Shortcut(shortcutTo);
+    }
+    public void Shortcut(float shortcutTo)
+    {
+        if (director == null) director = GetComponent<PlayableDirector>();
         director.time = shortcutTo;
     }
 

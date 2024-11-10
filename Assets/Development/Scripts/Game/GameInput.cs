@@ -91,7 +91,7 @@ namespace HotD
         }
 
         // Aiming
-        public void OnFlipCamera(InputValue inputValue) { IsPressed(inputValue, CurCharacter.FlipCamera); }
+        public void OnFlipCamera(InputValue inputValue) { if (CurCharacter != null) IsPressed(inputValue, CurCharacter.FlipCamera); }
         public void OnAim(InputValue inputValue) { if (CurCharacter != null) CurCharacter.Aim(inputValue.Get<Vector2>()); }
         //public void OnToggleAiming(InputValue inputValue) { if (CurCharacter != null) CurCharacter.SetAimModeActive(inputValue.isPressed); }
 

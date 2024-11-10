@@ -44,6 +44,11 @@ public class HUD : BaseMonoBehaviour
 
     // Builtin
 
+    private void OnDestroy()
+    {
+        if (HUD.main == this) HUD.main = null;
+    }
+
     private void Awake()
     {
         HUD.main = this;

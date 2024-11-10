@@ -13,6 +13,12 @@ namespace HotD.UI
 {
     public class UserInterface : BaseMonoBehaviour
     {
+        public static UserInterface main;
+        private void OnDestroy()
+        {
+            if (UserInterface.main == this) UserInterface.main = null;
+        }
+
         public Character controlledCharacter;
         public DialogueRunner dialogueRunner;
         public HUD hud;
@@ -33,6 +39,7 @@ namespace HotD.UI
 
         private void Awake()
         {
+            UserInterface.main = this;
             panels.Add(dialogueRunner.gameObject);
             panels.Add(hud.gameObject);
             panels.Add(controlScreen);

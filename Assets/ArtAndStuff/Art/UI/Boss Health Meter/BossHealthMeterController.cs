@@ -2,6 +2,7 @@ using HotD.Body;
 using MyBox;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Rendering;
 using UnityEngine.VFX;
 
@@ -21,6 +22,8 @@ namespace HotD.UI
         private float bannerPosition = 0f;
         [SerializeField] bool bannerMove = false;
         [SerializeField][ReadOnly] bool bannerMoveFired = false;
+        [SerializeField][ReadOnly] public bool bannerMoveBuffered;
+        [SerializeField] public bool bufferBannerMove;
         [SerializeField] bool canMoveBannerBeforeRevealed = false;
         [SerializeField] bool unpauseSceneTimelineOnBannerMove = false;
         private bool bannerSmall = false;
@@ -29,8 +32,8 @@ namespace HotD.UI
         private bool healthBarTransition;
         [SerializeField] private float bannerFadeInSpeed = 1f;
         [SerializeField] private float textFadeInSpeed = 1f;
-        [SerializeField] private float pipRevealSpeed = 1f;
-        [SerializeField] private float pipInitialRevealTime = .01f;
+        [SerializeField] public float pipRevealSpeed = 1f;  // Maybe should be private?
+        [SerializeField] public float pipInitialRevealTime = .01f; // Maybe should be private?
         private float bannerFadePosition = 0f;
         private float textFadePosition = 0f;
         private float portraitFadePosition = 0f;
@@ -89,6 +92,12 @@ namespace HotD.UI
             {
                 bossHealthMeter.SetFloat("Number of Health Pips", healthMax);
 
+                if (bannerMoveBuffered && bufferBannerMove)
+                {
+                    bannerMove = true;
+                    bannerMoveFired = true;
+                    bannerMoveBuffered = false;
+                }
 
                 if (currentHealth != previousHealth)
                 {
@@ -160,8 +169,13 @@ namespace HotD.UI
             bannerFadeOut = true;
         }
 
+        public UnityAction onBannerMove;
         [ButtonMethod]
         public void TriggerBannerMove()
+        {
+            TriggerBannerMove(true);
+        }
+        public void TriggerBannerMove(bool cameFromCutscene)
         {
             if (isActiveAndEnabled && (canMoveBannerBeforeRevealed || healthBarRevealed))
             {
@@ -170,7 +184,8 @@ namespace HotD.UI
                     print("Triggered Banner Move!");
                     bannerMove = true;
                     bannerMoveFired = true;
-                    if (unpauseSceneTimelineOnBannerMove && SceneTimeline.main)
+                    bannerMoveBuffered = false;
+                    if (unpauseSceneTimelineOnBannerMove && SceneTimeline.main && cameFromCutscene)
                     {
                         SceneTimeline.main.UnPause();
                     }
@@ -180,11 +195,17 @@ namespace HotD.UI
                     print("Banner Move not Triggered-- already fired!");
                 }
             }
-            else print("Ignoring, because not active/revealed.");
+            else
+            {
+                bannerMoveBuffered = true;
+                print("Ignoring, because not active/revealed.");
+            } 
         }
 
         IEnumerator BannerMove()
         {
+            onBannerMove?.Invoke();
+
             bannerMove = false;
             if (!bannerSmall)
             {
