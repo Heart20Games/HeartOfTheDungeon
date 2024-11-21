@@ -2,17 +2,21 @@ using HotD.Castables;
 using System.Collections;
 using UnityEngine;
 
-public class DodgeZone : MonoBehaviour
+public class DodgeZone : BaseMonoBehaviour
 {
     [SerializeField] private SlimeWizard slimeWizard;
 
     [SerializeField] private Transform characterTransform;
     [SerializeField] private Transform magicShieldParent;
 
+    [SerializeField] private Animator slimeAnimator;
+
     [SerializeField] private MagicShieldImpact magicShieldPrefab;
 
     private MagicShieldImpact magicShieldImpactObject;
 
+    [Tooltip("Percent Chance of Dodging.")]
+    [Range(0f, 100f)]
     [SerializeField] private int dodgeChance;
 
     [SerializeField] private float sideStepSpeed;
@@ -20,13 +24,24 @@ public class DodgeZone : MonoBehaviour
     private Coroutine sideStepRoutine;
     private Coroutine magicShieldRoutine;
 
+    [SerializeField] private bool debug;
+    [SerializeField] private bool debugAll;
+
     private void OnTriggerEnter(Collider other)
     {
+        Print($"Trigger Entered DodgeZone ({other.gameObject.name})", debugAll, this);
+
         if (slimeWizard.IsShootingLaser) return;
+
+        Print($"Trigger Entered While Not Firing Laser ({slimeWizard.IsShootingLaser})", debugAll, this);
 
         if(other.GetComponent<Projectile>())
         {
+            Print("Trigger Entered Projectile", debug, this);
+
             if(other.GetComponent<Projectile>().ShouldIgnoreDodgeLayer) return;
+
+            Print("DodgeZone Started Dodge", debug, this);
 
             CalculateDodgeChance();
         }
@@ -51,17 +66,11 @@ public class DodgeZone : MonoBehaviour
 
         if (randomChance == 0)
         {
-            if (sideStepRoutine == null)
-            {
-                sideStepRoutine = StartCoroutine(SidestepDodge());
-            }
+            sideStepRoutine ??= StartCoroutine(SidestepDodge());
         }
         else
         {
-            if (magicShieldRoutine == null)
-            {
-                magicShieldRoutine = StartCoroutine(MagicShieldDodge());
-            }
+            magicShieldRoutine ??= StartCoroutine(MagicShieldDodge());
         }
     }
 
@@ -115,6 +124,8 @@ public class DodgeZone : MonoBehaviour
 
         RaycastHit hit;
 
+        slimeAnimator.SetBool("Dodge", true);
+
         while (t < 0.5f)
         {
             t += Time.deltaTime;
@@ -141,6 +152,8 @@ public class DodgeZone : MonoBehaviour
 
             yield return null;
         }
+
+        slimeAnimator.SetBool("Dodge", false);
 
         sideStepRoutine = null;
     }

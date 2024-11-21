@@ -1,4 +1,6 @@
+using HotD.Body;
 using HotD.Castables;
+using MyBox;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -6,6 +8,7 @@ using UnityEngine.VFX;
 [System.Serializable]
 public class Actions
 {
+    [SerializeField] private string name = "Action";
     [SerializeField] private GameObject projectileToShoot;
 
     [SerializeField] private int castChance;
@@ -17,6 +20,7 @@ public class Actions
 
 public class SlimeWizard : EnemyAI
 {
+    [Foldout("Slime Wizard", true)]
     [SerializeField] private Actions[] actions;
 
     [SerializeField] private Transform slimeTransform;
@@ -24,6 +28,10 @@ public class SlimeWizard : EnemyAI
     [SerializeField] private VisualEffect magicBoltVfx;
 
     [SerializeField] private DodgeZone dodgeZone;
+
+    [SerializeField] private ArtRenderer artRenderer;
+
+    [SerializeField] private Rigidbody myRigidBody;
 
     [SerializeField] private Animator magicBoltVfxAnimator;
     [SerializeField] private Animator slimeWizardAnimator;
@@ -38,10 +46,10 @@ public class SlimeWizard : EnemyAI
 
     private float coolDownTimer;
 
-    private bool attacked;
-    private bool isShootingLaser;
-    private bool chargingLevelOne;
-    private bool chargingLevelTwo;
+    [SerializeField][ReadOnly] private bool attacked;
+    [SerializeField][ReadOnly] private bool isShootingLaser;
+    [SerializeField][ReadOnly] private bool chargingLevelOne;
+    [SerializeField][ReadOnly] private bool chargingLevelTwo;
 
     public bool IsShootingLaser => isShootingLaser;
 
@@ -55,8 +63,6 @@ public class SlimeWizard : EnemyAI
         if (character.CurrentHealth <= 0) return;
 
         base.Update();
-
-        WalkAnimation();
 
         if(DidAttack)
         {
@@ -77,15 +83,29 @@ public class SlimeWizard : EnemyAI
         }
     }
 
+    private void FixedUpdate()
+    {
+        WalkAnimation();
+    }
+
     private void WalkAnimation()
     {
         if(agent.remainingDistance > agent.stoppingDistance && !agent.isStopped)
         {
             slimeWizardAnimator.SetBool("Run", true);
+
+            artRenderer.RunVelocity = 3;
+
+            artRenderer.Running = true;
         }
         else
         {
             slimeWizardAnimator.SetBool("Run", false);
+
+            myRigidBody.velocity = Vector3.zero;
+            artRenderer.RunVelocity = 0;
+
+            artRenderer.Running = false;
         }
     }
 
@@ -287,6 +307,6 @@ public class SlimeWizard : EnemyAI
             laserRoutine = null;
         }
 
-        slimeWizardAnimator.SetBool("Slime_Dead", true);
+        slimeWizardAnimator.SetBool("Dead", true);
     }
 }

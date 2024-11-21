@@ -39,6 +39,12 @@ public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
 
     }
 
+    [Conditional("DEVELOPMENT_BUILD"), Conditional("UNITY_EDITOR")]
+    protected void Warning(object message, bool debug = true, Object context = null)
+    {
+        if (debug) Debug.LogWarning(message, context == null ? this : context);
+    }
+
     [Conditional("UNITY_EDITOR")]
     protected void Break(bool debug = true, Object context = null)
     {

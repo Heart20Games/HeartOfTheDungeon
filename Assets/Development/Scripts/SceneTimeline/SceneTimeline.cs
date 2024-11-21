@@ -1,3 +1,4 @@
+using HotD;
 using MyBox;
 using System;
 using System.Collections;
@@ -6,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Playables;
 using Yarn.Unity;
+using static HotD.GameModes;
 
 public class SceneTimeline : BaseMonoBehaviour
 {
@@ -23,6 +25,8 @@ public class SceneTimeline : BaseMonoBehaviour
     public UnityEvent onCutsceneCompleted;
 
     [SerializeField] private int paused = 0;
+    [SerializeField] private float shortcutTo = 0f;
+    [SerializeField] private bool shortcutOnStart = false;
 
     private void Awake()
     {
@@ -33,6 +37,12 @@ public class SceneTimeline : BaseMonoBehaviour
     {
         director = GetComponent<PlayableDirector>();
         UpdateCutsceneBank();
+        if (shortcutOnStart) Shortcut();
+    }
+
+    private void OnDestroy()
+    {
+        if (SceneTimeline.main == this) SceneTimeline.main = null;
     }
 
     public void OnCutsceneCompleted(PlayableDirector director)
@@ -40,6 +50,17 @@ public class SceneTimeline : BaseMonoBehaviour
         if (this.director == director)
             director.stopped -= OnCutsceneCompleted;
         onCutsceneCompleted.Invoke();
+    }
+
+    [ButtonMethod]
+    public void Shortcut()
+    {
+        Shortcut(shortcutTo);
+    }
+    public void Shortcut(float shortcutTo)
+    {
+        if (director == null) director = GetComponent<PlayableDirector>();
+        director.time = shortcutTo;
     }
 
     [ButtonMethod]
@@ -115,6 +136,8 @@ public class SceneTimeline : BaseMonoBehaviour
             if (paused >= 0)
                 director.playableGraph.GetRootPlayable(0).SetSpeed(1);
             //director.Play();
+
+            Game.main.SetMode(Game.main.dialogueMode);
         }
         else
             Debug.LogWarning("Tried unpausing a cutscene that does not exist.");

@@ -5,6 +5,7 @@ using Yarn.Unity;
 using Body;
 using HotD.PostProcessing;
 using HotD.Body;
+using HotD.UI;
 
 namespace HotD
 {
@@ -77,13 +78,9 @@ namespace HotD
             interactables = new List<Interactable>(FindObjectsOfType<Interactable>());
             game.interactables = interactables;
 
-            hud = FindAnyObjectByType<HUD>();
-            game.hud = hud;
-
             AssetNonNull("Game", game, "on GameObject");
             AssetNonNull("DialogueRunner", dialogueRunner);
             AssetNonNull("UserInterface", userInterface);
-            AssetNonNull("HUD", hud);
         }
 
         private void AssetNonNull(string typeName, MonoBehaviour BaseMonoBehaviour, string context = "in scene")

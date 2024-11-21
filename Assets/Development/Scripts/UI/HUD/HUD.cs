@@ -8,15 +8,16 @@ using MyBox;
 
 public class HUD : BaseMonoBehaviour
 {
+    static public HUD main;
+
     [Foldout("Components", true)]
     public AbilityMenu abilityMenu;
     public PartySelectPanel partySelectPanel;
     public TargetStatusDisplay targetCharacterPanel;
+    public bool useTargetPanel = true;
     public Transform crosshair;
-    public CastMeter castMeter;
-    private GameObject mainCamera;
     [Foldout("Components")]
-    private Canvas hudCanvas;
+    public CastMeter castMeter;
 
     [Space]
     [Foldout("Main Character", true)]
@@ -43,33 +44,23 @@ public class HUD : BaseMonoBehaviour
 
     // Builtin
 
-    [ButtonMethod]
-    public void SetCameraProperly()
+    private void OnDestroy()
     {
-        hudCanvas = GetComponent<Canvas>();
-        hudCanvas.renderMode = RenderMode.ScreenSpaceCamera;
-
-        mainCamera = Camera.main.gameObject;
-        hudCanvas.worldCamera = Camera.main; //mainCamera.GetComponent<Camera>();
+        if (HUD.main == this) HUD.main = null;
     }
 
     private void Awake()
     {
+        HUD.main = this;
+
         if (crosshair != null)
             crosshair.gameObject.SetActive(false);
 
         if (targetCharacterPanel != null)
             SetTarget(null);
 
-        SetCameraProperly();
-
         if (spellSlots != null)
             spellSlots.gameObject.SetActive(useSpellSlots);
-    }
-
-    private void Start()
-    {
-        SetCameraProperly();
     }
 
     public void SetParty(Party party)
@@ -107,9 +98,18 @@ public class HUD : BaseMonoBehaviour
 
     public void SetTarget(IIdentifiable target)
     {
-        this.target = target;
-        hasTarget = target != null;
-        targetCharacterPanel.Target = target;
+        if (useTargetPanel)
+        {
+            this.target = target;
+            hasTarget = target != null;
+            targetCharacterPanel.Target = target;
+        }
+        else
+        {
+            this.target = null;
+            hasTarget = target != null;
+            targetCharacterPanel.Target = null;
+        }
     }
 
     public void AddAlly(IIdentifiable ally)

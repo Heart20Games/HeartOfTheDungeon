@@ -1666,6 +1666,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ""id"": ""1228cef1-8522-4fec-bbb1-e70928a9b061"",
             ""actions"": [
                 {
+                    ""name"": ""Continue"",
+                    ""type"": ""Button"",
+                    ""id"": ""7af8e1be-5a21-4d71-88a5-0547056b9e77"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Select"",
                     ""type"": ""Button"",
                     ""id"": ""d4bc3486-1711-4e2d-a402-a1c535c6c9d7"",
@@ -1757,28 +1766,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""42116508-a709-49ee-b5ce-7d38cb1745fe"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Select"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""99063820-c583-42a2-9226-27ddd365af2c"",
-                    ""path"": ""<Keyboard>/enter"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Select"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""1b419ab3-2d8d-468a-a6a8-bbc64a346dfb"",
@@ -2084,6 +2071,50 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""MouseDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eedbcb15-5195-4663-98f5-98000058f140"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad882697-9d76-4d50-8198-8ad2bf86239c"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""42116508-a709-49ee-b5ce-7d38cb1745fe"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""99063820-c583-42a2-9226-27ddd365af2c"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2999,6 +3030,194 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Cheats"",
+            ""id"": ""aea2501c-3da3-4ded-8f8e-585c195af4ec"",
+            ""actions"": [
+                {
+                    ""name"": ""Restart"",
+                    ""type"": ""Button"",
+                    ""id"": ""4a35741a-d10c-410e-874b-7987f0286b21"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RestartAtCutscene"",
+                    ""type"": ""Button"",
+                    ""id"": ""21e8f92a-9b0e-4874-bc42-8c71ee52203c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RestartAtCombat"",
+                    ""type"": ""Button"",
+                    ""id"": ""26f9039e-1a3c-46e2-90e1-9236ee634053"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RestartFight"",
+                    ""type"": ""Button"",
+                    ""id"": ""934b4731-3802-4a7c-8092-26cacbd5463c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RestartApplication"",
+                    ""type"": ""Button"",
+                    ""id"": ""d54ad5ab-5322-4739-8511-2435834691ba"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cheat"",
+                    ""type"": ""Button"",
+                    ""id"": ""2bf21d53-b409-4ca9-8c22-1dc6d0afbddc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""IncreasePower"",
+                    ""type"": ""Button"",
+                    ""id"": ""355b0fcc-6409-4242-ade2-53d46d17b273"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DecreasePower"",
+                    ""type"": ""Button"",
+                    ""id"": ""4a34eb20-5713-4f25-8ecf-b1d3c7c2c2ff"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpawnSlimes"",
+                    ""type"": ""Button"",
+                    ""id"": ""7c8677c0-d517-4432-b115-6c4fe5928dc9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""da1838eb-fb49-4c55-bc05-f80294de2079"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RestartAtCombat"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7654caba-46c0-4a71-8421-1ed8e040387b"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RestartFight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""03ba172f-4167-4cf4-b655-422bf4ea725f"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RestartApplication"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""23fc96f8-9882-4f56-a5f4-0bee0fc50313"",
+                    ""path"": ""<Keyboard>/equals"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""IncreasePower"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""906f34f7-8de5-4487-908b-95fb4738f7ad"",
+                    ""path"": ""<Keyboard>/minus"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DecreasePower"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""af11e630-2200-41c0-94d0-007fea4cf424"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpawnSlimes"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""358fe929-73fa-4e17-b1e4-bfdac78f6fed"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cheat"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad0e1522-ddde-4591-a410-bf83729c9ae5"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2cdcc438-0a4d-4bcd-83a7-2bde09fe7ef0"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RestartAtCutscene"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -3052,6 +3271,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Dismiss_Dismiss = m_Dismiss.FindAction("Dismiss", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
+        m_Menu_Continue = m_Menu.FindAction("Continue", throwIfNotFound: true);
         m_Menu_Select = m_Menu.FindAction("Select", throwIfNotFound: true);
         m_Menu_Cancel = m_Menu.FindAction("Cancel", throwIfNotFound: true);
         m_Menu_ChangeSelection = m_Menu.FindAction("Change Selection", throwIfNotFound: true);
@@ -3092,6 +3312,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Shortcuts_RestartLevel = m_Shortcuts.FindAction("Restart Level", throwIfNotFound: true);
         m_Shortcuts_RestartGame = m_Shortcuts.FindAction("Restart Game", throwIfNotFound: true);
         m_Shortcuts_TriggerRestart = m_Shortcuts.FindAction("Trigger Restart", throwIfNotFound: true);
+        // Cheats
+        m_Cheats = asset.FindActionMap("Cheats", throwIfNotFound: true);
+        m_Cheats_Restart = m_Cheats.FindAction("Restart", throwIfNotFound: true);
+        m_Cheats_RestartAtCutscene = m_Cheats.FindAction("RestartAtCutscene", throwIfNotFound: true);
+        m_Cheats_RestartAtCombat = m_Cheats.FindAction("RestartAtCombat", throwIfNotFound: true);
+        m_Cheats_RestartFight = m_Cheats.FindAction("RestartFight", throwIfNotFound: true);
+        m_Cheats_RestartApplication = m_Cheats.FindAction("RestartApplication", throwIfNotFound: true);
+        m_Cheats_Cheat = m_Cheats.FindAction("Cheat", throwIfNotFound: true);
+        m_Cheats_IncreasePower = m_Cheats.FindAction("IncreasePower", throwIfNotFound: true);
+        m_Cheats_DecreasePower = m_Cheats.FindAction("DecreasePower", throwIfNotFound: true);
+        m_Cheats_SpawnSlimes = m_Cheats.FindAction("SpawnSlimes", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -3639,6 +3870,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     // Menu
     private readonly InputActionMap m_Menu;
     private List<IMenuActions> m_MenuActionsCallbackInterfaces = new List<IMenuActions>();
+    private readonly InputAction m_Menu_Continue;
     private readonly InputAction m_Menu_Select;
     private readonly InputAction m_Menu_Cancel;
     private readonly InputAction m_Menu_ChangeSelection;
@@ -3653,6 +3885,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         private @PlayerControls m_Wrapper;
         public MenuActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Continue => m_Wrapper.m_Menu_Continue;
         public InputAction @Select => m_Wrapper.m_Menu_Select;
         public InputAction @Cancel => m_Wrapper.m_Menu_Cancel;
         public InputAction @ChangeSelection => m_Wrapper.m_Menu_ChangeSelection;
@@ -3672,6 +3905,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_MenuActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_MenuActionsCallbackInterfaces.Add(instance);
+            @Continue.started += instance.OnContinue;
+            @Continue.performed += instance.OnContinue;
+            @Continue.canceled += instance.OnContinue;
             @Select.started += instance.OnSelect;
             @Select.performed += instance.OnSelect;
             @Select.canceled += instance.OnSelect;
@@ -3706,6 +3942,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IMenuActions instance)
         {
+            @Continue.started -= instance.OnContinue;
+            @Continue.performed -= instance.OnContinue;
+            @Continue.canceled -= instance.OnContinue;
             @Select.started -= instance.OnSelect;
             @Select.performed -= instance.OnSelect;
             @Select.canceled -= instance.OnSelect;
@@ -4059,6 +4298,116 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public ShortcutsActions @Shortcuts => new ShortcutsActions(this);
+
+    // Cheats
+    private readonly InputActionMap m_Cheats;
+    private List<ICheatsActions> m_CheatsActionsCallbackInterfaces = new List<ICheatsActions>();
+    private readonly InputAction m_Cheats_Restart;
+    private readonly InputAction m_Cheats_RestartAtCutscene;
+    private readonly InputAction m_Cheats_RestartAtCombat;
+    private readonly InputAction m_Cheats_RestartFight;
+    private readonly InputAction m_Cheats_RestartApplication;
+    private readonly InputAction m_Cheats_Cheat;
+    private readonly InputAction m_Cheats_IncreasePower;
+    private readonly InputAction m_Cheats_DecreasePower;
+    private readonly InputAction m_Cheats_SpawnSlimes;
+    public struct CheatsActions
+    {
+        private @PlayerControls m_Wrapper;
+        public CheatsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Restart => m_Wrapper.m_Cheats_Restart;
+        public InputAction @RestartAtCutscene => m_Wrapper.m_Cheats_RestartAtCutscene;
+        public InputAction @RestartAtCombat => m_Wrapper.m_Cheats_RestartAtCombat;
+        public InputAction @RestartFight => m_Wrapper.m_Cheats_RestartFight;
+        public InputAction @RestartApplication => m_Wrapper.m_Cheats_RestartApplication;
+        public InputAction @Cheat => m_Wrapper.m_Cheats_Cheat;
+        public InputAction @IncreasePower => m_Wrapper.m_Cheats_IncreasePower;
+        public InputAction @DecreasePower => m_Wrapper.m_Cheats_DecreasePower;
+        public InputAction @SpawnSlimes => m_Wrapper.m_Cheats_SpawnSlimes;
+        public InputActionMap Get() { return m_Wrapper.m_Cheats; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CheatsActions set) { return set.Get(); }
+        public void AddCallbacks(ICheatsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_CheatsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_CheatsActionsCallbackInterfaces.Add(instance);
+            @Restart.started += instance.OnRestart;
+            @Restart.performed += instance.OnRestart;
+            @Restart.canceled += instance.OnRestart;
+            @RestartAtCutscene.started += instance.OnRestartAtCutscene;
+            @RestartAtCutscene.performed += instance.OnRestartAtCutscene;
+            @RestartAtCutscene.canceled += instance.OnRestartAtCutscene;
+            @RestartAtCombat.started += instance.OnRestartAtCombat;
+            @RestartAtCombat.performed += instance.OnRestartAtCombat;
+            @RestartAtCombat.canceled += instance.OnRestartAtCombat;
+            @RestartFight.started += instance.OnRestartFight;
+            @RestartFight.performed += instance.OnRestartFight;
+            @RestartFight.canceled += instance.OnRestartFight;
+            @RestartApplication.started += instance.OnRestartApplication;
+            @RestartApplication.performed += instance.OnRestartApplication;
+            @RestartApplication.canceled += instance.OnRestartApplication;
+            @Cheat.started += instance.OnCheat;
+            @Cheat.performed += instance.OnCheat;
+            @Cheat.canceled += instance.OnCheat;
+            @IncreasePower.started += instance.OnIncreasePower;
+            @IncreasePower.performed += instance.OnIncreasePower;
+            @IncreasePower.canceled += instance.OnIncreasePower;
+            @DecreasePower.started += instance.OnDecreasePower;
+            @DecreasePower.performed += instance.OnDecreasePower;
+            @DecreasePower.canceled += instance.OnDecreasePower;
+            @SpawnSlimes.started += instance.OnSpawnSlimes;
+            @SpawnSlimes.performed += instance.OnSpawnSlimes;
+            @SpawnSlimes.canceled += instance.OnSpawnSlimes;
+        }
+
+        private void UnregisterCallbacks(ICheatsActions instance)
+        {
+            @Restart.started -= instance.OnRestart;
+            @Restart.performed -= instance.OnRestart;
+            @Restart.canceled -= instance.OnRestart;
+            @RestartAtCutscene.started -= instance.OnRestartAtCutscene;
+            @RestartAtCutscene.performed -= instance.OnRestartAtCutscene;
+            @RestartAtCutscene.canceled -= instance.OnRestartAtCutscene;
+            @RestartAtCombat.started -= instance.OnRestartAtCombat;
+            @RestartAtCombat.performed -= instance.OnRestartAtCombat;
+            @RestartAtCombat.canceled -= instance.OnRestartAtCombat;
+            @RestartFight.started -= instance.OnRestartFight;
+            @RestartFight.performed -= instance.OnRestartFight;
+            @RestartFight.canceled -= instance.OnRestartFight;
+            @RestartApplication.started -= instance.OnRestartApplication;
+            @RestartApplication.performed -= instance.OnRestartApplication;
+            @RestartApplication.canceled -= instance.OnRestartApplication;
+            @Cheat.started -= instance.OnCheat;
+            @Cheat.performed -= instance.OnCheat;
+            @Cheat.canceled -= instance.OnCheat;
+            @IncreasePower.started -= instance.OnIncreasePower;
+            @IncreasePower.performed -= instance.OnIncreasePower;
+            @IncreasePower.canceled -= instance.OnIncreasePower;
+            @DecreasePower.started -= instance.OnDecreasePower;
+            @DecreasePower.performed -= instance.OnDecreasePower;
+            @DecreasePower.canceled -= instance.OnDecreasePower;
+            @SpawnSlimes.started -= instance.OnSpawnSlimes;
+            @SpawnSlimes.performed -= instance.OnSpawnSlimes;
+            @SpawnSlimes.canceled -= instance.OnSpawnSlimes;
+        }
+
+        public void RemoveCallbacks(ICheatsActions instance)
+        {
+            if (m_Wrapper.m_CheatsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ICheatsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_CheatsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_CheatsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public CheatsActions @Cheats => new CheatsActions(this);
     public interface IDialogueActions
     {
         void OnContinue(InputAction.CallbackContext context);
@@ -4113,6 +4462,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     }
     public interface IMenuActions
     {
+        void OnContinue(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
         void OnChangeSelection(InputAction.CallbackContext context);
@@ -4156,5 +4506,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnRestartLevel(InputAction.CallbackContext context);
         void OnRestartGame(InputAction.CallbackContext context);
         void OnTriggerRestart(InputAction.CallbackContext context);
+    }
+    public interface ICheatsActions
+    {
+        void OnRestart(InputAction.CallbackContext context);
+        void OnRestartAtCutscene(InputAction.CallbackContext context);
+        void OnRestartAtCombat(InputAction.CallbackContext context);
+        void OnRestartFight(InputAction.CallbackContext context);
+        void OnRestartApplication(InputAction.CallbackContext context);
+        void OnCheat(InputAction.CallbackContext context);
+        void OnIncreasePower(InputAction.CallbackContext context);
+        void OnDecreasePower(InputAction.CallbackContext context);
+        void OnSpawnSlimes(InputAction.CallbackContext context);
     }
 }
