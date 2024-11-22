@@ -61,15 +61,16 @@ public class ProgressManager : BaseMonoBehaviour
 
     // Respawn Everything
 
-    public void RespawnToLastCheckpoint()
+    public bool RespawnToLastCheckpoint()
     {
         ActivateDialogues();
         SpawnParties();
 
-        if(Party.mainParty != null)
+        if (Party.mainParty != null)
         {
-            SpawnAtCheckpoint(Party.mainParty);
-        }  
+            return SpawnAtCheckpoint(Party.mainParty);
+        }
+        else return false;
     }
 
     // Session Data Management

@@ -2,7 +2,7 @@ using HotD.Castables;
 using System.Collections;
 using UnityEngine;
 
-public class DodgeZone : MonoBehaviour
+public class DodgeZone : BaseMonoBehaviour
 {
     [SerializeField] private SlimeWizard slimeWizard;
 
@@ -15,6 +15,8 @@ public class DodgeZone : MonoBehaviour
 
     private MagicShieldImpact magicShieldImpactObject;
 
+    [Tooltip("Percent Chance of Dodging.")]
+    [Range(0f, 100f)]
     [SerializeField] private int dodgeChance;
 
     [SerializeField] private float sideStepSpeed;
@@ -22,13 +24,24 @@ public class DodgeZone : MonoBehaviour
     private Coroutine sideStepRoutine;
     private Coroutine magicShieldRoutine;
 
+    [SerializeField] private bool debug;
+    [SerializeField] private bool debugAll;
+
     private void OnTriggerEnter(Collider other)
     {
+        Print($"Trigger Entered DodgeZone ({other.gameObject.name})", debugAll, this);
+
         if (slimeWizard.IsShootingLaser) return;
+
+        Print($"Trigger Entered While Not Firing Laser ({slimeWizard.IsShootingLaser})", debugAll, this);
 
         if(other.GetComponent<Projectile>())
         {
+            Print("Trigger Entered Projectile", debug, this);
+
             if(other.GetComponent<Projectile>().ShouldIgnoreDodgeLayer) return;
+
+            Print("DodgeZone Started Dodge", debug, this);
 
             CalculateDodgeChance();
         }
@@ -53,17 +66,11 @@ public class DodgeZone : MonoBehaviour
 
         if (randomChance == 0)
         {
-            if (sideStepRoutine == null)
-            {
-                sideStepRoutine = StartCoroutine(SidestepDodge());
-            }
+            sideStepRoutine ??= StartCoroutine(SidestepDodge());
         }
         else
         {
-            if (magicShieldRoutine == null)
-            {
-                magicShieldRoutine = StartCoroutine(MagicShieldDodge());
-            }
+            magicShieldRoutine ??= StartCoroutine(MagicShieldDodge());
         }
     }
 

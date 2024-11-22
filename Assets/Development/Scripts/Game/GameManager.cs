@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Body;
 using UnityEngine.Events;
 using Selection;
 using UnityEngine.SceneManagement;
 using HotD.PostProcessing;
 using MyBox;
 using Yarn.Unity;
-using UnityEngine.Assertions;
 using HotD.Body;
+using HotD.UI;
 
 namespace HotD
 {
@@ -35,6 +34,10 @@ namespace HotD
             }
             set => main = value;
         }
+        private void OnDestroy()
+        {
+            if (Game.main == this) Game.main = null;
+        }
 
         // Properties
         [Foldout("Parts", true)]
@@ -48,7 +51,6 @@ namespace HotD
         [HideInInspector] public UserInterface userInterface;
         [HideInInspector] public VolumeManager volumeManager;
         [HideInInspector] public ProgressManager progressManager;
-        [HideInInspector] public HUD hud;
         [HideInInspector] public List<Interactable> interactables;
         [Foldout("Parts")][HideInInspector] public List<Character> allCharacters;
         private PlayerInput input;
@@ -68,6 +70,7 @@ namespace HotD
         public MoveMode MoveMode { get => mode.moveMode; }
         public LookMode LookMode { get => mode.lookMode; }
         public Menu ActiveMenu { get => mode.activeMenu; set => SetMode(value); }
+        [SerializeField] private string swapToMode = "";
         public bool swapModes = false;
         [Foldout("Game Mode")] public bool reactivateMode = false;
 
@@ -87,6 +90,7 @@ namespace HotD
         [Foldout("Events", true)]
         [Header("Events")]
         public UnityEvent onPlayerDied;
+        [SerializeField] protected bool reloadScene = false;
         public UnityEvent onRestartScene;
         public UnityEvent onRestartLife;
         [Foldout("Events")] public UnityEvent onRestartGame;
@@ -111,7 +115,8 @@ namespace HotD
         {
             //if (session) session.Initialize();
             InitializePlayableCharacters();
-            progressManager.RespawnToLastCheckpoint();
+            bool spawnedMainParty = progressManager.RespawnToLastCheckpoint();
+            if (!spawnedMainParty) Party.mainParty.Respawn();
             if (initialMenu != Menu.None)
             {
                 SetMode(initialMenu);
@@ -128,18 +133,23 @@ namespace HotD
 
         public void InitializePlayableCharacters()
         {
+            Warning("No HUD found!", !HUD.main, this);
+
             if (playerParty != null)
             {
                 Character leader = playerParty.leader;
-                hud.MainCharacterSelect(leader);
-                foreach (var character in playerParty.members)
+                if (HUD.main)
                 {
-                    if (character != playerParty.leader)
-                        hud.AddAlly(character);
+                    HUD.main.MainCharacterSelect(leader);
+                    foreach (var character in playerParty.members)
+                    {
+                        if (character != playerParty.leader)
+                            HUD.main.AddAlly(character);
+                    }
                 }
                 playerParty.onMemberDeath = OnCharacterDied;
             }
-            hud.SetParty(playerParty);
+            if (HUD.main) HUD.main.SetParty(playerParty);
 
             SetCharacterIdx(0);
             if (curCharacter == null)
@@ -152,8 +162,14 @@ namespace HotD
         [ButtonMethod]
         public void RestartScene()
         {
-            if (restartable)
+            if (restartable && reloadScene)
+            {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+            else
+            {
+                onRestartScene.Invoke();
+            }
         }
         [ButtonMethod]
         public void RestartGame()
@@ -172,9 +188,14 @@ namespace HotD
             {
                 SetCharacter(playerParty.Leader);
             }
-            progressManager.RespawnToLastCheckpoint();
+            if (!progressManager.RespawnToLastCheckpoint())
+            {
+                playerParty.Respawn();
+            }
             if (mode.inputMode != InputMode.Character)
+            {
                 SetMode(InputMode.Character);
+            }
             onRestartLife.Invoke();
             restartingLife = false;
         }
@@ -191,7 +212,10 @@ namespace HotD
             if (swapModes)
             {
                 swapModes = false;
-                InputMode = InputMode;
+                if (swapToMode == "")
+                    InputMode = InputMode;
+                else
+                    SetMode(swapToMode);
             }
         }
 
@@ -210,6 +234,26 @@ namespace HotD
             userInterface.SetBossHudActive(false);
         }
 
+        // End Demo
+        
+        public void ShowEndDemoScreen()
+        {
+            SetMode(Menu.EndDemo);
+        }
+
+        // Start Game
+
+        [Foldout("Events")]
+        [SerializeField] protected UnityEvent onStartGame = new();
+        [ButtonMethod]
+        public void StartGame()
+        {
+            SetCharacter(Party.mainParty.Leader);
+            SetMode("Character");
+            //SetMode(InputMode.Character);
+            onStartGame.Invoke();
+        }
+
 
         // Setters
 
@@ -219,7 +263,10 @@ namespace HotD
         {
             if (debug) print($"Change InputMode to {name} (in bank? {(ModeBank.ContainsKey(name) ? "yes" : "no")})");
             if (ModeBank.TryGetValue(name, out GameMode mode))
-                SetMode(mode);
+            {
+                if (mode.active)
+                    SetMode(mode);
+            }
             else
             {
                 Debug.LogWarning($"Can't find game mode for \"{name}\"");
@@ -232,7 +279,7 @@ namespace HotD
             if (debug) print($"Change InputMode to {menu} (in bank? {(MenuBank.ContainsKey(menu) ? "yes" : "no")})");
             if (MenuBank.TryGetValue(menu, out GameMode mode))
             {
-                SetMode(mode);
+                if (mode.active) SetMode(mode);
             }
             else
             {
@@ -251,7 +298,9 @@ namespace HotD
             {
                 if (debug) print($"Change InputMode to {inputMode} (in bank? {(InputBank.ContainsKey(inputMode) ? "yes" : "no")})");
                 if (InputBank.TryGetValue(inputMode, out GameMode mode))
-                    SetMode(mode);
+                {
+                    if (mode.active) SetMode(mode);
+                }
                 else
                 {
                     Debug.LogWarning($"Can't find game mode for \"{inputMode}\"");
@@ -278,6 +327,7 @@ namespace HotD
                 userInterface.SetBossHudActive(mode.activeMenu == Menu.BossHud);
                 userInterface.SetControlScreenActive(mode.activeMenu == Menu.ControlSheet);
                 userInterface.SetCharacterSheetActive(mode.activeMenu == Menu.CharacterSheet);
+                userInterface.SetSimpleDialogueActive(mode.activeMenu == Menu.EndDemo);
                 userInterface.SetMenuInputsActive(mode.activeMenu != Menu.None);
                 userInterface.SetDeathScreenActive(mode.activeMenu == Menu.Death);
             }
@@ -369,14 +419,14 @@ namespace HotD
             if (selectable == null)
             {
                 Print($"Target deselected: {selectedTarget}", debug);
-                hud.SetTarget(null);
+                HUD.main.SetTarget(null);
             }
             else
             {
                 Print($"Target selected: {selectable}", debug);
                 if (selectable.source.TryGetComponent<AIdentifiable>(out var identifiable))
                 {
-                    hud.SetTarget(identifiable);
+                    HUD.main.SetTarget(identifiable);
                 }
             }
             selectedTarget = selectable;
@@ -438,7 +488,7 @@ namespace HotD
                     curCharIdx = idx % (members.Count);
                     Character character = members[curCharIdx];
                     SetCharacter(character);
-                    hud.CharacterSelect(character);
+                    HUD.main.CharacterSelect(character);
                 }
             }
         }

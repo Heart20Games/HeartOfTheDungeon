@@ -1,5 +1,6 @@
 using HotD.Body;
 using HotD.Castables;
+using MyBox;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -7,6 +8,7 @@ using UnityEngine.VFX;
 [System.Serializable]
 public class Actions
 {
+    [SerializeField] private string name = "Action";
     [SerializeField] private GameObject projectileToShoot;
 
     [SerializeField] private int castChance;
@@ -18,6 +20,7 @@ public class Actions
 
 public class SlimeWizard : EnemyAI
 {
+    [Foldout("Slime Wizard", true)]
     [SerializeField] private Actions[] actions;
 
     [SerializeField] private Transform slimeTransform;
@@ -43,10 +46,10 @@ public class SlimeWizard : EnemyAI
 
     private float coolDownTimer;
 
-    private bool attacked;
-    private bool isShootingLaser;
-    private bool chargingLevelOne;
-    private bool chargingLevelTwo;
+    [SerializeField][ReadOnly] private bool attacked;
+    [SerializeField][ReadOnly] private bool isShootingLaser;
+    [SerializeField][ReadOnly] private bool chargingLevelOne;
+    [SerializeField][ReadOnly] private bool chargingLevelTwo;
 
     public bool IsShootingLaser => isShootingLaser;
 

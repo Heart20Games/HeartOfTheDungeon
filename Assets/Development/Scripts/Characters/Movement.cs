@@ -82,7 +82,7 @@ namespace HotD.Body
             get
             {
                 if (myRigidbody == null && !Body.TryGetComponent(out myRigidbody))
-                    Debug.LogWarning("Movement expects it's body to have a Rigidbody. None found.", this);
+                    Warning("Movement expects it's body to have a Rigidbody. None found.", debug, this);
                 return myRigidbody;
             }
         }
@@ -261,7 +261,7 @@ namespace HotD.Body
 
         protected void ApplyPlayerMovement(Vector3 cameraDirection, Vector2 moveVector, float scale=1)
         {
-            Print("Character Controlled Movement", debug);
+            Print("Character Controlled Movement", debug, this);
             Vector3 direction = moveVector.Orient(cameraDirection).FullY();
             Debug.DrawRay(Body.position, direction * 3, Color.green, Time.fixedDeltaTime);
             MyRigidbody.AddRelativeForce(scale * Settings.speed * Time.fixedDeltaTime * timeScale * direction, ForceMode.Force);
@@ -269,7 +269,7 @@ namespace HotD.Body
 
         protected void ApplyNPCMovement(ref float modifier, Vector2 moveVector, float scale=1)
         {
-            Print($"NPC Controlled Movement ({character})", debug);
+            Print($"NPC Controlled Movement ({character})", debug, this);
             modifier = npcModifier;
             Vector3 direction = moveVector.FullY();
             Assert.IsFalse(float.IsNaN(direction.x) || float.IsNaN(direction.y) || float.IsNaN(direction.z));
