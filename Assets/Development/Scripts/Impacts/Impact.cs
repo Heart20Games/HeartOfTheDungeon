@@ -68,6 +68,11 @@ public class Impact : Validator
 
             if (other.gameObject.GetComponent<MagicShieldImpact>())
             {
+                if (gameObject.GetComponent<Projectile>())
+                {
+                    if (gameObject.GetComponent<Projectile>().ShouldIgnoreDodgeLayer) return;
+                }
+
                 if (other.gameObject.transform.parent.GetComponent<CastListenerDistributor>()) return;
             }
 
