@@ -2,7 +2,12 @@ using UnityEngine;
 using UnityEngine.Events;
 using static Body.Behavior.ContextSteering.CSIdentity;
 
-public interface IDamageReceiver
+public interface IDestroyable
+{
+    UnityAction OnDestroyed { get; set; }
+}
+
+public interface IDamageReceiver: IDestroyable
 {
     void TakeDamage(int amount, Identity id = Identity.Neutral);
     void SetDamagePosition(Vector3 damagePosition); // Expects world coordinates
@@ -12,6 +17,9 @@ public class DamageReceiver : BaseMonoBehaviour, IDamageReceiver
 {
     public UnityEvent<int> onTakeDamage;
     public UnityEvent<int, Identity> onTakeDamageFrom;
+    private UnityAction onDestroyed;
+
+    public virtual UnityAction OnDestroyed { get => onDestroyed; set => onDestroyed = value; }
 
     public virtual void TakeDamage(int amount, Identity id=Identity.Neutral)
     {
@@ -20,4 +28,6 @@ public class DamageReceiver : BaseMonoBehaviour, IDamageReceiver
     }
 
     public virtual void SetDamagePosition(Vector3 location) { }
+
+
 }

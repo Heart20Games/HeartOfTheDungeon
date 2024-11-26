@@ -12,8 +12,8 @@ public class CollidablePositioner : Positionable, IChangeCollisionExceptions, ID
     private Collider[] Colliders { get { return colliders ?? InitializeColliders(gameObject, out colliders, ref collidableObjects); } }
     [Foldout("Collision")] public List<GameObject> collidableObjects;
 
-    [Foldout("Damage")] public UnityEvent<Impact> hitDamageable;
-    [Foldout("Damage")] public UnityEvent<Impact> leftDamageable;
+    [Foldout("Damage")] public UnityEvent<Impactor> hitDamageable;
+    [Foldout("Damage")] public UnityEvent<Impactor> leftDamageable;
 
     public void InitializeEvents()
     {
@@ -40,12 +40,12 @@ public class CollidablePositioner : Positionable, IChangeCollisionExceptions, ID
     }
 
     // IDamager
-    public void HitDamageable(Impact impactor)
+    public void HitDamageable(Impactor impactor)
     {
         throw new System.NotImplementedException();
     }
 
-    public void LeftDamageable(Impact impactor)
+    public void LeftDamageable(Impactor impactor)
     {
         throw new System.NotImplementedException();
     }

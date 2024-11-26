@@ -7,7 +7,7 @@ using UnityEngine.Events;
 namespace CustomUnityEvents
 {
     [Serializable]
-    public struct BinaryEvent
+    public class BinaryEvent
     {
         public BinaryEvent(UnityEvent _enter, UnityEvent _exit)
         {
@@ -19,7 +19,7 @@ namespace CustomUnityEvents
     }
 
     [Serializable]
-    public struct BinaryEvent<T>
+    public class BinaryEvent<T>
     {
         public BinaryEvent(UnityEvent<T> _enter, UnityEvent<T> _exit)
         {
@@ -31,7 +31,7 @@ namespace CustomUnityEvents
     }
 
     [Serializable]
-    public struct BinaryEvents<T>
+    public class BinaryEvents<T>
     {
         public BinaryEvent trigger;
         public BinaryEvent<T> value;
@@ -48,11 +48,11 @@ namespace CustomUnityEvents
     }
 
     [Serializable]
-    public struct UnityEvents<T>
+    public class UnityEvents<T>
     {
         public UnityEvent trigger;
         public UnityEvent<T> value;
-        public readonly void Invoke(T value)
+        public void Invoke(T value)
         {
             this.trigger.Invoke();
             this.value.Invoke(value);
@@ -60,7 +60,7 @@ namespace CustomUnityEvents
     }
 
     [Serializable]
-    public struct UnityEvents<TS, TV>
+    public class UnityEvents<TS, TV>
     {
         public UnityEvent trigger;
         public UnityEvent<TS> source;

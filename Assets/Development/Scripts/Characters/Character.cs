@@ -271,12 +271,18 @@ namespace HotD.Body
             SetMode(ControlMode.Brain);
         }
 
+        // Destroy
+
+        private UnityAction onDestroyed;
+        public UnityAction OnDestroyed { get => onDestroyed; set => onDestroyed = value; }
+
         private void OnDestroy()
         {
             DisconnectHealth();
             DisconnectPips(pips);
             if (healthPopup != null)
                 health.current.UnSubscribe(healthPopup.PopupChange);
+            OnDestroyed?.Invoke();
         }
 
         private void InitBody()

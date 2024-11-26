@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(Impact.Other))]
+[CustomPropertyDrawer(typeof(Impactor.Other))]
 public class ImpactOtherDrawer : PropertyDrawer
 {
     bool show;
