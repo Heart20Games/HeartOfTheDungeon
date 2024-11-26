@@ -21,6 +21,7 @@ namespace HotD.Generators
     using static CastableStats;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using UnityEngine.Events;
+    using System.CodeDom.Compiler;
 
     [CreateAssetMenu(fileName = "NewStateCastGenerator", menuName = "Loadouts/State Cast Generator", order = 1)]
     public class StateCastGenerator : Generator
@@ -118,7 +119,6 @@ namespace HotD.Generators
 
                     // Base
                     StateCastable castable = GenerateCastableBase(gameObject, pivot);
-                    Damager damager = GenerateDamager(castable, gameObject);
                     castable.AddBaseTransitions();
 
                     // Executors
@@ -172,7 +172,7 @@ namespace HotD.Generators
                     executors.Add(executionExecutor);
                     if (executions.Count > 0)
                     {
-                        Comboer comboer = GenerateComboer(executionExecutor, stats, pivot, gameObject, damager);
+                        Comboer comboer = GenerateComboer(executionExecutor, stats, pivot, gameObject);
                     }
                     else
                     {
@@ -358,7 +358,7 @@ namespace HotD.Generators
             executor.supportedTransitions.Add(startTransition);
         }
 
-        public Comboer GenerateComboer(DelegatedExecutor executor, CastableStats stats, Pivot pivot, GameObject gameObject, Damager damager = null)
+        public Comboer GenerateComboer(DelegatedExecutor executor, CastableStats stats, Pivot pivot, GameObject gameObject)
         {
             Assert.IsNotNull(executor);
 
@@ -395,7 +395,7 @@ namespace HotD.Generators
             for (int i = 0; i < executions.Count; i++)
             {
                 Execution execution = executions[i];
-                Castables.ExecutionMethod method = execution.PrepareExecutionMethod(executor, stats, methodPivot, gameObject, damager);
+                Castables.ExecutionMethod method = execution.PrepareExecutionMethod(executor, stats, methodPivot, gameObject);
                 if (method != null)
                 {
                     comboer.AddStep(i + 1, method.gameObject);
@@ -520,13 +520,16 @@ namespace HotD.Generators
             return discharger;
         }
 
-        private Damager GenerateDamager(CastProperties castable, GameObject gameObject)
+        static private Damager AddDamager(CastProperties castable, GameObject gameObject, CastableStats stats, string label, int damageBase = 0, bool doTick = false, bool doTickOnProc = true)
         {
             Assert.IsNotNull(castable);
             if (stats.dealDamage)
             {
                 Damager damager = gameObject.AddComponent<Damager>();
-                damager.damage = stats.Damage; // TODO: Account for bonuses
+                damager.Name = label;
+                damager.damage = damageBase; // + stats.Damage; // TODO: Account for bonuses
+                damager.shouldTick = doTick;
+                damager.shouldTickOnProc = doTickOnProc;
                 UnityEventTools.AddPersistentListener(castable.fieldEvents.onSetIdentity, damager.SetIdentity);
                 return damager;
             }
@@ -706,6 +709,7 @@ namespace HotD.Generators
                         StatusType.Execution => activeEffects,
                         StatusType.Hit => hitEffects,
                         StatusType.Lingering => lingeringEffects,
+                        _ => null
                     };
                 }
             }
@@ -720,6 +724,10 @@ namespace HotD.Generators
                 this.chargeLevels = chargeLevels;
                 this.comboSteps = comboSteps;
                 this.statuses = new();
+
+                this.baseDamage = 0;
+                this.doTick = false;
+                this.tickOnProc = true;
 
                 this.passivePrefab = null;
                 this.colliderLifeSpan = 1;
@@ -737,31 +745,40 @@ namespace HotD.Generators
             public Vector2 comboSteps;
             public StatusesToApply statuses;
 
+            // Damage
+            [Header("Damage")]
+            public int baseDamage;
+            public bool doTick;
+            public bool tickOnProc;
+
             // Execution: Passive
+            [Header("Settings: Passive")]
             [ConditionalField("method", false, ExecutionType.Passive)]
             public GameObject passivePrefab;
 
             // Execution: Collider
+            [Header("Settings: Collider")]
             [ConditionalField("method", false, ExecutionType.ColliderBased)]
             public float colliderLifeSpan;
             [ConditionalField("method", false, ExecutionType.ColliderBased)]
             public List<GameObject> colliderPrefabs;
 
             // Execution: Projectile
+            [Header("Settings: Projectile")]
             [ConditionalField("method", false, ExecutionType.ProjectileBased)]
             public float projectileLifeSpan;
             [ConditionalField("method", false, ExecutionType.ProjectileBased)]
             public List<GameObject> projectilePrefabs;
             //public Projectile projectilePrefab;
 
-            public readonly Castables.ExecutionMethod PrepareExecutionMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, GameObject gameObject, Damager damager = null)
+            public readonly Castables.ExecutionMethod PrepareExecutionMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, GameObject gameObject)
             {
                 ExecutionMethod preparedMethod = method switch
                 {
-                    ExecutionType.ColliderBased => PrepareCollisionMethod(executor, stats, pivot, damager),
-                    ExecutionType.ProjectileBased => PrepareProjectileMethod(executor, stats, pivot, damager),
+                    ExecutionType.ColliderBased => PrepareCollisionMethod(executor, stats, pivot),
+                    ExecutionType.ProjectileBased => PrepareProjectileMethod(executor, stats, pivot),
                     ExecutionType.SelectionBased => null,
-                    _ => PreparePassiveMethod(executor, stats, pivot, damager),
+                    _ => PreparePassiveMethod(executor, stats, pivot),
                 };
 
                 AddStatusListener(preparedMethod, stats, StatusType.Execution, executor.fieldEvents.onSetOwner);
@@ -800,7 +817,7 @@ namespace HotD.Generators
                 }
             }
 
-            public readonly ExecutionMethod PreparePassiveMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
+            public readonly ExecutionMethod PreparePassiveMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot)
             {
                 // Object
                 GameObject castedObject = AddCastedObject(executor, pivot);
@@ -812,7 +829,7 @@ namespace HotD.Generators
                 if (passivePrefab != null)
                 {
                     // Prefab Instance
-                    GameObject instance = PrefabUtility.InstantiatePrefab(passivePrefab.gameObject) as GameObject;
+                    GameObject instance = PrefabUtility.InstantiatePrefab(passivePrefab) as GameObject;
                     instance.transform.SetParent(castedObject.transform);
 
                     if (instance.TryGetComponent<ACastCompatibleFollower>(out var follower))
@@ -824,48 +841,17 @@ namespace HotD.Generators
                 return method;
             }
 
-            public readonly ExecutionMethod PrepareCollisionMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
+            public readonly ExecutionMethod PrepareCollisionMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot)
             {
                 pivot.enabled = false;
 
-                // Object
-                GameObject castedObject = AddCastedObject(executor, pivot);
-                Pivot castedPivot = AddCastedPivot(castedObject);
-                castedPivot.body = castedPivot.transform;
-
-                // Method
-                ExecutionMethod method = AddExecutionMethod(castedObject, executor);
-                method.InitializeEvents();
+                ExecutionMethod method = PrepareNonPassiveMethod(executor, stats, pivot, out GameObject castedObject, out Pivot castedPivot, out Damager damager);
 
                 // Cast Location Follower
-                CastLocationFollower follower = castedPivot.GetOrAddComponent<CastLocationFollower>();
-                follower.SetTarget(CastLocation.WeaponPoint);
-                follower.SetMode(CastLocationFollower.Mode.AlsoOnUpdate);
-                follower.SetParent(false);
-                UnityEventTools.AddPersistentListener(method.fieldEvents.onSetOwner, follower.SetOwner);
+                AddLocationFollower(method, castedPivot, CastLocation.WeaponPoint, CastLocationFollower.Mode.AlsoOnUpdate);
 
                 // Cast Object Spawner
-                CastObjectSpawner spawner = castedObject.AddComponent<CastObjectSpawner>();
-                UnityEventTools.AddPersistentListener(method.onEnable, spawner.Spawn);
-                UnityEventTools.AddPersistentListener(method.fieldEvents.onSetCollisionExceptions, spawner.SetExceptions);
-                method.positionables.Add(spawner);
-                spawner.pivot = castedPivot.transform;
-                spawner.lifeSpan = colliderLifeSpan;
-                spawner.applyOnSet = false;
-                spawner.spawnOnEnable = false;
-                    
-                //// Casted Collider
-                //CastedCollider casted = (PrefabUtility.InstantiatePrefab(colliderPrefab.gameObject) as GameObject).GetComponent<CastedCollider>();
-                //casted.transform.SetParent(castedPivot.transform);
-                //UnityEventTools.AddPersistentListener(method.fieldEvents.onSetCollisionExceptions, casted.SetExceptions);
-                ////method.positionables.Add(casted);
-
-                //// Damage
-                //if (damager != null)
-                //{
-                //    UnityEventTools.AddPersistentListener(casted.hitDamageable, damager.HitDamageable);
-                //    UnityEventTools.AddPersistentListener(casted.leftDamageable, damager.LeftDamageable);
-                //}
+                CastObjectSpawner spawner = AddSpawner<CastObjectSpawner>(method, castedObject, castedPivot, colliderLifeSpan);
 
                 // Projectiles
                 if (colliderPrefabs != null)
@@ -897,33 +883,15 @@ namespace HotD.Generators
                 return method;
             }
 
-            public readonly ExecutionMethod PrepareProjectileMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, Damager damager = null)
+            public readonly ExecutionMethod PrepareProjectileMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot)
             {
-                // Object
-                GameObject castedObject = AddCastedObject(executor, pivot);
-                Pivot castedPivot = AddCastedPivot(castedObject);
-                castedPivot.body = castedPivot.transform;
-
-                // Method
-                ExecutionMethod method = AddExecutionMethod(castedObject, executor);
-                method.InitializeEvents();
+                ExecutionMethod method = PrepareNonPassiveMethod(executor, stats, pivot, out GameObject castedObject, out Pivot castedPivot, out Damager damager);
 
                 // Cast Location Follower
-                CastLocationFollower follower = castedPivot.GetOrAddComponent<CastLocationFollower>();
-                follower.SetTarget(CastLocation.FiringPoint);
-                follower.SetMode(CastLocationFollower.Mode.OnlyOnStart);
-                follower.SetParent(false);
-                UnityEventTools.AddPersistentListener(method.fieldEvents.onSetOwner, follower.SetOwner);
+                AddLocationFollower(method, castedPivot, CastLocation.FiringPoint, CastLocationFollower.Mode.OnlyOnStart);
 
                 // Projectile Spawner
-                ProjectileSpawner spawner = castedObject.AddComponent<ProjectileSpawner>();
-                UnityEventTools.AddPersistentListener(method.onEnable, spawner.Spawn);
-                UnityEventTools.AddPersistentListener(method.fieldEvents.onSetCollisionExceptions, spawner.SetExceptions);
-                method.positionables.Add(spawner);
-                spawner.pivot = castedPivot.transform;
-                spawner.lifeSpan = projectileLifeSpan;
-                spawner.applyOnSet = false;
-                spawner.spawnOnEnable = false;
+                ProjectileSpawner spawner = AddSpawner<ProjectileSpawner>(method, castedObject, castedPivot, projectileLifeSpan);
 
                 // Projectiles
                 if (projectilePrefabs != null)
@@ -954,6 +922,34 @@ namespace HotD.Generators
                 return method;
             }
 
+            private readonly ExecutionMethod PrepareNonPassiveMethod(DelegatedExecutor executor, CastableStats stats, Pivot pivot, out GameObject castedObject, out Pivot castedPivot, out Damager damager)
+            {
+                // Object
+                castedObject = AddCastedObject(executor, pivot);
+                castedPivot = AddCastedPivot(castedObject);
+                castedPivot.body = castedPivot.transform;
+
+                // Method
+                ExecutionMethod method = AddExecutionMethod(castedObject, executor);
+                method.InitializeEvents();
+
+                // Damager
+                damager = AddDamager(executor, method.gameObject, stats, name, baseDamage, doTick, tickOnProc);
+
+                return method;
+            }
+
+            private readonly CastLocationFollower AddLocationFollower(ExecutionMethod method, Pivot castedPivot, CastLocation target, CastLocationFollower.Mode mode)
+            {
+                CastLocationFollower follower = castedPivot.GetOrAddComponent<CastLocationFollower>();
+                follower.SetTarget(target);
+                follower.SetMode(mode);
+                follower.SetParent(false);
+                UnityEventTools.AddPersistentListener(method.fieldEvents.onSetOwner, follower.SetOwner);
+
+                return follower;
+            }
+
             private readonly GameObject AddCastedObject(DelegatedExecutor executor, Pivot pivot)
             {
                 GameObject castedObject = new(name);
@@ -967,6 +963,20 @@ namespace HotD.Generators
                 GameObject pivotObject = new($"{name} Pivot");
                 pivotObject.transform.parent = castedObject.transform;
                 return pivotObject.AddComponent<Pivot>();
+            }
+
+            private readonly T AddSpawner<T>(ExecutionMethod method, GameObject castedObject, Pivot castedPivot, float lifeSpan) where T : Spawner
+            {
+                T spawner = castedObject.AddComponent<T>();
+                UnityEventTools.AddPersistentListener(method.onEnable, spawner.Spawn);
+                UnityEventTools.AddPersistentListener(method.fieldEvents.onSetCollisionExceptions, spawner.SetExceptions);
+                method.positionables.Add(spawner);
+                spawner.pivot = castedPivot.transform;
+                spawner.lifeSpan = lifeSpan;
+                spawner.applyOnSet = false;
+                spawner.spawnOnEnable = false;
+
+                return spawner;
             }
         }
 

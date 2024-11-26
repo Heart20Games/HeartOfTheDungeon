@@ -11,13 +11,24 @@ namespace HotD.Castables
         public void Activate(Vector3 direction);
     }
 
-    public class CastObjectSpawner : Positionable, ISpawner, ISetCollisionExceptions
+    public abstract class Spawner : Positionable, ISpawner, ISetCollisionExceptions
     {
         public float lifeSpan;
         public Transform pivot;
+        public bool spawnOnEnable;
+
+        public abstract Collider[] Exceptions { get; set; }
+
+        public abstract void Activate(Vector3 direction);
+        public abstract void SetExceptions(Collider[] exceptions);
+        public abstract void Spawn();
+        public abstract void Spawn(Vector3 direction = default);
+    }
+
+    public class CastObjectSpawner : Spawner
+    {
         public CastedCollider castObject;
         [SerializeField] private bool followBody = false;
-        public bool spawnOnEnable = true;
         [SerializeField] private Collider[] exceptions;
         [SerializeField] private List<CastedCollider> castObjects = new();
         [SerializeField] private bool debug = false;
@@ -55,7 +66,7 @@ namespace HotD.Castables
             base.SetOrigin(source, location);
         }
 
-        public void Spawn()
+        public override void Spawn()
         {
             Spawn(false);
         }
@@ -73,7 +84,7 @@ namespace HotD.Castables
             }
         }
 
-        public void Spawn(Vector3 direction = new Vector3())
+        public override void Spawn(Vector3 direction = new Vector3())
         {
 
             if (debug) { Debug.Log($"{name} spawning projectile in {direction} direction.", this); }
@@ -98,7 +109,7 @@ namespace HotD.Castables
             }
         }
 
-        public void Activate(Vector3 direction)
+        public override void Activate(Vector3 direction)
         {
             LaunchInstance(direction, pivot.transform, castObject);
         }
@@ -134,12 +145,12 @@ namespace HotD.Castables
         }
 
         // Collision Exceptions
-        public Collider[] Exceptions
+        public override Collider[] Exceptions
         {
             get => exceptions;
             set => SetExceptions(value);
         }
-        public void SetExceptions(Collider[] exceptions)
+        public override void SetExceptions(Collider[] exceptions)
         {
             for (int i = 0; i < castObjects.Count; i++)
             {
