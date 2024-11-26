@@ -174,7 +174,7 @@ namespace HotD
         {
             if (Input == InputMode.LockOn)
             {
-                Crosshair.main.GetComponent<SpriteRenderer>().enabled = true;
+                Crosshair.Main.GetComponent<SpriteRenderer>().enabled = true;
                 Input = InputMode.Character;
             }  
         }
@@ -182,7 +182,7 @@ namespace HotD
         {
             if (Targeter.HasTarget())
             {
-                Crosshair.main.GetComponent<SpriteRenderer>().enabled = false;
+                Crosshair.Main.GetComponent<SpriteRenderer>().enabled = false;
                 Input = InputMode.LockOn;
             }
         }

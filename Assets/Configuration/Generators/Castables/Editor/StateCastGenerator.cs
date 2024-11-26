@@ -520,7 +520,7 @@ namespace HotD.Generators
             return discharger;
         }
 
-        static private Damager AddDamager(CastProperties castable, GameObject gameObject, CastableStats stats, string label, int damageBase = 0, bool doTick = false, bool doTickOnProc = true)
+        static private Damager AddDamager(CastProperties castable, GameObject gameObject, CastableStats stats, string label, int damageBase = 0, float tickRate = 0.25f, bool doTick = false, bool doTickOnProc = true)
         {
             Assert.IsNotNull(castable);
             if (stats.dealDamage)
@@ -528,6 +528,7 @@ namespace HotD.Generators
                 Damager damager = gameObject.AddComponent<Damager>();
                 damager.Name = label;
                 damager.damage = damageBase; // + stats.Damage; // TODO: Account for bonuses
+                damager.tickRate = tickRate;
                 damager.shouldTick = doTick;
                 damager.shouldTickOnProc = doTickOnProc;
                 UnityEventTools.AddPersistentListener(castable.fieldEvents.onSetIdentity, damager.SetIdentity);
@@ -726,6 +727,7 @@ namespace HotD.Generators
                 this.statuses = new();
 
                 this.baseDamage = 0;
+                this.tickRate = 0.25f;
                 this.doTick = false;
                 this.tickOnProc = true;
 
@@ -748,6 +750,7 @@ namespace HotD.Generators
             // Damage
             [Header("Damage")]
             public int baseDamage;
+            public float tickRate;
             public bool doTick;
             public bool tickOnProc;
 
@@ -791,7 +794,8 @@ namespace HotD.Generators
                 Assert.IsNotNull(method);
                 GameObject parent = method.gameObject;
 
-                if (stats.TryGetStatusClass(statusType, out StatusClass statusClass) || this.statuses[statusType].Count > 0)
+                bool hasStatuses = this.statuses[statusType] != null && this.statuses[statusType]?.Count > 0;
+                if (stats.TryGetStatusClass(statusType, out StatusClass statusClass) || hasStatuses)
                 {
                     var statusListener = parent.AddComponent<StatusCastListener>();
 
@@ -800,10 +804,12 @@ namespace HotD.Generators
                     //UnityEventTools.AddPersistentListener(method.fieldEvents.onSetOwner, statusListener.SetOwner);
 
                     List<Status> statuses = new();
-                    statuses.AddRange(this.statuses[statusType]);
+
+                    if (this.statuses[statusType] != null)
+                        statuses.AddRange(this.statuses[statusType]);
+
                     if (statusClass.statuses != null)
                     {
-
                         statuses.AddRange(statusClass.statuses);
                     }
                     else
@@ -934,7 +940,7 @@ namespace HotD.Generators
                 method.InitializeEvents();
 
                 // Damager
-                damager = AddDamager(executor, method.gameObject, stats, name, baseDamage, doTick, tickOnProc);
+                damager = AddDamager(executor, method.gameObject, stats, name, baseDamage, tickRate, doTick, tickOnProc);
 
                 return method;
             }

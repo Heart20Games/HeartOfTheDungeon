@@ -15,16 +15,16 @@ public interface IDamageReceiver: IDestroyable
 
 public class DamageReceiver : BaseMonoBehaviour, IDamageReceiver
 {
-    public UnityEvent<int> onTakeDamage;
-    public UnityEvent<int, Identity> onTakeDamageFrom;
+    public UnityEvent<int> onTakeDamage = new();
+    public UnityEvent<int, Identity> onTakeDamageFrom = new();
     private UnityAction onDestroyed;
 
     public virtual UnityAction OnDestroyed { get => onDestroyed; set => onDestroyed = value; }
 
     public virtual void TakeDamage(int amount, Identity id=Identity.Neutral)
     {
-        onTakeDamage.Invoke(amount);
-        onTakeDamageFrom.Invoke(amount, id);
+        onTakeDamage?.Invoke(amount);
+        onTakeDamageFrom?.Invoke(amount, id);
     }
 
     public virtual void SetDamagePosition(Vector3 location) { }

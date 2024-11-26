@@ -57,7 +57,7 @@ namespace HotD.Castables
             {
                 Debug.LogWarning($"Owner Null (Execution Method)", this);
             }
-            Assert.IsNotNull(Crosshair.main);
+            Assert.IsNotNull(Crosshair.Main);
 
             Transform source = Owner == null ? transform : Owner.Transform;
             Transform body = Owner != null ? Owner.Body : transform;
@@ -66,7 +66,7 @@ namespace HotD.Castables
                     (Owner.WeaponLocation != null ? Owner.WeaponLocation :
                         (Owner.Body != null ? Owner.Body : Owner.Transform
             ))));
-            Vector3 target = (aimAtCrosshair ? Crosshair.main.TargetedPosition(location) : location.position);
+            Vector3 target = (aimAtCrosshair ? Crosshair.Main.TargetedPosition(location) : location.position);
             
             foreach (var positionable in positionables)
             {
