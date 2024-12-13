@@ -17,9 +17,9 @@ MonoBehaviour:
     position:
       serializedVersion: 2
       x: 1967
-      y: 328
+      y: 362
       width: 4058
-      height: 5358
+      height: 5324
     contents:
     - model: {fileID: 8926484042661614610}
       id: 0
@@ -391,9 +391,9 @@ MonoBehaviour:
   uiBounds:
     serializedVersion: 2
     x: 631
-    y: 328
+    y: 362
     width: 5395
-    height: 11096
+    height: 11062
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -532,6 +532,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616220}
   - {fileID: 8926484042661616227}
   - {fileID: 8926484042661616234}
+  - {fileID: 8926484042661616657}
   m_UIPosition: {x: 0, y: 0}
   m_UICollapsed: 1
   m_UISuperCollapsed: 0
@@ -717,6 +718,20 @@ MonoBehaviour:
       m_SerializableObject: 15
     min: -Infinity
     max: Infinity
+    enumValues: []
+    descendantCount: 0
+  - name: ConeFormation
+    path: ConeFormation
+    tooltip: 
+    sheetType: m_Float
+    realType: Single
+    defaultValue:
+      m_Type:
+        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      m_SerializableObject: 1
+    min: 0
+    max: 1
     enumValues: []
     descendantCount: 0
   m_ImportDependencies: []
@@ -18817,7 +18832,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 3850, y: 453}
+  m_UIPosition: {x: 3621, y: 605}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -23033,7 +23048,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615296}
       inputSlot: {fileID: 8926484042661615172}
-    position: {x: 3681.3335, y: 386.66666}
+    position: {x: 3452.6667, y: 538.6667}
     expandedSlots: []
     expanded: 0
   - m_Id: 1
@@ -25394,7 +25409,7 @@ MonoBehaviour:
       inputSlot: {fileID: 8926484042661615369}
     - outputSlot: {fileID: 8926484042661615373}
       inputSlot: {fileID: 8926484042661615362}
-    position: {x: 2720.4258, y: 1427.0111}
+    position: {x: 2726, y: 1430.6666}
     expandedSlots: []
     expanded: 0
   - m_Id: 1
@@ -25403,7 +25418,7 @@ MonoBehaviour:
       inputSlot: {fileID: 8926484042661614839}
     - outputSlot: {fileID: 8926484042661615373}
       inputSlot: {fileID: 8926484042661614962}
-    position: {x: 4229.2354, y: 4040.0261}
+    position: {x: 4228.6665, y: 4040}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615373
@@ -44894,3 +44909,77 @@ MonoBehaviour:
   m_Direction: 1
   m_LinkedSlots:
   - {fileID: 8926484042661616146}
+--- !u!114 &8926484042661616657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 330e0fca1717dde4aaa144f48232aa64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UIIgnoredErrors: []
+  m_Parent: {fileID: 114350483966674976}
+  m_Children: []
+  m_UIPosition: {x: 0, y: 0}
+  m_UICollapsed: 1
+  m_UISuperCollapsed: 0
+  m_InputSlots: []
+  m_OutputSlots:
+  - {fileID: 8926484042661616658}
+  m_ExposedName: ConeFormation
+  m_Exposed: 1
+  m_Order: 13
+  m_Category: 
+  m_Min:
+    m_Type:
+      m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+    m_SerializableObject: 0
+  m_Max:
+    m_Type:
+      m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+    m_SerializableObject: 1
+  m_IsOutput: 0
+  m_EnumValues: []
+  m_ValueFilter: 1
+  m_Tooltip: 
+  m_Nodes: []
+--- !u!114 &8926484042661616658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f780aa281814f9842a7c076d436932e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UIIgnoredErrors: []
+  m_Parent: {fileID: 0}
+  m_Children: []
+  m_UIPosition: {x: 0, y: 0}
+  m_UICollapsed: 1
+  m_UISuperCollapsed: 0
+  m_MasterSlot: {fileID: 8926484042661616658}
+  m_MasterData:
+    m_Owner: {fileID: 8926484042661616657}
+    m_Value:
+      m_Type:
+        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      m_SerializableObject: 1
+    m_Space: 2147483647
+  m_Property:
+    name: o
+    m_serializedType:
+      m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+  m_Direction: 1
+  m_LinkedSlots: []
