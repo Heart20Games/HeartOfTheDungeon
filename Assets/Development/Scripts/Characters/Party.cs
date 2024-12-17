@@ -1,6 +1,7 @@
 using Body;
 using Body.Behavior;
 using Body.Behavior.ContextSteering;
+using HotD;
 using HotD.Body;
 using MyBox;
 using System.Collections.Generic;
@@ -158,12 +159,13 @@ public class Party : BaseMonoBehaviour
         }
     }
 
-    public void LevelUp(int amount = 1)
+    public void LevelUp(bool pullUpCharacterSheet = false, int amount = 1)
     {
         foreach (var member in members)
-        {
             member.StatBlock.skillPoints += amount;
-        }
+
+        if (isMainParty && pullUpCharacterSheet)
+            Game.main.SetMode(GameModes.Menu.CharacterSheet);
     }
 
     public void SetTargetParty(Party target, bool preferNew=true)
