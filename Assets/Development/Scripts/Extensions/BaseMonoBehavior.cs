@@ -31,9 +31,11 @@ public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
     {
         get
         {
-            Assert.IsNotNull(this);
-            Assert.IsNotNull(gameObject);
-            return $"{this.GetName()} ({gameObject.name})";
+            string behaviourName = "Unknown Behaviour";
+            string gameObjectName = "Unknown GameObject";
+            if (this != null) behaviourName = this.GetName();
+            if (gameObject != null) gameObjectName = gameObject.name;
+            return $"{behaviourName} ({gameObjectName})";
         }
         set => this.SetName(value);
     }
