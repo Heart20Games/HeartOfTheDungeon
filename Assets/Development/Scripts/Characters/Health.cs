@@ -54,6 +54,8 @@ public class Health : BaseMonoBehaviour, IHealth
         onSetHealthTotal.Invoke(healthTotal);
     }
 
+    // IDamageReceiver
+
     public void TakeDamage(int amount)
     {
         TakeDamage(amount, Identity.Neutral);
@@ -75,4 +77,13 @@ public class Health : BaseMonoBehaviour, IHealth
     }
 
     public virtual void SetDamagePosition(Vector3 location) { }
+
+    // IDestroyable
+
+    private UnityAction onDestroyed;
+    public UnityAction OnDestroyed { get => onDestroyed; set => onDestroyed = value; }
+    private void OnDestroy()
+    {
+        onDestroyed?.Invoke();
+    }
 }

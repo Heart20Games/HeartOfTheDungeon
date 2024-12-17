@@ -334,7 +334,7 @@ namespace Body.Behavior.ContextSteering
 
         // Obstacles
 
-        public void AddObstacle(Impact impact)
+        public void AddObstacle(Impactor impact)
         {
             if (!impact.other.gameObject.TryGetComponent<CSController>(out _))
             {
@@ -349,7 +349,7 @@ namespace Body.Behavior.ContextSteering
             }
         }
 
-        public void RemoveObstacle(Impact impact)
+        public void RemoveObstacle(Impactor impact)
         {
             if (!impact.other.gameObject.TryGetComponent<CSController>(out _))
             {

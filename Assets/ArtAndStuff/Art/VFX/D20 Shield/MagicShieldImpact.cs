@@ -3,7 +3,7 @@ using MyBox;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.VFX;
-using static Impact;
+using static Impactor;
 
 /*
  * This script is intended to handle all of the Magic shield's VFX transitions.
@@ -211,9 +211,9 @@ public class MagicShieldImpact : CastLocationFollower, ICastListener
             if (other.GetComponent<Projectile>().ShouldIgnoreDodgeLayer) return;
         }
 
-        if(other.GetComponent<Impact>())
+        if(other.GetComponent<Impactor>())
         {
-            OnImpact(other.GetComponent<Impact>().other);
+            OnImpact(other.GetComponent<Impactor>().other);
         }
     }
 

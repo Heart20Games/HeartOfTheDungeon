@@ -73,7 +73,7 @@ namespace HotD.Castables
             animator.SetTrigger("Swing");
         }
 
-        public void HitDamagable(Impact impactor)
+        public void HitDamagable(Impactor impactor)
         {
             IDamageReceiver other = impactor.other.gameObject.GetComponent<IDamageReceiver>();
             if (other != null && !ignored.Contains(other) && !others.Contains(other))
@@ -84,7 +84,7 @@ namespace HotD.Castables
             }
         }
 
-        public void LeftDamagable(Impact impactor)
+        public void LeftDamagable(Impactor impactor)
         {
             IDamageReceiver other = impactor.other.gameObject.GetComponent<IDamageReceiver>();
             if (other != null && !ignored.Contains(other) && others.Contains(other))

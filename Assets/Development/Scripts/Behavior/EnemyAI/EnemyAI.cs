@@ -131,7 +131,7 @@ public class EnemyAI : Brain
 
             if (character.castables[character.CastableID] != null)
             {
-                character.castables[character.CastableID].Damager._Impactor = Target.GetComponent<Impact>();
+                character.castables[character.CastableID].Damager._Impactor = Target.GetComponent<Impactor>();
             }
 
             if(!didAttack)
@@ -162,7 +162,7 @@ public class EnemyAI : Brain
         }
     }
 
-    public Impact GetImpactor()
+    public Impactor GetImpactor()
     {
         return character.castables[character.CastableID].Damager._Impactor;
     }

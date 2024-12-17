@@ -11,7 +11,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(SimpleMovement))]
 public class SimpleController : MonoBehaviour, IControllable
 {
-    public Impact cursor;
+    public Impactor cursor;
     public CinemachineVirtualCamera virtualCamera;
     private SimpleMovement movement;
 

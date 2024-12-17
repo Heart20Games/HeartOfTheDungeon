@@ -19,6 +19,7 @@ public class Validator : BaseMonoBehaviour
 
     // Validation: Tags
     public List<string> desiredTags;
+    public List<LayerMask> desiredLayers;
 
     // Validation: Types
     public List<SelectType> selectableTypes;
@@ -35,11 +36,11 @@ public class Validator : BaseMonoBehaviour
         this.selectableTypes = selectableTypes;
     }
 
-
     // Validation
     public bool Validate(GameObject other, Identity identity=Identity.Neutral)
     {
-        return HasValidTag(other) && IsValidSelectable(other) && IsValidInteractor(other) && IsValidCharacter(other) && IsValidTarget(identity, other);
+        return HasValidTag(other) && HasValidLayer(other) && IsValidSelectable(other) &&
+            IsValidInteractor(other) && IsValidCharacter(other) && IsValidTarget(identity, other);
     }
 
 
@@ -71,6 +72,18 @@ public class Validator : BaseMonoBehaviour
                 Debug.LogWarning($"Colliding with self: {other.tag}-{other.name}");
             Print($"Valid Tag? {(desiredTags.Count == 0 || desiredTags.Contains(other.tag))} (them:{other.tag}-{other.name} me:{gameObject.tag}-{gameObject.name})", debug);
             return desiredTags.Contains(other.tag);
+        }
+        else return true;
+    }
+
+    private bool HasValidLayer(GameObject other)
+    {
+        if (desiredLayers.Count > 0)
+        {
+            if (other == gameObject)
+                Debug.LogWarning($"Colliding with self {other.layer}-{other.layer}");
+            Print($"Valid Layer? {(desiredLayers.Count == 0 || desiredLayers.Contains(other.layer))} (them:{other.layer}-{other.name} me:{gameObject.layer}-{gameObject.name})", debug);
+            return desiredLayers.Contains(other.layer);
         }
         else return true;
     }

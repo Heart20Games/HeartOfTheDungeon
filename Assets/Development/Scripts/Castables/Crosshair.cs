@@ -5,6 +5,15 @@ using UnityEngine;
 public class Crosshair : BaseMonoBehaviour
 {
     public static Crosshair main;
+    public static Crosshair Main
+    {
+        get
+        {
+            if (main == null)
+                main = FindObjectOfType<Crosshair>();
+            return main;
+        }
+    }
 
     public float maxDistance = 1000;
 

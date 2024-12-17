@@ -9,13 +9,14 @@ public class EnemyBehaviorEvents : MonoBehaviour
 
     private void Start()
     {
-        meleeDamager = enemyAI.GetComponent<Character>().castables[0].Damager;
+        meleeDamager = enemyAI.GetComponent<Character>().castables[0]?.Damager;
     }
 
     public void Melee(string castKey)
     {
         if (string.IsNullOrEmpty(castKey)) return;
         if (enemyAI.Target == null) return;
+        if (meleeDamager == null) return;
 
         meleeDamager.HitDamageable(enemyAI.GetImpactor());
     }

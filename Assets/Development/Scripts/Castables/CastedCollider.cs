@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Events;
 using static Colliders;
 
@@ -16,8 +17,8 @@ namespace HotD.Castables
 
         [Foldout("Damage", true)]
         [SerializeField] protected bool debugDamage;
-        public UnityEvent<Impact> hitDamageable;
-        public UnityEvent<Impact> leftDamageable;
+        public UnityEvent<Impactor> hitDamageable;
+        public UnityEvent<Impactor> leftDamageable;
 
         [Foldout("Collision", true)]
         [SerializeField] protected bool debugCollision;
@@ -73,15 +74,19 @@ namespace HotD.Castables
             return colliders;
         }
 
-        public void HitDamageable(Impact impact)
+        public void HitDamageable(Impactor impact)
         {
+            Assert.IsNotNull(impact.other.collider);
             Print($"Hit Damageable: {impact.other.collider.gameObject.name}", debugDamage, this);
             hitDamageable.Invoke(impact);
         }
 
-        public void LeftDamageable(Impact impact)
+        public void LeftDamageable(Impactor impact)
         {
-            Print($"Left Damageable: {impact.other.collider.gameObject.name}", debugDamage, this);
+            if (impact.other.collider != null)
+            {
+                Print($"Left Damageable: {impact.other.collider.gameObject.name}", debugDamage, this);
+            }
             leftDamageable.Invoke(impact);
         }
 

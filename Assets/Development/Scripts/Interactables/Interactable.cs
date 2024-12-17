@@ -38,13 +38,13 @@ public class Interactable : BaseMonoBehaviour
         }
     }
 
-    public void AddInteractor(Impact impact)
+    public void AddInteractor(Impactor impact)
     {
         if (impact.other.gameObject.TryGetComponent<Interactor>(out var interactor))
             AddInteractor(interactor);
     }
 
-    public void RemoveInteractor(Impact impact)
+    public void RemoveInteractor(Impactor impact)
     {
         if (impact.other.gameObject.TryGetComponent<Interactor>(out var interactor))
             RemoveInteractor(interactor);
