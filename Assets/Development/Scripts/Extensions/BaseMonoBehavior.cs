@@ -7,6 +7,7 @@ using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 using System.Linq;
 using Sisus.ComponentNames;
+using UnityEngine.Assertions;
 
 public interface IEnableable
 {
@@ -28,7 +29,12 @@ public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
     public Transform Transform => transform;
     public string Name 
     {
-        get => $"{this.GetName()} ({gameObject.name})";
+        get
+        {
+            Assert.IsNotNull(this);
+            Assert.IsNotNull(gameObject);
+            return $"{this.GetName()} ({gameObject.name})";
+        }
         set => this.SetName(value);
     }
 

@@ -28,6 +28,4 @@ public class DamageReceiver : BaseMonoBehaviour, IDamageReceiver
     }
 
     public virtual void SetDamagePosition(Vector3 location) { }
-
-
 }
