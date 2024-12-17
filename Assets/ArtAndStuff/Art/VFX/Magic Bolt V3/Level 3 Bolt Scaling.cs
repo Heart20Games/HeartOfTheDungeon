@@ -1,4 +1,5 @@
 using MyBox;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,7 +21,11 @@ public class Level3BoltScaling : BaseMonoBehaviour
     [ReadOnly][SerializeField] private bool playing = false;
     [ReadOnly][SerializeField] private bool casting = false;
     [SerializeField] private float currentScale;
+    [SerializeField] private float maxDistance = 1000f;
     [SerializeField] private bool shouldFollowCrossHair;
+    [SerializeField] private bool shouldShootForever;
+    [SerializeField] private LayerMask raycastLayer;
+    [SerializeField][ReadOnly] private int numInLayer;
     private Coroutine windDownCoroutine;
 
     [Foldout("Events", true)]
@@ -123,7 +128,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
             {
                 Print("Scaling up...", debug);
                 currentScale += Time.fixedDeltaTime * scaleSpeed;
-                float clampedScale = Mathf.Min(currentScale, maxScale);
+                float clampedScale = Mathf.Min(currentScale, maxScale, maxDistance);
                 if (currentScale != clampedScale)
                 {
                     Print("Start the laser!", debug);
@@ -133,9 +138,38 @@ public class Level3BoltScaling : BaseMonoBehaviour
                 }
             }
 
-            if(shouldFollowCrossHair)
+            if(ShouldFollowCrossHair)
             {
                 transform.LookAt(Crosshair.GetTargetedPosition(transform));
+            }
+
+            Ray ray = new(transform.position, transform.forward);
+            Debug.DrawRay(ray.origin, ray.direction * 1000f, Color.magenta);
+
+
+            RaycastHit[] hits = Physics.RaycastAll(ray, 1000f, raycastLayer);
+
+            numInLayer = 0;
+            if (!shouldShootForever && hits.Length > 0)
+            {
+                maxDistance = 0;
+                foreach (var hit in hits)
+                {
+                    if ((hit.collider.gameObject.layer & raycastLayer) != 0)
+                    {
+                        maxDistance = Mathf.Max(hit.distance, maxDistance);
+                        numInLayer += 1;
+                    }
+                }
+            }
+            else
+            {
+                maxDistance = 1000f;
+            }
+
+            if (casting)
+            {
+                currentScale = Mathf.Min(maxScale, maxDistance);
             }
             
             UpdateScaling();
