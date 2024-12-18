@@ -18,6 +18,6 @@ public class EnemyBehaviorEvents : MonoBehaviour
         if (enemyAI.Target == null) return;
         if (!enemyAI.IsInAttackingDistance()) return;
 
-        meleeDamager.HitDamageable(enemyAI.GetImpactor());
+        meleeDamager.DamageTarget();
     }
 }

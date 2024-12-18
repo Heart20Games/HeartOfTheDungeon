@@ -1,5 +1,6 @@
 using Body.Behavior;
 using Body.Behavior.ContextSteering;
+using HotD;
 using HotD.Body;
 using MyBox;
 using System.Collections;
@@ -15,8 +16,6 @@ public class EnemyAI : Brain
     [SerializeField] protected Animator animator;
 
     [SerializeField] protected float distanceToReturnHome;
-    [SerializeField] protected float distanceToAttack;
-    [SerializeField] protected float distanceToChangeWaypoints;
     [SerializeField] protected float wayPointWaitTime;
     [SerializeField] protected float attackTime;
 
@@ -31,6 +30,8 @@ public class EnemyAI : Brain
     private int wayPointIndex;
 
     public Action CurrentAction => currentAction;
+
+    public bool ShouldPatrol => shouldPatrol;
 
     public bool DidAttack
     {
@@ -51,6 +52,7 @@ public class EnemyAI : Brain
         }
         else
         {
+            Target = Game.main.playerParty.leader.transform;
             ChasePlayer(Target, true);
         }
     }
