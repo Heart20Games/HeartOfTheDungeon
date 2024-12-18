@@ -71,9 +71,10 @@ public class Damager : BaseMonoBehaviour, IDamager
             {
                 Print("Doing stuff with damageable.", debug, this);
                 //others.Add(other);
-                otherCount = others.Count;
-                other.SetDamagePosition(impactor.other.ImpactLocation);
-                other.TakeDamage(damage, identity);
+                //otherCount = others.Count;
+
+                impactor.gameObject.GetComponent<IDamageReceiver>().SetDamagePosition(impactor.other.ImpactLocation);
+                impactor.gameObject.GetComponent<IDamageReceiver>().TakeDamage(damage, identity);
             }
         }
         else
@@ -94,8 +95,8 @@ public class Damager : BaseMonoBehaviour, IDamager
             {
                 Print("Removing Damageable.", debug, this);
 
-                others.Remove(other);
-                otherCount = others.Count;
+                //others.Remove(other);
+                //otherCount = others.Count;
             }
         }
         else
@@ -120,7 +121,7 @@ public class Damager : BaseMonoBehaviour, IDamager
             others.Add(other);
             otherCount = others.Count;
             other.SetDamagePosition(_impactor.other.ImpactLocation);
-            other.TakeDamage(damage, identity);
+            //other.TakeDamage(damage, identity);
         }
     }
 

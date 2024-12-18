@@ -16,6 +16,7 @@ public class EnemyBehaviorEvents : MonoBehaviour
     {
         if (string.IsNullOrEmpty(castKey)) return;
         if (enemyAI.Target == null) return;
+        if (!enemyAI.IsInAttackingDistance()) return;
 
         meleeDamager.HitDamageable(enemyAI.GetImpactor());
     }

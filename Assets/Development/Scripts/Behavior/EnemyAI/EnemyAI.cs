@@ -15,6 +15,7 @@ public class EnemyAI : Brain
     [SerializeField] protected Animator animator;
 
     [SerializeField] protected float distanceToReturnHome;
+    [SerializeField] protected float distanceToAttack;
     [SerializeField] protected float distanceToChangeWaypoints;
     [SerializeField] protected float wayPointWaitTime;
     [SerializeField] protected float attackTime;
@@ -123,7 +124,7 @@ public class EnemyAI : Brain
 
         SetTarget(Target);
 
-        if (agent.remainingDistance < agent.stoppingDistance)
+        if (agent.remainingDistance <= agent.stoppingDistance)
         {
             currentAction = Action.Duel;
 
@@ -214,6 +215,11 @@ public class EnemyAI : Brain
         }
     }
 
+    public bool IsInAttackingDistance()
+    {
+        return agent.remainingDistance <= agent.stoppingDistance;
+    }
+
     public bool IsAttacking()
     {
         return attackTimeStep >= attackTime;
@@ -249,7 +255,7 @@ public class EnemyAI : Brain
         {
             if (currentAction == Action.Patrol && pathFinder.target != null)
             {
-                if (agent.remainingDistance <= distanceToChangeWaypoints)
+                if (agent.remainingDistance <= agent.stoppingDistance)
                 {
                     wayPointTimeStep += Time.deltaTime;
 
