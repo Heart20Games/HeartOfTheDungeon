@@ -73,7 +73,7 @@ public class MagicBolt_ChargingVFXScript : ACastListener
     {
         if (castingEnd)
         {
-            StartCoroutine(CastingEnd());
+            CastingEnd();
         }
         else if (casting)
         {
@@ -104,10 +104,9 @@ public class MagicBolt_ChargingVFXScript : ACastListener
 
     // Casting
 
-    IEnumerator CastingEnd()
+    private void CastingEnd()
     {
         SetBool("CastingEnd", true);
-        yield return new WaitForSeconds(2);
         level = 0;
         casting = false;
         castingEnd = false;

@@ -25,7 +25,7 @@ public class SlimeWizard : EnemyAI
 
     [SerializeField] private Transform slimeTransform;
 
-    [SerializeField] private VisualEffect magicBoltVfx;
+    [SerializeField] private MagicBolt_ChargingVFXScript magicBoltVfx;
 
     [SerializeField] private DodgeZone dodgeZone;
 
@@ -33,8 +33,9 @@ public class SlimeWizard : EnemyAI
 
     [SerializeField] private Rigidbody myRigidBody;
 
-    [SerializeField] private Animator magicBoltVfxAnimator;
     [SerializeField] private Animator slimeWizardAnimator;
+
+    [SerializeField] private Transform firingPoint;
 
     private CastedCollider magicLaserObject;
 
@@ -130,33 +131,26 @@ public class SlimeWizard : EnemyAI
 
         Caster caster = GetComponent<Caster>();
 
-        magicBoltVfx.gameObject.SetActive(true);
-        magicBoltVfx.Play();
+        magicBoltVfx.SetTriggers(Coordination.Triggers.StartCast);
 
-        magicBoltVfxAnimator.SetBool("Sustain", true);
         slimeWizardAnimator.ResetTrigger("StartCast");
         slimeWizardAnimator.SetTrigger("StartAction");
 
         switch (attackIndex)
         {
             case 0:
-                magicBoltVfxAnimator.Play("Level 1 Charge");
                 slimeWizardAnimator.SetInteger("ChargeLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
                 chargingLevelOne = true;
                 //CallOutManager.instance.PlayPartyMemeberCallOut(0);
                 break;
             case 1:
-                magicBoltVfxAnimator.Play("Level 1 Charge");
-                magicBoltVfxAnimator.SetBool("Level 2 Available", true);
                 slimeWizardAnimator.SetInteger("ChargeLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
                 chargingLevelTwo = true;
                 //CallOutManager.instance.PlayPartyMemeberCallOut(1);
                 break;
             case 2:
-                magicBoltVfxAnimator.Play("Level 1 Charge");
-                magicBoltVfxAnimator.SetBool("Level 3 Available", true);
                 slimeWizardAnimator.SetInteger("ChargeLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
                 //CallOutManager.instance.PlayPartyMemeberCallOut(2);
@@ -182,7 +176,7 @@ public class SlimeWizard : EnemyAI
 
         slimeWizardAnimator.SetTrigger("StartCast");
 
-        var magicAttack = Instantiate(actions[attackIndex].ProjectileToShoot, transform);
+        var magicAttack = Instantiate(actions[attackIndex].ProjectileToShoot);
 
         if(magicAttack.GetComponent<Projectile>())
         {
@@ -192,10 +186,11 @@ public class SlimeWizard : EnemyAI
 
             projectile.ShouldIgnoreDodgeLayer = true;
 
-            magicAttack.transform.position = caster.WeaponLocation.position;
-            magicAttack.transform.position += caster.WeaponLocation.forward * 1.2f;
+            magicAttack.transform.position = firingPoint.position;
+            magicAttack.transform.position += firingPoint.forward * 1.2f;
 
-            projectile.direction = new Vector3(Target.transform.position.x - caster.WeaponLocation.position.x, 0, Target.transform.position.z - caster.WeaponLocation.position.z).normalized;
+            projectile.direction = new Vector3(Target.transform.position.x - firingPoint.position.x, (Target.transform.position.y + 2.0f) - firingPoint.position.y, 
+                                               Target.transform.position.z - firingPoint.position.z).normalized;
         }
         else
         {
@@ -219,12 +214,10 @@ public class SlimeWizard : EnemyAI
             }
         }
 
-        magicBoltVfxAnimator.SetBool("Sustain", false);
-
         chargingLevelOne = false;
         chargingLevelTwo = false;
 
-        magicBoltVfx.Stop();
+        magicBoltVfx.SetTriggers(Coordination.Triggers.EndCast);
 
         magicBoltRoutine = null;
     }
@@ -265,15 +258,13 @@ public class SlimeWizard : EnemyAI
 
     public void StopEffectsOnDeath()
     {
-        magicBoltVfx.Stop();
+        magicBoltVfx.SetTriggers(Coordination.Triggers.EndCast);
 
         chargingLevelOne = false;
         chargingLevelTwo = false;
 
         slimeWizardAnimator.SetFloat("Action", 0);
         slimeWizardAnimator.SetInteger("ChargeLevel", 0);
-
-        magicBoltVfxAnimator.SetBool("Sustain", false);
 
         dodgeZone.RemoveShieldEffect();
 

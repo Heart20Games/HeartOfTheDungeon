@@ -8,6 +8,8 @@ public class EnemyTriggerZone : MonoBehaviour
 
     private void Awake()
     {
+        if (!enemyAI.ShouldPatrol) return;
+
         StartCoroutine(EnableTriggerZone());
     }
 
