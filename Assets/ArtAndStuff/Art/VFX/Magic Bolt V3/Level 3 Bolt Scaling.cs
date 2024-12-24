@@ -22,6 +22,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
     [ReadOnly][SerializeField] private bool casting = false;
     [SerializeField] private float currentScale;
     [SerializeField] private float maxDistance = 1000f;
+    [SerializeField] private float collisionMargin = 0.01f;
     [SerializeField] private bool shouldFollowCrossHair;
     [SerializeField] private bool shouldShootForever;
     [SerializeField] private LayerMask raycastLayer;
@@ -116,7 +117,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
     private void UpdateScaling()
     {
         bolt.SetFloat("Scale", currentScale);
-        collider.transform.localScale = new Vector3(collider.transform.localScale.x, collider.transform.localScale.y, (currentScale * 100));
+        collider.transform.localScale = new Vector3(collider.transform.localScale.x, collider.transform.localScale.y, (currentScale * 100) + collisionMargin);
     }
 
     // Update is called once per frame
