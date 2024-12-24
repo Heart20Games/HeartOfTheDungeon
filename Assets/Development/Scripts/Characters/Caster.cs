@@ -161,7 +161,7 @@ namespace HotD.Castables
             vector = new(vector.x, vector.y, -vector.z);
             Debug.DrawRay(body.position, vector * 2f, Color.blue, 0.5f);
             Vector3 cameraDirection = Camera.main.transform.position - body.position;
-            vector = vector.Orient(cameraDirection.XZVector().FullY().normalized);
+            vector = vector.Orient(cameraDirection.XZVector2().FullY().normalized);
             Debug.DrawRay(body.position, vector * 2f, Color.yellow, 0.5f);
             return vector;
         }

@@ -38,9 +38,13 @@ public static class ExtensionMethods
     }
 
     // Vector3
-    public static Vector2 XZVector(this Vector3 _vector)
+    public static Vector2 XZVector2(this Vector3 _vector)
     {
         return new(_vector.x, _vector.z);
+    }
+    public static Vector3 XZVector3(this Vector3 _vector, float y = 0f)
+    {
+        return new(_vector.x, y, _vector.z);
     }
     public static Vector3 Orient(this Vector3 _vector, Vector3 front)
     {
@@ -65,7 +69,7 @@ public static class ExtensionMethods
     }
     public static Vector2 Orient(this Vector2 _vector, Vector3 front)
     {
-        return _vector.Orient(front.normalized.XZVector());
+        return _vector.Orient(front.normalized.XZVector2());
     }
 
 

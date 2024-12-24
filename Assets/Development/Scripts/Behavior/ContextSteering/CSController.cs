@@ -145,7 +145,7 @@ namespace Body.Behavior.ContextSteering
             {
                 if (destinationDistance > 0)
                 {
-                    Vector2 destinationVector = (destinationStep - transform.position).XZVector();
+                    Vector2 destinationVector = (destinationStep - transform.position).XZVector2();
                     MapTo(destinationVector, Identity.Target, destinationDistance * destinationScale);
                 }
                 DrawMaps();
@@ -159,7 +159,7 @@ namespace Body.Behavior.ContextSteering
                     }
                     rigidbody.velocity = Speed * Scale * Time.fixedDeltaTime * vector;
                 }
-                CurrentVector = vector.XZVector();
+                CurrentVector = vector.XZVector2();
                 onSetVector.Invoke( CurrentVector );
             }
         }

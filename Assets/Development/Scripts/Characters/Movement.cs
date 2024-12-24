@@ -210,8 +210,8 @@ namespace HotD.Body
 
                     if (artRenderer != null && pivot != null)
                     {
-                        Vector2 hVelocity = MyRigidbody.velocity.XZVector();
-                        Vector2 hCamera = cameraDirection.XZVector().normalized;
+                        Vector2 hVelocity = MyRigidbody.velocity.XZVector2();
+                        Vector2 hCamera = cameraDirection.XZVector2().normalized;
                         Vector2 right = Vector2.Perpendicular(hCamera);
                         if (hVelocity.magnitude > Settings.footstepVelocity)
                         {

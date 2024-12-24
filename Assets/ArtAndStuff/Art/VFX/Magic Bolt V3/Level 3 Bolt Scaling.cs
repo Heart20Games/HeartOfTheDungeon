@@ -144,7 +144,12 @@ public class Level3BoltScaling : BaseMonoBehaviour
 
             if (ShouldFollowCrossHair)
             {
-                transform.LookAt(Crosshair.GetTargetedPosition(transform));
+                // Get the crosshair's target
+                Vector3 targetedPosition = Crosshair.GetTargetedPosition(transform);
+                // Restricted the target's direction to the X and Z axes.
+                Vector3 restrictedDirection = (targetedPosition - transform.position).XZVector3().normalized;
+                // Look at the restricted direction relative to the origin position.
+                transform.LookAt(transform.position + restrictedDirection);
             }
 
 
@@ -159,7 +164,6 @@ public class Level3BoltScaling : BaseMonoBehaviour
 
     private void UpdateMaxDistance()
     {
-        Debug.Break();
         Ray ray = new(transform.position, transform.forward);
         RaycastHit[] hits = Physics.RaycastAll(ray, 1000f, raycastLayer);
 
