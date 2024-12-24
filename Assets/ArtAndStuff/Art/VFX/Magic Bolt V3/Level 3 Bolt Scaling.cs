@@ -26,6 +26,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
     [SerializeField] private bool shouldShootForever;
     [SerializeField] private LayerMask raycastLayer;
     [SerializeField][ReadOnly] private int numInLayer;
+    [SerializeField][ReadOnly] private int totalNum;
     private Coroutine windDownCoroutine;
 
     [Foldout("Events", true)]
@@ -121,6 +122,8 @@ public class Level3BoltScaling : BaseMonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        UpdateMaxDistance();
+
         if (playing)
         {
             Print("Playing...", debug);
@@ -138,41 +141,64 @@ public class Level3BoltScaling : BaseMonoBehaviour
                 }
             }
 
-            if(ShouldFollowCrossHair)
+            if (ShouldFollowCrossHair)
             {
                 transform.LookAt(Crosshair.GetTargetedPosition(transform));
             }
 
-            Ray ray = new(transform.position, transform.forward);
-            Debug.DrawRay(ray.origin, ray.direction * 1000f, Color.magenta);
-
-
-            RaycastHit[] hits = Physics.RaycastAll(ray, 1000f, raycastLayer);
-
-            numInLayer = 0;
-            if (!shouldShootForever && hits.Length > 0)
-            {
-                maxDistance = 0;
-                foreach (var hit in hits)
-                {
-                    if ((hit.collider.gameObject.layer & raycastLayer) != 0)
-                    {
-                        maxDistance = Mathf.Max(hit.distance, maxDistance);
-                        numInLayer += 1;
-                    }
-                }
-            }
-            else
-            {
-                maxDistance = 1000f;
-            }
 
             if (casting)
             {
                 currentScale = Mathf.Min(maxScale, maxDistance);
             }
-            
+
             UpdateScaling();
         }
+    }
+
+    private void UpdateMaxDistance()
+    {
+        Debug.Break();
+        Ray ray = new(transform.position, transform.forward);
+        RaycastHit[] hits = Physics.RaycastAll(ray, 1000f, raycastLayer);
+
+        int totalNum = 0;
+        int numInLayer = 0;
+        if (!shouldShootForever && hits.Length > 0)
+        {
+            maxDistance = 1000f;
+            foreach (var hit in hits)
+            {
+                if (raycastLayer.LayerInMask(hit.collider.gameObject.layer))
+                {
+                    float old = maxDistance;
+                    maxDistance = Mathf.Min(hit.distance, maxDistance);
+                    numInLayer += 1;
+                    Print($"Restricted: {old} -> {maxDistance} (by {hit.distance}, hit #{numInLayer})", debug);
+                }
+                else
+                {
+                    Print($"Hit didn't match {raycastLayer.value}, was {hit.collider.gameObject.layer}");
+                }
+
+                totalNum += 1;
+            }
+        }
+        else
+        {
+            Print($"UnRestricted: {1000f}");
+            maxDistance = 1000f;
+        }
+
+        Print($"Total hits: {totalNum}, # in layer: {numInLayer}");
+
+        if (totalNum != 0) this.totalNum = totalNum;
+        if (numInLayer != 0) this.numInLayer = totalNum;
+
+
+        Vector3 rayMaxVector = ray.direction * (1000f - maxDistance);
+        Vector3 collisionVector = ray.direction * maxDistance;
+        Debug.DrawRay(ray.origin + collisionVector, rayMaxVector, Color.magenta, .1f);
+        Debug.DrawRay(ray.origin,  collisionVector, Color.red, .1f);
     }
 }

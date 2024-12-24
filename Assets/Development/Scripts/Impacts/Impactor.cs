@@ -55,6 +55,8 @@ public class Impactor : Validator
 
     private void InvokeImpactEnter(Other other)
     {
+        if (AlertOtherNull(other)) return;
+
         Print($"Valid Other: {other.gameObject.name} ({this.GetName()})", debug, this);
         touching.Add(other.gameObject);
         hasCollided = true;
@@ -65,9 +67,21 @@ public class Impactor : Validator
 
     private void InvokeImpactExit(Other other)
     {
+        if (AlertOtherNull(other)) return;
+
         touching.Remove(other.gameObject);
         other.onEvent?.exit?.Invoke();
         onImpact.InvokeExit(this);
+    }
+
+    private bool AlertOtherNull(Other other)
+    {
+        if (other.gameObject == null)
+        {
+            Debug.LogWarning("GameObject on Other is Null!");
+            return true;
+        }
+        else return false;
     }
 
     // On Event Enter

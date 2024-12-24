@@ -544,7 +544,7 @@ namespace HotD.Body
         }
         public void Despawn()
         {
-            Print($"Despawning {Name}");
+            Print($"Despawning {Name}", debug);
             //SetDisplayable(false);
             onDespawn?.Invoke();
         }

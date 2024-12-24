@@ -241,6 +241,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3806865271184695148, guid: 15a0ef15721ccd645b0aaebc8ab34cd1, type: 3}
+      propertyPath: raycastLayer.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3806865271184695148, guid: 15a0ef15721ccd645b0aaebc8ab34cd1, type: 3}
       propertyPath: shouldFollowCrossHair
       value: 1
       objectReference: {fileID: 0}
@@ -354,6 +358,7 @@ MonoBehaviour:
   desiredTags:
   - Character
   - Damageable
+  desiredLayers: []
   selectableTypes: 
   selectable: {fileID: 0}
   debug: 0
@@ -430,7 +435,15 @@ MonoBehaviour:
   other:
     gameObject: {fileID: 0}
     collider: {fileID: 0}
+    onEvent:
+      enter:
+        m_PersistentCalls:
+          m_Calls: []
+      exit:
+        m_PersistentCalls:
+          m_Calls: []
   touching: []
+  others: []
 --- !u!114 &4960851252339063736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -443,9 +456,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc6e98420917628498e843205b370fc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldTick: 0
+  shouldTickOnProc: 1
+  tickRate: 0.5
   damage: 1
   identity: 0
-  otherCount: 0
+  receiverCount: 0
   ignoredCount: 0
   debug: 0
 --- !u!1 &2655125143085797631 stripped
