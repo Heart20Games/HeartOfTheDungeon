@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using log4net.Core;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -7,20 +8,12 @@ public class IceBoltCastingVFXController : MonoBehaviour
 {
     
     private VisualEffect castingVFX;
-    [SerializeField] private float level1Casting; //0 to 1 scale that determines progress on charging of level 1 bolt
-    [SerializeField] private float level2Casting; //0 to 1 scale that determines progress on charging of level 2 ice cone
-    [SerializeField] private float level3Casting; //0 to 1 scale that determines progress on charging of level 3 ice storm
-    [SerializeField] private float casting; //0 to 1 scale that determines how far into the casting of the spell the VFX are
     [SerializeField] private bool castingEnd; //Immediately kills all VFX. Used when cancelling or completing casting
-    [SerializeField] private float level1Charge;
-    [SerializeField] private float level2Charge;
-    [SerializeField] private float level3Charge;
-    [SerializeField] private float castingCharge;
-    [SerializeField] private bool castLevel1;
-    [SerializeField] private bool castLevel2;
-    [SerializeField] private bool castLevel3;
-    [SerializeField] private float castingTime = 1f;
-    [SerializeField] private bool currentlyCharging = false;
+    [SerializeField] private float level1Charge; //0 to 1 scale that determines progress on charging of level 1 bolt
+    [SerializeField] private float level2Charge; //0 to 1 scale that determines progress on charging of level 2 ice cone
+    [SerializeField] private float level3Charge; //0 to 1 scale that determines progress on charging of level 3 ice storm
+    [SerializeField] private float castingCharge; //0 to 1 scale that determines how far into the casting of the spell the VFX are
+    [SerializeField] private float timeToDestruct = 1; //duration in seconds before the GameObject is destroyed after enabling castingEnd
     
     
     // Start is called before the first frame update
@@ -30,7 +23,7 @@ public class IceBoltCastingVFXController : MonoBehaviour
         
     }
 
-    private void OnEnable() 
+    private void OnEnable() //reset all parameters upon enabling the VFX
     {
         if (castingVFX != null)
         {
@@ -53,76 +46,65 @@ public class IceBoltCastingVFXController : MonoBehaviour
         {
             if (castingEnd)
             {
-                EndCasting();
+                StartCoroutine(EndCasting());
             }
+            else if (castingCharge >= 1f)
+            {
+                castingEnd = true;
+            }
+            else if (castingCharge > 0f && level3Charge >= 1f)
+            {
+                level3Charge = 1f;
+                level2Charge = 1f;
+                level1Charge = 1f;
+                UpdateCharges();
+            }
+            else if (castingCharge > 0f && level3Charge < 1f && level2Charge >= 1f)
+            {
+                level3Charge = 0f;
+                level2Charge = 1f;
+                level1Charge = 1f;
+                UpdateCharges();
+            }
+            else if (castingCharge > 0f && level2Charge < 1f && level1Charge >= 1f)
+            {
+                level3Charge = 0f;
+                level2Charge = 0f;
+                level1Charge = 1f;
+                UpdateCharges();
+            }            
             else if (level3Charge > 0f)
             {
                 level1Charge = 1f;
                 level2Charge = 1f;
-                castingVFX.SetFloat("Level 3 Charge", level3Charge);
+                UpdateCharges();
             }
             else if (level2Charge > 0f)
             {
                 level1Charge = 1f;
-                castingVFX.SetFloat("Level 2 Charge", level2Charge);
+                UpdateCharges();
             }
             else
             {
-            castingVFX.SetFloat("Level 1 Charge", level1Charge);
-            }
-
-            if (castLevel1 && level2Charge == 0f && !currentlyCharging)
-            {
-                StartCoroutine(Level1Charge());
-            }
-
-            if (castLevel2 && level3Charge == 0f && !currentlyCharging)
-            {
-                StartCoroutine(Level2Charge());
-            }
-
-            if (castLevel3 && !currentlyCharging)
-            {
-                StartCoroutine(Level3Charge());
+                UpdateCharges();
             }
         }        
     }
 
-    private void EndCasting()
+    private void UpdateCharges()
+    {
+        castingVFX.SetFloat("Level 3 Charge", level3Charge);
+        castingVFX.SetFloat("Level 2 Charge", level2Charge);
+        castingVFX.SetFloat("Level 1 Charge", level1Charge);
+        castingVFX.SetFloat("Casting", castingCharge);
+    }
+
+    IEnumerator EndCasting()
     {
         castingVFX.SetBool("CastingEnd", true);
+        yield return new WaitForSeconds(timeToDestruct);
+        Destroy(gameObject);
+        Debug.Log("Should be destroyed now");
     }
 
-    IEnumerator Level1Charge()
-    {
-        currentlyCharging = true;
-        while(level1Charge < 1f)
-        {
-            level1Charge += .05f;
-            yield return new WaitForSeconds(castingTime * Time.deltaTime);
-        }
-        currentlyCharging = false;
-    }
-
-    IEnumerator Level2Charge()
-    {
-        currentlyCharging = true;
-        while(level2Charge < 1f)
-        {
-            level2Charge += .05f;
-            yield return new WaitForSeconds(castingTime * Time.deltaTime);
-        }
-        currentlyCharging = false;
-    }
-
-    IEnumerator Level3Charge()
-    {
-        currentlyCharging = true;
-        while(level3Charge < 1f)
-        {
-            level3Charge += .05f;
-            yield return new WaitForSeconds(castingTime * Time.deltaTime);
-        }
-        currentlyCharging = false;
-    }
 }
