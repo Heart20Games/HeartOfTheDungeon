@@ -54,8 +54,10 @@ public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
     }
 
     [Conditional("UNITY_EDITOR")]
-    protected void Break(bool debug = true, Object context = null)
+    protected void Break(bool debug = true, Object context = null, object message=null)
     {
+        if (message != null)
+            Print(message, debug, context);
         Print("Break!", debug, context);
         if (debug) Debug.Break();
     }
