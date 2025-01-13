@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8370275646776476147}
   - component: {fileID: 8467702314144232877}
   - component: {fileID: 3445171650749338063}
+  - component: {fileID: 1051977927234891970}
   m_Layer: 0
   m_Name: IceBolt_CastingPoint Slime Variant VFX
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 1.955, y: 1.977, z: 2.243}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4.9689436, y: 4.9689445, z: -4.9689445}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -58,7 +59,7 @@ VisualEffect:
       - m_Value: 0
         m_Name: Level 2 Charge
         m_Overridden: 1
-      - m_Value: 1
+      - m_Value: 0
         m_Name: Level 1 Charge
         m_Overridden: 1
       - m_Value: 0.5
@@ -66,6 +67,9 @@ VisualEffect:
         m_Overridden: 1
       - m_Value: 1
         m_Name: BoltFormationTime
+        m_Overridden: 1
+      - m_Value: 0
+        m_Name: Level 3 Charge
         m_Overridden: 1
     m_Vector2f:
       m_Array: []
@@ -84,6 +88,27 @@ VisualEffect:
         m_Overridden: 1
       - m_Value: {x: 5.992157, y: 5.992157, z: 5.992157, w: 0}
         m_Name: Ice Sparkles Color 2
+        m_Overridden: 1
+      - m_Value: {x: 0.4873291, y: 6.2053347, z: 0, w: 0}
+        m_Name: Refraction Surface Background Color
+        m_Overridden: 1
+      - m_Value: {x: 0.14123952, y: 0.5550822, z: 0, w: 0}
+        m_Name: Refraction Surface Fresnel Color
+        m_Overridden: 1
+      - m_Value: {x: 0.4873291, y: 6.205335, z: 0, w: 1}
+        m_Name: Refraction Surface Main Color
+        m_Overridden: 1
+      - m_Value: {x: 0.7409846, y: 4.1625905, z: 0.89761335, w: 0}
+        m_Name: Magic Circle Color
+        m_Overridden: 1
+      - m_Value: {x: 0, y: 8.609495, z: 0.28483582, w: 0}
+        m_Name: Cone Swirl Color 1
+        m_Overridden: 1
+      - m_Value: {x: 0.37317812, y: 5.087061, z: 0, w: 0}
+        m_Name: Cone Swirl Color 2
+        m_Overridden: 1
+      - m_Value: {x: 0, y: 117.53459, z: 3.718829, w: 0}
+        m_Name: Ice Cone Fade into Portal Color
         m_Overridden: 1
     m_Uint:
       m_Array: []
@@ -255,6 +280,198 @@ VisualEffect:
           m_NumAlphaKeys: 3
         m_Name: Small Bright Sparks Color
         m_Overridden: 1
+      - m_Value:
+          serializedVersion: 2
+          key0: {r: 2.1652238, g: 18.325893, b: 0, a: 0}
+          key1: {r: 0.11008118, g: 0.94509804, b: 0, a: 1}
+          key2: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 0.06666667}
+          key3: {r: 0, g: 0, b: 0, a: 0}
+          key4: {r: 0, g: 0, b: 0, a: 0}
+          key5: {r: 0, g: 0, b: 0, a: 0}
+          key6: {r: 0, g: 0, b: 0, a: 0}
+          key7: {r: 0, g: 0, b: 0, a: 0}
+          ctime0: 0
+          ctime1: 50303
+          ctime2: 60415
+          ctime3: 0
+          ctime4: 0
+          ctime5: 0
+          ctime6: 0
+          ctime7: 0
+          atime0: 0
+          atime1: 11520
+          atime2: 57471
+          atime3: 65535
+          atime4: 0
+          atime5: 0
+          atime6: 0
+          atime7: 0
+          m_Mode: 0
+          m_ColorSpace: -1
+          m_NumColorKeys: 3
+          m_NumAlphaKeys: 4
+        m_Name: Ice Sparkles Gradient
+        m_Overridden: 1
+      - m_Value:
+          serializedVersion: 2
+          key0: {r: 5.4854856, g: 14.967539, b: 6.1365304, a: 0.15686275}
+          key1: {r: 14.06573, g: 30.224695, b: 12.026581, a: 0}
+          key2: {r: 13.54346, g: 21.527067, b: 12.961324, a: 0}
+          key3: {r: 0, g: 0, b: 0, a: 0}
+          key4: {r: 0, g: 0, b: 0, a: 0}
+          key5: {r: 0, g: 0, b: 0, a: 0}
+          key6: {r: 0, g: 0, b: 0, a: 0}
+          key7: {r: 0, g: 0, b: 0, a: 0}
+          ctime0: 0
+          ctime1: 34687
+          ctime2: 65471
+          ctime3: 0
+          ctime4: 0
+          ctime5: 0
+          ctime6: 0
+          ctime7: 0
+          atime0: 0
+          atime1: 28800
+          atime2: 0
+          atime3: 0
+          atime4: 0
+          atime5: 0
+          atime6: 0
+          atime7: 0
+          m_Mode: 0
+          m_ColorSpace: 1
+          m_NumColorKeys: 3
+          m_NumAlphaKeys: 2
+        m_Name: Ice Mist Gradient
+        m_Overridden: 1
+      - m_Value:
+          serializedVersion: 2
+          key0: {r: 1.2941419, g: 9.601587, b: 1.0054015, a: 0}
+          key1: {r: 4.1002207, g: 9.42967, b: 3.55464, a: 0.22352941}
+          key2: {r: 2.5555165, g: 15.163721, b: 1.1114764, a: 0.109928295}
+          key3: {r: 0, g: 0, b: 0, a: 0}
+          key4: {r: 0, g: 0, b: 0, a: 0}
+          key5: {r: 0, g: 0, b: 0, a: 0}
+          key6: {r: 0, g: 0, b: 0, a: 0}
+          key7: {r: 0, g: 0, b: 0, a: 0}
+          ctime0: 0
+          ctime1: 32896
+          ctime2: 65471
+          ctime3: 0
+          ctime4: 0
+          ctime5: 0
+          ctime6: 0
+          ctime7: 0
+          atime0: 0
+          atime1: 20224
+          atime2: 41599
+          atime3: 65535
+          atime4: 0
+          atime5: 0
+          atime6: 0
+          atime7: 0
+          m_Mode: 0
+          m_ColorSpace: 1
+          m_NumColorKeys: 3
+          m_NumAlphaKeys: 4
+        m_Name: Flat Ice Mist Gradient
+        m_Overridden: 1
+      - m_Value:
+          serializedVersion: 2
+          key0: {r: 0.81543684, g: 38.937145, b: 1.6222152, a: 1}
+          key1: {r: 0.04705874, g: 2.9960785, b: 0.21343425, a: 0.69803923}
+          key2: {r: 0, g: 0, b: 0, a: 0}
+          key3: {r: 0, g: 0, b: 0, a: 0}
+          key4: {r: 0, g: 0, b: 0, a: 0}
+          key5: {r: 0, g: 0, b: 0, a: 0}
+          key6: {r: 0, g: 0, b: 0, a: 0}
+          key7: {r: 0, g: 0, b: 0, a: 0}
+          ctime0: 0
+          ctime1: 65535
+          ctime2: 0
+          ctime3: 0
+          ctime4: 0
+          ctime5: 0
+          ctime6: 0
+          ctime7: 0
+          atime0: 1344
+          atime1: 35071
+          atime2: 65535
+          atime3: 0
+          atime4: 0
+          atime5: 0
+          atime6: 0
+          atime7: 0
+          m_Mode: 0
+          m_ColorSpace: 1
+          m_NumColorKeys: 2
+          m_NumAlphaKeys: 3
+        m_Name: OuterCircleParticles Color 1
+        m_Overridden: 1
+      - m_Value:
+          serializedVersion: 2
+          key0: {r: 0, g: 0.3764706, b: 0.011734368, a: 0.48235294}
+          key1: {r: 0.02526149, g: 0.47843137, b: 0, a: 0.22745098}
+          key2: {r: 0, g: 0, b: 0, a: 0}
+          key3: {r: 0, g: 0, b: 0, a: 0}
+          key4: {r: 0, g: 0, b: 0, a: 0}
+          key5: {r: 0, g: 0, b: 0, a: 0}
+          key6: {r: 0, g: 0, b: 0, a: 0}
+          key7: {r: 0, g: 0, b: 0, a: 0}
+          ctime0: 0
+          ctime1: 65535
+          ctime2: 0
+          ctime3: 0
+          ctime4: 0
+          ctime5: 0
+          ctime6: 0
+          ctime7: 0
+          atime0: 1344
+          atime1: 35071
+          atime2: 65535
+          atime3: 0
+          atime4: 0
+          atime5: 0
+          atime6: 0
+          atime7: 0
+          m_Mode: 0
+          m_ColorSpace: 1
+          m_NumColorKeys: 2
+          m_NumAlphaKeys: 3
+        m_Name: OuterCircleParticles Color 2
+        m_Overridden: 1
+      - m_Value:
+          serializedVersion: 2
+          key0: {r: 0.7180667, g: 5.6734457, b: 0.29703897, a: 0}
+          key1: {r: 3.343734, g: 29.307045, b: 0.46031922, a: 1}
+          key2: {r: 2.566029, g: 14.506938, b: 0.30380994, a: 1}
+          key3: {r: 0, g: 0, b: 0, a: 0}
+          key4: {r: 0, g: 0, b: 0, a: 0}
+          key5: {r: 0, g: 0, b: 0, a: 0}
+          key6: {r: 0, g: 0, b: 0, a: 0}
+          key7: {r: 0, g: 0, b: 0, a: 0}
+          ctime0: 0
+          ctime1: 33773
+          ctime2: 65535
+          ctime3: 0
+          ctime4: 0
+          ctime5: 0
+          ctime6: 0
+          ctime7: 0
+          atime0: 0
+          atime1: 3712
+          atime2: 54911
+          atime3: 65535
+          atime4: 0
+          atime5: 0
+          atime6: 0
+          atime7: 0
+          m_Mode: 0
+          m_ColorSpace: 1
+          m_NumColorKeys: 3
+          m_NumAlphaKeys: 4
+        m_Name: OuterCircleParticles Color 3
+        m_Overridden: 1
     m_NamedObject:
       m_Array: []
     m_Bool:
@@ -314,3 +531,21 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 32767
   m_SortAtRoot: 0
+--- !u!114 &1051977927234891970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6407314194309104158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ffa79c47d8e104cb10dfa424423289, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  castingEnd: 0
+  level1Charge: 0
+  level2Charge: 0
+  level3Charge: 0
+  castingCharge: 0
+  timeToDestruct: 1

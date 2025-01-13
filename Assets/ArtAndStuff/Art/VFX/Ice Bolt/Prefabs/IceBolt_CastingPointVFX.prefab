@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8370275646776476147}
   - component: {fileID: 8467702314144232877}
   - component: {fileID: 3445171650749338063}
+  - component: {fileID: 2314607353405653279}
   m_Layer: 0
   m_Name: IceBolt_CastingPointVFX
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 1.955, y: 1.977, z: 2.243}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4.9689436, y: 4.9689445, z: -4.968943}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -67,10 +68,19 @@ VisualEffect:
       - m_Value: 1
         m_Name: BoltFormationTime
         m_Overridden: 1
+      - m_Value: 0
+        m_Name: Level 3 Charge
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
-      m_Array: []
+      m_Array:
+      - m_Value: {x: 0, y: 2.5, z: 0}
+        m_Name: Ice Bolt Level 1 Position Offset
+        m_Overridden: 1
+      - m_Value: {x: 0, y: 0, z: 0}
+        m_Name: TestScale
+        m_Overridden: 1
     m_Vector4f:
       m_Array: []
     m_Uint:
@@ -142,3 +152,21 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 32767
   m_SortAtRoot: 0
+--- !u!114 &2314607353405653279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6407314194309104158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ffa79c47d8e104cb10dfa424423289, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  castingEnd: 0
+  level1Charge: 0
+  level2Charge: 0
+  level3Charge: 0
+  castingCharge: 0
+  timeToDestruct: 1
