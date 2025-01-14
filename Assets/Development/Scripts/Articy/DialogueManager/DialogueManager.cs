@@ -60,6 +60,8 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
 
     public void StartDialogue(IArticyObject aObject, float lineNumber)
     {
+        if (lookForStop) return;
+
         DialogueActive = true;
         dialogueWidget.SetActive(DialogueActive);
         flowPlayer.StartOn = aObject;
