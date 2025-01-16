@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2657165483044202445}
   - component: {fileID: 7550764017926072541}
   - component: {fileID: -288400114845529993}
+  - component: {fileID: 5479341379206800287}
   m_Layer: 0
   m_Name: MagicBolt_CastingPoint Slime Variant VFX
   m_TagString: Untagged
@@ -79,6 +80,9 @@ VisualEffect:
         m_Overridden: 1
       - m_Value: 0.1
         m_Name: Circle Rotation Speed 1
+        m_Overridden: 1
+      - m_Value: 0.1
+        m_Name: BoltFormationTime
         m_Overridden: 1
     m_Vector2f:
       m_Array: []
@@ -447,3 +451,23 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 32767
   m_SortAtRoot: 0
+--- !u!114 &5479341379206800287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636630190376721941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ffa79c47d8e104cb10dfa424423289, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  castingEnd: 0
+  level1Charge: 0
+  level2Charge: 0
+  level3Charge: 0
+  castingCharge: 0
+  castingTime: 0
+  castingWindUpTime: 1
+  timeToDestruct: 1
