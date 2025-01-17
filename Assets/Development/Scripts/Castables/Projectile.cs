@@ -1,7 +1,4 @@
 using MyBox;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace HotD.Castables
@@ -40,13 +37,31 @@ namespace HotD.Castables
 
         private void Start()
         {
+            SetDirection(target, source, 1.5f);
+
             rigidbody.position = transform.position;
-            rigidbody.velocity = speed * Time.fixedDeltaTime * direction;
         }
 
         private void FixedUpdate()
         {
             rigidbody.velocity = speed * Time.fixedDeltaTime * direction;
+
+            if(rigidbody.velocity != Vector3.zero) rigidbody.rotation = Quaternion.LookRotation(rigidbody.velocity);
+        }
+
+        public void SetDirection(Transform toTarget, Transform origin, float offSet)
+        {
+            if (toTarget == null) return;
+            if (origin == null) return;
+
+            Vector3 distance = new Vector3(toTarget.position.x - origin.position.x, (toTarget.position.y + offSet) - origin.position.y, toTarget.position.z - origin.position.z).normalized;
+
+            direction = distance;
+        }
+
+        public void SetSource(Transform trans)
+        {
+            source = trans;
         }
 
         public void SetSpeed(float val)

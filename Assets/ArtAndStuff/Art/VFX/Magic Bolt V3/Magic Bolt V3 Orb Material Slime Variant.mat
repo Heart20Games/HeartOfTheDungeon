@@ -21,14 +21,15 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Magic Bolt V3 Orb Material Slime Variant
-  m_Shader: {fileID: -6465566751694194690, guid: f9ff9a676fdcd4046b637de97654be07, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 557716e9dbc9c5e4d9433915a069ed23, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _ALPHAPREMULTIPLY_ON
+  - _RECEIVE_SHADOWS_OFF
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -40,24 +41,16 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: ba6ea109084ea3c488360e77e33b884e, type: 3}
+    - _NormalMapTexture:
+        m_Texture: {fileID: 2800000, guid: a2b67a0c49b8f794db5b21bd09abd5ab, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2DLOD_4adbef96354e4e45b38e65c6015a652e_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: ba6ea109084ea3c488360e77e33b884e, type: 3}
+    - _POLayer1Texture:
+        m_Texture: {fileID: 2800000, guid: a2b67a0c49b8f794db5b21bd09abd5ab, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2DLOD_5e171e9bf07e49dbbfdaad894a4e4cea_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: ba6ea109084ea3c488360e77e33b884e, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2DLOD_63aa0afe3d0740ea81edea05f31ff60f_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: ba6ea109084ea3c488360e77e33b884e, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2DLOD_f5451ef949f94ead8b1608558b15bfd5_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: ba6ea109084ea3c488360e77e33b884e, type: 3}
+    - _POLayer2Texture:
+        m_Texture: {fileID: 2800000, guid: a2b67a0c49b8f794db5b21bd09abd5ab, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -81,21 +74,26 @@ Material:
     - _CastShadows: 1
     - _Cull: 2
     - _DstBlend: 10
+    - _NormalStrength: 2
+    - _POLayer1Depth: 50
+    - _POLayer2Depth: 200
+    - _POPower: 3.5
+    - _ParallaxNormalStrength: 0.1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _ReceiveShadows: 1
+    - _ReceiveShadows: 0
+    - _Smoothness: 0.1
     - _SrcBlend: 1
     - _Surface: 1
+    - _TextureResolution: 512
     - _WorkflowMode: 1
     - _ZTest: 4
     - _ZWrite: 0
     - _ZWriteControl: 0
     m_Colors:
-    - _BrightSpotAmount: {r: 1.9, g: 3, b: 0, a: 0}
-    - _BrightSpotColor: {r: 148.12154, g: 304.01004, b: 0, a: 0}
-    - _BrightSpotIntensity: {r: 22.36353, g: 22.36353, b: 22.36353, a: 0}
-    - _DarkSpotColor: {r: 0, g: 0, b: 0, a: 0}
-    - _DimRegionsColor: {r: 0, g: 0.29411766, b: 0.0014725854, a: 0}
-    - _DisplacementClamp: {r: 0.95, g: 1.05, b: 0, a: 0}
-    - _TextureScrollSpeed: {r: 0.7, g: 0.7, b: 0, a: 0}
+    - _FresnelColor: {r: 0, g: 85.42621, b: 116.0763, a: 0}
+    - _IceColor: {r: 0.0207352, g: 2.799525, b: 3.296962, a: 0}
+    - _NormalTiling: {r: 5, g: 5, b: 0, a: 0}
+    - _POLayer1Tiling: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _POLayer2Tiling: {r: 1.5, g: 1.5, b: 0, a: 0}
   m_BuildTextureStacks: []

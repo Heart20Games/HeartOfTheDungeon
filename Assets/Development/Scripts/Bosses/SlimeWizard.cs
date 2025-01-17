@@ -3,7 +3,6 @@ using HotD.Castables;
 using MyBox;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.VFX;
 
 [System.Serializable]
 public class Actions
@@ -129,8 +128,6 @@ public class SlimeWizard : EnemyAI
             }
         }
 
-        Caster caster = GetComponent<Caster>();
-
         magicBoltVfx.SetTriggers(Coordination.Triggers.StartCast);
 
         slimeWizardAnimator.ResetTrigger("StartCast");
@@ -142,18 +139,20 @@ public class SlimeWizard : EnemyAI
                 slimeWizardAnimator.SetInteger("ChargeLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
                 chargingLevelOne = true;
-                //CallOutManager.instance.PlayPartyMemeberCallOut(0);
                 break;
             case 1:
                 slimeWizardAnimator.SetInteger("ChargeLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
                 chargingLevelTwo = true;
-                //CallOutManager.instance.PlayPartyMemeberCallOut(1);
                 break;
             case 2:
                 slimeWizardAnimator.SetInteger("ChargeLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
-                //CallOutManager.instance.PlayPartyMemeberCallOut(2);
+                break;
+            case 3:
+                slimeWizardAnimator.SetInteger("ChargeLevel", 1);
+                slimeWizardAnimator.SetFloat("Action", 1);
+                chargingLevelOne = true;
                 break;
         }
 
@@ -182,15 +181,15 @@ public class SlimeWizard : EnemyAI
         {
             Projectile projectile = magicAttack.GetComponent<Projectile>();
 
+            projectile.SetTarget(target);
+            projectile.SetSource(firingPoint);
+
             projectile.AddException(character.AliveCollider);
 
             projectile.ShouldIgnoreDodgeLayer = true;
 
             magicAttack.transform.position = firingPoint.position;
             magicAttack.transform.position += firingPoint.forward * 1.2f;
-
-            projectile.direction = new Vector3(Target.transform.position.x - firingPoint.position.x, (Target.transform.position.y + 2.0f) - firingPoint.position.y, 
-                                               Target.transform.position.z - firingPoint.position.z).normalized;
         }
         else
         {
