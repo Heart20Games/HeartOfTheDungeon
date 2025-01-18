@@ -35,7 +35,7 @@ namespace HotD.Cheats
 
         private void Awake()
         {
-            if (jumpToCombat || jumpToCombatOnAwake) StartCoroutine(JumpToCombat());
+            if (timeline != null && (jumpToCombat || jumpToCombatOnAwake)) StartCoroutine(JumpToCombat());
         }
 
         private bool Pressed(InputValue inputValue)

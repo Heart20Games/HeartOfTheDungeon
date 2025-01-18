@@ -77,6 +77,8 @@ namespace HotD.UI
         // Update is called once per frame
         void Update()
         {
+            if (!isActiveAndEnabled) return;
+
             if (targetCharacter != null)
             {
                 currentHealth = targetCharacter.CurrentHealth;
