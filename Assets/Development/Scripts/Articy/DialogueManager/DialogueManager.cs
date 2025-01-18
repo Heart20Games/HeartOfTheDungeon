@@ -20,7 +20,7 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
     [SerializeField] private EventReference calloutsEvent;
 
     public bool DialogueActive { get; set; }
-    private bool lookForStop = false;
+    public bool lookForStop = false;
     private EventInstance calloutInstance;
     private ArticyString articyStageDirection;
     private IObjectWithStageDirections stageDirectionObject;
