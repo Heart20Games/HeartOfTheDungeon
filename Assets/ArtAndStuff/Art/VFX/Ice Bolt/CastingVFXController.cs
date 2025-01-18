@@ -4,7 +4,7 @@ using log4net.Core;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class IceBoltCastingVFXController : MonoBehaviour
+public class CastingVFXController : MonoBehaviour
 {
     
     private VisualEffect castingVFX;
@@ -13,6 +13,8 @@ public class IceBoltCastingVFXController : MonoBehaviour
     [SerializeField] private float level2Charge; //0 to 1 scale that determines progress on charging of level 2 ice cone
     [SerializeField] private float level3Charge; //0 to 1 scale that determines progress on charging of level 3 ice storm
     [SerializeField] private float castingCharge; //0 to 1 scale that determines how far into the casting of the spell the VFX are
+    [SerializeField] private float castingTime; //how long the spell will run before the casting VFX should be dismissed
+    [SerializeField] private float castingWindUpTime = 0; //float representing additional charge on castingCharge before tracking 0 to 1. This is for a precasting wind-up. Only applied to level 3 casts. 
     [SerializeField] private float timeToDestruct = 1; //duration in seconds before the GameObject is destroyed after enabling castingEnd
     
     
@@ -42,13 +44,16 @@ public class IceBoltCastingVFXController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(castingTime == 0f)
+            castingTime = 0.1f;
+        
         if(castingVFX != null)
         {
             if (castingEnd)
             {
                 StartCoroutine(EndCasting());
             }
-            else if (castingCharge >= 1f)
+            else if (castingCharge >= castingTime + castingWindUpTime)
             {
                 castingEnd = true;
             }
