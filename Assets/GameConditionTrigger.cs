@@ -82,7 +82,7 @@ public class GameConditionTrigger : MonoBehaviour
             if (GameConditionsManager.GetGameCondition(condition) < lines.Count)
             {
                 RuntimeManager.StudioSystem.setParameterByName("WizardDuelCallouts", LineNumber);
-                GameConditionsManager.CalloutCondition(condition, ArticyRef, LineNumber);5
+                GameConditionsManager.CalloutCondition(condition, ArticyRef, LineNumber);
             }
         }
     }
