@@ -14,7 +14,9 @@ public class Validator : BaseMonoBehaviour
     public bool controlledCharactersOnly = false;
     public bool useTargetIdentity = false;
     [ConditionalField("useTargetIdentity", false, true)]
-    public Identity targetIdentity = Identity.Neutral;
+    public Identity identity = Identity.Neutral;
+    [ConditionalField("useTargetIdentity", false, true)]
+    public Identity targetIdentity = Identity.Any;
     [Space()]
 
     // Validation: Tags
