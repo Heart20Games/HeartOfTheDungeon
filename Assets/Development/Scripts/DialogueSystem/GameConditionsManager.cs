@@ -26,6 +26,8 @@ public class GameConditionsManager : MonoBehaviour
     public void CalloutCondition(int condition, ArticyRef articyRef, float lineNumber)
     {
         articyReference = GetComponent<ArticyReference>();
+
+        if (articyReference == null) return;
         //if (condition <= 7)
         //{
             articyReference.reference = articyRef;

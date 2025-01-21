@@ -123,7 +123,7 @@ public class EnemyAI : Brain
 
         SetTarget(Target);
 
-        if (agent.remainingDistance < agent.stoppingDistance)
+        if (agent.isOnNavMesh && agent.remainingDistance < agent.stoppingDistance)
         {
             currentAction = Action.Duel;
 
