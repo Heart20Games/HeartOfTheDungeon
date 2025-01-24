@@ -224,6 +224,7 @@ public class SlimeWizard : EnemyAI
 
     private IEnumerator LaserRoutine(Transform targetToFollow)
     {
+
         float t = 0;
 
         while(t < 4)
