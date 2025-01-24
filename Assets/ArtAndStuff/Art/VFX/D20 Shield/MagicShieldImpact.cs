@@ -204,16 +204,33 @@ public class MagicShieldImpact : CastLocationFollower, ICastListener
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.GetComponent<Projectile>())
         {
+            if (GetComponentInParent<GameConditionTrigger>())
+            {
+                Debug.Log(other.name);
+                GetComponentInParent<GameConditionTrigger>().TriggerCalloutsCondition();
+            }
+            else
+            {
+                Debug.Log("I don't have one of those, please try again later. : )");
+            }
+
             if (other.GetComponent<Projectile>().ShouldIgnoreDodgeLayer) return;
         }
 
         if(other.GetComponent<Impact>())
         {
+
             OnImpact(other.GetComponent<Impact>().other);
+
         }
     }
 

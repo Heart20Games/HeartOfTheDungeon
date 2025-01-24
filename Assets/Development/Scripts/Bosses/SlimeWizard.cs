@@ -139,9 +139,10 @@ public class SlimeWizard : EnemyAI
         switch (attackIndex)
         {
             case 0:
+                GetComponent<GameConditionTrigger>().TriggerCalloutsCondition();
                 slimeWizardAnimator.SetInteger("ChargeLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
-                chargingLevelOne = true;
+                //chargingLevelOne = true;
                 //CallOutManager.instance.PlayPartyMemeberCallOut(0);
                 break;
             case 1:
@@ -151,6 +152,7 @@ public class SlimeWizard : EnemyAI
                 //CallOutManager.instance.PlayPartyMemeberCallOut(1);
                 break;
             case 2:
+                GetComponent<GameConditionTrigger>().TriggerCalloutsCondition();
                 slimeWizardAnimator.SetInteger("ChargeLevel", 1);
                 slimeWizardAnimator.SetFloat("Action", 1);
                 //CallOutManager.instance.PlayPartyMemeberCallOut(2);
@@ -224,7 +226,6 @@ public class SlimeWizard : EnemyAI
 
     private IEnumerator LaserRoutine(Transform targetToFollow)
     {
-
         float t = 0;
 
         while(t < 4)

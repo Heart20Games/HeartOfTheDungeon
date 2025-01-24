@@ -85,7 +85,7 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
         var objectWithText = aObject as IObjectWithLocalizableText;
         if (objectWithText != null)
         {
-            Debug.Log(objectWithText.Text);
+            //Debug.Log(objectWithText.Text);
             dialogueText.text = objectWithText.Text;
         }
         else
@@ -135,7 +135,6 @@ public class DialogueManager : MonoBehaviour, IArticyFlowPlayerCallbacks
 
     private void PlayCalloutAudio(string articyId, float lineNumber)
     {
-        Debug.Log(lineNumber);
         calloutsAudio.Play();
         calloutInstance = calloutsAudio.EventInstance;
         lookForStop = true;

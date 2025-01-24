@@ -54,9 +54,9 @@ public class GameConditionsManager : MonoBehaviour
         if (DialogueManager.Instance == null) return;
 
         instance.articyReference.reference = articyRef;
-        Debug.Log(articyRef, instance);
+        //Debug.Log(articyRef, instance);
         DialogueManager.Instance.StartDialogue(instance.articyReference.GetObject<ArticyObject>(), lineNumber);
         IncrementGameCondition(condition);
-        Debug.Log(condition, instance);
+        //Debug.Log(condition, instance);
     } 
 }
