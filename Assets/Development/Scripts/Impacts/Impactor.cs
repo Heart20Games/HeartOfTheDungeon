@@ -122,6 +122,11 @@ public class Impactor : Validator
 
             if (other.gameObject.GetComponent<MagicShieldImpact>()) // Hardcoded Ignore of the MagicShieldImpact VFX
             {
+                if (gameObject.GetComponent<Projectile>())
+                {
+                    if (gameObject.GetComponent<Projectile>().ShouldIgnoreDodgeLayer) return;
+                }
+
                 if (other.gameObject.transform.parent.GetComponent<CastListenerDistributor>()) return;
             }
 

@@ -1,5 +1,6 @@
 using Body.Behavior;
 using Body.Behavior.ContextSteering;
+using HotD;
 using HotD.Body;
 using MyBox;
 using System.Collections;
@@ -15,7 +16,6 @@ public class EnemyAI : Brain
     [SerializeField] protected Animator animator;
 
     [SerializeField] protected float distanceToReturnHome;
-    [SerializeField] protected float distanceToChangeWaypoints;
     [SerializeField] protected float wayPointWaitTime;
     [SerializeField] protected float attackTime;
 
@@ -30,6 +30,8 @@ public class EnemyAI : Brain
     private int wayPointIndex;
 
     public Action CurrentAction => currentAction;
+
+    public bool ShouldPatrol => shouldPatrol;
 
     public bool DidAttack
     {
@@ -50,6 +52,7 @@ public class EnemyAI : Brain
         }
         else
         {
+            Target = Game.main.playerParty.leader.transform;
             ChasePlayer(Target, true);
         }
     }
@@ -184,14 +187,14 @@ public class EnemyAI : Brain
 
         if (Target.GetComponent<CSController>().identity != CSIdentity.Identity.Friend) return;
 
-        //if (Target.parent.GetComponent<Character>().CurrentHealth <= 0)
-        //{
-        //    PatrolState();
+        if (Target.parent.GetComponent<Character>().CurrentHealth <= 0)
+        {
+            PatrolState();
 
-        //    attackTimeStep = 0;
+            attackTimeStep = 0;
 
-        //    return;
-        //}
+            return;
+        }
 
         SetTarget(Target);
 
@@ -212,6 +215,11 @@ public class EnemyAI : Brain
             ChasePlayer(Target, false);
             agent.isStopped = false;
         }
+    }
+
+    public bool IsInAttackingDistance()
+    {
+        return agent.remainingDistance <= agent.stoppingDistance;
     }
 
     public bool IsAttacking()
@@ -249,7 +257,7 @@ public class EnemyAI : Brain
         {
             if (currentAction == Action.Patrol && pathFinder.target != null)
             {
-                if (agent.remainingDistance <= distanceToChangeWaypoints)
+                if (agent.remainingDistance <= agent.stoppingDistance)
                 {
                     wayPointTimeStep += Time.deltaTime;
 

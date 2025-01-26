@@ -164,7 +164,12 @@ namespace HotD
 
                 for(int j = 0; j < party.members.Count; j++)
                 {
-                    AddWayPoints(party.members[j].GetComponent<EnemyAI>());
+                    EnemyAI enemyAI = party.members[j].GetComponent<EnemyAI>();
+
+                    if(enemyAI.ShouldPatrol)
+                    {
+                        AddWayPoints(party.members[j].GetComponent<EnemyAI>());
+                    }
                 }
             }
             TimeScaler.UpdateScalables();
