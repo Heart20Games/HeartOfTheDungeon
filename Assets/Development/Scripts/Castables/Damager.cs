@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Rendering;
 using UnityEngine.VFX;
 using static Body.Behavior.ContextSteering.CSIdentity;
@@ -69,36 +70,57 @@ public class Damager : BaseMonoBehaviour, IDamager
     {
         if (shouldTick)
         {
-            UpdateDamageTicks();
+            DamageTick();
         }
     }
 
 
     // Damage Ticks
 
-    public void UpdateDamageTicks()
+    
+
+    /// <summary>
+    /// A method that applies damage to a given damage reciever, or else applies damage to all receivers added to the damager.
+    /// </summary>
+    /// <param name="receiver"></param>
+    public void DamageTick(IDamageReceiver receiver=null)
     {
-        var receivers = receiverData.Keys.ToArray();
-        for (int i = receiverData.Keys.Count-1; i >= 0; i--)
+        if (receiver == null)
         {
-            IDamageReceiver receiver = receivers[i];
-            ReceiverData data = receiverData[receiver];
-            if (Time.time >= data.lastTick + tickRate)
+            UpdateDamageTicks();
+        }
+        else
+        {
+            DamageTickOn(receiver);
+        }
+
+        #region Local Functions
+        void DamageTickOn(IDamageReceiver receiver)
+        {
+            Print($"Damage Tick on {Name}", debug, this);
+            if (receiverData.TryGetValue(receiver, out var data))
             {
-                DamageTick(receiver);
+                receiver.SetDamagePosition(data.location);
+                receiverData[receiver] = data.UpdateLastTick(); // Updates the Last Tick field in the data struct to be Time.time.
+            }
+            receiver.TakeDamage(damage, identity);
+        }
+
+        void UpdateDamageTicks()
+        {
+            var receivers = receiverData.Keys.ToArray();
+            for (int i = receiverData.Keys.Count - 1; i >= 0; i--)
+            {
+                IDamageReceiver receiver = receivers[i];
+                Assert.IsNotNull(receiver);
+                ReceiverData data = receiverData[receiver];
+                if (Time.time >= data.lastTick + tickRate)
+                {
+                    DamageTickOn(receiver);
+                }
             }
         }
-    }
-
-    public void DamageTick(IDamageReceiver receiver)
-    {
-        Print($"Damage Tick on {Name}", debug, this);
-        if (receiverData.TryGetValue(receiver, out var data))
-        {
-            receiver.SetDamagePosition(data.location);
-            receiverData[receiver] = data.UpdateLastTick(); // Updates the Last Tick field in the data struct to be Time.time.
-        }
-        receiver.TakeDamage(damage, identity);
+        #endregion Local Functions
     }
 
 

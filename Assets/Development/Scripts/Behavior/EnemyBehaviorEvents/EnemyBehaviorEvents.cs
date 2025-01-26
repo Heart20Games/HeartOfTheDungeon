@@ -19,6 +19,6 @@ public class EnemyBehaviorEvents : MonoBehaviour
         if (meleeDamager == null) return;
         if (!enemyAI.IsInAttackingDistance()) return;
 
-        meleeDamager.DamageTarget();
+        meleeDamager.DamageTick();
     }
 }
