@@ -1,11 +1,10 @@
 using MyBox;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.VFX;
 
+[RequireComponent(typeof(EffectSpawner))]
 public class Level3BoltScaling : BaseMonoBehaviour
 {
     [Header("Configuration")]
@@ -13,6 +12,9 @@ public class Level3BoltScaling : BaseMonoBehaviour
     public VisualEffect bolt;
     public float scaleSpeed;
     public float castDuration;
+    private EffectSpawner endEffectSpawner;
+    [SerializeField] int endEffectDensity;
+    [SerializeField] private Transform endMarker;
     [SerializeField] private float maxScale = 50f;
     [SerializeField] private bool debug = false;
     [SerializeField] private bool debugEnable = false;
@@ -39,7 +41,11 @@ public class Level3BoltScaling : BaseMonoBehaviour
         set => shouldFollowCrossHair = value;
     }
 
-    // Start is called before the first frame update
+    private void Awake()
+    {
+        endEffectSpawner = GetComponent<EffectSpawner>();
+    }
+
     private void Start()
     {
         currentScale = 0f;
@@ -118,6 +124,14 @@ public class Level3BoltScaling : BaseMonoBehaviour
     {
         bolt.SetFloat("Scale", currentScale);
         collider.transform.localScale = new Vector3(collider.transform.localScale.x, collider.transform.localScale.y, (currentScale * 100) + collisionMargin);
+        endEffectSpawner.spawnTargets.Clear();
+        for (int i = 1; i <= endEffectDensity; i++)
+        {
+            float arcPos = Mathf.Lerp(0, Mathf.PI, i / endEffectDensity);
+            Vector3 relative = new(Mathf.Cos(arcPos), Mathf.Sin(arcPos), 0);
+            EffectSpawner.Target target = new(endMarker, relative);
+            endEffectSpawner.spawnTargets.Add(target);
+        }
     }
 
     // Update is called once per frame
