@@ -336,15 +336,15 @@ MonoBehaviour:
   hasDuration: 1
   castDuration: 4
   collisionMargin: 0.01
-  collisionBaseScale: 150
+  collisionBaseScale: 50
   raycastLayer:
     serializedVersion: 2
     m_Bits: 8
   ringCast:
     source: {fileID: 2044209371392978580}
     target: {fileID: 3685591001691019646}
-    radius: 0
-    density: 0
+    radius: 0.02
+    density: 13
     offsets: []
   shouldFollowCrossHair: 0
   debug: 0
@@ -397,9 +397,10 @@ MonoBehaviour:
   spawnRate: 0.1
   spawnTargets:
   - parent: {fileID: 3685591001691019646}
+    useWorldSpace: 0
     mode: 1
     offset: {x: 0, y: 0, z: 0}
-    radius: 1
+    radius: 0.02
     density: 13
     offsets: []
   effects:
