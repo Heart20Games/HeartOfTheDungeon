@@ -5,6 +5,8 @@ using UnityEngine;
 using FMODUnity;
 using UnityEngine.Serialization;
 using MyBox;
+using UnityEngine.PlayerLoop;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 public class EffectSpawner : Positionable
 {
@@ -14,7 +16,11 @@ public class EffectSpawner : Positionable
     [ConditionalField("autoSpawn")]
     [SerializeField] private float spawnRate;
     [ConditionalField("autoSpawn")]
-    public List<Target> spawnTargets;
+    public List<Target> spawnTargets = new();
+    public List<Effect> effects = new();
+    private List<Instance> instances = new();
+
+    // Structs
     [Serializable]
     public struct Effect
     {
@@ -41,16 +47,88 @@ public class EffectSpawner : Positionable
     [Serializable]
     public struct Target
     {
-        public Target(Transform parent, Vector3 offset)
+        public Target(Transform parent, List<Vector3> offsets, bool useWorldSpace=false)
         {
             this.parent = parent;
-            this.offset = offset;
+            this.useWorldSpace = useWorldSpace;
+            this.mode = Mode.Raw;
+            this.offset = new();
+            this.radius = 1f;
+            this.density = 8f;
+            this.offsets = offsets;
         }
+        public Target(Transform parent, Vector3 offset, bool useWorldSpace=false)
+        {
+            this.parent = parent;
+            this.useWorldSpace = useWorldSpace;
+            this.mode = Mode.Single;
+            this.offset = offset;
+            this.radius = 1f;
+            this.density = 8f;
+            this.offsets = new();
+            CalculateOffsets();
+        }
+        public Target(Transform parent, Vector3 offset, float radius, float density, bool useWorldSpace=false)
+        {
+            this.parent = parent;
+            this.useWorldSpace = useWorldSpace;
+            this.mode = Mode.Ring;
+            this.offset = offset;
+            this.radius = radius;
+            this.density = density;
+            this.offsets = new();
+            CalculateOffsets();
+        }
+
+        public enum Mode { Single, Raw, Ring }
         public Transform parent;
+        public bool useWorldSpace;
+        public Mode mode;
         public Vector3 offset;
+        [ConditionalField(true, "ShowRadius")]
+        public float radius;
+        [ConditionalField(true, "ShowDensity")]
+        public float density;
+        public List<Vector3> offsets;
+
+        private bool ShowRadius() { return mode == Mode.Ring; }
+        private bool ShowDensity() { return mode == Mode.Ring; }
+
+        public readonly void CalculateOffsets()
+        {
+            switch (mode)
+            {
+                case Mode.Raw: break;
+                default: offsets.Clear(); break;
+            }
+            offsets.Clear();
+
+            switch (mode)
+            {
+                case Mode.Raw: break;
+                case Mode.Single: Offset(offset, offsets);  break;
+                case Mode.Ring: Ring(offset, radius, density, offsets); break;
+                default: Offset(offset, offsets); break;
+            }
+
+            void Offset(Vector3 offset, List<Vector3> offsets)
+            {
+                offsets.Add(offset);
+            }
+
+            void Ring(Vector3 offset, float radius, float density, List<Vector3> offsets)
+            {
+                for (int i = 1; i <= density; i++)
+                {
+                    float arcPos = Mathf.Lerp(0, 2 * Mathf.PI, i / density);
+                    Vector3 point = new(Mathf.Cos(arcPos), Mathf.Sin(arcPos), 0);
+                    offsets.Add((point * radius) + offset);
+                }
+            }
+        }
     }
 
-    public List<Effect> effects;
+    // Stuff
 
     private void Start()
     {
@@ -58,6 +136,11 @@ public class EffectSpawner : Positionable
         {
             source = transform;
         }
+    }
+
+    private void OnDisable()
+    {
+        ClearInstances();
     }
 
     private void Update()
@@ -73,12 +156,11 @@ public class EffectSpawner : Positionable
         }
     }
 
-    private void OnDestroy()
+    private void OnValidate()
     {
-        if (autoSpawnRoutine != null)
+        foreach (var target in spawnTargets)
         {
-            StopCoroutine(autoSpawnRoutine);
-            autoSpawnRoutine = null;
+            target.CalculateOffsets();
         }
     }
 
@@ -91,13 +173,16 @@ public class EffectSpawner : Positionable
             Print($"Auto Spawning {spawnTargets.Count} times.", true, this);
             foreach (var target in spawnTargets)
             {
-                Spawn(target.offset, target.parent);
+                foreach (var offset in target.offsets)
+                {
+                    Spawn(offset, target.parent, target.useWorldSpace);
+                }
             }
             yield return new WaitForSeconds(spawnRate);
         }
     }
 
-    public void Spawn(Vector3 position, Transform parent=null)
+    public void Spawn(Vector3 position, Transform parent=null, bool useWorldSpace=false)
     {
         parent = (parent != null ? parent : (source == null ? transform : source));
         foreach (Effect effect in effects)
@@ -105,7 +190,11 @@ public class EffectSpawner : Positionable
             if (soundEmitter != null)
                 soundEmitter.Play();
             Transform tform = Instantiate(effect.prefab, parent);
-            tform.position = position + effect.prefab.transform.position;
+            Vector3 final = position + effect.prefab.transform.position;
+            if (useWorldSpace)
+                tform.position = final;
+            else
+                tform.localPosition = final;
             StartCoroutine(CleanupInstance(new Instance(effect, tform)));
         }
     }
@@ -119,5 +208,14 @@ public class EffectSpawner : Positionable
     {
         yield return new WaitForSeconds(instance.effect.lifeTime);
         Destroy(instance.transform.gameObject);
+    }
+
+    public void ClearInstances()
+    {
+        foreach (var instance in instances)
+        {
+            Destroy(instance.transform.gameObject);
+        }
+        instances.Clear();
     }
 }

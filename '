@@ -1,7 +1,5 @@
 using MyBox;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.VFX;
@@ -9,80 +7,36 @@ using UnityEngine.VFX;
 [RequireComponent(typeof(EffectSpawner))]
 public class Level3BoltScaling : BaseMonoBehaviour
 {
-    [Foldout("Configuration", true)]
-    [Header("Components")]
+    [Header("Configuration")]
     public new Collider collider;
     public VisualEffect bolt;
-    [Header("Scale")]
     public float scaleSpeed;
-    [SerializeField] private float maxScale = 50f;
-    [SerializeField] private bool shouldShootForever;
-    [Header("Duration")]
     public bool hasDuration = true;
     [ConditionalField("hasDuration")]
     public float castDuration;
-    [Header("Collision")]
-    [SerializeField] private float collisionMargin = 0.01f;
-    [SerializeField] private float collisionBaseScale = 50f;
-    [SerializeField] private LayerMask raycastLayer;
-    [SerializeField] private RingCast ringCast;
-    private EffectSpawner effectSpawner;
-    [Header("Direction")]
-    [SerializeField] private bool shouldFollowCrossHair;
-    [Header("Debug")]
+    private EffectSpawner endEffectSpawner;
+    [SerializeField] int endEffectDensity;
+    [SerializeField] private Transform endMarker;
+    [SerializeField] private float maxScale = 50f;
     [SerializeField] private bool debug = false;
     [SerializeField] private bool debugEnable = false;
 
-    [Foldout("State", true)]
     [Header("State")]
     [ReadOnly][SerializeField] private bool playing = false;
     [ReadOnly][SerializeField] private bool casting = false;
     [SerializeField] private float currentScale;
     [SerializeField] private float maxDistance = 1000f;
+    [SerializeField] private float collisionMargin = 0.01f;
+    [SerializeField] private float collisionBaseScale = 150f;
+    [SerializeField] private bool shouldFollowCrossHair;
+    [SerializeField] private bool shouldShootForever;
+    [SerializeField] private LayerMask raycastLayer;
     [SerializeField][ReadOnly] private int numInLayer;
     [SerializeField][ReadOnly] private int totalNum;
     private Coroutine windDownCoroutine;
 
     [Foldout("Events", true)]
     [SerializeField] protected UnityEvent onWoundDown = new();
-
-    [Serializable]
-    struct RingCast
-    {
-        public Transform source; // Assumed to share parent w/ target.
-        public Transform target; // Assumed to share parent w/ source.
-        public float radius;
-        public float density;
-        public List<Ray> rays; // This is the list of rays to be checked.
-        public List<Vector3> offsets; // This is the output
-        public void CalculateRays()
-        {
-            rays ??= new();
-            rays.Clear();
-            for (int i = 1; i <= density; i++)
-            {
-                float arcPos = Mathf.Lerp(0, 2 * Mathf.PI, i / density);
-                Vector3 point = radius * new Vector3(Mathf.Cos(arcPos), Mathf.Sin(arcPos), 0);
-                Vector3 origin = source.localPosition + point;
-                Vector3 destination = target.localPosition + point;
-                rays.Add(new(source.TransformPoint(origin), (target.TransformPoint(destination) - source.TransformPoint(origin)).normalized));
-            }
-        }
-        public void Cast(float maxDistance, int raycastLayer)
-        {
-            offsets ??= new();
-            offsets.Clear();
-            foreach (var ray in rays)
-            {
-                Debug.DrawRay(ray.origin, ray.direction * maxDistance, Color.red, 0.1f);
-                RaycastHit[] hits = Physics.RaycastAll(ray, maxDistance, raycastLayer);
-                foreach (var hit in hits)
-                {
-                    offsets.Add(hit.point);
-                }
-            }
-        }
-    }
 
     public bool ShouldFollowCrossHair
     {
@@ -92,7 +46,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
 
     private void Awake()
     {
-        effectSpawner = GetComponent<EffectSpawner>();
+        endEffectSpawner = GetComponent<EffectSpawner>();
     }
 
     private void Start()
@@ -173,14 +127,14 @@ public class Level3BoltScaling : BaseMonoBehaviour
     {
         bolt.SetFloat("Scale", currentScale);
         collider.transform.localScale = new Vector3(collider.transform.localScale.x, collider.transform.localScale.y, (currentScale * collisionBaseScale) + collisionMargin);
-    }
-
-    private void UpdateRayCastOffsets()
-    {
-        ringCast.CalculateRays();
-        ringCast.Cast(maxDistance + 1, raycastLayer);
-        effectSpawner.spawnTargets.Clear();
-        effectSpawner.spawnTargets.Add(new(ringCast.target, ringCast.offsets, true));
+        endEffectSpawner.spawnTargets.Clear();
+        for (int i = 1; i <= endEffectDensity; i++)
+        {
+            float arcPos = Mathf.Lerp(0, Mathf.PI, i / endEffectDensity);
+            Vector3 relative = new(Mathf.Cos(arcPos), Mathf.Sin(arcPos), 0);
+            EffectSpawner.Target target = new(endMarker, relative);
+            endEffectSpawner.spawnTargets.Add(target);
+        }
     }
 
     // Update is called once per frame
@@ -201,8 +155,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
                     Print("Start the laser!", debug);
                     currentScale = clampedScale;
                     casting = true;
-                    if (hasDuration)
-                        WindDownCoroutine();
+                    WindDownCoroutine();
                 }
             }
 
@@ -224,8 +177,6 @@ public class Level3BoltScaling : BaseMonoBehaviour
 
             UpdateScaling();
         }
-
-        UpdateRayCastOffsets();
     }
 
     private void UpdateMaxDistance()
