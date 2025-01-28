@@ -168,7 +168,7 @@ namespace Body.Behavior
             this.target = target;
             if (this.target != null)
                 this.target = (target.TryGetComponent(out Character targetChar) ? targetChar.Body : target);
-            if (agent != null && agent.isActiveAndEnabled)
+            if (agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh)
                 agent.destination = this.target == null ? new() : this.target.position;
             if (pathFinder != null)
                 pathFinder.target = this.target;

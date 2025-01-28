@@ -126,7 +126,7 @@ public class EnemyAI : Brain
 
         SetTarget(Target);
 
-        if (agent.remainingDistance <= agent.stoppingDistance)
+        if (agent.isOnNavMesh && agent.remainingDistance < agent.stoppingDistance)
         {
             currentAction = Action.Duel;
 
@@ -134,7 +134,7 @@ public class EnemyAI : Brain
 
             if (character.castables[character.CastableID] != null)
             {
-                character.castables[character.CastableID].Damager._Impactor = Target.GetComponent<Impact>();
+                character.castables[character.CastableID].Damager._Impactor = Target.GetComponent<Impactor>();
             }
 
             if(!didAttack)
@@ -165,7 +165,7 @@ public class EnemyAI : Brain
         }
     }
 
-    public Impact GetImpactor()
+    public Impactor GetImpactor()
     {
         return character.castables[character.CastableID].Damager._Impactor;
     }

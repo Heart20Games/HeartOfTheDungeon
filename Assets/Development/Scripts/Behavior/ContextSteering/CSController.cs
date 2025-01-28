@@ -145,7 +145,7 @@ namespace Body.Behavior.ContextSteering
             {
                 if (destinationDistance > 0)
                 {
-                    Vector2 destinationVector = (destinationStep - transform.position).XZVector();
+                    Vector2 destinationVector = (destinationStep - transform.position).XZVector2();
                     MapTo(destinationVector, Identity.Target, destinationDistance * destinationScale);
                 }
                 DrawMaps();
@@ -159,7 +159,7 @@ namespace Body.Behavior.ContextSteering
                     }
                     rigidbody.velocity = Speed * Scale * Time.fixedDeltaTime * vector;
                 }
-                CurrentVector = vector.XZVector();
+                CurrentVector = vector.XZVector2();
                 onSetVector.Invoke( CurrentVector );
             }
         }
@@ -334,7 +334,7 @@ namespace Body.Behavior.ContextSteering
 
         // Obstacles
 
-        public void AddObstacle(Impact impact)
+        public void AddObstacle(Impactor impact)
         {
             if (!impact.other.gameObject.TryGetComponent<CSController>(out _))
             {
@@ -349,7 +349,7 @@ namespace Body.Behavior.ContextSteering
             }
         }
 
-        public void RemoveObstacle(Impact impact)
+        public void RemoveObstacle(Impactor impact)
         {
             if (!impact.other.gameObject.TryGetComponent<CSController>(out _))
             {

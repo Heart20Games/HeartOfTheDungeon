@@ -16,6 +16,6 @@ public class Pivot : BaseMonoBehaviour
 
     public void OrientBody(Vector3 vector)
     {
-        body.SetLocalRotationWithVector(vector.XZVector());
+        body.SetLocalRotationWithVector(vector.XZVector2());
     }
 }

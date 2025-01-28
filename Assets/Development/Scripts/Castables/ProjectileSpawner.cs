@@ -5,20 +5,10 @@ using UnityEngine;
 
 namespace HotD.Castables
 {
-    public interface IProjectileSpawner
+    public class ProjectileSpawner : Spawner
     {
-        public void Spawn();
-        public void Spawn(Vector3 direction = new Vector3());
-        public void Activate(Vector3 direction);
-    }
-
-    public class ProjectileSpawner : Positionable, IProjectileSpawner, ISetCollisionExceptions
-    {
-        public float lifeSpan;
-        public Transform pivot;
         public Projectile projectile;
         [SerializeField] private bool followBody = false;
-        public bool spawnOnEnable = true;
         [SerializeField] private Collider[] exceptions;
         [SerializeField] private List<Projectile> projectiles = new();
         [SerializeField] private bool debug = false;
@@ -56,7 +46,7 @@ namespace HotD.Castables
             base.SetOrigin(source, location);
         }
 
-        public void Spawn()
+        public override void Spawn()
         {
             Spawn(false);
         }
@@ -75,7 +65,7 @@ namespace HotD.Castables
             }
         }
 
-        public void Spawn(Vector3 direction = new Vector3())
+        public override void Spawn(Vector3 direction = new Vector3())
         {
 
             if (debug) { Debug.Log($"{name} spawning projectile in {direction} direction.", this); }
@@ -100,7 +90,7 @@ namespace HotD.Castables
             }
         }
 
-        public void Activate(Vector3 direction)
+        public override void Activate(Vector3 direction)
         {
             LaunchInstance(direction, pivot.transform, projectile);
         }
@@ -136,12 +126,12 @@ namespace HotD.Castables
         }
 
         // Collision Exceptions
-        public Collider[] Exceptions
+        public override Collider[] Exceptions
         {
             get => exceptions;
             set => SetExceptions(value);
         }
-        public void SetExceptions(Collider[] exceptions)
+        public override void SetExceptions(Collider[] exceptions)
         {
             for (int i = 0; i < projectiles.Count; i++)
             {

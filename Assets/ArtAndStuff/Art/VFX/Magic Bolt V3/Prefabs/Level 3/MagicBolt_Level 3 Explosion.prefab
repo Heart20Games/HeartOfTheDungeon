@@ -14791,10 +14791,11 @@ GameObject:
   - component: {fileID: 4325371597580070175}
   - component: {fileID: 1153053085423334423}
   - component: {fileID: 1606243502375304327}
+  - component: {fileID: 8155711780689148846}
   m_Layer: 0
   m_Name: MagicBolt_Level 3 Explosion
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -14807,7 +14808,7 @@ Transform:
   m_GameObject: {fileID: 4834904578443139442}
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000089406946, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 15.65, y: 4.077, z: -9.2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.100000106, y: 0.099999994, z: 0.100000106}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -14822,7 +14823,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4834904578443139442}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09289944c663dc3428b0f9fc690e9a0a, type: 3}
   m_Name: 
@@ -14831,6 +14832,21 @@ MonoBehaviour:
   boltExplosion: {fileID: 5921433553872263819}
   elapsedTime: 0
   castDuration: 0.75
+  onEnable:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8155711780689148846}
+        m_TargetAssemblyTypeName: ParticleSystems, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!210 &1606243502375304327
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -14843,3 +14859,17 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 32767
   m_SortAtRoot: 0
+--- !u!114 &8155711780689148846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4834904578443139442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44df488cd77d581468d944f68ed00edc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadChildren: 1
+  particles: []

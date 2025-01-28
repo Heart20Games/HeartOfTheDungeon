@@ -1,0 +1,226 @@
+using MyBox;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.VFX;
+
+[RequireComponent(typeof(EffectSpawner))]
+public class Level3BoltScaling : BaseMonoBehaviour
+{
+    [Header("Configuration")]
+    public new Collider collider;
+    public VisualEffect bolt;
+    public float scaleSpeed;
+    public bool hasDuration = true;
+    [ConditionalField("hasDuration")]
+    public float castDuration;
+    private EffectSpawner endEffectSpawner;
+    [SerializeField] int endEffectDensity;
+    [SerializeField] private Transform endMarker;
+    [SerializeField] private float maxScale = 50f;
+    [SerializeField] private bool debug = false;
+    [SerializeField] private bool debugEnable = false;
+
+    [Header("State")]
+    [ReadOnly][SerializeField] private bool playing = false;
+    [ReadOnly][SerializeField] private bool casting = false;
+    [SerializeField] private float currentScale;
+    [SerializeField] private float maxDistance = 1000f;
+    [SerializeField] private float collisionMargin = 0.01f;
+    [SerializeField] private float collisionBaseScale = 150f;
+    [SerializeField] private bool shouldFollowCrossHair;
+    [SerializeField] private bool shouldShootForever;
+    [SerializeField] private LayerMask raycastLayer;
+    [SerializeField][ReadOnly] private int numInLayer;
+    [SerializeField][ReadOnly] private int totalNum;
+    private Coroutine windDownCoroutine;
+
+    [Foldout("Events", true)]
+    [SerializeField] protected UnityEvent onWoundDown = new();
+
+    public bool ShouldFollowCrossHair
+    {
+        get => shouldFollowCrossHair;
+        set => shouldFollowCrossHair = value;
+    }
+
+    private void Awake()
+    {
+        endEffectSpawner = GetComponent<EffectSpawner>();
+    }
+
+    private void Start()
+    {
+        currentScale = 0f;
+    }
+
+    private void OnEnable()
+    {
+        Print("Enabled.", debugEnable, this);
+        if (!playing)
+        {
+            ChargeUp();
+        }
+    }
+
+    private void OnDisable()
+    {
+        Print("Disabled.", debugEnable, this);
+        if (casting)
+        {
+            WindDown();
+        }
+    }
+
+    public void ChargeUp()
+    {
+        Print("Charge the laser!", debug);
+        bolt.SetFloat("Duration", castDuration);
+        bolt.SetBool("Effect End", false);
+        bolt.Play();
+        collider.enabled = true;
+        playing = true;
+        casting = false;
+        currentScale = 0;
+        InterruptWindDown();
+        UpdateScaling();
+    }
+
+    public void InterruptWindDown()
+    {
+        Print("Interrupt the laser.", debug);
+        if (windDownCoroutine != null)
+        {
+            StopCoroutine(windDownCoroutine);
+            windDownCoroutine = null;
+        }
+    }
+
+    public void WindDownCoroutine()
+    {
+        InterruptWindDown();
+        windDownCoroutine = StartCoroutine(DoWindDown(castDuration));
+    }
+
+    public void WindDown()
+    {
+        Print("Stop the laser!", debug);
+        bolt.Stop();
+        currentScale = 0f;
+        enabled = false;
+        playing = false;
+        casting = false;
+        collider.enabled = false;
+        bolt.SetBool("Effect End", true);
+        windDownCoroutine = null;
+        UpdateScaling();
+    }
+
+    private IEnumerator DoWindDown(float duration)
+    {
+        Print("Cool off the laser...", debug);
+        yield return new WaitForSeconds(duration);
+        WindDown();
+    }
+
+    private void UpdateScaling()
+    {
+        bolt.SetFloat("Scale", currentScale);
+        collider.transform.localScale = new Vector3(collider.transform.localScale.x, collider.transform.localScale.y, (currentScale * collisionBaseScale) + collisionMargin);
+        endEffectSpawner.spawnTargets.Clear();
+        for (int i = 1; i <= endEffectDensity; i++)
+        {
+            float arcPos = Mathf.Lerp(0, Mathf.PI, i / endEffectDensity);
+            Vector3 relative = new(Mathf.Cos(arcPos), Mathf.Sin(arcPos), 0);
+            EffectSpawner.Target target = new(endMarker, relative);
+            endEffectSpawner.spawnTargets.Add(target);
+        }
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        UpdateMaxDistance();
+
+        if (playing)
+        {
+            Print("Playing...", debug);
+            if (!casting)
+            {
+                Print("Scaling up...", debug);
+                currentScale += Time.fixedDeltaTime * scaleSpeed;
+                float clampedScale = Mathf.Min(currentScale, maxScale, maxDistance);
+                if (currentScale != clampedScale)
+                {
+                    Print("Start the laser!", debug);
+                    currentScale = clampedScale;
+                    casting = true;
+                    WindDownCoroutine();
+                }
+            }
+
+            if (ShouldFollowCrossHair)
+            {
+                // Get the crosshair's target
+                Vector3 targetedPosition = Crosshair.GetTargetedPosition(transform);
+                // Restricted the target's direction to the X and Z axes.
+                Vector3 restrictedDirection = (targetedPosition - transform.position).XZVector3().normalized;
+                // Look at the restricted direction relative to the origin position.
+                transform.LookAt(transform.position + restrictedDirection);
+            }
+
+
+            if (casting)
+            {
+                currentScale = Mathf.Min(maxScale, maxDistance);
+            }
+
+            UpdateScaling();
+        }
+    }
+
+    private void UpdateMaxDistance()
+    {
+        Ray ray = new(transform.position, transform.forward);
+        RaycastHit[] hits = Physics.RaycastAll(ray, 1000f, raycastLayer);
+
+        int totalNum = 0;
+        int numInLayer = 0;
+        if (!shouldShootForever && hits.Length > 0)
+        {
+            maxDistance = 1000f;
+            foreach (var hit in hits)
+            {
+                if (raycastLayer.LayerInMask(hit.collider.gameObject.layer))
+                {
+                    float old = maxDistance;
+                    maxDistance = Mathf.Min(hit.distance, maxDistance);
+                    numInLayer += 1;
+                    Print($"Restricted: {old} -> {maxDistance} (by {hit.distance}, hit #{numInLayer})", debug);
+                }
+                else
+                {
+                    Print($"Hit didn't match {raycastLayer.value}, was {hit.collider.gameObject.layer}");
+                }
+
+                totalNum += 1;
+            }
+        }
+        else
+        {
+            Print($"UnRestricted: {1000f}");
+            maxDistance = 1000f;
+        }
+
+        Print($"Total hits: {totalNum}, # in layer: {numInLayer}");
+
+        if (totalNum != 0) this.totalNum = totalNum;
+        if (numInLayer != 0) this.numInLayer = totalNum;
+
+
+        Vector3 rayMaxVector = ray.direction * (1000f - maxDistance);
+        Vector3 collisionVector = ray.direction * maxDistance;
+        Debug.DrawRay(ray.origin + collisionVector, rayMaxVector, Color.magenta, .1f);
+        Debug.DrawRay(ray.origin,  collisionVector, Color.red, .1f);
+    }
+}

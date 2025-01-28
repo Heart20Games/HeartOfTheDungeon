@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &436313392345878595
+--- !u!1 &471318016071411709
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,325 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2343331194985559189}
-  - component: {fileID: 1876261635737996942}
-  - component: {fileID: 5056952375696450344}
+  - component: {fileID: 7792423834073241337}
+  - component: {fileID: 4345891721918086981}
+  m_Layer: 0
+  m_Name: Methods
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7792423834073241337
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471318016071411709}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8349097819681975250}
+  m_Father: {fileID: 2283071274486112578}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4345891721918086981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471318016071411709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43b97ecb1e3625c468a11ddcbd29b35f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 0}
+--- !u!1 &1393583789518111583
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8349097819681975250}
+  - component: {fileID: 7085618470075202011}
+  - component: {fileID: 1019831758635286265}
+  m_Layer: 0
+  m_Name: Playing Dead
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8349097819681975250
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1393583789518111583}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7792423834073241337}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7085618470075202011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1393583789518111583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08cdb792beeac4b48850175501fb5cb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fields:
+    debug: 0
+    events:
+      name: Events
+      onSetOwner:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetPowerLevel:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetPowerLevelInt:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetMaxPowerLevel:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetComboStep:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetMaxComboStep:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetIdentity:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetCooldown:
+        m_PersistentCalls:
+          m_Calls: []
+      onSetCollisionExceptions:
+        m_PersistentCalls:
+          m_Calls: []
+      connected: 0
+      initialized: 1
+    stats:
+      name: 
+      stats: {fileID: 0}
+    rOffset: 0
+    weaponArt: {fileID: 0}
+    pivot: {fileID: 0}
+    direction: {x: 0, y: 0, z: 0}
+    followBody: 0
+    hasOwner: 0
+    item: {fileID: 0}
+    maxPowerLevel: 0
+    curPowerLevel: 0
+    maxComboStep: 0
+    curComboStep: 0
+    usePowerLevelAsComboStep: 0
+    castingMethods: []
+    toLocations: []
+    positionables: []
+    effects: []
+    collisionExceptions: []
+    identity: 0
+    damager: {fileID: 0}
+    activationStatusClass:
+      name: 
+      type: 0
+      power:
+        name: 
+        owner: 
+        finalPreview: 0
+        baseValue: 0
+        baseMultiplier: 0
+        baseValueRange: {x: 0, y: 0}
+        baseMultiplierRange: {x: 0, y: 0}
+        debug: 0
+        updated:
+          m_PersistentCalls:
+            m_Calls: []
+        updatedFinalFloat:
+          m_PersistentCalls:
+            m_Calls: []
+        updatedFinalInt:
+          m_PersistentCalls:
+            m_Calls: []
+        otherAttributes: []
+      statuses: []
+    executionStatusClass:
+      name: 
+      type: 0
+      power:
+        name: 
+        owner: 
+        finalPreview: 0
+        baseValue: 0
+        baseMultiplier: 0
+        baseValueRange: {x: 0, y: 0}
+        baseMultiplierRange: {x: 0, y: 0}
+        debug: 0
+        updated:
+          m_PersistentCalls:
+            m_Calls: []
+        updatedFinalFloat:
+          m_PersistentCalls:
+            m_Calls: []
+        updatedFinalInt:
+          m_PersistentCalls:
+            m_Calls: []
+        otherAttributes: []
+      statuses: []
+    hitStatusClass:
+      name: 
+      type: 0
+      power:
+        name: 
+        owner: 
+        finalPreview: 0
+        baseValue: 0
+        baseMultiplier: 0
+        baseValueRange: {x: 0, y: 0}
+        baseMultiplierRange: {x: 0, y: 0}
+        debug: 0
+        updated:
+          m_PersistentCalls:
+            m_Calls: []
+        updatedFinalFloat:
+          m_PersistentCalls:
+            m_Calls: []
+        updatedFinalInt:
+          m_PersistentCalls:
+            m_Calls: []
+        otherAttributes: []
+      statuses: []
+    pivotDirection: {x: 0, y: 0, z: 0}
+    debugFieldsEditor: 0
+  debugProperties: 0
+  connectToFieldEvents: 1
+  fieldEvents:
+    name: Local Events
+    onSetOwner:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetPowerLevel:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetPowerLevelInt:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetMaxPowerLevel:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetComboStep:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetMaxComboStep:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetIdentity:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetCooldown:
+      m_PersistentCalls:
+        m_Calls: []
+    onSetCollisionExceptions:
+      m_PersistentCalls:
+        m_Calls: []
+    connected: 1
+    initialized: 1
+  castEvents:
+    name: Cast Events
+    onTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+    onStartCast:
+      m_PersistentCalls:
+        m_Calls: []
+    onRelease:
+      m_PersistentCalls:
+        m_Calls: []
+    onEndCast:
+      m_PersistentCalls:
+        m_Calls: []
+    onCasted:
+      m_PersistentCalls:
+        m_Calls: []
+  initializeOffOf: {fileID: 8339173689766842222}
+  aimAtCrosshair: 1
+  positionables: []
+  onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  debugExecution: 0
+--- !u!114 &1019831758635286265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1393583789518111583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08fc4f98e7a12ab4a9d188cca050e895, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  level: 0
+  chargeTimes: []
+  statusClass:
+    name: Execution
+    type: 2
+    power:
+      name: Execution Power
+      owner: 
+      finalPreview: 0
+      baseValue: 0
+      baseMultiplier: 0
+      baseValueRange: {x: 0, y: 0}
+      baseMultiplierRange: {x: 0, y: 0}
+      debug: 0
+      updated:
+        m_PersistentCalls:
+          m_Calls: []
+      updatedFinalFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      updatedFinalInt:
+        m_PersistentCalls:
+          m_Calls: []
+      otherAttributes: []
+    statuses:
+    - name: Playing Dead
+      effect: {fileID: 11400000, guid: b63134a70b971ec4ab4a6caa9329880c, type: 2}
+      strength: 10
+      instance: {fileID: 0}
+  debugStatuses: 0
+--- !u!1 &2880234780778719732
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3776873135990750597}
+  - component: {fileID: 2511303526885194022}
+  - component: {fileID: 8544119758096877924}
   m_Layer: 0
   m_Name: Play Dead
   m_TagString: Untagged
@@ -18,47 +334,50 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2343331194985559189
+--- !u!4 &3776873135990750597
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 436313392345878595}
+  m_GameObject: {fileID: 2880234780778719732}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7438903718230956392}
-  - {fileID: 565341047801761015}
+  - {fileID: 5651980805603047384}
+  - {fileID: 2283071274486112578}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1876261635737996942
+--- !u!114 &2511303526885194022
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 436313392345878595}
+  m_GameObject: {fileID: 2880234780778719732}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc6e98420917628498e843205b370fc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldTick: 0
+  shouldTickOnProc: 1
+  tickRate: 0.5
   damage: 1
   identity: 0
-  otherCount: 0
+  receiverCount: 0
   ignoredCount: 0
   debug: 0
---- !u!114 &5056952375696450344
+--- !u!114 &8544119758096877924
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 436313392345878595}
+  m_GameObject: {fileID: 2880234780778719732}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2482107b4b7d694499417bb62ca09cc8, type: 3}
@@ -102,7 +421,7 @@ MonoBehaviour:
       stats: {fileID: 11400000, guid: 47a5e96c647fe004dbe8ce03cd9d19ea, type: 2}
     rOffset: 0
     weaponArt: {fileID: 0}
-    pivot: {fileID: 7438903718230956392}
+    pivot: {fileID: 5651980805603047384}
     direction: {x: 0, y: 0, z: 0}
     followBody: 1
     hasOwner: 0
@@ -119,13 +438,79 @@ MonoBehaviour:
     collisionExceptions: []
     identity: 0
     damager: {fileID: 0}
-    triggerStatuses: []
-    castStatuses:
-    - name: Playing Dead
-      effect: {fileID: 11400000, guid: b63134a70b971ec4ab4a6caa9329880c, type: 2}
-      strength: 10
-      instance: {fileID: 0}
-    hitStatuses: []
+    activationStatusClass:
+      name: 
+      type: 0
+      power:
+        name: 
+        owner: 
+        finalPreview: 0
+        baseValue: 0
+        baseMultiplier: 0
+        baseValueRange: {x: 0, y: 0}
+        baseMultiplierRange: {x: 0, y: 0}
+        debug: 0
+        updated:
+          m_PersistentCalls:
+            m_Calls: []
+        updatedFinalFloat:
+          m_PersistentCalls:
+            m_Calls: []
+        updatedFinalInt:
+          m_PersistentCalls:
+            m_Calls: []
+        otherAttributes: []
+      statuses: []
+    executionStatusClass:
+      name: Execution
+      type: 2
+      power:
+        name: Execution Power
+        owner: 
+        finalPreview: 0
+        baseValue: 0
+        baseMultiplier: 0
+        baseValueRange: {x: 0, y: 0}
+        baseMultiplierRange: {x: 0, y: 0}
+        debug: 0
+        updated:
+          m_PersistentCalls:
+            m_Calls: []
+        updatedFinalFloat:
+          m_PersistentCalls:
+            m_Calls: []
+        updatedFinalInt:
+          m_PersistentCalls:
+            m_Calls: []
+        otherAttributes: []
+      statuses:
+      - name: Playing Dead
+        effect: {fileID: 11400000, guid: b63134a70b971ec4ab4a6caa9329880c, type: 2}
+        strength: 10
+        instance: {fileID: 0}
+    hitStatusClass:
+      name: Hit
+      type: 3
+      power:
+        name: Hit Power
+        owner: 
+        finalPreview: 0
+        baseValue: 0
+        baseMultiplier: 0
+        baseValueRange: {x: 0, y: 0}
+        baseMultiplierRange: {x: 0, y: 0}
+        debug: 0
+        updated:
+          m_PersistentCalls:
+            m_Calls: []
+        updatedFinalFloat:
+          m_PersistentCalls:
+            m_Calls: []
+        updatedFinalInt:
+          m_PersistentCalls:
+            m_Calls: []
+        otherAttributes: []
+      statuses: []
     pivotDirection: {x: 0, y: 0, z: 0}
     debugFieldsEditor: 0
   debugProperties: 0
@@ -196,7 +581,7 @@ MonoBehaviour:
   queuedActions: []
   dequeuedActions: []
   debugCastable: 0
---- !u!1 &1132056367392104835
+--- !u!1 &5682624854169691718
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -204,9 +589,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 565341047801761015}
-  - component: {fileID: 3045978340310937051}
-  - component: {fileID: 4840716958040366731}
+  - component: {fileID: 2283071274486112578}
+  - component: {fileID: 8339173689766842222}
+  - component: {fileID: 6762075433531126670}
   m_Layer: 0
   m_Name: Execution
   m_TagString: Untagged
@@ -214,29 +599,29 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &565341047801761015
+--- !u!4 &2283071274486112578
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1132056367392104835}
+  m_GameObject: {fileID: 5682624854169691718}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2154855964456879076}
-  m_Father: {fileID: 2343331194985559189}
+  - {fileID: 7792423834073241337}
+  m_Father: {fileID: 3776873135990750597}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3045978340310937051
+--- !u!114 &8339173689766842222
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1132056367392104835}
+  m_GameObject: {fileID: 5682624854169691718}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56b915fc48b630043a509ce34e1da8b8, type: 3}
@@ -291,16 +676,82 @@ MonoBehaviour:
     curComboStep: 0
     usePowerLevelAsComboStep: 0
     castingMethods:
-    - {fileID: 6509382884763949875}
+    - {fileID: 1393583789518111583}
     toLocations: []
     positionables: []
     effects: []
     collisionExceptions: []
     identity: 0
     damager: {fileID: 0}
-    triggerStatuses: []
-    castStatuses: []
-    hitStatuses: []
+    activationStatusClass:
+      name: 
+      type: 0
+      power:
+        name: 
+        owner: 
+        finalPreview: 0
+        baseValue: 0
+        baseMultiplier: 0
+        baseValueRange: {x: 0, y: 0}
+        baseMultiplierRange: {x: 0, y: 0}
+        debug: 0
+        updated:
+          m_PersistentCalls:
+            m_Calls: []
+        updatedFinalFloat:
+          m_PersistentCalls:
+            m_Calls: []
+        updatedFinalInt:
+          m_PersistentCalls:
+            m_Calls: []
+        otherAttributes: []
+      statuses: []
+    executionStatusClass:
+      name: 
+      type: 0
+      power:
+        name: 
+        owner: 
+        finalPreview: 0
+        baseValue: 0
+        baseMultiplier: 0
+        baseValueRange: {x: 0, y: 0}
+        baseMultiplierRange: {x: 0, y: 0}
+        debug: 0
+        updated:
+          m_PersistentCalls:
+            m_Calls: []
+        updatedFinalFloat:
+          m_PersistentCalls:
+            m_Calls: []
+        updatedFinalInt:
+          m_PersistentCalls:
+            m_Calls: []
+        otherAttributes: []
+      statuses: []
+    hitStatusClass:
+      name: 
+      type: 0
+      power:
+        name: 
+        owner: 
+        finalPreview: 0
+        baseValue: 0
+        baseMultiplier: 0
+        baseValueRange: {x: 0, y: 0}
+        baseMultiplierRange: {x: 0, y: 0}
+        debug: 0
+        updated:
+          m_PersistentCalls:
+            m_Calls: []
+        updatedFinalFloat:
+          m_PersistentCalls:
+            m_Calls: []
+        updatedFinalInt:
+          m_PersistentCalls:
+            m_Calls: []
+        otherAttributes: []
+      statuses: []
     pivotDirection: {x: 0, y: 0, z: 0}
     debugFieldsEditor: 0
   debugProperties: 0
@@ -309,7 +760,19 @@ MonoBehaviour:
     name: Local Events
     onSetOwner:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 1019831758635286265}
+          m_TargetAssemblyTypeName: HotD.Castables.ACastCompatibleFollower, Core
+          m_MethodName: SetOwner
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     onSetPowerLevel:
       m_PersistentCalls:
         m_Calls: []
@@ -374,7 +837,7 @@ MonoBehaviour:
   - name: Release / End
     triggerAction: 48
     sendToCoordinator: 0
-    sendToListener: 8
+    sendToListener: 12
     waitAction: 0
     oneShot: 1
     startAction:
@@ -385,13 +848,13 @@ MonoBehaviour:
     name: 
     state: 0
     action: 0
---- !u!114 &4840716958040366731
+--- !u!114 &6762075433531126670
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1132056367392104835}
+  m_GameObject: {fileID: 5682624854169691718}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5496f9b472f93a7429292b202075a65e, type: 3}
@@ -401,10 +864,10 @@ MonoBehaviour:
   step: 0
   comboSteps:
   - name: '1: Playing Dead'
-    comboObject: {fileID: 6509382884763949875}
+    comboObject: {fileID: 1393583789518111583}
     step: 1
   debug: 0
---- !u!1 &1700396182772586700
+--- !u!1 &6231993069770693389
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -412,217 +875,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2154855964456879076}
-  - component: {fileID: 8140740983393587041}
-  m_Layer: 0
-  m_Name: Methods
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2154855964456879076
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1700396182772586700}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7232243589535847511}
-  m_Father: {fileID: 565341047801761015}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8140740983393587041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1700396182772586700}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43b97ecb1e3625c468a11ddcbd29b35f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  body: {fileID: 0}
---- !u!1 &6509382884763949875
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7232243589535847511}
-  - component: {fileID: 8505260156956842429}
-  m_Layer: 0
-  m_Name: Playing Dead
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7232243589535847511
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6509382884763949875}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2154855964456879076}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8505260156956842429
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6509382884763949875}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08cdb792beeac4b48850175501fb5cb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fields:
-    debug: 0
-    events:
-      name: Events
-      onSetOwner:
-        m_PersistentCalls:
-          m_Calls: []
-      onSetPowerLevel:
-        m_PersistentCalls:
-          m_Calls: []
-      onSetPowerLevelInt:
-        m_PersistentCalls:
-          m_Calls: []
-      onSetMaxPowerLevel:
-        m_PersistentCalls:
-          m_Calls: []
-      onSetComboStep:
-        m_PersistentCalls:
-          m_Calls: []
-      onSetMaxComboStep:
-        m_PersistentCalls:
-          m_Calls: []
-      onSetIdentity:
-        m_PersistentCalls:
-          m_Calls: []
-      onSetCooldown:
-        m_PersistentCalls:
-          m_Calls: []
-      onSetCollisionExceptions:
-        m_PersistentCalls:
-          m_Calls: []
-      connected: 0
-      initialized: 1
-    stats:
-      name: 
-      stats: {fileID: 0}
-    rOffset: 0
-    weaponArt: {fileID: 0}
-    pivot: {fileID: 0}
-    direction: {x: 0, y: 0, z: 0}
-    followBody: 0
-    hasOwner: 0
-    item: {fileID: 0}
-    maxPowerLevel: 0
-    curPowerLevel: 0
-    maxComboStep: 0
-    curComboStep: 0
-    usePowerLevelAsComboStep: 0
-    castingMethods: []
-    toLocations: []
-    positionables: []
-    effects: []
-    collisionExceptions: []
-    identity: 0
-    damager: {fileID: 0}
-    triggerStatuses: []
-    castStatuses: []
-    hitStatuses: []
-    pivotDirection: {x: 0, y: 0, z: 0}
-    debugFieldsEditor: 0
-  debugProperties: 0
-  connectToFieldEvents: 1
-  fieldEvents:
-    name: Local Events
-    onSetOwner:
-      m_PersistentCalls:
-        m_Calls: []
-    onSetPowerLevel:
-      m_PersistentCalls:
-        m_Calls: []
-    onSetPowerLevelInt:
-      m_PersistentCalls:
-        m_Calls: []
-    onSetMaxPowerLevel:
-      m_PersistentCalls:
-        m_Calls: []
-    onSetComboStep:
-      m_PersistentCalls:
-        m_Calls: []
-    onSetMaxComboStep:
-      m_PersistentCalls:
-        m_Calls: []
-    onSetIdentity:
-      m_PersistentCalls:
-        m_Calls: []
-    onSetCooldown:
-      m_PersistentCalls:
-        m_Calls: []
-    onSetCollisionExceptions:
-      m_PersistentCalls:
-        m_Calls: []
-    connected: 1
-    initialized: 1
-  castEvents:
-    name: Cast Events
-    onTrigger:
-      m_PersistentCalls:
-        m_Calls: []
-    onStartCast:
-      m_PersistentCalls:
-        m_Calls: []
-    onRelease:
-      m_PersistentCalls:
-        m_Calls: []
-    onEndCast:
-      m_PersistentCalls:
-        m_Calls: []
-    onCasted:
-      m_PersistentCalls:
-        m_Calls: []
-  initializeOffOf: {fileID: 3045978340310937051}
-  aimAtCrosshair: 1
-  positionables: []
-  onEnable:
-    m_PersistentCalls:
-      m_Calls: []
-  debugExecution: 0
-  statusType: 0
-  debugStatuses: 0
---- !u!1 &6573312828529411047
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7438903718230956392}
-  - component: {fileID: 6349628723013142001}
+  - component: {fileID: 5651980805603047384}
+  - component: {fileID: 6225986829933815674}
   m_Layer: 0
   m_Name: Pivot
   m_TagString: Untagged
@@ -630,28 +884,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7438903718230956392
+--- !u!4 &5651980805603047384
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6573312828529411047}
+  m_GameObject: {fileID: 6231993069770693389}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2343331194985559189}
+  m_Father: {fileID: 3776873135990750597}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6349628723013142001
+--- !u!114 &6225986829933815674
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6573312828529411047}
+  m_GameObject: {fileID: 6231993069770693389}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43b97ecb1e3625c468a11ddcbd29b35f, type: 3}

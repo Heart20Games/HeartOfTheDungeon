@@ -52,7 +52,7 @@ namespace Body.Behavior.ContextSteering
         {
             Identity identity = RelativeIdentity(aCon.identity, bCon.identity);
             Vector3 sourceVector = aTransform.position - bTransform.position; // aCon.transform.position - bCon.transform.position;
-            Vector2 vector = sourceVector.XZVector();
+            Vector2 vector = sourceVector.XZVector2();
             bCon.MapTo(vector, identity);
         }
     }

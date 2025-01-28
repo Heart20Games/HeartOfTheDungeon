@@ -101,6 +101,14 @@ public class CharacterStub : AIdentifiableStub, ICharacter
 
     public void SetDamagePosition(Vector3 damagePosition) { }
     public void TakeDamage(int amount, CSIdentity.Identity id = CSIdentity.Identity.Neutral) { }
+
+    private UnityAction onDestroyed;
+    public UnityAction OnDestroyed { get => onDestroyed; set => onDestroyed = value; }
+    private void OnDestroy()
+    {
+        OnDestroyed?.Invoke();
+    }
+
     public void SetPlayerControlled(bool playerControlled, bool ignoreDeath=false) { }
     public void SetSpectatable(bool spectable) { }
 }

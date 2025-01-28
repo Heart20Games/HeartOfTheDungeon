@@ -7,6 +7,7 @@ using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 using System.Linq;
 using Sisus.ComponentNames;
+using UnityEngine.Assertions;
 
 public interface IEnableable
 {
@@ -28,7 +29,14 @@ public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
     public Transform Transform => transform;
     public string Name 
     {
-        get => $"{this.GetName()} ({gameObject.name})";
+        get
+        {
+            string behaviourName = "Unknown Behaviour";
+            string gameObjectName = "Unknown GameObject";
+            if (this != null) behaviourName = this.GetName();
+            if (gameObject != null) gameObjectName = gameObject.name;
+            return $"{behaviourName} ({gameObjectName})";
+        }
         set => this.SetName(value);
     }
 
@@ -46,8 +54,10 @@ public class BaseMonoBehaviour : MonoBehaviour, IBaseMonoBehaviour
     }
 
     [Conditional("UNITY_EDITOR")]
-    protected void Break(bool debug = true, Object context = null)
+    protected void Break(bool debug = true, Object context = null, object message=null)
     {
+        if (message != null)
+            Print(message, debug, context);
         Print("Break!", debug, context);
         if (debug) Debug.Break();
     }

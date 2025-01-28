@@ -83,6 +83,8 @@ public class Explosion: BaseMonoBehaviour
         }
         else if (collisionMode == CollisionMode.Collider)
         {
+            ValidateOthers();
+
             foreach (var other in others)
             {
                 Ray ray = new(transform.position, other.collider.transform.position - transform.position);
@@ -111,6 +113,15 @@ public class Explosion: BaseMonoBehaviour
         Print($"Damage them! {other.collider.gameObject.name}", debug);
         other.damageReceiver.SetDamagePosition(hitPosition);
         other.damageReceiver.TakeDamage(damage, identity);
+    }
+
+    private void ValidateOthers()
+    {
+        for (int i = others.Count - 1; i >= 0; i--)
+        {
+            if (others[i].collider == null)
+                others.Remove(others[i]);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
