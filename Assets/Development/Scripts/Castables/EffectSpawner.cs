@@ -18,7 +18,7 @@ public class EffectSpawner : Positionable
     [ConditionalField("autoSpawn")]
     public List<Target> spawnTargets = new();
     public List<Effect> effects = new();
-    private List<Instance> instances = new();
+    [SerializeField][ReadOnly] private List<Instance> instances = new();
 
     // Structs
     [Serializable]
@@ -33,6 +33,7 @@ public class EffectSpawner : Positionable
         public Transform prefab;
     }
 
+    [Serializable]
     public struct Instance
     {
         public Instance(Effect effect, Transform transform)
@@ -40,8 +41,8 @@ public class EffectSpawner : Positionable
             this.effect = effect;
             this.transform = transform;
         }
-        public Effect effect;
-        public Transform transform;
+        [ReadOnly] public Effect effect;
+        [ReadOnly] public Transform transform;
     }
 
     [Serializable]
@@ -140,6 +141,7 @@ public class EffectSpawner : Positionable
 
     private void OnDisable()
     {
+        StopAutoSpawn();
         ClearInstances();
     }
 
@@ -149,11 +151,7 @@ public class EffectSpawner : Positionable
         {
             autoSpawnRoutine ??= StartCoroutine(AutoSpawn());
         }
-        else if (autoSpawnRoutine != null)
-        {
-            StopCoroutine(autoSpawnRoutine);
-            autoSpawnRoutine = null;
-        }
+        else StopAutoSpawn();
     }
 
     private void OnValidate()
@@ -165,20 +163,33 @@ public class EffectSpawner : Positionable
     }
 
     private Coroutine autoSpawnRoutine = null;
-    private int lastSpawnTime = 0;
+    private float lastSpawnTime = 0;
+    private void StopAutoSpawn()
+    {
+        if (autoSpawnRoutine != null)
+        {
+            StopCoroutine(autoSpawnRoutine);
+            autoSpawnRoutine = null;
+        }
+    }
     private IEnumerator AutoSpawn()
     {
         while (true)
         {
             Print($"Auto Spawning {spawnTargets.Count} times.", true, this);
-            foreach (var target in spawnTargets)
+            if (Time.time - lastSpawnTime >= spawnRate)
             {
-                foreach (var offset in target.offsets)
+                lastSpawnTime = Time.time;
+                foreach (var target in spawnTargets)
                 {
-                    Spawn(offset, target.parent, target.useWorldSpace);
+                    foreach (var offset in target.offsets)
+                    {
+                        Spawn(offset, target.parent, target.useWorldSpace);
+                    }
                 }
             }
-            yield return new WaitForSeconds(spawnRate);
+            float timeDiff = Mathf.Max(0, lastSpawnTime + spawnRate - Time.time); // Grab time again, in case spawning took a while.
+            yield return new WaitForSeconds(Mathf.Min(spawnRate, timeDiff));  
         }
     }
 
@@ -195,7 +206,7 @@ public class EffectSpawner : Positionable
                 tform.position = final;
             else
                 tform.localPosition = final;
-            StartCoroutine(CleanupInstance(new Instance(effect, tform)));
+            StartCoroutine(QueueInstance(new Instance(effect, tform)));
         }
     }
 
@@ -204,10 +215,20 @@ public class EffectSpawner : Positionable
         Spawn(target.position);
     }
 
-    public IEnumerator CleanupInstance(Instance instance)
+    public IEnumerator QueueInstance(Instance instance)
     {
+        instances.Add(instance);
         yield return new WaitForSeconds(instance.effect.lifeTime);
-        Destroy(instance.transform.gameObject);
+        ClearInstance(instance);
+    }
+
+    public void ClearInstance(Instance instance)
+    {
+        if (instance.transform != null)
+        {
+            Destroy(instance.transform.gameObject);
+        }
+        instances.Remove(instance);
     }
 
     public void ClearInstances()

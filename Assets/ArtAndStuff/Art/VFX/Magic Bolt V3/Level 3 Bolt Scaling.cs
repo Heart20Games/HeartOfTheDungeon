@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.VFX;
 
 [RequireComponent(typeof(EffectSpawner))]
@@ -24,7 +25,8 @@ public class Level3BoltScaling : BaseMonoBehaviour
     [Header("Collision")]
     [SerializeField] private float collisionMargin = 0.01f;
     [SerializeField] private float collisionBaseScale = 50f;
-    [SerializeField] private LayerMask raycastLayer;
+    [FormerlySerializedAs("raycastLayer")]
+    [SerializeField] private LayerMask scalingLayerMask;
     [SerializeField] private RingCast ringCast;
     private EffectSpawner effectSpawner;
     [Header("Direction")]
@@ -53,6 +55,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
         public Transform target; // Assumed to share parent w/ source.
         public float radius;
         public float density;
+        public LayerMask layerMask;
         public List<Ray> rays; // This is the list of rays to be checked.
         public List<Vector3> offsets; // This is the output
         public void CalculateRays()
@@ -68,19 +71,23 @@ public class Level3BoltScaling : BaseMonoBehaviour
                 rays.Add(new(source.TransformPoint(origin), (target.TransformPoint(destination) - source.TransformPoint(origin)).normalized));
             }
         }
-        public void Cast(float maxDistance, int raycastLayer)
+        public void Cast(float maxDistance, int? raycastLayer = null)
         {
             offsets ??= new();
             offsets.Clear();
             foreach (var ray in rays)
             {
                 Debug.DrawRay(ray.origin, ray.direction * maxDistance, Color.red, 0.1f);
-                RaycastHit[] hits = Physics.RaycastAll(ray, maxDistance, raycastLayer);
+                RaycastHit[] hits = Physics.RaycastAll(ray, maxDistance, raycastLayer ?? layerMask);
                 foreach (var hit in hits)
                 {
                     offsets.Add(hit.point);
                 }
             }
+        }
+        public void Clear()
+        {
+            offsets.Clear();
         }
     }
 
@@ -127,6 +134,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
         collider.enabled = true;
         playing = true;
         casting = false;
+        effectSpawner.enabled = true;
         currentScale = 0;
         InterruptWindDown();
         UpdateScaling();
@@ -160,6 +168,9 @@ public class Level3BoltScaling : BaseMonoBehaviour
         bolt.SetBool("Effect End", true);
         windDownCoroutine = null;
         UpdateScaling();
+        ringCast.Clear();
+        effectSpawner.enabled = false;
+        onWoundDown.Invoke();
     }
 
     private IEnumerator DoWindDown(float duration)
@@ -178,7 +189,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
     private void UpdateRayCastOffsets()
     {
         ringCast.CalculateRays();
-        ringCast.Cast(maxDistance + 1, raycastLayer);
+        ringCast.Cast(maxDistance + 1);
         effectSpawner.spawnTargets.Clear();
         effectSpawner.spawnTargets.Add(new(ringCast.target, ringCast.offsets, true));
     }
@@ -231,7 +242,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
     private void UpdateMaxDistance()
     {
         Ray ray = new(transform.position, transform.forward);
-        RaycastHit[] hits = Physics.RaycastAll(ray, 1000f, raycastLayer);
+        RaycastHit[] hits = Physics.RaycastAll(ray, 1000f, scalingLayerMask);
 
         int totalNum = 0;
         int numInLayer = 0;
@@ -240,7 +251,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
             maxDistance = 1000f;
             foreach (var hit in hits)
             {
-                if (raycastLayer.LayerInMask(hit.collider.gameObject.layer))
+                if (scalingLayerMask.LayerInMask(hit.collider.gameObject.layer))
                 {
                     float old = maxDistance;
                     maxDistance = Mathf.Min(hit.distance, maxDistance);
@@ -249,7 +260,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
                 }
                 else
                 {
-                    Print($"Hit didn't match {raycastLayer.value}, was {hit.collider.gameObject.layer}");
+                    Print($"Hit didn't match {scalingLayerMask.value}, was {hit.collider.gameObject.layer}");
                 }
 
                 totalNum += 1;

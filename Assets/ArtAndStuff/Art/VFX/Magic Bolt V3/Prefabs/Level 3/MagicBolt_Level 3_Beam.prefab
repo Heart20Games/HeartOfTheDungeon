@@ -140,7 +140,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 150.00002, y: 150, z: 150}
+  m_LocalScale: {x: 50, y: 50, z: 50.000004}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3685591001691019646}
@@ -337,7 +337,7 @@ MonoBehaviour:
   castDuration: 4
   collisionMargin: 0.01
   collisionBaseScale: 50
-  raycastLayer:
+  scalingLayerMask:
     serializedVersion: 2
     m_Bits: 8
   ringCast:
@@ -345,6 +345,9 @@ MonoBehaviour:
     target: {fileID: 3685591001691019646}
     radius: 0.02
     density: 13
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 136
     offsets: []
   shouldFollowCrossHair: 0
   debug: 0
@@ -406,3 +409,4 @@ MonoBehaviour:
   effects:
   - lifeTime: 0.2
     prefab: {fileID: 4325371597580070175, guid: fe01e9b8e9a67c64b820cb5818610705, type: 3}
+  instances: []
