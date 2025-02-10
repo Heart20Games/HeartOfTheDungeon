@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem.HID;
 using static Body.Behavior.ContextSteering.CSIdentity;
 
@@ -15,6 +16,8 @@ public class Explosion: BaseMonoBehaviour
     public CollisionMode collisionMode = CollisionMode.SphereCast;
 
     public bool triggerExplosion = false;
+
+    [SerializeField] protected UnityEvent onExplode = new();
 
     public bool debug;
     public float debugRayDuration = 0.01f;
@@ -68,6 +71,8 @@ public class Explosion: BaseMonoBehaviour
 
     public void Explode()
     {
+        onExplode?.Invoke();
+
         if (collisionMode == CollisionMode.SphereCast)
         {
             RaycastHit[] hits = Physics.SphereCastAll(new(transform.position, Vector3.forward), radius);
