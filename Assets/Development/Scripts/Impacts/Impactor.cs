@@ -48,6 +48,7 @@ public class Impactor : Validator
         {
             InvokeImpactExit(other);
         }
+        others.Clear();
     }
 
 

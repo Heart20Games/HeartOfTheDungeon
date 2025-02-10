@@ -19,6 +19,7 @@ public class EffectSpawner : Positionable
     public List<Target> spawnTargets = new();
     public List<Effect> effects = new();
     [SerializeField][ReadOnly] private List<Instance> instances = new();
+    [SerializeField] private bool debug = false;
 
     // Structs
     [Serializable]
@@ -176,7 +177,7 @@ public class EffectSpawner : Positionable
     {
         while (true)
         {
-            Print($"Auto Spawning {spawnTargets.Count} times.", true, this);
+            Print($"Auto Spawning {spawnTargets.Count} times.", debug, this);
             if (Time.time - lastSpawnTime >= spawnRate)
             {
                 lastSpawnTime = Time.time;

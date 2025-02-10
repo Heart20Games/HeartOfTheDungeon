@@ -131,6 +131,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
         bolt.SetFloat("Duration", castDuration);
         bolt.SetBool("Effect End", false);
         bolt.Play();
+        collider.gameObject.SetActive(true);
         collider.enabled = true;
         playing = true;
         casting = false;
@@ -165,6 +166,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
         playing = false;
         casting = false;
         collider.enabled = false;
+        collider.gameObject.SetActive(false);
         bolt.SetBool("Effect End", true);
         windDownCoroutine = null;
         UpdateScaling();

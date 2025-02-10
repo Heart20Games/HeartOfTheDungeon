@@ -26,6 +26,7 @@ public class Health : BaseMonoBehaviour, IHealth
     public UnityEvent<int, Identity> onTakeDamageFrom;
     [Foldout("Events")]
     public UnityEvent onNoHealth;
+    [SerializeField] bool debug = false;
 
     public void Refresh()
     {
@@ -63,6 +64,7 @@ public class Health : BaseMonoBehaviour, IHealth
 
     public virtual void TakeDamage(int amount, Identity id = Identity.Neutral)
     {
+        Print($"{gameObject.name} taking {amount} damage from {id}", debug, this);
         int initial = health;
         health -= amount;
         onSetHealth.Invoke(health);

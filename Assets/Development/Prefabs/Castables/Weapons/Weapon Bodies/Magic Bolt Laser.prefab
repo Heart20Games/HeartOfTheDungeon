@@ -66,11 +66,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4511247513421251100, guid: 4072d33aae34dcb409ea0e4384214e4f, type: 3}
       propertyPath: hitDamageable.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4511247513421251100, guid: 4072d33aae34dcb409ea0e4384214e4f, type: 3}
       propertyPath: leftDamageable.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4511247513421251100, guid: 4072d33aae34dcb409ea0e4384214e4f, type: 3}
       propertyPath: onCast.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -209,17 +209,6 @@ MonoBehaviour:
   leftDamageable:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &3284833484116792118 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4511247513421251100, guid: 4072d33aae34dcb409ea0e4384214e4f, type: 3}
-  m_PrefabInstance: {fileID: 1372816203847930154}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2789318854399362720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f8cb252bdcab0c4c8630cb96b7c25b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5897971063637177517
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -250,10 +239,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3806865271184695148, guid: 15a0ef15721ccd645b0aaebc8ab34cd1, type: 3}
       propertyPath: shouldFollowCrossHair
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3806865271184695148, guid: 15a0ef15721ccd645b0aaebc8ab34cd1, type: 3}
-      propertyPath: onWoundDown.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3806865271184695148, guid: 15a0ef15721ccd645b0aaebc8ab34cd1, type: 3}
@@ -430,8 +415,8 @@ MonoBehaviour:
       enter:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 3284833484116792118}
-            m_TargetAssemblyTypeName: CastableBody, Assembly-CSharp
+          - m_Target: {fileID: 4960851252339063736}
+            m_TargetAssemblyTypeName: Damager, Core
             m_MethodName: HitDamageable
             m_Mode: 0
             m_Arguments:
@@ -445,8 +430,8 @@ MonoBehaviour:
       exit:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 3284833484116792118}
-            m_TargetAssemblyTypeName: CastableBody, Assembly-CSharp
+          - m_Target: {fileID: 4960851252339063736}
+            m_TargetAssemblyTypeName: Damager, Core
             m_MethodName: LeftDamageable
             m_Mode: 0
             m_Arguments:
@@ -502,11 +487,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc6e98420917628498e843205b370fc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldTick: 0
+  shouldTick: 1
   shouldTickOnProc: 1
   tickRate: 0.5
   damage: 1
-  identity: 0
+  identity: 1
   receiverCount: 0
   ignoredCount: 0
   debug: 0
