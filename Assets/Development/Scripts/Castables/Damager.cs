@@ -140,7 +140,7 @@ public class Damager : BaseMonoBehaviour, IDamager
 
     public void RemoveReceiver(IDamageReceiver receiver)
     {
-        Print($"Receiver Removed on {(this == null ? name : Name)}", debug, this);
+        Print($"Receiver Removed on {(this == null ? "[Null Damager]" : Name)}", debug, this);
         receiverData.Remove(receiver);
         receiverCount = receiverData.Count;
     }

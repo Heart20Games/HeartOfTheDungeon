@@ -47,6 +47,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
 
     [Foldout("Events", true)]
     [SerializeField] protected UnityEvent onWoundDown = new();
+    [SerializeField] protected UnityEvent onEnable = new();
 
     [Serializable]
     struct RingCast
@@ -110,6 +111,7 @@ public class Level3BoltScaling : BaseMonoBehaviour
     private void OnEnable()
     {
         Print("Enabled.", debugEnable, this);
+        onEnable?.Invoke();
         if (!playing)
         {
             ChargeUp();
