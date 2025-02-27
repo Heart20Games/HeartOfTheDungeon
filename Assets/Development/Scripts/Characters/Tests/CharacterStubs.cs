@@ -92,8 +92,8 @@ public class CharacterStub : AIdentifiableStub, ICharacter
     public void MoveCharacter(Vector2 input) { }
     public void FlipCamera() { }
     public void Interact() { }
-    public void ReleaseCastable(int idx) { }
-    public void TriggerCastable(int idx) { }
+    public void ReleaseCastable(int idx, bool primary = true) { }
+    public void TriggerCastable(int idx, bool primary = true) { }
 
     public void ListenForControlChanged(UnityAction<bool> action) { }
     public void ListenForDamage(UnityAction action) { }
@@ -217,11 +217,11 @@ public class TalkerStub : BaseMonoBehaviour, ITalker
 
 public class CasterStub : BaseMonoBehaviour, ICaster
 {
-    public void ReleaseCastable(ICastable castable) { }
+    public void ReleaseCastable(ICastable castable, bool primary = true) { }
     public void SetFallback(Vector3 fallback, bool isAimVector = false, bool setOverride = false) { }
     public Vector3 SetVector(Vector3 aimVector)
     {
         return aimVector;
     }
-    public void TriggerCastable(ICastable castable) { }
+    public void TriggerCastable(ICastable castable, bool primary = true) { }
 }

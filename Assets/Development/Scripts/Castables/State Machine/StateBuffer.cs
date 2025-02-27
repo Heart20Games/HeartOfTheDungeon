@@ -157,8 +157,8 @@ namespace HotD.Castables
         public void AddTriggerBuffer(float bufferTime)
         {
             actionBuffers ??= new();
-            actionBuffers.Add(new(CastAction.Trigger, bufferTime, CastAction.Release, CastAction.None, new() { CastState.Activating }));
-            actionBuffers.Add(new(CastAction.Release, bufferTime, CastAction.None, CastAction.Trigger, new() { CastState.Executing }));
+            actionBuffers.Add(new(CastAction.PrimaryTrigger, bufferTime, CastAction.PrimaryRelease, CastAction.None, new() { CastState.Activating }));
+            actionBuffers.Add(new(CastAction.PrimaryRelease, bufferTime, CastAction.None, CastAction.PrimaryTrigger, new() { CastState.Executing }));
         }
     }
 

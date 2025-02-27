@@ -7,8 +7,8 @@ namespace HotD.Castables
 {
     public interface ICaster : IEnableable
     {
-        public void TriggerCastable(ICastable castable);
-        public void ReleaseCastable(ICastable castable);
+        public void TriggerCastable(ICastable castable, bool primary = true);
+        public void ReleaseCastable(ICastable castable, bool primary = true);
         public void SetFallback(Vector3 fallback, bool isAimVector = false, bool setOverride = false);
         public Vector3 SetVector(Vector3 aimVector);
     }
@@ -73,7 +73,8 @@ namespace HotD.Castables
 
         // Triggering the Castable
 
-        public void TriggerCastable(ICastable castable)
+        
+        public void TriggerCastable(ICastable castable, bool primary=true)
         {
             if (enabled)
             {
@@ -81,24 +82,24 @@ namespace HotD.Castables
                 if (method == AimingMethod.OverTheShoulder)
                     AimCaster();
                 this.castable = castable;
-                Trigger();
+                Trigger(primary);
                 if (method == AimingMethod.OverTheShoulder)
                     UnAimCaster();
             }
         }
-
-        public void ReleaseCastable(ICastable castable)
+        
+        public void ReleaseCastable(ICastable castable, bool primary=true)
         {
             if (enabled && this.castable == castable)
             {
                 TargetingMethod method = castable.Item.targetingMethod;
                 if (method == TargetingMethod.AimBased)
                     AimCaster();
-                Release();
+                Release(primary);
                 if (method == TargetingMethod.AimBased)
                     UnAimCaster();
             }
-            else castable?.QueueAction(CastAction.Release);
+            else castable?.QueueAction(ReleaseAction(primary));
         }
 
         // Target
@@ -197,23 +198,31 @@ namespace HotD.Castables
         }
 
         // Trigger
-        private void Trigger()
+        private CastAction TriggerAction(bool primary)
+        {
+            return primary ? CastAction.PrimaryTrigger : CastAction.SecondaryTrigger;
+        }
+        private void Trigger(bool primary=true)
         {
             ApplyCastVector();
             castable?.QueueAction(CastAction.Equip);
-            castable?.QueueAction(CastAction.Trigger);
+            castable?.QueueAction(TriggerAction(primary));
         }
-        private void Trigger(Vector2 aimVector)
+        private void Trigger(Vector2 aimVector, bool primary=true)
         {
             SetVector(aimVector);
-            Trigger();
+            Trigger(primary);
         }
 
         // Release
-        private void Release()
+        private CastAction ReleaseAction(bool primary)
+        {
+            return primary ? CastAction.PrimaryRelease : CastAction.SecondaryRelease;
+        }
+        private void Release(bool primary=true)
         {
             ApplyCastVector();
-            castable?.QueueAction(CastAction.Release);
+            castable?.QueueAction(ReleaseAction(primary));
         }
     }
 }

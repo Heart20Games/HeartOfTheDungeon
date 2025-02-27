@@ -103,8 +103,8 @@ namespace HotD
             if (CurCharacter != null)
             {
                 IsPressed(inputValue,
-                    () => { CurCharacter.TriggerCastable((int)idx); },
-                    () => { CurCharacter.ReleaseCastable((int)idx); }
+                    () => { CurCharacter.TriggerCastable((int)idx, inputValue.Get<float>() >= 0); },
+                    () => { CurCharacter.ReleaseCastable((int)idx, inputValue.Get<float>() >= 0); }
                 );
             }
         }

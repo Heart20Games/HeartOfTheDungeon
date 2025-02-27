@@ -66,8 +66,8 @@ namespace HotD.Castables
             {
                 case CastAction.Equip: Equip(); break;
                 case CastAction.UnEquip: UnEquip(); break;
-                case CastAction.Trigger: Trigger(); break;
-                case CastAction.Release: Release(); break;
+                case CastAction.PrimaryTrigger: Trigger(); break;
+                case CastAction.PrimaryRelease: Release(); break;
                 case CastAction.Start: Cast(); break;
                 case CastAction.End: UnCast(); break;
             }

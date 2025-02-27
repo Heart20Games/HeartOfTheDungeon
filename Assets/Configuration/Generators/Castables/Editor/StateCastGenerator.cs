@@ -140,7 +140,7 @@ namespace HotD.Generators
                     }
 
                     // Activation
-                    if (actionType == ActionType.Passive && settings.castOn.HasFlag(CastOn.Trigger)) // The default, bare-bones activation transitions.
+                    if (actionType == ActionType.Passive && settings.castOn.HasFlag(On.PrimaryTrigger)) // The default, bare-bones activation transitions.
                     {
                         castable.AddInstantCastOnTriggerTransitions();
                     }
@@ -324,7 +324,7 @@ namespace HotD.Generators
             executor.supportedTransitions.Add(startTransition);
 
             // Release Transition
-            CastAction releaseTriggerAction = settings.castOn.HasFlag(CastOn.Release) ? CastAction.Release | CastAction.End : CastAction.End;
+            CastAction releaseTriggerAction = settings.ToCastAction(settings.castOn) | CastAction.End;
             TransitionEvent releaseTransition = actionType switch
             {
                 ActionType.Passive =>   new("Release", releaseTriggerAction, Triggers.StartCast),
@@ -337,9 +337,28 @@ namespace HotD.Generators
             // Keep Power Level Updated
             UnityEventTools.AddPersistentListener(charger.onCharge, executor.SetPowerLevel);
             UnityEventTools.AddPersistentListener(executor.fieldEvents.onSetMaxPowerLevel, charger.SetMaxLevel);
+
+            // Click-Through Charge Progression
+            if (settings.progressOn != On.None)
+            {
+                // Pause Charger
+                UnityEventTools.AddPersistentListener(charger.onChargeInt, charger.Pause);
+                charger.intUpdateType = Charger.UpdateType.Discrete;
+                charger.resetOnBegin = true;
+
+                // Progress Transition
+                CastAction progressTriggerAction = settings.ToCastAction(settings.progressOn);
+                TransitionEvent progressTransition = actionType switch
+                {
+                    ActionType.Passive =>   new("Progress", progressTriggerAction, Triggers.None),
+                    _ =>                    new("Progress", progressTriggerAction)
+                };
+                executor.supportedTransitions.Add(progressTransition);
+                UnityEventTools.AddPersistentListener(progressTransition.startAction, charger.UnPause);
+            }
             
             // Executor On Full Charge?
-            if (settings.castOn.HasFlag(CastOn.ChargeUp))
+            if (settings.castOn.HasFlag(On.ChargeUp))
                 UnityEventTools.AddPersistentListener(charger.onCharged, executor.End);
                 
             return charger;
@@ -373,8 +392,8 @@ namespace HotD.Generators
             executor.supportedTransitions.Add(startTransition);
 
             // End Transition
-            string endName = settings.endOn.HasFlag(EndOn.Release) ? "Release / End" : "End";
-            CastAction endTriggerAction = settings.endOn.HasFlag(EndOn.Release) ? CastAction.Release | CastAction.End : CastAction.End;
+            string endName = settings.endOn.HasFlag(On.PrimaryRelease) ? "Release / End" : "End";
+            CastAction endTriggerAction = settings.endOn.HasFlag(On.PrimaryRelease) ? CastAction.PrimaryRelease | CastAction.End : CastAction.End;
             TransitionEvent endTransition = new(endName, endTriggerAction, Triggers.None, Triggers.EndCast | Triggers.EndAction);
             executor.supportedTransitions.Add(endTransition);
 
@@ -425,7 +444,7 @@ namespace HotD.Generators
             if (!settings.usePowerLevelAsComboStep)
             {
                 // Trigger Transition
-                TransitionEvent triggerTransition = new("Trigger", CastAction.Trigger, Triggers.None, Triggers.None);
+                TransitionEvent triggerTransition = new("Trigger", CastAction.PrimaryTrigger, Triggers.None, Triggers.None);
                 UnityEventTools.AddVoidPersistentListener(triggerTransition.startAction, executor.IncrementComboStep);
                 executor.supportedTransitions.Add(triggerTransition);
             }
@@ -610,28 +629,54 @@ namespace HotD.Generators
         public struct CastableSettings
         {
             [Flags]
-            public enum CastOn
+            public enum On
             {
                 None = 0,
-                Trigger = 1 << 0,
-                Release = 1 << 1,
-                ChargeUp = 1 << 2,
+                PrimaryTrigger = 1 << 0,
+                PrimaryRelease = 1 << 1,
+                SecondaryTrigger = 1 << 2,
+                SecondaryRelease = 1 << 3,
+                ChargeUp = 1 << 4,
             }
 
-            [Flags]
-            public enum EndOn
+            public readonly CastAction ToCastAction(On on, CastAction fallback=CastAction.None)
             {
-                None = 0,
-                Release = 1 << 0,
+                CastAction action = CastAction.None;
+                foreach (On value in Enum.GetValues(typeof(On)))
+                {
+                    if ((on & value) == value)
+                    {
+                        action |= on switch
+                        {
+                            On.PrimaryTrigger => CastAction.PrimaryTrigger,
+                            On.PrimaryRelease => CastAction.PrimaryRelease,
+                            On.SecondaryTrigger => CastAction.SecondaryTrigger,
+                            On.SecondaryRelease => CastAction.SecondaryRelease,
+                            _ => CastAction.None,
+                        };
+                    }
+                }
+                return action == CastAction.None ? fallback : action;
             }
 
+            [Tooltip("Whether ability's components should follow the body of the character casting it.")]
             public bool followBody;
-            public CastOn castOn;
-            public EndOn endOn;
+            [Tooltip("Which action(s) upon which to begin activation of the ability.")]
+            public On activateOn;
+            [Tooltip("Which action(s) upon which to begin charging the next power level.")]
+            public On progressOn;
+            [Tooltip("Which action(s) upon which to begin execution of the ability.")]
+            public On castOn;
+            [Tooltip("Which action(s) upon which to end execution of the ability.")]
+            public On endOn;
+            [Tooltip("Whether or not to use input buffering for the trigger action.")]
             public bool useTriggerBuffer;
             [ConditionalField("useTriggerBuffer")]
+            [Tooltip("There amount of wiggle room the player has when attempting a trigger action early.")]
             public float triggerBufferTime;
+            [Tooltip("Whether this weapon should do different things based on the number of times it's been activated in a row.")]
             public bool useComboSteps;
+            [Tooltip("Treats the current charge level of the weapon as the current combo step, rather than the number of consecutive activations.")]
             public bool usePowerLevelAsComboStep;
             
             public readonly void ApplyToCastable(CastProperties castable)

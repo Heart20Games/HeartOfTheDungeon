@@ -15,11 +15,14 @@ public class Charger : BaseMonoBehaviour
 
     public bool resetOnBegin;
 
+    public enum UpdateType { Continuous, Discrete }
+
     [Header("Settings")]
-    [SerializeField] private bool interrupt = false;
     [SerializeField] private float level;
     [SerializeField] private float maxLevel;
     public bool discreteUpdates = false;
+    public UpdateType floatUpdateType = UpdateType.Continuous;
+    public UpdateType intUpdateType = UpdateType.Continuous;
     public bool discharge = false;
     public bool distributeChargeTimes = false;
     private float chargeTimeScale = 1;
@@ -29,6 +32,8 @@ public class Charger : BaseMonoBehaviour
     public UnityEvent onBegin;
     public UnityEvent<float> onCharge;
     public UnityEvent<int> onChargeInt;
+    public UnityEvent onPaused;
+    public UnityEvent onUnPaused;
     public UnityEvent onCharged;
     [Foldout("Events")]
     public UnityEvent onInterrupt;
@@ -46,21 +51,40 @@ public class Charger : BaseMonoBehaviour
         maxLevel = level;
         if (this.level > maxLevel)
         {
-            this.level = maxLevel;
-            onCharge.Invoke(this.level);
-            onChargeInt.Invoke((int)this.level);
+            SetLevel(maxLevel);
+            //this.level = maxLevel;
+            //onCharge.Invoke(this.level);
+            //onChargeInt.Invoke((int)this.level);
         }
     }
 
     public void Begin()
     {
         if (resetOnBegin)
+        {
+            paused = false;
             level = discharge ? maxLevel : 0;
+        }
         interrupt = false;
         onBegin.Invoke();
         StartCoroutine(ChargeTimer());
     }
 
+    [ButtonMethod]
+    public void Pause(int _=0)
+    {
+        paused = true;
+        onPaused.Invoke();
+    }
+
+    [ButtonMethod]
+    public void UnPause()
+    {
+        paused = false;
+        onUnPaused.Invoke();
+    }
+
+    [ButtonMethod]
     public void Interrupt()
     {
         interrupt = true;
@@ -84,10 +108,14 @@ public class Charger : BaseMonoBehaviour
 
     private void SetLevel(float level)
     {
+        float old = this.level;
         this.level = Mathf.Min(level, maxLevel);
 
-        onCharge.Invoke(this.level);
-        onChargeInt.Invoke(Mathf.FloorToInt(this.level));
+        bool incremented = Mathf.FloorToInt(old) < Mathf.FloorToInt(this.level);
+        if (incremented || floatUpdateType == UpdateType.Continuous)
+            onCharge.Invoke(this.level);
+        if (incremented || intUpdateType == UpdateType.Continuous)
+            onChargeInt.Invoke(Mathf.FloorToInt(this.level));
     }
 
     private void SetRealLevel(ChargeLevels chargeLevels, float level)
@@ -110,6 +138,8 @@ public class Charger : BaseMonoBehaviour
 
     [Header("Status")]
     [ReadOnly][SerializeField] private bool active;
+    [ReadOnly][SerializeField] private bool paused;
+    [SerializeField] private bool interrupt = false;
     [SerializeField] private float chargeLevel;
     [ReadOnly][SerializeField] private float waitTime;
     [SerializeField] private ChargeLevels chargeLevels;
@@ -129,6 +159,11 @@ public class Charger : BaseMonoBehaviour
             // Report the Current Level
             Print($"{(discharge ? "Discharged" : "Charged")} to level {chargeLevel}", debug);
             SetRealLevel(chargeLevels, chargeLevel);
+
+            while (paused)
+            {
+                yield return null;
+            }
             
             // Waiting (And Calculating Increments)
             waitTime = DetermineWaitTime(chargeLevels, chargeLevel);

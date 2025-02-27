@@ -51,7 +51,7 @@ namespace HotD.Castables
         [ButtonMethod]
         public void TestTriggerThenReleaseThenEnd()
         {
-            target.QueueAction(CastAction.Trigger);
+            target.QueueAction(CastAction.PrimaryTrigger);
             if (Application.isPlaying)
             {
                 StartCoroutine(DelayedReleaseAndEnd(testDelay));
@@ -64,7 +64,7 @@ namespace HotD.Castables
         private IEnumerator DelayedReleaseAndEnd(float delay)
         {
             yield return new WaitForSeconds(delay);
-            target.QueueAction(CastAction.Release);
+            target.QueueAction(CastAction.PrimaryRelease);
             yield return new WaitForSeconds(delay);
             target.QueueAction(CastAction.End);
         }
@@ -83,7 +83,7 @@ namespace HotD.Castables
                 Triggers.StartAction, Triggers.None
             ));
             executor.supportedTransitions.Add(new(
-                "Cast on Release", CastAction.Release,
+                "Cast on Release", CastAction.PrimaryRelease,
                 Triggers.None, Triggers.None, CastAction.End
             ));
 

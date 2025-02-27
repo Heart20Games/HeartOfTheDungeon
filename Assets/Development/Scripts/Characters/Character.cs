@@ -23,8 +23,8 @@ namespace HotD.Body
     {
         public void MoveCharacter(Vector2 input);
         public void Aim(Vector2 input, bool aim = false);
-        public void TriggerCastable(int idx);
-        public void ReleaseCastable(int idx);
+        public void TriggerCastable(int idx, bool primary = true);
+        public void ReleaseCastable(int idx, bool primary = true);
         public void Interact();
         public void FlipCamera();
     }
@@ -208,8 +208,8 @@ namespace HotD.Body
         // Actions
         public void MoveCharacter(Vector2 input) { movement.MoveVector = input; caster.SetFallback(movement.MoveVector.FullY(), true); }
         public void Aim(Vector2 input, bool aim = false) { if (aimActive || aim) caster.SetVector(input.FullY()); }
-        public void TriggerCastable(int idx) { if (castables[idx] != null) caster.TriggerCastable(castables[idx]); castableID = idx; }
-        public void ReleaseCastable(int idx) { if (castables[idx] != null) caster.ReleaseCastable(castables[idx]); castableID = idx; }
+        public void TriggerCastable(int idx, bool primary=true) { if (castables[idx] != null) caster.TriggerCastable(castables[idx], primary); castableID = idx; }
+        public void ReleaseCastable(int idx, bool primary=true) { if (castables[idx] != null) caster.ReleaseCastable(castables[idx], primary); castableID = idx; }
         public void Interact() { talker.Talk(); }
         public void FlipCamera() { if (cameraPivot != null) cameraPivot.FlipOverX(); }
 

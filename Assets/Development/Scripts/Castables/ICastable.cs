@@ -11,11 +11,13 @@ namespace HotD.Castables
         None = 0,
         Equip = 1 << 0,
         Start = 1 << 2,
-        Trigger = 1 << 3,
-        Release = 1 << 4,
+        PrimaryTrigger = 1 << 3,
+        PrimaryRelease = 1 << 4,
         End = 1 << 5,
         UnEquip = 1 << 6,
-        Continue = 1 << 7
+        Continue = 1 << 7,
+        SecondaryTrigger = 1 << 8,
+        SecondaryRelease = 1 << 9,
     }
 
     public interface ICastable : ICastProperties

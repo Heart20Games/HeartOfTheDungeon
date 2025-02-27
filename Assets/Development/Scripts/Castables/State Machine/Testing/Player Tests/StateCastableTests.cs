@@ -82,7 +82,7 @@ public class StateCastableTests
             Triggers.StartAction, Triggers.None
         ));
         executor.supportedTransitions.Add(new(
-            "Cast on Release", CastAction.Release,
+            "Cast on Release", CastAction.PrimaryRelease,
             Triggers.None, Triggers.None, CastAction.End
         ));
 

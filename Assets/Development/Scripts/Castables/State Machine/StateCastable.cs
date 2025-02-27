@@ -361,8 +361,8 @@ namespace HotD.Castables
         public void AddChargeTransitions()
         {
             AddBaseTransitions();
-            AddTransition(new(CastState.Equipped, CastAction.Trigger, CastState.Activating));
-            AddTransition(new(CastState.Activating, CastAction.Release | CastAction.End, CastState.Executing));
+            AddTransition(new(CastState.Equipped, CastAction.PrimaryTrigger, CastState.Activating));
+            AddTransition(new(CastState.Activating, CastAction.PrimaryRelease | CastAction.End, CastState.Executing));
             AddTransition(new(CastState.Activating, CastAction.Continue, CastState.Executing));
             AddTransition(new(CastState.Executing, CastAction.End, CastState.Equipped));
         }
@@ -371,7 +371,7 @@ namespace HotD.Castables
         public void AddComboTransitions()
         {
             AddBaseTransitions();
-            AddTransition(new(CastState.Equipped, CastAction.Trigger, CastState.Activating));
+            AddTransition(new(CastState.Equipped, CastAction.PrimaryTrigger, CastState.Activating));
             AddTransition(new(CastState.Activating, CastAction.End, CastState.Executing));
             AddTransition(new(CastState.Executing, CastAction.End, CastState.Equipped));
         }
@@ -380,8 +380,8 @@ namespace HotD.Castables
         public void AddInstantCastOnTriggerTransitions()
         {
             AddBaseTransitions();
-            AddTransition(new(CastState.Equipped, CastAction.Trigger, CastState.Executing));
-            AddTransition(new(CastState.Executing, CastAction.Release | CastAction.End, CastState.Equipped));
+            AddTransition(new(CastState.Equipped, CastAction.PrimaryTrigger, CastState.Executing));
+            AddTransition(new(CastState.Executing, CastAction.PrimaryRelease | CastAction.End, CastState.Equipped));
         }
 
         [ButtonMethod]
